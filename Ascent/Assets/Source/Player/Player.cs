@@ -1,21 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player 
+public class Player
 {
 	#region Fields
 	
-	public Vector3 position;
-	private Transform transform;
-	private int playerId = 0;
+	public Vector3 position = new Vector3();
+	public GameObject gameObject;
+	//private Transform transform;
+	public int playerId = 0;
 	public float movementSpeed = 5.0f;
 	
-	// Set Object transform
-	public Transform ObjectTransform
-	{
-		get { return transform; }
-		set { transform = value; }
-	}
 	
 	#endregion
 	
@@ -27,24 +22,24 @@ public class Player
 	// Use this for initialization
 	public void Start () 
 	{
-		GameObject obj = transform.gameObject;
+		//GameObject obj = transform.gameObject;
 		
 		switch (playerId)
 		{
 		case 0:
-			obj.renderer.material.color = Color.red;
+			gameObject.renderer.material.color = Color.red;
 			break;
 			
 		case 1:
-			obj.renderer.material.color = Color.green;
+			gameObject.renderer.material.color = Color.green;
 			break;
 			
 		case 2:
-			obj.renderer.material.color = Color.blue;
+			gameObject.renderer.material.color = Color.blue;
 			break;
 			
 		default:
-			obj.renderer.material.color = Color.white;
+			gameObject.renderer.material.color = Color.white;
 			break;
 		}
 	}
@@ -55,13 +50,21 @@ public class Player
 		// Update the transform by the movement
 		float x = Input.GetAxis("Horizontal") * Time.deltaTime * movementSpeed;
 		float z = Input.GetAxis("Vertical") * Time.deltaTime * movementSpeed;
-		transform.Translate(x, 0, z);
+		//transform.Translate(x, 0, z);
+		Vector3 prevPos = gameObject.transform.position;
+		Vector3 newPos = new Vector3(x + prevPos.x, 0, z + prevPos.z);
+		gameObject.transform.position = newPos;
 		
 		// Update internal position
-		position = transform.position;
+		//position = transform.position;
 	}
 	
 	public void Draw() {
 		
+	}
+	
+	public Vector3 GetPos()
+	{
+		return gameObject.transform.position;
 	}
 }

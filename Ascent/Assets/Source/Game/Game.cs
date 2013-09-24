@@ -12,7 +12,7 @@ public class Game : MonoBehaviour {
 	// The camera prefab
 	public Transform CameraPrefab;
 	
-	private List<Player> players;
+	private List<Player> players = new List<Player>();
 	
 	#endregion
 	
@@ -21,8 +21,6 @@ public class Game : MonoBehaviour {
 	void Start () 
 	{
 		// Initialize the list of players.
-		players = new List<Player>();
-		
 		// Create the players
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
@@ -30,12 +28,15 @@ public class Game : MonoBehaviour {
 			Player newPlayer = new Player(i);
 			newPlayer.position = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
 			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
+			Transform t = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
+			newPlayer.gameObject = t.gameObject;
+			//newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
 			newPlayer.Start();
 			
 			// Add the player to the list.
 			players.Add(newPlayer);
 		}
+		
 		
 		// Create the camera
 		CameraPrefab = (Transform)Instantiate(CameraPrefab);
@@ -48,10 +49,15 @@ public class Game : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		// Update players
+		foreach (Player player in players)
+		{
+			player.Update();
+			//Debug.Log("Player :" + player.playerId);
+		}
+		
 		// Update Camera
 		UpdateCamPos();
-		// Update player
-		players[0].Update();
 	}
 	
 	void UpdateCamPos()
@@ -62,7 +68,7 @@ public class Game : MonoBehaviour {
 		// Add up all the vectors
 		foreach (Player player in players)
 		{
-			totalVector += player.position;
+			totalVector += player.GetPos();
 		}
 		
 		// Set the position of our camera.
