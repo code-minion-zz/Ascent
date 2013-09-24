@@ -12,7 +12,15 @@ public class Game : MonoBehaviour {
 	// The camera prefab
 	public Transform CameraPrefab;
 	
-	private List<Player> players = new List<Player>();
+	private List<Player> players;
+	
+	private InputHandler inputHandler;
+	
+	[HideInInspector]
+	public InputHandler InputHandler
+	{
+		get { return inputHandler; }
+	}
 	
 	#endregion
 	
@@ -20,23 +28,26 @@ public class Game : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		// Add monoehaviour components
+		inputHandler = (InputHandler)transform.gameObject.AddComponent("InputHandler");
+		
 		// Initialize the list of players.
+		players = new List<Player>();
+		
 		// Create the players
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
 			// Setup the player and their positions 
 			Player newPlayer = new Player(i);
-			newPlayer.position = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
+			// Setup the spawning point
+			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
 			// The player instance shall have a cloned instance of the player prefab
-			Transform t = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
-			newPlayer.gameObject = t.gameObject;
-			//newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
+			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
 			newPlayer.Start();
 			
 			// Add the player to the list.
 			players.Add(newPlayer);
 		}
-		
 		
 		// Create the camera
 		CameraPrefab = (Transform)Instantiate(CameraPrefab);
@@ -49,15 +60,14 @@ public class Game : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		// Update players
+		// Update Camera
+		UpdateCamPos();
+		// Update player
 		foreach (Player player in players)
 		{
 			player.Update();
-			//Debug.Log("Player :" + player.playerId);
+			
 		}
-		
-		// Update Camera
-		UpdateCamPos();
 	}
 	
 	void UpdateCamPos()
@@ -68,7 +78,8 @@ public class Game : MonoBehaviour {
 		// Add up all the vectors
 		foreach (Player player in players)
 		{
-			totalVector += player.GetPos();
+			if (player != null)
+				totalVector += player.Position;
 		}
 		
 		// Set the position of our camera.

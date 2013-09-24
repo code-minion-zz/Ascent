@@ -1,19 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
+using InControl;
 
-public class Player
+public class Player 
 {
 	#region Fields
 	
-	public Vector3 position = new Vector3();
-	public GameObject gameObject;
-	//private Transform transform;
-	public int playerId = 0;
-	public float movementSpeed = 5.0f;
+	// Private member variables.
+	private Transform transform;
+	// Player identifier
+	private int playerId = 0;
+	// Movement speed variables
+	public float movementSpeed = 5.0f;		
+	// Handling input for this player.
+	private InputHandler inputHandler;
 	
+	// Set Object transform.
+	[HideInInspector]
+	public Transform ObjectTransform
+	{
+		get { return transform; }
+		set { transform = value; }
+	}
+	
+	// Set the position of the players transform.
+	[HideInInspector]
+	public Vector3 Position
+	{
+		get { return transform.position; }
+		set { transform.position = value; }
+	}
 	
 	#endregion
 	
+	// Constructor
 	public Player(int playerId)
 	{
 		this.playerId = playerId;
@@ -22,24 +42,27 @@ public class Player
 	// Use this for initialization
 	public void Start () 
 	{
-		//GameObject obj = transform.gameObject;
+		// Get a reference to our unity GameObject so we can ulter the materials
+		GameObject obj = transform.gameObject;
+		// Get the input handler component for this transform.
+		inputHandler = GameObject.Find("Game").GetComponent<InputHandler>();
 		
 		switch (playerId)
 		{
 		case 0:
-			gameObject.renderer.material.color = Color.red;
+			obj.renderer.material.color = Color.red;
 			break;
 			
 		case 1:
-			gameObject.renderer.material.color = Color.green;
+			obj.renderer.material.color = Color.green;
 			break;
 			
 		case 2:
-			gameObject.renderer.material.color = Color.blue;
+			obj.renderer.material.color = Color.blue;
 			break;
 			
 		default:
-			gameObject.renderer.material.color = Color.white;
+			obj.renderer.material.color = Color.white;
 			break;
 		}
 	}
@@ -47,24 +70,24 @@ public class Player
 	// Update is called once per frame
 	public void Update () 
 	{
-		// Update the transform by the movement
-		float x = Input.GetAxis("Horizontal") * Time.deltaTime * movementSpeed;
-		float z = Input.GetAxis("Vertical") * Time.deltaTime * movementSpeed;
-		//transform.Translate(x, 0, z);
-		Vector3 prevPos = gameObject.transform.position;
-		Vector3 newPos = new Vector3(x + prevPos.x, 0, z + prevPos.z);
-		gameObject.transform.position = newPos;
+		InputDevice inputDevice = inputHandler.GetDevice(playerId);
 		
-		// Update internal position
-		//position = transform.position;
-	}
-	
-	public void Draw() {
-		
-	}
-	
-	public Vector3 GetPos()
-	{
-		return gameObject.transform.position;
+		if (inputDevice != null)
+		{
+			// Update the transform by the movement
+			if (inputDevice.Action1.IsPressed)
+			{
+				Debug.Log("Action One: " + playerId);
+			}
+			
+			float x = inputDevice.LeftStickX.Value * Time.deltaTime * movementSpeed;
+			float z = inputDevice.LeftStickY.Value * Time.deltaTime * movementSpeed;
+			transform.Translate(x, 0, z);
+		}
+		else
+		{
+			// Error no device
+			Debug.Log("No Device for this player");
+		}
 	}
 }
