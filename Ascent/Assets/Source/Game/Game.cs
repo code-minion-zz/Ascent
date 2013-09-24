@@ -14,12 +14,23 @@ public class Game : MonoBehaviour {
 	
 	private List<Player> players;
 	
+	private InputHandler inputHandler;
+	
+	[HideInInspector]
+	public InputHandler InputHandler
+	{
+		get { return inputHandler; }
+	}
+	
 	#endregion
 	
 	#region Initialization
 	// Use this for initialization
 	void Start () 
 	{
+		// Add monoehaviour components
+		inputHandler = (InputHandler)transform.gameObject.AddComponent("InputHandler");
+		
 		// Initialize the list of players.
 		players = new List<Player>();
 		
@@ -28,9 +39,10 @@ public class Game : MonoBehaviour {
 		{
 			// Setup the player and their positions 
 			Player newPlayer = new Player(i);
-			newPlayer.position = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
+			// Setup the spawning point
+			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
 			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, newPlayer.position, Quaternion.identity);
+			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
 			newPlayer.Start();
 			
 			// Add the player to the list.
@@ -51,7 +63,11 @@ public class Game : MonoBehaviour {
 		// Update Camera
 		UpdateCamPos();
 		// Update player
-		players[0].Update();
+		foreach (Player player in players)
+		{
+			player.Update();
+			
+		}
 	}
 	
 	void UpdateCamPos()
@@ -62,7 +78,8 @@ public class Game : MonoBehaviour {
 		// Add up all the vectors
 		foreach (Player player in players)
 		{
-			totalVector += player.position;
+			if (player != null)
+				totalVector += player.Position;
 		}
 		
 		// Set the position of our camera.
