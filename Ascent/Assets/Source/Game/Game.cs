@@ -11,12 +11,15 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
-	
+	// List of player objects
 	private List<Player> players;
-	
+	// The input handler which players will use.
 	private InputHandler inputHandler;
 	
-	[HideInInspector]
+	#endregion	
+	
+	#region Properties
+	
 	public InputHandler InputHandler
 	{
 		get { return inputHandler; }
@@ -83,7 +86,7 @@ public class Game : MonoBehaviour {
 		}
 		
 		// Set the position of our camera.
-		CameraPrefab.position = new Vector3(totalVector.x / 3.0f, CameraPrefab.position.y, totalVector.z / 3.0f);		
+		CameraPrefab.position = new Vector3(totalVector.x / players.Count, CameraPrefab.position.y, totalVector.z / players.Count);		
 	}
 	
 	#endregion
