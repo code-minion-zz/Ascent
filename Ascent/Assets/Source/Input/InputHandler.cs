@@ -10,12 +10,19 @@ using InControl;
 /// </summary>
 public class InputHandler : MonoBehaviour 
 {	
+	#region Fields
+	
 	enum PLAYER_ID
 	{
 		PLAYER_ONE,
 		PLAYER_TWO,
 		PLAYER_THREE
 	};
+	
+	// Map to hold the player id and device assigned.
+	Dictionary<int, InputDevice> playerDevices = new Dictionary<int, InputDevice>();
+	
+	#endregion
 	
 	// Use this for initialization
 	void Start () 
@@ -45,7 +52,23 @@ public class InputHandler : MonoBehaviour
 	
 	public InputDevice GetDevice(int playerId)
 	{
-		return (InputManager.Devices[playerId]);	
+		foreach(KeyValuePair<int, InputDevice> kvp in playerDevices)
+		{
+			if (playerId == kvp.Key)
+				return (kvp.Value);
+		}
+		
+		// No Device assigned for this player.
+		// We need to create one by getting the next available.
+		InputDevice dev = GetNextAvailable();
+		if (dev != null)
+		{
+			playerDevices.Add (playerId, dev);
+			return (dev);
+		}
+		
+		// No more available devices.
+		return (null);
 	}
 	
 	void SetupPlayerDevices()
@@ -57,6 +80,9 @@ public class InputHandler : MonoBehaviour
 		int i = 0;
 		foreach (InputDevice device in InputManager.Devices)
 		{
+			// Add the device to the dict of player devices
+			device.InUse = true;
+			playerDevices.Add(i, device);
 			Debug.Log (i + " " + device.Name);
 			i++;			
 		}
