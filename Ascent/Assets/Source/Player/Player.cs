@@ -17,6 +17,8 @@ public class Player
 	public float movementSpeed = 5.0f;		
 	// Handling input for this player.
 	private InputHandler inputHandler;
+	
+	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
 	List<Transform> meleeBoxes; // active melee attacks
 	
@@ -107,7 +109,17 @@ public class Player
 			
 			float x = inputDevice.LeftStickX.Value * Time.deltaTime * movementSpeed;
 			float z = inputDevice.LeftStickY.Value * Time.deltaTime * movementSpeed;
+			
+			//transform.rotation = new Quaternion(x, 0.0f, z, 0.0f);
+			Vector3 direction = Vector3.Normalize(Position + new Vector3(x,0,z));
+			//transform.forward = direction; 
+	
 			transform.Translate(x, 0, z);
+			//transform.Translate(transform.forward);
+			
+			//transform.forward = Vector3.Normalize(new Vector3(x, 0.0f, z));
+			Debug.DrawRay(Position, Position + transform.forward);
+			
 		}
 		else
 		{
@@ -131,8 +143,9 @@ public class Player
 		}
 		//transform.GetComponentInChildren<HitBox>().Fire();
 		transform.GetChild(0).renderer.enabled = true;
+		transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
 	}
-}
+
 
     public void TakeDamage(int _damage)
     {
@@ -143,3 +156,4 @@ public class Player
             transform.gameObject.renderer.material.color = Color.black;
         }
     }
+}
