@@ -3,14 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using InControl;
 
-public class Player 
+public class Player : MonoBehaviour
 {
     public int health = 100;
 
 	#region Fields
 	
-	// Private member variables.
-	private Transform transform;
 	// Player identifier
 	private int playerId = 0;
 	// Movement speed variables
@@ -25,25 +23,31 @@ public class Player
 	#endregion
 	
 	#region Properties
-	
-	// Get and set the transform of this player.
-	public Transform Transform
-	{
-		get { return transform; }
-		set { transform = value; }
-	}
-	
-	// Return the game object of this player.
-	public GameObject GameObject 
-	{
-		get { return transform.gameObject; }
-	}
-	
+
 	// Set the position of the players transform.
 	public Vector3 Position
 	{
 		get { return transform.position; }
 		set { transform.position = value; }
+	}
+	
+	// Gets the game object of this transform
+	public GameObject GameObject
+	{
+		get { return transform.gameObject; }
+	}
+	
+	// Gets the transform for this player.
+	public Transform Transform
+	{
+		get { return transform; }
+	}
+	
+	// The player Id of this player.
+	public int PlayerID
+	{
+		get { return playerId; }
+		set { playerId = value; }
 	}
 	
 	#endregion	
@@ -82,6 +86,7 @@ public class Player
 			obj.renderer.material.color = Color.white;
 			break;
 		}
+		
 		transform.GetChild(0).renderer.enabled = false;
 	}
 	#endregion

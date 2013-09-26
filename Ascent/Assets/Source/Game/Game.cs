@@ -48,13 +48,12 @@ public class Game : MonoBehaviour {
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
 			// Setup the player and their positions 
-			Player newPlayer = new Player(i);
 			// Setup the spawning point
 			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
-			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.Transform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
-			newPlayer.Start();
-			
+			PlayerPrefab = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);
+			// Get the Player class from the prefab component
+			Player newPlayer = PlayerPrefab.GetComponent<Player>();
+			newPlayer.PlayerID = i;
 			// Add the player to the list.
 			players.Add(newPlayer);
 		}
@@ -73,11 +72,11 @@ public class Game : MonoBehaviour {
 		// Update Camera
 		UpdateCamPos();
 		// Update player
-		foreach (Player player in players)
+		/*foreach (Player player in players)
 		{
 			player.Update();
 			
-		}
+		}*/
 	}
 	
 	void UpdateCamPos()
