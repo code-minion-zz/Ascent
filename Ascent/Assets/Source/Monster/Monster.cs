@@ -74,9 +74,9 @@ public class Monster : MonoBehaviour
                 break;
             case STATE.SEEK:
                 {
-                    Vector3 direction = targetPlayer.ObjectTransform.position - transform.position;
+                    Vector3 direction = targetPlayer.Transform.position - transform.position;
 
-                    Debug.DrawLine(transform.position, targetPlayer.ObjectTransform.position);
+                    Debug.DrawLine(transform.position, targetPlayer.Transform.position);
 
                     float distance = direction.sqrMagnitude;
                     if (distance > -5.0f && distance < 2.0f)
@@ -163,7 +163,7 @@ public class Monster : MonoBehaviour
 
         foreach (Player player in players)
         {
-            Vector3 diff = player.ObjectTransform.position - position;
+            Vector3 diff = player.Transform.position - position;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance)
             {
@@ -187,7 +187,7 @@ public class Monster : MonoBehaviour
     {
         if (_player != null)
         {
-            Vector3 direction = Vector3.Normalize((_player.ObjectTransform.position - transform.position));
+            Vector3 direction = Vector3.Normalize((_player.Transform.position - transform.position));
             transform.position += direction * Time.deltaTime * 2.5f;
         }
     }
