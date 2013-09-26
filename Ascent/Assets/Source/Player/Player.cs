@@ -110,15 +110,15 @@ public class Player
 			float x = inputDevice.LeftStickX.Value * Time.deltaTime * movementSpeed;
 			float z = inputDevice.LeftStickY.Value * Time.deltaTime * movementSpeed;
 			
-			//transform.rotation = new Quaternion(x, 0.0f, z, 0.0f);
-			Vector3 direction = Vector3.Normalize(Position + new Vector3(x,0,z));
-			//transform.forward = direction; 
-	
-			transform.Translate(x, 0, z);
-			//transform.Translate(transform.forward);
-			
-			//transform.forward = Vector3.Normalize(new Vector3(x, 0.0f, z));
-			Debug.DrawRay(Position, Position + transform.forward);
+			Vector3 direction = Vector3.Normalize(new Vector3(x, 0.0f, z));
+
+            if (x != 0.0f || z != 0.0f)
+            {
+                transform.LookAt(Position + (direction * 100.0f));
+                transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+                Debug.DrawRay(Position, transform.forward, Color.red);
+            }
 			
 		}
 		else
