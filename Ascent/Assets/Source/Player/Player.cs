@@ -5,6 +5,7 @@ using InControl;
 
 public class Player : MonoBehaviour
 {
+    private bool jumping = false;
     public int health = 100;
 
 	#region Fields
@@ -124,6 +125,12 @@ public class Player : MonoBehaviour
 
                 Debug.DrawRay(Position, transform.forward, Color.red);
             }
+
+            if (jumping)
+            {
+                Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
+                Debug.DrawRay(transform.position, -transform.up, Color.red);
+            }
 			
 		}
 		else
@@ -147,17 +154,26 @@ public class Player : MonoBehaviour
 	{
 		switch (skillId)
 		{
-		case 0: // jump
-			transform.gameObject.rigidbody.AddForce(Vector3.up * 100);
-			Debug.Log("Jumping");
-			return;
-		case 1: // attack normal
-			
-			break;
+            case 0: // jump
+                {
+                    if(!jumping)
+                    {
+                        transform.gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                        jumping = true;
+
+                        return;
+                    }
+                }
+                break;
+            case 1: // attack normal
+                {
+                    //transform.GetComponentInChildren<HitBox>().Fire();
+                    transform.GetChild(0).renderer.enabled = true;
+                    transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+                }
+                break;
 		}
-		//transform.GetComponentInChildren<HitBox>().Fire();
-		transform.GetChild(0).renderer.enabled = true;
-		transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+
 	}
 
 
@@ -168,6 +184,14 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             transform.gameObject.renderer.material.color = Color.black;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.parent.name == "HelperGrid")
+        {
+            jumping = false;
         }
     }
 }
