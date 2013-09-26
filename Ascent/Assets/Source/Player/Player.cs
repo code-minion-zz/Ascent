@@ -5,6 +5,7 @@ using InControl;
 
 public class Player : MonoBehaviour
 {
+    private bool jumping = false;
     public int health = 100;
 
 	#region Fields
@@ -138,13 +139,16 @@ public class Player : MonoBehaviour
 	{
 		switch (skillId)
 		{
-		case 0: // jump
-			transform.gameObject.rigidbody.AddForce(Vector3.up * 100);
-			Debug.Log("Jumping");
-			return;
-		case 1: // attack normal
-			
-			break;
+            case 0: // jump
+                {
+                    transform.gameObject.rigidbody.AddForce(Vector3.up * 100);
+                    Debug.Log("Jumping");
+                    return;
+                }
+            case 1: // attack normal
+                {
+                }
+                break;
 		}
 		//transform.GetComponentInChildren<HitBox>().Fire();
 		transform.GetChild(0).renderer.enabled = true;
