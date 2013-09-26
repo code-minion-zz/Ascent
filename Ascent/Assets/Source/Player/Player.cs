@@ -141,15 +141,6 @@ public class Player : MonoBehaviour
 	}
 	#endregion
 	
-	#region Collision
-	
-	void OnCollisionEnter(Collision other)
-	{
-
-	}
-	
-	#endregion
-	
 	public void Skill(int skillId)
 	{
 		switch (skillId)
