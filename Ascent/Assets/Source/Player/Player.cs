@@ -4,6 +4,8 @@ using InControl;
 
 public class Player 
 {
+    public int health = 100;
+
 	#region Fields
 	
 	// Private member variables.
@@ -98,4 +100,14 @@ public class Player
 			//Debug.Log("No Device for this player");
 		}
 	}
+
+    public void TakeDamage(int _damage)
+    {
+        health -= _damage;
+
+        if (health <= 0)
+        {
+            transform.gameObject.renderer.material.color = Color.black;
+        }
+    }
 }

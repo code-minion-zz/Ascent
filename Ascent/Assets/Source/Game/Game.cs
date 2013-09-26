@@ -26,6 +26,11 @@ public class Game : MonoBehaviour {
 	{
 		get { return inputHandler; }
 	}
+
+    public List<Player> Players
+    {
+        get { return players; }
+    }
 	
 	#endregion
 	
