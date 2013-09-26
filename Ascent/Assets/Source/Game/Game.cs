@@ -11,6 +11,8 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
+	// The door transform
+	public Transform DoorPrefab;
 	// Camera offset
 	public float cameraOffset = 6.0f;
 	// List of player objects
@@ -32,6 +34,11 @@ public class Game : MonoBehaviour {
         get { return players; }
     }
 	
+	public GameObject GameObject
+	{
+		get { return transform.gameObject; }
+	}
+	
 	#endregion
 	
 	#region Initialization
@@ -39,7 +46,7 @@ public class Game : MonoBehaviour {
 	void Start () 
 	{
 		// Add monoehaviour components
-		inputHandler = (InputHandler)transform.gameObject.AddComponent("InputHandler");
+		inputHandler = (InputHandler)GameObject.AddComponent("InputHandler");
 		
 		// Initialize the list of players.
 		players = new List<Player>();
@@ -60,6 +67,16 @@ public class Game : MonoBehaviour {
 		
 		// Create the camera
 		CameraPrefab = (Transform)Instantiate(CameraPrefab);
+		 
+		// Setup doors
+		SetupDoors();
+	}
+	
+	private void SetupDoors()
+	{
+		// Instantiate door.
+		DoorPrefab = (Transform)Instantiate(DoorPrefab);
+		
 	}
 	
 	#endregion
@@ -71,12 +88,6 @@ public class Game : MonoBehaviour {
 	{
 		// Update Camera
 		UpdateCamPos();
-		// Update player
-		/*foreach (Player player in players)
-		{
-			player.Update();
-			
-		}*/
 	}
 	
 	void UpdateCamPos()
@@ -98,7 +109,6 @@ public class Game : MonoBehaviour {
 		
 		// Set the position of our camera.
 		CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
-		
 	}
 	
 	#endregion
