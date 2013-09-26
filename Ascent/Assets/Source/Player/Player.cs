@@ -87,7 +87,7 @@ public class Player
 		else
 		{
 			// Error no device
-			Debug.Log("No Device for this player");
+			//Debug.Log("No Device for this player");
 		}
 	}
 }
