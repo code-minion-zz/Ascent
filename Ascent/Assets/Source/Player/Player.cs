@@ -15,23 +15,31 @@ public class Player
 	// Handling input for this player.
 	private InputHandler inputHandler;
 	
-	// Set Object transform.
-	[HideInInspector]
-	public Transform ObjectTransform
+	#endregion
+	
+	#region Properties
+	
+	// Get and set the transform of this player.
+	public Transform Transform
 	{
 		get { return transform; }
 		set { transform = value; }
 	}
 	
+	// Return the game object of this player.
+	public GameObject GameObject 
+	{
+		get { return transform.gameObject; }
+	}
+	
 	// Set the position of the players transform.
-	[HideInInspector]
 	public Vector3 Position
 	{
 		get { return transform.position; }
 		set { transform.position = value; }
 	}
 	
-	#endregion
+	#endregion	
 	
 	// Constructor
 	public Player(int playerId)

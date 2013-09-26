@@ -47,7 +47,7 @@ public class Game : MonoBehaviour {
 			// Setup the spawning point
 			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
 			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
+			newPlayer.Transform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
 			newPlayer.Start();
 			
 			// Add the player to the list.
@@ -93,7 +93,7 @@ public class Game : MonoBehaviour {
 		float z = (totalVector.z / players.Count) - cameraOffset;
 		
 		// Set the position of our camera.
-		CameraPrefab.position = new Vector3(x, y, z);
+		CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
 		
 	}
 	
