@@ -31,4 +31,5 @@ public class HitBox : MonoBehaviour {
 		get{return isHit;}
 		set{;}
 	}
+	bool enabled = false;
 }
