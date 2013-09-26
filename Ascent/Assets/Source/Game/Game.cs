@@ -11,6 +11,8 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
+	// Camera offset
+	public float cameraOffset = 6.0f;
 	// List of player objects
 	private List<Player> players;
 	// The input handler which players will use.
@@ -24,6 +26,11 @@ public class Game : MonoBehaviour {
 	{
 		get { return inputHandler; }
 	}
+
+    public List<Player> Players
+    {
+        get { return players; }
+    }
 	
 	#endregion
 	
@@ -45,7 +52,7 @@ public class Game : MonoBehaviour {
 			// Setup the spawning point
 			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
 			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.ObjectTransform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
+			newPlayer.Transform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
 			newPlayer.Start();
 			
 			// Add the player to the list.
@@ -85,8 +92,14 @@ public class Game : MonoBehaviour {
 				totalVector += player.Position;
 		}
 		
+		// Calculate camera position based off players
+		float x =  totalVector.x / players.Count;
+		float y = CameraPrefab.position.y;
+		float z = (totalVector.z / players.Count) - cameraOffset;
+		
 		// Set the position of our camera.
-		CameraPrefab.position = new Vector3(totalVector.x / players.Count, CameraPrefab.position.y, totalVector.z / players.Count);		
+		CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
+		
 	}
 	
 	#endregion
