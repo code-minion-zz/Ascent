@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using InControl;
 
 public class Player 
@@ -16,6 +17,10 @@ public class Player
 	public float movementSpeed = 5.0f;		
 	// Handling input for this player.
 	private InputHandler inputHandler;
+	
+	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
+		
+	List<Transform> meleeBoxes; // active melee attacks
 	
 	#endregion
 	
@@ -42,6 +47,8 @@ public class Player
 	}
 	
 	#endregion	
+	
+	#region Initialization
 	
 	// Constructor
 	public Player(int playerId)
@@ -75,8 +82,11 @@ public class Player
 			obj.renderer.material.color = Color.white;
 			break;
 		}
+		transform.GetChild(0).renderer.enabled = false;
 	}
+	#endregion
 	
+	#region Update
 	// Update is called once per frame
 	public void Update () 
 	{
@@ -87,12 +97,29 @@ public class Player
 			// Update the transform by the movement
 			if (inputDevice.Action1.IsPressed)
 			{
-				Debug.Log("Action One: " + playerId);
+			//	Debug.Log("Action One: " + playerId);
+				Skill (0);
+			}			
+			// Update the transform by the movement
+			if (inputDevice.Action2.IsPressed)
+			{
+				Debug.Log("Action Two: " + playerId);
+				Skill (1);
 			}
 			
 			float x = inputDevice.LeftStickX.Value * Time.deltaTime * movementSpeed;
 			float z = inputDevice.LeftStickY.Value * Time.deltaTime * movementSpeed;
+			
+			//transform.rotation = new Quaternion(x, 0.0f, z, 0.0f);
+			Vector3 direction = Vector3.Normalize(Position + new Vector3(x,0,z));
+			//transform.forward = direction; 
+	
 			transform.Translate(x, 0, z);
+			//transform.Translate(transform.forward);
+			
+			//transform.forward = Vector3.Normalize(new Vector3(x, 0.0f, z));
+			Debug.DrawRay(Position, Position + transform.forward);
+			
 		}
 		else
 		{
@@ -100,6 +127,25 @@ public class Player
 			//Debug.Log("No Device for this player");
 		}
 	}
+	#endregion
+	
+	public void Skill(int skillId)
+	{
+		switch (skillId)
+		{
+		case 0: // jump
+			transform.gameObject.rigidbody.AddForce(Vector3.up * 100);
+			Debug.Log("Jumping");
+			return;
+		case 1: // attack normal
+			
+			break;
+		}
+		//transform.GetComponentInChildren<HitBox>().Fire();
+		transform.GetChild(0).renderer.enabled = true;
+		transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+	}
+
 
     public void TakeDamage(int _damage)
     {
