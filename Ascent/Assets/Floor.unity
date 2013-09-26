@@ -9530,7 +9530,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
       propertyPath: NumberOfPlayers
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
       propertyPath: cameraOffset
@@ -9716,6 +9716,10 @@ Prefab:
     - target: {fileID: 2000000, guid: da6c5309c65500f4e80169ca302882e6, type: 2}
       propertyPath: field of view
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: da6c5309c65500f4e80169ca302882e6, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: da6c5309c65500f4e80169ca302882e6, type: 2}
@@ -11740,7 +11744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdb4c1b076388a4ca8dba43a1a575fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumberOfPlayers: 1
+  NumberOfPlayers: 2
   PlayerPrefab: {fileID: 400000, guid: 97c508aff77e3ca40b8340e5caedc429, type: 2}
   CameraPrefab: {fileID: 400000, guid: da6c5309c65500f4e80169ca302882e6, type: 2}
   cameraOffset: 8
@@ -14455,7 +14459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2031340228
 Transform:
   m_ObjectHideFlags: 0
