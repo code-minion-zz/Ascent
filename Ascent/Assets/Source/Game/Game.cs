@@ -11,6 +11,8 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
+	// Camera offset
+	public float cameraOffset = 6.0f;
 	// List of player objects
 	private List<Player> players;
 	// The input handler which players will use.
@@ -85,8 +87,14 @@ public class Game : MonoBehaviour {
 				totalVector += player.Position;
 		}
 		
+		// Calculate camera position based off players
+		float x =  totalVector.x / players.Count;
+		float y = CameraPrefab.position.y;
+		float z = (totalVector.z / players.Count) - cameraOffset;
+		
 		// Set the position of our camera.
-		CameraPrefab.position = new Vector3(totalVector.x / players.Count, CameraPrefab.position.y, totalVector.z / players.Count);		
+		CameraPrefab.position = new Vector3(x, y, z);
+		
 	}
 	
 	#endregion
