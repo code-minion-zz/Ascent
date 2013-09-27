@@ -157,6 +157,7 @@ public class Player : MonoBehaviour
                     //transform.GetComponentInChildren<HitBox>().Fire();
                     transform.GetChild(0).renderer.enabled = true;
                     transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+					transform.GetChild(0).parent = transform.parent;
                 }
                 break;
 		}

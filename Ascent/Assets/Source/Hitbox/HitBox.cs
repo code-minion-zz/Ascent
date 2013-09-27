@@ -2,18 +2,36 @@
 using System.Collections;
 
 public class HitBox : MonoBehaviour {
-	#region Enums
-	enum EHitType
+	#region Members
+	public enum EHitType
 	{
 		HB_INVALID_HIT = -1,
 		HB_HIT_SWORD,
 		HB_MAX_HIT
 	}
+		
+	EHitType hitType;
+	Vector3 rotateRate;
+	Vector3 moveRate;
+	#endregion
+	
+	#region Properties
+	public bool Active
+	{
+		get
+		{
+			return enabled;
+		}
+		set
+		{
+			enabled = value;
+		}
+	}
 	#endregion
 	
 	// Use this for initialization
 	void Start () {
-	
+		Active = false;
 	}
 	
 	// Update is called once per frame
@@ -42,21 +60,17 @@ public class HitBox : MonoBehaviour {
 	
 	public bool Fire(int id)
 	{
-		switch (id)
+		switch ((EHitType)id)
 		{
-		case EHitType:HB_HIT_SWORD: // im a sword
+		case EHitType.HB_HIT_SWORD: // im a sword
 			
+			break;
+		default:
 			break;
 		}
 		
 		return false;
 	}
 	
-	public bool isHit
-	{
-		get{return isHit;}
-		set{;}
-	}
-	public bool enabled = false;
 }
 
