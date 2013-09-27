@@ -54,12 +54,6 @@ public class Player : MonoBehaviour
 	#endregion	
 	
 	#region Initialization
-	
-	// Constructor
-	public Player(int playerId)
-	{
-		this.playerId = playerId;
-	}
 
 	// Use this for initialization
 	public void Start () 
