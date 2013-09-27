@@ -82,7 +82,9 @@ public class Player : MonoBehaviour
 			break;
 		}
 		
-		transform.GetChild(0).renderer.enabled = false;
+		Transform hitBox = transform.GetChild(0);
+		hitBox.renderer.enabled = false;
+		hitBox.GetComponent<HitBox>().enabled = false;
 	}
 	#endregion
 	
