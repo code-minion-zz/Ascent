@@ -54,12 +54,6 @@ public class Player : MonoBehaviour
 	#endregion	
 	
 	#region Initialization
-	
-	// Constructor
-	public Player(int playerId)
-	{
-		this.playerId = playerId;
-	}
 
 	// Use this for initialization
 	public void Start () 
@@ -180,9 +174,12 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.parent.name == "HelperGrid")
+        if (collision.transform.parent != null)
         {
-            jumping = false;
+            if (collision.transform.parent.name == "HelperGrid")
+            {
+                jumping = false;
+            }
         }
     }
 }
