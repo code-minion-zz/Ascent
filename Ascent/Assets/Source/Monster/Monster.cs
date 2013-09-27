@@ -192,7 +192,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void TakeDamage(int _damage)
+    public void TakeDamage(int _damage)
     {
         health -= _damage;
 
@@ -206,7 +206,7 @@ public class Monster : MonoBehaviour
         {
            waiting = 0.5f;
            state = STATE.HIT;
-           originalColor = gameObject.renderer.material.color;
+           originalColor = transform.GetChild(0).renderer.material.color;
         }
     }
 

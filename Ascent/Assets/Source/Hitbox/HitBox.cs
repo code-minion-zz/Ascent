@@ -14,11 +14,17 @@ public class HitBox : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		if (collision.transform.name.Contains("Player"))
+		foreach (ContactPoint contact in collision.contacts)
 		{
-			isHit = true;	
-			Debug.Log("hit");
-		}		
+			if (contact.otherCollider.transform.parent.name.Contains("Monster"))
+			{
+				isHit = true;	
+				contact.otherCollider.transform.parent.GetComponent<Monster>().TakeDamage(9);
+				Vector3 Force = contact.normal*1000;
+				contact.otherCollider.transform.parent.rigidbody.AddForce(Force);
+				Debug.Log("hit " + -Force);
+			}
+		}
 	}
 	
 	void OnCollisionExit(Collision collisionInfo)
@@ -33,3 +39,4 @@ public class HitBox : MonoBehaviour {
 	}
 	bool enabled = false;
 }
+
