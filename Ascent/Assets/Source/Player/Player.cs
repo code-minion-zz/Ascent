@@ -143,7 +143,7 @@ public class Player : MonoBehaviour
                 {
                     if(!jumping)
                     {
-                        transform.gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                        gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
                         jumping = true;
 
                         return;
