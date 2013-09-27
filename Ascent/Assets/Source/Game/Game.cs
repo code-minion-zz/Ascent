@@ -11,6 +11,8 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
+	// The door transform
+	public Transform DoorPrefab;
 	// Camera offset
 	public float cameraOffset = 6.0f;
 	// List of player objects
@@ -32,6 +34,11 @@ public class Game : MonoBehaviour {
         get { return players; }
     }
 	
+	public GameObject GameObject
+	{
+		get { return transform.gameObject; }
+	}
+	
 	#endregion
 	
 	#region Initialization
@@ -39,7 +46,7 @@ public class Game : MonoBehaviour {
 	void Start () 
 	{
 		// Add monoehaviour components
-		inputHandler = (InputHandler)transform.gameObject.AddComponent("InputHandler");
+		inputHandler = (InputHandler)GameObject.AddComponent("InputHandler");
 		
 		// Initialize the list of players.
 		players = new List<Player>();
@@ -48,19 +55,28 @@ public class Game : MonoBehaviour {
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
 			// Setup the player and their positions 
-			Player newPlayer = new Player(i);
 			// Setup the spawning point
 			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
-			// The player instance shall have a cloned instance of the player prefab
-			newPlayer.Transform = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);			
-			newPlayer.Start();
-			
+			PlayerPrefab = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);
+			// Get the Player class from the prefab component
+			Player newPlayer = PlayerPrefab.GetComponent<Player>();
+			newPlayer.PlayerID = i;
 			// Add the player to the list.
 			players.Add(newPlayer);
 		}
 		
 		// Create the camera
 		CameraPrefab = (Transform)Instantiate(CameraPrefab);
+		 
+		// Setup doors
+		SetupDoors();
+	}
+	
+	private void SetupDoors()
+	{
+		// Instantiate door.
+		DoorPrefab = (Transform)Instantiate(DoorPrefab);
+		
 	}
 	
 	#endregion
@@ -72,12 +88,6 @@ public class Game : MonoBehaviour {
 	{
 		// Update Camera
 		UpdateCamPos();
-		// Update player
-		foreach (Player player in players)
-		{
-			player.Update();
-			
-		}
 	}
 	
 	void UpdateCamPos()
@@ -99,7 +109,6 @@ public class Game : MonoBehaviour {
 		
 		// Set the position of our camera.
 		CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
-		
 	}
 	
 	#endregion

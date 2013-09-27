@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using InControl;
 
-public class Player 
+public class Player : MonoBehaviour
 {
+    private bool jumping = false;
     public int health = 100;
 
 	#region Fields
 	
-	// Private member variables.
-	private Transform transform;
 	// Player identifier
 	private int playerId = 0;
 	// Movement speed variables
@@ -25,20 +24,7 @@ public class Player
 	#endregion
 	
 	#region Properties
-	
-	// Get and set the transform of this player.
-	public Transform Transform
-	{
-		get { return transform; }
-		set { transform = value; }
-	}
-	
-	// Return the game object of this player.
-	public GameObject GameObject 
-	{
-		get { return transform.gameObject; }
-	}
-	
+
 	// Set the position of the players transform.
 	public Vector3 Position
 	{
@@ -46,15 +32,28 @@ public class Player
 		set { transform.position = value; }
 	}
 	
+	// Gets the game object of this transform
+	public GameObject GameObject
+	{
+		get { return transform.gameObject; }
+	}
+	
+	// Gets the transform for this player.
+	public Transform Transform
+	{
+		get { return transform; }
+	}
+	
+	// The player Id of this player.
+	public int PlayerID
+	{
+		get { return playerId; }
+		set { playerId = value; }
+	}
+	
 	#endregion	
 	
 	#region Initialization
-	
-	// Constructor
-	public Player(int playerId)
-	{
-		this.playerId = playerId;
-	}
 
 	// Use this for initialization
 	public void Start () 
@@ -82,6 +81,7 @@ public class Player
 			obj.renderer.material.color = Color.white;
 			break;
 		}
+		
 		transform.GetChild(0).renderer.enabled = false;
 	}
 	#endregion
@@ -119,6 +119,12 @@ public class Player
 
                 Debug.DrawRay(Position, transform.forward, Color.red);
             }
+
+            if (jumping)
+            {
+                Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
+                Debug.DrawRay(transform.position, -transform.up, Color.red);
+            }
 			
 		}
 		else
@@ -133,17 +139,26 @@ public class Player
 	{
 		switch (skillId)
 		{
-		case 0: // jump
-			transform.gameObject.rigidbody.AddForce(Vector3.up * 100);
-			Debug.Log("Jumping");
-			return;
-		case 1: // attack normal
-			
-			break;
+            case 0: // jump
+                {
+                    if(!jumping)
+                    {
+                        transform.gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                        jumping = true;
+
+                        return;
+                    }
+                }
+                break;
+            case 1: // attack normal
+                {
+                    //transform.GetComponentInChildren<HitBox>().Fire();
+                    transform.GetChild(0).renderer.enabled = true;
+                    transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+                }
+                break;
 		}
-		//transform.GetComponentInChildren<HitBox>().Fire();
-		transform.GetChild(0).renderer.enabled = true;
-		transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+
 	}
 
 
@@ -154,6 +169,17 @@ public class Player
         if (health <= 0)
         {
             transform.gameObject.renderer.material.color = Color.black;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.parent != null)
+        {
+            if (collision.transform.parent.name == "HelperGrid")
+            {
+                jumping = false;
+            }
         }
     }
 }
