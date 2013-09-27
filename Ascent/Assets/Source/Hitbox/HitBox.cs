@@ -42,9 +42,9 @@ public class HitBox : MonoBehaviour {
 	
 	public bool Fire(int id)
 	{
-		switch (id)
+        switch ((EHitType)id)
 		{
-		case EHitType:HB_HIT_SWORD: // im a sword
+		case EHitType.HB_HIT_SWORD: // im a sword
 			
 			break;
 		}
