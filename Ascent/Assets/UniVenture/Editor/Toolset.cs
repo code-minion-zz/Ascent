@@ -166,29 +166,19 @@ public class Toolset : EditorWindow {
 	private void ShowHideGrid()
 	{
 		GameObject go = helperGrid;
-		Transform[] children = helperGridChildren;
 		
 		if(go == null)
 			EditorUtility.DisplayDialog("Notice", "Could not find HelperGrid. Make sure one exists in scene and re-open toolset.", "Okay");
 		else
 		{
 			
-			if(go.active == true)
+			if(go.activeInHierarchy == true)
 			{
-				foreach(Transform child in children)
-				{
-					child.gameObject.active = false;
-				}
-				go.active = false;
+				go.SetActive(false);
 			}
 			else
 			{
-				go.active = true;
-				foreach(Transform child in children)
-				{
-					child.gameObject.active = true;
-				}
-				
+				go.SetActive(true);	
 			}
 		}
 	}

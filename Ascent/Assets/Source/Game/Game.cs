@@ -75,7 +75,7 @@ public class Game : MonoBehaviour {
 	private void SetupDoors()
 	{
 		// Instantiate door.
-		DoorPrefab = (Transform)Instantiate(DoorPrefab);
+		//DoorPrefab = (Transform)Instantiate(DoorPrefab);
 		
 	}
 	
