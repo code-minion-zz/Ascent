@@ -82,7 +82,9 @@ public class Player : MonoBehaviour
 			break;
 		}
 		
-		transform.GetChild(0).renderer.enabled = false;
+		Transform hitBox = transform.GetChild(0);
+		hitBox.renderer.enabled = false;
+		hitBox.GetComponent<HitBox>().enabled = false;
 	}
 	#endregion
 	
@@ -143,7 +145,7 @@ public class Player : MonoBehaviour
                 {
                     if(!jumping)
                     {
-                        transform.gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                        gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
                         jumping = true;
 
                         return;
@@ -155,6 +157,7 @@ public class Player : MonoBehaviour
                     //transform.GetComponentInChildren<HitBox>().Fire();
                     transform.GetChild(0).renderer.enabled = true;
                     transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+					transform.GetChild(0).parent = transform.parent;
                 }
                 break;
 		}
@@ -174,9 +177,12 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.parent.name == "HelperGrid")
+        if (collision.transform.parent != null)
         {
-            jumping = false;
+            if (collision.transform.parent.name == "HelperGrid")
+            {
+                jumping = false;
+            }
         }
     }
 }

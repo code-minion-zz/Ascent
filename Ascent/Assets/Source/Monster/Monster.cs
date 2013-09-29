@@ -192,7 +192,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void TakeDamage(int _damage)
+    public void TakeDamage(int _damage)
     {
         health -= _damage;
 
@@ -206,12 +206,30 @@ public class Monster : MonoBehaviour
         {
            waiting = 0.5f;
            state = STATE.HIT;
-           originalColor = gameObject.renderer.material.color;
+           originalColor = transform.GetChild(0).renderer.material.color;
         }
     }
 
     void AttackTarget(Player _player)
     {
         _player.TakeDamage(10);
-    }
+    }	
+	
+	void OnCollisionEnter(Collision collision)
+	{
+		foreach (ContactPoint contact in collision.contacts)
+		{
+			Collider hitBoxCollider = contact.otherCollider;
+			if (hitBoxCollider.name.Contains("HitBox"))
+			{
+				if (hitBoxCollider.enabled)
+				{
+					TakeDamage(25);
+					Vector3 Force = contact.normal*1000;
+					transform.rigidbody.AddForce(Force);
+					Debug.Log("hit " + -Force);
+				}
+			}
+		}
+	}
 }
