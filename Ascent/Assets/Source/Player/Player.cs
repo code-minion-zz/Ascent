@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.parent != null)
         {
-            if (collision.transform.parent.name == "HelperGrid")
+            if (collision.transform.parent.name == "GridHelper")
             {
                 jumping = false;
             }
