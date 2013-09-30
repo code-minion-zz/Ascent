@@ -20,6 +20,8 @@ public class ArrowShooter : MonoBehaviour
             // Instantiate an arrow
             GameObject arrow = GameObject.Instantiate(projectile, transform.GetChild(1).transform.position +( direction * 1.0f), new Quaternion(0.0f, 0.0f, 0.0f, 1.0f)) as GameObject;
 
+            arrow.transform.parent = transform;
+
             arrow.rigidbody.AddForce(direction * 50.0f);
         }
 	}
