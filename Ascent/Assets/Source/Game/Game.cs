@@ -56,7 +56,7 @@ public class Game : MonoBehaviour {
 		{
 			// Setup the player and their positions 
 			// Setup the spawning point
-			Vector3 pos = new Vector3(Random.Range(0, 5), 1, Random.Range(0, 5));
+			Vector3 pos = new Vector3(Random.Range(0, 5), 0, Random.Range(0, 5));
 			PlayerPrefab = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);
 			// Get the Player class from the prefab component
 			Player newPlayer = PlayerPrefab.GetComponent<Player>();
