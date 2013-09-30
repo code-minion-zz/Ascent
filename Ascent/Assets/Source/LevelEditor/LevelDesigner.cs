@@ -17,7 +17,7 @@ public class LevelDesigner : EditorWindow
 	private bool showFoldOutCreateObj = true;
 	private int index = 0;
 	
-	private GameObject gameObject = new GameObject();
+	private GameObject gameObject = null;
 	private string objectName = "";
 	private Vector3 incrementAmount = new Vector3(0.5f, 0.5f, 0.5f);
 	

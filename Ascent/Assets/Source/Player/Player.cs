@@ -17,9 +17,12 @@ public class Player : MonoBehaviour
 	// Handling input for this player.
 	private InputHandler inputHandler;
 	
+	// Hitbox Prefab
+	public Transform hitBoxPrefab;
+	
 	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
-	List<Transform> meleeBoxes; // active melee attacks
+	List<Transform> hitBoxes; // active melee attacks
 	
 	#endregion
 	
@@ -81,10 +84,10 @@ public class Player : MonoBehaviour
 			obj.renderer.material.color = Color.white;
 			break;
 		}
-		
-		Transform hitBox = transform.GetChild(0);
-		hitBox.renderer.enabled = false;
-		hitBox.GetComponent<HitBox>().enabled = false;
+		hitBoxes = new List<Transform>();
+		//Transform hitBox = transform.GetChild(0);
+		//hitBox.renderer.enabled = false;
+		//hitBox.GetComponent<HitBox>().enabled = false;
 	}
 	#endregion
 	
@@ -116,8 +119,14 @@ public class Player : MonoBehaviour
 
             if (x != 0.0f || z != 0.0f)
             {
-                transform.LookAt(Position + (direction * 100.0f));
-                transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+                if (transform.rigidbody.velocity.magnitude < 6.0f)
+                {
+                    transform.LookAt(Position + (direction * 100.0f));
+                    transform.rigidbody.AddForce(transform.forward *2.0f, ForceMode.Impulse);
+                }
+                //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+                
 
                 Debug.DrawRay(Position, transform.forward, Color.red);
             }
@@ -127,13 +136,28 @@ public class Player : MonoBehaviour
                 Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
                 Debug.DrawRay(transform.position, -transform.up, Color.red);
             }
-			
-		}
-		else
-		{
-			// Error no device
-			//Debug.Log("No Device for this player");
-		}
+//			if (hitBoxes.Count > 0)
+//			{
+////				List<int> toRemove = new List<int>();
+////				for (int i = hitBoxes.Count; i < hitBoxes.Count; --i)
+////				{
+////					if(!hitBoxes[i].GetComponent<HitBox>().Active)
+////					{
+////						toRemove.Add(i);
+////					}
+////				}				
+////				foreach ( int i in toRemove )
+////				{
+////					DestroyObject(hitBoxes[i].gameObject);
+////					hitBoxes.RemoveAt(i);
+////				}
+			}			
+//		}
+//		else
+//		{
+//			// Error no device
+//			//Debug.Log("No Device for this player");
+//		}
 	}
 	#endregion
 	
@@ -141,27 +165,40 @@ public class Player : MonoBehaviour
 	{
 		switch (skillId)
 		{
-            case 0: // jump
-                {
-                    if(!jumping)
-                    {
-                        gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
-                        jumping = true;
+        case 0: // jump
+        {
+            if(!jumping)
+            {
+                gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                jumping = true;
 
-                        return;
-                    }
-                }
-                break;
-            case 1: // attack normal
-                {
-                    //transform.GetComponentInChildren<HitBox>().Fire();
-                    transform.GetChild(0).renderer.enabled = true;
-                    transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
-					transform.GetChild(0).parent = transform.parent;
-                }
-                break;
+                return;
+            }
+        }
+        break;
+        case 1: // attack normal
+	    {
+			if (hitBoxes.Count < 1)
+			{
+				Transform t = (Transform)Instantiate(hitBoxPrefab);
+				t.position = Position + transform.forward;
+				t.parent = transform;
+				hitBoxes.Add(t);
+				Debug.Log ("Removing hitbox from list");
+			}
+	        //transform.GetComponentInChildren<HitBox>().Fire();
+	        //transform.GetChild(0).renderer.enabled = true;
+	        //transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
+			//transform.GetChild(0).parent = transform.parent;
+	    }
+	    break;
 		}
 
+	}
+	
+	public void KillBox(Transform box)
+	{
+		hitBoxes.Remove(box);
 	}
 
 
@@ -179,7 +216,7 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.parent != null)
         {
-            if (collision.transform.parent.name == "HelperGrid")
+            if (collision.transform.parent.name == "GridHelper")
             {
                 jumping = false;
             }
