@@ -225,7 +225,7 @@ public class Monster : MonoBehaviour
 				if (hitBoxCollider.enabled)
 				{
 					TakeDamage(25);
-					Vector3 Force = contact.normal*1000;
+					Vector3 Force = contact.normal * 200.0f;
 					transform.rigidbody.AddForce(Force);
 					Debug.Log("hit " + -Force);
 				}

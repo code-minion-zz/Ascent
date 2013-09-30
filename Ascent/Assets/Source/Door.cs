@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Door : MonoBehaviour {
+public class Door : MonoBehaviour 
+{
 	
 	#region Fields
 	public float doorOpenAngle = 90.0f;
@@ -12,6 +13,9 @@ public class Door : MonoBehaviour {
 	
 	private Vector3 defaultRot;
 	private Vector3 openRot;
+
+    public Vector3 openDirection;
+    private Vector3 defaultPosition;
 	
 	#endregion
 	
@@ -35,7 +39,9 @@ public class Door : MonoBehaviour {
 	void Start () 
 	{
 		defaultRot = transform.eulerAngles;
-		openRot = new Vector3(defaultRot.x, defaultRot.y + doorOpenAngle, defaultRot.z);
+        openRot = new Vector3(defaultRot.x + doorOpenAngle, defaultRot.y, defaultRot.z);
+
+        defaultPosition = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -45,21 +51,42 @@ public class Door : MonoBehaviour {
 		{
 			if (IsOpen)
 			{
-				// Open the door
-				transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, openRot,
-					Time.deltaTime * smoothing);
+                //SwingOpen();
+                SlideOpen();
 			}
-			else
-			{
-				transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, defaultRot, 
-					Time.deltaTime * smoothing);			
-			}
+            //else
+            //{
+            //    // SwingClose();
+            //    SlideClose();
+            //}
 		}
 		else
 		{
 			//Debug.Log("Door is locked");
 		}
 	}
+
+    private void SlideOpen()
+    {
+        transform.position = Vector3.Lerp(transform.position, defaultPosition + (openDirection * 4.0f), Time.deltaTime * 5.0f);
+    }
+
+    private void SlideClose()
+    {
+        transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * 5.0f);
+    }
+
+    private void SwingOpen()
+    {
+        transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, openRot,
+            Time.deltaTime * smoothing);
+    }
+
+    private void SwingClose()
+    {
+        transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, defaultRot,
+            Time.deltaTime * smoothing);	
+    }
 	
 	#region Collision
 	

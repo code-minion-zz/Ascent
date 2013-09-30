@@ -119,8 +119,14 @@ public class Player : MonoBehaviour
 
             if (x != 0.0f || z != 0.0f)
             {
-                transform.LookAt(Position + (direction * 100.0f));
-                transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+                if (transform.rigidbody.velocity.magnitude < 6.0f)
+                {
+                    transform.LookAt(Position + (direction * 100.0f));
+                    transform.rigidbody.AddForce(transform.forward * 0.75f, ForceMode.Impulse);
+                }
+                //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+                
 
                 Debug.DrawRay(Position, transform.forward, Color.red);
             }
@@ -178,7 +184,7 @@ public class Player : MonoBehaviour
 				t.position = Position + transform.forward;
 				t.parent = transform;
 				hitBoxes.Add(t);
-				Debug.Log ("blah");
+				Debug.Log ("Removing hitbox from list");
 			}
 	        //transform.GetComponentInChildren<HitBox>().Fire();
 	        //transform.GetChild(0).renderer.enabled = true;
