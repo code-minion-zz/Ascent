@@ -99,7 +99,7 @@ public class HitBox : MonoBehaviour {
 	{
 		switch ((EBoxAnimation)id)
 		{
-		case EBoxAnimation.HB_HIT_SWORD: // im a sword
+		case EBoxAnimation.BA_HIT_THRUST: // im a sword
 			
 			break;
 		default:
