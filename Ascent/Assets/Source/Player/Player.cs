@@ -5,10 +5,29 @@ using InControl;
 
 public class Player : MonoBehaviour
 {
-    private bool jumping = false;
-    public int health = 100;
+	#region Enums
+	enum EPlayerState // State defines what actions are allowed, and what animations to play
+	{
+		PS_INVALID_STATE = -1,
+		PS_STATE_IDLE,
+		PS_STATE_MOVE,
+		PS_STATE_SPRINT,
+		PS_STATE_ATTACK,
+		PS_STATE_JUMP,
+		PS_STATE_FALLING,
+		PS_STATE_CAST,
+		PS_STATE_PUSH,
+		PS_STATE_PULL,
+		PS_STATE_DEATH,
+		PS_STATE_FREEZE,
+		PS_MAX_STATE		
+	}
+	#endregion
 
 	#region Fields
+	
+    private bool jumping = false;
+    public int health = 100;
 	
 	// Player identifier
 	private int playerId = 0;
@@ -23,6 +42,8 @@ public class Player : MonoBehaviour
 	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
 	List<Transform> hitBoxes; // active melee attacks
+	
+	EPlayerState playerState; // 
 	
 	#endregion
 	
@@ -97,8 +118,11 @@ public class Player : MonoBehaviour
 	{
 		InputDevice inputDevice = inputHandler.GetDevice(playerId);
 		
-		if (inputDevice != null)
+		if (inputDevice == null)
 		{
+			Debug.Log("Player " + playerId + "'s inputDevice does not exist");
+			return;
+		}
 			// Update the transform by the movement
 			if (inputDevice.Action1.IsPressed)
 			{
@@ -138,20 +162,20 @@ public class Player : MonoBehaviour
             }
 //			if (hitBoxes.Count > 0)
 //			{
-////				List<int> toRemove = new List<int>();
-////				for (int i = hitBoxes.Count; i < hitBoxes.Count; --i)
-////				{
-////					if(!hitBoxes[i].GetComponent<HitBox>().Active)
-////					{
-////						toRemove.Add(i);
-////					}
-////				}				
-////				foreach ( int i in toRemove )
-////				{
-////					DestroyObject(hitBoxes[i].gameObject);
-////					hitBoxes.RemoveAt(i);
-////				}
-			}			
+//				List<int> toRemove = new List<int>();
+//				for (int i = hitBoxes.Count; i < hitBoxes.Count; --i)
+//				{
+//					if(!hitBoxes[i].GetComponent<HitBox>().Active)
+//					{
+//						toRemove.Add(i);
+//					}
+//				}				
+//				foreach ( int i in toRemove )
+//				{
+//					DestroyObject(hitBoxes[i].gameObject);
+//					hitBoxes.RemoveAt(i);
+//				}
+				
 //		}
 //		else
 //		{
@@ -169,7 +193,7 @@ public class Player : MonoBehaviour
         {
             if(!jumping)
             {
-                gameObject.rigidbody.AddForce(Vector3.up * 5.0f, ForceMode.Impulse);
+                gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
                 jumping = true;
 
                 return;
@@ -181,7 +205,9 @@ public class Player : MonoBehaviour
 			if (hitBoxes.Count < 1)
 			{
 				Transform t = (Transform)Instantiate(hitBoxPrefab);
-				t.position = Position + transform.forward;
+				Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
+				//t.position = Position + transform.forward;
+				t.position = boxPos;
 				t.parent = transform;
 				hitBoxes.Add(t);
 				Debug.Log ("Removing hitbox from list");
