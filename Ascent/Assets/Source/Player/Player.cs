@@ -116,8 +116,14 @@ public class Player : MonoBehaviour
 
             if (x != 0.0f || z != 0.0f)
             {
-                transform.LookAt(Position + (direction * 100.0f));
-                transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+                if (transform.rigidbody.velocity.magnitude < 6.0f)
+                {
+                    transform.LookAt(Position + (direction * 100.0f));
+                    transform.rigidbody.AddForce(transform.forward * 0.75f, ForceMode.Impulse);
+                }
+                //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+                
 
                 Debug.DrawRay(Position, transform.forward, Color.red);
             }
