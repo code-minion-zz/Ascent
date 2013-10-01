@@ -20,7 +20,9 @@ public class Monster : MonoBehaviour
     private float waiting = 0.0f;
     private Vector3 originalScale;
     private int attack = 10;
-    private Color originalColor;
+    private Color originalColor;	
+	
+	List<Transform> hitBoxes; // active melee attacks
 
     //List<MonsterAIState> listAIStates = new List<MonsterAIState>();
 

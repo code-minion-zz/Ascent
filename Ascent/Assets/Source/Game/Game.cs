@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Game : MonoBehaviour {
 	
 	#region Fields
+
 	// Number of players
 	public int NumberOfPlayers = 3;
 	// The player prefab
@@ -15,6 +16,9 @@ public class Game : MonoBehaviour {
 	public Transform DoorPrefab;
 	// Camera offset
 	public float cameraOffset = 6.0f;
+
+    public bool visualDebuggerPrefab = true;
+
 	// List of player objects
 	private List<Player> players;
 	// The input handler which players will use.
@@ -38,6 +42,11 @@ public class Game : MonoBehaviour {
 	{
 		get { return transform.gameObject; }
 	}
+
+    public Camera MainCamera
+    {
+        get { return CameraPrefab.camera; }
+    }
 	
 	#endregion
 	
@@ -67,9 +76,15 @@ public class Game : MonoBehaviour {
 		
 		// Create the camera
 		CameraPrefab = (Transform)Instantiate(CameraPrefab);
+        
 		 
 		// Setup doors
 		SetupDoors();
+
+        if (visualDebuggerPrefab)
+        {
+            Instantiate(Resources.Load("Prefabs/VisualDebugger"));
+        }
 	}
 	
 	private void SetupDoors()
