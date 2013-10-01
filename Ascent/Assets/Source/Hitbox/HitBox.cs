@@ -6,15 +6,21 @@ public class HitBox : MonoBehaviour {
 	public enum EBoxAnimation
 	{
 		BA_INVALID_HIT = -1,
-		BA_HIT_THRUST,
+		BA_HIT_THRUST,			// moves forward at a constant rate, does not rotate
 		BA_MAX_HIT
 	}
 		
-	EBoxAnimation hitType;
-	//Vector3 rotateRate;
-	//Vector3 moveRate;
-	float projectileSpeed = 10.0f;
+	// behaviour member variables
+	EBoxAnimation hitType;		
+	float rotateRate		= 0.0f;
+	float projectileSpeed 	= 10.0f;
+	float totalLifeTime		= 0.5f;
+	
+	// 
+	float elapsedLifeTime	= 0.0f;	
 	bool retract = false;
+	
+	
 	#endregion
 	
 	#region Properties
@@ -37,35 +43,58 @@ public class HitBox : MonoBehaviour {
 		transform.forward = transform.parent.forward;
 	}
 	
+	/// <summary>
+	/// Informs the hitbox of it's purpose in life
+	/// </summary>
+	/// <param name='animType'>
+	/// Animation type, as defined by 
+	/// </param>
+	void Init(EBoxAnimation animType, float speed = 10.0f, float lifeTime = 0.5f, float rotation = 0.0f)
+	{
+		hitType = animType;
+		projectileSpeed = speed;
+		totalLifeTime = lifeTime;
+		rotateRate = rotateRate;
+	}
+	
 	// Update is called once per frame
 	void Update () {
+		elapsedLifeTime += Time.fixedDeltaTime;
 		if (Active)
 		{
-			if (!retract)
+			switch (hitType)
 			{
-				transform.position = transform.position + (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
-				Debug.DrawRay(transform.position,transform.parent.forward);
-				Debug.DrawRay(transform.parent.position, transform.parent.forward);
-				//if (Mathf.Abs(transform.localPosition.z+transform.localPosition.x) > 2)
-				if( Vector3.Magnitude(transform.position - transform.parent.position) > 3)
+			case EBoxAnimation.BA_HIT_THRUST:
+				if (!retract)
 				{
-					retract = true;
-					Debug.Log("Retract " + retract);
+					transform.position = transform.position + (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
+					Debug.DrawRay(transform.position,transform.parent.forward);
+					Debug.DrawRay(transform.parent.position, transform.parent.forward);
+					//if (Mathf.Abs(transform.localPosition.z+transform.localPosition.x) > 2)
+					if( elapsedLifeTime > totalLifeTime/2 ) //Vector3.Magnitude(transform.position - transform.parent.position) > 3)
+					{
+						retract = true;
+						Debug.Log("Retract " + retract);
+					}
 				}
-			}
-			else 
-			{
-				
-				//transform.Translate(transform.forward * 2 * -Time.deltaTime);
-				if (transform.localPosition.z+transform.localPosition.x <= 0)
+				else 
 				{
-					Active = false;
-					Debug.Log("Active " +Active);
-					transform.parent.GetComponent<Player>().KillBox(transform);
-					Destroy(this.gameObject);
+					
+					//transform.Translate(transform.forward * 2 * -Time.deltaTime);
+					if (transform.localPosition.z+transform.localPosition.x <= 0)
+					{
+						Active = false;
+						Debug.Log("Active " +Active);
+						transform.parent.GetComponent<Player>().KillBox(transform);
+						Destroy(this.gameObject);
+					}
+					transform.position = transform.position - (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
+					
 				}
-				transform.position = transform.position + (transform.parent.forward * -Time.fixedDeltaTime * projectileSpeed);
-				
+				break;
+			default:
+				Debug.Log("this should never happen");
+				break;
 			}
 		}
 	}
