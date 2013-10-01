@@ -202,10 +202,10 @@ public class GridDesigner : EditorWindow
 				gridPosz = 5f * frame.y * 2f;	
 			}			
 			
-			string redMatPath = "Assets/UniVenture/Materials/gridMat1.mat";
+			string redMatPath = "Assets/Source/LevelEditor/Materials/gridMat1.mat";
 			Material redMat = AssetDatabase.LoadAssetAtPath(redMatPath, typeof(Material)) as Material;
 			
-			string whiteMatPath = "Assets/UniVenture/Materials/gridMat2.mat";
+			string whiteMatPath = "Assets/Source/LevelEditor/Materials/gridMat2.mat";
 			Material whiteMat = AssetDatabase.LoadAssetAtPath(whiteMatPath, typeof(Material)) as Material;
 			
 			//redMat.mainTextureScale = new Vector2(frame.x * 2, frame.y * 2);

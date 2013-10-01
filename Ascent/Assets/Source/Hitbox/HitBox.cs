@@ -3,14 +3,14 @@ using System.Collections;
 
 public class HitBox : MonoBehaviour {
 	#region Members
-	public enum EHitType
+	public enum EBoxAnimation
 	{
-		HB_INVALID_HIT = -1,
-		HB_HIT_SWORD,
-		HB_MAX_HIT
+		BA_INVALID_HIT = -1,
+		BA_HIT_THRUST,
+		BA_MAX_HIT
 	}
 		
-	EHitType hitType;
+	EBoxAnimation hitType;
 	//Vector3 rotateRate;
 	//Vector3 moveRate;
 	float projectileSpeed = 10.0f;
@@ -34,6 +34,7 @@ public class HitBox : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Active = true;
+		transform.forward = transform.parent.forward;
 	}
 	
 	// Update is called once per frame
@@ -96,9 +97,9 @@ public class HitBox : MonoBehaviour {
 	
 	public bool Fire(int id)
 	{
-		switch ((EHitType)id)
+		switch ((EBoxAnimation)id)
 		{
-		case EHitType.HB_HIT_SWORD: // im a sword
+		case EBoxAnimation.BA_HIT_THRUST: // im a sword
 			
 			break;
 		default:
