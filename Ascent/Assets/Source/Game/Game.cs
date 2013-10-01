@@ -17,7 +17,7 @@ public class Game : MonoBehaviour {
 	// Camera offset
 	public float cameraOffset = 6.0f;
 
-    public Transform visualDebuggerPrefab;
+    public bool visualDebuggerPrefab = true;
 
 	// List of player objects
 	private List<Player> players;
@@ -81,9 +81,9 @@ public class Game : MonoBehaviour {
 		// Setup doors
 		SetupDoors();
 
-        if (visualDebuggerPrefab != null)
+        if (visualDebuggerPrefab)
         {
-            Instantiate(visualDebuggerPrefab);
+            Instantiate(Resources.Load("Prefabs/VisualDebugger"));
         }
 	}
 	

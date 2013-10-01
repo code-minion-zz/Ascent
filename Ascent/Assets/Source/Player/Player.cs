@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 	#region Fields
 	
     private bool jumping = false;
-    public int health = 100;
+    private CharacterStatistics characterStatistics;
 	
 	// Player identifier
 	private int playerId = 0;
@@ -74,6 +74,11 @@ public class Player : MonoBehaviour
 		get { return playerId; }
 		set { playerId = value; }
 	}
+
+    public CharacterStatistics CharacterStats
+    {
+        get { return characterStatistics; }
+    }
 	
 	#endregion	
 	
@@ -109,6 +114,10 @@ public class Player : MonoBehaviour
 		//Transform hitBox = transform.GetChild(0);
 		//hitBox.renderer.enabled = false;
 		//hitBox.GetComponent<HitBox>().enabled = false;
+
+        characterStatistics = gameObject.AddComponent<CharacterStatistics>();
+        characterStatistics.Init();
+        characterStatistics.Health.Set(100.0f, 100.0f);
 	}
 	#endregion
 	
@@ -230,8 +239,9 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int _damage)
     {
-        health -= _damage;
+        HealthStat health =  CharacterStats.GetComponent<HealthStat>();
 
+        health -= _damage;
         if (health <= 0)
         {
             transform.gameObject.renderer.material.color = Color.black;
