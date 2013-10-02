@@ -69,7 +69,7 @@ public class Monster : MonoBehaviour
                         if (targetPlayer != null)
                         {
                             state = STATE.SEEK;
-                            waiting = 5.0f;
+                            waiting = 3.5f;
                         }
                     }
                 }
@@ -77,6 +77,7 @@ public class Monster : MonoBehaviour
             case STATE.SEEK:
                 {
                     Vector3 direction = targetPlayer.Transform.position - transform.position;
+                    transform.rotation = Quaternion.LookRotation(direction, new Vector3(0.0f, 1.0f, 0.0f));
 
                     Debug.DrawLine(transform.position, targetPlayer.Transform.position);
 
@@ -208,7 +209,7 @@ public class Monster : MonoBehaviour
         {
            waiting = 0.5f;
            state = STATE.HIT;
-           originalColor = transform.GetChild(0).renderer.material.color;
+           originalColor = transform.renderer.material.color;
         }
     }
 
@@ -229,7 +230,6 @@ public class Monster : MonoBehaviour
 					TakeDamage(25);
 					Vector3 Force = contact.normal * 200.0f;
 					transform.rigidbody.AddForce(Force);
-					Debug.Log("hit " + -Force);
 				}
 			}
 		}

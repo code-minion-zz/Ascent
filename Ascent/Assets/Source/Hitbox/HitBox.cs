@@ -74,7 +74,6 @@ public class HitBox : MonoBehaviour {
 					if( elapsedLifeTime > totalLifeTime/2 ) //Vector3.Magnitude(transform.position - transform.parent.position) > 3)
 					{
 						retract = true;
-						Debug.Log("Retract " + retract);
 					}
 				}
 				else 
@@ -84,7 +83,6 @@ public class HitBox : MonoBehaviour {
 					if (transform.localPosition.z+transform.localPosition.x <= 0)
 					{
 						Active = false;
-						Debug.Log("Active " +Active);
 						transform.parent.GetComponent<Player>().KillBox(transform);
 						Destroy(this.gameObject);
 					}
@@ -93,7 +91,7 @@ public class HitBox : MonoBehaviour {
 				}
 				break;
 			default:
-				Debug.Log("this should never happen");
+				Debug.LogError("this should never happen");
 				break;
 			}
 		}

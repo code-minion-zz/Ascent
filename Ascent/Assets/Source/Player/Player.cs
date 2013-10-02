@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
 			// Update the transform by the movement
 			if (inputDevice.Action2.IsPressed)
 			{
-				Debug.Log("Action Two: " + playerId);
+				//Debug.Log("Action Two: " + playerId);
 				Skill (1);
 			}
 			
@@ -225,7 +225,7 @@ public class Player : MonoBehaviour
                         t.position = boxPos;
                         t.parent = transform;
                         hitBoxes.Add(t);
-                        Debug.Log("Removing hitbox from list");
+                        //Debug.Log("Removing hitbox from list");
                     }
                     //transform.GetComponentInChildren<HitBox>().Fire();
                     //transform.GetChild(0).renderer.enabled = true;
