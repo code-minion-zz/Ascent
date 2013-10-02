@@ -49,7 +49,7 @@ public class HitBox : MonoBehaviour {
 	/// <param name='animType'>
 	/// Animation type, as defined by 
 	/// </param>
-	void Init(EBoxAnimation animType, float speed = 10.0f, float lifeTime = 0.5f, float rotation = 0.0f)
+	public void Init(EBoxAnimation animType, float speed = 10.0f, float lifeTime = 0.5f, float rotation = 0.0f)
 	{
 		hitType = animType;
 		projectileSpeed = speed;
