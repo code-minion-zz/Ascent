@@ -59,13 +59,19 @@ public class Game : MonoBehaviour {
 		
 		// Initialize the list of players.
 		players = new List<Player>();
+
+        GameObject[] startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+        //if (startPoints.Length != 3)
+        //{
+        //    Debug.LogError("Need three starting points");
+        //}
 		
 		// Create the players
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
 			// Setup the player and their positions 
 			// Setup the spawning point
-			Vector3 pos = new Vector3(Random.Range(0, 5), 0.0f, Random.Range(0, 5));
+            Vector3 pos = startPoints[i].transform.position;
 			PlayerPrefab = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);
 			// Get the Player class from the prefab component
 			Player newPlayer = PlayerPrefab.GetComponent<Player>();
