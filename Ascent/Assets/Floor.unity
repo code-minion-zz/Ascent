@@ -1942,8 +1942,8 @@ GameObject:
   - 33: {fileID: 67478222}
   - 23: {fileID: 67478221}
   - 114: {fileID: 67478218}
-  - 65: {fileID: 67478219}
   - 54: {fileID: 67478217}
+  - 65: {fileID: 67478219}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -2003,8 +2003,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &67478221
 Renderer:
   m_ObjectHideFlags: 0
@@ -2544,8 +2544,8 @@ GameObject:
   - 33: {fileID: 122610652}
   - 23: {fileID: 122610650}
   - 114: {fileID: 122610653}
-  - 65: {fileID: 122610651}
   - 54: {fileID: 122610654}
+  - 65: {fileID: 122610649}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -2564,6 +2564,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1064233976}
+--- !u!65 &122610649
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 6500000, guid: 742ea9e9ae811924abaeaa5f6508df46,
+    type: 2}
+  m_PrefabInternal: {fileID: 1747355920}
+  m_GameObject: {fileID: 122610647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &122610650
 Renderer:
   m_ObjectHideFlags: 0
@@ -2583,19 +2596,6 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
---- !u!65 &122610651
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6500000, guid: 742ea9e9ae811924abaeaa5f6508df46,
-    type: 2}
-  m_PrefabInternal: {fileID: 1747355920}
-  m_GameObject: {fileID: 122610647}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
 --- !u!33 &122610652
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3095,8 +3095,8 @@ GameObject:
   - 33: {fileID: 151483806}
   - 23: {fileID: 151483805}
   - 114: {fileID: 151483801}
-  - 65: {fileID: 151483803}
   - 54: {fileID: 151483800}
+  - 65: {fileID: 151483803}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -3156,8 +3156,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &151483805
 Renderer:
   m_ObjectHideFlags: 0
@@ -4807,8 +4807,8 @@ GameObject:
   - 33: {fileID: 182283875}
   - 23: {fileID: 182283874}
   - 114: {fileID: 182283870}
-  - 65: {fileID: 182283872}
   - 54: {fileID: 182283869}
+  - 65: {fileID: 182283872}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -4868,8 +4868,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &182283874
 Renderer:
   m_ObjectHideFlags: 0
@@ -6636,8 +6636,8 @@ GameObject:
   - 33: {fileID: 243566338}
   - 23: {fileID: 243566337}
   - 114: {fileID: 243566334}
-  - 65: {fileID: 243566335}
   - 54: {fileID: 243566333}
+  - 65: {fileID: 243566335}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -6697,8 +6697,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &243566337
 Renderer:
   m_ObjectHideFlags: 0
@@ -16196,8 +16196,8 @@ GameObject:
   - 33: {fileID: 425525546}
   - 23: {fileID: 425525545}
   - 114: {fileID: 425525542}
-  - 65: {fileID: 425525543}
   - 54: {fileID: 425525541}
+  - 65: {fileID: 425525543}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -16257,8 +16257,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &425525545
 Renderer:
   m_ObjectHideFlags: 0
@@ -21909,8 +21909,8 @@ GameObject:
   - 33: {fileID: 653898452}
   - 23: {fileID: 653898451}
   - 114: {fileID: 653898448}
-  - 65: {fileID: 653898449}
   - 54: {fileID: 653898447}
+  - 65: {fileID: 653898449}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -21970,8 +21970,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &653898451
 Renderer:
   m_ObjectHideFlags: 0
@@ -29094,8 +29094,8 @@ GameObject:
   - 33: {fileID: 817316336}
   - 23: {fileID: 817316335}
   - 114: {fileID: 817316332}
-  - 65: {fileID: 817316333}
   - 54: {fileID: 817316331}
+  - 65: {fileID: 817316333}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -29155,8 +29155,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &817316335
 Renderer:
   m_ObjectHideFlags: 0
@@ -29329,8 +29329,8 @@ GameObject:
   - 33: {fileID: 827276020}
   - 23: {fileID: 827276019}
   - 114: {fileID: 827276016}
-  - 65: {fileID: 827276017}
   - 54: {fileID: 827276015}
+  - 65: {fileID: 827276017}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -29390,8 +29390,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &827276019
 Renderer:
   m_ObjectHideFlags: 0
@@ -35722,8 +35722,8 @@ GameObject:
   - 33: {fileID: 1025408465}
   - 23: {fileID: 1025408464}
   - 114: {fileID: 1025408461}
-  - 65: {fileID: 1025408462}
   - 54: {fileID: 1025408460}
+  - 65: {fileID: 1025408462}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -35783,8 +35783,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1025408464
 Renderer:
   m_ObjectHideFlags: 0
@@ -36421,20 +36421,20 @@ Transform:
   - {fileID: 1279562768}
   - {fileID: 827276014}
   - {fileID: 1243154038}
-  - {fileID: 67478216}
-  - {fileID: 182283871}
-  - {fileID: 1870731809}
-  - {fileID: 151483802}
-  - {fileID: 1653060695}
-  - {fileID: 653898446}
-  - {fileID: 1588965888}
-  - {fileID: 1164815096}
-  - {fileID: 243566332}
   - {fileID: 1025408459}
-  - {fileID: 1224232800}
+  - {fileID: 425525540}
+  - {fileID: 653898446}
   - {fileID: 817316330}
   - {fileID: 122610648}
-  - {fileID: 425525540}
+  - {fileID: 1588965888}
+  - {fileID: 1164815096}
+  - {fileID: 67478216}
+  - {fileID: 1653060695}
+  - {fileID: 243566332}
+  - {fileID: 1870731809}
+  - {fileID: 151483802}
+  - {fileID: 182283871}
+  - {fileID: 1224232800}
   m_Father: {fileID: 0}
 --- !u!1 &1064986760
 GameObject:
@@ -37544,8 +37544,8 @@ GameObject:
   - 33: {fileID: 1164815102}
   - 23: {fileID: 1164815101}
   - 114: {fileID: 1164815098}
-  - 65: {fileID: 1164815099}
   - 54: {fileID: 1164815097}
+  - 65: {fileID: 1164815099}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -37605,8 +37605,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1164815101
 Renderer:
   m_ObjectHideFlags: 0
@@ -39482,8 +39482,8 @@ GameObject:
   - 33: {fileID: 1224232806}
   - 23: {fileID: 1224232805}
   - 114: {fileID: 1224232802}
-  - 65: {fileID: 1224232803}
   - 54: {fileID: 1224232801}
+  - 65: {fileID: 1224232803}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -39543,8 +39543,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1224232805
 Renderer:
   m_ObjectHideFlags: 0
@@ -39917,8 +39917,8 @@ GameObject:
   - 33: {fileID: 1243154044}
   - 23: {fileID: 1243154043}
   - 114: {fileID: 1243154040}
-  - 65: {fileID: 1243154041}
   - 54: {fileID: 1243154039}
+  - 65: {fileID: 1243154041}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -39978,8 +39978,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1243154043
 Renderer:
   m_ObjectHideFlags: 0
@@ -46489,8 +46489,8 @@ GameObject:
   - 33: {fileID: 1588965894}
   - 23: {fileID: 1588965893}
   - 114: {fileID: 1588965890}
-  - 65: {fileID: 1588965891}
   - 54: {fileID: 1588965889}
+  - 65: {fileID: 1588965891}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -46550,8 +46550,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1588965893
 Renderer:
   m_ObjectHideFlags: 0
@@ -48616,8 +48616,8 @@ GameObject:
   - 33: {fileID: 1653060701}
   - 23: {fileID: 1653060700}
   - 114: {fileID: 1653060697}
-  - 65: {fileID: 1653060698}
   - 54: {fileID: 1653060696}
+  - 65: {fileID: 1653060698}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -48677,8 +48677,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1653060700
 Renderer:
   m_ObjectHideFlags: 0
@@ -53656,8 +53656,8 @@ GameObject:
   - 33: {fileID: 1870731815}
   - 23: {fileID: 1870731814}
   - 114: {fileID: 1870731811}
-  - 65: {fileID: 1870731812}
   - 54: {fileID: 1870731810}
+  - 65: {fileID: 1870731812}
   m_Layer: 11
   m_Name: Monster
   m_TagString: Monster
@@ -53717,8 +53717,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .192491919, y: .376091659, z: .560357451}
-  m_Center: {x: -.00125684962, y: .188045859, z: -.00334583223}
+  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
+  m_Center: {x: 0, y: .530952036, z: -.62559402}
 --- !u!23 &1870731814
 Renderer:
   m_ObjectHideFlags: 0
