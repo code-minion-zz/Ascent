@@ -114,23 +114,23 @@ public class Game : MonoBehaviour {
 	
 	void UpdateCamPos()
 	{
-		// Ulter position of the camera to center on the players
-		Vector3 totalVector = new Vector3();
-		
-		// Add up all the vectors
-		foreach (Player player in players)
-		{
-			if (player != null)
-				totalVector += player.Position;
-		}
-		
-		// Calculate camera position based off players
-		float x =  totalVector.x / players.Count;
-		float y = CameraPrefab.position.y;
-		float z = (totalVector.z / players.Count) - cameraOffset;
-		
-		// Set the position of our camera.
-		CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
+        // Ulter position of the camera to center on the players
+        Vector3 totalVector = new Vector3();
+
+        // Add up all the vectors
+        foreach (Player player in players)
+        {
+            if (player != null)
+                totalVector += player.Position;
+        }
+
+        // Calculate camera position based off players
+        float x = totalVector.x / players.Count;
+        float y = CameraPrefab.position.y;
+        float z = (totalVector.z / players.Count) - cameraOffset;
+
+        // Set the position of our camera.
+        CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
 	}
 	
 	#endregion
