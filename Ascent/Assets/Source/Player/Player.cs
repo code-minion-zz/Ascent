@@ -27,11 +27,7 @@ public class Player : MonoBehaviour
 	#region Fields
 	
     private CharacterStatistics characterStatistics;
-    private InputHandler inputHandler;
     private bool jumping = false;
-	private int playerId = 0;	
-
-    public float movementSpeed = 5.0f;	
 	
 	public int teamId = 1;
 	
@@ -219,51 +215,31 @@ public class Player : MonoBehaviour
         switch (skillId)
         {
             case 0: // jump
+            {
+                if (!jumping)
                 {
-                    if (!jumping)
-                    {
-                        gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
-                        jumping = true;
+                    gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
+                    jumping = true;
 
-                        return;
-                    }
+                    return;
                 }
-                break;
-            case 1: // attack normal
-                {
-                    if (hitBoxes.Count < 1)
-                    {
-                        Transform t = (Transform)Instantiate(hitBoxPrefab);
-                        Vector3 boxPos = new Vector3(Position.x - 0.05f, rigidbody.centerOfMass.y + 0.1f, Position.z + transform.forward.z);
-                        //t.position = Position + transform.forward;
-                        t.position = boxPos;
-                        t.parent = transform;
-                        hitBoxes.Add(t);
-                        //Debug.Log("Removing hitbox from list");
-                    }
-                    //transform.GetComponentInChildren<HitBox>().Fire();
-                    //transform.GetChild(0).renderer.enabled = true;
-                    //transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
-                    //transform.GetChild(0).parent = transform.parent;
-                }
-                break;
+            }
+            break;
+	        case 1: // attack normal
+		    {
+				if (activeHitBoxes.Count < 1)
+				{
+					Transform t = (Transform)Instantiate(hitBoxPrefab);
+					Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
+					t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
+					t.position = boxPos;
+					t.parent = transform;
+					activeHitBoxes.Add(t);
+					Debug.Log ("Adding hitbox to list");
+				}
+		    }
+		    break;
         }
-        break;
-        case 1: // attack normal
-	    {
-			if (activeHitBoxes.Count < 1)
-			{
-				Transform t = (Transform)Instantiate(hitBoxPrefab);
-				Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
-				t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
-				t.position = boxPos;
-				t.parent = transform;
-				activeHitBoxes.Add(t);
-				Debug.Log ("Adding hitbox to list");
-			}
-	    }
-	    break;
-		}
 
 	}
 	

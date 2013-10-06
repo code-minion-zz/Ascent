@@ -251,9 +251,6 @@ public class Monster : MonoBehaviour
 			{
 				if (hitBoxCollider.enabled)
 				{
-					TakeDamage(25);
-					Vector3 Force = contact.normal * 200.0f;
-					transform.rigidbody.AddForce(Force);
 					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
 					{
 						TakeDamage(25);
