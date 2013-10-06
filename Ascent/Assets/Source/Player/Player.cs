@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     private bool jumping = false;
     private CharacterStatistics characterStatistics;
 	
+	public int teamId = 1;
+	
 	// Player identifier
 	private int playerId = 0;
 	// Movement speed variables
@@ -214,16 +216,12 @@ public class Player : MonoBehaviour
 			{
 				Transform t = (Transform)Instantiate(hitBoxPrefab);
 				Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
-				t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST,10.0f,0.6f);
+				t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
 				t.position = boxPos;
 				t.parent = transform;
 				activeHitBoxes.Add(t);
-				Debug.Log ("Removing hitbox from list");
+				Debug.Log ("Adding hitbox to list");
 			}
-	        //transform.GetComponentInChildren<HitBox>().Fire();
-	        //transform.GetChild(0).renderer.enabled = true;
-	        //transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
-			//transform.GetChild(0).parent = transform.parent;
 	    }
 	    break;
 		}
@@ -250,12 +248,22 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.parent != null)
-        {
-            if (collision.transform.parent.name == "GridHelper")
-            {
-                jumping = false;
-            }
-        }
+        foreach (ContactPoint contact in collision.contacts)
+		{
+			Collider hitBoxCollider = contact.otherCollider;
+			if (hitBoxCollider.name.Contains("HitBox"))
+			{
+				if (hitBoxCollider.enabled)
+				{
+					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
+					{
+						TakeDamage(25);
+						Vector3 Force = contact.normal * 200.0f;
+						transform.rigidbody.AddForce(Force);
+						Debug.Log("hit " + -Force);
+					}
+				}
+			}
+		}
     }
 }
