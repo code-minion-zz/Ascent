@@ -15,6 +15,7 @@ public class Monster : MonoBehaviour
     }
 
     public int health = 100;
+	public int teamId = 2;
     private Player targetPlayer;
     public STATE state = STATE.IDLE;
     private float waiting = 0.0f;
@@ -22,7 +23,10 @@ public class Monster : MonoBehaviour
     private int attack = 10;
     private Color originalColor;	
 	
-	List<Transform> hitBoxes; // active melee attacks
+	// Hitbox Prefab
+	public Transform hitBoxPrefab; // hitboxes represent projectiles
+	
+	List<Transform> activeHitBoxes; // active melee attacks
 
     //List<MonsterAIState> listAIStates = new List<MonsterAIState>();
 
@@ -52,7 +56,7 @@ public class Monster : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-
+		activeHitBoxes = new List<Transform>();
 	}
 	
 	// Update is called once per frame
@@ -103,7 +107,8 @@ public class Monster : MonoBehaviour
                 break;
             case STATE.ATTACKING:
                 {
-                    AttackTarget(targetPlayer);
+                    //AttackTarget(targetPlayer);
+					Attack ();
 
                     targetPlayer = null;
                     state = STATE.WAIT;
@@ -213,10 +218,29 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void AttackTarget(Player _player)
-    {
-        _player.TakeDamage(10);
-    }	
+//    void AttackTarget(Player _player)
+//    {
+//        _player.TakeDamage(10);
+//    }	
+	
+	void Attack()
+	{			
+		if (activeHitBoxes.Count < 1)
+		{
+			Transform t = (Transform)Instantiate(hitBoxPrefab);
+			Vector3 boxPos = new Vector3(transform.position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,transform.position.z + transform.forward.z);
+			t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
+			t.position = boxPos;
+			t.parent = transform;
+			activeHitBoxes.Add(t);
+			Debug.Log ("Adding hitbox to list");
+		}
+	}
+	
+	public void KillBox(Transform box)
+	{
+		activeHitBoxes.Remove(box);
+	}
 	
 	void OnCollisionEnter(Collision collision)
 	{
@@ -230,6 +254,13 @@ public class Monster : MonoBehaviour
 					TakeDamage(25);
 					Vector3 Force = contact.normal * 200.0f;
 					transform.rigidbody.AddForce(Force);
+					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
+					{
+						TakeDamage(25);
+						Vector3 Force = contact.normal * 200.0f;
+						transform.rigidbody.AddForce(Force);
+						Debug.Log("hit " + -Force);
+					}
 				}
 			}
 		}
