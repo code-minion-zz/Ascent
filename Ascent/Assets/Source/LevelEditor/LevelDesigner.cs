@@ -131,8 +131,8 @@ public class LevelDesigner : EditorWindow
 		}
 		
 		snapToBounds = state;
-	}	
-	
+	}
+
 	private void SnapTo()
 	{
 		if (snapToBounds)
