@@ -99,6 +99,8 @@ public class Toolset : EditorWindow {
 		
 		EditorGUILayout.Separator();
 		
+
+		
 		showGridSnaps = EditorGUILayout.Foldout(showGridSnaps, "Snap to Grid");
 		if(showGridSnaps)
 		{

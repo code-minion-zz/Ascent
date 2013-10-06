@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Game : MonoBehaviour {
 	
 	#region Fields
-
+	
+	public static Game Singleton;
 	// Number of players
 	public int NumberOfPlayers = 3;
 	// The player prefab
@@ -51,42 +52,28 @@ public class Game : MonoBehaviour {
 	#endregion
 	
 	#region Initialization
+	public void OnEnable()
+	{
+		if (Singleton == null)
+			Singleton = this;
+	}
+
+    // This function is always called immediately when Instantiated and is called before the Start() function
+    // The game should add all components here so that they are ready for use when other objects require them.
+    void Awake()
+    {
+        // Add monoehaviour components
+        inputHandler = GameObject.AddComponent("InputHandler") as InputHandler;
+    }
+	
 	// Use this for initialization
 	void Start () 
 	{
-		// Add monoehaviour components
-		inputHandler = (InputHandler)GameObject.AddComponent("InputHandler");
-		
-		// Initialize the list of players.
-		players = new List<Player>();
-
-        GameObject[] startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
-        //if (startPoints.Length != 3)
-        //{
-        //    Debug.LogError("Need three starting points");
-        //}
-		
-		// Create the players
-		for (int i = 0; i < NumberOfPlayers; ++i)
-		{
-			// Setup the player and their positions 
-			// Setup the spawning point
-            Vector3 pos = startPoints[i].transform.position;
-			PlayerPrefab = (Transform)Instantiate(PlayerPrefab, pos, Quaternion.identity);
-			// Get the Player class from the prefab component
-			Player newPlayer = PlayerPrefab.GetComponent<Player>();
-			newPlayer.PlayerID = i;
-            newPlayer.name = "Player " + i;
-			// Add the player to the list.
-			players.Add(newPlayer);
-		}
+        CreatePlayers();
+        SetupDoors();
 		
 		// Create the camera
-		CameraPrefab = (Transform)Instantiate(CameraPrefab);
-        
-		 
-		// Setup doors
-		SetupDoors();
+		CameraPrefab = Instantiate(CameraPrefab) as Transform;
 
         if (visualDebuggerPrefab)
         {
@@ -100,6 +87,33 @@ public class Game : MonoBehaviour {
 		//DoorPrefab = (Transform)Instantiate(DoorPrefab);
 		
 	}
+
+    private void CreatePlayers()
+    {
+        // Initialize the list of players.
+        players = new List<Player>();
+
+        GameObject[] startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+        //if (startPoints.Length != 3)
+        //{
+        //    Debug.LogError("Need three starting points");
+        //}
+
+        // Create the players
+        for (int i = 0; i < NumberOfPlayers; ++i)
+        {
+            // Setup the player and their positions 
+            // Setup the spawning point
+            Vector3 pos = startPoints[i].transform.position;
+            PlayerPrefab = Instantiate(PlayerPrefab, pos, Quaternion.identity) as Transform;
+            // Get the Player class from the prefab component
+            Player newPlayer = PlayerPrefab.GetComponent<Player>();
+            newPlayer.PlayerID = i;
+            newPlayer.name = "Player " + i;
+            // Add the player to the list.
+            players.Add(newPlayer);
+        }
+    }
 	
 	#endregion
 	

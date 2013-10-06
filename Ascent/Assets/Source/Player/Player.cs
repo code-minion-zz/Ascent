@@ -26,15 +26,12 @@ public class Player : MonoBehaviour
 
 	#region Fields
 	
-    private bool jumping = false;
     private CharacterStatistics characterStatistics;
-	
-	// Player identifier
-	private int playerId = 0;
-	// Movement speed variables
-	public float movementSpeed = 5.0f;		
-	// Handling input for this player.
-	private InputHandler inputHandler;
+    private InputHandler inputHandler;
+    private bool jumping = false;
+	private int playerId = 0;	
+
+    public float movementSpeed = 5.0f;	
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab;
@@ -84,13 +81,20 @@ public class Player : MonoBehaviour
 	
 	#region Initialization
 
+    // This function is always called immediately when Instantiated and is called before the Start() function
+    void Awake()
+    {
+
+    }
+
 	// Use this for initialization
 	public void Start () 
 	{
 		// Get a reference to our unity GameObject so we can ulter the materials
 		GameObject obj = transform.gameObject;
+		
 		// Get the input handler component for this transform.
-		inputHandler = GameObject.Find("Game").GetComponent<InputHandler>();
+		inputHandler = Game.Singleton.InputHandler;
 		
 		switch (playerId)
 		{
@@ -125,6 +129,8 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	public void Update () 
 	{
+		// Grab the input.
+		//inputHandler = Game.Singleton.InputHandler;
 		InputDevice inputDevice = inputHandler.GetDevice(playerId);
 		
 		if (inputDevice == null)

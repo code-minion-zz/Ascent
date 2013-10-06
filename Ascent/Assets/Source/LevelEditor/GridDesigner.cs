@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -29,6 +30,9 @@ public class GridDesigner : EditorWindow
 	
 	private C_AspectRatio currentAspectRatio;
 	
+	const string redMatPath = "Assets/Source/LevelEditor/Materials/gridMat1.mat";
+	const string whiteMatPath = "Assets/Source/LevelEditor/Materials/gridMat2.mat";
+	
 	#endregion
 	
 	// Initialization of the level designer.
@@ -36,7 +40,7 @@ public class GridDesigner : EditorWindow
 	private static void Init()
 	{
 		// Create and position the window
-        EditorWindow.GetWindow(typeof(GridDesigner));
+        EditorWindow.GetWindow(typeof(GridDesigner), false);
         //designerWindow.position = new Rect(, 150, 300, 350);		
 	}
 	
@@ -202,10 +206,7 @@ public class GridDesigner : EditorWindow
 				gridPosz = 5f * frame.y * 2f;	
 			}			
 			
-			string redMatPath = "Assets/Source/LevelEditor/Materials/gridMat1.mat";
 			Material redMat = AssetDatabase.LoadAssetAtPath(redMatPath, typeof(Material)) as Material;
-			
-			string whiteMatPath = "Assets/Source/LevelEditor/Materials/gridMat2.mat";
 			Material whiteMat = AssetDatabase.LoadAssetAtPath(whiteMatPath, typeof(Material)) as Material;
 			
 			//redMat.mainTextureScale = new Vector2(frame.x * 2, frame.y * 2);
@@ -226,3 +227,5 @@ public class GridDesigner : EditorWindow
 		}
 	}
 }
+
+#endif

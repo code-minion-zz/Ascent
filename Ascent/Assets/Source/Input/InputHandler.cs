@@ -23,17 +23,22 @@ public class InputHandler : MonoBehaviour
 	Dictionary<int, InputDevice> playerDevices = new Dictionary<int, InputDevice>();
 	
 	#endregion
+
+    void Awake()
+    {
+        // Setup the device manager and the events
+        InputManager.Setup();
+        InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
+        InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name);
+        InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
+        SetupPlayerDevices();
+        TestInputMappings();
+    }
 	
 	// Use this for initialization
 	void Start () 
 	{
-		// Setup the device manager and the events
-		InputManager.Setup();
-		InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
-		InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name );
-		InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
-		SetupPlayerDevices();
-		TestInputMappings();
+
 	}
 	
 	public InputDevice GetNextAvailable()
