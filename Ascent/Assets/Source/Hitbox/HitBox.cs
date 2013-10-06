@@ -20,7 +20,7 @@ public class HitBox : MonoBehaviour {
 	float elapsedLifeTime	= 0.0f;	
 	bool retract = false;
 	
-	
+	public int teamId = 0;
 	#endregion
 	
 	#region Properties
@@ -49,8 +49,9 @@ public class HitBox : MonoBehaviour {
 	/// <param name='animType'>
 	/// Animation type, as defined by 
 	/// </param>
-	void Init(EBoxAnimation animType, float speed = 10.0f, float lifeTime = 0.5f, float rotation = 0.0f)
+	public void Init(EBoxAnimation animType, int team, float speed = 10.0f, float lifeTime = 0.5f, float rotation = 0.0f)
 	{
+		teamId = team;
 		hitType = animType;
 		projectileSpeed = speed;
 		totalLifeTime = lifeTime;
@@ -70,31 +71,43 @@ public class HitBox : MonoBehaviour {
 					transform.position = transform.position + (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
 					Debug.DrawRay(transform.position,transform.parent.forward);
 					Debug.DrawRay(transform.parent.position, transform.parent.forward);
-					//if (Mathf.Abs(transform.localPosition.z+transform.localPosition.x) > 2)
-					if( elapsedLifeTime > totalLifeTime/2 ) //Vector3.Magnitude(transform.position - transform.parent.position) > 3)
+					if ( elapsedLifeTime > totalLifeTime/2 ) 
 					{
 						retract = true;
+						Debug.Log("Retract " + retract);
 					}
 				}
 				else 
-				{
-					
-					//transform.Translate(transform.forward * 2 * -Time.deltaTime);
+				{					
 					if (transform.localPosition.z+transform.localPosition.x <= 0)
 					{
 						Active = false;
-						transform.parent.GetComponent<Player>().KillBox(transform);
-						Destroy(this.gameObject);
+						//Debug.Log("Active " +Active);
+						DestroySelf();
 					}
 					transform.position = transform.position - (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
 					
 				}
 				break;
 			default:
-				Debug.LogError("this should never happen");
+				Debug.Log("this should never happen");
 				break;
 			}
 		}
+	}
+	
+	void DestroySelf()
+	{
+		if (transform.parent.name.Contains("Monster"))
+		{
+			transform.parent.GetComponent<Monster>().KillBox(transform);
+		}
+		else if (transform.parent.name.Contains("Player"))
+		{
+			transform.parent.GetComponent<Player>().KillBox(transform);			
+		}		
+		
+		Destroy(this.gameObject);			
 	}
 	
 //	void Shutdown()

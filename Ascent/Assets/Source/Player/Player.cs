@@ -6,7 +6,7 @@ using InControl;
 public class Player : MonoBehaviour
 {
 	#region Enums
-	enum EPlayerState // State defines what actions are allowed, and what animations to play
+	public enum EPlayerState // State defines what actions are allowed, and what animations to play
 	{
 		PS_INVALID_STATE = -1,
 		PS_STATE_IDLE,
@@ -27,21 +27,25 @@ public class Player : MonoBehaviour
 	#region Fields
 	
     private CharacterStatistics characterStatistics;
-    private InputHandler inputHandler;
     private bool jumping = false;
-	private int playerId = 0;	
-
-    public float movementSpeed = 5.0f;	
+	
+	public int teamId = 1;
+	
+	// Player identifier
+	private int playerId = 0;
+	// Movement speed variables
+	public float movementSpeed = 5.0f;		
+	// Handling input for this player.
+	private InputHandler inputHandler;
 	
 	// Hitbox Prefab
-	public Transform hitBoxPrefab;
+	public Transform hitBoxPrefab; // hitboxes represent projectiles
 	
 	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
-	List<Transform> hitBoxes; // active melee attacks
+	List<Transform> activeHitBoxes; // active projectiles
 	
-	EPlayerState playerState; // 
-	
+	public EPlayerState playerState;
 	#endregion
 	
 	#region Properties
@@ -114,7 +118,7 @@ public class Player : MonoBehaviour
 			obj.renderer.material.color = Color.white;
 			break;
 		}
-		hitBoxes = new List<Transform>();
+		activeHitBoxes = new List<Transform>();
 		//Transform hitBox = transform.GetChild(0);
 		//hitBox.renderer.enabled = false;
 		//hitBox.GetComponent<HitBox>().enabled = false;
@@ -211,41 +215,37 @@ public class Player : MonoBehaviour
         switch (skillId)
         {
             case 0: // jump
+            {
+                if (!jumping)
                 {
-                    if (!jumping)
-                    {
-                        gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
-                        jumping = true;
+                    gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
+                    jumping = true;
 
-                        return;
-                    }
+                    return;
                 }
-                break;
-            case 1: // attack normal
-                {
-                    if (hitBoxes.Count < 1)
-                    {
-                        Transform t = (Transform)Instantiate(hitBoxPrefab);
-                        Vector3 boxPos = new Vector3(Position.x - 0.05f, rigidbody.centerOfMass.y + 0.1f, Position.z + transform.forward.z);
-                        //t.position = Position + transform.forward;
-                        t.position = boxPos;
-                        t.parent = transform;
-                        hitBoxes.Add(t);
-                        //Debug.Log("Removing hitbox from list");
-                    }
-                    //transform.GetComponentInChildren<HitBox>().Fire();
-                    //transform.GetChild(0).renderer.enabled = true;
-                    //transform.GetChild(0).position = transform.position + (transform.forward * 2.0f);
-                    //transform.GetChild(0).parent = transform.parent;
-                }
-                break;
+            }
+            break;
+	        case 1: // attack normal
+		    {
+				if (activeHitBoxes.Count < 1)
+				{
+					Transform t = (Transform)Instantiate(hitBoxPrefab);
+					Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
+					t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
+					t.position = boxPos;
+					t.parent = transform;
+					activeHitBoxes.Add(t);
+					Debug.Log ("Adding hitbox to list");
+				}
+		    }
+		    break;
         }
 
 	}
 	
 	public void KillBox(Transform box)
 	{
-		hitBoxes.Remove(box);
+		activeHitBoxes.Remove(box);
 	}
 
 
@@ -257,6 +257,28 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             transform.gameObject.renderer.material.color = Color.black;
+			playerState = EPlayerState.PS_STATE_DEATH;
         }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+		{
+			Collider hitBoxCollider = contact.otherCollider;
+			if (hitBoxCollider.name.Contains("HitBox"))
+			{
+				if (hitBoxCollider.enabled)
+				{
+					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
+					{
+						TakeDamage(25);
+						Vector3 Force = contact.normal * 200.0f;
+						transform.rigidbody.AddForce(Force);
+						Debug.Log("hit " + -Force);
+					}
+				}
+			}
+		}
     }
 }
