@@ -13,7 +13,9 @@ public class GridDesigner : EditorWindow
 		FiveFour,
 		ThreeTwo,
 		SixteenTen,
-		SixteenNine
+		SixteenNine,
+        TenTen,
+        FiveFive
 	}	
 	
 	#endregion
@@ -114,6 +116,18 @@ public class GridDesigner : EditorWindow
 				aspectRatioDenominator = 9;
 				break;
 			}
+            case C_AspectRatio.TenTen:
+            {
+                aspectRatioNumerator = 10;
+                aspectRatioDenominator = 10;
+                break;
+            }
+            case C_AspectRatio.FiveFive:
+            {
+                aspectRatioNumerator = 5;
+                aspectRatioDenominator = 5;
+                break;
+            }
 		}
 		
 		float _aspectRatioNumerator;
