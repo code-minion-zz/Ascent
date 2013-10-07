@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
 	
-	private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
+	//private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
 	List<Transform> activeHitBoxes; // active projectiles
 	

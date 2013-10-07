@@ -65,10 +65,18 @@ public class ObjectCreationGUI
         EditorPrefs.SetBool("showFoldOut", showFoldOut);
     }
 
-    private void CreateObject()
+    void CreateObject()
     {
         // Instantiate the selected game object.
         GameObject newObj = GameObject.Instantiate(objectToCreate) as GameObject;
         newObj.name = objectName;
+
+        GameObject[] objects = new GameObject[] { newObj };
+        Selection.objects = objects;
+
+        // Tell the scene view to focus on the selected objects.
+        SceneView sceneView = SceneView.lastActiveSceneView;
+        sceneView.Focus();
+        sceneView.FrameSelected();
     }
 }

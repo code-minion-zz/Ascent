@@ -12,7 +12,7 @@ public class HitBox : MonoBehaviour {
 		
 	// behaviour member variables
 	EBoxAnimation hitType;		
-	float rotateRate		= 0.0f;
+	//float rotateRate		= 0.0f;
 	float projectileSpeed 	= 10.0f;
 	float totalLifeTime		= 0.5f;
 	
@@ -55,7 +55,7 @@ public class HitBox : MonoBehaviour {
 		hitType = animType;
 		projectileSpeed = speed;
 		totalLifeTime = lifeTime;
-		rotateRate = rotateRate;
+		//rotateRate = rotation;
 	}
 	
 	// Update is called once per frame

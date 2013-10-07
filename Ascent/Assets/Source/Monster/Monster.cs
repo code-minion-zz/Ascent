@@ -20,8 +20,8 @@ public class Monster : MonoBehaviour
     public STATE state = STATE.IDLE;
     private float waiting = 0.0f;
     private Vector3 originalScale;
-    private int attack = 10;
-    private Color originalColor;	
+    //private int attack = 10;
+    //private Color originalColor;	
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
@@ -214,7 +214,7 @@ public class Monster : MonoBehaviour
         {
            waiting = 0.5f;
            state = STATE.HIT;
-           originalColor = transform.renderer.material.color;
+           //originalColor = transform.renderer.material.color;
         }
     }
 
