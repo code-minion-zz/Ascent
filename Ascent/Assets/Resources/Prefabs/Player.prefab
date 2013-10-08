@@ -11,8 +11,8 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400002}
-  - 65: {fileID: 6500000}
   - 54: {fileID: 5400000}
+  - 65: {fileID: 6500000}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -43,7 +43,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -91,8 +91,8 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 10
+  m_Mass: 5
+  m_Drag: .5
   m_AngularDrag: .0500000007
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -157,8 +157,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846397c5b9bba9545b0d118fa5a5edaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamId: 1
   movementSpeed: 5
   hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  playerState: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
