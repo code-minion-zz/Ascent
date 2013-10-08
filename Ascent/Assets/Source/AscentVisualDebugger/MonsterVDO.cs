@@ -3,12 +3,12 @@ using System.Collections;
 
 public class MonsterVDO : GenericVDO<Monster>, IVisulDebugObject
 {
-    public void Start()
+    new public void Start()
     {
         base.Start();
     }
 
-    public void Update()
+    new public void Update()
     {
         base.Update();
     }

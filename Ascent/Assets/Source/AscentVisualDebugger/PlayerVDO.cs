@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public class PlayerVDO : GenericVDO<Player>, IVisulDebugObject
 {
-    public void Start()
+    new public void Start()
     {
         base.Start();
     }
 
-    public void Update()
+    new public void Update()
     {
         base.Update();
     }
