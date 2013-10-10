@@ -74,7 +74,6 @@ public class HitBox : MonoBehaviour {
 					if ( elapsedLifeTime > totalLifeTime/2 ) 
 					{
 						retract = true;
-						Debug.Log("Retract " + retract);
 					}
 				}
 				else 

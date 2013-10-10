@@ -15,8 +15,8 @@ MonoBehaviour:
   - FileName: .currentai
     BehaviorTreeName: Currently Selected AI
     BehaviorTreeID: 0
-    LastUpdate: 635169261143875293
-    LastModified: 635169261143875293
+    LastUpdate: 0
+    LastModified: 0
     Errored: 0
   - FileName: .createxml
     BehaviorTreeName: Create New Behavior Tree
@@ -30,6 +30,12 @@ MonoBehaviour:
     LastUpdate: 635169261143885293
     LastModified: 635169261143885293
     Errored: 0
+  - FileName: a2.xml
+    BehaviorTreeName: a2
+    BehaviorTreeID: 4
+    LastUpdate: 635169326016658401
+    LastModified: 635169326016648401
+    Errored: 0
   TreeState:
     _branchRepo:
     - _fields: []
@@ -41,42 +47,126 @@ MonoBehaviour:
       _lastUpdate: 0
       _children: 
       _variables: 
-    - _fields: []
-      _type: 0
-      _id: 0
+    - _fields:
+      - _field: name
+        _currentValue: action 446
+        _recordChange: 1
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      - _field: classname
+        _currentValue: _
+        _recordChange: 1
+        _changed: 0
+      _type: 1
+      _id: 1
+      _parent: 3
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169294142355293
+      _children: 
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: condition 571
+        _recordChange: 1
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      - _field: expression
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 7
+      _id: 2
       _parent: 0
       _reference: 0
       _referencedCount: 0
-      _lastUpdate: 0
+      _lastUpdate: 635169321202773008
       _children: 
       _variables: 
-    - _fields: []
-      _type: 0
-      _id: 0
+    - _fields:
+      - _field: name
+        _currentValue: root
+        _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      _type: 20
+      _id: 3
+      _parent: 4
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169325808828401
+      _children: 0a00000001000000
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: a2
+        _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      - _field: variablesopen
+        _currentValue: True
+        _recordChange: 1
+        _changed: 0
+      _type: 5
+      _id: 4
       _parent: 0
       _reference: 0
       _referencedCount: 0
-      _lastUpdate: 0
-      _children: 
-      _variables: 
-    - _fields: []
-      _type: 0
-      _id: 0
-      _parent: 0
-      _reference: 0
-      _referencedCount: 0
-      _lastUpdate: 0
-      _children: 
-      _variables: 
-    - _fields: []
-      _type: 0
-      _id: 0
-      _parent: 0
-      _reference: 0
-      _referencedCount: 0
-      _lastUpdate: 0
-      _children: 
-      _variables: 
+      _lastUpdate: 635169326006598401
+      _children: 03000000
+      _variables: 0c000000
     - _fields:
       - _field: name
         _currentValue: move 1220
@@ -204,5 +294,154 @@ MonoBehaviour:
       _lastUpdate: 635169261133815293
       _children: 06000000
       _variables: 
-    _freeList: 01000000020000000300000004000000
+    - _fields:
+      - _field: name
+        _currentValue: selector 70
+        _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      _type: 19
+      _id: 8
+      _parent: 0
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169321309683698
+      _children: 
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: debug 119
+        _recordChange: 1
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debugmessage
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: returnvalue
+        _currentValue: success
+        _recordChange: 1
+        _changed: 0
+      _type: 8
+      _id: 9
+      _parent: 0
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169321987341457
+      _children: 
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: detect 255
+        _recordChange: 1
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      - _field: sensor
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: aspect
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: variable
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 9
+      _id: 10
+      _parent: 3
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169324264148401
+      _children: 
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: detect 255
+        _recordChange: 1
+        _changed: 0
+      - _field: precondition
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: debug
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      - _field: sensor
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: aspect
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: variable
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 9
+      _id: 11
+      _parent: 0
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 635169324264148401
+      _children: 
+      _variables: 
+    - _fields:
+      - _field: name
+        _currentValue: newvariable
+        _recordChange: 1
+        _changed: 0
+      - _field: initialvalue
+        _currentValue: 0
+        _recordChange: 1
+        _changed: 0
+      _type: 6
+      _id: 12
+      _parent: 0
+      _reference: 0
+      _referencedCount: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+    _freeList: 
   Version: 14

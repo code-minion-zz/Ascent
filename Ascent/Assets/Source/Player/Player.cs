@@ -25,9 +25,10 @@ public class Player : MonoBehaviour
 	#endregion
 
 	#region Fields
-	
+
+    private PlayerAnimator animator;
     private CharacterStatistics characterStatistics;
-    private bool jumping = false;
+    public bool jumping = false;
 	
 	public int teamId = 1;
 	
@@ -35,8 +36,7 @@ public class Player : MonoBehaviour
 	private int playerId = 0;
 	// Movement speed variables
 	public float movementSpeed = 5.0f;		
-	// Handling input for this player.
-	private InputHandler inputHandler;
+
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
@@ -96,28 +96,25 @@ public class Player : MonoBehaviour
 	{
 		// Get a reference to our unity GameObject so we can ulter the materials
 		GameObject obj = transform.gameObject;
-		
-		// Get the input handler component for this transform.
-		inputHandler = Game.Singleton.InputHandler;
-		
-		switch (playerId)
-		{
-		case 0:
-			obj.renderer.material.color = Color.red;
-			break;
-			
-		case 1:
-			obj.renderer.material.color = Color.green;
-			break;
-			
-		case 2:
-			obj.renderer.material.color = Color.blue;
-			break;
-			
-		default:
-			obj.renderer.material.color = Color.white;
-			break;
-		}
+
+        switch (playerId)
+        {
+            case 0:
+                obj.GetComponentInChildren<Renderer>().material.color = Color.red;
+                break;
+
+            case 1:
+                obj.GetComponentInChildren<Renderer>().material.color = Color.green;
+                break;
+
+            case 2:
+                obj.GetComponentInChildren<Renderer>().material.color = Color.blue;
+                break;
+
+            default:
+                obj.GetComponentInChildren<Renderer>().material.color = Color.white;
+                break;
+        }
 		activeHitBoxes = new List<Transform>();
 		//Transform hitBox = transform.GetChild(0);
 		//hitBox.renderer.enabled = false;
@@ -126,6 +123,8 @@ public class Player : MonoBehaviour
         characterStatistics = gameObject.AddComponent<CharacterStatistics>();
         characterStatistics.Init();
         characterStatistics.Health.Set(100.0f, 100.0f);
+
+        animator = gameObject.GetComponent<PlayerAnimator>();
 	}
 	#endregion
 	
@@ -133,80 +132,7 @@ public class Player : MonoBehaviour
 	// Update is called once per frame
 	public void Update () 
 	{
-		// Grab the input.
-		//inputHandler = Game.Singleton.InputHandler;
-		InputDevice inputDevice = inputHandler.GetDevice(playerId);
-		
-		if (inputDevice == null)
-		{
-			Debug.Log("Player " + playerId + "'s inputDevice does not exist");
-			return;
-		}
-			// Update the transform by the movement
-			if (inputDevice.Action1.IsPressed)
-			{
-			//	Debug.Log("Action One: " + playerId);
-				Skill (0);
-			}			
-			// Update the transform by the movement
-			if (inputDevice.Action2.IsPressed)
-			{
-				//Debug.Log("Action Two: " + playerId);
-				Skill (1);
-			}
-			
-			float x = inputDevice.LeftStickX.Value * Time.deltaTime * movementSpeed;
-			float z = inputDevice.LeftStickY.Value * Time.deltaTime * movementSpeed;
-			
-			Vector3 direction = Vector3.Normalize(new Vector3(x, 0.0f, z));
 
-            if (x != 0.0f || z != 0.0f)
-            {
-
-                if (transform.rigidbody.velocity.magnitude < 6.0f)
-                {
-                    transform.LookAt(Position + (direction * 100.0f));
-                    transform.rigidbody.AddForce(transform.forward *2.0f, ForceMode.Impulse);
-                }
-                //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
-                
-
-                Debug.DrawRay(Position, transform.forward, Color.red);
-            }
-
-            if (jumping)
-            {
-                Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
-                Debug.DrawRay(transform.position, -transform.up, Color.red);
-            }
-//			if (hitBoxes.Count > 0)
-//			{
-//				List<int> toRemove = new List<int>();
-//				for (int i = hitBoxes.Count; i < hitBoxes.Count; --i)
-//				{
-//					if(!hitBoxes[i].GetComponent<HitBox>().Active)
-//					{
-//						toRemove.Add(i);
-//					}
-//				}				
-//				foreach ( int i in toRemove )
-//				{
-//					DestroyObject(hitBoxes[i].gameObject);
-//					hitBoxes.RemoveAt(i);
-//				}
-				
-//		}
-//		else
-//		{
-//			// Error no device
-//			//Debug.Log("No Device for this player");
-//		}
-
-            
-        if (transform.rigidbody.velocity.y == 0)
-        {
-            jumping = false;
-        }
 	}
 	#endregion
 	
@@ -218,8 +144,10 @@ public class Player : MonoBehaviour
             {
                 if (!jumping)
                 {
-                    gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
-                    jumping = true;
+                    //gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
+                    //jumping = true;
+                    animator.PlayAnimation(PlayerAnimator.EAnimState.Jump);
+                    Debug.Log("jump");
 
                     return;
                 }
@@ -235,13 +163,33 @@ public class Player : MonoBehaviour
 					t.position = boxPos;
 					t.parent = transform;
 					activeHitBoxes.Add(t);
-					Debug.Log ("Adding hitbox to list");
+					//Debug.Log ("Adding hitbox to list");
+
+                    animator.PlayAnimation(PlayerAnimator.EAnimState.Strike);
 				}
 		    }
 		    break;
         }
 
 	}
+
+    public void Move(Vector3 _direction)
+    {
+        if (_direction.x != 0.0f || _direction.z != 0.0f)
+        {
+
+            if (transform.rigidbody.velocity.magnitude < 6.0f)
+            {
+                transform.LookAt(transform.position + (_direction * 100.0f));
+                transform.rigidbody.AddForce(transform.forward * 2.0f, ForceMode.Impulse);
+            }
+            //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+            Debug.DrawRay(transform.position, transform.forward, Color.red);
+
+            animator.PlayAnimation(PlayerAnimator.EAnimState.Run);
+        }
+    }
 	
 	public void KillBox(Transform box)
 	{
