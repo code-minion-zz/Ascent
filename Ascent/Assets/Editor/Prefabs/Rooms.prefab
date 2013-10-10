@@ -11572,8 +11572,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100672}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
-  m_LocalScale: {x: 3.89750791, y: 2.84916186, z: .132264405}
+  m_LocalPosition: {x: 2.00000048, y: 0, z: -.0500000007}
+  m_LocalScale: {x: 4, y: 3, z: .100000001}
   m_Children: []
   m_Father: {fileID: 400308}
 --- !u!4 &400674
@@ -12122,8 +12122,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
-  m_LocalScale: {x: 3.89750791, y: 2.84916186, z: .132264405}
+  m_LocalPosition: {x: 2.00000048, y: 0, z: -1.78813934e-07}
+  m_LocalScale: {x: 3.89750791, y: 2.8491621, z: .132264405}
   m_Children: []
   m_Father: {fileID: 400578}
 --- !u!4 &400774
@@ -23349,8 +23349,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.89750791, y: 2.8491621, z: .132264405}
-  m_Center: {x: 2, y: 0, z: 0}
+  m_Size: {x: 4, y: 3, z: .100000001}
+  m_Center: {x: 2, y: 0, z: -.0500000007}
 --- !u!65 &6500212
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -26844,7 +26844,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: -1.5, y: 0, z: 0}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -26876,7 +26876,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: 0, y: 0, z: 1.5}
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -26924,7 +26924,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: 0, y: 0, z: -1.5}
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -26940,7 +26940,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: -1.5, y: 0, z: 0}
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
