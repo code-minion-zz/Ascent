@@ -250,6 +250,7 @@ public class Player : MonoBehaviour
             if (playerMat != null)
                 playerMat.color = Color.black
                     ;
+            //transform.gameObject.renderer.material.color = Color.black;
 			playerState = EPlayerState.PS_STATE_DEATH;
         }
     }
