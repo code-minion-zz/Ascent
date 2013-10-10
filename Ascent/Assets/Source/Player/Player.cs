@@ -204,7 +204,7 @@ public class Player : MonoBehaviour
         health -= _damage;
         if (health <= 0)
         {
-            transform.gameObject.renderer.material.color = Color.black;
+            //transform.gameObject.renderer.material.color = Color.black;
 			playerState = EPlayerState.PS_STATE_DEATH;
         }
     }
