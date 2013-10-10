@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class HitBox : MonoBehaviour {
-	#region Members
+	#region Fields
 	public enum EBoxAnimation
 	{
 		BA_INVALID_HIT = -1,
@@ -21,6 +21,15 @@ public class HitBox : MonoBehaviour {
 	bool retract = false;
 	
 	public int teamId = 0;
+
+    // Delegates for trigger events.
+    public delegate void OnTriggerEnterDelegate(Collider other);
+    public delegate void OnTriggerStayDelegate(Collider other);
+    public delegate void OnTriggerExitDelegate(Collider other);
+    public OnTriggerEnterDelegate OnTriggerEnterSteps;
+    public OnTriggerStayDelegate OnTriggerStaySteps;
+    public OnTriggerExitDelegate OnTriggerExitSteps;
+
 	#endregion
 	
 	#region Properties
@@ -133,6 +142,32 @@ public class HitBox : MonoBehaviour {
 //	{
 //		isHit = false;		
 //	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (OnTriggerEnterSteps != null)
+        {
+            OnTriggerEnterSteps(other);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (OnTriggerExitSteps != null)
+        {
+            OnTriggerExitSteps(other);
+        }
+        // Called when the collision ends and the two objects do not overlap
+
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (OnTriggerStaySteps != null)
+        {
+            OnTriggerStaySteps(other);
+        }
+    }
 	
 	public bool Fire(int id)
 	{

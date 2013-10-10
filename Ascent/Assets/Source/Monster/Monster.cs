@@ -230,10 +230,14 @@ public class Monster : MonoBehaviour
 			Transform t = (Transform)Instantiate(hitBoxPrefab);
 			Vector3 boxPos = new Vector3(transform.position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,transform.position.z + transform.forward.z);
 			t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
+            t.renderer.material.color = Color.blue;
+            // Setup this hitbox with our collision event code.
+            t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
+            t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
+            t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
 			t.position = boxPos;
 			t.parent = transform;
 			activeHitBoxes.Add(t);
-			Debug.Log ("Adding hitbox to list");
 		}
 	}
 	
@@ -241,25 +245,50 @@ public class Monster : MonoBehaviour
 	{
 		activeHitBoxes.Remove(box);
 	}
+
+    void OnHitBoxCollideEnter(Collider other)
+    {
+        // When monster hit box collides with player.
+        if (other.transform.tag == "Player")
+        {
+            Player player = other.transform.GetComponent<Player>();
+
+            if (player != null)
+            {
+                // Make the monster take damage.
+                player.TakeDamage(25);
+            }
+        }
+    }
+
+    void OnHitBoxCollideStay(Collider other)
+    {
+
+    }
+
+    void OnHitBoxCollideExit(Collider other)
+    {
+
+    }
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		foreach (ContactPoint contact in collision.contacts)
-		{
-			Collider hitBoxCollider = contact.otherCollider;
-			if (hitBoxCollider.name.Contains("HitBox"))
-			{
-				if (hitBoxCollider.enabled)
-				{
-					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
-					{
-						TakeDamage(25);
-						Vector3 Force = contact.normal * 200.0f;
-						transform.rigidbody.AddForce(Force);
-						Debug.Log("hit " + -Force);
-					}
-				}
-			}
-		}
+		//foreach (ContactPoint contact in collision.contacts)
+		//{
+            //Collider hitBoxCollider = contact.otherCollider;
+            //if (hitBoxCollider.name.Contains("HitBox"))
+            //{
+            //    if (hitBoxCollider.enabled)
+            //    {
+            //        if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
+            //        {
+            //            TakeDamage(25);
+            //            Vector3 Force = contact.normal * 200.0f;
+            //            transform.rigidbody.AddForce(Force);
+            //            Debug.Log("hit " + -Force);
+            //        }
+            //    }
+            //}
+		//}
 	}
 }

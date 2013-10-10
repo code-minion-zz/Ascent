@@ -28,7 +28,10 @@ public class Player : MonoBehaviour
 
     private PlayerAnimator animator;
     private CharacterStatistics characterStatistics;
+    private Color playerColor = Color.white;
+    private Material playerMat = null;
     public bool jumping = false;
+    public bool attacking = false;
 	
 	public int teamId = 1;
 	
@@ -40,8 +43,6 @@ public class Player : MonoBehaviour
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
-	
-	//private Vector3 forward = new Vector3(0.0f, 0.0f, 0.0f);
 		
 	List<Transform> activeHitBoxes; // active projectiles
 	
@@ -94,32 +95,38 @@ public class Player : MonoBehaviour
 	// Use this for initialization
 	public void Start () 
 	{
-		// Get a reference to our unity GameObject so we can ulter the materials
-		GameObject obj = transform.gameObject;
-
         switch (playerId)
         {
             case 0:
-                obj.GetComponentInChildren<Renderer>().material.color = Color.red;
+                playerColor = Color.red;
                 break;
 
             case 1:
-                obj.GetComponentInChildren<Renderer>().material.color = Color.green;
+                playerColor = Color.green;
                 break;
 
             case 2:
-                obj.GetComponentInChildren<Renderer>().material.color = Color.blue;
+                playerColor = Color.blue;
                 break;
 
             default:
-                obj.GetComponentInChildren<Renderer>().material.color = Color.white;
+                playerColor = Color.white;
                 break;
         }
+
+        // Be careful not sure which material it will get first.
+        GameObject obj = transform.gameObject;
+        playerMat = obj.GetComponentInChildren<Renderer>().material;
+
+        if (playerMat != null)
+            playerMat.color = playerColor;
+
 		activeHitBoxes = new List<Transform>();
 		//Transform hitBox = transform.GetChild(0);
 		//hitBox.renderer.enabled = false;
 		//hitBox.GetComponent<HitBox>().enabled = false;
 
+        // Attach character stats component
         characterStatistics = gameObject.AddComponent<CharacterStatistics>();
         characterStatistics.Init();
         characterStatistics.Health.Set(100.0f, 100.0f);
@@ -157,13 +164,21 @@ public class Player : MonoBehaviour
 		    {
 				if (activeHitBoxes.Count < 1)
 				{
+                    attacking = true;
+                    // Create a hitbox
 					Transform t = (Transform)Instantiate(hitBoxPrefab);
+                    t.renderer.material.color = playerColor;
+                    // Initialize the hitbox
 					Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
 					t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
 					t.position = boxPos;
+                    // Make the parent this player
 					t.parent = transform;
+                    // Setup this hitbox with our collision event code.
+                    t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
+                    t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
+                    t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
 					activeHitBoxes.Add(t);
-					//Debug.Log ("Adding hitbox to list");
 
                     animator.PlayAnimation(PlayerAnimator.EAnimState.Strike);
 				}
@@ -175,9 +190,11 @@ public class Player : MonoBehaviour
 
     public void Move(Vector3 _direction)
     {
+        if (attacking)
+            return;
+
         if (_direction.x != 0.0f || _direction.z != 0.0f)
         {
-
             if (transform.rigidbody.velocity.magnitude < 6.0f)
             {
                 transform.LookAt(transform.position + (_direction * 100.0f));
@@ -193,9 +210,34 @@ public class Player : MonoBehaviour
 	
 	public void KillBox(Transform box)
 	{
+        attacking = false;
 		activeHitBoxes.Remove(box);
 	}
 
+    void OnHitBoxCollideEnter(Collider other)
+    {
+        // When players hit box collides with object.
+        if (other.transform.tag == "Monster")
+        {
+            Monster monster = other.transform.GetComponent<Monster>();
+
+            if (monster != null)
+            {
+                // Make the monster take damage.
+                monster.TakeDamage(25);
+            }
+        }
+    }
+
+    void OnHitBoxCollideStay(Collider other)
+    {
+
+    }
+
+    void OnHitBoxCollideExit(Collider other)
+    {
+
+    }
 
     public void TakeDamage(int _damage)
     {
@@ -204,6 +246,10 @@ public class Player : MonoBehaviour
         health -= _damage;
         if (health <= 0)
         {
+            // On Death settings
+            if (playerMat != null)
+                playerMat.color = Color.black
+                    ;
             //transform.gameObject.renderer.material.color = Color.black;
 			playerState = EPlayerState.PS_STATE_DEATH;
         }
@@ -211,22 +257,22 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        foreach (ContactPoint contact in collision.contacts)
-		{
-			Collider hitBoxCollider = contact.otherCollider;
-			if (hitBoxCollider.name.Contains("HitBox"))
-			{
-				if (hitBoxCollider.enabled)
-				{
-					if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
-					{
-						TakeDamage(25);
-						Vector3 Force = contact.normal * 200.0f;
-						transform.rigidbody.AddForce(Force);
-						Debug.Log("hit " + -Force);
-					}
-				}
-			}
-		}
+       // foreach (ContactPoint contact in collision.contacts)
+		//{
+            //Collider hitBoxCollider = contact.otherCollider;
+            //if (hitBoxCollider.name.Contains("HitBox"))
+            //{
+            //    if (hitBoxCollider.enabled)
+            //    {
+            //        if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
+            //        {
+            //            TakeDamage(25);
+            //            Vector3 Force = contact.normal * 200.0f;
+            //            transform.rigidbody.AddForce(Force);
+            //            Debug.Log("hit " + -Force);
+            //        }
+            //    }
+            //}
+		//}
     }
 }

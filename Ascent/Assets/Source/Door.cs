@@ -92,7 +92,7 @@ public class Door : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
-		if (collision.transform.name.Contains("Player"))
+		if (collision.transform.tag == "Player")
 		{
 			if (IsOpen == false)
 			{
