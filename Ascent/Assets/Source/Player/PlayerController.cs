@@ -38,12 +38,14 @@ public class PlayerController : MonoBehaviour
         {
             //	Debug.Log("Action One: " + playerId);
             player.Skill(0);
+            return;
         }
         // Update the transform by the movement
         if (inputDevice.Action2.IsPressed)
         {
             //Debug.Log("Action Two: " + playerId);
             player.Skill(1);
+            return;
         }
 
         float x = inputDevice.LeftStickX.Value * Time.deltaTime * player.movementSpeed;
@@ -53,16 +55,16 @@ public class PlayerController : MonoBehaviour
 
         player.Move(direction);
 
-        if (player.jumping)
-        {
-            Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
-            Debug.DrawRay(transform.position, -transform.up, Color.red);
+        //if (player.jumping)
+        //{
+        //    Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
+        //    Debug.DrawRay(transform.position, -transform.up, Color.red);
             
-        }
+        //}
 
-        if (transform.position.y < 0.0f)
-        {
-            player.jumping = false;
-        }
+        //if (transform.position.y < 0.0f)
+        //{
+        //    player.jumping = false;
+        //}
 	}
 }

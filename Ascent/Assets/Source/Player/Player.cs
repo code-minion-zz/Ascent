@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
                     //gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
                     //jumping = true;
                     animator.PlayAnimation(PlayerAnimator.EAnimState.Jump);
-                    Debug.Log("jump");
+                    //Debug.Log("jump");
 
                     return;
                 }
