@@ -10,13 +10,12 @@ public class PlayerAnimController : MonoBehaviour
 {
     private Animator anim;							// a reference to the animator on the character
     private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
-    private AnimatorStateInfo layer2CurrentState;	// a reference to the current state of the animator, used for layer 2
+    private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
     private CapsuleCollider col;					// a reference to the capsule collider of the character
 
-    public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
-    public float lookSmoother = 3f;				// a smoothing setting for camera motion
-    public bool useCurves;						// a setting for teaching purposes to show use of curves
-    public float movementSpeed = 100.0f;
+    public float animSpeed = 1.5f;				    // a public setting for overall animator animation speed
+    public float lookSmoother = 3f;				    // a smoothing setting for camera motion
+    public bool useCurves;						    // a setting for teaching purposes to show use of curves
 
     public bool useXboxController = false;
 
@@ -29,7 +28,6 @@ public class PlayerAnimController : MonoBehaviour
     private InputDevice inputDevice;
 
     private Vector3 direction;
-
     private Player player;
 
     void Awake()
@@ -57,11 +55,20 @@ public class PlayerAnimController : MonoBehaviour
             anim.SetLayerWeight(1, 1);
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        // Set our currentState variable to the current state of the Base Layer (0) of animation
+        currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
+
+        // Set our combatLayerState variable to the current state of the second Layer (1) of animation
+        if (anim.layerCount == 2)
+        {
+            combatLayerState = anim.GetCurrentAnimatorStateInfo(1);
+        }
+
         // Direction vector to hold the input key press.
         direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
-
+        
         // Set the speed value based on the pressure push direction on the joystick
         float speed = direction.magnitude;		
         anim.SetFloat("Speed", speed);
@@ -76,11 +83,6 @@ public class PlayerAnimController : MonoBehaviour
                 transform.LookAt(transform.position + direction);
             }
         }
-
-        currentBaseState = anim.GetCurrentAnimatorStateInfo(0);	// set our currentState variable to the current state of the Base Layer (0) of animation
-
-        if (anim.layerCount == 2)
-            layer2CurrentState = anim.GetCurrentAnimatorStateInfo(1);	// set our layer2CurrentState variable to the current state of the second Layer (1) of animation
 
         if (currentBaseState.nameHash == idleState)
         {

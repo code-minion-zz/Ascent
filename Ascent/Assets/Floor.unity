@@ -29433,7 +29433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1064233976
 Transform:
   m_ObjectHideFlags: 0
@@ -45337,7 +45337,7 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 400072, guid: ba49d427411001d4eafd188830446191, type: 2}
   CameraPrefab: {fileID: 400000, guid: da6c5309c65500f4e80169ca302882e6, type: 2}
   cameraOffset: 15
-  visualDebuggerPrefab: 255
+  visualDebuggerPrefab: 0
 --- !u!4 &1637853898
 Transform:
   m_ObjectHideFlags: 0
@@ -45561,6 +45561,10 @@ Prefab:
       propertyPath: PlayerPrefab
       value: 
       objectReference: {fileID: 400072, guid: ba49d427411001d4eafd188830446191, type: 2}
+    - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
+      propertyPath: visualDebuggerPrefab
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
   m_RootGameObject: {fileID: 1637853896}
