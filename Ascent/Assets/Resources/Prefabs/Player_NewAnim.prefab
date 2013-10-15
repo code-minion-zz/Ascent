@@ -1266,6 +1266,7 @@ GameObject:
   - 136: {fileID: 13600000}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Player_NewAnim
   m_TagString: Player
@@ -2371,6 +2372,7 @@ MonoBehaviour:
   animSpeed: 1.5
   lookSmoother: 3
   useCurves: 1
+  useXboxController: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2384,11 +2386,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumping: 0
   attacking: 0
+  playerDirection: {x: 0, y: 0, z: 0}
   teamId: 1
   movementSpeed: 5
   jumpSpeed: 25
   hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
   playerState: 0
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 169768932, guid: 2a17e298aec7a0741be0fb38bb304895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rainVersionString: RAIN.Ontology.Decoration
+  aspect:
+    aspectName: PlayerVisual
+    sensation:
+      sensationName: sight
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
