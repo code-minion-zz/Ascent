@@ -32,18 +32,18 @@ public class Player : MonoBehaviour
     private Material playerMat = null;
     public bool jumping = false;
     public bool attacking = false;
+    public Vector3 playerDirection = Vector3.zero;
 	
 	public int teamId = 1;
 	
 	// Player identifier
 	private int playerId = 0;
 	// Movement speed variables
-	public float movementSpeed = 5.0f;		
-
+	public float movementSpeed = 5.0f;
+    public float jumpSpeed = 25.0f;
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
-		
 	List<Transform> activeHitBoxes; // active projectiles
 	
 	public EPlayerState playerState;
@@ -80,6 +80,11 @@ public class Player : MonoBehaviour
     public CharacterStatistics CharacterStats
     {
         get { return characterStatistics; }
+    }
+
+    public PlayerAnimator Animator
+    {
+        get { return animator; }
     }
 	
 	#endregion	
@@ -166,21 +171,19 @@ public class Player : MonoBehaviour
 				{
                     attacking = true;
                     // Create a hitbox
-					Transform t = (Transform)Instantiate(hitBoxPrefab);
+                    Transform t = (Transform)Instantiate(hitBoxPrefab);
                     t.renderer.material.color = playerColor;
                     // Initialize the hitbox
-					Vector3 boxPos = new Vector3(Position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,Position.z + transform.forward.z);
-					t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
-					t.position = boxPos;
+                    Vector3 boxPos = new Vector3(Position.x - 0.05f, rigidbody.centerOfMass.y + 0.1f, Position.z + transform.forward.z);
+                    t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId, 10.0f, 0.6f);
+                    t.position = boxPos;
                     // Make the parent this player
-					t.parent = transform;
+                    t.parent = transform;
                     // Setup this hitbox with our collision event code.
                     t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
                     t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
                     t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
-					activeHitBoxes.Add(t);
-
-                    animator.PlayAnimation(PlayerAnimator.EAnimState.Strike);
+                    activeHitBoxes.Add(t);
 				}
 		    }
 		    break;
@@ -190,22 +193,26 @@ public class Player : MonoBehaviour
 
     public void Move(Vector3 _direction)
     {
-        if (attacking)
-            return;
-
         if (_direction.x != 0.0f || _direction.z != 0.0f)
         {
-            if (transform.rigidbody.velocity.magnitude < 6.0f)
-            {
-                transform.LookAt(transform.position + (_direction * 100.0f));
-                transform.rigidbody.AddForce(transform.forward * 2.0f, ForceMode.Impulse);
-            }
-            //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
-
-            Debug.DrawRay(transform.position, transform.forward, Color.red);
-
+            Vector3 newDir = new Vector3(_direction.x, 0.0f, _direction.z) * 100.0f;
+            transform.LookAt(transform.position + newDir);
             animator.PlayAnimation(PlayerAnimator.EAnimState.Run);
         }
+
+        //if (_direction.x != 0.0f || _direction.z != 0.0f)
+        //{
+        //    if (transform.rigidbody.velocity.magnitude < 6.0f)
+        //    {
+        //        transform.LookAt(transform.position + (_direction * 100.0f));
+        //        transform.rigidbody.AddForce(transform.forward * 2.0f, ForceMode.Impulse);
+        //    }
+        //    //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
+
+        //    Debug.DrawRay(transform.position, transform.forward, Color.red);
+
+        //    animator.PlayAnimation(PlayerAnimator.EAnimState.Run);
+        //}
     }
 	
 	public void KillBox(Transform box)
@@ -257,22 +264,6 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-       // foreach (ContactPoint contact in collision.contacts)
-		//{
-            //Collider hitBoxCollider = contact.otherCollider;
-            //if (hitBoxCollider.name.Contains("HitBox"))
-            //{
-            //    if (hitBoxCollider.enabled)
-            //    {
-            //        if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
-            //        {
-            //            TakeDamage(25);
-            //            Vector3 Force = contact.normal * 200.0f;
-            //            transform.rigidbody.AddForce(Force);
-            //            Debug.Log("hit " + -Force);
-            //        }
-            //    }
-            //}
-		//}
+
     }
 }

@@ -13,8 +13,6 @@ public class Game : MonoBehaviour {
 	public Transform PlayerPrefab;
 	// The camera prefab
 	public Transform CameraPrefab;
-	// The door transform
-	public Transform DoorPrefab;
 	// Camera offset
 	public float cameraOffset = 6.0f;
 
@@ -70,7 +68,6 @@ public class Game : MonoBehaviour {
 	void Start () 
 	{
         CreatePlayers();
-        SetupDoors();
 		
 		// Create the camera
 		CameraPrefab = Instantiate(CameraPrefab) as Transform;
@@ -79,13 +76,6 @@ public class Game : MonoBehaviour {
         {
             Instantiate(Resources.Load("Prefabs/VisualDebugger"));
         }
-	}
-	
-	private void SetupDoors()
-	{
-		// Instantiate door.
-		//DoorPrefab = (Transform)Instantiate(DoorPrefab);
-		
 	}
 
     private void CreatePlayers()
@@ -129,13 +119,15 @@ public class Game : MonoBehaviour {
 	void UpdateCamPos()
 	{
         // Ulter position of the camera to center on the players
-        Vector3 totalVector = new Vector3();
+        Vector3 totalVector = Vector3.zero;
 
         // Add up all the vectors
         foreach (Player player in players)
         {
             if (player != null)
+            {
                 totalVector += player.Position;
+            }
         }
 
         // Calculate camera position based off players
@@ -143,8 +135,11 @@ public class Game : MonoBehaviour {
         float y = CameraPrefab.position.y;
         float z = (totalVector.z / players.Count) - cameraOffset;
 
+        Vector3 newVector = new Vector3(x, y, z);
+
         // Set the position of our camera.
-        CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, new Vector3(x, y, z), 1.0f * Time.deltaTime);
+        CameraPrefab.position = Vector3.Lerp(CameraPrefab.position, newVector, 2.0f * Time.deltaTime);
+
 	}
 	
 	#endregion
