@@ -33,6 +33,7 @@ public class ActChase : RAIN.Action.Action
 
     public override RAIN.Action.Action.ActionResult Execute(RAIN.Core.Agent agent, float deltaTime)
     {
+        // Keep following the player
         if (!agent.MoveTo(moveToLocation, deltaTime))
         {
             return ActionResult.RUNNING;
@@ -41,6 +42,15 @@ public class ActChase : RAIN.Action.Action
         {
             moveToLocation = Vector3.zero;
         }
+
+        // Temp
+        //RAIN.Sensors.RaycastSensor s = (RAIN.Sensors.RaycastSensor)agent.GetSensor("Sensor");
+        //if(!s.CanSee())
+        //{
+            // Do stuff
+            //agent.Mind.CancelInvoke("Move");
+            //agent.Mind.Reset();
+        //}
 
         return RAIN.Action.Action.ActionResult.SUCCESS;
     }
