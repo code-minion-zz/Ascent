@@ -12236,12 +12236,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rainVersionString: RAIN.Sensors.ExpandingBoxSensor
-  focusOfAttention: []
+  focusOfAttention:
+  - PlayerVisual
   maxFocus: 1
   persistenceTime: 1
   sensations:
   - sensationName: sight
-  useRaycastTest: 0
+  useRaycastTest: 1
   raycastLocation: {fileID: 1719280360}
   layerMask:
     serializedVersion: 2
@@ -12670,7 +12671,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rainVersionString: RAIN.Sensors.ExpandingBoxSensor
-  focusOfAttention: []
+  focusOfAttention:
+  - PlayerVisual
   maxFocus: 1
   persistenceTime: 1
   sensations:
@@ -13602,7 +13604,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1937720453}
   m_LocalRotation: {x: 0, y: .522108972, z: 0, w: .852878809}
-  m_LocalPosition: {x: -5.54057932, y: 0, z: 3.4875164}
+  m_LocalPosition: {x: -5.54057932, y: 1.46695328, z: 3.4875164}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1660056141}
