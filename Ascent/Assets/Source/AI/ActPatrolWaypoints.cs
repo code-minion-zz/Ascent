@@ -68,7 +68,6 @@ public class ActPatrolWaypoints : RAIN.Action.Action
         {
             if(t.name == currentWaypoint.ToString())
             {
-                Debug.Log(t.name);
                 agent.LookTarget.TransformTarget = t;
                 return;
             }

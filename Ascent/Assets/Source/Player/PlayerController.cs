@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     private InputDevice inputDevice;
     private Player player;
     private int playerID;
+    private Vector3 direction = Vector3.zero;
+    private float gravity = 20.0f;
 
 	// Use this for initialization
 	void Start () 
@@ -33,38 +35,47 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Update the transform by the movement
+        // Jumping skill
         if (inputDevice.Action1.IsPressed)
         {
-            //	Debug.Log("Action One: " + playerId);
             player.Skill(0);
-            return;
         }
-        // Update the transform by the movement
-        if (inputDevice.Action2.IsPressed)
+        // Attacking skill
+        else if (inputDevice.Action2.IsPressed)
         {
-            //Debug.Log("Action Two: " + playerId);
             player.Skill(1);
-            return;
         }
 
-        float x = inputDevice.LeftStickX.Value * Time.deltaTime * player.movementSpeed;
-        float z = inputDevice.LeftStickY.Value * Time.deltaTime * player.movementSpeed;
+        // Handle payer movements
+        // First we get access to the physics controller
+        CharacterController controller = GetComponent<CharacterController>();
 
-        Vector3 direction = Vector3.Normalize(new Vector3(x, 0.0f, z));
+        float x = inputDevice.LeftStickX.Value;
+        float z = inputDevice.LeftStickY.Value;
 
+        // Player should not move while jumping or attacking.
+        if (player.attacking || player.jumping)
+        {
+            x = 0.0f;
+            z = 0.0f;
+        }
+
+        if (controller.isGrounded)
+        {
+            direction = new Vector3(x, 0, z).normalized;
+            //direction = transform.TransformDirection(direction);
+            direction *= player.movementSpeed;
+
+           if (inputDevice.Action1.IsPressed)
+               direction.y = player.jumpSpeed * 1.5f;
+        }
+
+        // Apply gravity to our direction.
+        direction.y -= gravity * Time.deltaTime;
+        // Move the controller. This step is necessary as the controller will not do any
+        // collisions if this call is not made.
+        controller.Move(direction * Time.deltaTime);
+        // Move the character to face the direction we will move this controller.
         player.Move(direction);
-
-        //if (player.jumping)
-        //{
-        //    Physics.Raycast(new Ray(transform.position, -transform.up), 5.0f);
-        //    Debug.DrawRay(transform.position, -transform.up, Color.red);
-            
-        //}
-
-        //if (transform.position.y < 0.0f)
-        //{
-        //    player.jumping = false;
-        //}
 	}
 }
