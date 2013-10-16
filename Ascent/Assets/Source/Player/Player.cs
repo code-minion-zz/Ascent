@@ -124,12 +124,9 @@ public class Player : MonoBehaviour
         playerMat = obj.GetComponentInChildren<Renderer>().material;
 
         if (playerMat != null)
-            playerMat.color = playerColor;
+            //playerMat.color = playerColor;
 
 		activeHitBoxes = new List<Transform>();
-		//Transform hitBox = transform.GetChild(0);
-		//hitBox.renderer.enabled = false;
-		//hitBox.GetComponent<HitBox>().enabled = false;
 
         // Attach character stats component
         characterStatistics = gameObject.AddComponent<CharacterStatistics>();
@@ -156,11 +153,6 @@ public class Player : MonoBehaviour
             {
                 if (!jumping)
                 {
-                    //gameObject.rigidbody.AddForce(Vector3.up * 10.0f, ForceMode.Impulse);
-                    //jumping = true;
-                    animator.PlayAnimation(PlayerAnimator.EAnimState.Jump);
-                    //Debug.Log("jump");
-
                     return;
                 }
             }
@@ -190,30 +182,6 @@ public class Player : MonoBehaviour
         }
 
 	}
-
-    public void Move(Vector3 _direction)
-    {
-        if (_direction.x != 0.0f || _direction.z != 0.0f)
-        {
-            Vector3 newDir = new Vector3(_direction.x, 0.0f, _direction.z) * 100.0f;
-            transform.LookAt(transform.position + newDir);
-            animator.PlayAnimation(PlayerAnimator.EAnimState.Run);
-        }
-
-        //if (_direction.x != 0.0f || _direction.z != 0.0f)
-        //{
-        //    if (transform.rigidbody.velocity.magnitude < 6.0f)
-        //    {
-        //        transform.LookAt(transform.position + (_direction * 100.0f));
-        //        transform.rigidbody.AddForce(transform.forward * 2.0f, ForceMode.Impulse);
-        //    }
-        //    //transform.position += (transform.forward * movementSpeed * Time.deltaTime);
-
-        //    Debug.DrawRay(transform.position, transform.forward, Color.red);
-
-        //    animator.PlayAnimation(PlayerAnimator.EAnimState.Run);
-        //}
-    }
 	
 	public void KillBox(Transform box)
 	{

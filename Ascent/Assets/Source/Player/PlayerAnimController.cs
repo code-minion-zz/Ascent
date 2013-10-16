@@ -23,12 +23,14 @@ public class PlayerAnimController : MonoBehaviour
     static int jumpState = Animator.StringToHash("Base Layer.JumpRunning");				// and are used to check state for various actions to occur
     static int attackState = Animator.StringToHash("Base Layer.SwingRight");
     static int movementState = Animator.StringToHash("Base Layer.Movement");
+    static int rollState = Animator.StringToHash("Base Layer.Roll");
 
     private InputHandler inputHandler;
     private InputDevice inputDevice;
 
     private Vector3 direction;
     private Player player;
+ 
 
     void Awake()
     {
@@ -75,50 +77,52 @@ public class PlayerAnimController : MonoBehaviour
 
         bool attacking = anim.GetBool("SwingAttack");
         bool jumping = anim.GetBool("Jump");
-
-        if (!attacking && !jumping)
-        {
-            if (direction.x != 0 || direction.z != 0)
-            {
-                transform.LookAt(transform.position + direction);
-            }
-        }
-
-        if (currentBaseState.nameHash == idleState)
-        {
-            if (inputDevice.Action2.IsPressed)
-            {
-                anim.SetBool("SwingAttack", true);
-                player.Skill(1);
-            }
-        }
-        else if (currentBaseState.nameHash == attackState)
-        {
-            // Transition in process wait to see if it has finished
-            if (!anim.IsInTransition(0))
-            {
-                // Reset so we can attack again.
-                anim.SetBool("SwingAttack", false);
-            }
-        }
+        bool rolling = anim.GetBool("Roll");
+        
 
         // if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
-        if (currentBaseState.nameHash == movementState)
+        if (currentBaseState.nameHash == movementState || 
+            currentBaseState.nameHash == idleState)
         {
-            if (inputDevice.Action1.IsPressed)
+            if (currentBaseState.nameHash == movementState)
             {
-                anim.SetBool("Jump", true);
+                if (inputDevice.Action1.IsPressed)
+                {
+                    anim.SetBool("Jump", true);
+                }
             }
 
             if (inputDevice.Action2.IsPressed)
             {
                 anim.SetBool("SwingAttack", true);
-                player.Skill(1);
+            }
+
+            if (inputDevice.Action3.IsPressed)
+            {
+                anim.SetBool("Roll", true);
+            }
+
+            if (!attacking && !jumping && !rolling)
+            {
+                if (direction.x != 0 || direction.z != 0)
+                {
+                    transform.LookAt(transform.position + direction);
+                }
             }
         }
         // if we are in the jumping state... 
         else if (currentBaseState.nameHash == jumpState)
         {
+            if (inputDevice.Action2.IsPressed)
+            {
+                anim.SetBool("SwingAttack", true);
+            }
+
+            if (inputDevice.Action3.IsPressed)
+            {
+                anim.SetBool("Roll", true);
+            }
+
             //  ..and not still in transition..
             if (!anim.IsInTransition(0))
             {
@@ -145,6 +149,35 @@ public class PlayerAnimController : MonoBehaviour
                     // of the timeline of our animation clip
                     anim.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
                 }
+            }
+        }
+
+        if (currentBaseState.nameHash == attackState)
+        {
+            // Transition in process wait to see if it has finished
+            if (!anim.IsInTransition(0))
+            {
+                // Reset so we can attack again.
+                anim.SetBool("SwingAttack", false);
+            }
+        }
+
+        if (currentBaseState.nameHash == rollState)
+        {
+            if (inputDevice.Action2.IsPressed)
+            {
+                anim.SetBool("SwingAttack", true);
+            }
+            else if (inputDevice.Action1.IsPressed)
+            {
+                anim.SetBool("Jump", true);
+            }
+
+            // Transition in process wait to see if it has finished
+            if (!anim.IsInTransition(0))
+            {
+                // Reset so we can attack again.
+                anim.SetBool("Roll", false);
             }
         }
     }

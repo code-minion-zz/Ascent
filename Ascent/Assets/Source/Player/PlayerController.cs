@@ -76,6 +76,6 @@ public class PlayerController : MonoBehaviour
         // collisions if this call is not made.
         controller.Move(direction * Time.deltaTime);
         // Move the character to face the direction we will move this controller.
-        player.Move(direction);
+        //player.Move(direction);
 	}
 }
