@@ -5,10 +5,7 @@ using RAIN.Action;
 
 public class ActChase : RAIN.Action.Action
 {
-    private Vector3 agentPos = Vector3.zero;
-    private Vector3 moveToLocation = Vector3.zero;
-    private Vector3 directionToRun = Vector3.zero;
-    private GameObject targetToAvoid;
+    private GameObject player;
 
     public ActChase()
     {
@@ -17,15 +14,14 @@ public class ActChase : RAIN.Action.Action
 
     public override RAIN.Action.Action.ActionResult Start(RAIN.Core.Agent agent, float deltaTime)
     {
-        agentPos = agent.Avatar.transform.position;
-
-        Mind mind = agent.Mind;
-        mind.GetObjectWithAspect("asd", out targetToAvoid);
-
-        if (targetToAvoid != null && moveToLocation == Vector3.zero)
+        if (actionContext.ContextItemExists("player"))
         {
-            directionToRun = agentPos - targetToAvoid.transform.position;
-            moveToLocation = agentPos - directionToRun;
+            player = actionContext.GetContextItem<GameObject>("player");
+        }
+
+        if (actionContext.ContextItemExists("seeking"))
+        {
+            actionContext.SetContextItem("seeking", 1);
         }
 
         return RAIN.Action.Action.ActionResult.SUCCESS;
@@ -33,25 +29,30 @@ public class ActChase : RAIN.Action.Action
 
     public override RAIN.Action.Action.ActionResult Execute(RAIN.Core.Agent agent, float deltaTime)
     {
-        // Keep following the player
-        if (!agent.MoveTo(moveToLocation, deltaTime))
+        if (player != null)
         {
-            return ActionResult.RUNNING;
-        }
-        else
-        {
-            moveToLocation = Vector3.zero;
-        }
+            agent.LookAt(player.transform.position, deltaTime);
+            agent.MoveTarget.VectorTarget = player.transform.position;
 
-        // Temp
-        //RAIN.Sensors.RaycastSensor s = (RAIN.Sensors.RaycastSensor)agent.GetSensor("Sensor");
-        //if(!s.CanSee())
-        //{
-            // Do stuff
-            //agent.Mind.CancelInvoke("Move");
-            //agent.Mind.Reset();
-        //}
+            if(!agent.Move(deltaTime))
+            {
+                RAIN.Sensors.RaycastSensor raySensor = agent.GetSensor("Sensor") as RAIN.Sensors.RaycastSensor;
+                if (!raySensor.CanSee(player))
+                {
+                    Debug.Log("cansee");
+                    if (actionContext.ContextItemExists("seeking"))
+                    {
+                        actionContext.SetContextItem("seeking", 0);
+                        agent.Mind.CancelInvoke("Move");
+                        agent.Mind.Reset();
 
+                        return ActionResult.SUCCESS;
+                    }
+                }
+
+                return ActionResult.RUNNING;
+            }
+        }
         return RAIN.Action.Action.ActionResult.SUCCESS;
     }
 
