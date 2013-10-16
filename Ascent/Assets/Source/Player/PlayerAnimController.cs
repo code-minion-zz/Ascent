@@ -16,6 +16,7 @@ public class PlayerAnimController : MonoBehaviour
     public float animSpeed = 1.5f;				    // a public setting for overall animator animation speed
     public float lookSmoother = 3f;				    // a smoothing setting for camera motion
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
+    public float movementSpeed = 100.0f;              // Movment speed
 
     public bool useXboxController = false;
 
@@ -68,11 +69,13 @@ public class PlayerAnimController : MonoBehaviour
             combatLayerState = anim.GetCurrentAnimatorStateInfo(1);
         }
 
+        float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
+        speed *= movementSpeed;
+
         // Direction vector to hold the input key press.
         direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
-        
-        // Set the speed value based on the pressure push direction on the joystick
-        float speed = direction.magnitude;		
+
+        Debug.Log(speed);
         anim.SetFloat("Speed", speed);
 
         bool attacking = anim.GetBool("SwingAttack");
