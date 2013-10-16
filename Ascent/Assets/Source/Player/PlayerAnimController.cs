@@ -12,11 +12,12 @@ public class PlayerAnimController : MonoBehaviour
     private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
     private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
     private CapsuleCollider col;					// a reference to the capsule collider of the character
+    private InputHandler inputHandler;              // 
+    private InputDevice inputDevice;                // a reference to the input device of the player
 
-    public float animSpeed = 1.5f;				    // a public setting for overall animator animation speed
-    public float lookSmoother = 3f;				    // a smoothing setting for camera motion
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
-    public float movementSpeed = 100.0f;              // Movment speed
+    public float movementSpeed = 10.0f;              // Movment speed
+    public float rotationSmooth = 10.0f;
 
     public bool useXboxController = false;
 
@@ -26,16 +27,12 @@ public class PlayerAnimController : MonoBehaviour
     static int movementState = Animator.StringToHash("Base Layer.Movement");
     static int rollState = Animator.StringToHash("Base Layer.Roll");
 
-    private InputHandler inputHandler;
-    private InputDevice inputDevice;
-
     private Vector3 direction;
-    private Player player;
  
 
     void Awake()
     {
-        player = GetComponent<Player>();
+
     }
 
     void Start()
@@ -58,6 +55,13 @@ public class PlayerAnimController : MonoBehaviour
             anim.SetLayerWeight(1, 1);
     }
 
+    void SmoothLookAt(Vector3 target, float smooth)
+    {
+        Vector3 dir = target - transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smooth);
+    }
+
     void FixedUpdate()
     {
         // Set our currentState variable to the current state of the Base Layer (0) of animation
@@ -78,13 +82,19 @@ public class PlayerAnimController : MonoBehaviour
         Debug.Log(speed);
         anim.SetFloat("Speed", speed);
 
+        CollisionStates();
+    }
+
+    #region Collision States
+
+    void CollisionStates()
+    {
         bool attacking = anim.GetBool("SwingAttack");
         bool jumping = anim.GetBool("Jump");
         bool rolling = anim.GetBool("Roll");
-        
 
         // if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
-        if (currentBaseState.nameHash == movementState || 
+        if (currentBaseState.nameHash == movementState ||
             currentBaseState.nameHash == idleState)
         {
             if (currentBaseState.nameHash == movementState)
@@ -109,7 +119,7 @@ public class PlayerAnimController : MonoBehaviour
             {
                 if (direction.x != 0 || direction.z != 0)
                 {
-                    transform.LookAt(transform.position + direction);
+                    SmoothLookAt(transform.position + direction, rotationSmooth);
                 }
             }
         }
@@ -184,4 +194,6 @@ public class PlayerAnimController : MonoBehaviour
             }
         }
     }
+
+    #endregion 
 }
