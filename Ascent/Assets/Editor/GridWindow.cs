@@ -149,7 +149,7 @@ namespace Ascent
                     // Now we want to make the parent room which we will edit as the room prefab.
                     parentRoom = room;
                     prefabName = room.name;
-                    parentRoom.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+                    parentRoom.transform.position = grid.gridPosition;
                 }
             }
         }

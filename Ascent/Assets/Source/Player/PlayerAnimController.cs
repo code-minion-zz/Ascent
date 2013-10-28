@@ -79,7 +79,6 @@ public class PlayerAnimController : MonoBehaviour
         // Direction vector to hold the input key press.
         direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
 
-        Debug.Log(speed);
         anim.SetFloat("Speed", speed);
 
         CollisionStates();

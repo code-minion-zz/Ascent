@@ -68,8 +68,15 @@ namespace Ascent
         {
             if (GUILayout.Button("Open Grid Properties", GUILayout.Width(255)))
             {
-                GridWindow window = EditorWindow.GetWindow<GridWindow>("Grid Properties Window");
+                window = EditorWindow.GetWindow<GridWindow>("Grid Properties Window");
                 window.Init();
+            }
+
+            if (GUILayout.Button("Open Level Designer", GUILayout.Width(255)))
+            {
+                LevelDesigner levelDesigner = EditorWindow.GetWindow<LevelDesigner>("LevelDesigner");
+                levelDesigner.Init(grid);
+
             }
 
             SceneView.RepaintAll();

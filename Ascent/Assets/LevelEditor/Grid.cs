@@ -8,10 +8,14 @@ namespace Ascent
         public float width = 1.0f;
         public float length = 1.0f;
 
-        public float gridWidth = 0.0f;
-        public float gridLength = 0.0f;
+        public float gridWidth = 10.0f;
+        public float gridLength = 10.0f;
 
         public Color color = Color.green;
+
+        public Vector3 gridPosition = Vector3.zero;
+
+        public bool showGrid = true;
 
         // Use this for initialization
         void Start()
@@ -28,20 +32,34 @@ namespace Ascent
         void OnDrawGizmos()
         {
             //Vector3 pos = Camera.current.transform.position;
-            Vector3 pos = new Vector3(0.0f, 0.0f, 0.0f);
-            Gizmos.color = color;
+            gridPosition = transform.position;
 
-            // Draw the grid
-            for (float x = pos.x - gridWidth - width; x < pos.x + gridWidth; x += width)
+            if (showGrid)
             {
-                Gizmos.DrawLine(new Vector3(-gridWidth, 0.0f, Mathf.Floor(x / width) * width + width),
-                                new Vector3(gridWidth, 0.0f, Mathf.Floor(x / width) * width + width));
+                DrawGrid();
+            }
+        }
+
+        private void DrawGrid()
+        {
+            Gizmos.color = color;
+            float count = 0.0f;
+            // Draw the grid
+            for (float x = gridPosition.x - gridWidth - width; x < gridPosition.x + gridWidth; x += width)
+            {
+                Vector3 startHorrizontal = new Vector3(gridPosition.x - gridWidth, 0.0f, (gridPosition.z - gridWidth) + count * width);
+                Vector3 endHorrizontal = new Vector3(gridPosition.x + gridWidth, 0.0f, (gridPosition.z - gridWidth) + count * width);
+
+                Gizmos.DrawLine(startHorrizontal, endHorrizontal);
+                count++;
             }
 
-            for (float z = pos.z - gridLength - length; z < pos.z + gridLength; z += length)
+            count = 0.0f;
+            for (float z = gridPosition.z - gridLength - length; z < gridPosition.z + gridLength; z += length)
             {
-                Gizmos.DrawLine(new Vector3(Mathf.Floor(z / length) * length + length, 0.0f, -gridLength),
-                                new Vector3(Mathf.Floor(z / length) * length + length, 0.0f, gridLength));
+                Gizmos.DrawLine(new Vector3((gridPosition.x - gridLength) + count * length, 0.0f, gridPosition.z - gridLength),
+                                new Vector3((gridPosition.x - gridLength) + count * length, 0.0f, gridPosition.z + gridLength));
+                count++;
             }
         }
     }

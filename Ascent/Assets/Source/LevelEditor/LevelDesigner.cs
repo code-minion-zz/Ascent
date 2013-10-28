@@ -2,6 +2,7 @@
 using UnityEditor;
 using System;
 using System.Collections;
+using Ascent;
 
 [Serializable]
 public class LevelDesigner : EditorWindow
@@ -10,11 +11,10 @@ public class LevelDesigner : EditorWindow
 	
 	int buttonWidth = 125;
 	bool snapToBounds = true;
-	GameObject grid;
 	
 	// Creation settings
     Vector2 scrollPosition;
-    ObjectCreationGUI objCreationGUI;
+    Grid levelGrid;
 
     [SerializeField]
     Vector3 snapAmount = new Vector3(0.5f, 0.5f, 0.5f);
@@ -38,20 +38,19 @@ public class LevelDesigner : EditorWindow
         // Anything that happens here will only happen once. 
 	}
 
+    public void Init(Grid grid)
+    {
+        levelGrid = grid;
+    }
+
     void OnEnable()
     {
         hideFlags = HideFlags.HideAndDontSave;
-        if (objCreationGUI == null)
-            objCreationGUI = new ObjectCreationGUI();
-
-        objCreationGUI.OnEnable();
-
-        grid = GetGrid();
     }
 
     void OnDisable()
     {
-        objCreationGUI.OnDisable();
+
     }
 
     // Update is called once per frame
@@ -86,8 +85,6 @@ public class LevelDesigner : EditorWindow
                 // Set increment amount
                 snapAmount = EditorGUILayout.Vector3Field("Movement Increment Amount:", snapAmount);
 
-                objCreationGUI.OnGUI();
-
             }
             EditorGUILayout.EndVertical();
         }
@@ -98,21 +95,7 @@ public class LevelDesigner : EditorWindow
 
 	private void ShowHideGrid()
 	{
-		if (grid == null)
-		{
-			Debug.Log("No grid exists please create a grid using the designer.");
-			return;
-		}
-		
-		// Enable or disable the parent
-		if (grid.activeInHierarchy == true)
-		{
-			grid.SetActive(false);
-		}
-		else
-		{
-			grid.SetActive(true);
-		}
+
 	}
 	
 	private void ToggleCenter(bool state)
@@ -162,18 +145,6 @@ public class LevelDesigner : EditorWindow
         	}
 		}	
 	}	
-	
-	// Find the grid we will use to help align objects.
-	private GameObject GetGrid()
-	{
-		// Find the object with tag grid.
-		GameObject grid = GameObject.FindWithTag("GridHelper");
-		
-		if (grid != null)
-			return grid;
-		
-		return (null);
-	}
 	
 	#endregion
 }
