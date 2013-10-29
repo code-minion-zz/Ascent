@@ -2,12 +2,15 @@
 using System.Collections;
 using InControl;
 
+[RequireComponent(typeof(CapsuleCollider))]
 public class PlayerAnimController : AnimatorController
 {
     private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
     private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
     private InputHandler inputHandler;              // 
     private InputDevice inputDevice;                // a reference to the input device of the player
+
+    protected CapsuleCollider col;
 
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
     public float movementSpeed = 10.0f;              // Movment speed

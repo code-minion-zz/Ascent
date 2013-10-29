@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 // Require these components when using this script
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class AnimatorController : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class AnimatorController : MonoBehaviour
 
     // Shared between all animator controllers
     protected Animator animator;
-    protected CapsuleCollider col;
     protected Rigidbody rigidBody;
 
     #endregion
@@ -22,11 +20,6 @@ public class AnimatorController : MonoBehaviour
     public Animator Animator
     {
         get { return animator; }
-    }
-
-    public CapsuleCollider Collisder
-    {
-        get { return col; }
     }
 
     public Rigidbody RigidBody
@@ -40,7 +33,7 @@ public class AnimatorController : MonoBehaviour
     {
         // Gather the components that we require.
         animator = GetComponent<Animator>();
-        col = GetComponent<CapsuleCollider>();
+        //col = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
     }
 

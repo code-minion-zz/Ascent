@@ -12,12 +12,14 @@ public class HealthBar : MonoBehaviour
 
     void Awake()
     {
-        // Get the game.
-        game = Game.Singleton;
+
     }
 
     void Start()
     {
+        // Get the game.
+        game = Game.Singleton;
+
         // Load the resources for the texture.
         healthTexture = Resources.Load("Actors/Textures/Chrysanthemum") as Texture2D;
 

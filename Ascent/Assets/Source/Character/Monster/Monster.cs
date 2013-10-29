@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Monster : MonoBehaviour 
+public class Monster : Character
 {
+    #region Enums
+
     public enum STATE
     {
         IDLE,
@@ -14,53 +16,40 @@ public class Monster : MonoBehaviour
         HIT,
     }
 
-    public int health = 100;
-	public int teamId = 2;
-    private Player targetPlayer;
+    #endregion
+
+    #region Fields
+
+    public int teamId = 2;
     public STATE state = STATE.IDLE;
+    public Transform hitBoxPrefab; // hitboxes represent projectiles
+
+    private Player targetPlayer;
     private float waiting = 0.0f;
     private Vector3 originalScale;
-    //private int attack = 10;
-    //private Color originalColor;	
-	
-	// Hitbox Prefab
-	public Transform hitBoxPrefab; // hitboxes represent projectiles
-	
-	List<Transform> activeHitBoxes; // active melee attacks
+    private List<Transform> activeHitBoxes; // active melee attacks
 
-    //List<MonsterAIState> listAIStates = new List<MonsterAIState>();
+    #endregion
 
-    /// <summary>
-    /// Enum of monster AI movement states, multiple can be active at once
-    /// </summary>	
-    
-    enum EMonsterAiFlag
+    #region Initialization
+
+    public override void Awake()
     {
-        MA_INVALID_STATE = 0x00,
-        MA_STATE_WANDER = 0x01,	// Face and move random direction
-        MA_STATE_SEEK = 0x02,	// Run towards
-        MA_STATE_ESCAPE = 0x04,	// Run away
-        MA_STATE_NOROTATE = 0x08,	// Halt rotation
-        MA_STATE_NOMOVE = 0x16, // Halt movement
-        MA_MAX_STATE = 0x80
-    };
-
-
-
-    protected char monsterState
-    {
-        get;
-        set;
-    }	
+        base.Awake();
+    }
 
 	// Use this for initialization
-	void Start () 
+	public override void Start () 
     {
 		activeHitBoxes = new List<Transform>();
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+    #endregion
+
+    #region Update
+
+    // Update is called once per frame
+	public override void Update () 
     {
         switch(state)
         {
@@ -154,15 +143,16 @@ public class Monster : MonoBehaviour
                 }
                 break;
         }
-
-       
 	}
+
+    #endregion
+
+    #region Operations
 
     protected Player GetClosestPlayer()
     {
         // Find a close player
-        Game game = GameObject.Find("Game").GetComponent<Game>();
-        List<Player> players = game.Players;
+        List<Player> players = Game.Singleton.Players;
 
         Player closest = null;
         float distance = Mathf.Infinity;
@@ -200,9 +190,10 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int _damage)
+    public override void TakeDamage(int damageAmount)
     {
-        health -= _damage;
+        HealthStat health = characterStatistics.Health;
+        health -= damageAmount;
 
         if (health <= 0)
         {
@@ -214,14 +205,8 @@ public class Monster : MonoBehaviour
         {
            waiting = 0.5f;
            state = STATE.HIT;
-           //originalColor = transform.renderer.material.color;
         }
     }
-
-//    void AttackTarget(Player _player)
-//    {
-//        _player.TakeDamage(10);
-//    }	
 	
 	void Attack()
 	{			
@@ -245,6 +230,10 @@ public class Monster : MonoBehaviour
 	{
 		activeHitBoxes.Remove(box);
 	}
+
+    #endregion
+
+    #region HitBox Collisions
 
     void OnHitBoxCollideEnter(Collider other)
     {
@@ -270,25 +259,15 @@ public class Monster : MonoBehaviour
     {
 
     }
-	
-	void OnCollisionEnter(Collision collision)
+
+    #endregion
+
+    #region Collisions on Self
+
+    void OnCollisionEnter(Collision collision)
 	{
-		//foreach (ContactPoint contact in collision.contacts)
-		//{
-            //Collider hitBoxCollider = contact.otherCollider;
-            //if (hitBoxCollider.name.Contains("HitBox"))
-            //{
-            //    if (hitBoxCollider.enabled)
-            //    {
-            //        if (hitBoxCollider.GetComponent<HitBox>().teamId != teamId) // if not my own team
-            //        {
-            //            TakeDamage(25);
-            //            Vector3 Force = contact.normal * 200.0f;
-            //            transform.rigidbody.AddForce(Force);
-            //            Debug.Log("hit " + -Force);
-            //        }
-            //    }
-            //}
-		//}
-	}
+
+    }
+
+    #endregion
 }
