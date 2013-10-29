@@ -2,16 +2,10 @@
 using System.Collections;
 using InControl;
 
-// Require these components when using this script
-[RequireComponent(typeof (Animator))]
-[RequireComponent(typeof (CapsuleCollider))]
-[RequireComponent(typeof (Rigidbody))]
-public class PlayerAnimController : MonoBehaviour
+public class PlayerAnimController : AnimatorController
 {
-    private Animator anim;							// a reference to the animator on the character
     private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
     private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
-    private CapsuleCollider col;					// a reference to the capsule collider of the character
     private InputHandler inputHandler;              // 
     private InputDevice inputDevice;                // a reference to the input device of the player
 
@@ -30,17 +24,13 @@ public class PlayerAnimController : MonoBehaviour
     private Vector3 direction;
  
 
-    void Awake()
+    public override void Awake()
     {
-
+        base.Awake();
     }
 
-    void Start()
+    public override void Start()
     {
-        // initialising reference variables
-        anim = GetComponent<Animator>();
-        col = GetComponent<CapsuleCollider>();
-
         inputHandler = Game.Singleton.InputHandler;
 
         if (useXboxController)
@@ -51,8 +41,8 @@ public class PlayerAnimController : MonoBehaviour
         if (inputDevice == null)
             inputDevice = inputHandler.GetDevice(0);
 
-        if (anim.layerCount == 2)
-            anim.SetLayerWeight(1, 1);
+        if (animator.layerCount == 2)
+            animator.SetLayerWeight(1, 1);
     }
 
     void SmoothLookAt(Vector3 target, float smooth)
@@ -65,12 +55,12 @@ public class PlayerAnimController : MonoBehaviour
     void FixedUpdate()
     {
         // Set our currentState variable to the current state of the Base Layer (0) of animation
-        currentBaseState = anim.GetCurrentAnimatorStateInfo(0);
+        currentBaseState = animator.GetCurrentAnimatorStateInfo(0);
 
         // Set our combatLayerState variable to the current state of the second Layer (1) of animation
-        if (anim.layerCount == 2)
+        if (animator.layerCount == 2)
         {
-            combatLayerState = anim.GetCurrentAnimatorStateInfo(1);
+            combatLayerState = animator.GetCurrentAnimatorStateInfo(1);
         }
 
         float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
@@ -79,7 +69,7 @@ public class PlayerAnimController : MonoBehaviour
         // Direction vector to hold the input key press.
         direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
 
-        anim.SetFloat("Speed", speed);
+        animator.SetFloat("Speed", speed);
 
         CollisionStates();
     }
@@ -88,9 +78,9 @@ public class PlayerAnimController : MonoBehaviour
 
     void CollisionStates()
     {
-        bool attacking = anim.GetBool("SwingAttack");
-        bool jumping = anim.GetBool("Jump");
-        bool rolling = anim.GetBool("Roll");
+        bool attacking = animator.GetBool("SwingAttack");
+        bool jumping = animator.GetBool("Jump");
+        bool rolling = animator.GetBool("Roll");
 
         // if we are currently in a state called Locomotion (see line 25), then allow Jump input (Space) to set the Jump bool parameter in the Animator to true
         if (currentBaseState.nameHash == movementState ||
@@ -100,18 +90,18 @@ public class PlayerAnimController : MonoBehaviour
             {
                 if (inputDevice.Action1.IsPressed)
                 {
-                    anim.SetBool("Jump", true);
+                    animator.SetBool("Jump", true);
                 }
             }
 
             if (inputDevice.Action2.IsPressed)
             {
-                anim.SetBool("SwingAttack", true);
+                animator.SetBool("SwingAttack", true);
             }
 
             if (inputDevice.Action3.IsPressed)
             {
-                anim.SetBool("Roll", true);
+                animator.SetBool("Roll", true);
             }
 
             if (!attacking && !jumping && !rolling)
@@ -127,23 +117,23 @@ public class PlayerAnimController : MonoBehaviour
         {
             if (inputDevice.Action2.IsPressed)
             {
-                anim.SetBool("SwingAttack", true);
+                animator.SetBool("SwingAttack", true);
             }
 
             if (inputDevice.Action3.IsPressed)
             {
-                anim.SetBool("Roll", true);
+                animator.SetBool("Roll", true);
             }
 
             //  ..and not still in transition..
-            if (!anim.IsInTransition(0))
+            if (!animator.IsInTransition(0))
             {
                 if (useCurves)
                     // ..set the collider height to a float curve in the clip called ColliderHeight
-                    col.height = anim.GetFloat("ColliderHeight");
+                    col.height = animator.GetFloat("ColliderHeight");
 
                 // reset the Jump bool so we can jump again, and so that the state does not loop 
-                anim.SetBool("Jump", false);
+                animator.SetBool("Jump", false);
             }
 
             // Raycast down from the center of the character.. 
@@ -159,7 +149,7 @@ public class PlayerAnimController : MonoBehaviour
                     // MatchTarget allows us to take over animation and smoothly transition our character towards a location - the hit point from the ray.
                     // Here we're telling the Root of the character to only be influenced on the Y axis (MatchTargetWeightMask) and only occur between 0.35 and 0.5
                     // of the timeline of our animation clip
-                    anim.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
+                    animator.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
                 }
             }
         }
@@ -167,10 +157,10 @@ public class PlayerAnimController : MonoBehaviour
         if (currentBaseState.nameHash == attackState)
         {
             // Transition in process wait to see if it has finished
-            if (!anim.IsInTransition(0))
+            if (!animator.IsInTransition(0))
             {
                 // Reset so we can attack again.
-                anim.SetBool("SwingAttack", false);
+                animator.SetBool("SwingAttack", false);
             }
         }
 
@@ -178,18 +168,18 @@ public class PlayerAnimController : MonoBehaviour
         {
             if (inputDevice.Action2.IsPressed)
             {
-                anim.SetBool("SwingAttack", true);
+                animator.SetBool("SwingAttack", true);
             }
             else if (inputDevice.Action1.IsPressed)
             {
-                anim.SetBool("Jump", true);
+                animator.SetBool("Jump", true);
             }
 
             // Transition in process wait to see if it has finished
-            if (!anim.IsInTransition(0))
+            if (!animator.IsInTransition(0))
             {
                 // Reset so we can attack again.
-                anim.SetBool("Roll", false);
+                animator.SetBool("Roll", false);
             }
         }
     }

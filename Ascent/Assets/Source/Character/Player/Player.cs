@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using InControl;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
 	#region Enums
 	public enum EPlayerState // State defines what actions are allowed, and what animations to play
@@ -26,8 +26,6 @@ public class Player : MonoBehaviour
 
 	#region Fields
 
-    private PlayerAnimator animator;
-    private CharacterStatistics characterStatistics;
     private Color playerColor = Color.white;
     private Material playerMat = null;
     public bool jumping = false;
@@ -76,29 +74,21 @@ public class Player : MonoBehaviour
 		get { return playerId; }
 		set { playerId = value; }
 	}
-
-    public CharacterStatistics CharacterStats
-    {
-        get { return characterStatistics; }
-    }
-
-    public PlayerAnimator Animator
-    {
-        get { return animator; }
-    }
 	
 	#endregion	
 	
 	#region Initialization
 
     // This function is always called immediately when Instantiated and is called before the Start() function
-    void Awake()
+    public override void Awake()
     {
-
+        base.Awake();
+        Destroy(animatorController);
+        animatorController = gameObject.AddComponent<PlayerAnimController>();
     }
 
 	// Use this for initialization
-	public void Start () 
+	public override void Start () 
 	{
         switch (playerId)
         {
@@ -127,22 +117,17 @@ public class Player : MonoBehaviour
             //playerMat.color = playerColor;
 
 		activeHitBoxes = new List<Transform>();
-
-        // Attach character stats component
-        characterStatistics = gameObject.AddComponent<CharacterStatistics>();
-        characterStatistics.Init();
-        characterStatistics.Health.Set(100.0f, 100.0f);
-
-        animator = gameObject.GetComponent<PlayerAnimator>();
 	}
 	#endregion
 	
 	#region Update
+
 	// Update is called once per frame
-	public void Update () 
+	public override void Update() 
 	{
 
 	}
+
 	#endregion
 	
 	public void Skill(int skillId)
@@ -180,7 +165,6 @@ public class Player : MonoBehaviour
 		    }
 		    break;
         }
-
 	}
 	
 	public void KillBox(Transform box)
@@ -212,22 +196,6 @@ public class Player : MonoBehaviour
     void OnHitBoxCollideExit(Collider other)
     {
 
-    }
-
-    public void TakeDamage(int _damage)
-    {
-        HealthStat health =  CharacterStats.GetComponent<HealthStat>();
-
-        health -= _damage;
-        if (health <= 0)
-        {
-            // On Death settings
-            if (playerMat != null)
-                playerMat.color = Color.black
-                    ;
-            //transform.gameObject.renderer.material.color = Color.black;
-			playerState = EPlayerState.PS_STATE_DEATH;
-        }
     }
 
     void OnCollisionEnter(Collision collision)

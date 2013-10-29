@@ -2,20 +2,16 @@
 using System.Collections;
 using System;
 
-public class HealthStat : MonoBehaviour
+public class HealthStat
 {
+    #region Fields
+
     private float min;
     private float max;
 
-    public HealthStat()
-    {
-    }
+    #endregion
 
-    public HealthStat(float _min, float _max)
-    {
-        min = _min;
-        max = _max;
-    }
+    #region Properties
 
     public float Min
     {
@@ -28,6 +24,25 @@ public class HealthStat : MonoBehaviour
         get { return max; }
         set { max = value; }
     }
+
+    #endregion
+
+    #region Intialization
+
+    public HealthStat()
+    {
+
+    }
+
+    public HealthStat(float _min, float _max)
+    {
+        min = _min;
+        max = _max;
+    }
+
+    #endregion
+
+    #region Operations
 
     public void Set(float _min, float _max)
     {
@@ -75,4 +90,6 @@ public class HealthStat : MonoBehaviour
     {
         return ("HealthStat" + ": " + min + " / " +  max);
     }
+
+    #endregion
 }

@@ -1,17 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterStatistics : MonoBehaviour 
+public class CharacterStatistics
 {
+    #region Fields
+
     private HealthStat health;
+
+    #endregion
+
+    #region Properties
 
     public HealthStat Health
     {
         get { return health; }
     }
 
+    #endregion
+
+    #region Initialization
+
     public void Init()
     {
-        health = gameObject.AddComponent<HealthStat>();
+        health = new HealthStat();
     }
+
+    #endregion
 }
