@@ -8,12 +8,13 @@ public class ArrowShooter : MonoBehaviour
     public float frequency = 1.0f;
     public float projectileSpeed = 5.0f;
     public float projectileDamage = 2.0f;
+    public float arrowLifeSpan = 2.0f;
 
     private ObjectPool arrowPool;
     private Vector3 direction;
     private Vector3 spawnPoint;
     private float timeElapsed = 0.0f;
-    private float arrowLifeSpawn = 2.0f;
+   
 
 	// Use this for initialization
 	void Start () 
@@ -36,7 +37,7 @@ public class ArrowShooter : MonoBehaviour
             if (po != null)
             {
                 Arrow newArrow = po.script as Arrow;
-                newArrow.Initialise(arrowLifeSpawn, direction, projectileSpeed, projectileDamage);
+                newArrow.Initialise(arrowLifeSpan, direction, projectileSpeed, projectileDamage);
                 po.go.SetActive(true);
                 po.go.transform.position = spawnPoint;
                 po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
