@@ -9,43 +9,77 @@ public class SpinningBlade : MonoBehaviour
         right = 1
     }
 
+	struct TBlade
+	{
+		public GameObject go;
+		public Blade script;
+	}
+
     public GameObject blade;
     public int bladeCount;
     public EBladeDirection bladeDirection;
     public float rotationSpeed;
     public float bladeDamage;
+	public float bladeLength;
 
-    private GameObject[] blades;
+	private TBlade[] blades;
+	private int previousBladeCount;
+	private float previousBladeLength;
 
 	void Start () 
     {
-        blades = new GameObject[bladeCount];
+		Initialise();
+	}
 
-        transform.FindChild("Blades");
+	void Initialise()
+	{
+		if (bladeCount < 1)
+		{
+			bladeCount = 1;
+		}
+		previousBladeCount = bladeCount;
+		previousBladeLength = bladeLength;
 
-        for (int i = 0; i < bladeCount; ++i)
-        {
-            blades[i] = GameObject.Instantiate(blade) as GameObject;
-            blades[i].transform.parent = this.transform;
+		blades = new TBlade[bladeCount];
 
-            float angle = 45.0f;
-            blades[i].transform.Rotate(Vector3.up, angle);
+		transform.FindChild("Blades");
 
-            Vector3 offset = new Vector3(0.0f, 1.0f, 3.5f);
-            //Utility.RotateY(ref offset, -angle);
+		for (int i = 0; i < bladeCount; ++i)
+		{
+			GameObject newBlade = GameObject.Instantiate(blade) as GameObject;
+			blades[i].go = newBlade;
+			blades[i].script = newBlade.GetComponent<Blade>();
+			blades[i].script.Initialise(bladeDamage);
 
-            Debug.Log(offset);
+			newBlade.transform.parent = this.transform;
 
-          //  blades[i].transform.rotation = quat;
-                //blades[i].transform.rotation = Quaternion.AngleAxis(45.0f, Vector3.up);
-           // Vector3 direction = blades[i].transform.rotation.eulerAngles.normalized;
+			newBlade.transform.localScale = new Vector3(newBlade.transform.localScale.x + bladeLength, newBlade.transform.localScale.y, newBlade.transform.localScale.z);
 
-            blades[i].transform.position = transform.position + offset;
-        }
+			Vector3 offset = new Vector3(0.0f, 1.0f, 3.5f + bladeLength * 0.5f);
+			newBlade.transform.position += offset + new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+			float angle = (360.0f / bladeCount) * (float)bladeDirection;
+			transform.Rotate(Vector3.up, angle);
+		}
+	}
+
+	void Shutdown()
+	{
+		for (int i = 0; i < previousBladeCount; ++i)
+		{
+			Object.Destroy(blades[i].go);
+		}
 	}
 	
 	void Update () 
     {
-        //gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection);
+       gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection);
+
+		// TODO: Remove this for optimisation
+	   if (previousBladeCount != bladeCount || previousBladeLength != bladeLength)
+		{
+			Shutdown();
+			Initialise();
+		}
 	}
 }
