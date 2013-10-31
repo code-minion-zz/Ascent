@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(HealthBar))]
-[RequireComponent(typeof(AnimatorController))]
 public class Character : MonoBehaviour
 {
     #region Fields

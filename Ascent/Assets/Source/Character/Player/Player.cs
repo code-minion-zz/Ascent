@@ -5,46 +5,24 @@ using InControl;
 
 public class Player : Character
 {
-	#region Enums
-	public enum EPlayerState // State defines what actions are allowed, and what animations to play
-	{
-		PS_INVALID_STATE = -1,
-		PS_STATE_IDLE,
-		PS_STATE_MOVE,
-		PS_STATE_SPRINT,
-		PS_STATE_ATTACK,
-		PS_STATE_JUMP,
-		PS_STATE_FALLING,
-		PS_STATE_CAST,
-		PS_STATE_PUSH,
-		PS_STATE_PULL,
-		PS_STATE_DEATH,
-		PS_STATE_FREEZE,
-		PS_MAX_STATE		
-	}
-	#endregion
-
 	#region Fields
 
     private Color playerColor = Color.white;
     private Material playerMat = null;
+    private PlayerAnimController animController;
+
     public bool jumping = false;
     public bool attacking = false;
-    public Vector3 playerDirection = Vector3.zero;
 	
 	public int teamId = 1;
 	
 	// Player identifier
 	private int playerId = 0;
-	// Movement speed variables
-	public float movementSpeed = 5.0f;
-    public float jumpSpeed = 25.0f;
 	
 	// Hitbox Prefab
 	public Transform hitBoxPrefab; // hitboxes represent projectiles
-	List<Transform> activeHitBoxes; // active projectiles
-	
-	public EPlayerState playerState;
+    private	List<Transform> activeHitBoxes; // active projectiles
+
 	#endregion
 	
 	#region Properties
@@ -83,8 +61,6 @@ public class Player : Character
     public override void Awake()
     {
         base.Awake();
-        Destroy(animatorController);
-        animatorController = gameObject.AddComponent<PlayerAnimController>();
     }
 
 	// Use this for initialization
@@ -112,9 +88,6 @@ public class Player : Character
         // Be careful not sure which material it will get first.
         GameObject obj = transform.gameObject;
         playerMat = obj.GetComponentInChildren<Renderer>().material;
-
-        if (playerMat != null)
-            //playerMat.color = playerColor;
 
 		activeHitBoxes = new List<Transform>();
 	}
