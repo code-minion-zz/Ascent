@@ -3,20 +3,29 @@ using System.Collections;
 
 public class HealthBar : MonoBehaviour 
 {
-    private Texture2D healthTexture;
-
     public float barLength = 100.0f;
     private float healthRatio = 1.0f;
-
     private Vector3 guiPosition;
-
+    private Texture2D healthTexture;
     private HealthStat health;
+    private Game game;
+
+    void Awake()
+    {
+
+    }
 
     void Start()
     {
+        // Get the game.
+        game = Game.Singleton;
+
+        // Load the resources for the texture.
         healthTexture = Resources.Load("Actors/Textures/Chrysanthemum") as Texture2D;
-        CharacterStatistics stats = gameObject.GetComponent<CharacterStatistics>();
-        health = stats.GetComponent<HealthStat>();
+
+        // Obtain the character and get the stats health.
+        Character character = GetComponent<Character>();
+        health = character.CharacterStats.Health;
     }
 	
 	void Update () 
@@ -26,8 +35,6 @@ public class HealthBar : MonoBehaviour
 
         Vector3 vTargetPositon = transform.position;
         vTargetPositon.y += 2.0f;
-
-        Game game = GameObject.Find("Game").GetComponent<Game>();
 
         guiPosition = game.MainCamera.WorldToViewportPoint(vTargetPositon);
 
@@ -39,7 +46,8 @@ public class HealthBar : MonoBehaviour
     {
         if (health.Min > 0)
         {
-            GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
+            if (healthTexture != null)
+                GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
         }
     }
 }
