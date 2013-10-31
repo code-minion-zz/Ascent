@@ -42,7 +42,7 @@ public class SpinningBlade : MonoBehaviour
 
 		blades = new TBlade[bladeCount];
 
-		transform.FindChild("Blades");
+		Transform bladesParent = transform.FindChild("Blades");
 
 		for (int i = 0; i < bladeCount; ++i)
 		{
@@ -51,7 +51,7 @@ public class SpinningBlade : MonoBehaviour
 			blades[i].script = newBlade.GetComponent<Blade>();
 			blades[i].script.Initialise(bladeDamage);
 
-			newBlade.transform.parent = this.transform;
+            newBlade.transform.parent = bladesParent;
 
 			newBlade.transform.localScale = new Vector3(newBlade.transform.localScale.x + bladeLength, newBlade.transform.localScale.y, newBlade.transform.localScale.z);
 

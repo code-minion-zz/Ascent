@@ -48,7 +48,7 @@ public class ArrowShooter : MonoBehaviour
             }
             else
             {
-                Debug.Log(name + " ran out of " + projectile.ToString() + " to fire.");
+                //Debug.Log(name + " ran out of " + projectile.ToString() + " to fire.");
             }
         }
 	}
