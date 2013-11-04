@@ -5,6 +5,13 @@ using System.Collections.Generic;
 [RequireComponent(typeof(HealthBar))]
 public class Character : MonoBehaviour
 {
+    public enum ECharacterClass
+    {
+        Warrior,
+        Rogue,
+        Mage
+    }
+
     #region Fields
 
     protected CharacterStatistics characterStatistics;

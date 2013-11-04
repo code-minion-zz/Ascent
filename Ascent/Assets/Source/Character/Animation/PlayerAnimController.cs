@@ -38,7 +38,7 @@ public class PlayerAnimController : AnimatorController
     private InputDevice inputDevice;                // a reference to the input device of the player
 
     private CapsuleCollider col;
-    private Player player;
+    //private Player player;
 
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
     public float movementSpeed = 10.0f;              // Movment speed
@@ -69,7 +69,7 @@ public class PlayerAnimController : AnimatorController
         base.Awake();
         // Get all the components that we need.
         col = GetComponent<CapsuleCollider>();
-        player = GetComponent<Player>();
+        //player = GetComponent<Hero>();
     }
 
     public override void Start()
