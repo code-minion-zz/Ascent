@@ -8,7 +8,7 @@ public class Game : MonoBehaviour
 
 	public static Game Singleton;
 	// Number of players
-    public Character.ECharacterClass[] playerCharacterType = new Character.ECharacterClass[3];
+    public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
 
 	// The player prefab
 	public Transform PlayerPrefab;
@@ -89,6 +89,7 @@ public class Game : MonoBehaviour
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
             newPlayer.CreateHero(playerCharacterType[i]);
+			newPlayer.SetInputDevice(inputHandler.GetDevice(i));
         }
     }
 	

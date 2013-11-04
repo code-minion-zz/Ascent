@@ -70,10 +70,25 @@ public class PlayerAnimController : AnimatorController
         // Get all the components that we need.
         col = GetComponent<CapsuleCollider>();
         //player = GetComponent<Hero>();
+		
     }
+
+	public void EnableInput(AscentInput ainput)
+	{
+		// Register everthing here
+		ainput.OnLStickUp += OnDPadUp; 
+	}
+
+	public void DisableInput(AscentInput ainput)
+	{
+		// Unregister everything here
+		ainput.OnLStickUp -= OnDPadUp;
+	}
+
 
     public override void Start()
     {
+
         inputHandler = Game.Singleton.InputHandler;
 
         if (useXboxController)
@@ -108,16 +123,40 @@ public class PlayerAnimController : AnimatorController
             combatLayerState = animator.GetCurrentAnimatorStateInfo(1);
         }
 
-        float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
-        speed *= movementSpeed;
+		//float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
+		//speed *= movementSpeed;
 
-        // Direction vector to hold the input key press.
-        direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
+		//// Direction vector to hold the input key press.
+		//direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
 
-        animator.SetFloat("Speed", speed);
+		//animator.SetFloat("Speed", speed);
+
+
+		//float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
+		//speed *= movementSpeed;
+
+		//// Direction vector to hold the input key press.
+		//direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
+
+		//animator.SetFloat("Speed", speed);
+
 
         CollisionStates();
     }
+
+	// Handle everything here...
+	void OnDPadUp(InControl.InputDevice device)
+	{
+		float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
+		speed *= movementSpeed;
+
+		// Direction vector to hold the input key press.
+		direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
+
+		animator.SetFloat("Speed", speed);
+
+		Debug.Log("hi");
+	}
 
     #region Collision States
 

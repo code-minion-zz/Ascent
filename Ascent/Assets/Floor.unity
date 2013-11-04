@@ -1264,12 +1264,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 67478215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &67478219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1871,7 +1871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdb4c1b076388a4ca8dba43a1a575fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacterType: 000000000000000000000000
+  playerCharacterType: 00000000
   PlayerPrefab: {fileID: 400072, guid: ba49d427411001d4eafd188830446191, type: 2}
   visualDebuggerPrefab: 0
 --- !u!4 &102089943
@@ -2248,12 +2248,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 122610647}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!23 &122610650
 Renderer:
   m_ObjectHideFlags: 0
@@ -2551,7 +2551,7 @@ Transform:
   m_PrefabInternal: {fileID: 1437607309}
   m_GameObject: {fileID: 131806411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 1279562768}
@@ -2948,12 +2948,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 151483799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!4 &151483802
 Transform:
   m_ObjectHideFlags: 0
@@ -4904,12 +4904,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 182283868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!4 &182283871
 Transform:
   m_ObjectHideFlags: 0
@@ -6837,7 +6837,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &232970147
 GameObject:
   m_ObjectHideFlags: 0
@@ -7242,12 +7246,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 243566331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &243566335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7489,7 +7493,7 @@ Transform:
   m_PrefabInternal: {fileID: 1314176456}
   m_GameObject: {fileID: 247726071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 231040167}
@@ -15431,6 +15435,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
+      propertyPath: playerCharacterType.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
       propertyPath: playerCharacte1rType.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -15745,12 +15753,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 425525539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &425525543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16483,7 +16491,7 @@ Transform:
   m_PrefabInternal: {fileID: 1314176456}
   m_GameObject: {fileID: 462861323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 231040167}
@@ -17105,7 +17113,7 @@ Transform:
   m_PrefabInternal: {fileID: 471160015}
   m_GameObject: {fileID: 492238090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 1029105552}
@@ -19255,7 +19263,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &552510462
 GameObject:
   m_ObjectHideFlags: 0
@@ -22626,12 +22638,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 653898445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &653898449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23355,7 +23367,7 @@ Transform:
   m_PrefabInternal: {fileID: 471160015}
   m_GameObject: {fileID: 693234347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1029105552}
@@ -25846,12 +25858,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 817316329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &817316333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25989,12 +26001,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 827276013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &827276017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32140,12 +32152,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1025408458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1025408462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32335,7 +32347,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &1030039670
 GameObject:
   m_ObjectHideFlags: 0
@@ -33329,22 +33345,22 @@ Transform:
   - {fileID: 551232713}
   - {fileID: 231040167}
   - {fileID: 1279562768}
+  - {fileID: 653898446}
+  - {fileID: 1224232800}
   - {fileID: 827276014}
   - {fileID: 1243154038}
-  - {fileID: 67478216}
-  - {fileID: 182283871}
-  - {fileID: 1870731809}
-  - {fileID: 151483802}
-  - {fileID: 1653060695}
-  - {fileID: 653898446}
-  - {fileID: 1588965888}
   - {fileID: 1164815096}
-  - {fileID: 243566332}
-  - {fileID: 1025408459}
-  - {fileID: 1224232800}
-  - {fileID: 817316330}
+  - {fileID: 1588965888}
   - {fileID: 122610648}
+  - {fileID: 1025408459}
+  - {fileID: 182283871}
+  - {fileID: 817316330}
+  - {fileID: 151483802}
+  - {fileID: 67478216}
   - {fileID: 425525540}
+  - {fileID: 1870731809}
+  - {fileID: 243566332}
+  - {fileID: 1653060695}
   m_Father: {fileID: 0}
 --- !u!1 &1064986760
 GameObject:
@@ -34122,7 +34138,7 @@ Transform:
   m_PrefabInternal: {fileID: 653008558}
   m_GameObject: {fileID: 1101289078}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 551232713}
@@ -35231,12 +35247,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1164815095}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1164815099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38902,12 +38918,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1224232799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1224232803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39518,12 +39534,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1243154037}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1243154041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40129,7 +40145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1001 &1281113515
 Prefab:
   m_ObjectHideFlags: 0
@@ -51132,7 +51152,7 @@ Transform:
   m_PrefabInternal: {fileID: 653008558}
   m_GameObject: {fileID: 1565116514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 551232713}
@@ -51891,12 +51911,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1588965887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1588965891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53547,12 +53567,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1653060694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1653060698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66424,12 +66444,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1870731808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1870731812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77292,7 +77312,7 @@ Transform:
   m_PrefabInternal: {fileID: 1437607309}
   m_GameObject: {fileID: 2088843821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1279562768}

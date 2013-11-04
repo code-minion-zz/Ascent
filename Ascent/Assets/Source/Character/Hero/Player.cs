@@ -11,6 +11,7 @@ public class Player
     private GameObject heroObject;
     private Hero heroScript;
     private InputDevice input;
+	public AscentInput aInput;
 
     //delegate void InputUpDelegate();
     //InputUpDelegate OnInputUp;
@@ -61,8 +62,21 @@ public class Player
         }
     }
 
+	public void SetInputDevice(InputDevice device)
+	{
+		this.input = device;
+
+		Debug.Log(device);
+		aInput = new AscentInput();
+		aInput.Initialise(device);
+
+		PlayerAnimController anim = heroObject.transform.GetComponent<PlayerAnimController>();
+		anim.EnableInput(aInput);
+	}
+
     public void Update()
     {
+		aInput.Update();
         // Up 
         //if (input.LeftStickY.Value > 0.0f)
         //{
@@ -86,28 +100,28 @@ public class Player
     }
 
     // To create a brand new Hero
-    public void CreateHero(Character.ECharacterClass heroType)
+    public void CreateHero(Character.EHeroClass heroType)
     {
         // TODO: Put this function into a object creation class of some sort.
         GameObject go = null;
 
         switch(heroType)
         {
-            case Character.ECharacterClass.Warrior:
+            case Character.EHeroClass.Warrior:
                 {
                     go = Resources.Load("Prefabs/Warrior") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.GetComponent<Warrior>();
                 }
                 break;
-            case Character.ECharacterClass.Rogue:
+            case Character.EHeroClass.Rogue:
                 {
                     go = Resources.Load("Prefabs/Rogue") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.GetComponent<Rogue>();
                 }
                 break;
-           case Character.ECharacterClass.Mage:
+           case Character.EHeroClass.Mage:
                 {
                     go = Resources.Load("Prefabs/Mage") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;

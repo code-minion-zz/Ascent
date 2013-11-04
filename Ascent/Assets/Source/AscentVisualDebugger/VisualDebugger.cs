@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class VisualDebugger : MonoBehaviour 
 {
     private PlayerVDO players;
-    private MonsterVDO monsters;
+    private EnemyVDO monsters;
 
 	void Start () 
     {
         players = gameObject.AddComponent<PlayerVDO>();
-        monsters = gameObject.AddComponent<MonsterVDO>();
+        monsters = gameObject.AddComponent<EnemyVDO>();
 	}
 
     void Update () 

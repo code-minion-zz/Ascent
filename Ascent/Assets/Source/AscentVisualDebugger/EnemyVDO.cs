@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterVDO : GenericVDO<Monster>, IVisulDebugObject
+public class EnemyVDO : GenericVDO<Enemy>, IVisulDebugObject
 {
     new public void Start()
     {

@@ -2,21 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(HealthBar))]
 public class Character : MonoBehaviour
 {
-    public enum ECharacterClass
-    {
-        Warrior,
-        Rogue,
-        Mage
-    }
+	public enum EHeroClass
+	{
+		Warrior,
+		Rogue,
+		Mage
+	}
 
     #region Fields
 
     protected CharacterStatistics characterStatistics;
-    protected AnimatorController animatorController;
-    protected HealthBar healthBar;
+    //protected AnimatorController animatorController;
 
     #endregion
 
@@ -27,10 +25,10 @@ public class Character : MonoBehaviour
         get { return characterStatistics; }
     }
 
-    public AnimatorController Animator
-    {
-        get { return animatorController; }
-    }
+	//public AnimatorController Animator
+	//{
+	//    get { return animatorController; }
+	//}
 
     #endregion
 
@@ -38,14 +36,8 @@ public class Character : MonoBehaviour
 
     public virtual void Awake()
     {
-        // Initialize the character statistics
-        characterStatistics = new CharacterStatistics();
-        characterStatistics.Init();
-        characterStatistics.Health.Set(100.0f, 100.0f);
-
         // Get all the components
-        healthBar = GetComponent<HealthBar>();
-        animatorController = GetComponent<AnimatorController>();
+        //animatorController = GetComponent<AnimatorController>();
     }
 
     public virtual void Start()
@@ -65,11 +57,10 @@ public class Character : MonoBehaviour
     public virtual void TakeDamage(int damageAmount)
     {
         // Obtain the health stat and subtract damage amount to the health.
-        HealthStat health = characterStatistics.Health;
-        health -= damageAmount;
+		characterStatistics.CurrentHealth -= damageAmount;
 
         // If the character is dead
-        if (health <= 0)
+		if (characterStatistics.CurrentHealth <= 0)
         {
             // On Death settings
             // Update states to kill character

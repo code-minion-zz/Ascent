@@ -7,9 +7,12 @@ public abstract class Hero : Character
     private List<Transform> activeHitBoxes = new List<Transform>();
     private PlayerAnimController animController;
 
+	protected HeroAbilities abilities;
+	protected HeroEquipment equipment;
+
     // Initially populated through unity.
     // We may want to encapsulate this later.
-    protected Transform weaponSlot;               // Player weapon slot
+    protected Transform weaponSlot;	// Player weapon slot
     protected Weapon equipedWeapon;
     protected GameObject weaponPrefab;
 
@@ -37,14 +40,12 @@ public abstract class Hero : Character
 
     #region Initialization
 
+	public abstract void Initialise(HeroSave saveData);
+
     // This function is always called immediately when Instantiated and is called before the Start() function
     public override void Awake()
     {
         base.Awake();
-
-        // Load the prefab
-        weaponPrefab = Resources.Load("Prefabs/angelic_sword_03") as GameObject;
-        weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
     }
 
 	// Use this for initialization
@@ -58,7 +59,7 @@ public abstract class Hero : Character
         playerColor = color;
     }
 
-    public abstract void Initialise(HeroSave saveData);
+    
 
     #endregion
 
@@ -101,7 +102,7 @@ public abstract class Hero : Character
         // When players hit box collides with object.
         if (other.transform.tag == "Monster")
         {
-            Monster monster = other.transform.GetComponent<Monster>();
+			Enemy monster = other.transform.GetComponent<Enemy>();
 
             if (monster != null)
             {

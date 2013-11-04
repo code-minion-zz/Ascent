@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Monster : Character
+public abstract class Enemy : Character
 {
     #region Enums
 
@@ -33,6 +33,8 @@ public class Monster : Character
 
     #region Initialization
 
+	public abstract void Initialise();
+
     public override void Awake()
     {
         base.Awake();
@@ -41,7 +43,7 @@ public class Monster : Character
 	// Use this for initialization
 	public override void Start () 
     {
-		activeHitBoxes = new List<Transform>();
+		//activeHitBoxes = new List<Transform>();
 	}
 
     #endregion
@@ -193,10 +195,9 @@ public class Monster : Character
 
     public override void TakeDamage(int damageAmount)
     {
-        HealthStat health = characterStatistics.Health;
-        health -= damageAmount;
+		characterStatistics.CurrentHealth -= damageAmount;
 
-        if (health <= 0)
+		if (characterStatistics.CurrentHealth <= 0)
         {
             originalScale = transform.localScale;
             waiting = 0.5f;
@@ -211,25 +212,25 @@ public class Monster : Character
 	
 	void Attack()
 	{			
-		if (activeHitBoxes.Count < 1)
-		{
-			Transform t = (Transform)Instantiate(hitBoxPrefab);
-			Vector3 boxPos = new Vector3(transform.position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,transform.position.z + transform.forward.z);
-			t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
-            t.renderer.material.color = Color.blue;
-            // Setup this hitbox with our collision event code.
-            t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
-            t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
-            t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
-			t.position = boxPos;
-			t.parent = transform;
-			activeHitBoxes.Add(t);
-		}
+		//if (activeHitBoxes.Count < 1)
+		//{
+		//    Transform t = (Transform)Instantiate(hitBoxPrefab);
+		//    Vector3 boxPos = new Vector3(transform.position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,transform.position.z + transform.forward.z);
+		//    t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
+		//    t.renderer.material.color = Color.blue;
+		//    // Setup this hitbox with our collision event code.
+		//    t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
+		//    t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
+		//    t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
+		//    t.position = boxPos;
+		//    t.parent = transform;
+		//    activeHitBoxes.Add(t);
+		//}
 	}
 	
 	public void KillBox(Transform box)
 	{
-		activeHitBoxes.Remove(box);
+		//activeHitBoxes.Remove(box);
 	}
 
     #endregion

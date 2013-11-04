@@ -7,7 +7,7 @@ public class HealthBar : MonoBehaviour
     private float healthRatio = 1.0f;
     private Vector3 guiPosition;
     private Texture2D healthTexture;
-    private HealthStat health;
+   // private HealthStat health;
     private Game game;
 
     void Awake()
@@ -17,15 +17,15 @@ public class HealthBar : MonoBehaviour
 
     void Start()
     {
-        // Get the game.
-        game = Game.Singleton;
+		//// Get the game.
+		//game = Game.Singleton;
 
-        // Load the resources for the texture.
-        healthTexture = Resources.Load("Actors/Textures/Chrysanthemum") as Texture2D;
+		//// Load the resources for the texture.
+		//healthTexture = Resources.Load("Actors/Textures/Chrysanthemum") as Texture2D;
 
-        // Obtain the character and get the stats health.
-        Character character = GetComponent<Character>();
-        health = character.CharacterStats.Health;
+		//// Obtain the character and get the stats health.
+		//Character character = GetComponent<Character>();
+		//health = character.CharacterStats.Health;
     }
 	
 	void Update () 
@@ -44,10 +44,10 @@ public class HealthBar : MonoBehaviour
 
     void OnGUI()
     {
-        if (health.Min > 0)
-        {
-            if (healthTexture != null)
-                GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
-        }
+		//if (health.Min > 0)
+		//{
+		//    if (healthTexture != null)
+		//        GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
+		//}
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class HeroSave  
 {
     int level;
-    Character.ECharacterClass type;
+    Character.EHeroClass type;
     // Inventory
     // Abilities
     // Experience 
