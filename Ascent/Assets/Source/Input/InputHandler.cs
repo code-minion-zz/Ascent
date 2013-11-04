@@ -28,11 +28,18 @@ public class InputHandler : MonoBehaviour
     {
         // Setup the device manager and the events
         InputManager.Setup();
-        InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
+        InputManager.OnDeviceAttached += OnAttached;
+        //InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
         InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name);
         InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
+
         SetupPlayerDevices();
         TestInputMappings();
+    }
+
+    void OnAttached(InputDevice device)
+    {
+        Debug.Log("Attached: " + device.Name);
     }
 	
 	// Use this for initialization
@@ -101,7 +108,7 @@ public class InputHandler : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-
+        // For each input device binded by the players - send an event
 	}
 	
 	#region Tests

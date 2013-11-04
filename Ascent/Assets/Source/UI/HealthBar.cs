@@ -30,16 +30,16 @@ public class HealthBar : MonoBehaviour
 	
 	void Update () 
     {
-        healthRatio = health.Min / health.Max;
-        barLength = healthRatio * 100.0f;
+        //healthRatio = health.Min / health.Max;
+        //barLength = healthRatio * 100.0f;
 
-        Vector3 vTargetPositon = transform.position;
-        vTargetPositon.y += 2.0f;
+        //Vector3 vTargetPositon = transform.position;
+        //vTargetPositon.y += 2.0f;
 
-        guiPosition = game.MainCamera.WorldToViewportPoint(vTargetPositon);
+        //guiPosition = game.MainCamera.WorldToViewportPoint(vTargetPositon);
 
-        guiPosition.x = (Screen.width * guiPosition.x) - 50.0f;
-        guiPosition.y = Screen.height - (guiPosition.y * Screen.height);
+        //guiPosition.x = (Screen.width * guiPosition.x) - 50.0f;
+        //guiPosition.y = Screen.height - (guiPosition.y * Screen.height);
 	}
 
     void OnGUI()

@@ -106,14 +106,14 @@ public class HitBox : MonoBehaviour {
 	
 	void DestroySelf()
 	{
-		if (transform.parent.name.Contains("Monster"))
-		{
-			transform.parent.GetComponent<Monster>().KillBox(transform);
-		}
-		else if (transform.parent.name.Contains("Player"))
-		{
-			transform.parent.GetComponent<Player>().KillBox(transform);			
-		}		
+        //if (transform.parent.name.Contains("Monster"))
+        //{
+        //    transform.parent.GetComponent<Monster>().KillBox(transform);
+        //}
+        //else if (transform.parent.name.Contains("Player"))
+        //{
+        //    transform.parent.GetComponent<Player>().KillBox(transform);			
+        //}		
 		
 		Destroy(this.gameObject);			
 	}

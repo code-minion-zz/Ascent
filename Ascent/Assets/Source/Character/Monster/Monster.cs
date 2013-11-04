@@ -51,98 +51,98 @@ public class Monster : Character
     // Update is called once per frame
 	public override void Update () 
     {
-        switch(state)
-        {
-            case STATE.IDLE:
-                {
-                    if (Time.frameCount % 10 == 0)
-                    {
-                        targetPlayer = GetClosestPlayer();
+        //switch(state)
+        //{
+        //    case STATE.IDLE:
+        //        {
+        //            if (Time.frameCount % 10 == 0)
+        //            {
+        //                targetPlayer = GetClosestPlayer();
 
-                        if (targetPlayer != null)
-                        {
-                            state = STATE.SEEK;
-                            waiting = 3.5f;
-                        }
-                    }
-                }
-                break;
-            case STATE.SEEK:
-                {
-                    Vector3 direction = targetPlayer.Transform.position - transform.position;
-                    transform.rotation = Quaternion.LookRotation(direction, new Vector3(0.0f, 1.0f, 0.0f));
+        //                if (targetPlayer != null)
+        //                {
+        //                    state = STATE.SEEK;
+        //                    waiting = 3.5f;
+        //                }
+        //            }
+        //        }
+        //        break;
+        //    case STATE.SEEK:
+        //        {
+        //            Vector3 direction = targetPlayer.Transform.position - transform.position;
+        //            transform.rotation = Quaternion.LookRotation(direction, new Vector3(0.0f, 1.0f, 0.0f));
 
-                    Debug.DrawLine(transform.position, targetPlayer.Transform.position);
+        //            Debug.DrawLine(transform.position, targetPlayer.Transform.position);
 
-                    float distance = direction.sqrMagnitude;
-                    if (distance > -5.0f && distance < 2.0f)
-                    {
-                        state = STATE.ATTACKING;
-                        break;
-                    }
-                    else if (waiting > 0.0f)
-                    {
-                        waiting -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        waiting = 0.35f;
-                        state = STATE.WAIT;
-                        break;
-                    }
+        //            float distance = direction.sqrMagnitude;
+        //            if (distance > -5.0f && distance < 2.0f)
+        //            {
+        //                state = STATE.ATTACKING;
+        //                break;
+        //            }
+        //            else if (waiting > 0.0f)
+        //            {
+        //                waiting -= Time.deltaTime;
+        //            }
+        //            else
+        //            {
+        //                waiting = 0.35f;
+        //                state = STATE.WAIT;
+        //                break;
+        //            }
 
-                    MoveTowardPlayer(targetPlayer);
-                }
-                break;
-            case STATE.ATTACKING:
-                {
-                    //AttackTarget(targetPlayer);
-					Attack ();
+        //            MoveTowardPlayer(targetPlayer);
+        //        }
+        //        break;
+        //    case STATE.ATTACKING:
+        //        {
+        //            //AttackTarget(targetPlayer);
+        //            Attack ();
 
-                    targetPlayer = null;
-                    state = STATE.WAIT;
-                    waiting = 0.35f;                    
-                }
-                break;
-            case STATE.WAIT:
-                {
-                    if (waiting > 0.0f)
-                    {
-                        waiting -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        state = STATE.IDLE;
-                    }
-                }
-                break;
-            case STATE.HIT:
-                {
-                    if (waiting > 0.0f)
-                    {
-                        waiting -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        state = STATE.IDLE;
-                    }
-                }
-                break;
-            case STATE.DEAD:
-                {
-                    if (waiting > 0.0f)
-                    {
-                        waiting -= Time.deltaTime;
+        //            targetPlayer = null;
+        //            state = STATE.WAIT;
+        //            waiting = 0.35f;                    
+        //        }
+        //        break;
+        //    case STATE.WAIT:
+        //        {
+        //            if (waiting > 0.0f)
+        //            {
+        //                waiting -= Time.deltaTime;
+        //            }
+        //            else
+        //            {
+        //                state = STATE.IDLE;
+        //            }
+        //        }
+        //        break;
+        //    case STATE.HIT:
+        //        {
+        //            if (waiting > 0.0f)
+        //            {
+        //                waiting -= Time.deltaTime;
+        //            }
+        //            else
+        //            {
+        //                state = STATE.IDLE;
+        //            }
+        //        }
+        //        break;
+        //    case STATE.DEAD:
+        //        {
+        //            if (waiting > 0.0f)
+        //            {
+        //                waiting -= Time.deltaTime;
 
-                        transform.localScale = Vector3.Lerp(originalScale, new Vector3(0.0f, 0.0f, 0.0f), 0.1f * Time.deltaTime);
-                    }
-                    else
-                    {
-                        Object.Destroy(this.gameObject);
-                    }
-                }
-                break;
-        }
+        //                transform.localScale = Vector3.Lerp(originalScale, new Vector3(0.0f, 0.0f, 0.0f), 0.1f * Time.deltaTime);
+        //            }
+        //            else
+        //            {
+        //                Object.Destroy(this.gameObject);
+        //            }
+        //        }
+        //        break;
+        //}
 	}
 
     #endregion
@@ -151,43 +151,44 @@ public class Monster : Character
 
     protected Player GetClosestPlayer()
     {
-        // Find a close player
-        List<Player> players = Game.Singleton.Players;
+        //// Find a close player
+        //List<Player> players = Game.Singleton.Players;
 
-        Player closest = null;
-        float distance = Mathf.Infinity;
+        //Player closest = null;
+        //float distance = Mathf.Infinity;
 
-        Vector3 position = transform.position;
+        //Vector3 position = transform.position;
 
-        foreach (Player player in players)
-        {
-            Vector3 diff = player.Transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
-            {
-                closest = player;
-                distance = curDistance;
-            }
-        }
+        //foreach (Player player in players)
+        //{
+        //    Vector3 diff = player.Transform.position - position;
+        //    float curDistance = diff.sqrMagnitude;
+        //    if (curDistance < distance)
+        //    {
+        //        closest = player;
+        //        distance = curDistance;
+        //    }
+        //}
 
-        if (closest != null)
-        {
-            if (distance > 75.0f)
-            {
-                closest = null;
-            }
-        }
+        //if (closest != null)
+        //{
+        //    if (distance > 75.0f)
+        //    {
+        //        closest = null;
+        //    }
+        //}
 
-        return closest;
+        //return closest;
+        return null;
     }
 
     protected void MoveTowardPlayer(Player _player)
     {
-        if (_player != null)
-        {
-            Vector3 direction = Vector3.Normalize((_player.Transform.position - transform.position));
-            transform.position += direction * Time.deltaTime * 2.5f;
-        }
+        //if (_player != null)
+        //{
+        //    Vector3 direction = Vector3.Normalize((_player.Transform.position - transform.position));
+        //    transform.position += direction * Time.deltaTime * 2.5f;
+        //}
     }
 
     public override void TakeDamage(int damageAmount)
@@ -237,17 +238,17 @@ public class Monster : Character
 
     void OnHitBoxCollideEnter(Collider other)
     {
-        // When monster hit box collides with player.
-        if (other.transform.tag == "Player")
-        {
-            Player player = other.transform.GetComponent<Player>();
+        //// When monster hit box collides with player.
+        //if (other.transform.tag == "Player")
+        //{
+        //    Player player = other.transform.GetComponent<Player>();
 
-            if (player != null)
-            {
-                // Make the monster take damage.
-                player.TakeDamage(25);
-            }
-        }
+        //    if (player != null)
+        //    {
+        //        // Make the monster take damage.
+        //        player.TakeDamage(25);
+        //    }
+        //}
     }
 
     void OnHitBoxCollideStay(Collider other)
