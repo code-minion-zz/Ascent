@@ -357,4 +357,5 @@ public class UISlider : UIWidgetContainer
 	/// </summary>
 
 	public void ForceUpdate () { Set(rawValue, true); }
+	
 }

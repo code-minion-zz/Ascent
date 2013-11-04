@@ -713,6 +713,7 @@ public class UICamera : MonoBehaviour
 	{
 		if (go != null)
 		{
+			UISlider uis = go.GetComponent<UISlider>();
 			for (int i = mHighlighted.Count; i > 0; )
 			{
 				Highlighted hl = mHighlighted[--i];
@@ -731,6 +732,12 @@ public class UICamera : MonoBehaviour
 					{
 						mHighlighted.Remove(hl);
 						Notify(go, "OnHover", false);
+						#region Kit'sCode
+						if (uis != null)
+						{
+							Notify(uis.thumb.gameObject, "OnHover", false);
+						}
+						#endregion
 					}
 					return;
 				}
@@ -743,6 +750,13 @@ public class UICamera : MonoBehaviour
 				hl.counter = 1;
 				mHighlighted.Add(hl);
 				Notify(go, "OnHover", true);
+				
+				#region Kit'sCode
+				if (uis != null)
+				{
+					Notify(uis.thumb.gameObject, "OnHover", true);
+				}
+				#endregion
 			}
 		}
 	}

@@ -14,13 +14,14 @@ using System.Collections.Generic;
 [AddComponentMenu("NGUI/Interaction/Button Keys")]
 public class UIButtonKeys : MonoBehaviour
 {
+	public UIButtonKeys defaultButton; // only set once!
 	public bool startsSelected = false;
 	public UIButtonKeys selectOnClick;
 	public UIButtonKeys selectOnUp;
 	public UIButtonKeys selectOnDown;
 	public UIButtonKeys selectOnLeft;
 	public UIButtonKeys selectOnRight;
-
+		
 	void OnEnable ()
 	{
 		if (startsSelected)
@@ -36,7 +37,7 @@ public class UIButtonKeys : MonoBehaviour
 	void OnKey (KeyCode key)
 	{
 		if (enabled && NGUITools.GetActive(gameObject))
-		{
+		{			
 			switch (key)
 			{
 			case KeyCode.LeftArrow:
@@ -68,7 +69,7 @@ public class UIButtonKeys : MonoBehaviour
 				}
 				break;
 			}
-		}
+		}		
 	}
 
 	void OnClick ()
