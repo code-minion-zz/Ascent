@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AnimationState
+public class NAnimationState
 {
     #region Fields
 
