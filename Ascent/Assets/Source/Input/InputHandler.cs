@@ -18,7 +18,8 @@ public class InputHandler : MonoBehaviour
 		PLAYER_TWO,
 		PLAYER_THREE
 	};
-	
+
+
 	// Map to hold the player id and device assigned.
 	Dictionary<int, InputDevice> playerDevices = new Dictionary<int, InputDevice>();
 	
@@ -32,6 +33,7 @@ public class InputHandler : MonoBehaviour
         //InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
         InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name);
         InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
+
 
         SetupPlayerDevices();
         TestInputMappings();
@@ -110,9 +112,9 @@ public class InputHandler : MonoBehaviour
 	{
         // For each input device binded by the players - send an event
 	}
-	
-	#region Tests
-	void TestInputMappings()
+
+    #region Tests
+    void TestInputMappings()
 	{
 		var complete = InputControlMapping.Range.Complete;
 		var positive = InputControlMapping.Range.Positive;

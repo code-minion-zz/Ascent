@@ -10,9 +10,6 @@ public class Game : MonoBehaviour
 	// Number of players
     public Character.ECharacterClass[] playerCharacterType = new Character.ECharacterClass[3];
 
-	// The player prefab
-	public Transform PlayerPrefab;
-
     public bool visualDebuggerPrefab = true;
 
 	// List of player objects
@@ -57,7 +54,6 @@ public class Game : MonoBehaviour
         inputHandler = gameObject.AddComponent("InputHandler") as InputHandler;
 
         CreatePlayers();
-
 
         if (visualDebuggerPrefab)
         {

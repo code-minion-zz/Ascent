@@ -1871,8 +1871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdb4c1b076388a4ca8dba43a1a575fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacterType: 000000000000000000000000
-  PlayerPrefab: {fileID: 400072, guid: ba49d427411001d4eafd188830446191, type: 2}
+  playerCharacterType: 00000000
   visualDebuggerPrefab: 0
 --- !u!4 &102089943
 Transform:
@@ -2551,7 +2550,7 @@ Transform:
   m_PrefabInternal: {fileID: 1437607309}
   m_GameObject: {fileID: 131806411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 1279562768}
@@ -6837,7 +6836,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &232970147
 GameObject:
   m_ObjectHideFlags: 0
@@ -7489,7 +7492,7 @@ Transform:
   m_PrefabInternal: {fileID: 1314176456}
   m_GameObject: {fileID: 247726071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 231040167}
@@ -15431,6 +15434,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
+      propertyPath: playerCharacterType.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
       propertyPath: playerCharacte1rType.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -16483,7 +16490,7 @@ Transform:
   m_PrefabInternal: {fileID: 1314176456}
   m_GameObject: {fileID: 462861323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 231040167}
@@ -17105,7 +17112,7 @@ Transform:
   m_PrefabInternal: {fileID: 471160015}
   m_GameObject: {fileID: 492238090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 1029105552}
@@ -19255,7 +19262,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &552510462
 GameObject:
   m_ObjectHideFlags: 0
@@ -23355,7 +23366,7 @@ Transform:
   m_PrefabInternal: {fileID: 471160015}
   m_GameObject: {fileID: 693234347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1029105552}
@@ -32335,7 +32346,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1 &1030039670
 GameObject:
   m_ObjectHideFlags: 0
@@ -34122,7 +34137,7 @@ Transform:
   m_PrefabInternal: {fileID: 653008558}
   m_GameObject: {fileID: 1101289078}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .805697441, y: -3.95614386, z: 4.24091005}
+  m_LocalPosition: {x: .805697441, y: .5, z: 4.24091005}
   m_LocalScale: {x: .25, y: .25, z: .25}
   m_Children: []
   m_Father: {fileID: 551232713}
@@ -40129,7 +40144,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  direction: {x: 0, y: 0, z: 1}
+  projectilePoolCount: 5
+  frequency: .5
+  projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1001 &1281113515
 Prefab:
   m_ObjectHideFlags: 0
@@ -51132,7 +51151,7 @@ Transform:
   m_PrefabInternal: {fileID: 653008558}
   m_GameObject: {fileID: 1565116514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 551232713}
@@ -77292,7 +77311,7 @@ Transform:
   m_PrefabInternal: {fileID: 1437607309}
   m_GameObject: {fileID: 2088843821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.42586422, y: -4.00837708, z: 4.24419975}
+  m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1279562768}
