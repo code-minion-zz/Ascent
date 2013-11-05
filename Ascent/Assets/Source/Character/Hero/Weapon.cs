@@ -2,39 +2,67 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Weapon : MonoBehaviour
 {
+    BoxCollider boxCollider;
+    Character owner;
+
+    int damage;
+    Character.EDamageType damageType;
+
+    public bool EnableCollision
+    {
+        get { return boxCollider.enabled; }
+        set { boxCollider.enabled = value; }
+    }
+
     public void Awake()
     {
-
+        boxCollider = GetComponent<BoxCollider>();
+        boxCollider.enabled = false;
+        //enabled = false;
     }
 
-    public void Start()
+    public void Initialise(Character character)
     {
-
+        owner = character;
     }
 
-    public void Initialise(HeroSave saveData)
+    public void SetAttackProperties(int damage, Character.EDamageType damageType)
     {
-        //if(saveData != null)
-        //{
-        //    // Populate with the savedata
-        //}
-        //else
-        //{
-        //    if (weaponPrefab == null)
-        //        Debug.Log("Weapon prefab not found");
+        this.damage = damage;
+        this.damageType = damageType;
+    }
 
-        //    // Create the weapon in the weapon slot
-        //    // Assign its parent to this object, ideally we will equip it to the players
-        //    // weapon bone.
-        //    weaponPrefab = Instantiate(weaponPrefab) as GameObject;
-        //    weaponPrefab.transform.parent = weaponSlot.transform;
-        //    weaponPrefab.transform.localPosition = Vector3.zero;
+    void OnTriggerEnter(Collider other)
+    {
+        string tag = other.tag;
+        switch (tag)
+        {
+            case "Hero":
+                {
+                    Character otherCharacter = other.GetComponent<Character>();
+                    otherCharacter.ApplyDamage(damage, damageType);
+                    
+                    Debug.Log(this.name + " collides with " + otherCharacter);
+                }
+                break;
+            case "Enemy":
+                {
+                    Character otherCharacter = other.GetComponent<Character>();
+                    otherCharacter.ApplyDamage(damage, damageType);
 
 
-        //    // Obtain the equiped weapon class from this weapon
-        //    equipedWeapon = weaponPrefab.GetComponent<Weapon>();
-        //}
+                    otherCharacter.ApplyKnockback(Vector3.Normalize(new Vector3(otherCharacter.transform.position.x, 0.0f, otherCharacter.transform.position.z) - new Vector3(owner.transform.position.x, 0.0f, owner.transform.position.z)), 10.0f);
+                    Debug.Log(this.name + " collides with " + otherCharacter);
+                }
+                break;
+            default:
+                {
+                    //Debug.Log(this.name + " colliding with " + other.name + " but not handled");
+                }
+                break;
+        }
     }
 }

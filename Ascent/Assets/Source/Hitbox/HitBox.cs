@@ -131,6 +131,7 @@ public class HitBox : MonoBehaviour {
 //			{
 //				isHit = true;	
 //				contact.otherCollider.transform.parent.GetComponent<Monster>().TakeDamage(9);
+               
 //				Vector3 Force = contact.normal*1000;
 //				contact.otherCollider.transform.parent.rigidbody.AddForce(Force);
 //				Debug.Log("hit " + -Force);

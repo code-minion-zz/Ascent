@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using InControl;
 
-public class Player 
+public class Player : MonoBehaviour
 {
 	#region Fields
 
@@ -12,22 +12,6 @@ public class Player
     private Hero heroScript;
     private InputDevice input;
 	public AscentInput aInput;
-
-    //delegate void InputUpDelegate();
-    //InputUpDelegate OnInputUp;
-
-    //delegate void InputUpDelegate();
-    //InputUpDelegate OnInputDown;
-
-    //delegate void InputUpDelegate();
-    //InputUpDelegate OnInputLeft;
-
-    //delegate void InputUpDelegate();
-    //InputUpDelegate OnInputRight;
-
-
-    delegate void InputDelegate(InputDevice device);
-    InputDelegate Onup;
 
 
     // Delegates
@@ -54,14 +38,6 @@ public class Player
         set { heroObject = value; }
     }
 
-    public void RegisterInputDelegates(InputDevice device)
-    {
-        if (Onup != null)
-        {
-            Onup(device);
-        }
-    }
-
 	public void SetInputDevice(InputDevice device)
 	{
 		this.input = device;
@@ -77,26 +53,6 @@ public class Player
     public void Update()
     {
 		aInput.Update();
-        // Up 
-        //if (input.LeftStickY.Value > 0.0f)
-        //{
-            
-        //}
-        //// Down
-        //else if (input.LeftStickY.Value < 0.0f)
-        //{
-
-        //}
-        //// Left
-        //if (input.LeftStickX.Value > 0.0f)
-        //{
-
-        //}
-        //// Right
-        //else if (input.LeftStickX.Value < 0.0f)
-        //{
-
-        //}
     }
 
     // To create a brand new Hero

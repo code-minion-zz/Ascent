@@ -85,7 +85,7 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < NumberOfPlayers; ++i)
         {
-            Player newPlayer = new Player();
+            Player newPlayer = gameObject.AddComponent<Player>();
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
             newPlayer.CreateHero(playerCharacterType[i]);

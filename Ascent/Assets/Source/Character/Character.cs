@@ -11,10 +11,18 @@ public class Character : MonoBehaviour
 		Mage
 	}
 
+    public enum EDamageType
+    {
+        Physical,
+        Magical,
+    }
+
     #region Fields
 
     protected CharacterStatistics characterStatistics;
     //protected AnimatorController animatorController;
+
+    Vector3 knockback;
 
     #endregion
 
@@ -51,13 +59,24 @@ public class Character : MonoBehaviour
 
     public virtual void Update()
     {
+        //if (knockback.magnitude > 0.0f)
+        //{
+        //    Debug.Log(knockback);
+        //    transform.position += knockback * Time.deltaTime;
+
+        //    knockback -= knockback * 2.0f;
+        //}
+
 
     }
 
-    public virtual void TakeDamage(int damageAmount)
+    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
+        //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
-		characterStatistics.CurrentHealth -= damageAmount;
+        characterStatistics.CurrentHealth -= unmitigatedDamage;
+
+        //Debug.Log(characterStatistics.CurrentHealth);
 
         // If the character is dead
 		if (characterStatistics.CurrentHealth <= 0)
@@ -66,6 +85,18 @@ public class Character : MonoBehaviour
             // Update states to kill character
         }
     }
+
+    public virtual void ApplyKnockback(Vector3 direction, float magnitude)
+    {
+        knockback += (magnitude * direction);
+    }
+
+    public virtual void ApplySpellEffect()
+    {
+
+    }
+
+
 
     #endregion
 }

@@ -44,6 +44,7 @@ public abstract class Enemy : Character
 	public override void Start () 
     {
 		//activeHitBoxes = new List<Transform>();
+       
 	}
 
     #endregion
@@ -53,6 +54,7 @@ public abstract class Enemy : Character
     // Update is called once per frame
 	public override void Update () 
     {
+        base.Update();
         //switch(state)
         //{
         //    case STATE.IDLE:
@@ -193,22 +195,22 @@ public abstract class Enemy : Character
         //}
     }
 
-    public override void TakeDamage(int damageAmount)
-    {
-		characterStatistics.CurrentHealth -= damageAmount;
+    //public override void ApplyDamage(int unmitigatedDamage, EDamageType type)
+    //{
+    //    characterStatistics.CurrentHealth -= unmitigatedDamage;
 
-		if (characterStatistics.CurrentHealth <= 0)
-        {
-            originalScale = transform.localScale;
-            waiting = 0.5f;
-            state = STATE.DEAD;
-        }
-        else
-        {
-           waiting = 0.5f;
-           state = STATE.HIT;
-        }
-    }
+    //    if (characterStatistics.CurrentHealth <= 0)
+    //    {
+    //        originalScale = transform.localScale;
+    //        waiting = 0.5f;
+    //        state = STATE.DEAD;
+    //    }
+    //    else
+    //    {
+    //       waiting = 0.5f;
+    //       state = STATE.HIT;
+    //    }
+    //}
 	
 	void Attack()
 	{			

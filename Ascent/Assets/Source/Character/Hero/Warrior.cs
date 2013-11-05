@@ -52,5 +52,7 @@ public class Warrior : Hero
 
 		// Obtain the equiped weapon class from this weapon
 		equipedWeapon = weaponPrefab.GetComponent<Weapon>();
+
+        equipedWeapon.Initialise(this);
     }
 }

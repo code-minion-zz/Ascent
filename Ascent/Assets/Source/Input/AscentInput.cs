@@ -8,7 +8,7 @@ public class AscentInput
 {
 	private InControl.InputDevice device;
 
-	public delegate void AscentInputEventHandler(InControl.InputDevice device);
+	public delegate void AscentInputEventHandler(ref InControl.InputDevice device);
 
 	// D-Pad
 	public event AscentInputEventHandler OnDPadUp;
@@ -34,7 +34,7 @@ public class AscentInput
 	//public event AscentInputEventHandler OnRStickRight;
 
 	//// Front face butons
-	//public event AscentInputEventHandler OnX;
+	public event AscentInputEventHandler OnX;
 	//public event AscentInputEventHandler OnY;
 	//public event AscentInputEventHandler OnA;
 	//public event AscentInputEventHandler OnB;
@@ -76,55 +76,55 @@ public class AscentInput
 		// DPad down
 		if (device.DPadUp.WasPressed && OnDPadUp != null)
 		{
-			OnDPadUp.Invoke(device);
+			OnDPadUp.Invoke(ref device);
 		}
 		else if (device.DPadDown.WasPressed && OnDPadDown != null)
 		{
-			OnDPadDown.Invoke(device);
+            OnDPadDown.Invoke(ref device);
 		}
 		if (device.DPadLeft.WasPressed && OnDPadLeft != null)
 		{
-			OnDPadLeft.Invoke(device);
+            OnDPadLeft.Invoke(ref device);
 		}
 		else if (device.DPadRight.WasPressed && OnDPadRight != null)
 		{
-			OnDPadRight.Invoke(device);
+            OnDPadRight.Invoke(ref device);
 		}
 
 		// DPad up
 		if (device.DPadUp.WasReleased && OnDPadUp_up != null)
 		{
-			OnDPadUp_up.Invoke(device);
+            OnDPadUp_up.Invoke(ref device);
 		}
 		else if (device.DPadDown.WasReleased && OnDPadDown_up != null)
 		{
-			OnDPadDown_up.Invoke(device);
+            OnDPadDown_up.Invoke(ref device);
 		}
 		if (device.DPadLeft.WasReleased && OnDPadLeft_up != null)
 		{
-			OnDPadLeft_up.Invoke(device);
+            OnDPadLeft_up.Invoke(ref device);
 		}
 		else if (device.DPadRight.WasReleased && OnDPadRight_up != null)
 		{
-			OnDPadRight_up.Invoke(device);
+            OnDPadRight_up.Invoke(ref device);
 		}
 
 		// L-Stick
 		if (device.LeftStickY.IsNotNull && OnLStickUp != null)
 		{
-			OnLStickUp.Invoke(device);
+            OnLStickUp.Invoke(ref device);
 		}
 		else if (device.LeftStickY.IsNotNull && OnLStickDown != null)
 		{
-			OnLStickDown.Invoke(device);
+            OnLStickDown.Invoke(ref device);
 		}
-		if (device.LeftStickY.IsNotNull && OnLStickLeft != null)
+		if (device.LeftStickX.IsNotNull && OnLStickLeft != null)
 		{
-			OnLStickLeft.Invoke(device);
+            OnLStickLeft.Invoke(ref device);
 		}
-		else if (device.LeftStickY.IsNotNull && OnLStickRight != null)
+        else if (device.LeftStickX.IsNotNull && OnLStickRight != null)
 		{
-			OnLStickRight.Invoke(device);
+            OnLStickRight.Invoke(ref device);
 		}
 	}
 

@@ -34,17 +34,16 @@ public class PlayerAnimController : AnimatorController
 
     private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
     private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
-    private InputHandler inputHandler;              // 
-    private InputDevice inputDevice;                // a reference to the input device of the player
+   // private InputHandler inputHandler;              // 
+    //private InputDevice inputDevice;                // a reference to the input device of the player
 
     private CapsuleCollider col;
-    //private Player player;
 
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
     public float movementSpeed = 10.0f;              // Movment speed
     public float rotationSmooth = 10.0f;
 
-    public bool useXboxController = false;
+    //public bool useXboxController = false;
 
     static int idleState = Animator.StringToHash("Base Layer.Idle");
     static int jumpState = Animator.StringToHash("Base Layer.JumpRunning");				// and are used to check state for various actions to occur
@@ -53,12 +52,6 @@ public class PlayerAnimController : AnimatorController
     static int rollState = Animator.StringToHash("Base Layer.Roll");
 
     private Vector3 direction;
-
-    #endregion
-
-    #region Properties
-
-
 
     #endregion
 
@@ -76,28 +69,29 @@ public class PlayerAnimController : AnimatorController
 	public void EnableInput(AscentInput ainput)
 	{
 		// Register everthing here
-		ainput.OnLStickUp += OnDPadUp; 
+		ainput.OnLStickUp += OnDPadUp;
+        ainput.OnX += OnX;
 	}
 
 	public void DisableInput(AscentInput ainput)
 	{
 		// Unregister everything here
 		ainput.OnLStickUp -= OnDPadUp;
+        ainput.OnX -= OnX;
 	}
 
 
     public override void Start()
     {
+        //inputHandler = Game.Singleton.InputHandler;
 
-        inputHandler = Game.Singleton.InputHandler;
+        //if (useXboxController)
+        //    inputDevice = inputHandler.GetDevice(1);
+        //else
+        //    inputDevice = inputHandler.GetDevice(0);
 
-        if (useXboxController)
-            inputDevice = inputHandler.GetDevice(1);
-        else
-            inputDevice = inputHandler.GetDevice(0);
-
-        if (inputDevice == null)
-            inputDevice = inputHandler.GetDevice(0);
+        //if (inputDevice == null)
+        //    inputDevice = inputHandler.GetDevice(0);
 
         if (animator.layerCount == 2)
             animator.SetLayerWeight(1, 1);
@@ -123,40 +117,37 @@ public class PlayerAnimController : AnimatorController
             combatLayerState = animator.GetCurrentAnimatorStateInfo(1);
         }
 
-		//float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
-		//speed *= movementSpeed;
-
-		//// Direction vector to hold the input key press.
-		//direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
-
-		//animator.SetFloat("Speed", speed);
-
-
-		//float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
-		//speed *= movementSpeed;
-
-		//// Direction vector to hold the input key press.
-		//direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
-
-		//animator.SetFloat("Speed", speed);
-
 
         CollisionStates();
     }
 
 	// Handle everything here...
-	void OnDPadUp(InControl.InputDevice device)
+	void OnDPadUp(ref InControl.InputDevice device)
 	{
-		float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
-		speed *= movementSpeed;
+        Debug.Log(device.LeftStickX); Debug.Log(device.LeftStickY);
+        ////Debug.Log(inputDevice.LeftStickX); Debug.Log(inputDevice.LeftStickY);
+        //float speed = (inputDevice.LeftStickX.Value * inputDevice.LeftStickX.Value) + (inputDevice.LeftStickY.Value * inputDevice.LeftStickY.Value);
+        //speed *= movementSpeed;
 
-		// Direction vector to hold the input key press.
-		direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
+        //// Direction vector to hold the input key press.
+        //direction = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value).normalized;
 
-		animator.SetFloat("Speed", speed);
+        //animator.SetFloat("Speed", speed);
 
-		Debug.Log("hi");
+
+        float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+        speed *= movementSpeed;
+
+        // Direction vector to hold the input key press.
+        direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+
+        animator.SetFloat("Speed", speed);
 	}
+
+    void OnX(ref  InControl.InputDevice device)
+    {
+
+    }
 
     #region Collision States
 
@@ -170,23 +161,25 @@ public class PlayerAnimController : AnimatorController
         if (currentBaseState.nameHash == movementState ||
             currentBaseState.nameHash == idleState)
         {
-            if (currentBaseState.nameHash == movementState)
-            {
-                if (inputDevice.Action1.IsPressed)
-                {
-                    animator.SetBool("Jump", true);
-                }
-            }
+            //if (currentBaseState.nameHash == movementState)
+            //{
+            //    if (inputDevice.Action1.IsPressed)
+            //    {
+            //        animator.SetBool("Jump", true);
+            //    }
+            //}
 
-            if (inputDevice.Action2.IsPressed)
-            {
-                animator.SetBool("SwingAttack", true);
-            }
+            //if (inputDevice.Action2.IsPressed)
+            //{
+            //    //animator.SetBool("SwingAttack", true);
+            //    Attack(true);
+               
+            //}
 
-            if (inputDevice.Action3.IsPressed)
-            {
-                animator.SetBool("Roll", true);
-            }
+            //if (inputDevice.Action3.IsPressed)
+            //{
+            //    animator.SetBool("Roll", true);
+            //}
 
             if (!attacking && !jumping && !rolling)
             {
@@ -199,15 +192,17 @@ public class PlayerAnimController : AnimatorController
         // if we are in the jumping state... 
         else if (currentBaseState.nameHash == jumpState)
         {
-            if (inputDevice.Action2.IsPressed)
-            {
-                animator.SetBool("SwingAttack", true);
-            }
+            //if (inputDevice.Action2.IsPressed)
+            //{
+            //    //animator.SetBool("SwingAttack", true);
 
-            if (inputDevice.Action3.IsPressed)
-            {
-                animator.SetBool("Roll", true);
-            }
+            //    Attack(true);
+            //}
+
+            //if (inputDevice.Action3.IsPressed)
+            //{
+            //    animator.SetBool("Roll", true);
+            //}
 
             //  ..and not still in transition..
             if (!animator.IsInTransition(0))
@@ -244,20 +239,22 @@ public class PlayerAnimController : AnimatorController
             if (!animator.IsInTransition(0))
             {
                 // Reset so we can attack again.
-                animator.SetBool("SwingAttack", false);
+                //animator.SetBool("SwingAttack", false);
+                Attack(false);
             }
         }
 
         if (currentBaseState.nameHash == rollState)
         {
-            if (inputDevice.Action2.IsPressed)
-            {
-                animator.SetBool("SwingAttack", true);
-            }
-            else if (inputDevice.Action1.IsPressed)
-            {
-                animator.SetBool("Jump", true);
-            }
+            //if (inputDevice.Action2.IsPressed)
+            //{
+            //    //animator.SetBool("SwingAttack", true);
+            //    Attack(true);
+            //}
+            //else if (inputDevice.Action1.IsPressed)
+            //{
+            //    animator.SetBool("Jump", true);
+            //}
 
             // Transition in process wait to see if it has finished
             if (!animator.IsInTransition(0))
@@ -266,6 +263,13 @@ public class PlayerAnimController : AnimatorController
                 animator.SetBool("Roll", false);
             }
         }
+    }
+
+    void Attack(bool b)
+    {
+        animator.SetBool("SwingAttack", b);
+        GetComponentInChildren<Weapon>().SetAttackProperties(10, Character.EDamageType.Physical);
+        GetComponentInChildren<Weapon>().EnableCollision = b;
     }
 
     #endregion 

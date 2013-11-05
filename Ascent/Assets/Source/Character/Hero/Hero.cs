@@ -107,7 +107,7 @@ public abstract class Hero : Character
             if (monster != null)
             {
                 // Make the monster take damage.
-                monster.TakeDamage(25);
+                monster.ApplyDamage(25, EDamageType.Physical);
             }
         }
     }
