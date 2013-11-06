@@ -6,18 +6,17 @@ using InControl;
 public class HeroController : MonoBehaviour, IAscentController
 {
     HeroAnimator heroAnimator;
-    Weapon heroWeapon;
+    //Weapon heroWeapon;
     Hero hero;
 
     #region Intialization
 
-    public void Start()
-    {
-        hero = GetComponent<Hero>();
-        heroAnimator = GetComponent<AnimatorController>() as HeroAnimator;
-        heroWeapon = GetComponentInChildren<Weapon>();
-
-    }
+	public void Initialise(Hero hero)
+	{
+		this.hero = hero;
+		heroAnimator = hero.Animator as HeroAnimator;
+		//heroWeapon = hero.Weapon;
+	}
 
     #endregion
 
@@ -57,12 +56,12 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnA(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(1); // pass in the ability binded to this key
     }
 
     public void OnB(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(2); // pass in the ability binded to this key
     }
 
     public void OnX_up(ref  InControl.InputDevice device)

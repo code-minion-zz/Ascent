@@ -6,6 +6,11 @@ using System.Collections;
 
 public class Rat : Enemy 
 {
+	public override void Start()
+	{
+		Initialise();
+	}
+
 	public override void Initialise()
 	{
 		// Populate with stats
@@ -13,11 +18,13 @@ public class Rat : Enemy
         characterStatistics = new CharacterStatistics();
         characterStatistics.MaxHealth = 100;
         characterStatistics.CurrentHealth = 100;
+
+		// Add abilities
+		IAbility swordSwing = new SwingSword();
+
+		swordSwing.Initialise(this);
+		abilities.Add(swordSwing);
 	}
 
-    public override void Start()
-    {
-        Initialise();
-    }
-	
+
 }

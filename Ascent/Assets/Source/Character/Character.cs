@@ -17,6 +17,11 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 
+	protected List<IAbility> abilities = new List<IAbility>();
+	protected IAbility activeAbility;
+
+	protected GameObject weaponPrefab;
+
     protected Transform weaponSlot;
     public Transform WeaponSlot
     {
@@ -29,15 +34,11 @@ public abstract class Character : MonoBehaviour
         get { return equipedWeapon; }
     }
 
-    protected GameObject weaponPrefab;
-
     protected AnimatorController characterAnimator;
     public AnimatorController Animator
     {
         get { return characterAnimator; }
     }
-
-    protected List<IAbility> abilities = new List<IAbility>();
 
     protected CharacterStatistics characterStatistics;
     public CharacterStatistics CharacterStats
@@ -57,25 +58,49 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Update()
     {
-        // To be derived
+		if (activeAbility != null)
+		{
+			activeAbility.UpdateAbility();
+		}
     }
-
-    //public abstract void Move(Vector3 direction, float speed)
-    //{
-    //}
-
-    //public abstract void UseAbility(int abilityID);
 
     public virtual void UseAbility(int abilityID)
     {
-        abilities[abilityID].StartAbility();
+		if (activeAbility == null)
+		{
+			abilities[abilityID].StartAbility();
+			activeAbility = abilities[abilityID];
+		}
     }
+
+	public virtual void InterruptAbility()
+	{
+		if (activeAbility != null)
+		{
+			activeAbility.EndAbility();
+			activeAbility = null;
+		}
+	}
+
+	public virtual void StopAbility()
+	{
+		if (activeAbility != null)
+		{
+			activeAbility.EndAbility();
+			activeAbility = null;
+		}
+	}
+
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
+		// Taking damage may or may not interrupt the current ability
+
         //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
         characterStatistics.CurrentHealth -= unmitigatedDamage;
+
+		
 
         //Debug.Log(characterStatistics.CurrentHealth);
 
@@ -89,12 +114,13 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {
-        
+		// Taking damage may or may not interrupt the current ability
+		transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
     }
 
     public virtual void ApplySpellEffect()
     {
-
+		// Taking damage may or may not interrupt the current ability
     }
 
 }

@@ -53,8 +53,9 @@ public class Weapon : MonoBehaviour
                     Character otherCharacter = other.GetComponent<Character>();
                     otherCharacter.ApplyDamage(damage, damageType);
 
+					Vector3 direction = Vector3.Normalize(new Vector3(otherCharacter.transform.position.x, 0.0f, otherCharacter.transform.position.z) - new Vector3(owner.transform.position.x, 0.0f, owner.transform.position.z));
 
-                    otherCharacter.ApplyKnockback(Vector3.Normalize(new Vector3(otherCharacter.transform.position.x, 0.0f, otherCharacter.transform.position.z) - new Vector3(owner.transform.position.x, 0.0f, owner.transform.position.z)), 10.0f);
+                    otherCharacter.ApplyKnockback(direction, 10.0f);
                     Debug.Log(this.name + " collides with " + otherCharacter);
                 }
                 break;

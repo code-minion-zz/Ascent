@@ -68,15 +68,12 @@ public class Game : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-
+		// Not used atm...
 	}
 
     void Update()
     {
-        //for (int i = 0; i < NumberOfPlayers; ++i)
-        //{
-        //    players[i].Update();
-        //}
+		// Not used atm...
     }
 
     private void CreatePlayers()

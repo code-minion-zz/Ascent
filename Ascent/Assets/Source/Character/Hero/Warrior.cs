@@ -46,6 +46,7 @@ public class Warrior : Hero
         // Add the animator and controller
         characterAnimator = gameObject.AddComponent<HeroAnimator>();
         heroController = gameObject.AddComponent<HeroController>();
+		heroController.Initialise(this);
         heroController.EnableInput(input);
 
 
@@ -53,11 +54,19 @@ public class Warrior : Hero
         IAbility swordSwing = new SwingSword();
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
+
+		IAbility jump = new Jump();
+		jump.Initialise(this);
+		abilities.Add(jump);
+
+		IAbility roll = new Roll();
+		roll.Initialise(this);
+		abilities.Add(roll);
     }
 	
 	// public is called once per frame
     public override void Update() 
 	{
-	
+		base.Update();
 	}
 }
