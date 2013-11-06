@@ -152,11 +152,8 @@ public abstract class GameScreen
     /// Activates the screen. Called when the screen is added to the screen manager or if the game resumes
     /// from being paused or tombstoned.
     /// </summary>
-    /// <param name="instancePreserved">
-    /// True if the game was preserved during deactivation, false if the screen is just being added or if the game was tombstoned.
-    /// On Xbox and Windows this will always be false.
-    /// </param>
-    public virtual void Activate(bool instancePreserved) { }
+    /// 
+    public virtual void Activate() { }
 
     /// <summary>
     /// Deactivates the screen. Called when the game is being deactivated due to pausing or tombstoning.

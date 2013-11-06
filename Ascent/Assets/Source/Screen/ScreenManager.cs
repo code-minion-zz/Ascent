@@ -6,10 +6,12 @@ public class ScreenManager : MonoBehaviour
 {
     #region Fields
 
+    public static ScreenManager Singleton;
+
     private List<GameScreen> screens = new List<GameScreen>();
     private List<GameScreen> tempScreensList = new List<GameScreen>();
     private bool isInitialized;
-    private bool traceEnabled;
+    private bool traceEnabled = true;
 
     #endregion
 
@@ -30,23 +32,44 @@ public class ScreenManager : MonoBehaviour
 
     #region Initialization
 
+    /// <summary>
+    /// Here we will initialize anything fundamental to this system before we do the Start function.
+    /// We will also declare DonDestroyOnLoad which means this object shall exist even when scenes are 
+    /// loaded.
+    /// </summary>
     void Awake()
     {
         isInitialized = true;
+        DontDestroyOnLoad(this);
     }
 
-    // Use this for initialization
+    /// <summary>
+    /// Everytime this object has been enabled or on first intialization we want to ensure the Singleton
+    /// exists
+    /// </summary>
+    public void OnEnable()
+    {
+        if (Singleton == null)
+            Singleton = this;
+    }
+
+    /// <summary>
+    /// Start all the screens in the list.
+    /// </summary>
 	void Start () 
     {
         foreach (GameScreen screen in screens)
         {
-            screen.Activate(false);
+            screen.Activate();
         }
 	}
 
     #endregion
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called once per frame.
+    /// Here we will update all the game screens and handle any input required.
+    /// </summary>
 	void Update () 
     {
         // Read the keyboard and gamepad.
@@ -138,10 +161,10 @@ public class ScreenManager : MonoBehaviour
         screen.ScreenManager = this;
         screen.IsExiting = false;
 
-        // If we have a graphics device, tell the screen to load content.
+        // If we have been intialised we can activate the screen
         if (isInitialized)
         {
-            screen.Activate(false);
+            screen.Activate();
         }
 
         screens.Add(screen);
