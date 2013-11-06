@@ -39,6 +39,7 @@ public class Game : MonoBehaviour
 	#endregion
 	
 	#region Initialization
+
 	public void OnEnable()
 	{
 		if (Singleton == null)
