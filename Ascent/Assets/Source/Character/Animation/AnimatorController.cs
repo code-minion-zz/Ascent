@@ -41,4 +41,9 @@ public class AnimatorController : MonoBehaviour
     {
         animator.SetBool(animation, true);
     }
+
+	public virtual void StopAnimation(string animation)
+	{
+		animator.SetBool(animation, false);
+	}
 }
