@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UISliderController : MonoBehaviour {
+public class UISliderController : MonoBehaviour 
+{
 
 	UISlider mSlider;
 
-	void Start () { mSlider = GetComponent<UISlider>(); Update(); }
+	void Start () 
+    { 
+        mSlider = GetComponent<UISlider>(); 
+        Update(); 
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+    {
 	
 	}
 	
