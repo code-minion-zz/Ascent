@@ -73,10 +73,10 @@ public class Game : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < NumberOfPlayers; ++i)
-        {
-            players[i].Update();
-        }
+        //for (int i = 0; i < NumberOfPlayers; ++i)
+        //{
+        //    players[i].Update();
+        //}
     }
 
     private void CreatePlayers()
@@ -85,11 +85,13 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < NumberOfPlayers; ++i)
         {
-            Player newPlayer = gameObject.AddComponent<Player>();
+            GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+            Player newPlayer = player.GetComponent<Player>();
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
+            newPlayer.SetInputDevice(inputHandler.GetDevice(1));
             newPlayer.CreateHero(playerCharacterType[i]);
-			newPlayer.SetInputDevice(inputHandler.GetDevice(i));
+			
         }
     }
 	

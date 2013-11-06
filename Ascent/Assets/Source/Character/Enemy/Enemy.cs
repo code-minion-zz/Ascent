@@ -25,7 +25,7 @@ public abstract class Enemy : Character
     public Transform hitBoxPrefab; // hitboxes represent projectiles
 
     private Player targetPlayer;
-    private float waiting = 0.0f;
+    //private float waiting = 0.0f;
     private Vector3 originalScale;
     private List<Transform> activeHitBoxes; // active melee attacks
 
@@ -37,14 +37,12 @@ public abstract class Enemy : Character
 
     public override void Awake()
     {
-        base.Awake();
+        // To be derived
     }
 
-	// Use this for initialization
 	public override void Start () 
     {
-		//activeHitBoxes = new List<Transform>();
-       
+        // To be derived
 	}
 
     #endregion

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
 	public enum EHeroClass
 	{
@@ -17,57 +17,58 @@ public class Character : MonoBehaviour
         Magical,
     }
 
-    #region Fields
+    protected Transform weaponSlot;
+    public Transform WeaponSlot
+    {
+        get { return weaponSlot; }
+    }
+
+    protected Weapon equipedWeapon;
+    public Weapon Weapon
+    {
+        get { return equipedWeapon; }
+    }
+
+    protected GameObject weaponPrefab;
+
+    protected AnimatorController characterAnimator;
+    public AnimatorController Animator
+    {
+        get { return characterAnimator; }
+    }
+
+    protected List<IAbility> abilities = new List<IAbility>();
 
     protected CharacterStatistics characterStatistics;
-    //protected AnimatorController animatorController;
-
-    Vector3 knockback;
-
-    #endregion
-
-    #region Properties
-
     public CharacterStatistics CharacterStats
     {
         get { return characterStatistics; }
     }
 
-	//public AnimatorController Animator
-	//{
-	//    get { return animatorController; }
-	//}
-
-    #endregion
-
-    #region Initialization
-
     public virtual void Awake()
     {
-        // Get all the components
-        //animatorController = GetComponent<AnimatorController>();
+        // To be derived
     }
 
     public virtual void Start()
     {
-
+        // To be derived
     }
-
-    #endregion
-
-    #region Operations
 
     public virtual void Update()
     {
-        //if (knockback.magnitude > 0.0f)
-        //{
-        //    Debug.Log(knockback);
-        //    transform.position += knockback * Time.deltaTime;
+        // To be derived
+    }
 
-        //    knockback -= knockback * 2.0f;
-        //}
+    //public abstract void Move(Vector3 direction, float speed)
+    //{
+    //}
 
+    //public abstract void UseAbility(int abilityID);
 
+    public virtual void UseAbility(int abilityID)
+    {
+        abilities[abilityID].StartAbility();
     }
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
@@ -88,7 +89,7 @@ public class Character : MonoBehaviour
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {
-        knockback += (magnitude * direction);
+        
     }
 
     public virtual void ApplySpellEffect()
@@ -96,7 +97,4 @@ public class Character : MonoBehaviour
 
     }
 
-
-
-    #endregion
 }

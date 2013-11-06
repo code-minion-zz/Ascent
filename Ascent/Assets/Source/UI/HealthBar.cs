@@ -4,7 +4,7 @@ using System.Collections;
 public class HealthBar : MonoBehaviour 
 {
     public float barLength = 100.0f;
-    private float healthRatio = 1.0f;
+    //private float healthRatio = 1.0f;
     private Vector3 guiPosition;
     private Texture2D healthTexture;
    // private HealthStat health;

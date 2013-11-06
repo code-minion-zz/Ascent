@@ -37,13 +37,8 @@ public class AnimatorController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    public virtual void Start()
+    public virtual void PlayAnimation(string animation)
     {
-
-    }
-
-    public virtual void Update()
-    {
-
+        animator.SetBool(animation, true);
     }
 }

@@ -13,10 +13,6 @@ public class Player : MonoBehaviour
     private InputDevice input;
 	public AscentInput aInput;
 
-
-    // Delegates
-
-
 	#endregion
 	
 	#region Properties
@@ -38,21 +34,25 @@ public class Player : MonoBehaviour
         set { heroObject = value; }
     }
 
-	public void SetInputDevice(InputDevice device)
+    #endregion
+
+    public void SetInputDevice(InputDevice device)
 	{
 		this.input = device;
 
-		Debug.Log(device);
 		aInput = new AscentInput();
 		aInput.Initialise(device);
-
-		PlayerAnimController anim = heroObject.transform.GetComponent<PlayerAnimController>();
-		anim.EnableInput(aInput);
 	}
 
     public void Update()
     {
-		aInput.Update();
+        // TODO: Handle lost input device.
+        //          Subscribe to detach event and disable input until it is reattached. 
+        //          Then rebind the device to the hero controller.
+        if (aInput !=null)
+        {
+            aInput.Update();
+        }
     }
 
     // To create a brand new Hero
@@ -65,23 +65,26 @@ public class Player : MonoBehaviour
         {
             case Character.EHeroClass.Warrior:
                 {
+                    Debug.Log("Made Warrior");
                     go = Resources.Load("Prefabs/Warrior") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
-                    heroScript = heroObject.GetComponent<Warrior>();
+                    heroScript = heroObject.AddComponent<Warrior>();
                 }
                 break;
             case Character.EHeroClass.Rogue:
                 {
+                    Debug.Log("Made Rogue");
                     go = Resources.Load("Prefabs/Rogue") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
-                    heroScript = heroObject.GetComponent<Rogue>();
+                    heroScript = heroObject.AddComponent<Rogue>();
                 }
                 break;
            case Character.EHeroClass.Mage:
                 {
+                    Debug.Log("Made Mage");
                     go = Resources.Load("Prefabs/Mage") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
-                    heroScript = heroObject.GetComponent<Mage>();
+                    heroScript = heroObject.AddComponent<Mage>();
                 }
                 break;
             default:
@@ -91,17 +94,36 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        // Create the hero for the player however do not make it active.
-
-        if (playerId == 0)
+       
+        // This is test code to assign players colours
+        switch (playerId)
         {
-            heroScript.SetColor(Color.red);
+            case 0:
+                {
+                    heroScript.SetColor(Color.red);
+                }
+                break;
+            case 1:
+                {
+                    heroScript.SetColor(Color.green);
+                }
+                break;
+            case 2:
+                {
+                    heroScript.SetColor(Color.blue);
+                }
+                break;
         }
-        heroScript.Initialise(null);
 
+        // Create the animator and controller for this hero (binds the input with the controller)
+        heroScript.Initialise(aInput, null);
+
+        // TODO: Do not make it active until gameplay starts
         heroObject.SetActive(true);
+
+        heroObject.transform.parent = this.transform;
     }
 
 	
-	#endregion	
+
 }
