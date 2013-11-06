@@ -11,7 +11,7 @@ public class ScreenManager : MonoBehaviour
     private List<GameScreen> screens = new List<GameScreen>();
     private List<GameScreen> tempScreensList = new List<GameScreen>();
     private bool isInitialized;
-    private bool traceEnabled = true;
+    private bool traceEnabled = false;
 
     #endregion
 
@@ -65,6 +65,8 @@ public class ScreenManager : MonoBehaviour
 	}
 
     #endregion
+
+    #region Update
 
     /// <summary>
     /// Called once per frame.
@@ -148,6 +150,8 @@ public class ScreenManager : MonoBehaviour
             screen.Draw();
         }
     }
+
+    #endregion
 
     #region Public Methods
 

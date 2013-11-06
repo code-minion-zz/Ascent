@@ -10,7 +10,6 @@ public class MenuScreen : GameScreen
     public override void Activate()
     {
         base.Activate();
-        Debug.Log("Menu Screen Created");
     }
 
     public override void Deactivate()
