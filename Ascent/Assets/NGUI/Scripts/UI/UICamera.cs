@@ -338,8 +338,8 @@ public class UICamera : MonoBehaviour
 	/// </summary>
 
 	static public GameObject hoveredObject;
-
-	/// <summary>
+	
+		/// <summary>
 	/// Option to manually set the selected game object.
 	/// </summary>
 
@@ -931,7 +931,7 @@ public class UICamera : MonoBehaviour
 			}
 		}
 		else inputHasFocus = false;
-
+		
 		// Update the keyboard and joystick events
 		if (mCurrentSelection != null) ProcessOthers();
 
@@ -948,7 +948,7 @@ public class UICamera : MonoBehaviour
 				ShowTooltip(true);
 			}
 		}
-		current = null;
+		current = null;		
 	}
 
 	/// <summary>

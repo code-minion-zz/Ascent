@@ -14,7 +14,6 @@ using System.Collections.Generic;
 [AddComponentMenu("NGUI/Interaction/Button Keys")]
 public class UIButtonKeys : MonoBehaviour
 {
-	public UIButtonKeys defaultButton; // only set once!
 	public bool startsSelected = false;
 	public UIButtonKeys selectOnClick;
 	public UIButtonKeys selectOnUp;
@@ -69,7 +68,7 @@ public class UIButtonKeys : MonoBehaviour
 				}
 				break;
 			}
-		}		
+		}
 	}
 
 	void OnClick ()
