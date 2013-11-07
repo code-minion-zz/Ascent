@@ -7,8 +7,8 @@ using System.Collections;
 public class Whirlwind : IAbility 
 {
 	Character owner;
-	private const float animationTime = 2f;
-	private const float animationSpeed = 1.1f;
+	private const float animationTime = 2.333f;
+	private const float animationSpeed = 2.0f;
 	private float timeElapsed;
 
 	public void Initialise(Character owner)
@@ -28,7 +28,7 @@ public class Whirlwind : IAbility
 	{
 		timeElapsed += Time.deltaTime;
 
-		if (timeElapsed >= animationTime / animationSpeed)
+		if (timeElapsed >= animationTime / animationSpeed * 0.9f)
 		{
 			owner.StopAbility();
 		}
