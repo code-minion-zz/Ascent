@@ -62,6 +62,10 @@ public class Warrior : Hero
 		IAbility roll = new Roll();
 		roll.Initialise(this);
 		abilities.Add(roll);
+		
+		IAbility whirlwind = new Whirlwind();
+		whirlwind.Initialise(this);
+		abilities.Add(whirlwind);
     }
 	
 	// public is called once per frame

@@ -21,6 +21,7 @@ public class SwingSword : IAbility
 
     public void UpdateAbility()
     {
+		
 		if (timeElapsed < (animationTime / animationSpeed) * 0.50f) // @ 70% time of the animation
 		{
 			// TODO: Get damage from the owner and ability formula

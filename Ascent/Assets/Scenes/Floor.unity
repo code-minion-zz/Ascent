@@ -1218,12 +1218,12 @@ GameObject:
   - 54: {fileID: 67478217}
   - 95: {fileID: 67478224}
   - 114: {fileID: 67478220}
-  - 114: {fileID: 67478219}
   - 114: {fileID: 67478218}
   - 65: {fileID: 67478223}
+  - 114: {fileID: 67478219}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1264,12 +1264,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 67478215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &67478219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1333,8 +1333,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &67478224
 Animator:
   m_ObjectHideFlags: 0
@@ -2217,12 +2217,12 @@ GameObject:
   - 54: {fileID: 122610654}
   - 95: {fileID: 122610656}
   - 114: {fileID: 122610653}
-  - 114: {fileID: 122610651}
   - 114: {fileID: 122610649}
   - 65: {fileID: 122610655}
+  - 114: {fileID: 122610651}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2247,12 +2247,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 122610647}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!23 &122610650
 Renderer:
   m_ObjectHideFlags: 0
@@ -2332,8 +2332,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &122610656
 Animator:
   m_ObjectHideFlags: 0
@@ -2912,12 +2912,12 @@ GameObject:
   - 54: {fileID: 151483800}
   - 95: {fileID: 151483808}
   - 114: {fileID: 151483804}
-  - 114: {fileID: 151483803}
   - 114: {fileID: 151483801}
   - 65: {fileID: 151483807}
+  - 114: {fileID: 151483803}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2947,12 +2947,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 151483799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!4 &151483802
 Transform:
   m_ObjectHideFlags: 0
@@ -3027,8 +3027,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &151483808
 Animator:
   m_ObjectHideFlags: 0
@@ -4868,12 +4868,12 @@ GameObject:
   - 54: {fileID: 182283869}
   - 95: {fileID: 182283877}
   - 114: {fileID: 182283873}
-  - 114: {fileID: 182283872}
   - 114: {fileID: 182283870}
   - 65: {fileID: 182283876}
+  - 114: {fileID: 182283872}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4903,12 +4903,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 182283868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!4 &182283871
 Transform:
   m_ObjectHideFlags: 0
@@ -4983,8 +4983,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &182283877
 Animator:
   m_ObjectHideFlags: 0
@@ -7199,12 +7199,12 @@ GameObject:
   - 54: {fileID: 243566333}
   - 95: {fileID: 243566340}
   - 114: {fileID: 243566336}
-  - 114: {fileID: 243566335}
   - 114: {fileID: 243566334}
   - 65: {fileID: 243566339}
+  - 114: {fileID: 243566335}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7245,12 +7245,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 243566331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &243566335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7314,8 +7314,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &243566340
 Animator:
   m_ObjectHideFlags: 0
@@ -15706,12 +15706,12 @@ GameObject:
   - 54: {fileID: 425525541}
   - 95: {fileID: 425525548}
   - 114: {fileID: 425525544}
-  - 114: {fileID: 425525543}
   - 114: {fileID: 425525542}
   - 65: {fileID: 425525547}
+  - 114: {fileID: 425525543}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15752,12 +15752,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 425525539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &425525543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15821,8 +15821,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &425525548
 Animator:
   m_ObjectHideFlags: 0
@@ -22591,12 +22591,12 @@ GameObject:
   - 54: {fileID: 653898447}
   - 95: {fileID: 653898454}
   - 114: {fileID: 653898450}
-  - 114: {fileID: 653898449}
   - 114: {fileID: 653898448}
   - 65: {fileID: 653898453}
+  - 114: {fileID: 653898449}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22637,12 +22637,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 653898445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &653898449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22706,8 +22706,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &653898454
 Animator:
   m_ObjectHideFlags: 0
@@ -25811,12 +25811,12 @@ GameObject:
   - 54: {fileID: 817316331}
   - 95: {fileID: 817316338}
   - 114: {fileID: 817316334}
-  - 114: {fileID: 817316333}
   - 114: {fileID: 817316332}
   - 65: {fileID: 817316337}
+  - 114: {fileID: 817316333}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25857,12 +25857,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 817316329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &817316333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25926,8 +25926,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &817316338
 Animator:
   m_ObjectHideFlags: 0
@@ -25954,12 +25954,12 @@ GameObject:
   - 54: {fileID: 827276015}
   - 95: {fileID: 827276022}
   - 114: {fileID: 827276018}
-  - 114: {fileID: 827276017}
   - 114: {fileID: 827276016}
   - 65: {fileID: 827276021}
+  - 114: {fileID: 827276017}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26000,12 +26000,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 827276013}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &827276017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26069,8 +26069,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &827276022
 Animator:
   m_ObjectHideFlags: 0
@@ -30786,6 +30786,46 @@ MeshFilter:
   m_PrefabInternal: {fileID: 833075487}
   m_GameObject: {fileID: 1002189917}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1003450969
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+  m_RootGameObject: {fileID: 1691038963}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1004031437
 GameObject:
   m_ObjectHideFlags: 0
@@ -32105,12 +32145,12 @@ GameObject:
   - 54: {fileID: 1025408460}
   - 95: {fileID: 1025408467}
   - 114: {fileID: 1025408463}
-  - 114: {fileID: 1025408462}
   - 114: {fileID: 1025408461}
   - 65: {fileID: 1025408466}
+  - 114: {fileID: 1025408462}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32151,12 +32191,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1025408458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1025408462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32220,8 +32260,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1025408467
 Animator:
   m_ObjectHideFlags: 0
@@ -35200,12 +35240,12 @@ GameObject:
   - 54: {fileID: 1164815097}
   - 95: {fileID: 1164815104}
   - 114: {fileID: 1164815100}
-  - 114: {fileID: 1164815099}
   - 114: {fileID: 1164815098}
   - 65: {fileID: 1164815103}
+  - 114: {fileID: 1164815099}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35246,12 +35286,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1164815095}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1164815099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35315,8 +35355,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1164815104
 Animator:
   m_ObjectHideFlags: 0
@@ -38871,12 +38911,12 @@ GameObject:
   - 54: {fileID: 1224232801}
   - 95: {fileID: 1224232808}
   - 114: {fileID: 1224232804}
-  - 114: {fileID: 1224232803}
   - 114: {fileID: 1224232802}
   - 65: {fileID: 1224232807}
+  - 114: {fileID: 1224232803}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38917,12 +38957,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1224232799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1224232803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38986,8 +39026,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1224232808
 Animator:
   m_ObjectHideFlags: 0
@@ -39487,12 +39527,12 @@ GameObject:
   - 54: {fileID: 1243154039}
   - 95: {fileID: 1243154046}
   - 114: {fileID: 1243154042}
-  - 114: {fileID: 1243154041}
   - 114: {fileID: 1243154040}
   - 65: {fileID: 1243154045}
+  - 114: {fileID: 1243154041}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39533,12 +39573,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1243154037}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1243154041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39602,8 +39642,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1243154046
 Animator:
   m_ObjectHideFlags: 0
@@ -51864,12 +51904,12 @@ GameObject:
   - 54: {fileID: 1588965889}
   - 95: {fileID: 1588965896}
   - 114: {fileID: 1588965892}
-  - 114: {fileID: 1588965891}
   - 114: {fileID: 1588965890}
   - 65: {fileID: 1588965895}
+  - 114: {fileID: 1588965891}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51910,12 +51950,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1588965887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1588965891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51979,8 +52019,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1588965896
 Animator:
   m_ObjectHideFlags: 0
@@ -53520,12 +53560,12 @@ GameObject:
   - 54: {fileID: 1653060696}
   - 95: {fileID: 1653060703}
   - 114: {fileID: 1653060699}
-  - 114: {fileID: 1653060698}
   - 114: {fileID: 1653060697}
   - 65: {fileID: 1653060702}
+  - 114: {fileID: 1653060698}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53566,12 +53606,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1653060694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1653060698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53635,8 +53675,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1653060703
 Animator:
   m_ObjectHideFlags: 0
@@ -55538,6 +55578,92 @@ MeshFilter:
   m_PrefabInternal: {fileID: 110978254}
   m_GameObject: {fileID: 1683740200}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1691038963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1691038967}
+  - 33: {fileID: 1691038966}
+  - 135: {fileID: 1691038965}
+  - 23: {fileID: 1691038964}
+  - 54: {fileID: 1691038968}
+  m_Layer: 0
+  m_Name: HitSphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1691038964
+Renderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 2300000, guid: edfd7b663325acc4db301aa909f624d7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  m_GameObject: {fileID: 1691038963}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+--- !u!135 &1691038965
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 13500000, guid: edfd7b663325acc4db301aa909f624d7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  m_GameObject: {fileID: 1691038963}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: .5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1691038966
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 3300000, guid: edfd7b663325acc4db301aa909f624d7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  m_GameObject: {fileID: 1691038963}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1691038967
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: edfd7b663325acc4db301aa909f624d7, type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  m_GameObject: {fileID: 1691038963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!54 &1691038968
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 5400000, guid: edfd7b663325acc4db301aa909f624d7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1003450969}
+  m_GameObject: {fileID: 1691038963}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1701660993
 GameObject:
   m_ObjectHideFlags: 0
@@ -66397,12 +66523,12 @@ GameObject:
   - 54: {fileID: 1870731810}
   - 95: {fileID: 1870731817}
   - 114: {fileID: 1870731813}
-  - 114: {fileID: 1870731812}
   - 114: {fileID: 1870731811}
   - 65: {fileID: 1870731816}
+  - 114: {fileID: 1870731812}
   m_Layer: 11
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Rat
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66443,12 +66569,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1870731808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29073be9f9c62bc49a87a8623a4cb775, type: 3}
+  m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   teamId: 2
   state: 0
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
+  hitBoxPrefab: {fileID: 0}
 --- !u!114 &1870731812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66512,8 +66638,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .921625972, y: 1.08348596, z: 2.8463819}
-  m_Center: {x: 0, y: .530952036, z: -.62559402}
+  m_Size: {x: .921625972, y: 1.59000003, z: 1.41999996}
+  m_Center: {x: 0, y: .839999974, z: .0799999982}
 --- !u!95 &1870731817
 Animator:
   m_ObjectHideFlags: 0

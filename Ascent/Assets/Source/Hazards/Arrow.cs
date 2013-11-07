@@ -15,8 +15,9 @@ public class Arrow : MonoBehaviour
 	
 	}
 
-    public void Initialise(float life, Vector3 direction, float speed, float damage)
+    public void Initialise(float life, Vector3 direction, float speed, float damage, Player _owner= null)
     {
+		//owner = _owner;
         lifeSpan = life;
         toDestroy = false;
         this.direction = direction;
