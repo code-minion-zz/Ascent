@@ -8,7 +8,7 @@ public class Game : MonoBehaviour
 
 	public static Game Singleton;
 	// Number of players
-    public Character.ECharacterClass[] playerCharacterType = new Character.ECharacterClass[3];
+    public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
 
     public bool visualDebuggerPrefab = true;
 
@@ -65,15 +65,12 @@ public class Game : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-
+		// Not used atm...
 	}
 
     void Update()
     {
-        for (int i = 0; i < NumberOfPlayers; ++i)
-        {
-            players[i].Update();
-        }
+		// Not used atm...
     }
 
     private void CreatePlayers()
@@ -82,10 +79,13 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < NumberOfPlayers; ++i)
         {
-            Player newPlayer = new Player();
+            GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+            Player newPlayer = player.GetComponent<Player>();
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
+            newPlayer.SetInputDevice(inputHandler.GetDevice(1));
             newPlayer.CreateHero(playerCharacterType[i]);
+			
         }
     }
 	

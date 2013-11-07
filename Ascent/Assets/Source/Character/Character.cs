@@ -2,79 +2,125 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(HealthBar))]
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour
 {
-    public enum ECharacterClass
+	public enum EHeroClass
+	{
+		Warrior,
+		Rogue,
+		Mage
+	}
+
+    public enum EDamageType
     {
-        Warrior,
-        Rogue,
-        Mage
+        Physical,
+        Magical,
     }
 
-    #region Fields
+	protected List<IAbility> abilities = new List<IAbility>();
+	protected IAbility activeAbility;
+
+	protected GameObject weaponPrefab;
+
+    protected Transform weaponSlot;
+    public Transform WeaponSlot
+    {
+        get { return weaponSlot; }
+    }
+
+    protected Weapon equipedWeapon;
+    public Weapon Weapon
+    {
+        get { return equipedWeapon; }
+    }
+
+    protected AnimatorController characterAnimator;
+    public AnimatorController Animator
+    {
+        get { return characterAnimator; }
+    }
 
     protected CharacterStatistics characterStatistics;
-    protected AnimatorController animatorController;
-    protected HealthBar healthBar;
-
-    #endregion
-
-    #region Properties
-
     public CharacterStatistics CharacterStats
     {
         get { return characterStatistics; }
     }
 
-    public AnimatorController Animator
-    {
-        get { return animatorController; }
-    }
-
-    #endregion
-
-    #region Initialization
-
     public virtual void Awake()
     {
-        // Initialize the character statistics
-        characterStatistics = new CharacterStatistics();
-        characterStatistics.Init();
-        characterStatistics.Health.Set(100.0f, 100.0f);
-
-        // Get all the components
-        healthBar = GetComponent<HealthBar>();
-        animatorController = GetComponent<AnimatorController>();
+        // To be derived
     }
 
     public virtual void Start()
     {
-
+        // To be derived
     }
-
-    #endregion
-
-    #region Operations
 
     public virtual void Update()
     {
-
+		if (activeAbility != null)
+		{
+			activeAbility.UpdateAbility();
+		}
     }
 
-    public virtual void TakeDamage(int damageAmount)
+    public virtual void UseAbility(int abilityID)
     {
+		if (activeAbility == null)
+		{
+			abilities[abilityID].StartAbility();
+			activeAbility = abilities[abilityID];
+		}
+    }
+
+	public virtual void InterruptAbility()
+	{
+		if (activeAbility != null)
+		{
+			activeAbility.EndAbility();
+			activeAbility = null;
+		}
+	}
+
+	public virtual void StopAbility()
+	{
+		if (activeAbility != null)
+		{
+			activeAbility.EndAbility();
+			activeAbility = null;
+		}
+	}
+
+
+    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
+    {
+		// Taking damage may or may not interrupt the current ability
+
+        //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
-        HealthStat health = characterStatistics.Health;
-        health -= damageAmount;
+        characterStatistics.CurrentHealth -= unmitigatedDamage;
+
+		
+
+        //Debug.Log(characterStatistics.CurrentHealth);
 
         // If the character is dead
-        if (health <= 0)
+		if (characterStatistics.CurrentHealth <= 0)
         {
             // On Death settings
             // Update states to kill character
         }
     }
 
-    #endregion
+    public virtual void ApplyKnockback(Vector3 direction, float magnitude)
+    {
+		// Taking damage may or may not interrupt the current ability
+		transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
+    }
+
+    public virtual void ApplySpellEffect()
+    {
+		// Taking damage may or may not interrupt the current ability
+    }
+
 }

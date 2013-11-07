@@ -35,15 +35,17 @@ public class AnimatorController : MonoBehaviour
         animator = GetComponent<Animator>();
         //col = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
+
+        Debug.Log( Animator);
     }
 
-    public virtual void Start()
+    public virtual void PlayAnimation(string animation)
     {
-
+        animator.SetBool(animation, true);
     }
 
-    public virtual void Update()
-    {
-
-    }
+	public virtual void StopAnimation(string animation)
+	{
+		animator.SetBool(animation, false);
+	}
 }
