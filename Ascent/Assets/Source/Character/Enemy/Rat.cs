@@ -19,11 +19,17 @@ public class Rat : Enemy
         characterStatistics.MaxHealth = 100;
         characterStatistics.CurrentHealth = 100;
 
-		// Add abilities
-		IAbility swordSwing = new SwingSword();
+        // Add abilities
+        IAbility swordSwing = new SwingSword();
 
-		swordSwing.Initialise(this);
-		abilities.Add(swordSwing);
+        swordSwing.Initialise(this);
+        abilities.Add(swordSwing);
+
+        // Add abilities
+        IAbility charge = new Charge();
+
+        charge.Initialise(this);
+        abilities.Add(charge);
 	}
 
 
