@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SwingSword : IAbility
+public class SwingSword : IAction
 {
     Character owner;
 	private const float animationTime = 1.167f;

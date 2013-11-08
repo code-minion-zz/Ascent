@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public interface IAbility 
+public interface IAction 
 {
     void Initialise(Character owner);
     void StartAbility();

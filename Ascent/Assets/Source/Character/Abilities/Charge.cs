@@ -4,33 +4,38 @@
 using UnityEngine;
 using System.Collections;
 
-public class Charge : IAbility 
+public class Charge : IAction 
 {
 	Character owner;
 	private const float animationTime = 2.333f;
 	private const float animationSpeed = 2.0f;
 	private float timeElapsed;
+    private float distanceMax = 20.0f;
+    private float distanceTraveled;
 
-	public void Initialise(Character owner)
-	{
-		this.owner = owner;
-	}
-
+    public void Initialise(Character owner)
+    {
+        this.owner = owner;
+    }
+    
 	public void StartAbility()
 	{
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("SwingAttack");
+        // get owner's charge box and enable collision
 		owner.Weapon.EnableCollision = true;
 		owner.Weapon.SetAttackProperties(999,Character.EDamageType.Physical);
 	}
 
 	public void UpdateAbility()
 	{
-		timeElapsed += Time.deltaTime;
 
-        owner.transform.position += owner.transform.forward * Time.fixedDeltaTime * animationSpeed;
+        Vector3 moveVec = owner.transform.forward * Time.deltaTime * animationSpeed;
+        distanceTraveled += moveVec.magnitude;
+        Debug.Log(distanceTraveled);
+        owner.transform.position += moveVec;
 
-		if (timeElapsed >= animationTime / animationSpeed * 0.7f)
+		if (distanceTraveled >= distanceMax)
 		{
 			owner.StopAbility();
 		}

@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Roll : IAbility
+public class Roll : IAction
 {
 	Character owner;
 	private const float animationTime = 1.8f;

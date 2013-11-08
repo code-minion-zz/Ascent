@@ -20,13 +20,13 @@ public class Rat : Enemy
         characterStatistics.CurrentHealth = 100;
 
         // Add abilities
-        IAbility swordSwing = new SwingSword();
+        IAction swordSwing = new SwingSword();
 
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
 
         // Add abilities
-        IAbility charge = new Charge();
+        IAction charge = new Charge();
 
         charge.Initialise(this);
         abilities.Add(charge);

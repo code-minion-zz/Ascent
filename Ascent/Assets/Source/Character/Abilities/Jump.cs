@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Jump : IAbility 
+public class Jump : IAction 
 {
 	Character owner;
 	private const float animationTime = 2.233f;

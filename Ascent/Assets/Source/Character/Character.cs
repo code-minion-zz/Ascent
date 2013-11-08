@@ -17,8 +17,8 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 
-	protected List<IAbility> abilities = new List<IAbility>();
-	protected IAbility activeAbility;
+	protected List<IAction> abilities = new List<IAction>();
+	protected IAction activeAbility;
 
 	protected GameObject weaponPrefab;
 

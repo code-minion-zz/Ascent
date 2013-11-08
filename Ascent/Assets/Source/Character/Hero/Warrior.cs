@@ -51,19 +51,19 @@ public class Warrior : Hero
 
 
         // Add abilities
-        IAbility swordSwing = new SwingSword();
+        IAction swordSwing = new SwingSword();
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
 
-		IAbility jump = new Jump();
+		IAction jump = new Jump();
 		jump.Initialise(this);
 		abilities.Add(jump);
 
-		IAbility roll = new Roll();
+		IAction roll = new Roll();
 		roll.Initialise(this);
 		abilities.Add(roll);
 		
-		IAbility charge = new Charge();
+		IAction charge = new Charge();
 		charge.Initialise(this);
 		abilities.Add(charge);
     }
