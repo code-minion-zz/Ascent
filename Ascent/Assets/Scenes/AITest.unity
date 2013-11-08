@@ -2067,10 +2067,10 @@ MonoBehaviour:
       /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
       /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
-      /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="True"
+      /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
       childrenvisible="False" /><field type="RAIN.Perception.BasicSenses" reference="9"
-      id="_senses" childrenvisible="False" /><field type="System.Collections.Generic.List"
+      id="_senses" childrenvisible="True" /><field type="System.Collections.Generic.List"
       id="_customElements" elementtype="RAIN.Core.CustomAIElement" childrenvisible="False"
       /></reference><reference type="RAIN.Memory.BasicMemory" refcount="1" id="1"><field
       type="System.Collections.Generic.List" id="_memoryItems" elementtype="System.String"
@@ -2119,11 +2119,11 @@ MonoBehaviour:
       reference="10" id="element0" /></field></reference><reference type="RAIN.Perception.Sensors.VisualSensor"
       refcount="1" id="10"><field value="True" type="System.Boolean" id="_showVisual"
       /><field value="0,0.6,0,1" type="UnityEngine.Color" id="_sensorColor" /><field
-      value="True" type="System.Boolean" id="_isActive" /><field value="Visual Sensor"
-      type="System.String" id="_sensorName" /><field type="UnityEngine.Transform"
-      id="_mountPoint" gameobject="-1" /><field value="0,0,0" type="UnityEngine.Vector3"
-      id="_positionOffset" /><field value="0,0,0" type="UnityEngine.Vector3" id="_angleOffset"
-      /><field value="False" type="System.Boolean" id="_canDetectSelf" /><field type="System.Collections.Generic.List"
+      value="True" type="System.Boolean" id="_isActive" /><field value="Eyes" type="System.String"
+      id="_sensorName" /><field type="UnityEngine.Transform" id="_mountPoint" gameobject="-1"
+      /><field value="0,0,0" type="UnityEngine.Vector3" id="_positionOffset" /><field
+      value="0,0,0" type="UnityEngine.Vector3" id="_angleOffset" /><field value="False"
+      type="System.Boolean" id="_canDetectSelf" /><field type="System.Collections.Generic.List"
       id="_filters" elementtype="RAIN.Perception.Sensors.Filters.RAINSensorFilter"
       /><field value="359.05" type="System.Single" id="_horizontalAngle" /><field
       value="360.7" type="System.Single" id="_verticalAngle" /><field value="10" type="System.Single"
@@ -2134,7 +2134,7 @@ MonoBehaviour:
       /></references></component>
     _serializedGameObjects:
     - {fileID: 2003184285}
-    - {fileID: 11400000, guid: e6551f57b7598ae48afb9b2437d12a76, type: 2}
+    - {fileID: 11400000, guid: 13b00b2a1743dc44eb74a892a4d7c7fe, type: 2}
     _serializedCustomData: []
 --- !u!1 &1789895434
 GameObject:
