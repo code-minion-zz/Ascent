@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SwingSword : IAbility
+public class SwingSword : IAction
 {
     private Character owner;
 	private const float animationTime = 1.167f;
