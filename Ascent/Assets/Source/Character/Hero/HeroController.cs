@@ -51,7 +51,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnY(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(3);
     }
 
     public void OnA(ref  InControl.InputDevice device)
