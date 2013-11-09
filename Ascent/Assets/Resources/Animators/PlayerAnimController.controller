@@ -15,13 +15,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Direction
-    m_Type: 1
-    m_DefaultVector: {x: 0, y: 0, z: 0}
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   - m_Name: Jump
     m_Type: 4
     m_DefaultVector: {x: 0, y: 0, z: 0}
@@ -43,13 +36,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: AngularSpeed
-    m_Type: 1
-    m_DefaultVector: {x: 0, y: 0, z: 0}
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   - m_Name: Roll
     m_Type: 4
     m_DefaultVector: {x: 0, y: 0, z: 0}
@@ -57,7 +43,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: RunSpeed
+  - m_Name: SwordAttackSpeed
     m_Type: 1
     m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
@@ -318,6 +304,33 @@ BlendTree:
   m_MaxThreshold: 132.987793
   m_UseAutomaticThresholds: 0
   m_BlendType: 0
+--- !u!206 &20660274
+BlendTree:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: SwordAttackSpeed
+  m_Childs:
+  - m_Motion: {fileID: 7400016, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+    m_Threshold: 1
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_IsAnim: 1
+    m_Mirror: 0
+  - m_Motion: {fileID: 7400016, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+    m_Threshold: 4
+    m_Position: {x: 0, y: 0}
+    m_TimeScale: 4
+    m_CycleOffset: 0
+    m_IsAnim: 1
+    m_Mirror: 0
+  m_BlendParameter: SwordAttackSpeed
+  m_BlendParameterY: Speed
+  m_MinThreshold: 1
+  m_MaxThreshold: 4
+  m_UseAutomaticThresholds: 0
+  m_BlendType: 0
 --- !u!206 &20677416
 BlendTree:
   m_ObjectHideFlags: 1
@@ -451,7 +464,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: RunSpeed
+    m_ConditionEvent: Speed
     m_EventTreshold: 0
     m_ExitTime: .5
   - m_ConditionMode: 1
@@ -527,7 +540,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: RunSpeed
+    m_ConditionEvent: Speed
     m_EventTreshold: 0
     m_ExitTime: .858490586
   - m_ConditionMode: 2
@@ -651,7 +664,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: RunSpeed
+    m_ConditionEvent: Speed
     m_EventTreshold: 0
     m_ExitTime: .858490586
   - m_ConditionMode: 2
@@ -688,7 +701,7 @@ State:
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400014, guid: ce448a8080b4e934b8473badd27be402, type: 3}
+  - {fileID: 7400000, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
   m_ParentStateMachine: {fileID: 110700000}
   m_Position: {x: 264, y: 84, z: 0}
   m_IKOnFeet: 0
@@ -745,10 +758,10 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SwingSword
-  m_Speed: 2
+  m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400016, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+  - {fileID: 20660274}
   m_ParentStateMachine: {fileID: 110748155}
   m_Position: {x: 384, y: 60, z: 0}
   m_IKOnFeet: 0
@@ -765,7 +778,7 @@ State:
   m_Motions:
   - {fileID: 7400004, guid: 4d82c5d5981b02243b3eda7b9567b1c1, type: 3}
   m_ParentStateMachine: {fileID: 110700000}
-  m_Position: {x: 696, y: 84, z: 0}
+  m_Position: {x: 660, y: 12, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 
@@ -799,9 +812,6 @@ StateMachine:
       - {fileID: 110113258}
       - {fileID: 110100277}
     data:
-      first: {fileID: 0}
-      second: []
-    data:
       first: {fileID: 110235276}
       second:
       - {fileID: 110120908}
@@ -831,16 +841,16 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110263461}
-      second:
-      - {fileID: 110185308}
+      first: {fileID: 0}
+      second: []
     data:
       first: {fileID: 110212141}
       second:
       - {fileID: 110169125}
     data:
-      first: {fileID: 0}
-      second: []
+      first: {fileID: 110263461}
+      second:
+      - {fileID: 110185308}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 60, y: -12, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

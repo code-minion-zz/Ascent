@@ -82,8 +82,9 @@ public class PlayerAnimController : AnimatorController
 	}
 
 
-    public void Start()
+    public override void Start()
     {
+
         if (animator.layerCount == 2)
             animator.SetLayerWeight(1, 1);
     }

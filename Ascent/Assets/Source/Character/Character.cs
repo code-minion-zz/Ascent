@@ -19,8 +19,8 @@ public abstract class Character : MonoBehaviour
 
 	protected List<IAbility> abilities = new List<IAbility>();
 	protected IAbility activeAbility;
-
 	protected GameObject weaponPrefab;
+    protected bool isDead = false;
 
     protected Transform weaponSlot;
     public Transform WeaponSlot
@@ -44,6 +44,20 @@ public abstract class Character : MonoBehaviour
     public CharacterStatistics CharacterStats
     {
         get { return characterStatistics; }
+    }
+
+    protected List<Object> lastObjectsDamagedBy = new List<Object>();
+    public List<Object> LastObjectsDamagedBy
+    {
+        get { return lastObjectsDamagedBy; }
+    }
+
+    /// <summary>
+    /// Returns true if the character is dead. 
+    /// </summary>
+    public bool IsDead
+    {
+        get { return isDead; }
     }
 
     public virtual void Awake()
@@ -91,7 +105,6 @@ public abstract class Character : MonoBehaviour
 		}
 	}
 
-
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
 		// Taking damage may or may not interrupt the current ability
@@ -100,15 +113,12 @@ public abstract class Character : MonoBehaviour
         // Obtain the health stat and subtract damage amount to the health.
         characterStatistics.CurrentHealth -= unmitigatedDamage;
 
-		
-
-        //Debug.Log(characterStatistics.CurrentHealth);
-
         // If the character is dead
 		if (characterStatistics.CurrentHealth <= 0)
         {
             // On Death settings
             // Update states to kill character
+            OnDeath();
         }
     }
 
@@ -123,4 +133,11 @@ public abstract class Character : MonoBehaviour
 		// Taking damage may or may not interrupt the current ability
     }
 
+    public virtual void OnDeath()
+    {
+        // We may internally tell this character that they are dead.
+        // The reason we do this is when we pool objects we will re-use 
+        // this character.
+        isDead = true;
+    }
 }

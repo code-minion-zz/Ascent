@@ -26,5 +26,15 @@ public class Rat : Enemy
 		abilities.Add(swordSwing);
 	}
 
+    // We want to override the on death for this rat as we have some specific behaviour here.
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        // Play some cool animation
+        // Maybe even play a sound here
+        // Maybe even drop some loot here
 
+        // Rat is going to destroy itself now
+        DestroyObject(this.gameObject);
+    }
 }

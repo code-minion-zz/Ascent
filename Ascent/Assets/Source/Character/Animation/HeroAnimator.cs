@@ -28,31 +28,21 @@ public class HeroAnimator : AnimatorController
 
     #region Fields
 
-    private AnimatorStateInfo currentBaseState;		// a reference to the current state of the animator, used for base layer
-    private AnimatorStateInfo combatLayerState;	    // a reference to the current state of the animator, used for layer 2
-
-    //private CapsuleCollider col;
-
     public bool useCurves;						    // a setting for teaching purposes to show use of curves
     public float movementSpeed = 10.0f;              // Movment speed
     public float rotationSmooth = 10.0f;
 
+
     static int idleState = Animator.StringToHash("Movement." + "Idle");
-    static int attackState = Animator.StringToHash("CombatLayer." + "SwingRight");
+    static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
     static int movementState = Animator.StringToHash("Movement." + "Movement");
 
     private Vector3 direction;
-
-    private List<AnimationClip> currentAnimationClips = new List<AnimationClip>();
+    private AnimatorStateInfo activeStateInfo;
 
     public float MovementSpeed
     {
         get { return movementSpeed; }
-    }
-
-    public List<AnimationClip> CurrentAnimationClips
-    {
-        get { return currentAnimationClips; }
     }
 
     #endregion
@@ -60,47 +50,33 @@ public class HeroAnimator : AnimatorController
     public override void Awake()
     {
         base.Awake();
-
-        // Get all the components that we need.
-        //col = GetComponent<CapsuleCollider>();
     }
 
 	// Use this for initialization
-    public void Start() 
+    public override void Start() 
     {
-
+        base.Start();
 	}
-
-    AnimationInfo[] GetCurrentAnimationInfo(int layer)
-    {
-        return animator.GetCurrentAnimationClipState(layer);
-    }
 	
 	// Update is called once per frame
-	public void Update () 
+	public override void Update () 
     {
+        base.Update();
+
         bool attacking = animator.GetBool("SwingAttack");
         bool jumping = animator.GetBool("Jump");
         bool rolling = animator.GetBool("Roll");
 
-        // Set our currentState variable to the current state of the Base Layer (0) of animation
-        currentBaseState = animator.GetCurrentAnimatorStateInfo(0);
-
-        // Set our combatLayerState variable to the current state of the second Layer (1) of animation
-        if (animator.layerCount == 2)
+        for (int layer = 0; layer < layerCount; ++layer)
         {
-            combatLayerState = animator.GetCurrentAnimatorStateInfo(1);
-        }
-
-        if (currentBaseState.nameHash == movementState ||
-            currentBaseState.nameHash == idleState)
-        {
-            if (!attacking && !jumping && !rolling)
+            if (IsActiveState(layer, movementState) ||
+                IsActiveState(layer, idleState))
             {
+
+                // Update the look at when we are moving
                 if (direction.x != 0 || direction.z != 0)
                 {
                     transform.LookAt(transform.position + direction);
-                    //SmoothLookAt(transform.position + direction, rotationSmooth);
                 }
             }
         }
@@ -133,7 +109,7 @@ public class HeroAnimator : AnimatorController
 
     void AnimJump(bool b)
     {
-        if (currentBaseState.nameHash == movementState)
+        if (activeStateInfo.nameHash == movementState)
         {
             animator.SetBool("Jump", b);
         }
