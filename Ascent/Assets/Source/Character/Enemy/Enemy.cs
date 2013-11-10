@@ -29,6 +29,8 @@ public abstract class Enemy : Character
     private Vector3 originalScale;
     private List<Transform> activeHitBoxes; // active melee attacks
 
+    protected RAIN.Core.AIRig ai;
+
     #endregion
 
     #region Initialization

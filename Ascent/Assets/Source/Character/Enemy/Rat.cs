@@ -13,6 +13,20 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
+        ai = gameObject.GetComponentInChildren<RAIN.Core.AIRig>();
+
+        if (ai.AI.WorkingMemory.ItemExists("acting") == false)
+        {
+            ai.AI.WorkingMemory.SetItem<bool>("acting", false);
+        }
+
+        Debug.Log(ai.AI.WorkingMemory.ItemExists("acting"));
+
+        if (ai.AI.WorkingMemory.ItemExists("acting2") == false)
+        {
+            ai.AI.WorkingMemory.SetItem<bool>("acting2", false);
+        }
+
 		// Populate with stats
 
         characterStatistics = new CharacterStatistics();
@@ -20,13 +34,13 @@ public class Rat : Enemy
         characterStatistics.CurrentHealth = 100;
 
         // Add abilities
-        IAction swordSwing = new SwingSword();
+        Action swordSwing = new SwingSword();
 
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
 
         // Add abilities
-        IAction charge = new Charge();
+        Action charge = new Charge();
 
         charge.Initialise(this);
         abilities.Add(charge);

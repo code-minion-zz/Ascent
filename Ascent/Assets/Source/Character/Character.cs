@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 
-	protected List<IAction> abilities = new List<IAction>();
+	protected List<Action> abilities = new List<Action>();
 	protected IAction activeAbility;
 	protected GameObject weaponPrefab;
     protected bool isDead = false;
@@ -85,6 +85,21 @@ public abstract class Character : MonoBehaviour
 			abilities[abilityID].StartAbility();
 			activeAbility = abilities[abilityID];
 		}
+    }
+
+    public virtual void UseAbility(string ability)
+    {
+        if (activeAbility == null)
+        {
+            Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
+            if (action == null)
+            {
+                Debug.LogError("Could not find and use ability: " + ability);
+            }
+
+            action.StartAbility();
+            activeAbility = action;
+        }
     }
 
 	public virtual void InterruptAbility()
