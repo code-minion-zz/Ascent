@@ -75,7 +75,7 @@ public class Warrior : Hero
 		base.Update();
 	}
 	
-	private void AddSkill(IAction skill)
+	private void AddSkill(Action skill)
 	{
 		skill.Initialise(this);
 		abilities.Add(skill);
