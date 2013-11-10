@@ -4,25 +4,24 @@
 using UnityEngine;
 using System.Collections;
 
-public class Roll : IAction
+public class Roll : Action
 {
-	Character owner;
 	private const float animationTime = 1.8f;
 	private const float animationSpeed = 1.25f;
 	private float timeElapsed;
 
-	public void Initialise(Character owner)
+    public override void Initialise(Character owner)
 	{
-		this.owner = owner;
+        base.Initialise(owner);
 	}
 
-	public void StartAbility()
+    public override void StartAbility()
 	{
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("Roll");
 	}
 
-	public void UpdateAbility()
+    public override void UpdateAbility()
 	{
 		timeElapsed += Time.deltaTime;
 
@@ -32,7 +31,7 @@ public class Roll : IAction
 		}
 	}
 
-	public void EndAbility()
+    public override void EndAbility()
 	{
 		owner.Animator.StopAnimation("Roll");
 	}

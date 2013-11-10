@@ -2,28 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SwingSword : IAction
+public class SwingSword : Action
 {
-    private Character owner;
 	private const float animationTime = 1.167f;
 	private const float animationSpeed = 3.0f;
     private int damage = 10;
 	private float timeElapsed;
     private string animationClip = "SwingAttack";
 
-    public void Initialise(Character owner)
+    public override void Initialise(Character owner)
     {
-        this.owner = owner;
+        base.Initialise(owner);
     }
 
-    public void StartAbility()
+    public override void StartAbility()
     {
 		timeElapsed = 0.0f;
         owner.Animator.PlayAnimation(animationClip);
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 
-    public void UpdateAbility()
+    public override void UpdateAbility()
     {
         if (timeElapsed < (animationTime / animationSpeed) * 0.50f) // @ 70% time of the animation
         {
@@ -41,7 +40,7 @@ public class SwingSword : IAction
         }
     }
 
-    public void EndAbility()
+    public override void EndAbility()
     {
         owner.Weapon.EnableCollision = false;
         owner.Animator.StopAnimation(animationClip);

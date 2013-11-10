@@ -4,21 +4,20 @@
 using UnityEngine;
 using System.Collections;
 
-public class Charge : IAction 
+public class Charge : Action 
 {
-	Character owner;
 	private const float animationTime = 2.333f;
 	private const float animationSpeed = 2.0f;
 	private float timeElapsed;
     private float distanceMax = 20.0f;
     private float distanceTraveled;
 
-    public void Initialise(Character owner)
+    public override void Initialise(Character owner)
     {
-        this.owner = owner;
+        base.Initialise(owner);
     }
-    
-	public void StartAbility()
+
+    public override void StartAbility()
 	{
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("SwingAttack");
@@ -27,7 +26,7 @@ public class Charge : IAction
 		owner.Weapon.SetAttackProperties(999,Character.EDamageType.Physical);
 	}
 
-	public void UpdateAbility()
+    public override void UpdateAbility()
 	{
 
         Vector3 moveVec = owner.transform.forward * Time.deltaTime * animationSpeed;
@@ -41,7 +40,7 @@ public class Charge : IAction
 		}
 	}
 
-	public void EndAbility()
+    public override void EndAbility()
 	{
 		owner.Weapon.EnableCollision = false;
 		owner.Animator.StopAnimation("SwingAttack");
