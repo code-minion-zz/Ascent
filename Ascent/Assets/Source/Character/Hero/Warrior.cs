@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Warrior : Hero 
 {
+    bool chargeCollision = false;
+
     public override void Initialise(AscentInput input, HeroSave saveData)
     {
         characterStatistics = null;
@@ -50,34 +52,21 @@ public class Warrior : Hero
         heroController.EnableInput(input);
 		
 		// Add charge collider
-		GameObject hitDisc = Resources.Load("Prefabs/HitDisc") as GameObject;
-        if (hitDisc == null)
-            Debug.Log("HitDisc prefab not found");
-		hitDisc = Instantiate(hitDisc) as GameObject;
-		hitDisc.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST,0,0f,100f,0f);
-		hitDisc.transform.localPosition = Vector3.zero;
-		hitDisc.transform.parent = transform;
+		GameObject collisionBall = Resources.Load("Prefabs/CollisionBall") as GameObject;
+        if (collisionBall == null)
+            Debug.Log("CollisionBall prefab not found");
+        collisionBall = Instantiate(collisionBall) as GameObject;
+        collisionBall.transform.localPosition = transform.forward;
+        collisionBall.transform.parent = transform;
 		
         // Add abilities
 		AddSkill(new SwingSword());
-//        IAction swordSwing = new SwingSword();
-//        swordSwing.Initialise(this);
-//        abilities.Add(swordSwing);
 		
 		AddSkill(new Jump());
-//		IAction jump = new Jump();
-//		jump.Initialise(this);
-//		abilities.Add(jump);
 		
 		AddSkill(new Roll());
-//		IAction roll = new Roll();
-//		roll.Initialise(this);
-//		abilities.Add(roll);
 		
 		AddSkill(new Charge());
-//		IAction charge = new Charge();
-//		charge.Initialise(this);
-//		abilities.Add(charge);
     }
 	
 	// public is called once per frame

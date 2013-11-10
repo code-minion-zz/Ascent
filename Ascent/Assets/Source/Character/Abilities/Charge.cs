@@ -46,6 +46,7 @@ public class Charge : IAction
 		owner.Weapon.EnableCollision = false;
 		owner.Animator.StopAnimation("SwingAttack");
 	}
+
 }
 
 /*
