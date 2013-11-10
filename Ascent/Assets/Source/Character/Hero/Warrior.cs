@@ -48,29 +48,47 @@ public class Warrior : Hero
         heroController = gameObject.AddComponent<HeroController>();
 		heroController.Initialise(this);
         heroController.EnableInput(input);
-
-
-        // Add abilities
-        IAction swordSwing = new SwingSword();
-        swordSwing.Initialise(this);
-        abilities.Add(swordSwing);
-
-		IAction jump = new Jump();
-		jump.Initialise(this);
-		abilities.Add(jump);
-
-		IAction roll = new Roll();
-		roll.Initialise(this);
-		abilities.Add(roll);
 		
-		IAction charge = new Charge();
-		charge.Initialise(this);
-		abilities.Add(charge);
+		// Add charge collider
+		GameObject hitDisc = Resources.Load("Prefabs/HitDisc") as GameObject;
+        if (hitDisc == null)
+            Debug.Log("HitDisc prefab not found");
+		hitDisc = Instantiate(hitDisc) as GameObject;
+		hitDisc.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST,0,0f,100f,0f);
+		hitDisc.transform.localPosition = Vector3.zero;
+		hitDisc.transform.parent = transform;
+		
+        // Add abilities
+		AddSkill(new SwingSword());
+//        IAction swordSwing = new SwingSword();
+//        swordSwing.Initialise(this);
+//        abilities.Add(swordSwing);
+		
+		AddSkill(new Jump());
+//		IAction jump = new Jump();
+//		jump.Initialise(this);
+//		abilities.Add(jump);
+		
+		AddSkill(new Roll());
+//		IAction roll = new Roll();
+//		roll.Initialise(this);
+//		abilities.Add(roll);
+		
+		AddSkill(new Charge());
+//		IAction charge = new Charge();
+//		charge.Initialise(this);
+//		abilities.Add(charge);
     }
 	
 	// public is called once per frame
     public override void Update() 
 	{
 		base.Update();
+	}
+	
+	private void AddSkill(IAction skill)
+	{
+		skill.Initialise(this);
+		abilities.Add(skill);
 	}
 }
