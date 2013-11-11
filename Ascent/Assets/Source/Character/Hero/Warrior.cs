@@ -51,21 +51,21 @@ public class Warrior : Hero
 
 
         // Add abilities
-        IAbility swordSwing = new SwingSword();
+        IAction swordSwing = new SwingSword();
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
 
-		IAbility jump = new Jump();
+		IAction jump = new Jump();
 		jump.Initialise(this);
 		abilities.Add(jump);
 
-		IAbility roll = new Roll();
+		IAction roll = new Roll();
 		roll.Initialise(this);
 		abilities.Add(roll);
 		
-		IAbility whirlwind = new Whirlwind();
-		whirlwind.Initialise(this);
-		abilities.Add(whirlwind);
+		IAction charge = new Charge();
+		charge.Initialise(this);
+		abilities.Add(charge);
     }
 	
 	// public is called once per frame

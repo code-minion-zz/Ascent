@@ -19,11 +19,17 @@ public class Rat : Enemy
         characterStatistics.MaxHealth = 100;
         characterStatistics.CurrentHealth = 100;
 
-		// Add abilities
-		IAbility swordSwing = new SwingSword();
+        // Add abilities
+        IAction swordSwing = new SwingSword();
 
-		swordSwing.Initialise(this);
-		abilities.Add(swordSwing);
+        swordSwing.Initialise(this);
+        abilities.Add(swordSwing);
+
+        // Add abilities
+        IAction charge = new Charge();
+
+        charge.Initialise(this);
+        abilities.Add(charge);
 	}
 
     // We want to override the on death for this rat as we have some specific behaviour here.

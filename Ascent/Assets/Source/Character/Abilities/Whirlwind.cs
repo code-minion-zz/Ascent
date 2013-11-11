@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Whirlwind : IAbility 
+public class Whirlwind : IAction 
 {
 	Character owner;
 	private const float animationTime = 2.333f;
