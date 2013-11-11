@@ -22,11 +22,6 @@ public class Rat : Enemy
 
         Debug.Log(ai.AI.WorkingMemory.ItemExists("acting"));
 
-        if (ai.AI.WorkingMemory.ItemExists("acting2") == false)
-        {
-            ai.AI.WorkingMemory.SetItem<bool>("acting2", false);
-        }
-
 		// Populate with stats
 
         characterStatistics = new CharacterStatistics();
@@ -34,13 +29,13 @@ public class Rat : Enemy
         characterStatistics.CurrentHealth = 100;
 
         // Add abilities
-        Action swordSwing = new SwingSword();
+        Action swordSwing = new EnemyTackle();
 
         swordSwing.Initialise(this);
         abilities.Add(swordSwing);
 
         // Add abilities
-        Action charge = new Charge();
+        Action charge = new EnemyCharge();
 
         charge.Initialise(this);
         abilities.Add(charge);

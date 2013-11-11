@@ -1,26 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyTackle : IAction
+public class EnemyTackle : Action
 {
-    Character owner;
-
-    public void Initialise(Character owner)
+    public override void Initialise(Character owner)
     {
-        this.owner = owner;
+        base.Initialise(owner);
     }
 
-    public void StartAbility()
+    public override void StartAbility()
     {
 
     }
 
-    public void UpdateAbility()
+    public override void UpdateAbility()
     {
-
+        owner.StopAbility();
     }
 
-    public void EndAbility()
+    public override void EndAbility()
     {
 
     }

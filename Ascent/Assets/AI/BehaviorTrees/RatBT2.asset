@@ -13,34 +13,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dataSerializer:
     _serializedData: <scriptableobject version="1.0" type="RAIN.BehaviorTrees.BTAsset"><fields><field
-      value="&lt;behaviortree version=&quot;1.0&quot; repeatuntil=&quot;&quot; name=&quot;RatBT2&quot;&gt;&lt;parallel
-      tiebreaker=&quot;fail&quot; succeed=&quot;all&quot; repeatuntil=&quot;running&quot;
-      name=&quot;root&quot; fail=&quot;any&quot;&gt;&lt;selector usepriorities=&quot;False&quot;
-      repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint repeatuntil=&quot;&quot;
-      priority=&quot;&quot; name=&quot;not performing action&quot; constraint=&quot;acting
-      == false&quot;&gt;&lt;parallel tiebreaker=&quot;fail&quot; succeed=&quot;all&quot;
-      repeatuntil=&quot;&quot; name=&quot;parallel&quot; fail=&quot;any&quot;&gt;&lt;detect
-      sensor=&quot;chargeRange&quot; repeatuntil=&quot;running&quot; name=&quot;detect
-      hero in chargeRange&quot; entityobjectvariable=&quot;targetCharge&quot; aspectvariable=&quot;&quot;
-      aspectobjectvariable=&quot;&quot; aspect=&quot;heroVisual&quot; /&gt;&lt;detect
-      sensor=&quot;attackRange&quot; repeatuntil=&quot;running&quot; name=&quot;detect
-      hero in attackRange&quot; entityobjectvariable=&quot;targetAttack&quot; aspectvariable=&quot;&quot;
-      aspectobjectvariable=&quot;&quot; aspect=&quot;heroVisual&quot; /&gt;&lt;detect
-      sensor=&quot;eyeRange&quot; repeatuntil=&quot;running&quot; name=&quot;detect
-      hero in eyeRange&quot; entityobjectvariable=&quot;targetMove&quot; aspectvariable=&quot;&quot;
-      aspectobjectvariable=&quot;&quot; aspect=&quot;heroVisual&quot; /&gt;&lt;selector
-      usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint
+      value="&lt;behaviortree version=&quot;1.0&quot; repeatuntil=&quot;&quot; name=&quot;RatBT2&quot;&gt;&lt;sequencer
+      usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;root&quot;&gt;&lt;selector
+      usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;selector&quot;&gt;&lt;constraint repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;not performing action&quot; constraint=&quot;acting == false&quot;&gt;&lt;parallel
+      tiebreaker=&quot;fail&quot; succeed=&quot;all&quot; repeatuntil=&quot;&quot;
+      name=&quot;parallel&quot; fail=&quot;any&quot;&gt;&lt;detect sensor=&quot;chargeRange&quot;
+      repeatuntil=&quot;running&quot; name=&quot;detect hero in chargeRange&quot;
+      entityobjectvariable=&quot;targetCharge&quot; aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot;
+      aspect=&quot;heroVisual&quot; /&gt;&lt;detect sensor=&quot;attackRange&quot;
+      repeatuntil=&quot;running&quot; name=&quot;detect hero in attackRange&quot;
+      entityobjectvariable=&quot;targetAttack&quot; aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot;
+      aspect=&quot;heroVisual&quot; /&gt;&lt;detect sensor=&quot;eyeRange&quot; repeatuntil=&quot;running&quot;
+      name=&quot;detect hero in eyeRange&quot; entityobjectvariable=&quot;targetMove&quot;
+      aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot; aspect=&quot;heroVisual&quot;
+      /&gt;&lt;selector usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint
       repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;hero detected in attackRange&quot;
-      constraint=&quot;targetAttack != null&quot;&gt;&lt;move repeatuntil=&quot;running&quot;
-      name=&quot;move toward target&quot; movetarget=&quot;targetMove&quot; movespeed=&quot;2&quot;
-      closeenoughdistance=&quot;&quot; closeenoughangle=&quot;&quot; /&gt;&lt;/constraint&gt;&lt;constraint
-      repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;hero not detected
-      in attackRange&quot; constraint=&quot;targetAttack == null&quot;&gt;&lt;selector
-      usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint
-      repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;hero detected in chargeRange&quot;
-      constraint=&quot;targetCharge != null&quot;&gt;&lt;move repeatuntil=&quot;running&quot;
-      name=&quot;move toward target&quot; movetarget=&quot;targetMove&quot; movespeed=&quot;2&quot;
-      closeenoughdistance=&quot;&quot; closeenoughangle=&quot;&quot; /&gt;&lt;/constraint&gt;&lt;constraint
+      constraint=&quot;targetAttack != null &quot;&gt;&lt;action repeatuntil=&quot;running&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
+      name=&quot;UseAbilityAction tackle&quot; classname=&quot;UseAbilityAction&quot;
+      /&gt;&lt;/constraint&gt;&lt;constraint repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;hero not detected in attackRange&quot; constraint=&quot;targetAttack
+      == null&quot;&gt;&lt;selector usepriorities=&quot;False&quot; repeatuntil=&quot;&quot;
+      name=&quot;selector&quot;&gt;&lt;constraint repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;hero detected in chargeRange&quot; constraint=&quot;targetCharge
+      != null&quot;&gt;&lt;action repeatuntil=&quot;running&quot; parametervalues=&quot;&quot;
+      parameters=&quot;&quot; namespace=&quot;(global)&quot; name=&quot;UseAbilityAction
+      charge&quot; classname=&quot;UseAbilityAction&quot; /&gt;&lt;/constraint&gt;&lt;constraint
       repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;hero not detected
       in chargeRange&quot; constraint=&quot;targetCharge == null&quot;&gt;&lt;selector
       usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint
@@ -58,7 +58,7 @@ MonoBehaviour:
       /&gt;&lt;timer waitforsec=&quot;timeToNextTurn&quot; returnvalue=&quot;failure&quot;
       name=&quot;timer&quot; /&gt;&lt;/parallel&gt;&lt;/constraint&gt;&lt;/selector&gt;&lt;/constraint&gt;&lt;/selector&gt;&lt;/constraint&gt;&lt;/selector&gt;&lt;/parallel&gt;&lt;/constraint&gt;&lt;constraint
       repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;constraint&quot; constraint=&quot;acting
-      == true&quot; /&gt;&lt;/selector&gt;&lt;/parallel&gt;&lt;/behaviortree&gt;"
+      == true&quot; /&gt;&lt;/selector&gt;&lt;/sequencer&gt;&lt;/behaviortree&gt;"
       type="System.String" id="treeData" /><field type="System.Array" id="treeBindings"
       elementtype="System.String" /></fields><references /></scriptableobject>
     _serializedGameObjects: []

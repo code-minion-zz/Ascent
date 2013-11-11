@@ -19,8 +19,6 @@ public abstract class Action : IAction
     {
        this.owner = owner;
        this.name = this.GetType().ToString();
-
-       Debug.Log(this.name);
     }
 
     public abstract void StartAbility();

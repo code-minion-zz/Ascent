@@ -78,6 +78,14 @@ public abstract class Character : MonoBehaviour
 		}
     }
 
+    public virtual void UpdateActiveAbility()
+    {
+        if (activeAbility != null)
+        {
+            activeAbility.UpdateAbility();
+        }
+    }
+
     public virtual void UseAbility(int abilityID)
     {
 		if (activeAbility == null)

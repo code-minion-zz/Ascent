@@ -25,23 +25,37 @@ public class UseAbilityAction : RAINAction
             owner = ai.Body.GetComponentInChildren<Character>();
         }
 
-        owner.UseAbility("ABC");
-
         // Changes AI state to acting
+        if (ai.WorkingMemory.ItemExists("acting") == false)
+        {
+            Debug.LogError("Current AI does not have \"acting\" variable: " + ai);
+        }
 
-        //if (ai.WorkingMemory.ItemExists("acting") == false)
-        //{
-        //    Debug.LogError("Current AI does not have \"acting\" variable: " + ai);
-        //}
+        ai.WorkingMemory.SetItem<bool>("acting", true);
 
-        //ai.WorkingMemory.SetItem<bool>("acting", true);
+        IList<RAIN.Perception.Sensors.RAINSensor> sensors = ai.Senses.Sensors;
+
+        foreach(RAIN.Perception.Sensors.RAINSensor sensor in sensors)
+        {
+            Debug.Log(sensor.GetType());
+            Debug.Log( sensor.SensorName);
+            Debug.Log(sensor.Matches);
+            //sensor.MatchAspect(aspect);
+            //sensor.MatchAspectName("heroVisual");
+           
+        }
+
+        // Turn on this ability.
+        owner.UseAbility("EnemyCharge");  
+     
+        //ai.Motor.MoveTo
 
 		base.Start(ai);
 	}
 
 	public override ActionResult Execute(AI ai)
 	{
-		return ActionResult.SUCCESS;
+        return ActionResult.SUCCESS;
 	}
 
 	public override void Stop(AI ai)

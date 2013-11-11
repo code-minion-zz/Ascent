@@ -754,7 +754,7 @@ Transform:
   m_PrefabInternal: {fileID: 1538838704}
   m_GameObject: {fileID: 496044320}
   m_LocalRotation: {x: 0, y: .983082592, z: 0, w: .183163032}
-  m_LocalPosition: {x: -8.6624279, y: .200529695, z: 15.0415363}
+  m_LocalPosition: {x: -14.4315157, y: .200529695, z: 12.8144932}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 638750724}
@@ -936,8 +936,8 @@ MonoBehaviour:
       /><field type="RAIN.Core.AI" reference="0" id="_ai" /></fields><references><reference
       type="RAIN.Core.AI" refcount="1" id="0"><field value="True" type="System.Boolean"
       id="_isActive" /><field type="UnityEngine.GameObject" id="_body" gameobject="0"
-      /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="True"
-      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
+      /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
+      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="True"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
       /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
@@ -948,13 +948,11 @@ MonoBehaviour:
       id="_memoryItems" elementtype="System.String"><field value="maxTurnAngle" type="System.String"
       id="element0" /><field value="minDistanceToWander" type="System.String" id="element1"
       /><field value="maxDistanceToWander" type="System.String" id="element2" /><field
-      value="timeToNextTurn" type="System.String" id="element3" /><field value="acting"
-      type="System.String" id="element4" /></field><field type="System.Collections.Generic.List"
+      value="timeToNextTurn" type="System.String" id="element3" /></field><field type="System.Collections.Generic.List"
       id="_memoryValues" elementtype="RAIN.Memory.MemoryObject"><field type="RAIN.Memory.MemoryObject"
       reference="10" id="element0" /><field type="RAIN.Memory.MemoryObject" reference="11"
       id="element1" /><field type="RAIN.Memory.MemoryObject" reference="12" id="element2"
-      /><field type="RAIN.Memory.MemoryObject" reference="13" id="element3" /><field
-      type="RAIN.Memory.MemoryObject" reference="17" id="element4" /></field></reference><reference
+      /><field type="RAIN.Memory.MemoryObject" reference="13" id="element3" /></field></reference><reference
       type="RAIN.Minds.BasicMind" refcount="1" id="2"><field type="RAIN.BehaviorTrees.BTAsset"
       id="behaviorTreeAsset" gameobject="1" /><field type="System.Collections.Generic.List"
       id="behaviorTreeBindings" elementtype="RAIN.BehaviorTrees.BTAssetBinding" /></reference><reference
@@ -1052,9 +1050,7 @@ MonoBehaviour:
       value="False" type="System.Boolean" id="_requireLineOfSight" /><field value="-5"
       type="UnityEngine.LayerMask" id="_lineOfSightMask" /><field value="True" type="System.Boolean"
       id="_lineOfSightIgnoresSelf" /></reference><reference type="RAIN.Memory.MemoryObject"
-      refcount="1" id="17"><field value="System.Boolean" type="System.String" id="_serializedType"
-      /><field value="False" type="System.String" id="_serializedValue" /><field type="UnityEngine.GameObject"
-      id="_serializedGameObject" gameobject="-1" /></reference></references></component>
+      refcount="0" id="17" /></references></component>
     _serializedGameObjects:
     - {fileID: 496044320}
     - {fileID: 11400000, guid: 1e2892a141f06244f9805db4c4af0da4, type: 2}
@@ -3363,7 +3359,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -8.6624279
+      value: -14.4315157
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3371,7 +3367,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 15.0415363
+      value: 12.8144932
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
       propertyPath: m_LocalRotation.x

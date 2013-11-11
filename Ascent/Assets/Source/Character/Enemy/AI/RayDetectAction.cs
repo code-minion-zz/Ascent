@@ -17,12 +17,14 @@ public class RayDetectAction : RAINAction
 
 	public override void Start(AI ai)
 	{
+
 		base.Start(ai);
 	}
 
 	public override ActionResult Execute(AI ai)
 	{
-		return ActionResult.SUCCESS;
+        ai.Motor.MoveTo(Vector3.zero);
+		return ActionResult.RUNNING;
 	}
 
 	public override void Stop(AI ai)

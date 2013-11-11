@@ -8,7 +8,7 @@ public class Charge : Action
 {
 	private const float animationTime = 2.333f;
 	private const float animationSpeed = 2.0f;
-	private float timeElapsed;
+	//private float timeElapsed = 0.0f;
     private float distanceMax = 20.0f;
     private float distanceTraveled;
 
@@ -19,7 +19,7 @@ public class Charge : Action
 
     public override void StartAbility()
 	{
-		timeElapsed = 0.0f;
+		//timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("SwingAttack");
         // get owner's charge box and enable collision
 		owner.Weapon.EnableCollision = true;
