@@ -174,7 +174,8 @@ public class HeroController : MonoBehaviour, IAscentController
     public void OnLStickMove(ref  InControl.InputDevice device)
     {
         float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-        speed *= heroAnimator.MovementSpeed;
+        speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+        speed *= 1000.0f;
 
         // Direction vector to hold the input key press.
         Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;

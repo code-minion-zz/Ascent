@@ -8,7 +8,11 @@ public class Room : MonoBehaviour
 {
     #region Fields
 
+    private Transform enemyTransform;
+    private Transform chestsTransform;
+
     private List<Enemy> enemies = new List<Enemy>();
+    private List<TreasureChest> chests = new List<TreasureChest>();
 
     #endregion
 
@@ -19,17 +23,41 @@ public class Room : MonoBehaviour
         get { return enemies.ToArray(); }
     }
 
+    /// <summary>
+    /// Populates the class with data obtained from the room.
+    /// </summary>
     void Awake()
     {
-        foreach (Enemy enemy in gameObject.GetComponents<Enemy>())
+        enemyTransform = transform.FindChild("Enemies");
+        chestsTransform = transform.FindChild("TreasureChests");
+
+        if (enemyTransform != null)
         {
-            enemies.Add(enemy);
+            // We are going to find the enemy component script inside all the enemies attached to this
+            // enemy transform.
+            foreach (Enemy enemy in enemyTransform.gameObject.GetComponentsInChildren<Enemy>())
+            {
+                enemies.Add(enemy);
+            }
+        }
+        else
+        {
+            Debug.Log("Enemies not found");
+        }
+
+        if (chestsTransform != null)
+        {
+            foreach (TreasureChest chest in chestsTransform.gameObject.GetComponentsInChildren<TreasureChest>())
+            {
+                chests.Add(chest);
+            }
         }
     }
 
     void Start()
     {
-
+        Debug.Log("ChestRoom(EnemyCount: " + enemies.Count + " " +
+                  "ChestsCount: " + chests.Count);
     }
 
     #endregion
