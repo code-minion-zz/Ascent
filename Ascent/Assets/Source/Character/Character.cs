@@ -110,6 +110,21 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+	public Action GetAbility(string ability)
+	{
+		if (activeAbility == null)
+		{
+			Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
+			if (action == null)
+			{
+				Debug.LogError("Could not find and return ability: " + ability);
+			}
+
+			return(action);
+		}
+		return null;
+	}
+
 	public virtual void InterruptAbility()
 	{
 		if (activeAbility != null)

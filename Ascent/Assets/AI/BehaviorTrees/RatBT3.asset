@@ -13,12 +13,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dataSerializer:
     _serializedData: <scriptableobject version="1.0" type="RAIN.BehaviorTrees.BTAsset"><fields><field
-      value="&lt;behaviortree version=&quot;1.0&quot; repeatuntil=&quot;&quot; name=&quot;RatBT3&quot;&gt;&lt;sequencer
-      usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;root&quot;&gt;&lt;action
-      repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;&quot;
-      parameters=&quot;&quot; namespace=&quot;(global)&quot; name=&quot;action&quot;
-      classname=&quot;RayDetectAction&quot; /&gt;&lt;/sequencer&gt;&lt;/behaviortree&gt;"
-      type="System.String" id="treeData" /><field type="System.Array" id="treeBindings"
-      elementtype="System.String" /></fields><references /></scriptableobject>
+      value="&lt;behaviortree version=&quot;1.0&quot; repeatuntil=&quot;&quot; name=&quot;RatBT3&quot;&gt;&lt;constraint
+      repeatuntil=&quot;&quot; name=&quot;root&quot; constraint=&quot;moving == true&quot;&gt;&lt;action
+      repeatuntil=&quot;&quot; parametervalues=&quot;&quot; parameters=&quot;&quot;
+      namespace=&quot;(global)&quot; name=&quot;action&quot; classname=&quot;ActMove&quot;
+      /&gt;&lt;/constraint&gt;&lt;/behaviortree&gt;" type="System.String" id="treeData"
+      /><field type="System.Array" id="treeBindings" elementtype="System.String" /></fields><references
+      /></scriptableobject>
     _serializedGameObjects: []
     _serializedCustomData: []
