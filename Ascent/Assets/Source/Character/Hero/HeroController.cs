@@ -8,6 +8,12 @@ public class HeroController : MonoBehaviour, IAscentController
     HeroAnimator heroAnimator;
     //Weapon heroWeapon;
     Hero hero;
+    AscentInput input;
+
+    public AscentInput Input
+    {
+        get { return input; }
+    }
 
     #region Intialization
 
@@ -26,6 +32,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void EnableInput(AscentInput inputDevice)
     {
+        input = inputDevice;
         // Register everthing here
         inputDevice.OnLStickMove += OnLStickMove;
         inputDevice.OnX += OnX;
