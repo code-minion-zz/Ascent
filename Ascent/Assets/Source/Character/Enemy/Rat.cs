@@ -60,6 +60,8 @@ public class Rat : Enemy
 			}
 		}
 
+        ai.enabled = false;
+
 		
 
 
@@ -95,120 +97,120 @@ public class Rat : Enemy
 	{
 		timeElapsed += Time.deltaTime;
 
-		switch (ratState)
-		{
-			case ERatState.Idle:
-			case ERatState.Idle2:
-				{
-					//Debug.Log("IDLE");
-					if (timeElapsed > stateTimes[(int)ERatState.Idle])
-					{
-						StartState(ERatState.Wandering);
-					}
-				}
-				break;
-			case ERatState.Wandering:
-				{
-					//Debug.Log("WANDER");
-					if (timeElapsed > stateTimes[(int)ERatState.Wandering])
-					{
-						// Detect heroes eye range now
-						sensors[0].MatchAspectName("heroVisual");
+        switch (ratState)
+        {
+            case ERatState.Idle:
+            case ERatState.Idle2:
+                {
+                    //Debug.Log("IDLE");
+                    if (timeElapsed > stateTimes[(int)ERatState.Idle])
+                    {
+                        StartState(ERatState.Wandering);
+                    }
+                }
+                break;
+            case ERatState.Wandering:
+                {
+                    //Debug.Log("WANDER");
+                    if (timeElapsed > stateTimes[(int)ERatState.Wandering])
+                    {
+                        // Detect heroes eye range now
+                        sensors[0].MatchAspectName("heroVisual");
 
-						IList<RAIN.Entities.Aspects.RAINAspect> matches = sensors[0].Matches;
+                        IList<RAIN.Entities.Aspects.RAINAspect> matches = sensors[0].Matches;
 
-						//foreach(RAIN.Entities.Aspects.RAINAspect match in matches)
-						//{
-						//    Debug.Log( match.AspectName);
-						//}
+                        //foreach(RAIN.Entities.Aspects.RAINAspect match in matches)
+                        //{
+                        //    Debug.Log( match.AspectName);
+                        //}
 
-						if (matches.Count > 0)
-						{
-							target = matches[0].Entity.Form.transform;
-							StartState(ERatState.Seeking);
-						}
-					}
-					else
-					{
-						Wander();
-					}
-				}
-				break;
-			case ERatState.Seeking:
-				{
-					if (timeElapsed > stateTimes[(int)ERatState.Seeking])
-					{
-						//Debug.Log("SEEK");
-						ai.AI.Motor.MoveTo(target.position);
+                        if (matches.Count > 0)
+                        {
+                            target = matches[0].Entity.Form.transform;
+                            StartState(ERatState.Seeking);
+                        }
+                    }
+                    else
+                    {
+                        Wander();
+                    }
+                }
+                break;
+            case ERatState.Seeking:
+                {
+                    if (timeElapsed > stateTimes[(int)ERatState.Seeking])
+                    {
+                        //Debug.Log("SEEK");
+                        ai.AI.Motor.MoveTo(target.position);
 
-						// Detect attack range now
-						sensors[1].MatchAspectName("heroVisual");
-						IList<RAIN.Entities.Aspects.RAINAspect> matches = sensors[1].Matches;
-						if (matches.Count > 0)
-						{
-							// Can attack this target
-							StartState(ERatState.ActionAttacking);
-							return;
-						}
+                        // Detect attack range now
+                        sensors[1].MatchAspectName("heroVisual");
+                        IList<RAIN.Entities.Aspects.RAINAspect> matches = sensors[1].Matches;
+                        if (matches.Count > 0)
+                        {
+                            // Can attack this target
+                            StartState(ERatState.ActionAttacking);
+                            return;
+                        }
 
-						// Detect heroes in charge range now
-						sensors[2].MatchAspectName("heroVisual");
-						matches = sensors[2].Matches;
-						if (matches.Count > 0)
-						{
-							// Can attack this target
-							StartState(ERatState.ActionCharging);
-							return;
-						}
-					}
-					else
-					{
-						StartState(ERatState.Idle);
-					}
-				}
-				break;
-			case ERatState.ActionAttacking:
-				{
-					//Debug.Log("Attacking");
+                        // Detect heroes in charge range now
+                        sensors[2].MatchAspectName("heroVisual");
+                        matches = sensors[2].Matches;
+                        if (matches.Count > 0)
+                        {
+                            // Can attack this target
+                            StartState(ERatState.ActionCharging);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        StartState(ERatState.Idle);
+                    }
+                }
+                break;
+            case ERatState.ActionAttacking:
+                {
+                    //Debug.Log("Attacking");
 
-					if(activeAbility == null)
-					{
-						StartState(ERatState.Idle);
-					}
-					base.Update();
-				}
-				break;
-			case ERatState.ActionCharging:
-				{
-					//Debug.Log("Charging");
+                    if (activeAbility == null)
+                    {
+                        StartState(ERatState.Idle);
+                    }
+                    base.Update();
+                }
+                break;
+            case ERatState.ActionCharging:
+                {
+                    //Debug.Log("Charging");
 
-					if (activeAbility == null)
-					{
-						StartState(ERatState.Idle);
-					}
-					base.Update();
-				}
-				break;
-			case ERatState.Flinching:
-				{
-					if (timeElapsed > stateTimes[(int)ERatState.Flinching])
-					{
-						StartState(ERatState.Wandering);
-					}
-				}
-				break;
-			case ERatState.Dying:
-				{
-					// Do nothing
-				}
-				break;
-			default:
-				{
-					Debug.LogError("Invalid rat state entered.");
-				}
-				break;
+                    if (activeAbility == null)
+                    {
+                        StartState(ERatState.Idle);
+                    }
+                    base.Update();
+                }
+                break;
+            case ERatState.Flinching:
+                {
+                    if (timeElapsed > stateTimes[(int)ERatState.Flinching])
+                    {
+                        StartState(ERatState.Wandering);
+                    }
+                }
+                break;
+            case ERatState.Dying:
+                {
+                    // Do nothing
+                }
+                break;
+            default:
+                {
+                    Debug.LogError("Invalid rat state entered.");
+                }
+                break;
 
-		}
+        }
 	}
 
     // We want to override the on death for this rat as we have some specific behaviour here.

@@ -10,6 +10,11 @@ public abstract class Hero : Character
 
     public int teamId = 1;
 
+    public HeroController HeroController
+    {
+        get { return heroController; }
+    }
+
     #region Initialization
 
 	public abstract void Initialise(AscentInput input, HeroSave saveData);
@@ -21,6 +26,15 @@ public abstract class Hero : Character
         {
             render.material.color = color;
         }
+    }
+
+    /// <summary>
+    /// Tells the hero to open the specified chest
+    /// </summary>
+    /// <param name="chest">The chest which needs to be opened</param>
+    public void OpenChest(TreasureChest chest)
+    {
+
     }
 
     #endregion
