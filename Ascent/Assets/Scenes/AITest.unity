@@ -719,7 +719,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!23 &496044327
 Renderer:
   m_ObjectHideFlags: 0
@@ -1213,6 +1213,10 @@ Prefab:
     - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
       propertyPath: m_LocalRotation.w
       value: .266474217
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}

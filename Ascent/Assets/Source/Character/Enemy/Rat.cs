@@ -81,10 +81,10 @@ public class Rat : Enemy
 		// Grab sensors
 		sensors = ai.AI.Senses.Sensors;
 
-		foreach(RAIN.Perception.Sensors.RAINSensor sensor in sensors)
-		{
-			Debug.Log(sensor.SensorName);
-		}
+        //foreach(RAIN.Perception.Sensors.RAINSensor sensor in sensors)
+        //{
+        //    Debug.Log(sensor.SensorName);
+        //}
 		
 		
 
@@ -100,7 +100,7 @@ public class Rat : Enemy
 			case ERatState.Idle:
 			case ERatState.Idle2:
 				{
-					Debug.Log("IDLE");
+					//Debug.Log("IDLE");
 					if (timeElapsed > stateTimes[(int)ERatState.Idle])
 					{
 						StartState(ERatState.Wandering);
@@ -109,7 +109,7 @@ public class Rat : Enemy
 				break;
 			case ERatState.Wandering:
 				{
-					Debug.Log("WANDER");
+					//Debug.Log("WANDER");
 					if (timeElapsed > stateTimes[(int)ERatState.Wandering])
 					{
 						// Detect heroes eye range now
@@ -138,7 +138,7 @@ public class Rat : Enemy
 				{
 					if (timeElapsed > stateTimes[(int)ERatState.Seeking])
 					{
-						Debug.Log("SEEK");
+						//Debug.Log("SEEK");
 						ai.AI.Motor.MoveTo(target.position);
 
 						// Detect attack range now
@@ -169,7 +169,7 @@ public class Rat : Enemy
 				break;
 			case ERatState.ActionAttacking:
 				{
-					Debug.Log("Attacking");
+					//Debug.Log("Attacking");
 
 					if(activeAbility == null)
 					{
@@ -180,7 +180,7 @@ public class Rat : Enemy
 				break;
 			case ERatState.ActionCharging:
 				{
-					Debug.Log("Charging");
+					//Debug.Log("Charging");
 
 					if (activeAbility == null)
 					{
