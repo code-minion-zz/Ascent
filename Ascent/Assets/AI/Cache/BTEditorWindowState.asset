@@ -15,9 +15,9 @@ MonoBehaviour:
   HolderNodes:
   - AssetPath: .currentai
     BehaviorTreeName: (No AI Selected)
-    BehaviorTreeID: 12
-    LastUpdate: 635198051463451256
-    LastModified: 635197965734498229
+    BehaviorTreeID: 0
+    LastUpdate: 0
+    LastModified: 0
     Errored: 0
   - AssetPath: .createxml
     BehaviorTreeName: Create New Behavior Tree
@@ -25,9 +25,21 @@ MonoBehaviour:
     LastUpdate: 0
     LastModified: 0
     Errored: 0
+  - AssetPath: Assets/AI/BehaviorTrees/RatBT.asset
+    BehaviorTreeName: RatBT
+    BehaviorTreeID: 11
+    LastUpdate: 635198872261262334
+    LastModified: 635198708886778725
+    Errored: 0
+  - AssetPath: Assets/AI/BehaviorTrees/RatBT2.asset
+    BehaviorTreeName: RatBT2
+    BehaviorTreeID: 0
+    LastUpdate: 0
+    LastModified: 0
+    Errored: 0
   - AssetPath: Assets/AI/BehaviorTrees/RatBT3.asset
     BehaviorTreeName: RatBT3
-    BehaviorTreeID: 12
+    BehaviorTreeID: 0
     LastUpdate: 635198051463451256
     LastModified: 635197965734498229
     Errored: 0
@@ -70,6 +82,114 @@ MonoBehaviour:
       _stateIndex: 0
       _parent: 0
       _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields:
+      - _field: name
+        _currentValue: timer
+        _recordChange: 1
+        _changed: 0
+      - _field: pausewhenhit
+        _currentValue: False
+        _recordChange: 0
+        _changed: 0
+      - _field: startingpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: runningpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: priority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: weight
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: waitforsec
+        _currentValue: timeToNextTurn
+        _recordChange: 1
+        _changed: 0
+      - _field: returnvalue
+        _currentValue: failure
+        _recordChange: 1
+        _changed: 0
+      _type: 18
+      _stateIndex: 5
+      _parent: 10
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 1
+    - _fields:
+      - _field: name
+        _currentValue: move
+        _recordChange: 1
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: pausewhenhit
+        _currentValue: False
+        _recordChange: 0
+        _changed: 0
+      - _field: startingpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: runningpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: priority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: weight
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: movetargettype
+        _currentValue: variable
+        _recordChange: 1
+        _changed: 0
+      - _field: movetarget
+        _currentValue: directionVector
+        _recordChange: 1
+        _changed: 0
+      - _field: movespeed
+        _currentValue: 3
+        _recordChange: 1
+        _changed: 0
+      - _field: facetargettype
+        _currentValue: none
+        _recordChange: 1
+        _changed: 0
+      - _field: facetarget
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: turnspeed
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: closeenoughdistance
+        _currentValue: 2
+        _recordChange: 1
+        _changed: 0
+      - _field: closeenoughangle
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 12
+      _stateIndex: 6
+      _parent: 10
+      _lastUpdate: 635198872193548461
       _children: 
       _variables: 
       _focused: 0
@@ -135,9 +255,9 @@ MonoBehaviour:
         _recordChange: 1
         _changed: 0
       _type: 1
-      _stateIndex: 7
-      _parent: 8
-      _lastUpdate: 635198051347736618
+      _stateIndex: 9
+      _parent: 10
+      _lastUpdate: 635198872251251762
       _children: 
       _variables: 
       _focused: 0
@@ -151,7 +271,7 @@ MonoBehaviour:
         _recordChange: 0
         _changed: 0
       - _field: repeatuntil
-        _currentValue: 
+        _currentValue: failure
         _recordChange: 1
         _changed: 0
       - _field: pausewhenhit
@@ -174,44 +294,28 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      - _field: constraint
-        _currentValue: moving == true
+      - _field: fail
+        _currentValue: any
         _recordChange: 1
         _changed: 0
-      _type: 5
-      _stateIndex: 8
-      _parent: 12
-      _lastUpdate: 635198051453429989
-      _children: 07000000
-      _variables: 
-      _focused: 1
-    - _fields: []
-      _type: 0
-      _stateIndex: 0
-      _parent: 0
-      _lastUpdate: 0
-      _children: 
-      _variables: 
-      _focused: 0
-    - _fields: []
-      _type: 0
-      _stateIndex: 0
-      _parent: 0
-      _lastUpdate: 0
-      _children: 
-      _variables: 
-      _focused: 0
-    - _fields: []
-      _type: 0
-      _stateIndex: 0
-      _parent: 0
-      _lastUpdate: 0
-      _children: 
+      - _field: succeed
+        _currentValue: all
+        _recordChange: 1
+        _changed: 0
+      - _field: tiebreaker
+        _currentValue: fail
+        _recordChange: 1
+        _changed: 0
+      _type: 13
+      _stateIndex: 10
+      _parent: 11
+      _lastUpdate: 635198872193518459
+      _children: 090000000600000005000000
       _variables: 
       _focused: 0
     - _fields:
       - _field: name
-        _currentValue: RatBT3
+        _currentValue: RatBT
         _recordChange: 1
         _changed: 0
       - _field: open
@@ -243,10 +347,10 @@ MonoBehaviour:
         _recordChange: 1
         _changed: 0
       _type: 4
-      _stateIndex: 12
+      _stateIndex: 11
       _parent: 0
-      _lastUpdate: 635198051453429989
-      _children: 08000000
+      _lastUpdate: 635198872251251762
+      _children: 0a000000
       _variables: 
       _focused: 0
-    _freeList: 010000000200000003000000040000000500000006000000090000000a0000000b000000
+    _freeList: 010000000200000003000000040000000700000008000000
