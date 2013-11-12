@@ -63,7 +63,7 @@ public class AscentInput
 		this.device = device;
 	}
 
-	public void Update()
+	public void FixedUpdate()
 	{
         // TODO: Handle device detachment
 		if (device == null)

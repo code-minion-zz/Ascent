@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         //          Then rebind the device to the hero controller.
         if (aInput !=null)
         {
-            aInput.Update();
+            aInput.FixedUpdate();
         }
     }
 

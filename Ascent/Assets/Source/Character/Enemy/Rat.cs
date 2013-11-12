@@ -275,7 +275,8 @@ public class Rat : Enemy
         // Maybe even drop some loot here
 
         // Rat is going to destroy itself now
-        DestroyObject(this.gameObject);
+        //DestroyObject(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
 	protected void StartState(ERatState ratState)

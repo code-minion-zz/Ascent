@@ -28,17 +28,19 @@ public class HeroAnimator : AnimatorController
 
     #region Fields
 
-    public bool useCurves;						    // a setting for teaching purposes to show use of curves
     public float movementSpeed = 10.0f;              // Movment speed
     public float rotationSmooth = 10.0f;
 
 
     static int idleState = Animator.StringToHash("Movement." + "Idle");
+    static int jumpState = Animator.StringToHash("Movement." + "JumpRunning");
     static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
     static int movementState = Animator.StringToHash("Movement." + "Movement");
 
     private Vector3 direction;
     private AnimatorStateInfo activeStateInfo;
+    private CapsuleCollider col;
+    private bool useCurves = true;						     // a setting for teaching purposes to show use of curves
 
     public float MovementSpeed
     {
@@ -56,6 +58,8 @@ public class HeroAnimator : AnimatorController
     public override void Start() 
     {
         base.Start();
+
+        col = GetComponent<CapsuleCollider>();
 	}
 	
 	// Update is called once per frame
@@ -77,6 +81,40 @@ public class HeroAnimator : AnimatorController
                 if (direction.x != 0 || direction.z != 0)
                 {
                     transform.LookAt(transform.position + direction);
+                }
+            }
+
+            // If the hero is jumping
+            if (IsActiveState(layer, jumpState))
+            {
+                //  ..and not still in transition..
+                if (!animator.IsInTransition(layer))
+                {
+                    if (useCurves)
+                    {
+                        // ..set the collider height to a float curve in the clip called ColliderHeight
+                        col.height = animator.GetFloat("ColliderHeight");
+                    }
+
+                    // reset the Jump bool so we can jump again, and so that the state does not loop 
+                    //animator.SetBool("Jump", false);
+                }
+
+                // Raycast down from the center of the character.. 
+                Ray ray = new Ray(transform.position + Vector3.up, -Vector3.up);
+                RaycastHit hitInfo = new RaycastHit();
+
+                if (Physics.Raycast(ray, out hitInfo))
+                {
+                    // ..if distance to the ground is more than 1.75, use Match Target
+                    if (hitInfo.distance > 1.75f)
+                    {
+
+                        // MatchTarget allows us to take over animation and smoothly transition our character towards a location - the hit point from the ray.
+                        // Here we're telling the Root of the character to only be influenced on the Y axis (MatchTargetWeightMask) and only occur between 0.35 and 0.5
+                        // of the timeline of our animation clip
+                        animator.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
+                    }
                 }
             }
         }

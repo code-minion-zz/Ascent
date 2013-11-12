@@ -12,17 +12,30 @@ public class Weapon : MonoBehaviour
     private int damage;
     private float knockBackValue = 5.0f;
     private Character.EDamageType damageType;
+    private GameObject bloodSplat;
 
+    /// <summary>
+    /// Enables and disables the collision box collider.
+    /// </summary>
     public bool EnableCollision
     {
         get { return boxCollider.enabled; }
         set { boxCollider.enabled = value; }
     }
 
+    /// <summary>
+    /// Gets the owner of this weapon
+    /// </summary>
+    public Character Owner
+    {
+        get { return owner; }
+    }
+
     public void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = false;
+        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
         //enabled = false;
     }
 
@@ -129,10 +142,17 @@ public class Weapon : MonoBehaviour
         Vector3 enemyPos = other.transform.position;
 
         Vector3 direction = Vector3.Normalize(enemyPos - ownerPos);
+        //Vector3 splatterStart = other.transform.position;
+        Vector3 splatterStart = other.collider.ClosestPointOnBounds(this.transform.position);
 
         // Apply knock back and tell the enemy it was hit by this weapon object.
         // We can succesfully say we hit this character now and we set their last hit by to null.
         other.ApplyKnockback(direction, knockBackValue);
+
+        // Apply particle blood splatter and make it a parent of the enemy so that it will move with the enemy.
+        // TODO: make a pool of these emitters and dont instantiate them on the frame.
+        GameObject bloodSplatter = Instantiate(bloodSplat, splatterStart, other.collider.transform.rotation) as GameObject;
+        bloodSplatter.transform.parent = other.transform;
 
         // Now we say ok this enemy was hit by this weapon.
         other.LastObjectsDamagedBy.Add(this);

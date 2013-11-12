@@ -40,6 +40,7 @@ public class HealthBar : MonoBehaviour
 
         //guiPosition.x = (Screen.width * guiPosition.x) - 50.0f;
         //guiPosition.y = Screen.height - (guiPosition.y * Screen.height);
+        //GetComponent<UISprite>().width -= 1;
 	}
 
     void OnGUI()
