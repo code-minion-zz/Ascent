@@ -9,6 +9,7 @@ public class HeroController : MonoBehaviour, IAscentController
     //Weapon heroWeapon;
     Hero hero;
     AscentInput input;
+	bool movingLastFrame = false;
 
     public AscentInput Input
     {
@@ -34,21 +35,21 @@ public class HeroController : MonoBehaviour, IAscentController
     {
         input = inputDevice;
         // Register everthing here
-        inputDevice.OnLStickMove += OnLStickMove;
-        inputDevice.OnX += OnX;
-        inputDevice.OnY += OnY;
-        inputDevice.OnA += OnA;
-        inputDevice.OnB += OnB;
+		inputDevice.OnLStickMove += OnLStickMove;
+		inputDevice.OnX += OnX;
+		inputDevice.OnY += OnY;
+		inputDevice.OnA += OnA;
+		inputDevice.OnB += OnB;
     }
 
     public void DisableInput(AscentInput inputDevice)
     {
         // Unregister everything here
-        inputDevice.OnLStickMove -= OnLStickMove;
-        inputDevice.OnX -= OnX;
-        inputDevice.OnY -= OnY;
-        inputDevice.OnA -= OnA;
-        inputDevice.OnB -= OnB;
+		inputDevice.OnLStickMove -= OnLStickMove;
+		inputDevice.OnX -= OnX;
+		inputDevice.OnY -= OnY;
+		inputDevice.OnA -= OnA;
+		inputDevice.OnB -= OnB;
     }
 
     public void OnX(ref  InControl.InputDevice device)

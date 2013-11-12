@@ -7,6 +7,10 @@ using System.Collections;
 public class AscentInput
 {
 	private InControl.InputDevice device;
+	public InControl.InputDevice Device
+	{
+		get { return device; }
+	}
 
 	public delegate void AscentInputEventHandler(ref InControl.InputDevice device);
 
@@ -114,54 +118,30 @@ public class AscentInput
         #region L-Stick
 
         // L-Stick
-		if (device.LeftStickY.IsNotNull && OnLStickMove != null)
-		{
-            OnLStickMove.Invoke(ref device);
-		}
-        else if (device.LeftStickY.IsNotNull && OnLStickMove != null)
-		{
-            OnLStickMove.Invoke(ref device);
-		}
-        if (device.LeftStickX.IsNotNull && OnLStickMove != null)
-		{
-            OnLStickMove.Invoke(ref device);
-		}
-        else if (device.LeftStickX.IsNotNull && OnLStickMove != null)
+		if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull) && OnLStickMove != null)
 		{
             OnLStickMove.Invoke(ref device);
 		}
 
-        // L-Stick button
-        if (device.LeftStickButton.WasPressed && OnLStick != null)
-        {
-            OnLStick.Invoke(ref device);
-        }
-        else if (device.LeftStickButton.WasReleased && OnLStick_up != null)
-        {
-            OnLStick_up.Invoke(ref device);
-        }
+		// L-Stick button
+		if (device.LeftStickButton.WasPressed && OnLStick != null)
+		{
+			OnLStick.Invoke(ref device);
+		}
+		else if (device.LeftStickButton.WasReleased && OnLStick_up != null)
+		{
+			OnLStick_up.Invoke(ref device);
+		}
 
         #endregion
 
         #region R-Stick
 
         // R-Stick
-        if (device.RightStickY.IsNotNull && OnRStickMove != null)
-        {
-            OnLStickMove.Invoke(ref device);
-        }
-        else if (device.RightStickY.IsNotNull && OnRStickMove != null)
-        {
-            OnLStickMove.Invoke(ref device);
-        }
-        if (device.RightStickX.IsNotNull && OnRStickMove != null)
-        {
-            OnLStickMove.Invoke(ref device);
-        }
-        else if (device.RightStickX.IsNotNull && OnRStickMove != null)
-        {
-            OnLStickMove.Invoke(ref device);
-        }
+		if ((device.RightStickY.IsNotNull || device.RightStickY.IsNotNull) && OnRStickMove != null)
+		{
+			OnRStick.Invoke(ref device);
+		}
 
         // R-Stick button
         if (device.RightStickButton.WasPressed && OnRStick != null)

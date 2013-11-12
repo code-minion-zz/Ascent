@@ -100,7 +100,7 @@ public class Weapon : MonoBehaviour
                     Debug.Log(this.name + " collides with " + otherCharacter);
                 }
                 break;
-            case "Enemy":
+            case "Monster":
                 {
                     CollideWithEnemy(other.GetComponent<Character>() as Enemy);
                 }
