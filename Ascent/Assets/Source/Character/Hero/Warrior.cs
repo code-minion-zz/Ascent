@@ -66,7 +66,7 @@ public class Warrior : Hero
 		
 		AddSkill(new Jump());
 		
-		AddSkill(new Roll());
+		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
     }
