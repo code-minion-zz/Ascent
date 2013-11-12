@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Warrior : Hero 
 {
-    bool chargeCollision = false;
-
+    bool chargeCollision = false;	
+	
     public override void Initialise(AscentInput input, HeroSave saveData)
-    {
+    {		
         characterStatistics = null;
 
         if (saveData != null)
@@ -56,8 +56,10 @@ public class Warrior : Hero
         if (collisionBall == null)
             Debug.Log("CollisionBall prefab not found");
         collisionBall = Instantiate(collisionBall) as GameObject;
-        collisionBall.transform.localPosition = transform.forward;
+        collisionBall.transform.localPosition = transform.forward + Vector3.up;
         collisionBall.transform.parent = transform;
+		collisionBall.transform.localScale = new Vector3(2f,2f,2f);
+		chargeBall = collisionBall.GetComponent<Collidable>();
 		
         // Add abilities
 		AddSkill(new SwingSword());
@@ -75,9 +77,4 @@ public class Warrior : Hero
 		base.Update();
 	}
 	
-	private void AddSkill(Action skill)
-	{
-		skill.Initialise(this);
-		abilities.Add(skill);
-	}
 }

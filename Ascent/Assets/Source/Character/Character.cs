@@ -16,17 +16,23 @@ public abstract class Character : MonoBehaviour
         Physical,
         Magical,
     }
-
+	
 	protected List<Action> abilities = new List<Action>();
 	protected IAction activeAbility;
 	protected GameObject weaponPrefab;
     protected bool isDead = false;
-
+	
     protected Transform weaponSlot;
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
     }
+	
+	protected Collidable chargeBall;
+	public Collidable ChargeBall
+	{
+		get { return chargeBall; }
+	}
 
     protected Weapon equipedWeapon;
     public Weapon Weapon
@@ -67,7 +73,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Start()
     {
-        // To be derived
+        // To be derived		
     }
 
     public virtual void Update()
@@ -76,6 +82,14 @@ public abstract class Character : MonoBehaviour
 		{
 			activeAbility.UpdateAbility();
 		}
+    }
+
+    public virtual void UpdateActiveAbility()
+    {
+        if (activeAbility != null)
+        {
+            activeAbility.UpdateAbility();
+        }
     }
 
     public virtual void UseAbility(int abilityID)
@@ -101,6 +115,21 @@ public abstract class Character : MonoBehaviour
             activeAbility = action;
         }
     }
+
+	public Action GetAbility(string ability)
+	{
+		if (activeAbility == null)
+		{
+			Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
+			if (action == null)
+			{
+				Debug.LogError("Could not find and return ability: " + ability);
+			}
+
+			return(action);
+		}
+		return null;
+	}
 
 	public virtual void InterruptAbility()
 	{
@@ -155,4 +184,10 @@ public abstract class Character : MonoBehaviour
         // this character.
         isDead = true;
     }
+	
+	protected void AddSkill(Action skill)
+	{
+		skill.Initialise(this);
+		abilities.Add(skill);
+	}
 }

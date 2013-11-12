@@ -6,11 +6,11 @@ public class Collidable : MonoBehaviour {
 
     uint        collisions = 0;
     Character   owner;
-    string         ownerTeam;
-    bool        ignoreWall = false;    // ignore walls
-    bool        ignoreGrounded = false;// ignore objects on the ground
-    bool        ignoreFlying = false;  // ignore objects that are too high
-    bool        ignoreFriend = true; // ignore friendly units
+    string      ownerTeam;
+//    bool        ignoreWall = false;    // ignore walls
+//    bool        ignoreGrounded = false;// ignore objects on the ground
+//    bool        ignoreFlying = false;  // ignore objects that are too high
+//    bool        ignoreFriend = true; // ignore friendly units
 
     // remember these
     static bool hasInit;
@@ -47,6 +47,9 @@ public class Collidable : MonoBehaviour {
 
     void Awake()
     {
+		// object starts disabled
+		gameObject.SetActive(false);
+		
         if (!hasInit)
         {
             hasInit = true;
@@ -74,37 +77,40 @@ public class Collidable : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         GameObject go = other.gameObject;
-        if (go.layer == WallLayer)
-        {
-            if (!ignoreWall)
-            {
-                if (onCollisionEnterWall != null)
-                {
-                    onCollisionEnterWall(go);
-                    ++collisions;
-                    return;
-                }
-            }
-        }
-
+		
         if (go.layer == CharacterLayer)
         {
             if (ownerTeam == go.tag)
             {
-                if (!ignoreFriend)
-                    return;
-                else
+				if (onCollisionEnterFriend != null)
                 {
-                    ++collisions;
-                    onCollisionEnterFriend(go);
-                    return;
+					
+                	onCollisionEnterFriend(go);
+                	++collisions;
+					return;
                 }
             }
-            // check the ignore ground/flying flags here
-            // if we are interested in hitting this object :
-            onCollisionEnterEnemy(go);
-            ++collisions;
-            return;
+            // check if we cannot hit this for any reason
+			
+			// report enemy collision
+			if (onCollisionEnterEnemy != null)
+			{
+            	onCollisionEnterEnemy(go);
+	            ++collisions;
+	            return;
+			}
+        }
+		
+        if (go.layer == WallLayer)
+        {
+            if (onCollisionEnterWall != null)
+            {
+                onCollisionEnterWall(go);
+				
+                ++collisions;
+                return;
+            }
+            
         }
     }
 
