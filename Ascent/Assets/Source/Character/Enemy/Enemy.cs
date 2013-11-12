@@ -21,13 +21,10 @@ public abstract class Enemy : Character
     #region Fields
 
     public int teamId = 2;
-    public STATE state = STATE.IDLE;
-    public Transform hitBoxPrefab; // hitboxes represent projectiles
 
     private Player targetPlayer;
     //private float waiting = 0.0f;
     private Vector3 originalScale;
-    private List<Transform> activeHitBoxes; // active melee attacks
 
     protected RAIN.Core.AIRig ai;
 
