@@ -3,8 +3,10 @@ using System.Collections;
 
 public class Warrior : Hero 
 {
+    bool chargeCollision = false;	
+	
     public override void Initialise(AscentInput input, HeroSave saveData)
-    {
+    {		
         characterStatistics = null;
 
         if (saveData != null)
@@ -48,24 +50,26 @@ public class Warrior : Hero
         heroController = gameObject.AddComponent<HeroController>();
 		heroController.Initialise(this);
         heroController.EnableInput(input);
-
-
-        // Add abilities
-        Action swordSwing = new SwingSword();
-        swordSwing.Initialise(this);
-        abilities.Add(swordSwing);
-
-		Action jump = new Jump();
-		jump.Initialise(this);
-		abilities.Add(jump);
-
-		Action roll = new Roll();
-		roll.Initialise(this);
-		abilities.Add(roll);
 		
-		Action charge = new Charge();
-		charge.Initialise(this);
-		abilities.Add(charge);
+		// Add charge collider
+		GameObject collisionBall = Resources.Load("Prefabs/CollisionBall") as GameObject;
+        if (collisionBall == null)
+            Debug.Log("CollisionBall prefab not found");
+        collisionBall = Instantiate(collisionBall) as GameObject;
+        collisionBall.transform.localPosition = transform.forward * 0.5f + Vector3.up;
+        collisionBall.transform.parent = transform;
+		collisionBall.transform.localScale = new Vector3(2f,2f,2f);
+		chargeBall = collisionBall.GetComponent<Collidable>();
+		chargeBall.Init(this);
+		
+        // Add abilities
+		AddSkill(new SwingSword());
+		
+		AddSkill(new Jump());
+		
+		AddSkill(new Whirlwind());
+		
+		AddSkill(new Charge());
     }
 	
 	// public is called once per frame
@@ -73,4 +77,5 @@ public class Warrior : Hero
 	{
 		base.Update();
 	}
+	
 }

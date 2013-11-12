@@ -84,7 +84,7 @@ GameObject:
   - 4: {fileID: 1106565}
   - 198: {fileID: 1106567}
   - 199: {fileID: 1106566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1165,7 +1165,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 8122014}
   - 114: {fileID: 8122015}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1215,7 +1215,7 @@ GameObject:
   - 33: {fileID: 17294697}
   - 65: {fileID: 17294696}
   - 23: {fileID: 17294695}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1283,7 +1283,7 @@ GameObject:
   - 4: {fileID: 31844321}
   - 198: {fileID: 31844323}
   - 199: {fileID: 31844322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2395,7 +2395,7 @@ GameObject:
   - 4: {fileID: 38458497}
   - 198: {fileID: 38458499}
   - 199: {fileID: 38458498}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3506,7 +3506,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 51055693}
   - 114: {fileID: 51055694}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3555,7 +3555,7 @@ GameObject:
   - 4: {fileID: 54445039}
   - 198: {fileID: 54445041}
   - 199: {fileID: 54445040}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4637,7 +4637,7 @@ GameObject:
   - 4: {fileID: 56004906}
   - 114: {fileID: 56004908}
   - 65: {fileID: 56004907}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4696,7 +4696,7 @@ GameObject:
   - 4: {fileID: 56166261}
   - 114: {fileID: 56166263}
   - 65: {fileID: 56166262}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4754,7 +4754,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 57828564}
   - 108: {fileID: 57828565}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6050,6 +6050,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 168404145}
@@ -6090,6 +6098,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: -4.37113883e-08
       objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1825953274}
@@ -6105,7 +6141,7 @@ GameObject:
   - 4: {fileID: 82413111}
   - 198: {fileID: 82413113}
   - 199: {fileID: 82413112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7187,7 +7223,7 @@ GameObject:
   - 4: {fileID: 92668188}
   - 198: {fileID: 92668190}
   - 199: {fileID: 92668189}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8299,7 +8335,7 @@ GameObject:
   - 4: {fileID: 106167187}
   - 198: {fileID: 106167189}
   - 199: {fileID: 106167188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9380,7 +9416,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 107664845}
   - 108: {fileID: 107664846}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9507,7 +9543,7 @@ GameObject:
   - 4: {fileID: 122499555}
   - 33: {fileID: 122499557}
   - 23: {fileID: 122499556}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9562,7 +9598,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 124859503}
   - 108: {fileID: 124859504}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11860,7 +11896,7 @@ GameObject:
   - 4: {fileID: 168404146}
   - 114: {fileID: 168404148}
   - 65: {fileID: 168404147}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11919,7 +11955,7 @@ GameObject:
   - 4: {fileID: 168504937}
   - 198: {fileID: 168504939}
   - 199: {fileID: 168504938}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15196,7 +15232,7 @@ GameObject:
   - 33: {fileID: 182629012}
   - 65: {fileID: 182629011}
   - 23: {fileID: 182629010}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15264,7 +15300,7 @@ GameObject:
   - 4: {fileID: 183061654}
   - 198: {fileID: 183061656}
   - 199: {fileID: 183061655}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16346,7 +16382,7 @@ GameObject:
   - 4: {fileID: 184936523}
   - 198: {fileID: 184936525}
   - 199: {fileID: 184936524}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17494,7 +17530,7 @@ GameObject:
   - 4: {fileID: 193353316}
   - 198: {fileID: 193353318}
   - 199: {fileID: 193353317}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18575,7 +18611,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 210053270}
   - 114: {fileID: 210053271}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18708,7 +18744,7 @@ GameObject:
   - 4: {fileID: 236162593}
   - 198: {fileID: 236162595}
   - 199: {fileID: 236162594}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19819,7 +19855,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 238262912}
   - 114: {fileID: 238262913}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19868,7 +19904,7 @@ GameObject:
   - 4: {fileID: 240842305}
   - 33: {fileID: 240842307}
   - 23: {fileID: 240842306}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19924,7 +19960,7 @@ GameObject:
   - 4: {fileID: 251794618}
   - 33: {fileID: 251794620}
   - 23: {fileID: 251794619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19979,7 +20015,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 266361295}
   - 65: {fileID: 266361296}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RegionOpen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20021,7 +20057,7 @@ GameObject:
   - 33: {fileID: 274242964}
   - 65: {fileID: 274242963}
   - 23: {fileID: 274242962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20088,7 +20124,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 284172566}
   - 108: {fileID: 284172567}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20153,7 +20189,7 @@ GameObject:
   - 33: {fileID: 285378083}
   - 65: {fileID: 285378082}
   - 23: {fileID: 285378081}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20221,7 +20257,7 @@ GameObject:
   - 4: {fileID: 290259312}
   - 198: {fileID: 290259314}
   - 199: {fileID: 290259313}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21334,7 +21370,7 @@ GameObject:
   - 33: {fileID: 296786176}
   - 65: {fileID: 296786175}
   - 23: {fileID: 296786174}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21402,7 +21438,7 @@ GameObject:
   - 4: {fileID: 299688303}
   - 198: {fileID: 299688305}
   - 199: {fileID: 299688304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22484,7 +22520,7 @@ GameObject:
   - 4: {fileID: 313500393}
   - 198: {fileID: 313500395}
   - 199: {fileID: 313500394}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25743,7 +25779,7 @@ GameObject:
   - 4: {fileID: 318536390}
   - 198: {fileID: 318536392}
   - 199: {fileID: 318536391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26894,7 +26930,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 328009569}
   - 108: {fileID: 328009570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26957,7 +26993,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 330881102}
   - 108: {fileID: 330881103}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27046,6 +27082,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106888
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1771433899}
@@ -27086,6 +27150,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106769
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1393753360}
@@ -27102,7 +27194,7 @@ GameObject:
   - 33: {fileID: 340248863}
   - 65: {fileID: 340248862}
   - 23: {fileID: 340248861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27169,7 +27261,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 341953271}
   - 108: {fileID: 341953272}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27233,7 +27325,7 @@ GameObject:
   - 4: {fileID: 342326970}
   - 198: {fileID: 342326972}
   - 199: {fileID: 342326971}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28328,7 +28420,7 @@ GameObject:
   - 4: {fileID: 345652210}
   - 198: {fileID: 345652212}
   - 199: {fileID: 345652211}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29435,6 +29527,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 51055692}
@@ -29527,7 +29647,7 @@ GameObject:
   - 4: {fileID: 361803397}
   - 198: {fileID: 361803399}
   - 199: {fileID: 361803398}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30609,7 +30729,7 @@ GameObject:
   - 4: {fileID: 367471685}
   - 198: {fileID: 367471687}
   - 199: {fileID: 367471686}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31721,7 +31841,7 @@ GameObject:
   - 4: {fileID: 368146750}
   - 198: {fileID: 368146752}
   - 199: {fileID: 368146751}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32816,7 +32936,7 @@ GameObject:
   - 4: {fileID: 372029484}
   - 33: {fileID: 372029483}
   - 23: {fileID: 372029482}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32920,7 +33040,7 @@ GameObject:
   - 33: {fileID: 389273580}
   - 65: {fileID: 389273579}
   - 23: {fileID: 389273578}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32982,7 +33102,7 @@ MeshFilter:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 391006529}
@@ -32999,7 +33119,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 391006527}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -33014,12 +33134,12 @@ MonoBehaviour:
       type="RAIN.Core.AI" refcount="1" id="0"><field value="True" type="System.Boolean"
       id="_isActive" /><field type="UnityEngine.GameObject" id="_body" gameobject="0"
       /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
-      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
+      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="True"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
       /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
       childrenvisible="False" /><field type="RAIN.Perception.BasicSenses" reference="9"
-      id="_senses" childrenvisible="True" /><field type="System.Collections.Generic.List"
+      id="_senses" childrenvisible="False" /><field type="System.Collections.Generic.List"
       id="_customElements" elementtype="RAIN.Core.CustomAIElement" /></reference><reference
       type="RAIN.Memory.BasicMemory" refcount="1" id="1"><field type="System.Collections.Generic.List"
       id="_memoryItems" elementtype="System.String"><field value="moving" type="System.String"
@@ -33127,7 +33247,7 @@ MonoBehaviour:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 391006527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .0859336853, y: -.010791, z: .184868813}
@@ -33145,7 +33265,7 @@ GameObject:
   - 33: {fileID: 401988673}
   - 65: {fileID: 401988672}
   - 23: {fileID: 401988671}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33214,7 +33334,7 @@ GameObject:
   - 33: {fileID: 404020143}
   - 65: {fileID: 404020142}
   - 23: {fileID: 404020141}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33282,7 +33402,7 @@ GameObject:
   - 4: {fileID: 412820162}
   - 198: {fileID: 412820164}
   - 199: {fileID: 412820163}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34378,7 +34498,7 @@ GameObject:
   - 33: {fileID: 434314928}
   - 65: {fileID: 434314927}
   - 23: {fileID: 434314926}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34446,7 +34566,7 @@ GameObject:
   - 4: {fileID: 444833259}
   - 198: {fileID: 444833261}
   - 199: {fileID: 444833260}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35529,7 +35649,7 @@ GameObject:
   - 33: {fileID: 459943788}
   - 65: {fileID: 459943787}
   - 23: {fileID: 459943786}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35597,7 +35717,7 @@ GameObject:
   - 4: {fileID: 462455143}
   - 198: {fileID: 462455145}
   - 199: {fileID: 462455144}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36678,7 +36798,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 467033681}
   - 108: {fileID: 467033680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36742,7 +36862,7 @@ GameObject:
   - 4: {fileID: 467772850}
   - 33: {fileID: 467772852}
   - 23: {fileID: 467772851}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36797,7 +36917,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 482773390}
   - 114: {fileID: 482773391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37987,6 +38107,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 1028731399}
@@ -38002,7 +38130,7 @@ GameObject:
   - 4: {fileID: 500489490}
   - 198: {fileID: 500489492}
   - 199: {fileID: 500489491}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39122,6 +39250,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106888
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1726065989}
@@ -39136,7 +39292,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 528795390}
   - 114: {fileID: 528795391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brazier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39185,7 +39341,7 @@ GameObject:
   - 4: {fileID: 538342342}
   - 33: {fileID: 538342344}
   - 23: {fileID: 538342343}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39278,6 +39434,26 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: -.5
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8e470c3bd3c4e1e44b4913bea5b5a3fa, type: 2}
   m_RootGameObject: {fileID: 598553110}
@@ -39294,7 +39470,7 @@ GameObject:
   - 33: {fileID: 544130621}
   - 65: {fileID: 544130620}
   - 23: {fileID: 544130619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39387,6 +39563,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 900356357}
@@ -39403,7 +39607,7 @@ GameObject:
   - 33: {fileID: 554034570}
   - 65: {fileID: 554034569}
   - 23: {fileID: 554034568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39472,7 +39676,7 @@ GameObject:
   - 33: {fileID: 554835013}
   - 65: {fileID: 554835012}
   - 23: {fileID: 554835011}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39609,7 +39813,7 @@ GameObject:
   - 4: {fileID: 565822046}
   - 198: {fileID: 565822048}
   - 199: {fileID: 565822047}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40716,6 +40920,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106769
       objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1986758117}
@@ -40755,6 +40987,34 @@ Prefab:
     - target: {fileID: 400000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
       propertyPath: m_LocalRotation.w
       value: .707106769
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
@@ -40799,6 +41059,14 @@ Prefab:
     - target: {fileID: 400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -40867,7 +41135,7 @@ GameObject:
   - 4: {fileID: 589266953}
   - 33: {fileID: 589266955}
   - 23: {fileID: 589266954}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40924,7 +41192,7 @@ GameObject:
   - 33: {fileID: 589604584}
   - 65: {fileID: 589604583}
   - 23: {fileID: 589604582}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40993,7 +41261,7 @@ GameObject:
   - 33: {fileID: 590139407}
   - 65: {fileID: 590139406}
   - 23: {fileID: 590139405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41062,7 +41330,7 @@ GameObject:
   - 95: {fileID: 598553114}
   - 114: {fileID: 598553113}
   - 54: {fileID: 598553112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TreasureChest
   m_TagString: TreasureChest
   m_Icon: {fileID: 0}
@@ -41141,7 +41409,7 @@ GameObject:
   - 4: {fileID: 601157909}
   - 198: {fileID: 601157911}
   - 199: {fileID: 601157910}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42290,53 +42558,17 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 1385118567}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
---- !u!1001 &606967459
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1697309904}
-    m_Modifications:
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -7.50000048
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 4.99999952
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -.902817726
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: -.430023551
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-  m_RootGameObject: {fileID: 1700041740}
   m_IsPrefabParent: 0
   m_IsExploded: 1
 --- !u!1 &610807279
@@ -42349,7 +42581,7 @@ GameObject:
   - 4: {fileID: 610807280}
   - 198: {fileID: 610807282}
   - 199: {fileID: 610807281}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43456,6 +43688,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
   m_RootGameObject: {fileID: 1822354969}
@@ -43471,7 +43731,7 @@ GameObject:
   - 4: {fileID: 627564515}
   - 198: {fileID: 627564517}
   - 199: {fileID: 627564516}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44583,7 +44843,7 @@ GameObject:
   - 4: {fileID: 631310639}
   - 198: {fileID: 631310638}
   - 199: {fileID: 631310637}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45678,7 +45938,7 @@ GameObject:
   - 4: {fileID: 632818145}
   - 33: {fileID: 632818147}
   - 23: {fileID: 632818146}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45735,7 +45995,7 @@ GameObject:
   - 33: {fileID: 636779575}
   - 23: {fileID: 636779574}
   - 65: {fileID: 636779573}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45874,7 +46134,7 @@ GameObject:
   - 4: {fileID: 641653067}
   - 198: {fileID: 641653069}
   - 199: {fileID: 641653068}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46969,7 +47229,7 @@ GameObject:
   - 4: {fileID: 648708909}
   - 198: {fileID: 648708911}
   - 199: {fileID: 648708910}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48152,7 +48412,7 @@ GameObject:
   - 33: {fileID: 652024017}
   - 65: {fileID: 652024016}
   - 23: {fileID: 652024015}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48220,7 +48480,7 @@ GameObject:
   - 4: {fileID: 660135924}
   - 198: {fileID: 660135926}
   - 199: {fileID: 660135925}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49302,7 +49562,7 @@ GameObject:
   - 4: {fileID: 663159037}
   - 114: {fileID: 663159039}
   - 65: {fileID: 663159038}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49361,7 +49621,7 @@ GameObject:
   - 4: {fileID: 663269155}
   - 198: {fileID: 663269157}
   - 199: {fileID: 663269156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50444,7 +50704,7 @@ GameObject:
   - 33: {fileID: 683266458}
   - 65: {fileID: 683266457}
   - 23: {fileID: 683266456}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50516,9 +50776,9 @@ GameObject:
   - 114: {fileID: 691402612}
   - 65: {fileID: 691402611}
   - 114: {fileID: 691402610}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Rat
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50654,6 +50914,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1874096329}
@@ -50669,7 +50957,7 @@ GameObject:
   - 4: {fileID: 699154357}
   - 33: {fileID: 699154359}
   - 23: {fileID: 699154358}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50724,7 +51012,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 699950143}
   - 114: {fileID: 699950144}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50774,7 +51062,7 @@ GameObject:
   - 33: {fileID: 711854355}
   - 65: {fileID: 711854354}
   - 23: {fileID: 711854353}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50889,7 +51177,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 713529539}
   - 114: {fileID: 713529540}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brazier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51009,7 +51297,7 @@ GameObject:
   - 33: {fileID: 751861303}
   - 65: {fileID: 751861302}
   - 23: {fileID: 751861301}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51106,6 +51394,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 1398804014}
@@ -51158,12 +51454,12 @@ MonoBehaviour:
       type="RAIN.Core.AI" refcount="1" id="0"><field value="True" type="System.Boolean"
       id="_isActive" /><field type="UnityEngine.GameObject" id="_body" gameobject="0"
       /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
-      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
+      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="True"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
       /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
       childrenvisible="False" /><field type="RAIN.Perception.BasicSenses" reference="9"
-      id="_senses" childrenvisible="True" /><field type="System.Collections.Generic.List"
+      id="_senses" childrenvisible="False" /><field type="System.Collections.Generic.List"
       id="_customElements" elementtype="RAIN.Core.CustomAIElement" /></reference><reference
       type="RAIN.Memory.BasicMemory" refcount="1" id="1"><field type="System.Collections.Generic.List"
       id="_memoryItems" elementtype="System.String"><field value="moving" type="System.String"
@@ -51350,6 +51646,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
   m_RootGameObject: {fileID: 528795389}
@@ -51393,6 +51717,14 @@ Prefab:
     - target: {fileID: 400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -51493,7 +51825,7 @@ GameObject:
   - 4: {fileID: 805677792}
   - 198: {fileID: 805677794}
   - 199: {fileID: 805677793}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52575,7 +52907,7 @@ GameObject:
   - 4: {fileID: 806258811}
   - 198: {fileID: 806258813}
   - 199: {fileID: 806258812}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53752,6 +54084,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 238262911}
@@ -53767,7 +54127,7 @@ GameObject:
   - 4: {fileID: 810733025}
   - 198: {fileID: 810733027}
   - 199: {fileID: 810733026}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55944,7 +56304,7 @@ GameObject:
   - 4: {fileID: 836092567}
   - 198: {fileID: 836092569}
   - 199: {fileID: 836092568}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57038,7 +57398,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 847292963}
   - 114: {fileID: 847292964}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57088,7 +57448,7 @@ GameObject:
   - 33: {fileID: 847621943}
   - 65: {fileID: 847621942}
   - 23: {fileID: 847621941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57157,7 +57517,7 @@ GameObject:
   - 33: {fileID: 855541445}
   - 65: {fileID: 855541444}
   - 23: {fileID: 855541443}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57323,7 +57683,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 867413247}
   - 108: {fileID: 867413248}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57457,7 +57817,7 @@ GameObject:
   - 4: {fileID: 877330478}
   - 198: {fileID: 877330480}
   - 199: {fileID: 877330479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58539,7 +58899,7 @@ GameObject:
   - 4: {fileID: 882652604}
   - 114: {fileID: 882652606}
   - 65: {fileID: 882652605}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58597,7 +58957,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 900356358}
   - 114: {fileID: 900356359}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58645,7 +59005,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 905972124}
   - 108: {fileID: 905972125}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58779,7 +59139,7 @@ GameObject:
   - 4: {fileID: 933883047}
   - 198: {fileID: 933883049}
   - 199: {fileID: 933883048}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59951,6 +60311,46 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 934232576}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &941107471
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1697309904}
+    m_Modifications:
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -7.50000048
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 4.99999952
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -.902817726
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: -.430023551
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
+  m_RootGameObject: {fileID: 1700041740}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1001 &946751289
 Prefab:
   m_ObjectHideFlags: 0
@@ -59989,6 +60389,14 @@ Prefab:
     - target: {fileID: 400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -60033,6 +60441,14 @@ Prefab:
     - target: {fileID: 400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -60156,6 +60572,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 663159036}
@@ -60171,7 +60595,7 @@ GameObject:
   - 4: {fileID: 998593355}
   - 198: {fileID: 998593357}
   - 199: {fileID: 998593356}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61284,7 +61708,7 @@ GameObject:
   - 33: {fileID: 998878021}
   - 23: {fileID: 998878020}
   - 65: {fileID: 998878019}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61378,6 +61802,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1099545926}
@@ -61394,7 +61846,7 @@ GameObject:
   - 33: {fileID: 1006837602}
   - 65: {fileID: 1006837601}
   - 23: {fileID: 1006837600}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61462,7 +61914,7 @@ GameObject:
   - 4: {fileID: 1007524793}
   - 198: {fileID: 1007524795}
   - 199: {fileID: 1007524794}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62557,7 +63009,7 @@ GameObject:
   - 4: {fileID: 1011013505}
   - 198: {fileID: 1011013504}
   - 199: {fileID: 1011013503}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63640,7 +64092,7 @@ GameObject:
   - 33: {fileID: 1011536638}
   - 65: {fileID: 1011536637}
   - 23: {fileID: 1011536636}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63708,7 +64160,7 @@ GameObject:
   - 4: {fileID: 1023373808}
   - 198: {fileID: 1023373810}
   - 199: {fileID: 1023373809}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64790,7 +65242,7 @@ GameObject:
   - 4: {fileID: 1028731400}
   - 114: {fileID: 1028731402}
   - 65: {fileID: 1028731401}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64850,7 +65302,7 @@ GameObject:
   - 33: {fileID: 1037370713}
   - 65: {fileID: 1037370712}
   - 23: {fileID: 1037370711}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65078,7 +65530,7 @@ GameObject:
   - 4: {fileID: 1066261121}
   - 198: {fileID: 1066261123}
   - 199: {fileID: 1066261122}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66160,7 +66612,7 @@ GameObject:
   - 4: {fileID: 1072860723}
   - 198: {fileID: 1072860725}
   - 199: {fileID: 1072860724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67243,7 +67695,7 @@ GameObject:
   - 33: {fileID: 1080625938}
   - 65: {fileID: 1080625937}
   - 23: {fileID: 1080625936}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67311,7 +67763,7 @@ GameObject:
   - 4: {fileID: 1080787044}
   - 198: {fileID: 1080787046}
   - 199: {fileID: 1080787045}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69534,7 +69986,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1099545927}
   - 114: {fileID: 1099545928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69624,7 +70076,7 @@ GameObject:
   - 33: {fileID: 1104931561}
   - 65: {fileID: 1104931560}
   - 23: {fileID: 1104931559}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69692,7 +70144,7 @@ GameObject:
   - 4: {fileID: 1106442824}
   - 198: {fileID: 1106442826}
   - 199: {fileID: 1106442825}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70787,7 +71239,7 @@ GameObject:
   - 4: {fileID: 1123545426}
   - 198: {fileID: 1123545428}
   - 199: {fileID: 1123545427}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71868,7 +72320,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1124383074}
   - 108: {fileID: 1124383075}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71933,7 +72385,7 @@ GameObject:
   - 33: {fileID: 1127233230}
   - 23: {fileID: 1127233229}
   - 65: {fileID: 1127233228}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72072,7 +72524,7 @@ GameObject:
   - 33: {fileID: 1131123694}
   - 23: {fileID: 1131123693}
   - 65: {fileID: 1131123692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73302,7 +73754,7 @@ GameObject:
   - 33: {fileID: 1136355919}
   - 65: {fileID: 1136355918}
   - 23: {fileID: 1136355917}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73369,7 +73821,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1146073035}
   - 108: {fileID: 1146073036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73462,6 +73914,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 1232181721}
@@ -73477,7 +73937,7 @@ GameObject:
   - 4: {fileID: 1162435458}
   - 198: {fileID: 1162435457}
   - 199: {fileID: 1162435456}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74588,7 +75048,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1164140634}
   - 108: {fileID: 1164140635}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74651,7 +75111,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1171052500}
   - 108: {fileID: 1171052501}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74760,7 +75220,7 @@ GameObject:
   - 33: {fileID: 1200192753}
   - 65: {fileID: 1200192752}
   - 23: {fileID: 1200192751}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74915,6 +75375,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106769
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 8122013}
@@ -74934,9 +75422,9 @@ GameObject:
   - 114: {fileID: 1212181919}
   - 65: {fileID: 1212181918}
   - 114: {fileID: 1212181917}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Rat
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75047,7 +75535,7 @@ GameObject:
   - 4: {fileID: 1232181722}
   - 114: {fileID: 1232181724}
   - 65: {fileID: 1232181723}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75107,7 +75595,7 @@ GameObject:
   - 33: {fileID: 1241055997}
   - 65: {fileID: 1241055996}
   - 23: {fileID: 1241055995}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75279,7 +75767,7 @@ GameObject:
   - 4: {fileID: 1282688714}
   - 198: {fileID: 1282688716}
   - 199: {fileID: 1282688715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76362,7 +76850,7 @@ GameObject:
   - 33: {fileID: 1284697802}
   - 65: {fileID: 1284697801}
   - 23: {fileID: 1284697800}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76539,7 +77027,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1311054831}
   - 108: {fileID: 1311054832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76604,7 +77092,7 @@ GameObject:
   - 33: {fileID: 1314261200}
   - 65: {fileID: 1314261199}
   - 23: {fileID: 1314261198}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76673,7 +77161,7 @@ GameObject:
   - 33: {fileID: 1315192492}
   - 65: {fileID: 1315192491}
   - 23: {fileID: 1315192490}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76766,6 +77254,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106888
       objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1476270373}
@@ -76781,7 +77297,7 @@ GameObject:
   - 4: {fileID: 1322769062}
   - 198: {fileID: 1322769064}
   - 199: {fileID: 1322769063}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77863,7 +78379,7 @@ GameObject:
   - 4: {fileID: 1340878235}
   - 198: {fileID: 1340878237}
   - 199: {fileID: 1340878236}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79000,7 +79516,7 @@ GameObject:
   - 4: {fileID: 1354248227}
   - 114: {fileID: 1354248229}
   - 65: {fileID: 1354248228}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79060,7 +79576,7 @@ GameObject:
   - 33: {fileID: 1355566195}
   - 65: {fileID: 1355566194}
   - 23: {fileID: 1355566193}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79126,7 +79642,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1357202459}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Loot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79306,7 +79822,7 @@ GameObject:
   - 33: {fileID: 1380524845}
   - 65: {fileID: 1380524844}
   - 23: {fileID: 1380524843}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79373,7 +79889,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1383459864}
   - 108: {fileID: 1383459865}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79437,7 +79953,7 @@ GameObject:
   - 4: {fileID: 1385118568}
   - 114: {fileID: 1385118570}
   - 65: {fileID: 1385118569}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79496,7 +80012,7 @@ GameObject:
   - 4: {fileID: 1385721354}
   - 198: {fileID: 1385721356}
   - 199: {fileID: 1385721355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80577,7 +81093,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1393753361}
   - 114: {fileID: 1393753362}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80626,7 +81142,7 @@ GameObject:
   - 4: {fileID: 1394136835}
   - 33: {fileID: 1394136837}
   - 23: {fileID: 1394136836}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81834,7 +82350,7 @@ GameObject:
   - 4: {fileID: 1398804015}
   - 114: {fileID: 1398804017}
   - 65: {fileID: 1398804016}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82975,7 +83491,7 @@ GameObject:
   - 4: {fileID: 1400727915}
   - 198: {fileID: 1400727917}
   - 199: {fileID: 1400727916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84071,7 +84587,7 @@ GameObject:
   - 33: {fileID: 1402150332}
   - 65: {fileID: 1402150331}
   - 23: {fileID: 1402150330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84140,7 +84656,7 @@ GameObject:
   - 33: {fileID: 1405245335}
   - 23: {fileID: 1405245334}
   - 65: {fileID: 1405245333}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84210,7 +84726,7 @@ GameObject:
   - 33: {fileID: 1420656527}
   - 65: {fileID: 1420656526}
   - 23: {fileID: 1420656525}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84278,7 +84794,7 @@ GameObject:
   - 4: {fileID: 1432938958}
   - 198: {fileID: 1432938960}
   - 199: {fileID: 1432938959}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85360,7 +85876,7 @@ GameObject:
   - 4: {fileID: 1441262624}
   - 198: {fileID: 1441262626}
   - 199: {fileID: 1441262625}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86443,7 +86959,7 @@ GameObject:
   - 33: {fileID: 1454623232}
   - 65: {fileID: 1454623231}
   - 23: {fileID: 1454623230}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86510,7 +87026,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1462257605}
   - 108: {fileID: 1462257606}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86574,7 +87090,7 @@ GameObject:
   - 4: {fileID: 1471575598}
   - 33: {fileID: 1471575600}
   - 23: {fileID: 1471575599}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86655,6 +87171,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: -4.37113883e-08
       objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 2079948212}
@@ -86669,7 +87213,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1476270375}
   - 114: {fileID: 1476270374}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86718,7 +87262,7 @@ GameObject:
   - 4: {fileID: 1478516436}
   - 198: {fileID: 1478516438}
   - 199: {fileID: 1478516437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87800,7 +88344,7 @@ GameObject:
   - 4: {fileID: 1490012183}
   - 198: {fileID: 1490012185}
   - 199: {fileID: 1490012184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88950,7 +89494,7 @@ GameObject:
   - 4: {fileID: 1509207363}
   - 198: {fileID: 1509207365}
   - 199: {fileID: 1509207364}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90087,6 +90631,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
   m_RootGameObject: {fileID: 1965897942}
@@ -90103,7 +90675,7 @@ GameObject:
   - 33: {fileID: 1519976759}
   - 65: {fileID: 1519976758}
   - 23: {fileID: 1519976757}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90171,7 +90743,7 @@ GameObject:
   - 4: {fileID: 1523663290}
   - 198: {fileID: 1523663289}
   - 199: {fileID: 1523663288}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91266,7 +91838,7 @@ GameObject:
   - 4: {fileID: 1528578373}
   - 198: {fileID: 1528578375}
   - 199: {fileID: 1528578374}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92348,7 +92920,7 @@ GameObject:
   - 4: {fileID: 1538401997}
   - 33: {fileID: 1538401999}
   - 23: {fileID: 1538401998}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92429,6 +93001,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106829
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 210053269}
@@ -92444,7 +93044,7 @@ GameObject:
   - 4: {fileID: 1564749062}
   - 198: {fileID: 1564749064}
   - 199: {fileID: 1564749063}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93539,7 +94139,7 @@ GameObject:
   - 4: {fileID: 1566085932}
   - 198: {fileID: 1566085934}
   - 199: {fileID: 1566085933}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94651,7 +95251,7 @@ GameObject:
   - 4: {fileID: 1567867865}
   - 198: {fileID: 1567867867}
   - 199: {fileID: 1567867866}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95732,7 +96332,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1575428682}
   - 108: {fileID: 1575428683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95797,7 +96397,7 @@ GameObject:
   - 33: {fileID: 1579508268}
   - 65: {fileID: 1579508267}
   - 23: {fileID: 1579508266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95865,7 +96465,7 @@ GameObject:
   - 4: {fileID: 1582393377}
   - 198: {fileID: 1582393379}
   - 199: {fileID: 1582393378}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97015,7 +97615,7 @@ GameObject:
   - 4: {fileID: 1594495423}
   - 198: {fileID: 1594495425}
   - 199: {fileID: 1594495424}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98156,6 +98756,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 56166260}
@@ -98171,7 +98779,7 @@ GameObject:
   - 4: {fileID: 1618203893}
   - 114: {fileID: 1618203895}
   - 65: {fileID: 1618203894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98230,7 +98838,7 @@ GameObject:
   - 4: {fileID: 1621297985}
   - 198: {fileID: 1621297987}
   - 199: {fileID: 1621297986}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99390,7 +99998,7 @@ GameObject:
   - 33: {fileID: 1632170846}
   - 65: {fileID: 1632170845}
   - 23: {fileID: 1632170844}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99458,7 +100066,7 @@ GameObject:
   - 4: {fileID: 1642079454}
   - 114: {fileID: 1642079453}
   - 65: {fileID: 1642079452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HingeDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99569,7 +100177,7 @@ GameObject:
   - 4: {fileID: 1648518270}
   - 198: {fileID: 1648518269}
   - 199: {fileID: 1648518268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100707,12 +101315,12 @@ MonoBehaviour:
       type="RAIN.Core.AI" refcount="1" id="0"><field value="True" type="System.Boolean"
       id="_isActive" /><field type="UnityEngine.GameObject" id="_body" gameobject="0"
       /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
-      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
+      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="True"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
       /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
       childrenvisible="False" /><field type="RAIN.Perception.BasicSenses" reference="9"
-      id="_senses" childrenvisible="True" /><field type="System.Collections.Generic.List"
+      id="_senses" childrenvisible="False" /><field type="System.Collections.Generic.List"
       id="_customElements" elementtype="RAIN.Core.CustomAIElement" /></reference><reference
       type="RAIN.Memory.BasicMemory" refcount="1" id="1"><field type="System.Collections.Generic.List"
       id="_memoryItems" elementtype="System.String"><field value="moving" type="System.String"
@@ -100837,7 +101445,7 @@ GameObject:
   - 4: {fileID: 1658087660}
   - 198: {fileID: 1658087659}
   - 199: {fileID: 1658087658}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101919,7 +102527,7 @@ GameObject:
   - 4: {fileID: 1669579351}
   - 198: {fileID: 1669579353}
   - 199: {fileID: 1669579352}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103001,7 +103609,7 @@ GameObject:
   - 4: {fileID: 1671725679}
   - 33: {fileID: 1671725681}
   - 23: {fileID: 1671725680}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103058,7 +103666,7 @@ GameObject:
   - 33: {fileID: 1673021501}
   - 65: {fileID: 1673021500}
   - 23: {fileID: 1673021499}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103126,7 +103734,7 @@ GameObject:
   - 4: {fileID: 1685211256}
   - 198: {fileID: 1685211258}
   - 199: {fileID: 1685211257}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104242,9 +104850,9 @@ GameObject:
   - 114: {fileID: 1697038509}
   - 65: {fileID: 1697038508}
   - 114: {fileID: 1697038507}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Rat
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104376,8 +104984,8 @@ Transform:
   - {fileID: 1838395936}
   - {fileID: 860524154}
   - {fileID: 1028731400}
-  - {fileID: 1700041741}
   - {fileID: 1697038506}
+  - {fileID: 1700041741}
   - {fileID: 691402616}
   - {fileID: 1212181916}
   - {fileID: 1825953275}
@@ -104393,7 +105001,7 @@ Transform:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1700041741}
@@ -104403,9 +105011,9 @@ GameObject:
   - 114: {fileID: 1700041744}
   - 65: {fileID: 1700041743}
   - 114: {fileID: 1700041742}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Rat
-  m_TagString: Enemy
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104414,7 +105022,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400002, guid: 742ea9e9ae811924abaeaa5f6508df46, type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_LocalRotation: {x: -0, y: -.902817726, z: 0, w: -.430023551}
   m_LocalPosition: {x: -7.50000048, y: 0, z: 4.99999952}
@@ -104427,7 +105035,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -104440,7 +105048,7 @@ BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 6500000, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -104453,7 +105061,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -104468,7 +105076,7 @@ Rigidbody:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 5400000, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   serializedVersion: 2
   m_Mass: 1
@@ -104484,7 +105092,7 @@ Renderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 2300000, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_Enabled: 1
   m_CastShadows: 1
@@ -104503,7 +105111,7 @@ MeshFilter:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 3300000, guid: 742ea9e9ae811924abaeaa5f6508df46,
     type: 2}
-  m_PrefabInternal: {fileID: 606967459}
+  m_PrefabInternal: {fileID: 941107471}
   m_GameObject: {fileID: 1700041740}
   m_Mesh: {fileID: 4300000, guid: ee695a18a0d14b14a84f13d7681a3c4b, type: 3}
 --- !u!1 &1703560168
@@ -104517,7 +105125,7 @@ GameObject:
   - 33: {fileID: 1703560172}
   - 65: {fileID: 1703560171}
   - 23: {fileID: 1703560170}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104585,7 +105193,7 @@ GameObject:
   - 4: {fileID: 1708370563}
   - 33: {fileID: 1708370565}
   - 23: {fileID: 1708370564}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104642,7 +105250,7 @@ GameObject:
   - 33: {fileID: 1710285425}
   - 65: {fileID: 1710285424}
   - 23: {fileID: 1710285423}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104710,7 +105318,7 @@ GameObject:
   - 4: {fileID: 1720627085}
   - 198: {fileID: 1720627087}
   - 199: {fileID: 1720627086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105822,7 +106430,7 @@ GameObject:
   - 4: {fileID: 1726014633}
   - 198: {fileID: 1726014635}
   - 199: {fileID: 1726014634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106916,7 +107524,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1726065990}
   - 114: {fileID: 1726065991}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108097,12 +108705,12 @@ MonoBehaviour:
       type="RAIN.Core.AI" refcount="1" id="0"><field value="True" type="System.Boolean"
       id="_isActive" /><field type="UnityEngine.GameObject" id="_body" gameobject="0"
       /><field type="RAIN.Memory.BasicMemory" reference="1" id="_workingMemory" childrenvisible="False"
-      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="False"
+      /><field type="RAIN.Minds.BasicMind" reference="2" id="_mind" childrenvisible="True"
       /><field type="RAIN.Motion.BasicMotor" reference="3" id="_motor" childrenvisible="False"
       /><field type="RAIN.Animation.BasicAnimator" reference="6" id="_animator" childrenvisible="False"
       /><field type="RAIN.Navigation.BasicNavigator" reference="7" id="_navigator"
       childrenvisible="False" /><field type="RAIN.Perception.BasicSenses" reference="9"
-      id="_senses" childrenvisible="True" /><field type="System.Collections.Generic.List"
+      id="_senses" childrenvisible="False" /><field type="System.Collections.Generic.List"
       id="_customElements" elementtype="RAIN.Core.CustomAIElement" /></reference><reference
       type="RAIN.Memory.BasicMemory" refcount="1" id="1"><field type="System.Collections.Generic.List"
       id="_memoryItems" elementtype="System.String"><field value="moving" type="System.String"
@@ -108216,7 +108824,7 @@ GameObject:
   - 4: {fileID: 1737678943}
   - 198: {fileID: 1737678945}
   - 199: {fileID: 1737678944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109298,7 +109906,7 @@ GameObject:
   - 4: {fileID: 1739044582}
   - 198: {fileID: 1739044584}
   - 199: {fileID: 1739044583}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110411,7 +111019,7 @@ GameObject:
   - 33: {fileID: 1742828857}
   - 65: {fileID: 1742828856}
   - 23: {fileID: 1742828855}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110480,7 +111088,7 @@ GameObject:
   - 33: {fileID: 1761015192}
   - 23: {fileID: 1761015191}
   - 65: {fileID: 1761015190}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: polySurface1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110585,7 +111193,7 @@ GameObject:
   - 4: {fileID: 1768333095}
   - 33: {fileID: 1768333097}
   - 23: {fileID: 1768333096}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110710,7 +111318,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1771433900}
   - 114: {fileID: 1771433901}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110760,7 +111368,7 @@ GameObject:
   - 33: {fileID: 1771947413}
   - 65: {fileID: 1771947412}
   - 23: {fileID: 1771947411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110827,7 +111435,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1773602931}
   - 108: {fileID: 1773602932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110891,7 +111499,7 @@ GameObject:
   - 4: {fileID: 1782976859}
   - 33: {fileID: 1782976861}
   - 23: {fileID: 1782976860}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110971,6 +111579,34 @@ Prefab:
     - target: {fileID: 400000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
       propertyPath: m_LocalRotation.w
       value: .707106888
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
@@ -111107,6 +111743,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: -4.37113883e-08
       objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 482773389}
@@ -111146,6 +111810,34 @@ Prefab:
     - target: {fileID: 400012, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
       propertyPath: m_LocalRotation.w
       value: .707106829
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2525dccf9250fa74188b0c0721b3fa4b, type: 2}
@@ -111231,7 +111923,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1822354970}
   - 114: {fileID: 1822354971}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brazier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111279,7 +111971,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1825953275}
   - 114: {fileID: 1825953276}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111328,7 +112020,7 @@ GameObject:
   - 4: {fileID: 1830600752}
   - 198: {fileID: 1830600754}
   - 199: {fileID: 1830600753}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112423,7 +113115,7 @@ GameObject:
   - 4: {fileID: 1831187791}
   - 198: {fileID: 1831187793}
   - 199: {fileID: 1831187792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113506,7 +114198,7 @@ GameObject:
   - 33: {fileID: 1838395939}
   - 65: {fileID: 1838395938}
   - 23: {fileID: 1838395937}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113573,7 +114265,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1849326074}
   - 114: {fileID: 1849326075}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113622,7 +114314,7 @@ GameObject:
   - 4: {fileID: 1855258765}
   - 198: {fileID: 1855258767}
   - 199: {fileID: 1855258766}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114705,7 +115397,7 @@ GameObject:
   - 33: {fileID: 1855275481}
   - 65: {fileID: 1855275480}
   - 23: {fileID: 1855275479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114772,7 +115464,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1863156977}
   - 108: {fileID: 1863156978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114835,7 +115527,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1874096331}
   - 114: {fileID: 1874096330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114885,7 +115577,7 @@ GameObject:
   - 33: {fileID: 1886873021}
   - 65: {fileID: 1886873020}
   - 23: {fileID: 1886873019}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114954,7 +115646,7 @@ GameObject:
   - 33: {fileID: 1899177583}
   - 65: {fileID: 1899177582}
   - 23: {fileID: 1899177581}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116224,7 +116916,7 @@ GameObject:
   - 4: {fileID: 1935460336}
   - 198: {fileID: 1935460338}
   - 199: {fileID: 1935460337}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117320,7 +118012,7 @@ GameObject:
   - 33: {fileID: 1936859575}
   - 65: {fileID: 1936859574}
   - 23: {fileID: 1936859573}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118470,7 +119162,7 @@ GameObject:
   - 4: {fileID: 1945878398}
   - 198: {fileID: 1945878400}
   - 199: {fileID: 1945878399}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119565,7 +120257,7 @@ GameObject:
   - 4: {fileID: 1960123024}
   - 198: {fileID: 1960123026}
   - 199: {fileID: 1960123025}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: base_flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120676,7 +121368,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1965897943}
   - 114: {fileID: 1965897944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brazier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120725,7 +121417,7 @@ GameObject:
   - 4: {fileID: 1973185169}
   - 198: {fileID: 1973185171}
   - 199: {fileID: 1973185170}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121807,7 +122499,7 @@ GameObject:
   - 4: {fileID: 1984735631}
   - 33: {fileID: 1984735633}
   - 23: {fileID: 1984735632}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121862,7 +122554,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1986758118}
   - 114: {fileID: 1986758119}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121912,7 +122604,7 @@ GameObject:
   - 33: {fileID: 1989549798}
   - 65: {fileID: 1989549797}
   - 23: {fileID: 1989549796}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121980,7 +122672,7 @@ GameObject:
   - 4: {fileID: 1998303592}
   - 198: {fileID: 1998303594}
   - 199: {fileID: 1998303593}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123101,7 +123793,7 @@ GameObject:
   - 4: {fileID: 2019115481}
   - 198: {fileID: 2019115483}
   - 199: {fileID: 2019115482}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: fumee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124212,6 +124904,14 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
   m_RootGameObject: {fileID: 882652603}
@@ -124290,7 +124990,7 @@ GameObject:
   - 4: {fileID: 2056596192}
   - 198: {fileID: 2056596194}
   - 199: {fileID: 2056596193}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125385,7 +126085,7 @@ GameObject:
   - 4: {fileID: 2063288320}
   - 33: {fileID: 2063288322}
   - 23: {fileID: 2063288321}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: torche
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125441,7 +126141,7 @@ GameObject:
   - 4: {fileID: 2063986270}
   - 198: {fileID: 2063986269}
   - 199: {fileID: 2063986268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: flam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126535,7 +127235,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2079948213}
   - 114: {fileID: 2079948214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126583,7 +127283,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2080461719}
   - 108: {fileID: 2080461720}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126715,7 +127415,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2109877986}
   - 108: {fileID: 2109877987}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torch_light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126804,6 +127504,34 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: -4.37113883e-08
       objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2e2d0bcbc91da9d499584945a2fc60d3, type: 2}
   m_RootGameObject: {fileID: 1849326073}
@@ -126819,7 +127547,7 @@ GameObject:
   - 4: {fileID: 2117973959}
   - 198: {fileID: 2117973961}
   - 199: {fileID: 2117973960}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: etincelles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128052,7 +128780,7 @@ GameObject:
   - 33: {fileID: 2139544367}
   - 65: {fileID: 2139544366}
   - 23: {fileID: 2139544365}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128121,7 +128849,7 @@ GameObject:
   - 33: {fileID: 2146652866}
   - 65: {fileID: 2146652865}
   - 23: {fileID: 2146652864}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
