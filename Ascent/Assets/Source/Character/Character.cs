@@ -16,17 +16,23 @@ public abstract class Character : MonoBehaviour
         Physical,
         Magical,
     }
-
+	
 	protected List<Action> abilities = new List<Action>();
 	protected IAction activeAbility;
 	protected GameObject weaponPrefab;
     protected bool isDead = false;
-
+	
     protected Transform weaponSlot;
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
     }
+	
+	protected Collidable chargeBall;
+	public Collidable ChargeBall
+	{
+		get { return chargeBall; }
+	}
 
     protected Weapon equipedWeapon;
     public Weapon Weapon
@@ -67,7 +73,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Start()
     {
-        // To be derived
+        // To be derived		
     }
 
     public virtual void Update()
@@ -199,4 +205,10 @@ public abstract class Character : MonoBehaviour
             Debug.Log("Character somehow died by somethign and we do not know what caused it.");
         }
     }
+	
+	protected void AddSkill(Action skill)
+	{
+		skill.Initialise(this);
+		abilities.Add(skill);
+	}
 }

@@ -4,19 +4,19 @@
 using UnityEngine;
 using System.Collections;
 
-public class Whirlwind : IAction 
+public class Whirlwind : Action 
 {
-	Character owner;
+	//Character owner;
 	private const float animationTime = 2.333f;
 	private const float animationSpeed = 2.0f;
 	private float timeElapsed;
 
-	public void Initialise(Character owner)
+	public override void Initialise(Character owner)
 	{
-		this.owner = owner;
+		base.Initialise(owner);
 	}
 
-	public void StartAbility()
+	public override void StartAbility()
 	{
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("Whirlwind");
@@ -24,7 +24,7 @@ public class Whirlwind : IAction
 		owner.Weapon.SetAttackProperties(999,Character.EDamageType.Physical);
 	}
 
-	public void UpdateAbility()
+	public override void UpdateAbility()
 	{
 		timeElapsed += Time.deltaTime;
 
@@ -34,7 +34,7 @@ public class Whirlwind : IAction
 		}
 	}
 
-	public void EndAbility()
+	public override void EndAbility()
 	{
 		owner.Weapon.EnableCollision = false;
 		owner.Animator.StopAnimation("Whirlwind");
