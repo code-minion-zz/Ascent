@@ -63,7 +63,7 @@ public class Collidable : MonoBehaviour {
 		transform.forward = transform.parent.forward;
 	}
 
-    void Init(Character _owner)
+    public void Init(Character _owner)
     {
         owner = _owner;
         ownerTeam = _owner.tag;
@@ -90,15 +90,14 @@ public class Collidable : MonoBehaviour {
 					return;
                 }
             }
-            // check if we cannot hit this for any reason
-			
-			// report enemy collision
-			if (onCollisionEnterEnemy != null)
+			else if (onCollisionEnterEnemy != null)					
 			{
+            // check if we cannot hit this for any reason
+			// report enemy collision
             	onCollisionEnterEnemy(go);
 	            ++collisions;
 	            return;
-			}
+			}			
         }
 		
         if (go.layer == WallLayer)

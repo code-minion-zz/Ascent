@@ -15,7 +15,9 @@ public class Charge : Action
 	private float distanceMax = 12f;
 	
 	private Animator ownerAnimator;
-
+	
+	private bool endCharge = false;
+	
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
@@ -63,6 +65,7 @@ public class Charge : Action
 	{	
 		timeElapsed = 0.0f;
     	distanceTraveled = 0f;
+		endCharge = false;
 	}
 	
 	private void OnHitWall(GameObject go)

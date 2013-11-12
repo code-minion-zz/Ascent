@@ -56,10 +56,11 @@ public class Warrior : Hero
         if (collisionBall == null)
             Debug.Log("CollisionBall prefab not found");
         collisionBall = Instantiate(collisionBall) as GameObject;
-        collisionBall.transform.localPosition = transform.forward + Vector3.up;
+        collisionBall.transform.localPosition = transform.forward * 0.5f + Vector3.up;
         collisionBall.transform.parent = transform;
 		collisionBall.transform.localScale = new Vector3(2f,2f,2f);
 		chargeBall = collisionBall.GetComponent<Collidable>();
+		chargeBall.Init(this);
 		
         // Add abilities
 		AddSkill(new SwingSword());
