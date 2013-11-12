@@ -139,5 +139,26 @@ public abstract class Character : MonoBehaviour
         // The reason we do this is when we pool objects we will re-use 
         // this character.
         isDead = true;
+        
+        // Obtain the last object that killed this rat
+        if (lastObjectsDamagedBy.Count > 0)
+        {
+            Object obj = LastObjectsDamagedBy[lastObjectsDamagedBy.Count - 1];
+
+            System.Type type = obj.GetType();
+
+            // Check if the type of object is a weapon
+            // then we can get the owner character.
+            // TODO: Maybe the character should only know the object it was killed by and other characters will handle being killed by specific objects.
+            if (type == typeof(Weapon))
+            {
+                Weapon weapon = obj as Weapon;
+                Debug.Log("Killed by: " + weapon.Owner);
+            }
+        }
+        else
+        {
+            Debug.Log("Character somehow died by somethign and we do not know what caused it.");
+        }
     }
 }
