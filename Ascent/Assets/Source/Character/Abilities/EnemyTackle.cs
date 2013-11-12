@@ -1,28 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyTackle : IAction
+public class EnemyTackle : Action
 {
-    Character owner;
+	Color original;
+	const float actionTime = 0.5f;
+	float timeElapsed = 0.0f;
 
-    public void Initialise(Character owner)
+	Vector3 originalPos;
+	Vector3 targetPos;
+
+    public override void Initialise(Character owner)
     {
-        this.owner = owner;
+        base.Initialise(owner);
     }
 
-    public void StartAbility()
+    public override void StartAbility()
     {
+		original = owner.renderer.material.color;
+		owner.renderer.material.color = Color.red;
 
+		timeElapsed = 0.0f;
+
+		originalPos = owner.transform.position;
+		targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.5f, 0.0f)) * 1.5f;
+
+		// Create a collider that will flinch and damage anything I hit
+	}
+
+    public override void UpdateAbility()
+    {
+		timeElapsed += Time.deltaTime;
+
+		Mathf.Clamp(timeElapsed, 0.0f, actionTime);
+
+		owner.transform.position = Vector3.Lerp(originalPos, targetPos, timeElapsed);
+
+		if (timeElapsed > actionTime)
+		{
+			owner.StopAbility();
+		}   
     }
 
-    public void UpdateAbility()
+    public override void EndAbility()
     {
+		owner.renderer.material.color = original;
 
-    }
-
-    public void EndAbility()
-    {
-
+		//owner.transform.position = originalPos;
     }
 
 }
