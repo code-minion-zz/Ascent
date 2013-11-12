@@ -8,16 +8,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1149339567, guid: e13daaf571579eb4abf0cd1e90e0e831, type: 3}
+  m_Script: {fileID: -1149339567, guid: 5bb466df8c981f046b6574a8178885de, type: 3}
   m_Name: BTEditorWindowState
   m_EditorClassIdentifier: 
   Version: 19
   HolderNodes:
   - AssetPath: .currentai
     BehaviorTreeName: (No AI Selected)
-    BehaviorTreeID: 1
-    LastUpdate: 635193712196642864
-    LastModified: 635193707313904848
+    BehaviorTreeID: 12
+    LastUpdate: 635198051463451256
+    LastModified: 635197965734498229
     Errored: 0
   - AssetPath: .createxml
     BehaviorTreeName: Create New Behavior Tree
@@ -25,11 +25,11 @@ MonoBehaviour:
     LastUpdate: 0
     LastModified: 0
     Errored: 0
-  - AssetPath: Assets/AI/BehaviorTrees/BTRat.asset
-    BehaviorTreeName: BTRat
-    BehaviorTreeID: 1
-    LastUpdate: 635193712196642864
-    LastModified: 635193707313904848
+  - AssetPath: Assets/AI/BehaviorTrees/RatBT3.asset
+    BehaviorTreeName: RatBT3
+    BehaviorTreeID: 12
+    LastUpdate: 635198051463451256
+    LastModified: 635197965734498229
     Errored: 0
   TreeState:
     _branchRepo:
@@ -41,14 +41,58 @@ MonoBehaviour:
       _children: 
       _variables: 
       _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
     - _fields:
       - _field: name
-        _currentValue: BTRat
+        _currentValue: action
         _recordChange: 1
-        _changed: 0
-      - _field: open
-        _currentValue: True
-        _recordChange: 0
         _changed: 0
       - _field: repeatuntil
         _currentValue: 
@@ -74,11 +118,27 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      _type: 4
-      _stateIndex: 1
-      _parent: 0
-      _lastUpdate: 635193712186551268
-      _children: 02000000
+      - _field: namespace
+        _currentValue: (global)
+        _recordChange: 1
+        _changed: 0
+      - _field: classname
+        _currentValue: ActMove
+        _recordChange: 1
+        _changed: 0
+      - _field: parameters
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: parametervalues
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 1
+      _stateIndex: 7
+      _parent: 8
+      _lastUpdate: 635198051347736618
+      _children: 
       _variables: 
       _focused: 0
     - _fields:
@@ -114,21 +174,49 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      - _field: usepriorities
-        _currentValue: False
+      - _field: constraint
+        _currentValue: moving == true
         _recordChange: 1
         _changed: 0
-      _type: 17
-      _stateIndex: 2
-      _parent: 1
-      _lastUpdate: 635193712186551268
-      _children: 03000000
+      _type: 5
+      _stateIndex: 8
+      _parent: 12
+      _lastUpdate: 635198051453429989
+      _children: 07000000
+      _variables: 
+      _focused: 1
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
+      _variables: 
+      _focused: 0
+    - _fields: []
+      _type: 0
+      _stateIndex: 0
+      _parent: 0
+      _lastUpdate: 0
+      _children: 
       _variables: 
       _focused: 0
     - _fields:
       - _field: name
-        _currentValue: detect
+        _currentValue: RatBT3
         _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
         _changed: 0
       - _field: repeatuntil
         _currentValue: 
@@ -154,31 +242,11 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      - _field: sensor
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: aspect
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: entityobjectvariable
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: aspectvariable
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: aspectobjectvariable
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      _type: 6
-      _stateIndex: 3
-      _parent: 2
-      _lastUpdate: 0
-      _children: 
+      _type: 4
+      _stateIndex: 12
+      _parent: 0
+      _lastUpdate: 635198051453429989
+      _children: 08000000
       _variables: 
-      _focused: 1
-    _freeList: 
+      _focused: 0
+    _freeList: 010000000200000003000000040000000500000006000000090000000a0000000b000000

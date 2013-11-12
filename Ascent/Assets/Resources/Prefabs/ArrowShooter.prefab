@@ -69,7 +69,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: .920880795, y: 0, z: 8.3088913}
+  m_LocalPosition: {x: 1, y: 0, z: 8.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
@@ -160,9 +160,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  projectilePoolCount: 5
+  projectilePoolCount: 10
   frequency: .5
   projectileSpeed: 5
+  projectileDamage: 2
+  arrowLifeSpan: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -78,7 +78,7 @@ public class HeroAnimator : AnimatorController
             {
 
                 // Update the look at when we are moving
-                if (direction.x != 0 || direction.z != 0)
+                //if (direction.x != 0 || direction.z != 0)
                 {
                     transform.LookAt(transform.position + direction);
                 }

@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 
-	protected List<IAction> abilities = new List<IAction>();
+	protected List<Action> abilities = new List<Action>();
 	protected IAction activeAbility;
 	protected GameObject weaponPrefab;
     protected bool isDead = false;
@@ -78,6 +78,14 @@ public abstract class Character : MonoBehaviour
 		}
     }
 
+    public virtual void UpdateActiveAbility()
+    {
+        if (activeAbility != null)
+        {
+            activeAbility.UpdateAbility();
+        }
+    }
+
     public virtual void UseAbility(int abilityID)
     {
 		if (activeAbility == null)
@@ -86,6 +94,36 @@ public abstract class Character : MonoBehaviour
 			activeAbility = abilities[abilityID];
 		}
     }
+
+    public virtual void UseAbility(string ability)
+    {
+        if (activeAbility == null)
+        {
+            Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
+            if (action == null)
+            {
+                Debug.LogError("Could not find and use ability: " + ability);
+            }
+
+            action.StartAbility();
+            activeAbility = action;
+        }
+    }
+
+	public Action GetAbility(string ability)
+	{
+		if (activeAbility == null)
+		{
+			Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
+			if (action == null)
+			{
+				Debug.LogError("Could not find and return ability: " + ability);
+			}
+
+			return(action);
+		}
+		return null;
+	}
 
 	public virtual void InterruptAbility()
 	{

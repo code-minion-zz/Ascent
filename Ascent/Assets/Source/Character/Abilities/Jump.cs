@@ -4,36 +4,35 @@
 using UnityEngine;
 using System.Collections;
 
-public class Jump : IAction 
+public class Jump : Action 
 {
-	Character owner;
 	private const float animationTime = 2.233f;
     //private const float animationTime = 1.367f;
 	private const float animationSpeed = 1.5f;
 	private float timeElapsed;
 
-	public void Initialise(Character owner)
+	public override void Initialise(Character owner)
 	{
-		this.owner = owner;
+        base.Initialise(owner);
 	}
 
-	public void StartAbility()
+    public override void StartAbility()
 	{
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("Jump");
 	}
 
-	public void UpdateAbility()
+    public override void UpdateAbility()
 	{
 		timeElapsed += Time.deltaTime;
 
-		if (timeElapsed >= animationTime / animationSpeed * 0.6f)
+		if (timeElapsed >= animationTime / animationSpeed)
 		{
 			owner.StopAbility();
 		}
 	}
 
-	public void EndAbility()
+    public override void EndAbility()
 	{
 		owner.Animator.StopAnimation("Jump");
 	}

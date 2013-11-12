@@ -2310,7 +2310,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.16428089, y: -3.12748242e-18, z: .281698555}
+  m_LocalPosition: {x: 5, y: -0, z: .5}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 400164}
@@ -2455,7 +2455,6 @@ MonoBehaviour:
   useCurves: 1
   movementSpeed: 10
   rotationSmooth: 10
-  useXboxController: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2467,11 +2466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846397c5b9bba9545b0d118fa5a5edaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EditorClassIdentifier: 
-  weaponSlot: {fileID: 400168}
-  hitBoxPrefab: {fileID: 400000, guid: da3aa2f45546e1749a1d52d8da4856c9, type: 2}
-  weaponPrefab: {fileID: 400170}
-  teamId: 1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2494,6 +2488,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 369423152, guid: 2a17e298aec7a0741be0fb38bb304895, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   rainVersionString: RAIN.Ontology.Entity
 --- !u!114 &11400008

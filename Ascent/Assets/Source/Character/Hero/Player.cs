@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 		aInput.Initialise(device);
 	}
 
-    public void Update()
+    public void FixedUpdate()
     {
         // TODO: Handle lost input device.
         //          Subscribe to detach event and disable input until it is reattached. 
