@@ -4685,7 +4685,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: 0, y: 0, z: -1}
 --- !u!1 &56166260
 GameObject:
   m_ObjectHideFlags: 0
@@ -4744,7 +4744,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: 0, y: 0, z: -1}
 --- !u!1 &57828563
 GameObject:
   m_ObjectHideFlags: 0
@@ -6057,6 +6057,14 @@ Prefab:
     - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.z
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -11944,7 +11952,7 @@ MonoBehaviour:
   smoothing: 2
   isDoorOpen: 0
   isLocked: 0
-  openDirection: {x: -1, y: 0, z: 0}
+  openDirection: {x: 0, y: 0, z: -1}
 --- !u!1 &168504936
 GameObject:
   m_ObjectHideFlags: 0
@@ -51725,6 +51733,14 @@ Prefab:
     - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.z
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
@@ -98763,6 +98779,14 @@ Prefab:
     - target: {fileID: 100002, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
+      propertyPath: openDirection.z
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ae1f573b1f3dc3940838d077768b8255, type: 2}
