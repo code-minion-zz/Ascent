@@ -15,7 +15,7 @@
  * - Need to figure out if the "Instantiating mesh" error in Editor is a big issue, if not, how to supress it.
  * - Allowing the pivot to move outside the bounds of the mesh, ideally using the movement gizmo but only affecting the pivot.
  */
-
+#if UNITY_EDITOR
 
 using UnityEngine;
 using UnityEditor;
@@ -185,3 +185,4 @@ public class SetPivot : EditorWindow
         }
     }
 }
+#endif
