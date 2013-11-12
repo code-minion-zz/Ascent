@@ -15,8 +15,8 @@ public class AnimatorController : MonoBehaviour
     protected int layerCount;
     protected Dictionary<int, AnimatorStateInfo> activeState = new Dictionary<int, AnimatorStateInfo>();
 
-    protected Dictionary<int, List<UnityEditorInternal.State>> layerStates = new Dictionary<int, List<UnityEditorInternal.State>>();
-    protected UnityEditorInternal.AnimatorController unityAnimController;
+    //protected Dictionary<int, List<UnityEditorInternal.State>> layerStates = new Dictionary<int, List<UnityEditorInternal.State>>();
+    //protected UnityEditorInternal.AnimatorController unityAnimController;
 
     #endregion
 
@@ -42,37 +42,39 @@ public class AnimatorController : MonoBehaviour
         animator = GetComponent<Animator>();
         //col = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
+
+        layerCount = animator.layerCount;
     }
 
     public virtual void Start()
     {
-        unityAnimController = GetComponent<Animator>().runtimeAnimatorController as UnityEditorInternal.AnimatorController;
+        //unityAnimController = GetComponent<Animator>().runtimeAnimatorController as UnityEditorInternal.AnimatorController;
 
-        if (unityAnimController == null)
-            return;
+        //if (unityAnimController == null)
+        //    return;
 
-        // Get the number of layers on this animator controller.
-        layerCount = unityAnimController.layerCount;
+        //// Get the number of layers on this animator controller.
+        //layerCount = unityAnimController.layerCount;
 
-        // Go through the layers and find the controller for the layer. We then find the state machine from
-        // this layer and populate all the states in our dictionairy.
-        for (int layer = 0; layer < layerCount; layer++)
-        {
-            // Grab the controller layer and the state machine associated with it.
-            UnityEditorInternal.AnimatorControllerLayer controllerLayer = unityAnimController.GetLayer(layer);
-            UnityEditorInternal.StateMachine sm = controllerLayer.stateMachine;
+        //// Go through the layers and find the controller for the layer. We then find the state machine from
+        //// this layer and populate all the states in our dictionairy.
+        //for (int layer = 0; layer < layerCount; layer++)
+        //{
+        //    // Grab the controller layer and the state machine associated with it.
+        //    UnityEditorInternal.AnimatorControllerLayer controllerLayer = unityAnimController.GetLayer(layer);
+        //    UnityEditorInternal.StateMachine sm = controllerLayer.stateMachine;
 
-            // Grab all the states
-            List<UnityEditorInternal.State> states = new List<UnityEditorInternal.State>();
+        //    // Grab all the states
+        //    List<UnityEditorInternal.State> states = new List<UnityEditorInternal.State>();
 
-            // Grab all the states on this layer
-            for (int i = 0; i < sm.stateCount; ++i)
-            {
-                states.Add(sm.GetState(i));
-            }
+        //    // Grab all the states on this layer
+        //    for (int i = 0; i < sm.stateCount; ++i)
+        //    {
+        //        states.Add(sm.GetState(i));
+        //    }
 
-            layerStates.Add(layer, states);
-        }
+        //    layerStates.Add(layer, states);
+        //}
     }
 
     #endregion

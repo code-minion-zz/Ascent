@@ -43,12 +43,12 @@ public class HealthBar : MonoBehaviour
         //GetComponent<UISprite>().width -= 1;
 	}
 
-    void OnGUI()
-    {
-		//if (health.Min > 0)
-		//{
-		//    if (healthTexture != null)
-		//        GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
-		//}
-    }
+    //void OnGUI()
+    //{
+    //    //if (health.Min > 0)
+    //    //{
+    //    //    if (healthTexture != null)
+    //    //        GUI.DrawTexture(new Rect(guiPosition.x, guiPosition.y, barLength, 10.0f), healthTexture);
+    //    //}
+    //}
 }

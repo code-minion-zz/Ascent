@@ -24,6 +24,11 @@ public class Rat : Enemy
 		Max
 	}
 
+    private float deathSequenceTime = 0.0f;    
+    private float deathSequenceEnd = 1.0f;
+    private Vector3 deathRotation = Vector3.zero;
+    private float deathSpeed = 5.0f;
+
 	float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,
 														0.5f,
 														2.0f,
@@ -33,26 +38,72 @@ public class Rat : Enemy
 														0.2f,
 														0.0f };
 	float timeElapsed = 0.0f;
-
 	ERatState ratState;
-
 	Vector3 targetPos;
-
 	Transform target;
-
 	IList<RAIN.Perception.Sensors.RAINSensor> sensors;
-
     GameObject aiObject;
 
-	public override void Start()
+    public override void Start()
 	{
 		Initialise();
+        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 	}
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (isDead)
+        {
+            deathSequenceTime += Time.deltaTime;
+
+            // When the rat dies we want to make him kinematic and disabled the collider
+            // this is so we can walk over the dead body.
+            if (this.transform.rigidbody.isKinematic == false)
+            {
+                this.transform.rigidbody.isKinematic = true;
+                this.transform.collider.enabled = false;
+            }
+
+            // Death sequence end
+            if (deathSequenceTime >= deathSequenceEnd)
+            {
+                // When the death sequence has finished we want to make this object not active
+                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
+                deathSequenceTime = 0.0f;
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                // During death sequence we can do some thing in here
+                // For now we will rotate the rat on the z axis.
+                this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+
+                // If the rotation is done early we can end the sequence.
+                if (this.transform.eulerAngles == deathRotation)
+                {
+                    deathSequenceTime = deathSequenceEnd;
+                }
+            }
+        }
+        else
+        {
+            timeElapsed += Time.deltaTime;
+
+            if (aiObject.activeSelf == true)
+            {
+                UpdateSmart();
+            }
+            else
+            {
+                UpdateStandard();
+            }
+        }
+    }
 
 	public override void Initialise()
 	{
-
-
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{
@@ -71,10 +122,6 @@ public class Rat : Enemy
 		}
 
        // ai.enabled = false;
-        
-
-		
-
 
 		// Populate with stats
         characterStatistics = new CharacterStatistics();
@@ -102,19 +149,6 @@ public class Rat : Enemy
 		StartState(ERatState.Idle);
 	}
 
-    public override void Update()
-    {
-        timeElapsed += Time.deltaTime;
-
-        if (aiObject.activeSelf == true)
-        {
-            UpdateSmart();
-        }
-        else
-        {
-            UpdateStandard();
-        }
-    }
 
     public void UpdateStandard()
     {
@@ -276,7 +310,7 @@ public class Rat : Enemy
 
         // Rat is going to destroy itself now
         //DestroyObject(this.gameObject);
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
     }
 
 	protected void StartState(ERatState ratState)

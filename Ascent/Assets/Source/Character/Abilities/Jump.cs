@@ -7,6 +7,7 @@ using System.Collections;
 public class Jump : Action 
 {
 	private const float animationTime = 2.233f;
+    //private const float animationTime = 1.367f;
 	private const float animationSpeed = 1.5f;
 	private float timeElapsed;
 
