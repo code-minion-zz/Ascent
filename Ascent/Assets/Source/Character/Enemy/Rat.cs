@@ -42,6 +42,8 @@ public class Rat : Enemy
 
 	IList<RAIN.Perception.Sensors.RAINSensor> sensors;
 
+    GameObject aiObject;
+
 	public override void Start()
 	{
 		Initialise();
@@ -49,18 +51,27 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
+
+
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{
+
 			ai = gameObject.GetComponentInChildren<RAIN.Core.AIRig>();
+            //ai = gameObject.AddComponent<RAIN.Core.AIRig>();
 
 			if (ai == null)
 			{
 				Debug.LogError("No AIRig attached to this: " + this.name);
 			}
+
+            Transform go = transform.FindChild("AI");
+            aiObject = go.gameObject;
+            //aiObject.SetActive(false);
 		}
 
-        ai.enabled = false;
+       // ai.enabled = false;
+        
 
 		
 
@@ -88,15 +99,57 @@ public class Rat : Enemy
         //    Debug.Log(sensor.SensorName);
         //}
 		
-		
-
 		StartState(ERatState.Idle);
 	}
 
-	public override void Update()
-	{
-		timeElapsed += Time.deltaTime;
+    public override void Update()
+    {
+        timeElapsed += Time.deltaTime;
 
+        if (aiObject.activeSelf == true)
+        {
+            UpdateSmart();
+        }
+        else
+        {
+            UpdateStandard();
+        }
+    }
+
+    public void UpdateStandard()
+    {
+        switch (ratState)
+        {
+            case ERatState.Idle:
+            case ERatState.Idle2:
+                {
+                    //Debug.Log("IDLE");
+                    if (timeElapsed > stateTimes[(int)ERatState.Idle])
+                    {
+                        StartState(ERatState.Wandering);
+                    }
+                }
+                break;
+            case ERatState.Wandering:
+                {
+                    // Detect the player
+                    rigidbody.AddForce(transform.forward * 100.0f);
+                }
+                break;
+            case ERatState.Seeking:
+                {
+                    // move to the player
+
+                    // Check if the player is within range to attack
+
+                    // Check if the player is within range to Charge
+                }
+                break;
+        }
+    }
+
+    public void UpdateSmart()
+    {
         switch (ratState)
         {
             case ERatState.Idle:
@@ -211,7 +264,7 @@ public class Rat : Enemy
                 break;
 
         }
-	}
+    }
 
     // We want to override the on death for this rat as we have some specific behaviour here.
     public override void OnDeath()

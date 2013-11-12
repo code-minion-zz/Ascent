@@ -8,6 +8,7 @@ public class Floor : MonoBehaviour
 
     // Camera offset
     private const float cameraOffset = 15.0f;
+    public bool orthographicCamera = false;
 
     // The camera prefab
     private GameObject CameraPrefab;
@@ -26,7 +27,18 @@ public class Floor : MonoBehaviour
     {
         //Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
         // Create the camera
-        GameObject go = Resources.Load("Prefabs/GameCamera") as GameObject;
+
+        GameObject go = null;
+
+        if (orthographicCamera)
+        {
+            go = Resources.Load("Prefabs/GameCameraOrtho") as GameObject;
+        }
+        else
+        {
+            go = Resources.Load("Prefabs/GameCamera") as GameObject;
+        }
+        
         GameObject[] startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
         players = Game.Singleton.Players;
