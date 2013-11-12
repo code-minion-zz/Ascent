@@ -8,7 +8,6 @@ public abstract class Hero : Character
 
 	protected HeroEquipment equipment;
 
-    public int teamId = 1;
 
     public HeroController HeroController
     {

@@ -47,9 +47,15 @@ public class HitBox : MonoBehaviour {
 	#endregion
 	
 	// Use this for initialization
-	void Start () {
+	void OnEnable () 
+	{
 		Active = true;
 		transform.forward = transform.parent.forward;
+	}
+	
+	void OnDisable()
+	{
+		Active = false;
 	}
 	
 	/// <summary>
@@ -91,7 +97,7 @@ public class HitBox : MonoBehaviour {
 					{
 						Active = false;
 						//Debug.Log("Active " +Active);
-						DestroySelf();
+						//DestroySelf();
 					}
 					transform.position = transform.position - (transform.parent.forward * Time.fixedDeltaTime * projectileSpeed);
 					
