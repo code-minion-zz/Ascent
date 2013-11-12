@@ -473,7 +473,8 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 352.340424
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8100000, guid: 3a6134b7ad96e9045a9a39832eb74cdf, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3a6134b7ad96e9045a9a39832eb74cdf, type: 2}
   m_RootGameObject: {fileID: 53448695}
   m_IsPrefabParent: 0
@@ -5496,7 +5497,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 207261271}
   - 20: {fileID: 207261274}
-  - 81: {fileID: 207261273}
   - 114: {fileID: 207261272}
   m_Layer: 14
   m_Name: Camera
@@ -5554,14 +5554,6 @@ MonoBehaviour:
   submitKey1: 330
   cancelKey0: 27
   cancelKey1: 331
---- !u!81 &207261273
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 8100000, guid: 3a6134b7ad96e9045a9a39832eb74cdf,
-    type: 2}
-  m_PrefabInternal: {fileID: 8811144}
-  m_GameObject: {fileID: 207261270}
-  m_Enabled: 1
 --- !u!20 &207261274
 Camera:
   m_ObjectHideFlags: 0
@@ -9520,6 +9512,34 @@ Prefab:
     - target: {fileID: 100546, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
       propertyPath: m_Name
       value: Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: .345677853
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: .93835324
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -3.23141837
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -5.12724209
+      objectReference: {fileID: 0}
+    - target: {fileID: 400286, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: .010791
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4861c5623fbd90442ad415ce2474e23c, type: 2}

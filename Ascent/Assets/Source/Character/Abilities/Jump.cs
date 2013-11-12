@@ -8,6 +8,7 @@ public class Jump : IAction
 {
 	Character owner;
 	private const float animationTime = 2.233f;
+    //private const float animationTime = 1.367f;
 	private const float animationSpeed = 1.5f;
 	private float timeElapsed;
 
@@ -26,7 +27,7 @@ public class Jump : IAction
 	{
 		timeElapsed += Time.deltaTime;
 
-		if (timeElapsed >= animationTime / animationSpeed)
+		if (timeElapsed >= animationTime / animationSpeed * 0.6f)
 		{
 			owner.StopAbility();
 		}

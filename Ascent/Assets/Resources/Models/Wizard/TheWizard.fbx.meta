@@ -792,9 +792,9 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
@@ -802,7 +802,48 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: ColliderHeight
+        curve:
+          serializedVersion: 2
+          curve:
+          - time: 0
+            value: 2
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .210613534
+            value: 2
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .383084536
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .49585408
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .676616907
+            value: 2
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: .764150977
+            value: 2
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          - time: 1
+            value: 2
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+          preInfinity: 2
+          postInfinity: 2
       transformMask: []
     - name: IdleWithoutStaff
       takeName: IdleWithoutStaff
@@ -985,10 +1026,10 @@ ModelImporter:
       limit:
         min: {x: -90, y: 0, z: -80}
         max: {x: 90, y: 0, z: 80}
-        value: {x: .387484133, y: 0, z: .193742067}
-        preQ: {x: .0346914902, y: .151174039, z: -.575217426, w: .803161204}
-        postQ: {x: 5.96046412e-08, y: .110672601, z: -.993856907, w: -1.49011603e-08}
-        length: .484355301
+        value: {x: .387484103, y: 0, z: .193742052}
+        preQ: {x: .0346914865, y: .151174039, z: -.575217366, w: .803161144}
+        postQ: {x: -0, y: .110672578, z: -.993856907, w: 5.96046448e-08}
+        length: .484355271
         modified: 1
     - boneName: Bip01_R_Calf
       humanName: RightLowerLeg
@@ -1005,10 +1046,10 @@ ModelImporter:
       limit:
         min: {x: 0, y: -30.0000019, z: -50}
         max: {x: 0, y: 30.0000019, z: 50}
-        value: {x: .110213391, y: 0, z: .0551066957}
-        preQ: {x: -.0594802387, y: .101996116, z: -.979508579, w: -.16316171}
-        postQ: {x: -.018517822, y: .108694576, z: -.993901908, w: .00122492015}
-        length: .137766778
+        value: {x: .110213444, y: 0, z: .0551067218}
+        preQ: {x: -.0594802536, y: .101996072, z: -.979508579, w: -.16316171}
+        postQ: {x: -.01851785, y: .108694546, z: -.993901908, w: .00122493494}
+        length: .137766838
         modified: 1
     - boneName: Bip01_R_Foot
       humanName: RightFoot
@@ -1136,8 +1177,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -50}
         max: {x: 0, y: 0, z: 50}
         value: {x: .0789300278, y: 0, z: .0394650139}
-        preQ: {x: .0899527743, y: -.0637646392, z: .703660905, w: .701928616}
-        postQ: {x: .10869465, y: .0185178518, z: .993901908, w: -.00122525077}
+        preQ: {x: .0899527669, y: -.0637646019, z: .703660905, w: .701928616}
+        postQ: {x: .108694591, y: .0185178891, z: .993901908, w: -.0012252517}
         length: .0986625701
         modified: 1
     - boneName: Bip01_R_Toe0
@@ -1203,7 +1244,7 @@ ModelImporter:
       transformModified: 1
     - name: Bip01_L_Calf
       position: {x: -.435281217, y: 1.12396243e-08, z: 2.99999989e-08}
-      rotation: {x: 0, y: 0, z: .246511862, w: .969139755}
+      rotation: {x: 0, y: 0, z: .246511832, w: .969139636}
       scale: {x: 1.00000143, y: .999998987, z: 1}
       transformModified: 1
     - name: Bip01_L_Foot
@@ -1323,7 +1364,7 @@ ModelImporter:
       transformModified: 1
     - name: Bip01_R_Clavicle
       position: {x: .0393193588, y: .0365678295, z: -.0442387089}
-      rotation: {x: .674325407, y: .252209663, z: .693960011, w: -.00974812917}
+      rotation: {x: .674325347, y: .252209634, z: .693959951, w: -.00974812824}
       scale: {x: 1.00000846, y: 1.00000036, z: .999992192}
       transformModified: 1
     - name: Bip01_R_UpperArm
