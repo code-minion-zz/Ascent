@@ -74,6 +74,11 @@ public class HeroAnimator : AnimatorController
         // Select the collider component that we will use.
         col = GetComponent<CapsuleCollider>();
 	}
+
+	void OnAnimationEvent()
+	{
+
+	}
 	
 	// Update is called once per frame
 	public override void Update () 
@@ -112,7 +117,7 @@ public class HeroAnimator : AnimatorController
                     StopAnimation("Whirlwind");
                 }
             }
-
+		
 
             // If the active state is the attack state
             if (IsActiveState(layer, attackState))

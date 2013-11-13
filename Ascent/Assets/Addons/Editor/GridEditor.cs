@@ -31,7 +31,7 @@ namespace Ascent
             {
                 if (window.objectToCreate)
                 {
-                    Undo.IncrementCurrentEventIndex();
+                    //Undo.IncrementCurrentEventIndex();
                     // Get the object to create from our grid tool
                     GameObject obj = PrefabUtility.InstantiatePrefab(window.objectToCreate) as GameObject;
 
@@ -54,8 +54,8 @@ namespace Ascent
             }
             else if (e.isKey && e.character == 'd')
             {
-                Undo.IncrementCurrentEventIndex();
-                Undo.RegisterSceneUndo("Delete Selected Objects");
+                //Undo.IncrementCurrentEventIndex();
+                //Undo.RegisterSceneUndo("Delete Selected Objects");
 
                 foreach (GameObject obj in Selection.gameObjects)
                 {

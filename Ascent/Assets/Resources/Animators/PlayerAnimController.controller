@@ -10,56 +10,48 @@ AnimatorController:
   m_AnimatorParameters:
   - m_Name: Speed
     m_Type: 1
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Jump
     m_Type: 4
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: ColliderHeight
     m_Type: 1
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: SwingAttack
     m_Type: 4
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Roll
     m_Type: 4
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: SwordAttackSpeed
     m_Type: 1
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: Whirlwind
     m_Type: 4
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
   - m_Name: TakeHit
     m_Type: 4
-    m_DefaultVector: {x: 0, y: 0, z: 0}
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -79,7 +71,7 @@ AnimatorController:
   - serializedVersion: 3
     m_Name: CombatLayer
     m_StateMachine: {fileID: 110748155}
-    m_Mask: {fileID: 101100000, guid: beeb5bb5c162fa049b08a72fbc5bc323, type: 2}
+    m_Mask: {fileID: 0}
     m_BlendingMode: 0
     m_SyncedLayerIndex: -1
     m_StateMachineMotionSetIndex: 0
@@ -961,9 +953,6 @@ StateMachine:
       - {fileID: 110141891}
       - {fileID: 110174499}
       - {fileID: 110153759}
-    data:
-      first: {fileID: 0}
-      second: []
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -984,14 +973,6 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110256979}
-      second:
-      - {fileID: 110110486}
-    data:
-      first: {fileID: 110288260}
-      second:
-      - {fileID: 110168998}
-    data:
       first: {fileID: 0}
       second: []
     data:
@@ -1004,6 +985,14 @@ StateMachine:
       first: {fileID: 110263461}
       second:
       - {fileID: 110147183}
+    data:
+      first: {fileID: 110288260}
+      second:
+      - {fileID: 110168998}
+    data:
+      first: {fileID: 110256979}
+      second:
+      - {fileID: 110110486}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 60, y: -12, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
