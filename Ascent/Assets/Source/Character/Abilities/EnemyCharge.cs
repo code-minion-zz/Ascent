@@ -29,7 +29,8 @@ public class EnemyCharge : Action
 		timeElapsed = 0.0f;
 
 		originalPos = owner.transform.position;
-
+		
+		// Kit TODO : Rewrite this to be better, or maybe change rats to use the same Charge skill as Warrior
 		if (target == null)
 		{
 			//targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.0f, 0.0f)) * 10.0f;
@@ -52,6 +53,7 @@ public class EnemyCharge : Action
 	{
 		timeElapsed += Time.deltaTime;
 
+		// TODO : Rewrite
 		//Mathf.Clamp(timeElapsed, 0.0f, actionTime);
 
 		//owner.transform.position = Vector3.Lerp(originalPos, targetPos, timeElapsed);
