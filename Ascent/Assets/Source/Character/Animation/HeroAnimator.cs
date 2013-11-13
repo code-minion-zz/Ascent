@@ -120,7 +120,7 @@ public class HeroAnimator : AnimatorController
                 if (!animator.IsInTransition(layer))
                 {
                     // Here we can get the normalized time. big BOI
-                    Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
+                    //Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
                 }
                 else
                 {

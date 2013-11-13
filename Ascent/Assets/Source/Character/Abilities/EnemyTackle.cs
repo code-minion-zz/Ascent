@@ -17,7 +17,6 @@ public class EnemyTackle : Action
 
     public override void StartAbility()
     {
-		Debug.Log("tackle");
 		original = owner.renderer.material.color;
 		owner.renderer.material.color = Color.red;
 
