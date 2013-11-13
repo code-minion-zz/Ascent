@@ -73,7 +73,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Start()
     {
-        // To be derived		
+        // To be derived
     }
 
     public virtual void Update()
@@ -151,8 +151,6 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
-		// Taking damage may or may not interrupt the current ability
-
         //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
         characterStatistics.CurrentHealth -= unmitigatedDamage;
