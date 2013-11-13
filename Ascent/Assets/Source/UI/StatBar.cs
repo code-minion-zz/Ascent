@@ -94,6 +94,6 @@ public class StatBar : MonoBehaviour {
 	
 	void Rescale()
 	{
-		barFront.width = (int)(defaultWidth / (maxVal/curVal));
+		barBack.width = (int)(defaultWidth / (maxVal/curVal));
 	}	
 }
