@@ -44,14 +44,14 @@ public class Player : MonoBehaviour
 		aInput.Initialise(device);
 	}
 
-    public void FixedUpdate()
+    public void Update()
     {
         // TODO: Handle lost input device.
         //          Subscribe to detach event and disable input until it is reattached. 
         //          Then rebind the device to the hero controller.
         if (aInput !=null)
         {
-            aInput.FixedUpdate();
+            aInput.Update();
         }
     }
 
