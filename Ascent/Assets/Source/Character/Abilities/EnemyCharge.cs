@@ -29,17 +29,19 @@ public class EnemyCharge : Action
 		timeElapsed = 0.0f;
 
 		originalPos = owner.transform.position;
-
+		
+		// Kit TODO : Rewrite this to be better, or maybe change rats to use the same Charge skill as Warrior
 		if (target == null)
 		{
-			targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.0f, 0.0f)) * 10.0f;
-			owner.transform.LookAt(targetPos, Vector3.up);
+			//targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.0f, 0.0f)) * 10.0f;
+			owner.rigidbody.AddForce((owner.transform.forward) * 1000.0f);
+			//owner.transform.LookAt(targetPos, Vector3.up);
 
 		}
 		else
 		{
 			
-			targetPos = owner.transform.position + Vector3.Normalize(target.position - owner.transform.position) * 10.0f;
+			owner.rigidbody.AddForce((owner.transform.forward) * 1000.0f);
 			owner.transform.LookAt( target.position , Vector3.up);
 		}
 		//owner.rigidbody.AddForce(owner.transform.forward * 800.0f, ForceMode.Acceleration);
@@ -51,9 +53,10 @@ public class EnemyCharge : Action
 	{
 		timeElapsed += Time.deltaTime;
 
-		Mathf.Clamp(timeElapsed, 0.0f, actionTime);
+		// TODO : Rewrite
+		//Mathf.Clamp(timeElapsed, 0.0f, actionTime);
 
-		owner.transform.position = Vector3.Lerp(originalPos, targetPos, timeElapsed);
+		//owner.transform.position = Vector3.Lerp(originalPos, targetPos, timeElapsed);
 
 		if (timeElapsed > actionTime)
 		{
