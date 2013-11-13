@@ -461,8 +461,6 @@ public class Rat : Enemy
 
             // Heroes are going to take a hit and play the animation.
             hero.Animator.PlayAnimation("TakeHit");
-
-            this.rigidbody.velocity = Vector3.zero;
         }
 
         // Update our list of collided targets
