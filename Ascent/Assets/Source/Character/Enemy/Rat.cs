@@ -228,7 +228,7 @@ public class Rat : Enemy
                     }
                     else
                     {
-                        Wander();
+                        //Wander();
                     }
                 }
                 break;
