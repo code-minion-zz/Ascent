@@ -21,7 +21,7 @@ public class Whirlwind : Action
 		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("Whirlwind");
 		owner.Weapon.EnableCollision = true;
-		owner.Weapon.SetAttackProperties(999,Character.EDamageType.Physical);
+		owner.Weapon.SetAttackProperties(20,Character.EDamageType.Physical);
 	}
 
 	public override void UpdateAbility()
