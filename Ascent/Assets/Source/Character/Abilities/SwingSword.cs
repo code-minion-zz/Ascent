@@ -43,6 +43,6 @@ public class SwingSword : Action
     public override void EndAbility()
     {
         owner.Weapon.EnableCollision = false;
-        owner.Animator.StopAnimation(animationClip);
+        //owner.Animator.StopAnimation(animationClip);
     }
 }

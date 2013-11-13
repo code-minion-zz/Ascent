@@ -21,7 +21,6 @@ public class HeroController : MonoBehaviour, IAscentController
 	{
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
-		//heroWeapon = hero.Weapon;
 	}
 
     #endregion
@@ -180,10 +179,8 @@ public class HeroController : MonoBehaviour, IAscentController
         // Direction vector to hold the input key press.
         Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
 
+        // Tell the hero animator to update the speed and direction.
         heroAnimator.AnimMove(direction, speed);
-
-        //hero.Move(direction, speed);
-        // Move(direction, speed);
     }
 
     public void OnLStick(ref  InControl.InputDevice device)

@@ -28,7 +28,7 @@ public class Whirlwind : Action
 	{
 		timeElapsed += Time.deltaTime;
 
-		if (timeElapsed >= animationTime / animationSpeed * 0.9f)
+		if (timeElapsed >= animationTime / animationSpeed)
 		{
 			owner.StopAbility();
 		}
@@ -37,6 +37,6 @@ public class Whirlwind : Action
 	public override void EndAbility()
 	{
 		owner.Weapon.EnableCollision = false;
-		owner.Animator.StopAnimation("Whirlwind");
+		//owner.Animator.StopAnimation("Whirlwind");
 	}
 }

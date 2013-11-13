@@ -3,6 +3,11 @@ using System.Collections;
 
 public class EnemyCharge : Action
 {
+    // TODO: Move this somewhere else
+    public int damageValue = 10;
+    public Character.EDamageType damageType = Character.EDamageType.Physical;
+
+
 	Color original;
 	const float actionTime = 0.75f;
 	float timeElapsed = 0.0f;
