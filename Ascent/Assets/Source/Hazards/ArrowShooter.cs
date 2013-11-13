@@ -40,7 +40,7 @@ public class ArrowShooter : MonoBehaviour
                 newArrow.Initialise(arrowLifeSpan, direction, projectileSpeed, projectileDamage);
                 po.go.SetActive(true);
                 po.go.transform.position = spawnPoint;
-                po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
+                ///po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
                 //po.go.transform.tra
                 //po.go.rigidbody.velocity = Vector3.zero;
                 //po.go.rigidbody.angularVelocity = Vector3.zero;

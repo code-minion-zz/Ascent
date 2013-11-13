@@ -23,7 +23,7 @@ public class EnemyTackle : Action
 		timeElapsed = 0.0f;
 
 		originalPos = owner.transform.position;
-		targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.0f, 0.0f)) * 1.1f;
+		targetPos = owner.transform.position + (owner.transform.forward + new Vector3(0.0f, 0.5f, 0.0f)) * 1.25f;
 
 		// Create a collider that will flinch and damage anything I hit
 	}
