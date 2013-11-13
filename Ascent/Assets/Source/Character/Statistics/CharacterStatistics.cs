@@ -10,62 +10,116 @@ public class CharacterStatistics
 	protected int maxSpecial;
 	
 	protected int level;
-	protected int curExperience; // Also holds monster bounty 
+	protected int curExperience; 		// Also holds monster bounty 
 	protected int maxExperience;
-	protected int currency; // Also holds monster bounty
+	protected int currency; 			// Also holds monster bounty
 	
 	// primary stats
-	protected int power;
-	protected int finesse;
-	protected int vitality;
-	protected int spirit;
+	protected int power;				// Increases Attack
+	protected int finesse;				// Increases chance for crit, dodge, block, etc
+	protected int vitality;				// Increases Max HP, Physical Resistance, HP Regen
+	protected int spirit;				// Increases Max Special, Magic Resistance
 	
 	// derived stats
-	protected int attack;
-	protected int armour;
-	protected float damageMitigation;
-	protected float resistance;
+	// offensive
+	protected int attack;				// Power + Equipment + Buffs + Mods, usually affects damage
+	protected float criticalChance;		// Chance to do more damage
+	protected float criticalBonus;		// How much stronger are crits?
 	
-	protected float criticalChance;
-	protected float criticalDamage;
-	
+	// defensive
+	protected int armour;				// Contributes to Phys & Mag resistances, gained from buffs and equipment.
+	protected float physicalResistance;	// Reduces Phys damage taken by %. Value from 0 to 1.
+	protected float magicalResistance;	// Reduces Mag damage taken by %. Value from 0 to 1.
+		
 	protected float blockChance;
 	protected float dodgeChance;
+	
+	public delegate void CharacterStatisticEventHandler(float newValue);
+	public event CharacterStatisticEventHandler onMaxHealthChanged;
+	public event CharacterStatisticEventHandler onMaxSpecialChanged;
+	public event CharacterStatisticEventHandler onCurHealthChanged;
+	public event CharacterStatisticEventHandler onCurSpecialChanged;
+	public event CharacterStatisticEventHandler onLevelChanged;
+	public event CharacterStatisticEventHandler onExpChanged;
+	public event CharacterStatisticEventHandler onMoneyChanged;
+	public event CharacterStatisticEventHandler onPowerChanged;
+	public event CharacterStatisticEventHandler onFinesseChanged;
+	public event CharacterStatisticEventHandler onVitalityChanged;
+	public event CharacterStatisticEventHandler onSpiritChanged;
+	public event CharacterStatisticEventHandler onAttackChanged;
+	public event CharacterStatisticEventHandler onCritChanceChanged;
+	public event CharacterStatisticEventHandler onCritBonusChanged;
+	public event CharacterStatisticEventHandler onAnyOffensiveChanged;
+	public event CharacterStatisticEventHandler onArmorChanged;
+	public event CharacterStatisticEventHandler onPhysResChanged;
+	public event CharacterStatisticEventHandler onMagResChanged;
+	public event CharacterStatisticEventHandler onBlockChanged;
+	public event CharacterStatisticEventHandler onDodgeChanged;
+	public event CharacterStatisticEventHandler onAnyDefensiveChanged;
+	public event CharacterStatisticEventHandler onAnyStatChanged;
 
 	public  int CurrentHealth
 	{
 		get { return curHealth; }
-		set { curHealth = value; }
+		set 
+		{ 
+			curHealth = value;
+			if (onCurHealthChanged != null)		onCurHealthChanged(curHealth);
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int MaxHealth
 	{
 		get { return maxHealth; }
-		set { maxHealth = value; }
+		set 
+		{ 
+			maxHealth = value;
+			if (onMaxHealthChanged != null)		onMaxHealthChanged(maxHealth);
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int CurrentSpecial
 	{
 		get { return curSpecial; }
-		set { curSpecial = value; }
+		set 
+		{
+			curSpecial = value;
+			if (onCurSpecialChanged != null)	onCurSpecialChanged(curSpecial);
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int MaxSpecial
 	{
 		get { return maxSpecial; }
-		set { maxSpecial = value; }
+		set { 
+			maxSpecial = value; 
+			if (onMaxSpecialChanged != null)	onMaxSpecialChanged(maxSpecial);
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int Level
 	{
 		get { return level; }
-		set { level = value; }
+		set 
+		{ 
+			level = value; 
+			if (onLevelChanged != null)			onLevelChanged(level);			
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int CurrentExperience
 	{
 		get { return curExperience; }
-		set { curExperience = value; }
+		set { 
+			curExperience = value; 			
+			if (onExpChanged != null)			onExpChanged(curExperience);			
+			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
 	}
 
 	public  int MaxExperience
@@ -128,16 +182,16 @@ public class CharacterStatistics
 		set { armour = value; }
 	}
 
-	public  float DamageMitigation
+	public  float PhysicalResistance
 	{
-		get { return damageMitigation; }
-		set { damageMitigation = value; }
+		get { return physicalResistance; }
+		set { physicalResistance = value; }
 	}
 
-	public  float Resistance
+	public  float MagicalResistance
 	{
-		get { return resistance; }
-		set { resistance = value; }
+		get { return magicalResistance; }
+		set { magicalResistance = value; }
 	}
 
 	public  float CriticalChance
@@ -146,10 +200,10 @@ public class CharacterStatistics
 		set { criticalChance = value; }
 	}
 
-	public  float CriticalDamage
+	public  float CriticalBonus
 	{
-		get { return criticalDamage; }
-		set { criticalDamage = value; }
+		get { return criticalBonus; }
+		set { criticalBonus = value; }
 	}
 
 	public  float BlockChance
@@ -162,5 +216,5 @@ public class CharacterStatistics
 	{
 		get { return dodgeChance; }
 		set { dodgeChance = value; }
-	}
+	}	
 }
