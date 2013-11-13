@@ -21,7 +21,7 @@ public class Collidable : MonoBehaviour {
 
     #region Events & Delegates
 
-    public delegate void CollisionEventHandler(GameObject go);
+    public delegate void CollisionEventHandler(Character other);
     public  event CollisionEventHandler onCollisionEnterWall;
     public event CollisionEventHandler onCollisionEnterEnemy;
     public event CollisionEventHandler onCollisionEnterFriend;
@@ -85,7 +85,7 @@ public class Collidable : MonoBehaviour {
 				if (onCollisionEnterFriend != null)
                 {
 					
-                	onCollisionEnterFriend(go);
+                	onCollisionEnterFriend(go.GetComponent<Character>());
                 	++collisions;
 					return;
                 }
@@ -94,7 +94,7 @@ public class Collidable : MonoBehaviour {
 			{
             // check if we cannot hit this for any reason
 			// report enemy collision
-            	onCollisionEnterEnemy(go);
+            	onCollisionEnterEnemy(go.GetComponent<Character>());
 	            ++collisions;
 	            return;
 			}			
@@ -104,7 +104,7 @@ public class Collidable : MonoBehaviour {
         {
             if (onCollisionEnterWall != null)
             {
-                onCollisionEnterWall(go);
+                onCollisionEnterWall(null);
 				
                 ++collisions;
                 return;

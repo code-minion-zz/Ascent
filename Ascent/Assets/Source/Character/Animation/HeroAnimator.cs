@@ -93,7 +93,7 @@ public class HeroAnimator : AnimatorController
                 IsActiveState(layer, idleState))
             {
                 // We want to only change the direction of the player when we can.
-                if (!attacking && !takeHit && !whirlWind)
+                if (!takeHit && !whirlWind)
                 {
                     transform.LookAt(transform.position + direction);
                 }
