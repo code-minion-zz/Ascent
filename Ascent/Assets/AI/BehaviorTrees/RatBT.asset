@@ -17,7 +17,7 @@ MonoBehaviour:
       tiebreaker=&quot;fail&quot; succeed=&quot;all&quot; repeatuntil=&quot;failure&quot;
       name=&quot;root&quot; fail=&quot;any&quot;&gt;&lt;action repeatuntil=&quot;&quot;
       parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
-      name=&quot;action&quot; classname=&quot;WanderAction&quot; /&gt;&lt;move repeatuntil=&quot;&quot;
+      name=&quot;action&quot; classname=&quot;ActMove&quot; /&gt;&lt;move repeatuntil=&quot;&quot;
       name=&quot;move&quot; movetarget=&quot;directionVector&quot; movespeed=&quot;3&quot;
       closeenoughdistance=&quot;2&quot; closeenoughangle=&quot;&quot; /&gt;&lt;timer
       waitforsec=&quot;timeToNextTurn&quot; returnvalue=&quot;failure&quot; name=&quot;timer&quot;

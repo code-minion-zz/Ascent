@@ -5,6 +5,13 @@ namespace Utility
 {
 	public class Math
 	{
+        public static Quaternion SmoothLookAt(Vector3 target, Transform from, float smooth)
+        {
+            Vector3 dir = target - from.position;
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+            return (Quaternion.Slerp(from.rotation, targetRotation, Time.deltaTime * smooth));
+        }
+
 		public static void RotateX(ref Vector3 v, float angle)
 		{
 			float sin = Mathf.Sin(angle);

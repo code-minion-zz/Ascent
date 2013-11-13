@@ -28,23 +28,35 @@ public class HeroAnimator : AnimatorController
 
     #region Fields
 
-    public float movementSpeed = 10.0f;              // Movment speed
-    public float rotationSmooth = 10.0f;
+    // Movement speed this can be ultered to change the movement speed of the hero. Changing this will make the hero 
+    // walk or run depending on the value. Lower value is closer to walk.
+    public float movementSpeed = 10.0f;
 
-
+    // The following are movement layer states
+    // We have a few movement states for the hero which are idle, jumping and running.
     static int idleState = Animator.StringToHash("Movement." + "Idle");
     static int jumpState = Animator.StringToHash("Movement." + "JumpRunning");
-    static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
     static int movementState = Animator.StringToHash("Movement." + "Movement");
 
+    // Combat layer states
+    // Taking a hit, swinging the sword and general combat mode.
+    static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
+    static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
+    static int takingHit = Animator.StringToHash("CombatLayer." + "TakingHit");
+    static int whirlWindAttack = Animator.StringToHash("CombatLayer." + "HelixSpell");
+
     private Vector3 direction;
-    private AnimatorStateInfo activeStateInfo;
     private CapsuleCollider col;
-    private bool useCurves = true;						     // a setting for teaching purposes to show use of curves
+    private bool useCurves = true;
+
+    #endregion
+
+    #region Properties
 
     public float MovementSpeed
     {
         get { return movementSpeed; }
+        set { movementSpeed = value; }
     }
 
     #endregion
@@ -59,6 +71,7 @@ public class HeroAnimator : AnimatorController
     {
         base.Start();
 
+        // Select the collider component that we will use.
         col = GetComponent<CapsuleCollider>();
 	}
 	
@@ -70,17 +83,62 @@ public class HeroAnimator : AnimatorController
         bool attacking = animator.GetBool("SwingAttack");
         bool jumping = animator.GetBool("Jump");
         bool rolling = animator.GetBool("Roll");
+        bool takeHit = animator.GetBool("TakeHit");
+        bool whirlWind = animator.GetBool("Whirlwind");
 
         for (int layer = 0; layer < layerCount; ++layer)
         {
+            // Check if we are in the movement or idle state.
             if (IsActiveState(layer, movementState) ||
                 IsActiveState(layer, idleState))
             {
-
-                // Update the look at when we are moving
-                //if (direction.x != 0 || direction.z != 0)
+                // We want to only change the direction of the player when we can.
+                if (!takeHit && !whirlWind)
                 {
                     transform.LookAt(transform.position + direction);
+                }
+            }
+            
+            if (IsActiveState(layer, whirlWindAttack))
+            {
+                if (!animator.IsInTransition(layer))
+                {
+                    // While in transition
+                    // We don't want to take hit.
+                    StopAnimation("TakeHit");
+                }
+                else
+                {
+                    StopAnimation("Whirlwind");
+                }
+            }
+
+
+            // If the active state is the attack state
+            if (IsActiveState(layer, attackState))
+            {
+                if (!animator.IsInTransition(layer))
+                {
+                    // Here we can get the normalized time. big BOI
+                    Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
+                }
+                else
+                {
+                    StopAnimation("SwingAttack");
+                }
+            }
+
+            // We want the hero to take a hit and stop it
+            // when the transition ends.
+            if (IsActiveState(layer, takingHit))
+            {
+                if (!animator.IsInTransition(layer))
+                {
+
+                }
+                else
+                {
+                    StopAnimation("TakeHit");
                 }
             }
 
@@ -109,7 +167,6 @@ public class HeroAnimator : AnimatorController
                     // ..if distance to the ground is more than 1.75, use Match Target
                     if (hitInfo.distance > 1.75f)
                     {
-
                         // MatchTarget allows us to take over animation and smoothly transition our character towards a location - the hit point from the ray.
                         // Here we're telling the Root of the character to only be influenced on the Y axis (MatchTargetWeightMask) and only occur between 0.35 and 0.5
                         // of the timeline of our animation clip
@@ -120,47 +177,12 @@ public class HeroAnimator : AnimatorController
         }
 	}
 
-    void SmoothLookAt(Vector3 target, float smooth)
-    {
-        Vector3 dir = target - transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smooth);
-    }
-
     #region animations
 
-    public void AnimMove(Vector3 direction, float magnitude)
+    public void AnimMove(Vector3 direction, float speed)
     {
         this.direction = direction;
-        animator.SetFloat("Speed", magnitude);
-    }
-
-    public virtual void AnimAbility(int abilityID)
-    {
-        // Must be derived by each class for unique animations
-    }
-
-    void AnimRoll(bool b)
-    {
-        animator.SetBool("Roll", b);
-    }
-
-    void AnimJump(bool b)
-    {
-        if (activeStateInfo.nameHash == movementState)
-        {
-            animator.SetBool("Jump", b);
-        }
-    }
-
-    public void AnimFlinch()
-    {
-
-    }
-
-    public void AnimDie()
-    {
-
+        animator.SetFloat("Speed", speed);
     }
 
     #endregion

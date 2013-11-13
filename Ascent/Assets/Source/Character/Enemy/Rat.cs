@@ -11,6 +11,9 @@ using RAIN.Representation;
 
 public class Rat : Enemy 
 {
+    // TODO: Move this
+    private GameObject bloodSplat;
+
 	public enum ERatState
 	{
 		Idle,
@@ -28,6 +31,7 @@ public class Rat : Enemy
     private float deathSequenceEnd = 1.0f;
     private Vector3 deathRotation = Vector3.zero;
     private float deathSpeed = 5.0f;
+    private List<Character> collidedTargets = new List<Character>();
 
 	float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,
 														0.5f,
@@ -48,11 +52,16 @@ public class Rat : Enemy
 	{
 		Initialise();
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+        // TODO: move this.
+        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
 	}
 
     public override void Update()
     {
         base.Update();
+
+        RemoveCollisions();
 
         if (isDead)
         {
@@ -398,4 +407,82 @@ public class Rat : Enemy
 
 		targetPos = transform.position + directionVector;
 	}
+
+    public void OnCollisionEnter(Collision other)
+    {
+        string tag = other.transform.tag;
+
+        switch (tag)
+        {
+            case "Hero":
+                {
+                    Character otherCharacter = other.transform.GetComponent<Character>();
+
+                    CollidWithHero(otherCharacter as Hero, other);
+                }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// When the rat collides with a hero
+    /// </summary>
+    /// <param name="hero"></param>
+    private void CollidWithHero(Hero hero, Collision collision)
+    {
+        // If there is an object in this list that is the same
+        // as this object it means we have a double collision.
+        foreach (Object obj in hero.LastObjectsDamagedBy)
+        {
+            if (obj == this)
+                return;
+        }
+
+        // Find the ability that this rat last performed
+        Action ability = null;
+        if (abilities.Count > 0)
+        {
+            ability = abilities[abilities.Count - 1];
+        }
+
+        if (ability != null && ability.GetType() == typeof(EnemyCharge))
+        {
+            EnemyCharge charge = ability as EnemyCharge;
+            // Apply damage value to other character
+            hero.ApplyDamage(charge.damageValue, charge.damageType);
+
+            ContactPoint contact = collision.contacts[0];
+            Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+
+            // Apply particle blood splatter and make it a parent of the hero so that it will move with the hero.
+            // TODO: make a pool of these emitters and dont instantiate them on the frame.
+            GameObject bloodSplatter = Instantiate(bloodSplat, contact.point, rot) as GameObject;
+            bloodSplatter.transform.parent = hero.transform;
+
+            // Heroes are going to take a hit and play the animation.
+            hero.Animator.PlayAnimation("TakeHit");
+        }
+
+        // Update our list of collided targets
+        // If a weapon has special properties where it may only be able to hit a number of targets, 
+        // we would check to see if the count is too high before adding to the targets list.
+        collidedTargets.Add(hero);
+
+        Debug.Log(this.name + " collides with " + hero);
+    }
+
+    private void RemoveCollisions()
+    {
+        foreach (Character other in collidedTargets)
+        {
+            // Sanity check to make sure that the other character still exists
+            if (other != null)
+            {
+                // We can remove this collision as it is no longer in effect.
+                other.LastObjectsDamagedBy.Remove(this);
+            }
+        }
+
+        collidedTargets.Clear();
+    }
 }
