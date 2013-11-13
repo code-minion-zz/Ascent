@@ -57,6 +57,9 @@ public class HeroController : MonoBehaviour, IAscentController
         inputDevice.OnY += OnY;
         inputDevice.OnA += OnA;
         inputDevice.OnB += OnB;
+		inputDevice.OnLeftBumper += OnLBumper;
+		inputDevice.OnRightBumper += OnRBumper;
+		inputDevice.OnRightTrigger += OnRTrigger;
     }
 
     public void DisableInput(AscentInput inputDevice)
@@ -66,16 +69,19 @@ public class HeroController : MonoBehaviour, IAscentController
         inputDevice.OnY -= OnY;
         inputDevice.OnA -= OnA;
         inputDevice.OnB -= OnB;
+		inputDevice.OnLeftBumper -= OnLBumper;
+		inputDevice.OnRightBumper -= OnRBumper;
+		inputDevice.OnRightTrigger -= OnRTrigger;
     }
 
     public void OnX(ref  InControl.InputDevice device)
     {
-        hero.UseAbility(0); // pass in the ability binded to this key
+
     }
 
     public void OnY(ref  InControl.InputDevice device)
     {
-		hero.UseAbility(3);
+		
     }
 
     public void OnA(ref  InControl.InputDevice device)
@@ -85,7 +91,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnB(ref  InControl.InputDevice device)
     {
-		hero.UseAbility(2); // pass in the ability binded to this key
+		
     }
 
     public void OnX_up(ref  InControl.InputDevice device)
@@ -135,17 +141,17 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnLBumper(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(2); // pass in the ability binded to this key
     }
 
     public void OnRTrigger(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(0); // pass in the ability binded to this key
     }
 
     public void OnRBumper(ref  InControl.InputDevice device)
     {
-
+		hero.UseAbility(3);
     }
 
     public void OnDPadLeft(ref  InControl.InputDevice device)
