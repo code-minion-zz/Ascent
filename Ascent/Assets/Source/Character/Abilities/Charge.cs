@@ -88,7 +88,7 @@ public class Charge : Action
 	{
 		EndCharge();
 		other.ApplyDamage(10,Character.EDamageType.Physical);
-		other.ApplyKnockback(Vector3.up,100f);
+		//other.ApplyKnockback(Vector3.up,100f);
 	}
 	
 	private void EndCharge()

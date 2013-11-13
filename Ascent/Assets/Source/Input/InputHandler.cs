@@ -104,13 +104,13 @@ public class InputHandler : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		//InputManager.Update();
+		InputManager.Update();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		InputManager.Update();
+		//InputManager.Update();
         // For each input device binded by the players - send an event
 	}
 
