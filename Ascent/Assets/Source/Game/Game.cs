@@ -83,7 +83,14 @@ public class Game : MonoBehaviour
             Player newPlayer = player.GetComponent<Player>();
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
-            newPlayer.SetInputDevice(inputHandler.GetDevice(1));
+
+            int iDevice = i + 1;
+            if (iDevice > 2)
+            {
+                iDevice = 1;
+            }
+
+            newPlayer.SetInputDevice(inputHandler.GetDevice(iDevice));
             newPlayer.CreateHero(playerCharacterType[i]);
 			
         }

@@ -51,7 +51,7 @@ public class SpikeTrap : MonoBehaviour
 
         Transform spikeParent = transform.FindChild("Spikes");
 
-        Vector3 startPos = new Vector3(-0.6f, 0.0f, 0.6f);
+        Vector3 startPos = new Vector3(-0.6f, -0.2f, 0.6f);
         float offsetX = 0.3f;
         float offsetZ = -0.3f;
         //Vector3 offset = new Vector3(0.2f, 0.0f, 0.2f);

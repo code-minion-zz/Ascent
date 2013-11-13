@@ -27,28 +27,45 @@ public class HeroController : MonoBehaviour, IAscentController
     #endregion
 
 
+    void Update()
+    {
+        //InControl.InputDevice device = input.Device;
+
+        ////if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+        //{
+        //    float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+        //    speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+        //    speed *= 1000.0f;
+
+        //    // Direction vector to hold the input key press.
+        //    Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+
+        //    heroAnimator.AnimMove(direction, speed);
+        //}
+
+    }
+
+
     #region input
 
 
     public void EnableInput(AscentInput inputDevice)
     {
         input = inputDevice;
-        // Register everthing here
-		inputDevice.OnLStickMove += OnLStickMove;
-		inputDevice.OnX += OnX;
-		inputDevice.OnY += OnY;
-		inputDevice.OnA += OnA;
-		inputDevice.OnB += OnB;
+        inputDevice.OnLStickMove += OnLStickMove;
+        inputDevice.OnX += OnX;
+        inputDevice.OnY += OnY;
+        inputDevice.OnA += OnA;
+        inputDevice.OnB += OnB;
     }
 
     public void DisableInput(AscentInput inputDevice)
     {
-        // Unregister everything here
-		inputDevice.OnLStickMove -= OnLStickMove;
-		inputDevice.OnX -= OnX;
-		inputDevice.OnY -= OnY;
-		inputDevice.OnA -= OnA;
-		inputDevice.OnB -= OnB;
+        inputDevice.OnLStickMove -= OnLStickMove;
+        inputDevice.OnX -= OnX;
+        inputDevice.OnY -= OnY;
+        inputDevice.OnA -= OnA;
+        inputDevice.OnB -= OnB;
     }
 
     public void OnX(ref  InControl.InputDevice device)
