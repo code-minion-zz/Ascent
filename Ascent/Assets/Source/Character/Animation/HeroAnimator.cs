@@ -74,6 +74,11 @@ public class HeroAnimator : AnimatorController
         // Select the collider component that we will use.
         col = GetComponent<CapsuleCollider>();
 	}
+
+	void OnAnimationEvent()
+	{
+
+	}
 	
 	// Update is called once per frame
 	public override void Update () 
@@ -112,7 +117,7 @@ public class HeroAnimator : AnimatorController
                     StopAnimation("Whirlwind");
                 }
             }
-
+		
 
             // If the active state is the attack state
             if (IsActiveState(layer, attackState))
@@ -120,7 +125,7 @@ public class HeroAnimator : AnimatorController
                 if (!animator.IsInTransition(layer))
                 {
                     // Here we can get the normalized time. big BOI
-                    Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
+                    //Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
                 }
                 else
                 {
