@@ -15,9 +15,9 @@ MonoBehaviour:
   HolderNodes:
   - AssetPath: .currentai
     BehaviorTreeName: (No AI Selected)
-    BehaviorTreeID: 0
-    LastUpdate: 0
-    LastModified: 0
+    BehaviorTreeID: 1
+    LastUpdate: 635200366261360833
+    LastModified: 635200274748604889
     Errored: 0
   - AssetPath: .createxml
     BehaviorTreeName: Create New Behavior Tree
@@ -27,9 +27,9 @@ MonoBehaviour:
     Errored: 0
   - AssetPath: Assets/AI/BehaviorTrees/RatBT3.asset
     BehaviorTreeName: RatBT3
-    BehaviorTreeID: 6
-    LastUpdate: 635200272846904738
-    LastModified: 635200270384748547
+    BehaviorTreeID: 1
+    LastUpdate: 635200366261360833
+    LastModified: 635200274748604889
     Errored: 0
   TreeState:
     _branchRepo:
@@ -43,8 +43,12 @@ MonoBehaviour:
       _focused: 0
     - _fields:
       - _field: name
-        _currentValue: moveTarget
+        _currentValue: RatBT3
         _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
         _changed: 0
       - _field: repeatuntil
         _currentValue: 
@@ -70,27 +74,55 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      - _field: namespace
-        _currentValue: (global)
-        _recordChange: 1
-        _changed: 0
-      - _field: classname
-        _currentValue: ActMove
-        _recordChange: 1
-        _changed: 0
-      - _field: parameters
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: parametervalues
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      _type: 1
+      _type: 4
       _stateIndex: 1
-      _parent: 2
-      _lastUpdate: 0
-      _children: 
+      _parent: 0
+      _lastUpdate: 635200366251190833
+      _children: 02000000
+      _variables: 
+      _focused: 0
+    - _fields:
+      - _field: name
+        _currentValue: root
+        _recordChange: 1
+        _changed: 0
+      - _field: open
+        _currentValue: True
+        _recordChange: 0
+        _changed: 0
+      - _field: repeatuntil
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: pausewhenhit
+        _currentValue: False
+        _recordChange: 0
+        _changed: 0
+      - _field: startingpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: runningpriority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: priority
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: weight
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: usepriorities
+        _currentValue: False
+        _recordChange: 1
+        _changed: 0
+      _type: 16
+      _stateIndex: 2
+      _parent: 1
+      _lastUpdate: 635200366251180833
+      _children: 0300000005000000
       _variables: 
       _focused: 0
     - _fields:
@@ -127,14 +159,14 @@ MonoBehaviour:
         _recordChange: 1
         _changed: 0
       - _field: constraint
-        _currentValue: moving == true
+        _currentValue: targetPos != null
         _recordChange: 1
         _changed: 0
       _type: 5
-      _stateIndex: 2
-      _parent: 5
-      _lastUpdate: 635200272846904738
-      _children: 01000000
+      _stateIndex: 3
+      _parent: 2
+      _lastUpdate: 635200366251180833
+      _children: 04000000
       _variables: 
       _focused: 0
     - _fields:
@@ -199,9 +231,9 @@ MonoBehaviour:
         _recordChange: 1
         _changed: 0
       _type: 12
-      _stateIndex: 3
-      _parent: 4
-      _lastUpdate: 635200272846904738
+      _stateIndex: 4
+      _parent: 3
+      _lastUpdate: 635200366251190833
       _children: 
       _variables: 
       _focused: 0
@@ -239,68 +271,20 @@ MonoBehaviour:
         _recordChange: 1
         _changed: 0
       - _field: constraint
-        _currentValue: targetPos != null
+        _currentValue: moving == true
         _recordChange: 1
         _changed: 0
       _type: 5
-      _stateIndex: 4
-      _parent: 5
-      _lastUpdate: 635200272846904738
-      _children: 03000000
-      _variables: 
-      _focused: 0
-    - _fields:
-      - _field: name
-        _currentValue: root
-        _recordChange: 1
-        _changed: 0
-      - _field: open
-        _currentValue: True
-        _recordChange: 0
-        _changed: 0
-      - _field: repeatuntil
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: pausewhenhit
-        _currentValue: False
-        _recordChange: 0
-        _changed: 0
-      - _field: startingpriority
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: runningpriority
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: priority
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: weight
-        _currentValue: 
-        _recordChange: 1
-        _changed: 0
-      - _field: usepriorities
-        _currentValue: False
-        _recordChange: 1
-        _changed: 0
-      _type: 16
       _stateIndex: 5
-      _parent: 6
-      _lastUpdate: 635200272846904738
-      _children: 0400000002000000
+      _parent: 2
+      _lastUpdate: 635200366251180833
+      _children: 06000000
       _variables: 
-      _focused: 0
+      _focused: 1
     - _fields:
       - _field: name
-        _currentValue: RatBT3
+        _currentValue: moveTarget
         _recordChange: 1
-        _changed: 0
-      - _field: open
-        _currentValue: True
-        _recordChange: 0
         _changed: 0
       - _field: repeatuntil
         _currentValue: 
@@ -326,11 +310,27 @@ MonoBehaviour:
         _currentValue: 
         _recordChange: 1
         _changed: 0
-      _type: 4
+      - _field: namespace
+        _currentValue: (global)
+        _recordChange: 1
+        _changed: 0
+      - _field: classname
+        _currentValue: ActMove
+        _recordChange: 1
+        _changed: 0
+      - _field: parameters
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      - _field: parametervalues
+        _currentValue: 
+        _recordChange: 1
+        _changed: 0
+      _type: 1
       _stateIndex: 6
-      _parent: 0
-      _lastUpdate: 635200272846904738
-      _children: 05000000
+      _parent: 5
+      _lastUpdate: 0
+      _children: 
       _variables: 
       _focused: 0
     _freeList: 
