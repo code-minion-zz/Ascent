@@ -4,13 +4,12 @@
 SceneSettings:
   m_ObjectHideFlags: 0
   m_PVSData: 
-  m_QueryMode: 1
   m_PVSObjectsArray: []
   m_PVSPortalsArray: []
   m_OcclusionBakeSettings:
-    viewCellSize: 1
-    bakeMode: 2
-    memoryUsage: 10485760
+    smallestOccluder: 5
+    smallestHole: .25
+    backfaceThreshold: 100
 --- !u!104 &2
 RenderSettings:
   m_Fog: 0
@@ -23,6 +22,7 @@ RenderSettings:
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: .5
   m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 0}
   m_ObjectHideFlags: 0
@@ -753,7 +753,6 @@ GameObject:
   - 4: {fileID: 117}
   - 65: {fileID: 157}
   - 114: {fileID: 216}
-  - 114: {fileID: 271}
   - 114: {fileID: 266}
   m_Layer: 15
   m_Name: Slider
@@ -2091,6 +2090,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
+  m_OcclusionCulling: 1
 --- !u!65 &146
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2286,9 +2286,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &162
 Animation:
   m_ObjectHideFlags: 0
@@ -2304,9 +2301,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &163
 Animation:
   m_ObjectHideFlags: 0
@@ -2322,9 +2316,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &164
 Animation:
   m_ObjectHideFlags: 0
@@ -2341,9 +2332,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &165
 Animation:
   m_ObjectHideFlags: 0
@@ -2360,9 +2348,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &166
 Animation:
   m_ObjectHideFlags: 0
@@ -2378,9 +2363,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &167
 Animation:
   m_ObjectHideFlags: 0
@@ -2396,9 +2378,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!111 &168
 Animation:
   m_ObjectHideFlags: 0
@@ -2414,9 +2393,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4716,17 +4692,6 @@ MonoBehaviour:
   selectOnDown: {fileID: 0}
   selectOnLeft: {fileID: 0}
   selectOnRight: {fileID: 0}
---- !u!114 &271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 47}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1952b974ca6db641a32a24e815cda7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5527,9 +5492,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &1908106987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5589,5 +5551,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25ebcc4cb996b419c14e2e9f6c51f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Floor
+  levelName: Level
   defaultSelection: {fileID: 583164692}

@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Collidable : MonoBehaviour {
+public class Collidable : MonoBehaviour 
+{
+#pragma warning disable 0414
+
 	#region Fields		
 
+
     uint        collisions = 0;
-    Character   owner;
+    //Character   owner;
     string      ownerTeam;
 //    bool        ignoreWall = false;    // ignore walls
 //    bool        ignoreGrounded = false;// ignore objects on the ground
@@ -65,7 +69,7 @@ public class Collidable : MonoBehaviour {
 
     public void Init(Character _owner)
     {
-        owner = _owner;
+       // owner = _owner;
         ownerTeam = _owner.tag;
     }
 

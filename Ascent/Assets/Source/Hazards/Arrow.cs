@@ -7,49 +7,68 @@ public class Arrow : MonoBehaviour
     private bool toDestroy = false;
     private Vector3 direction;
     private float speed;
-    private float damage;
+    private int damage;
 
 	// Use this for initialization
 	void Start () 
     {
-	
 	}
 
-    public void Initialise(float life, Vector3 direction, float speed, float damage, Player _owner= null)
+    public void Initialise(float life, Vector3 direction, float speed, int damage, Player _owner= null)
     {
 		//owner = _owner;
         lifeSpan = life;
         toDestroy = false;
         this.direction = direction;
         this.speed = speed;
-        this.damage = damage ;
+        this.damage = damage;
     }
 	
 	// Update is called once per frame
 	void Update () 
     {
-        transform.position += direction * speed * Time.deltaTime;
+        //transform.position += direction * speed * Time.deltaTime;
         if(toDestroy)
         {
-           // Object.Destroy(this.gameObject);
-           gameObject.SetActive(false);
+			transform.position = Vector3.zero;
+			transform.rotation = Quaternion.identity;
+           	// Object.Destroy(this.gameObject);
+           	gameObject.SetActive(false);
         }
 
         if (lifeSpan > 0.0f)
         {
+			transform.position += direction * speed * Time.deltaTime;
             lifeSpan -= Time.deltaTime;
         }
         else
         {
+			lifeSpan = 0.0f;
             gameObject.SetActive(false);
         }
 	}
 
     void OnCollisionEnter(Collision collision)
     {
-        // TODO: Deal damage to other object if it is a character
-        damage = damage + damage - damage; // suppress the warning;
+		toDestroy = true;
 
-        toDestroy = true;
+		switch (collision.transform.tag)
+		{
+		case "Hero":
+			CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
+			break;
+		}
     }
+
+	/// <summary>
+	/// When the arrow collides with a hero.
+	/// </summary>
+	/// <param name="hero">Hero.</param>
+	/// <param name="collision">Collision.</param>
+	private void CollideWithHero(Hero hero, Collision collision)
+	{
+		// Apply damage to the hero
+		hero.ApplyDamage(damage, Character.EDamageType.Physical);
+
+	}
 }
