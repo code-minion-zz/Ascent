@@ -4,7 +4,7 @@ using System.Collections;
 public class BossCharge : Action
 {
     // TODO: Move this somewhere else
-    public int damageValue = 10;
+    public int damageValue = 5;
     public Character.EDamageType damageType = Character.EDamageType.Physical;
 
 

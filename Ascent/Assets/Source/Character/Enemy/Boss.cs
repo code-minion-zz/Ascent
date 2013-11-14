@@ -152,8 +152,8 @@ public class Boss : Enemy
 
         // Populate with stats
         characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 100;
-        characterStatistics.CurrentHealth = 100;
+        characterStatistics.MaxHealth = 250;
+        characterStatistics.CurrentHealth = 250;
 
         // Add abilities
         Action tackle = new EnemyTackle();
@@ -471,7 +471,7 @@ public class Boss : Enemy
                 break;
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Wall") && ratState == ERatState.ActionCharging)
         {
             ApplyStunEffect(2.0f);
             gameObject.renderer.material.color = Color.yellow;

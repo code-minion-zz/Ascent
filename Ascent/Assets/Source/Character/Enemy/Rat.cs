@@ -101,15 +101,27 @@ public class Rat : Enemy
         }
         else
         {
-            timeElapsed += Time.deltaTime;
-
-            if (aiObject.activeSelf == true)
+            if (stunDuration > 0.0f)
             {
-                UpdateSmart();
+                stunDuration -= Time.deltaTime;
+
+                if (stunDuration < 0.0f)
+                {
+                    gameObject.renderer.material.color = originalColour;
+                }
             }
             else
             {
-                UpdateStandard();
+                timeElapsed += Time.deltaTime;
+
+                if (aiObject.activeSelf == true)
+                {
+                    UpdateSmart();
+                }
+                else
+                {
+                    UpdateStandard();
+                }
             }
         }
     }
@@ -165,6 +177,8 @@ public class Rat : Enemy
 		StartState(ERatState.Wandering);
 
         timeElapsed = Random.Range(0.0f, stateTimes[(int)ERatState.Wandering]);
+
+        originalColour = gameObject.renderer.material.color;
         
 	}
 
@@ -454,6 +468,12 @@ public class Rat : Enemy
                     CollidWithHero(otherCharacter as Hero, other);
                 }
                 break;
+        }
+
+        if (ratState == ERatState.ActionCharging)
+        {
+            ApplyStunEffect(2.5f);
+            gameObject.renderer.material.color = Color.yellow;
         }
     }
 
