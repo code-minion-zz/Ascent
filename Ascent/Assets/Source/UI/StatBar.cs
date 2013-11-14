@@ -27,7 +27,7 @@ public class StatBar : MonoBehaviour {
 	
 	// Use this for initialization
 	void Awake () {
-		defaultWidth = barFront.width;
+		//defaultWidth = barFront.width;
 	}
 	
 	void Update()
@@ -43,6 +43,7 @@ public class StatBar : MonoBehaviour {
 	
 	public void Init(eStat stat, CharacterStatistics charStat)
 	{
+		defaultWidth = barFront.width;
 		ownerStat = charStat;
 		switch (stat)
 		{
