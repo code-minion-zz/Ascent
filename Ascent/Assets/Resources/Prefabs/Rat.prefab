@@ -44,7 +44,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400002}
@@ -54,9 +54,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: -.734259486, z: 0, w: .678868949}
-  m_LocalPosition: {x: 5.00000048, y: 0, z: -3.49999952}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -.123898439, z: 0, w: -.992294908}
+  m_LocalPosition: {x: -5.5, y: 0, z: -5.5}
+  m_LocalScale: {x: .5, y: .5, z: .5}
   m_Children:
   - {fileID: 400000}
   m_Father: {fileID: 0}
@@ -238,8 +238,8 @@ MonoBehaviour:
       type="UnityEngine.Vector3" id="_positionOffset" /><field value="0,0,0" type="UnityEngine.Vector3"
       id="_angleOffset" /><field value="False" type="System.Boolean" id="_canDetectSelf"
       /><field type="System.Collections.Generic.List" id="_filters" elementtype="RAIN.Perception.Sensors.Filters.RAINSensorFilter"
-      childrenvisible="False" /><field value="200.32" type="System.Single" id="_horizontalAngle"
-      /><field value="10" type="System.Single" id="_verticalAngle" /><field value="3.8"
+      childrenvisible="False" /><field value="38.6" type="System.Single" id="_horizontalAngle"
+      /><field value="10" type="System.Single" id="_verticalAngle" /><field value="2.62"
       type="System.Single" id="_range" /><field value="False" type="System.Boolean"
       id="_requireLineOfSight" /><field value="-5" type="UnityEngine.LayerMask" id="_lineOfSightMask"
       /><field value="True" type="System.Boolean" id="_lineOfSightIgnoresSelf" /></reference><reference
