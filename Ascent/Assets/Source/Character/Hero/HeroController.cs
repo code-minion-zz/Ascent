@@ -75,7 +75,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnX(ref  InControl.InputDevice device)
     {
-
+        hero.UseAbility(0); // pass in the ability binded to this key
     }
 
     public void OnY(ref  InControl.InputDevice device)
@@ -145,7 +145,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnRTrigger(ref  InControl.InputDevice device)
     {
-		hero.UseAbility(0); // pass in the ability binded to this key
+		
     }
 
     public void OnRBumper(ref  InControl.InputDevice device)

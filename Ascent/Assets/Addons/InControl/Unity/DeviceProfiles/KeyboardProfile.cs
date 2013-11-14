@@ -41,7 +41,7 @@ namespace InControl
 				{
 					Handle = "X",
 					Target = InputControlType.Action3,
-					Source = "e"
+					Source = "a"
 				},
 				new InputControlButtonMapping()
 				{
@@ -71,7 +71,7 @@ namespace InControl
 				{
 					Handle = "Right Trigger",
 					Target = InputControlType.RightTrigger,
-					Source = "a"
+					Source = "e"
 				},
 				new InputControlButtonMapping()
 				{
