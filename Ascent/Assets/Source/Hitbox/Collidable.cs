@@ -25,9 +25,9 @@ public class Collidable : MonoBehaviour {
     public  event CollisionEventHandler onCollisionEnterWall;
     public event CollisionEventHandler onCollisionEnterEnemy;
     public event CollisionEventHandler onCollisionEnterFriend;
-    public event CollisionEventHandler onCollisionStayEnemy;
-    public event CollisionEventHandler onCollisionStayFriend;
-    public event CollisionEventHandler onCollisionExit;
+    //public event CollisionEventHandler onCollisionStayEnemy;
+    //public event CollisionEventHandler onCollisionStayFriend;
+    //public event CollisionEventHandler onCollisionExit;
 
     #endregion
 

@@ -9,7 +9,6 @@ public class HeroController : MonoBehaviour, IAscentController
     //Weapon heroWeapon;
     Hero hero;
     AscentInput input;
-	bool movingLastFrame = false;
 
     public AscentInput Input
     {

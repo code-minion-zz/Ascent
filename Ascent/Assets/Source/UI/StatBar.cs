@@ -23,7 +23,7 @@ public class StatBar : MonoBehaviour {
 	};
 	public eStat TrackStat = eStat.Invalid;
 	
-	float tick = 0f;
+	//float tick = 0.0f;
 	
 	// Use this for initialization
 	void Awake () {

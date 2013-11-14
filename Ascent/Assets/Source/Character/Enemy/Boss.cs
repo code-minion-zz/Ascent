@@ -240,7 +240,6 @@ public class Boss : Enemy
                     }
                     else
                     {
-                        Debug.Log("Sense");
                         // Detect heroes eye range now
                         sensors[0].MatchAspectName("heroVisual");
 
