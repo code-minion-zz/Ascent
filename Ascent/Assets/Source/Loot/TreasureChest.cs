@@ -132,7 +132,7 @@ public class TreasureChest : MonoBehaviour
             case "Hero":
                 {
                     canUse = true;
-                    Hero hero = stay.GetComponent<Hero>();
+                    //Hero hero = stay.GetComponent<Hero>();
                 }
                 break;
         }

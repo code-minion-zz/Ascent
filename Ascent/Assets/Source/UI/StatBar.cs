@@ -23,11 +23,11 @@ public class StatBar : MonoBehaviour {
 	};
 	public eStat TrackStat = eStat.Invalid;
 	
-	float tick = 0f;
+	//float tick = 0.0f;
 	
 	// Use this for initialization
-	void Start () {
-		defaultWidth = barBack.width;
+	void Awake () {
+		defaultWidth = barFront.width;
 	}
 	
 	void Update()
@@ -77,23 +77,25 @@ public class StatBar : MonoBehaviour {
 			break;
 		}
 		
-		Rescale();
+		AdjustBar();
 	}
 	
 	void OnCurValueChanged(float value)
 	{
 		curVal = value;
-		Rescale();
+		AdjustBar();
 	}
 	
 	void OnMaxValueChanged(float value)
 	{
 		maxVal = value;
-		Rescale();
+		AdjustBar();
 	}
 	
-	void Rescale()
+	void AdjustBar()
 	{
 		barBack.width = (int)(defaultWidth / (maxVal/curVal));
 	}	
+	
+	
 }

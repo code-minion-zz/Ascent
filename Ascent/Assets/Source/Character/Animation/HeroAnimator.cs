@@ -97,9 +97,9 @@ public class HeroAnimator : AnimatorController
     {
         base.Update();
 
-        bool attacking = animator.GetBool("SwingAttack");
-        bool jumping = animator.GetBool("Jump");
-        bool rolling = animator.GetBool("Roll");
+        //bool attacking = animator.GetBool("SwingAttack");
+        //bool jumping = animator.GetBool("Jump");
+        //bool rolling = animator.GetBool("Roll");
         bool takeHit = animator.GetBool("TakeHit");
         bool whirlWind = animator.GetBool("Whirlwind");
 

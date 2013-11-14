@@ -21,6 +21,9 @@ public abstract class Character : MonoBehaviour
 	protected IAction activeAbility;
 	protected GameObject weaponPrefab;
     protected bool isDead = false;
+    protected Color originalColour;
+
+    protected float stunDuration;
 	
     protected Transform weaponSlot;
     public Transform WeaponSlot
@@ -173,6 +176,12 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplySpellEffect()
     {
 		// Taking damage may or may not interrupt the current ability
+    }
+
+    public virtual void ApplyStunEffect(float duration)
+    {
+        Debug.Log("Stunned: " + duration);
+        stunDuration = duration;
     }
 
     public virtual void OnDeath()

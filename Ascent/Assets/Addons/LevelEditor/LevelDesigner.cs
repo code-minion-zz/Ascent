@@ -5,6 +5,9 @@ using System;
 using System.Collections;
 using Ascent;
 
+// Disables warning: The levelGrid is not used (but it is!?)
+#pragma warning disable 0414
+
 [Serializable]
 public class LevelDesigner : EditorWindow
 {

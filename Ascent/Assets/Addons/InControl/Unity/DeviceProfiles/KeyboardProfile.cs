@@ -29,25 +29,61 @@ namespace InControl
 				{
 					Handle = "Spacebar",
 					Target = InputControlType.Action1,
-					Source = "space"
+					Source = "a"
 				},
 				new InputControlButtonMapping()
 				{
 					Handle = "A Key",
 					Target = InputControlType.Action2,
-					Source = "a"
+					Source = "s"
 				},
 				new InputControlButtonMapping()
 				{
 					Handle = "S Key",
 					Target = InputControlType.Action3,
-					Source = "s"
+					Source = "d"
 				},
 				new InputControlButtonMapping()
 				{
 					Handle = "D Key",
 					Target = InputControlType.Action4,
-					Source = "d"
+					Source = "f"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Left Bumper",
+					Target = InputControlType.LeftBumper,
+					Source = "q"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Right Bumper",
+					Target = InputControlType.RightBumper,
+					Source = "w"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Left Stick Button",
+					Target = InputControlType.LeftStickButton,
+					Source = "e"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Right Stick Button",
+					Target = InputControlType.RightStickButton,
+					Source = "r"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Back",
+					Target = InputControlType.Select,
+					Source = "'"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Start",
+					Target = InputControlType.Start,
+					Source = "return"
 				}
 			};
 

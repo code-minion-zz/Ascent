@@ -14,6 +14,15 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Disable this warning:
+// D:\Ascent\Ascent\Assets\NGUI\Scripts\Internal\EventDelegate.cs(103,12): warning CS0253: Possible unintended reference comparison; to get a value comparison, cast the right hand side to type 'UnityEngine.MonoBehaviour'
+#pragma warning disable 0252
+
+// Disable this warning:
+// D:\Ascent\Ascent\Assets\NGUI\Scripts\Internal\EventDelegate.cs(129,52): warning CS0252: Possible unintended reference comparison; to get a value comparison, cast the left hand side to type 'UnityEngine.MonoBehaviour'
+#pragma warning disable 0253
+
+
 /// <summary>
 /// Delegate callback that Unity can serialize and set via Inspector.
 /// </summary>
