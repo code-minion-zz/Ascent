@@ -19,7 +19,7 @@ public class SwingSword : Action
     {
 		timeElapsed = 0.0f;
         //owner.Animator.PlayAnimation(animationClip);
-		owner.Animator.Animator.SetTrigger("SwingAttack");
+		owner.Animator.Animator.SetTrigger(animationClip);
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 
