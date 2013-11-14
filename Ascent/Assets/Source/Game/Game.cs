@@ -84,13 +84,21 @@ public class Game : MonoBehaviour
             newPlayer.PlayerID = i;
             players.Add(newPlayer);
 
-            int iDevice = i + 1;
-            if (iDevice > 2)
+            int iDevice = i;
+
+            if (inputHandler.NumberOfDevices > 1)
             {
-                iDevice = 1;
+                iDevice += 1;
             }
 
-            newPlayer.SetInputDevice(inputHandler.GetDevice(iDevice));
+            InControl.InputDevice device = inputHandler.GetDevice(iDevice);
+            if (device == null)
+            {
+                device = inputHandler.GetDevice(0);
+            }
+
+            newPlayer.SetInputDevice(device);
+
             newPlayer.CreateHero(playerCharacterType[i]);
 			
         }
