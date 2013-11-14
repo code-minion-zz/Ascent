@@ -79,6 +79,18 @@ public class HeroAnimator : AnimatorController
 	{
 
 	}
+
+	// Events called by the animation
+	void EnableWeaponCollider()
+	{
+		Debug.Log ("Enable Collider");
+
+	}
+
+	void DisableWeaponCollider()
+	{
+		Debug.Log ("Disable collider");
+	}
 	
 	// Update is called once per frame
 	public override void Update () 
@@ -129,7 +141,7 @@ public class HeroAnimator : AnimatorController
                 }
                 else
                 {
-                    StopAnimation("SwingAttack");
+                    //StopAnimation("SwingAttack");
                 }
             }
 
