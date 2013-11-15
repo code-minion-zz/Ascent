@@ -146,7 +146,6 @@ public class UILabel : UIWidget
 				else RemoveFromPanel();
 
 				mFont = value;
-				hasChanged = true;
 				MarkAsChanged();
 			}
 		}
@@ -167,28 +166,37 @@ public class UILabel : UIWidget
 			if (mTrueTypeFont != value)
 			{
 #if DYNAMIC_FONT
-				if (mActiveTTF != null)
-				{
-					mActiveTTF.textureRebuildCallback -= MarkAsChanged;
-					mActiveTTF = null;
-				}
-
+				SetActiveFont(null);
 				RemoveFromPanel();
 				mTrueTypeFont = value;
-				mActiveTTF = value;
 				hasChanged = true;
 				mFont = null;
-
+				SetActiveFont(value);
+				ProcessAndRequest();
 				if (mActiveTTF != null)
-				{
-					mActiveTTF.textureRebuildCallback += MarkAsChanged;
-					ProcessAndRequest();
 					base.MarkAsChanged();
-				}
 #else
 				mTrueTypeFont = value;
 #endif
 			}
+		}
+	}
+
+	/// <summary>
+	/// Ambiguous helper function.
+	/// </summary>
+
+	public UnityEngine.Object ambigiousFont
+	{
+		get
+		{
+			return (mFont != null) ? (UnityEngine.Object)mFont : (UnityEngine.Object)mTrueTypeFont;
+		}
+		set
+		{
+			UIFont bf = value as UIFont;
+			if (bf != null) bitmapFont = bf;
+			else trueTypeFont = value as Font;
 		}
 	}
 
@@ -206,8 +214,12 @@ public class UILabel : UIWidget
 		{
 			if (string.IsNullOrEmpty(value))
 			{
-				if (!string.IsNullOrEmpty(mText)) mText = "";
-				hasChanged = true;
+				if (!string.IsNullOrEmpty(mText))
+				{
+					mText = "";
+					hasChanged = true;
+					ProcessAndRequest();
+				}
 			}
 			else if (mText != value)
 			{
@@ -290,13 +302,13 @@ public class UILabel : UIWidget
 
 	void ProcessAndRequest ()
 	{
-#if DYNAMIC_FONT
-		if (mActiveTTF != null)
+		if (ambigiousFont != null)
 		{
 			ProcessText();
-			mActiveTTF.RequestCharactersInTexture(mText, usePrintedSize ? mPrintedSize : fontSize, mFontStyle);
-		}
+#if DYNAMIC_FONT
+			if (mActiveTTF != null) mActiveTTF.RequestCharactersInTexture(mText, usePrintedSize ? mPrintedSize : fontSize, mFontStyle);
 #endif
+		}
 	}
 
 	/// <summary>
@@ -312,7 +324,9 @@ public class UILabel : UIWidget
 
 		mFont = null;
 		mTrueTypeFont = null;
-
+#if DYNAMIC_FONT
+		SetActiveFont(null);
+#endif
 		if (ttf != null && (fnt == null || !mUseDynamicFont))
 		{
 			bitmapFont = null;
@@ -662,9 +676,7 @@ public class UILabel : UIWidget
 			mFontStyle = mFont.dynamicFontStyle;
 			mFont = null;
 		}
-
-		mActiveTTF = mTrueTypeFont;
-		if (mActiveTTF != null) mActiveTTF.textureRebuildCallback += MarkAsChanged;
+		SetActiveFont(mTrueTypeFont);
 	}
 
 	/// <summary>
@@ -673,9 +685,26 @@ public class UILabel : UIWidget
 
 	protected override void OnDisable ()
 	{
-		if (mActiveTTF != null) mActiveTTF.textureRebuildCallback -= MarkAsChanged;
-		mActiveTTF = null;
+		SetActiveFont(null);
 		base.OnDisable();
+	}
+
+	/// <summary>
+	/// Set the active font, correctly setting and clearing callbacks.
+	/// </summary>
+
+	protected void SetActiveFont (Font fnt)
+	{
+		if (mActiveTTF != fnt)
+		{
+			if (mActiveTTF != null)
+				mActiveTTF.textureRebuildCallback -= MarkAsChanged;
+
+			mActiveTTF = fnt;
+
+			if (mActiveTTF != null)
+				mActiveTTF.textureRebuildCallback += MarkAsChanged;
+		}
 	}
 #endif
 
@@ -850,7 +879,7 @@ public class UILabel : UIWidget
 
 	public override void MakePixelPerfect ()
 	{
-		if (bitmapFont != null)
+		if (ambigiousFont != null)
 		{
 			float pixelSize = (bitmapFont != null) ? bitmapFont.pixelSize : 1f;
 
@@ -876,6 +905,17 @@ public class UILabel : UIWidget
 				int minX = Mathf.RoundToInt(mCalculatedSize.x * pixelSize);
 				int minY = Mathf.RoundToInt(mCalculatedSize.y * pixelSize);
 
+				if (bitmapFont != null)
+				{
+					minX = Mathf.Max(bitmapFont.defaultSize);
+					minY = Mathf.Max(bitmapFont.defaultSize);
+				}
+				else
+				{
+					minX = Mathf.Max(base.minWidth);
+					minY = Mathf.Max(base.minHeight);
+				}
+
 				if (width < minX) width = minX;
 				if (height < minY) height = minY;
 			}
@@ -889,16 +929,12 @@ public class UILabel : UIWidget
 
 	public void AssumeNaturalSize ()
 	{
-		if (bitmapFont != null)
+		if (ambigiousFont != null)
 		{
 			ProcessText(false);
-
 			float pixelSize = (bitmapFont != null) ? bitmapFont.pixelSize : 1f;
-			int minX = Mathf.RoundToInt(mCalculatedSize.x * pixelSize);
-			int minY = Mathf.RoundToInt(mCalculatedSize.y * pixelSize);
-
-			if (width < minX) width = minX;
-			if (height < minY) height = minY;
+			width = Mathf.RoundToInt(mCalculatedSize.x * pixelSize);
+			height = Mathf.RoundToInt(mCalculatedSize.y * pixelSize);
 		}
 	}
 
@@ -974,19 +1010,39 @@ public class UILabel : UIWidget
 
 		if (usePS || scale == 1f)
 		{
+#if UNITY_FLASH
+			for (int i = start; i < verts.size; ++i)
+			{
+				Vector3 buff = verts.buffer[i];
+				buff.x += fx;
+				buff.y += fy;
+				verts.buffer[i] = buff;
+			}
+#else
 			for (int i = start; i < verts.size; ++i)
 			{
 				verts.buffer[i].x += fx;
 				verts.buffer[i].y += fy;
 			}
+#endif
 		}
 		else
 		{
+#if UNITY_FLASH
+			for (int i = start; i < verts.size; ++i)
+			{
+				Vector3 buff = verts.buffer[i];
+				buff.x = fx + verts.buffer[i].x * scale;
+				buff.y = fy + verts.buffer[i].y * scale;
+				verts.buffer[i] = buff;
+			}
+#else
 			for (int i = start; i < verts.size; ++i)
 			{
 				verts.buffer[i].x = fx + verts.buffer[i].x * scale;
 				verts.buffer[i].y = fy + verts.buffer[i].y * scale;
 			}
+#endif
 		}
 
 		// Apply an effect if one was requested

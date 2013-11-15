@@ -338,8 +338,8 @@ public class UICamera : MonoBehaviour
 	/// </summary>
 
 	static public GameObject hoveredObject;
-	
-		/// <summary>
+
+	/// <summary>
 	/// Option to manually set the selected game object.
 	/// </summary>
 
@@ -561,8 +561,12 @@ public class UICamera : MonoBehaviour
 					{
 						GameObject go = hits[b].collider.gameObject;
 						mHit.depth = NGUITools.CalculateRaycastDepth(go);
-						mHit.hit = hits[b];
-						mHits.Add(mHit);
+
+						if (mHit.depth != int.MaxValue)
+						{
+							mHit.hit = hits[b];
+							mHits.Add(mHit);
+						}
 					}
 
 					mHits.Sort(delegate(DepthEntry r1, DepthEntry r2) { return r2.depth.CompareTo(r1.depth); });
@@ -713,7 +717,6 @@ public class UICamera : MonoBehaviour
 	{
 		if (go != null)
 		{
-			UISlider uis = go.GetComponent<UISlider>();
 			for (int i = mHighlighted.Count; i > 0; )
 			{
 				Highlighted hl = mHighlighted[--i];
@@ -732,12 +735,6 @@ public class UICamera : MonoBehaviour
 					{
 						mHighlighted.Remove(hl);
 						Notify(go, "OnHover", false);
-						#region Kit'sCode
-						if (uis != null)
-						{
-							Notify(uis.thumb.gameObject, "OnHover", false);
-						}
-						#endregion
 					}
 					return;
 				}
@@ -750,13 +747,6 @@ public class UICamera : MonoBehaviour
 				hl.counter = 1;
 				mHighlighted.Add(hl);
 				Notify(go, "OnHover", true);
-				
-				#region Kit'sCode
-				if (uis != null)
-				{
-					Notify(uis.thumb.gameObject, "OnHover", true);
-				}
-				#endregion
 			}
 		}
 	}
@@ -779,12 +769,20 @@ public class UICamera : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the details of the specified mouse button.
+	/// </summary>
+
+	static public MouseOrTouch GetMouse (int button) { return mMouse[button]; }
+
+	/// <summary>
 	/// Get or create a touch event.
 	/// </summary>
 
 	static public MouseOrTouch GetTouch (int id)
 	{
 		MouseOrTouch touch = null;
+
+		if (id < 0) return GetMouse(-id - 1);
 
 		if (!mTouches.TryGetValue(id, out touch))
 		{
@@ -816,7 +814,11 @@ public class UICamera : MonoBehaviour
 			Application.platform == RuntimePlatform.IPhonePlayer
 #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_1
 			|| Application.platform == RuntimePlatform.WP8Player
+#if UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3
 			|| Application.platform == RuntimePlatform.BB10Player
+#else
+			|| Application.platform == RuntimePlatform.BlackBerryPlayer
+#endif
 #endif
 			)
 		{
@@ -931,7 +933,7 @@ public class UICamera : MonoBehaviour
 			}
 		}
 		else inputHasFocus = false;
-		
+
 		// Update the keyboard and joystick events
 		if (mCurrentSelection != null) ProcessOthers();
 
@@ -948,7 +950,7 @@ public class UICamera : MonoBehaviour
 				ShowTooltip(true);
 			}
 		}
-		current = null;		
+		current = null;
 	}
 
 	/// <summary>
