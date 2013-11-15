@@ -10,6 +10,9 @@ using System.Collections.Generic;
 /// <summary>
 /// Simple toggle functionality.
 /// </summary>
+/// 
+
+#pragma warning disable 0649
 
 [ExecuteInEditMode]
 [AddComponentMenu("NGUI/Interaction/Toggle")]

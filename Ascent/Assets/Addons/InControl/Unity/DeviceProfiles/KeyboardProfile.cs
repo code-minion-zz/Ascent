@@ -27,27 +27,75 @@ namespace InControl
 			{
 				new InputControlButtonMapping()
 				{
-					Handle = "Spacebar",
+					Handle = "A",
 					Target = InputControlType.Action1,
-					Source = "space"
+					Source = "q"
 				},
 				new InputControlButtonMapping()
 				{
-					Handle = "A Key",
+					Handle = "B",
 					Target = InputControlType.Action2,
+					Source = "w"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "X",
+					Target = InputControlType.Action3,
 					Source = "a"
 				},
 				new InputControlButtonMapping()
 				{
-					Handle = "S Key",
-					Target = InputControlType.Action3,
+					Handle = "Y",
+					Target = InputControlType.Action4,
+					Source = "r"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Left Bumper",
+					Target = InputControlType.LeftBumper,
 					Source = "s"
 				},
 				new InputControlButtonMapping()
 				{
-					Handle = "D Key",
-					Target = InputControlType.Action4,
+					Handle = "Right Bumper",
+					Target = InputControlType.RightBumper,
 					Source = "d"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Left Trigger",
+					Target = InputControlType.LeftTrigger,
+					Source = "f"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Right Trigger",
+					Target = InputControlType.RightTrigger,
+					Source = "e"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Left Stick Button",
+					Target = InputControlType.LeftStickButton,
+					Source = "g"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Right Stick Button",
+					Target = InputControlType.RightStickButton,
+					Source = "t"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Back",
+					Target = InputControlType.Select,
+					Source = "'"
+				},
+				new InputControlButtonMapping()
+				{
+					Handle = "Start",
+					Target = InputControlType.Start,
+					Source = "return"
 				}
 			};
 

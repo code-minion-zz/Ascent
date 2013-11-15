@@ -73,7 +73,7 @@ public class SpinningBlade : MonoBehaviour
 	
 	void Update () 
     {
-       gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection);
+       gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
 
 		// TODO: Remove this for optimisation
 	   if (previousBladeCount != bladeCount || previousBladeLength != bladeLength)

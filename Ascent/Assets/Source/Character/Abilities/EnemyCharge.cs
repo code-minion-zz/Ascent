@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyCharge : Action
 {
     // TODO: Move this somewhere else
-    public int damageValue = 10;
+    public int damageValue = 2;
     public Character.EDamageType damageType = Character.EDamageType.Physical;
 
 
@@ -12,7 +12,7 @@ public class EnemyCharge : Action
 	const float actionTime = 0.75f;
 	float timeElapsed = 0.0f;
 
-	Vector3 originalPos;
+	//Vector3 originalPos;
 	Vector3 targetPos;
 
 	Transform target;
@@ -28,7 +28,7 @@ public class EnemyCharge : Action
 		owner.renderer.material.color = Color.magenta;
 		timeElapsed = 0.0f;
 
-		originalPos = owner.transform.position;
+		//originalPos = owner.transform.position;
 		
 		// Kit TODO : Rewrite this to be better, or maybe change rats to use the same Charge skill as Warrior
 		if (target == null)

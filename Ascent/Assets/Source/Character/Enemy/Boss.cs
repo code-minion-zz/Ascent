@@ -9,31 +9,31 @@ using RAIN.Core;
 using RAIN.Action;
 using RAIN.Representation;
 
-public class Rat : Enemy 
+public class Boss : Enemy
 {
     // TODO: Move this
     private GameObject bloodSplat;
 
-	public enum ERatState
-	{
-		Idle,
-		Idle2,
-		Wandering,
-		Seeking,
-		ActionAttacking,
-		ActionCharging,
-		Flinching,
-		Dying,
-		Max
-	}
+    public enum ERatState
+    {
+        Idle,
+        Idle2,
+        Wandering,
+        Seeking,
+        ActionAttacking,
+        ActionCharging,
+        Flinching,
+        Dying,
+        Max
+    }
 
-    private float deathSequenceTime = 0.0f;    
+    private float deathSequenceTime = 0.0f;
     private float deathSequenceEnd = 1.0f;
     private Vector3 deathRotation = Vector3.zero;
     private float deathSpeed = 5.0f;
     private List<Character> collidedTargets = new List<Character>();
 
-	float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,
+    float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,
 														0.5f,
 														2.0f,
 														0.0f,
@@ -41,16 +41,16 @@ public class Rat : Enemy
 														0.0f,
 														0.2f,
 														0.0f };
-	float timeElapsed = 0.0f;
-	ERatState ratState;
-	Transform target;
-	IList<RAIN.Perception.Sensors.RAINSensor> sensors;
+    float timeElapsed = 0.0f;
+    ERatState ratState;
+    Transform target;
+    IList<RAIN.Perception.Sensors.RAINSensor> sensors;
     GameObject aiObject;
     Transform childTarget;
     Vector3 targetPos;
 
     public override void Start()
-	{
+    {
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 
@@ -58,7 +58,7 @@ public class Rat : Enemy
         bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
 
         Initialise();
-	}
+    }
 
     public override void Update()
     {
@@ -101,6 +101,7 @@ public class Rat : Enemy
         }
         else
         {
+
             if (stunDuration > 0.0f)
             {
                 stunDuration -= Time.deltaTime;
@@ -112,7 +113,7 @@ public class Rat : Enemy
             }
             else
             {
-                timeElapsed += Time.deltaTime;
+                 timeElapsed += Time.deltaTime;
 
                 if (aiObject.activeSelf == true)
                 {
@@ -126,61 +127,61 @@ public class Rat : Enemy
         }
     }
 
-	public override void Initialise()
-	{
-		// Grab the AI Rig from Rain AI
-		if (ai == null)
-		{
+    public override void Initialise()
+    {
+        // Grab the AI Rig from Rain AI
+        if (ai == null)
+        {
 
-			ai = gameObject.GetComponentInChildren<RAIN.Core.AIRig>();
+            ai = gameObject.GetComponentInChildren<RAIN.Core.AIRig>();
             //ai = gameObject.AddComponent<RAIN.Core.AIRig>();
 
-			if (ai == null)
-			{
-				Debug.LogError("No AIRig attached to this: " + this.name);
-			}
+            if (ai == null)
+            {
+                Debug.LogError("No AIRig attached to this: " + this.name);
+            }
 
             ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
 
             Transform go = transform.FindChild("AI");
             aiObject = go.gameObject;
             //aiObject.SetActive(false);
-		}
+        }
 
-       // ai.enabled = false;
+        // ai.enabled = false;
 
-		// Populate with stats
+        // Populate with stats
         characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 100;
-        characterStatistics.CurrentHealth = 100;
+        characterStatistics.MaxHealth = 250;
+        characterStatistics.CurrentHealth = 250;
 
         // Add abilities
         Action tackle = new EnemyTackle();
-		tackle.Initialise(this);
-		abilities.Add(tackle);
+        tackle.Initialise(this);
+        abilities.Add(tackle);
 
         // Add abilities
-        Action charge = new EnemyCharge();
+        Action charge = new BossCharge();
         charge.Initialise(this);
         abilities.Add(charge);
 
-		// Grab sensors
-		sensors = ai.AI.Senses.Sensors;
+        // Grab sensors
+        sensors = ai.AI.Senses.Sensors;
 
         //foreach(RAIN.Perception.Sensors.RAINSensor sensor in sensors)
         //{
         //    Debug.Log(sensor.SensorName);
         //}
 
-       
 
-		StartState(ERatState.Wandering);
+
+        StartState(ERatState.Wandering);
 
         timeElapsed = Random.Range(0.0f, stateTimes[(int)ERatState.Wandering]);
 
         originalColour = gameObject.renderer.material.color;
-        
-	}
+
+    }
 
 
     public void UpdateStandard()
@@ -231,7 +232,7 @@ public class Rat : Enemy
                 break;
             case ERatState.Wandering:
                 {
-                   
+
                     ////Debug.Log("WANDER");
                     if (timeElapsed > stateTimes[(int)ERatState.Wandering])
                     {
@@ -264,19 +265,19 @@ public class Rat : Enemy
                         //Debug.Log("SEEK");
                         ai.AI.Motor.MoveTo(target.position);
 
-                        // Detect attack range now
-                        sensors[1].MatchAspectName("heroVisual");
+                        //// Detect attack range now
+                        //sensors[1].MatchAspectName("heroVisual");
                         IList<RAIN.Entities.Aspects.RAINAspect> matches = sensors[1].Matches;
-                        if (matches.Count > 0)
-                        {
-                            // Can attack this target
-                            StartState(ERatState.ActionAttacking);
-                            return;
-                        }
+                        //if (matches.Count > 0)
+                        //{
+                        //    // Can attack this target
+                        //    StartState(ERatState.ActionAttacking);
+                        //    return;
+                        //}
 
                         // Detect heroes in charge range now
-                        sensors[2].MatchAspectName("heroVisual");
-                        matches = sensors[2].Matches;
+                        sensors[1].MatchAspectName("heroVisual");
+                        matches = sensors[1].Matches;
                         if (matches.Count > 0)
                         {
                             // Can attack this target
@@ -347,101 +348,101 @@ public class Rat : Enemy
         //this.gameObject.SetActive(false);
     }
 
-	protected void StartState(ERatState ratState)
-	{
-		timeElapsed = 0.0f;
+    protected void StartState(ERatState ratState)
+    {
+        timeElapsed = 0.0f;
 
-		switch (ratState)
-	    {
-			case ERatState.Idle:
-				{
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+        switch (ratState)
+        {
+            case ERatState.Idle:
+                {
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					//Animator.PlayAnimation("Idle");
+                    //Animator.PlayAnimation("Idle");
                     target = null;
-				}
-				break;
-			case ERatState.Idle2:
-				{
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+                }
+                break;
+            case ERatState.Idle2:
+                {
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					//Animator.PlayAnimation("Idle");
+                    //Animator.PlayAnimation("Idle");
                     target = null;
-				}
-				break;
-			case ERatState.Wandering:
-				{
-					//ai.AI.WorkingMemory.SetItem<bool>("movingToVector", true);
-					//Animator.PlayAnimation("Walk");
+                }
+                break;
+            case ERatState.Wandering:
+                {
+                    //ai.AI.WorkingMemory.SetItem<bool>("movingToVector", true);
+                    //Animator.PlayAnimation("Walk");
                     Wander();
                     target = null;
-				}
-				break;
-			case ERatState.Seeking:
-				{
-					ai.AI.WorkingMemory.SetItem<bool>("moving", true);
+                }
+                break;
+            case ERatState.Seeking:
+                {
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", true);
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					//Animator.PlayAnimation("Run");
-				}
-				break;
-			case ERatState.ActionAttacking:
-				{
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+                    //Animator.PlayAnimation("Run");
+                }
+                break;
+            case ERatState.ActionAttacking:
+                {
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					UseAbility("EnemyTackle");
-				}
-				break;
-			case ERatState.ActionCharging:
-				{
+                    UseAbility("EnemyTackle");
+                }
+                break;
+            case ERatState.ActionCharging:
+                {
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
 
-					EnemyCharge charge = GetAbility("EnemyCharge") as EnemyCharge;
+                    BossCharge charge = GetAbility("BossCharge") as BossCharge;
 
-					charge.SetTarget(target);
+                    charge.SetTarget(target);
 
-					UseAbility("EnemyCharge");
-				}
-				break;
-			case ERatState.Flinching:
-				{
+                    UseAbility("BossCharge");
+                }
+                break;
+            case ERatState.Flinching:
+                {
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
-					//Animator.PlayAnimation("Flinch");
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+                    //Animator.PlayAnimation("Flinch");
                     target = null;
-				}
-				break;
-			case ERatState.Dying:
-				{
+                }
+                break;
+            case ERatState.Dying:
+                {
                     ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", Vector3.zero);
-					ai.AI.WorkingMemory.SetItem<bool>("moving", false);
-					//Animator.PlayAnimation("Die");
+                    ai.AI.WorkingMemory.SetItem<bool>("moving", false);
+                    //Animator.PlayAnimation("Die");
                     target = null;
-				}
-				break;
-			default:
-				{
-					Debug.LogError("Invalid rat state entered.");
-				}
-				break;
-	    }
+                }
+                break;
+            default:
+                {
+                    Debug.LogError("Invalid rat state entered.");
+                }
+                break;
+        }
 
-		this.ratState = ratState;
-	}
+        this.ratState = ratState;
+    }
 
-	protected void Wander()
-	{
-		float distanceToWander = Random.Range(2.0f, 5.0f);
+    protected void Wander()
+    {
+        float distanceToWander = Random.Range(2.0f, 5.0f);
 
-		//Set Random Direction
-		Vector2 newVector = Random.insideUnitCircle;
-		Vector3 directionVector = new Vector3();
+        //Set Random Direction
+        Vector2 newVector = Random.insideUnitCircle;
+        Vector3 directionVector = new Vector3();
 
-		directionVector.x = newVector.x * distanceToWander;
-		directionVector.z = newVector.y * distanceToWander;
-		directionVector.y = 0;
+        directionVector.x = newVector.x * distanceToWander;
+        directionVector.z = newVector.y * distanceToWander;
+        directionVector.y = 0;
 
-		//float angle = Vector3.Angle(ai.AI.Body.transform.forward, directionVector);
+        //float angle = Vector3.Angle(ai.AI.Body.transform.forward, directionVector);
 
         //Debug.Log(targetPos);
         //childTarget.transform.localPosition = directionVector;
@@ -450,10 +451,10 @@ public class Rat : Enemy
 
         //target = childTarget;
 
-		targetPos = transform.position + directionVector;
+        targetPos = transform.position + directionVector;
 
         ai.AI.WorkingMemory.SetItem<Vector3>("targetPos", targetPos);
-	}
+    }
 
     public void OnCollisionEnter(Collision other)
     {
@@ -470,9 +471,9 @@ public class Rat : Enemy
                 break;
         }
 
-        if (ratState == ERatState.ActionCharging)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Wall") && ratState == ERatState.ActionCharging)
         {
-            ApplyStunEffect(2.5f);
+            ApplyStunEffect(2.0f);
             gameObject.renderer.material.color = Color.yellow;
         }
     }
@@ -498,9 +499,9 @@ public class Rat : Enemy
             ability = abilities[abilities.Count - 1];
         }
 
-        if (ability != null && ability.GetType() == typeof(EnemyCharge))
+        if (ability != null && ability.GetType() == typeof(BossCharge))
         {
-            EnemyCharge charge = ability as EnemyCharge;
+            BossCharge charge = ability as BossCharge;
             // Apply damage value to other character
             hero.ApplyDamage(charge.damageValue, charge.damageType);
 

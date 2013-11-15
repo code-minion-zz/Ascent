@@ -40,7 +40,7 @@ public class HeroAnimator : AnimatorController
 
     // Combat layer states
     // Taking a hit, swinging the sword and general combat mode.
-    static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
+    //static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
     static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
     static int takingHit = Animator.StringToHash("CombatLayer." + "TakingHit");
     static int whirlWindAttack = Animator.StringToHash("CombatLayer." + "HelixSpell");
@@ -79,15 +79,27 @@ public class HeroAnimator : AnimatorController
 	{
 
 	}
+
+	// Events called by the animation
+	void EnableWeaponCollider()
+	{
+		Debug.Log ("Enable Collider");
+
+	}
+
+	void DisableWeaponCollider()
+	{
+		Debug.Log ("Disable collider");
+	}
 	
 	// Update is called once per frame
 	public override void Update () 
     {
         base.Update();
 
-        bool attacking = animator.GetBool("SwingAttack");
-        bool jumping = animator.GetBool("Jump");
-        bool rolling = animator.GetBool("Roll");
+        //bool attacking = animator.GetBool("SwingAttack");
+        //bool jumping = animator.GetBool("Jump");
+        //bool rolling = animator.GetBool("Roll");
         bool takeHit = animator.GetBool("TakeHit");
         bool whirlWind = animator.GetBool("Whirlwind");
 
@@ -129,7 +141,7 @@ public class HeroAnimator : AnimatorController
                 }
                 else
                 {
-                    StopAnimation("SwingAttack");
+                    //StopAnimation("SwingAttack");
                 }
             }
 

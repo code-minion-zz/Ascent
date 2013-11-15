@@ -9,7 +9,6 @@ public class HeroController : MonoBehaviour, IAscentController
     //Weapon heroWeapon;
     Hero hero;
     AscentInput input;
-	bool movingLastFrame = false;
 
     public AscentInput Input
     {
@@ -29,19 +28,19 @@ public class HeroController : MonoBehaviour, IAscentController
 
     void Update()
     {
-        //InControl.InputDevice device = input.Device;
+        InControl.InputDevice device = input.Device;
 
-        ////if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
-        //{
-        //    float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-        //    speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-        //    speed *= 1000.0f;
+        //if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+        {
+            float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+            speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+            speed *= 1000.0f;
 
-        //    // Direction vector to hold the input key press.
-        //    Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+            // Direction vector to hold the input key press.
+            Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
 
-        //    heroAnimator.AnimMove(direction, speed);
-        //}
+            heroAnimator.AnimMove(direction, speed);
+        }
 
     }
 
@@ -76,7 +75,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnX(ref  InControl.InputDevice device)
     {
-
+        hero.UseAbility(0); // pass in the ability binded to this key
     }
 
     public void OnY(ref  InControl.InputDevice device)
@@ -146,7 +145,7 @@ public class HeroController : MonoBehaviour, IAscentController
 
     public void OnRTrigger(ref  InControl.InputDevice device)
     {
-		hero.UseAbility(0); // pass in the ability binded to this key
+		
     }
 
     public void OnRBumper(ref  InControl.InputDevice device)
@@ -198,7 +197,7 @@ public class HeroController : MonoBehaviour, IAscentController
     {
         float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
         speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-        speed *= 100.0f;
+        speed *= 1000.0f;
 
         // Direction vector to hold the input key press.
         Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;

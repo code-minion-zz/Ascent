@@ -41,21 +41,21 @@ public class CharacterStatistics
 	public event CharacterStatisticEventHandler onCurSpecialChanged;
 	public event CharacterStatisticEventHandler onLevelChanged;
 	public event CharacterStatisticEventHandler onExpChanged;
-	public event CharacterStatisticEventHandler onMoneyChanged;
-	public event CharacterStatisticEventHandler onPowerChanged;
-	public event CharacterStatisticEventHandler onFinesseChanged;
-	public event CharacterStatisticEventHandler onVitalityChanged;
-	public event CharacterStatisticEventHandler onSpiritChanged;
-	public event CharacterStatisticEventHandler onAttackChanged;
-	public event CharacterStatisticEventHandler onCritChanceChanged;
-	public event CharacterStatisticEventHandler onCritBonusChanged;
-	public event CharacterStatisticEventHandler onAnyOffensiveChanged;
-	public event CharacterStatisticEventHandler onArmorChanged;
-	public event CharacterStatisticEventHandler onPhysResChanged;
-	public event CharacterStatisticEventHandler onMagResChanged;
-	public event CharacterStatisticEventHandler onBlockChanged;
-	public event CharacterStatisticEventHandler onDodgeChanged;
-	public event CharacterStatisticEventHandler onAnyDefensiveChanged;
+	//public event CharacterStatisticEventHandler onMoneyChanged;
+	//public event CharacterStatisticEventHandler onPowerChanged;
+	//public event CharacterStatisticEventHandler onFinesseChanged;
+	//public event CharacterStatisticEventHandler onVitalityChanged;
+	//public event CharacterStatisticEventHandler onSpiritChanged;
+	//public event CharacterStatisticEventHandler onAttackChanged;
+	//public event CharacterStatisticEventHandler onCritChanceChanged;
+	//public event CharacterStatisticEventHandler onCritBonusChanged;
+	//public event CharacterStatisticEventHandler onAnyOffensiveChanged;
+	//public event CharacterStatisticEventHandler onArmorChanged;
+	//public event CharacterStatisticEventHandler onPhysResChanged;
+	//public event CharacterStatisticEventHandler onMagResChanged;
+	//public event CharacterStatisticEventHandler onBlockChanged;
+	//public event CharacterStatisticEventHandler onDodgeChanged;
+	//public event CharacterStatisticEventHandler onAnyDefensiveChanged;
 	public event CharacterStatisticEventHandler onAnyStatChanged;
 
 	public  int CurrentHealth

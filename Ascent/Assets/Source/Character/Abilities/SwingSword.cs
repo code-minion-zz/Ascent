@@ -18,7 +18,8 @@ public class SwingSword : Action
     public override void StartAbility()
     {
 		timeElapsed = 0.0f;
-        owner.Animator.PlayAnimation(animationClip);
+        //owner.Animator.PlayAnimation(animationClip);
+		owner.Animator.Animator.SetTrigger(animationClip);
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 

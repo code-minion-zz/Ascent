@@ -7,11 +7,11 @@ public class ArrowShooter : MonoBehaviour
     public int projectilePoolCount = 5;
     public float frequency = 1.0f;
     public float projectileSpeed = 5.0f;
-    public float projectileDamage = 2.0f;
+    public int projectileDamage = 2;
     public float arrowLifeSpan = 2.0f;
+	private Vector3 direction;
 
     private ObjectPool arrowPool;
-    private Vector3 direction;
     private Vector3 spawnPoint;
     private float timeElapsed = 0.0f;
    
@@ -21,7 +21,8 @@ public class ArrowShooter : MonoBehaviour
     {
         arrowPool = new ObjectPool(projectile, projectilePoolCount, this.transform, "Arrow");
         direction = (transform.FindChild("Shooter").transform.position - transform.FindChild("Base").transform.position).normalized;
-        spawnPoint = transform.FindChild("Shooter").transform.position + (direction * 1.0f);
+        //spawnPoint = transform.FindChild("Shooter").transform.position + (direction * 1.0f);
+		spawnPoint = transform.FindChild("Shooter").transform.position + direction;
 	}
 	
 	// Update is called once per frame
@@ -38,9 +39,12 @@ public class ArrowShooter : MonoBehaviour
             {
                 Arrow newArrow = po.script as Arrow;
                 newArrow.Initialise(arrowLifeSpan, direction, projectileSpeed, projectileDamage);
+				po.go.transform.position = spawnPoint;
+				po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
                 po.go.SetActive(true);
-                po.go.transform.position = spawnPoint;
-                ///po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
+
+				//po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+                //po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
                 //po.go.transform.tra
                 //po.go.rigidbody.velocity = Vector3.zero;
                 //po.go.rigidbody.angularVelocity = Vector3.zero;

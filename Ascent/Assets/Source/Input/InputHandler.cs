@@ -25,6 +25,11 @@ public class InputHandler : MonoBehaviour
 	
 	#endregion
 
+    public int NumberOfDevices
+    {
+        get { return playerDevices.Count; }
+    }
+
     void Awake()
     {
         // Setup the device manager and the events

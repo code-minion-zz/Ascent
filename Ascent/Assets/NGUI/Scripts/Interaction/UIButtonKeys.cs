@@ -20,7 +20,7 @@ public class UIButtonKeys : MonoBehaviour
 	public UIButtonKeys selectOnDown;
 	public UIButtonKeys selectOnLeft;
 	public UIButtonKeys selectOnRight;
-		
+
 	void OnEnable ()
 	{
 		if (startsSelected)
@@ -36,7 +36,7 @@ public class UIButtonKeys : MonoBehaviour
 	void OnKey (KeyCode key)
 	{
 		if (enabled && NGUITools.GetActive(gameObject))
-		{			
+		{
 			switch (key)
 			{
 			case KeyCode.LeftArrow:
