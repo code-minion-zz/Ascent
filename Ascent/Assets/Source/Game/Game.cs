@@ -99,6 +99,9 @@ public class Game : MonoBehaviour
 
             newPlayer.SetInputDevice(device);
 
+            //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
+            
+
             newPlayer.CreateHero(playerCharacterType[i]);
 			
         }
