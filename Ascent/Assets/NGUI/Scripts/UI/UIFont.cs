@@ -110,7 +110,7 @@ public class UIFont : MonoBehaviour
 
 				mPMA = -1;
 				mAtlas = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public class UIFont : MonoBehaviour
 			if (mReplacement != null) return mReplacement.material;
 
 			if (mAtlas != null) return mAtlas.spriteMaterial;
-			
+
 			if (mMat != null)
 			{
 				if (mDynamicFont != null && mMat != mDynamicFont.material)
@@ -152,7 +152,7 @@ public class UIFont : MonoBehaviour
 			{
 				mPMA = -1;
 				mMat = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -188,7 +188,7 @@ public class UIFont : MonoBehaviour
 				if (mPixelSize != val)
 				{
 					mPixelSize = val;
-					MarkAsDirty();
+					MarkAsChanged();
 				}
 			}
 		}
@@ -283,7 +283,7 @@ public class UIFont : MonoBehaviour
 			else if (sprite == null && mUVRect != value)
 			{
 				mUVRect = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -307,7 +307,7 @@ public class UIFont : MonoBehaviour
 			else if (mFont.spriteName != value)
 			{
 				mFont.spriteName = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public class UIFont : MonoBehaviour
 			else if (mSpacingX != value)
 			{
 				mSpacingX = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -355,7 +355,7 @@ public class UIFont : MonoBehaviour
 			else if (mSpacingY != value)
 			{
 				mSpacingY = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -420,7 +420,7 @@ public class UIFont : MonoBehaviour
 				}
 
 				for (int i = 0, imax = mSymbols.Count; i < imax; ++i)
-					symbols[i].MarkAsDirty();
+					symbols[i].MarkAsChanged();
 			}
 			return mSprite;
 		}
@@ -446,9 +446,9 @@ public class UIFont : MonoBehaviour
 			if (mReplacement != rep)
 			{
 				if (rep != null && rep.replacement == this) rep.replacement = null;
-				if (mReplacement != null) MarkAsDirty();
+				if (mReplacement != null) MarkAsChanged();
 				mReplacement = rep;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -479,7 +479,7 @@ public class UIFont : MonoBehaviour
 			{
 				if (mDynamicFont != null) material = null;
 				mDynamicFont = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -503,7 +503,7 @@ public class UIFont : MonoBehaviour
 			else if (mDynamicFontStyle != value)
 			{
 				mDynamicFontStyle = value;
-				MarkAsDirty();
+				MarkAsChanged();
 			}
 		}
 	}
@@ -568,12 +568,12 @@ public class UIFont : MonoBehaviour
 	/// Refresh all labels that use this font.
 	/// </summary>
 
-	public void MarkAsDirty ()
+	public void MarkAsChanged ()
 	{
 #if UNITY_EDITOR
 		UnityEditor.EditorUtility.SetDirty(gameObject);
 #endif
-		if (mReplacement != null) mReplacement.MarkAsDirty();
+		if (mReplacement != null) mReplacement.MarkAsChanged();
 
 		mSprite = null;
 		UILabel[] labels = NGUITools.FindActive<UILabel>();
@@ -592,7 +592,7 @@ public class UIFont : MonoBehaviour
 
 		// Clear all symbols
 		for (int i = 0, imax = mSymbols.Count; i < imax; ++i)
-			symbols[i].MarkAsDirty();
+			symbols[i].MarkAsChanged();
 	}
 
 	/// <summary>
@@ -756,6 +756,7 @@ public class UIFont : MonoBehaviour
 
 	/// <summary>
 	/// Text wrapping functionality. The 'width' and 'height' should be in pixels.
+	/// Returns 'true' if the specified text was able to fit into the provided dimensions, 'false' otherwise.
 	/// </summary>
 
 	public bool WrapText (string text, int size, out string finalText, int width, int height, int maxLines, bool encoding, SymbolStyle symbolStyle)
@@ -775,7 +776,9 @@ public class UIFont : MonoBehaviour
 			return false;
 		}
 
-		int maxLineCount = (maxLines > 0) ? maxLines : 999999;
+		if (maxLines > 0) height = Mathf.Min(height, size * maxLines);
+
+		int maxLineCount = (maxLines > 0) ? maxLines : 1000000;
 		maxLineCount = Mathf.Min(maxLineCount, height / size);
 
 		if (maxLineCount == 0)
@@ -790,9 +793,8 @@ public class UIFont : MonoBehaviour
 		int previousChar = 0;
 		int start = 0;
 		int offset = 0;
-		bool lineIsEmpty = true;
-		bool multiline = (maxLines != 1);
 		int lineCount = 1;
+		bool lineIsEmpty = true;
 		bool useSymbols = encoding && symbolStyle != SymbolStyle.None && hasSymbols;
 
 		// Run through all characters
@@ -803,7 +805,7 @@ public class UIFont : MonoBehaviour
 			// New line character -- start a new line
 			if (ch == '\n')
 			{
-				if (!multiline || lineCount == maxLineCount) break;
+				if (lineCount == maxLineCount) break;
 				remainingWidth = width;
 
 				// Add the previous word to the final string
@@ -831,7 +833,7 @@ public class UIFont : MonoBehaviour
 
 			// See if there is a symbol matching this text
 			BMSymbol symbol = useSymbols ? MatchSymbol(text, offset, textLength) : null;
-			
+
 			// Calculate how wide this symbol or character is going to be
 			int glyphWidth = mSpacingX;
 
@@ -857,12 +859,12 @@ public class UIFont : MonoBehaviour
 			if (remainingWidth < 0)
 			{
 				// Can't start a new line
-				if (lineIsEmpty || !multiline || lineCount == maxLineCount)
+				if (lineIsEmpty || lineCount == maxLineCount)
 				{
 					// This is the first word on the line -- add it up to the character that fits
 					sb.Append(text.Substring(start, Mathf.Max(0, offset - start)));
 
-					if (!multiline || lineCount == maxLineCount)
+					if (lineCount++ == maxLineCount)
 					{
 						start = offset;
 						break;
@@ -871,7 +873,6 @@ public class UIFont : MonoBehaviour
 
 					// Start a brand-new line
 					lineIsEmpty = true;
-					++lineCount;
 
 					if (ch == ' ')
 					{
@@ -896,8 +897,7 @@ public class UIFont : MonoBehaviour
 					offset = start - 1;
 					previousChar = 0;
 
-					if (!multiline || lineCount == maxLineCount) break;
-					++lineCount;
+					if (lineCount++ == maxLineCount) break;
 					NGUIText.EndLine(ref sb);
 					continue;
 				}
@@ -914,7 +914,7 @@ public class UIFont : MonoBehaviour
 
 		if (start < offset) sb.Append(text.Substring(start, offset - start));
 		finalText = sb.ToString();
-		return (!multiline || offset == textLength || (maxLines > 0 && lineCount <= maxLines));
+		return (offset == textLength) || (lineCount <= Mathf.Min(maxLines, maxLineCount));
 	}
 
 	/// <summary>
@@ -1176,7 +1176,7 @@ public class UIFont : MonoBehaviour
 	{
 		BMSymbol symbol = GetSymbol(sequence, true);
 		symbol.spriteName = spriteName;
-		MarkAsDirty();
+		MarkAsChanged();
 	}
 
 	/// <summary>
@@ -1187,7 +1187,7 @@ public class UIFont : MonoBehaviour
 	{
 		BMSymbol symbol = GetSymbol(sequence, false);
 		if (symbol != null) symbols.Remove(symbol);
-		MarkAsDirty();
+		MarkAsChanged();
 	}
 
 	/// <summary>
@@ -1198,7 +1198,7 @@ public class UIFont : MonoBehaviour
 	{
 		BMSymbol symbol = GetSymbol(before, false);
 		if (symbol != null) symbol.sequence = after;
-		MarkAsDirty();
+		MarkAsChanged();
 	}
 
 	/// <summary>
