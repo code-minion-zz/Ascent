@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Hud manager.
+/// </summary>
 public class HudManager : MonoBehaviour {
 	
 	public	GameObject 	hudCamera;
 	private	Game		gameScript;
 	private	int			numPlayers;
-	public	StatBar		PlayerHP1;
-	public	StatBar		PlayerHP2;
-	public	StatBar		PlayerHP3;
+	public	PlayerHUD	Player1;
+	public	PlayerHUD	Player2;
+	public	PlayerHUD	Player3;
 	
 	void Awake()
 	{
@@ -18,8 +21,7 @@ public class HudManager : MonoBehaviour {
 			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
 			return;
 		}
-		gameScript = gameLoop.GetComponent<Game>();	
-		
+		gameScript = gameLoop.GetComponent<Game>();		
 		
 	}
 	
@@ -30,10 +32,16 @@ public class HudManager : MonoBehaviour {
 
 		if (numPlayers > 0)
 		{		
-			PlayerHP1.Init(StatBar.eStat.HP, gameScript.Players[0].Hero.GetComponent<Character>().CharacterStats);
+			Player1.Init(gameScript.Players[0].Hero.GetComponent<Character>());
+
 			if (numPlayers > 1)
 			{
+				Player2.Init(gameScript.Players[1].Hero.GetComponent<Character>());
 
+				if (numPlayers > 2)
+				{				
+					Player3.Init(gameScript.Players[2].Hero.GetComponent<Character>());
+				}
 			}
 		}
 	}
