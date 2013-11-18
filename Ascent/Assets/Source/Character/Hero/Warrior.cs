@@ -76,5 +76,15 @@ public class Warrior : Hero
 	{
 		base.Update();
 	}
-	
+
+    void OnControllerColliderHit(ControllerColliderHit collision)
+    {
+
+        if (collision.transform.tag == "Door")
+        {
+            Debug.Log("Open Door");
+            Door door = collision.transform.GetComponent<Door>();
+            door.IsOpen = true;
+        }
+    }
 }

@@ -388,9 +388,9 @@ static public class NGUITools
 		UIWidget[] widgets = go.GetComponentsInChildren<UIWidget>();
 		if (widgets.Length == 0) return 0;
 
-		int depth = widgets[0].raycastDepth;
+		int depth = int.MaxValue;
 		
-		for (int i = 1, imax = widgets.Length; i < imax; ++i)
+		for (int i = 0, imax = widgets.Length; i < imax; ++i)
 		{
 			if (widgets[i].enabled)
 				depth = Mathf.Min(depth, widgets[i].raycastDepth);
@@ -445,7 +445,13 @@ static public class NGUITools
 
 			if (panel != null)
 			{
-				panel.depth = panel.depth + adjustment;
+				UIPanel[] panels = go.GetComponentsInChildren<UIPanel>(true);
+				
+				for (int i = 0; i < panels.Length; ++i)
+				{
+					UIPanel p = panels[i];
+					p.depth = p.depth + adjustment;
+				}
 				return 1;
 			}
 			else
@@ -637,6 +643,28 @@ static public class NGUITools
 		if (comp == null)
 		{
 			Transform t = go.transform.parent;
+
+			while (t != null && comp == null)
+			{
+				comp = t.gameObject.GetComponent<T>();
+				t = t.parent;
+			}
+		}
+		return (T)comp;
+	}
+
+	/// <summary>
+	/// Finds the specified component on the game object or one of its parents.
+	/// </summary>
+
+	static public T FindInParents<T> (Transform trans) where T : Component
+	{
+		if (trans == null) return null;
+		object comp = trans.GetComponent<T>();
+
+		if (comp == null)
+		{
+			Transform t = trans.transform.parent;
 
 			while (t != null && comp == null)
 			{
