@@ -20,6 +20,7 @@ public class Charge : Action
 	private float distanceMax = 10f;
 	
 	private Animator ownerAnimator;
+    private HeroAnimator heroController;
 	
 	private bool endCharge = false;
 	
@@ -27,6 +28,8 @@ public class Charge : Action
     {
         base.Initialise(owner);
 		ownerAnimator = owner.Animator.Animator;
+        heroController = owner.Animator as HeroAnimator;
+
 		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
 		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
     }
@@ -55,7 +58,10 @@ public class Charge : Action
 		}
 		else
 		{			
-	        owner.transform.position += moveVec;
+	        //owner.transform.position += moveVec;
+
+            heroController.Controller.Move(moveVec);
+
 	        distanceTraveled += moveVec.magnitude;
 			
 			if (timeElapsed > halfWayPoint)
@@ -71,7 +77,8 @@ public class Charge : Action
 	}
 
     public override void EndAbility()
-	{	owner.ChargeBall.gameObject.SetActive(false);
+	{	
+        owner.ChargeBall.gameObject.SetActive(false);
 		ownerAnimator.speed = prevAnimatorSpeed;
 		ownerAnimator.SetBool("SwingAttack",false);
 	}

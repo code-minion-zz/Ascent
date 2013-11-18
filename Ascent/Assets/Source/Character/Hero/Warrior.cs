@@ -5,7 +5,7 @@ public class Warrior : Hero
 {
     //bool chargeCollision = false;	
 	
-    public override void Initialise(AscentInput input, HeroSave saveData)
+    public override void Initialise(InControl.InputDevice input, HeroSave saveData)
     {		
         characterStatistics = null;
 
@@ -48,8 +48,7 @@ public class Warrior : Hero
         // Add the animator and controller
         characterAnimator = gameObject.AddComponent<HeroAnimator>();
         heroController = gameObject.AddComponent<HeroController>();
-		heroController.Initialise(this);
-        heroController.EnableInput(input);
+        heroController.Initialise(this, input);
 		
 		// Add charge collider
 		GameObject collisionBall = Resources.Load("Prefabs/CollisionBall") as GameObject;
@@ -77,5 +76,15 @@ public class Warrior : Hero
 	{
 		base.Update();
 	}
-	
+
+    void OnControllerColliderHit(ControllerColliderHit collision)
+    {
+
+        if (collision.transform.tag == "Door")
+        {
+            Debug.Log("Open Door");
+            Door door = collision.transform.GetComponent<Door>();
+            door.IsOpen = true;
+        }
+    }
 }

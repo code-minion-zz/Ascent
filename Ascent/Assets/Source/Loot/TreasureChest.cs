@@ -117,7 +117,10 @@ public class TreasureChest : MonoBehaviour
                 {
                     canUse = true;
                     Hero hero = enter.GetComponent<Hero>();
-                    hero.HeroController.Input.OnY += OnY;
+                    if (hero.HeroController.InputDevice.Action4.WasPressed)
+                    {
+                        openChest = true;
+                    }
                 }
                 break;
         }        
@@ -133,6 +136,12 @@ public class TreasureChest : MonoBehaviour
                 {
                     canUse = true;
                     //Hero hero = stay.GetComponent<Hero>();
+
+                    Hero hero = stay.GetComponent<Hero>();
+                    if (hero.HeroController.InputDevice.Action4.WasPressed)
+                    {
+                        openChest = true;
+                    }
                 }
                 break;
         }
@@ -147,8 +156,8 @@ public class TreasureChest : MonoBehaviour
             case "Hero":
                 {
                     canUse = false;
-                    Hero hero = exit.GetComponent<Hero>();
-                    hero.HeroController.Input.OnY -= OnY;
+                    //Hero hero = exit.GetComponent<Hero>();
+                    //hero.HeroController.Input.OnY -= OnY;
                 }
                 break;
         }

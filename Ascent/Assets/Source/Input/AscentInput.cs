@@ -70,78 +70,78 @@ public class AscentInput
 	public void Update()
 	{
         // TODO: Handle device detachment
-		if (device == null)
-		{
-			Debug.Log("Put something in here to handle the disconnection");
-			return;
+        if (device == null)
+        {
+            Debug.Log("Put something in here to handle the disconnection");
+            return;
         }
 
         #region DPad
         // DPad down
-		if (device.DPadUp.WasPressed && OnDPadUp != null)
-		{
-			OnDPadUp.Invoke(ref device);
-		}
-		else if (device.DPadDown.WasPressed && OnDPadDown != null)
-		{
+        if (device.DPadUp.WasPressed && OnDPadUp != null)
+        {
+            OnDPadUp.Invoke(ref device);
+        }
+        else if (device.DPadDown.WasPressed && OnDPadDown != null)
+        {
             OnDPadDown.Invoke(ref device);
-		}
-		if (device.DPadLeft.WasPressed && OnDPadLeft != null)
-		{
+        }
+        if (device.DPadLeft.WasPressed && OnDPadLeft != null)
+        {
             OnDPadLeft.Invoke(ref device);
-		}
-		else if (device.DPadRight.WasPressed && OnDPadRight != null)
-		{
+        }
+        else if (device.DPadRight.WasPressed && OnDPadRight != null)
+        {
             OnDPadRight.Invoke(ref device);
-		}
+        }
 
-		// DPad up
-		if (device.DPadUp.WasReleased && OnDPadUp_up != null)
-		{
+        // DPad up
+        if (device.DPadUp.WasReleased && OnDPadUp_up != null)
+        {
             OnDPadUp_up.Invoke(ref device);
-		}
-		else if (device.DPadDown.WasReleased && OnDPadDown_up != null)
-		{
+        }
+        else if (device.DPadDown.WasReleased && OnDPadDown_up != null)
+        {
             OnDPadDown_up.Invoke(ref device);
-		}
-		if (device.DPadLeft.WasReleased && OnDPadLeft_up != null)
-		{
+        }
+        if (device.DPadLeft.WasReleased && OnDPadLeft_up != null)
+        {
             OnDPadLeft_up.Invoke(ref device);
-		}
-		else if (device.DPadRight.WasReleased && OnDPadRight_up != null)
-		{
+        }
+        else if (device.DPadRight.WasReleased && OnDPadRight_up != null)
+        {
             OnDPadRight_up.Invoke(ref device);
-		}
+        }
 
         #endregion
 
         #region L-Stick
 
         // L-Stick
-		if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull) && OnLStickMove != null)
-		{
+        if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull) && OnLStickMove != null)
+        {
             OnLStickMove.Invoke(ref device);
-		}
+        }
 
-		// L-Stick button
-		if (device.LeftStickButton.WasPressed && OnLStick != null)
-		{
-			OnLStick.Invoke(ref device);
-		}
-		else if (device.LeftStickButton.WasReleased && OnLStick_up != null)
-		{
-			OnLStick_up.Invoke(ref device);
-		}
+        // L-Stick button
+        if (device.LeftStickButton.WasPressed && OnLStick != null)
+        {
+            OnLStick.Invoke(ref device);
+        }
+        else if (device.LeftStickButton.WasReleased && OnLStick_up != null)
+        {
+            OnLStick_up.Invoke(ref device);
+        }
 
         #endregion
 
         #region R-Stick
 
         // R-Stick
-		if ((device.RightStickY.IsNotNull || device.RightStickY.IsNotNull) && OnRStickMove != null)
-		{
-			OnRStick.Invoke(ref device);
-		}
+        if ((device.RightStickY.IsNotNull || device.RightStickY.IsNotNull) && OnRStickMove != null)
+        {
+            OnRStick.Invoke(ref device);
+        }
 
         // R-Stick button
         if (device.RightStickButton.WasPressed && OnRStick != null)
@@ -159,18 +159,18 @@ public class AscentInput
 
         // Face Buttons
         // A
-        if(device.Action1.WasPressed && OnA != null) 
+        if (device.Action1.WasPressed && OnA != null)
         {
-                    
+
             OnA.Invoke(ref device);
         }
-        else  if (device.Action1.WasReleased && OnA_up != null)
+        else if (device.Action1.WasReleased && OnA_up != null)
         {
             OnA_up.Invoke(ref device);
         }
 
         // B
-        if (device.Action2.WasPressed && OnB != null) 
+        if (device.Action2.WasPressed && OnB != null)
         {
             OnB.Invoke(ref device);
         }
