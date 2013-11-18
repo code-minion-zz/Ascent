@@ -39,6 +39,7 @@ public class StatBar : MonoBehaviour {
 //			tick = 0;
 //			ownerStat.CurrentHealth --;
 //		}
+        AdjustBar();
 	}
 	
 	public void Init(eStat stat, CharacterStatistics charStat)
@@ -94,7 +95,7 @@ public class StatBar : MonoBehaviour {
 	
 	void AdjustBar()
 	{
-		barBack.width = (int)(defaultWidth / (maxVal/curVal));
+		barFront.width = (int)(defaultWidth / (maxVal/curVal));
 	}	
 	
 	

@@ -220,8 +220,6 @@ public abstract class Character : MonoBehaviour
 			{
 				Debug.Log ("Killed by: " + type);
 			}
-
-
         }
         else
         {

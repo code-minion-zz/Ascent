@@ -220,6 +220,8 @@ public class CharacterStatistics
 
     public void ResetHealth()
     {
-        curHealth = maxHealth;
+        // We use the properties because this notifies events tied to the health to also update,
+        // in cases such as GUI.
+        CurrentHealth = MaxHealth;
     }
 }
