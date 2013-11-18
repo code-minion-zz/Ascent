@@ -5,16 +5,12 @@ using System.Collections.Generic;
 public abstract class Hero : Character 
 {
     protected HeroController heroController;
-
 	protected HeroEquipment equipment;
-
 
     public HeroController HeroController
     {
         get { return heroController; }
     }
-
-    #region Initialization
 
 	public abstract void Initialise(AscentInput input, HeroSave saveData);
 
@@ -27,6 +23,22 @@ public abstract class Hero : Character
         }
     }
 
+    public override void Respawn(Vector3 position)
+    {
+        base.Respawn(position);
+
+        // Reset the health
+        characterStatistics.ResetHealth();
+    }
+
+    /// <summary>
+    /// Specific on death event functionality for heroes
+    /// </summary>
+    public override void OnDeath()
+    {
+        base.OnDeath();
+    }
+
     /// <summary>
     /// Tells the hero to open the specified chest
     /// </summary>
@@ -35,6 +47,4 @@ public abstract class Hero : Character
     {
 
     }
-
-    #endregion
 }
