@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(CharacterController))]
 public class HeroAnimator : AnimatorController  
 {
     #region Enums
@@ -46,8 +46,9 @@ public class HeroAnimator : AnimatorController
     static int whirlWindAttack = Animator.StringToHash("CombatLayer." + "HelixSpell");
 
     private Vector3 direction;
-    private CapsuleCollider col;
+    private CharacterController controller;
     private bool useCurves = true;
+    private Vector3 gravityVelocity = Vector3.zero;
 
     #endregion
 
@@ -57,6 +58,11 @@ public class HeroAnimator : AnimatorController
     {
         get { return movementSpeed; }
         set { movementSpeed = value; }
+    }
+
+    public CharacterController Controller
+    {
+        get { return controller; }
     }
 
     #endregion
@@ -72,7 +78,7 @@ public class HeroAnimator : AnimatorController
         base.Start();
 
         // Select the collider component that we will use.
-        col = GetComponent<CapsuleCollider>();
+        controller = GetComponent<CharacterController>();
 	}
 
 	void OnAnimationEvent()
@@ -96,6 +102,8 @@ public class HeroAnimator : AnimatorController
 	public override void Update () 
     {
         base.Update();
+
+        gravityVelocity += Physics.gravity * Time.deltaTime;
 
         //bool attacking = animator.GetBool("SwingAttack");
         //bool jumping = animator.GetBool("Jump");
@@ -168,7 +176,7 @@ public class HeroAnimator : AnimatorController
                     if (useCurves)
                     {
                         // ..set the collider height to a float curve in the clip called ColliderHeight
-                        col.height = animator.GetFloat("ColliderHeight");
+                        controller.height = animator.GetFloat("ColliderHeight");
                     }
 
                     // reset the Jump bool so we can jump again, and so that the state does not loop 
@@ -195,6 +203,19 @@ public class HeroAnimator : AnimatorController
 	}
 
     #region animations
+
+    void OnAnimatorMove()
+    {
+        Vector3 deltaPos = animator.deltaPosition;
+        deltaPos += gravityVelocity * Time.deltaTime;
+
+        if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
+        {
+            gravityVelocity = Vector3.zero;
+        }
+
+        transform.Rotate(animator.deltaRotation.eulerAngles);
+    }
 
     public void AnimMove(Vector3 direction, float speed)
     {

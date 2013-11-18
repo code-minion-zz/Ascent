@@ -438,7 +438,7 @@ GameObject:
   - 65: {fileID: 6500014}
   m_Layer: 8
   m_Name: HingeDoor
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -604,7 +604,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400070}
   - 33: {fileID: 3300018}
-  - 65: {fileID: 6500018}
   - 23: {fileID: 2300018}
   m_Layer: 8
   m_Name: Body
@@ -1218,7 +1217,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: d2dc3f7f75ae07b43974996520368996, type: 2}
+  - {fileID: 2100000, guid: 87cfde8a55077fb40b273d9f5dae5fa0, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1524,18 +1523,6 @@ BoxCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &6500018
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100070}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1

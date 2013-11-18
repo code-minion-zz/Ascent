@@ -2,7 +2,7 @@
 using System.Collections;
 using InControl;
 
-[RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(CharacterController))]
 public class HeroController : MonoBehaviour, IAscentController
 {
     HeroAnimator heroAnimator;
