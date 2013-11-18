@@ -16,7 +16,7 @@ public abstract class Hero : Character
 
     #region Initialization
 
-	public abstract void Initialise(AscentInput input, HeroSave saveData);
+    public abstract void Initialise(InControl.InputDevice input, HeroSave saveData);
 
     public void SetColor(Color color)
     {
