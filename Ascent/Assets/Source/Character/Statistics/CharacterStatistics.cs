@@ -216,5 +216,10 @@ public class CharacterStatistics
 	{
 		get { return dodgeChance; }
 		set { dodgeChance = value; }
-	}	
+	}
+
+    public void ResetHealth()
+    {
+        curHealth = maxHealth;
+    }
 }

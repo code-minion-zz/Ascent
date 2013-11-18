@@ -95,9 +95,12 @@ public class Weapon : MonoBehaviour
             case "Hero":
                 {
                     Character otherCharacter = other.GetComponent<Character>();
-                    otherCharacter.ApplyDamage(damage, damageType);
-                    
-                    Debug.Log(this.name + " collides with " + otherCharacter);
+					if (owner != otherCharacter)
+					{
+						otherCharacter.ApplyDamage(damage, damageType);
+		                    
+		                Debug.Log(this.name + " collides with " + otherCharacter);
+					}
                 }
                 break;
             case "Monster":

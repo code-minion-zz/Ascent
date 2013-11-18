@@ -5,17 +5,22 @@ using System.Collections.Generic;
 public class Floor : MonoBehaviour 
 {
     private List<Player> players;
+    private GameObject[] startPoints;
+    private GameObject CameraPrefab;
 
     // Camera offset
     private const float cameraOffset = 15.0f;
     public bool orthographicCamera = false;
 
-    // The camera prefab
-    private GameObject CameraPrefab;
 
     public Camera MainCamera
     {
         get { return CameraPrefab.camera; }
+    }
+
+    public GameObject[] StartPoints
+    {
+        get { return startPoints; }
     }
 
     // Use this for initialization
@@ -23,6 +28,7 @@ public class Floor : MonoBehaviour
     {
        
     }
+
     void Start()
     {
         //Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
@@ -39,7 +45,7 @@ public class Floor : MonoBehaviour
             go = Resources.Load("Prefabs/GameCamera") as GameObject;
         }
         
-        GameObject[] startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+        startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
         players = Game.Singleton.Players;
 
@@ -53,8 +59,6 @@ public class Floor : MonoBehaviour
         }
 
         CameraPrefab = Instantiate(go) as GameObject;
-
-        
     }
 
     #region Update
@@ -64,6 +68,7 @@ public class Floor : MonoBehaviour
     {
         // Update Camera
         UpdateCamPos();
+        HandleDeadHeroes();
     }
 
     void UpdateCamPos()
@@ -92,6 +97,19 @@ public class Floor : MonoBehaviour
         CameraPrefab.transform.position = lerpVector;
 
         //GameObject.Find("CameraBlur").transform.position = lerpVector;
+    }
+
+    void HandleDeadHeroes()
+    {
+        foreach (Player player in players)
+        {
+            Hero hero = player.Hero.GetComponent<Hero>();
+
+            if (hero.IsDead)
+            {
+                hero.Respawn(startPoints[0].transform.position);
+            }
+        }
     }
 
     #endregion

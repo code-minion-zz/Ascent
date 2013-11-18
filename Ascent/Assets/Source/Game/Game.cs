@@ -9,13 +9,11 @@ public class Game : MonoBehaviour
 	public static Game Singleton;
 	// Number of players
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-
     public bool visualDebuggerPrefab = true;
 
-	// List of player objects
 	private List<Player> players;
-	// The input handler which players will use.
 	private InputHandler inputHandler;
+    private Floor floor;
 	
 	#endregion	
 	
@@ -34,6 +32,11 @@ public class Game : MonoBehaviour
     public List<Player> Players
     {
         get { return players; }
+    }
+
+    public Floor Floor
+    {
+        get { return floor; }
     }
 	
 	#endregion
@@ -60,6 +63,8 @@ public class Game : MonoBehaviour
         {
             Instantiate(Resources.Load("Prefabs/VisualDebugger"));
         }
+
+        floor = GetComponent<Floor>();
     }
 	
 	// Use this for initialization
@@ -103,7 +108,6 @@ public class Game : MonoBehaviour
             
 
             newPlayer.CreateHero(playerCharacterType[i]);
-			
         }
     }
 	

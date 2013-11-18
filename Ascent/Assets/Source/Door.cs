@@ -92,8 +92,6 @@ public class Door : MonoBehaviour
 	
 	void OnCollisionEnter(Collision collision)
 	{
-
-        Debug.Log(collision.transform.tag);
 		if (collision.transform.tag == "Hero")
 		{
 			if (IsOpen == false)

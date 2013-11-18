@@ -159,7 +159,7 @@ public abstract class Character : MonoBehaviour
         characterStatistics.CurrentHealth -= unmitigatedDamage;
 
         // If the character is dead
-		if (characterStatistics.CurrentHealth <= 0)
+		if (characterStatistics.CurrentHealth <= 0 && !isDead)
         {
             // On Death settings
             // Update states to kill character
@@ -184,6 +184,16 @@ public abstract class Character : MonoBehaviour
         stunDuration = duration;
     }
 
+    /// <summary>
+    /// When the character needs to respawn into the game.
+    /// </summary>
+    /// <param name="position">The position to spawn the character.</param>
+    public virtual void Respawn(Vector3 position)
+    {
+        isDead = false;
+        transform.position = position;
+    }
+
     public virtual void OnDeath()
     {
         // We may internally tell this character that they are dead.
@@ -206,10 +216,16 @@ public abstract class Character : MonoBehaviour
                 Weapon weapon = obj as Weapon;
                 Debug.Log("Killed by: " + weapon.Owner);
             }
+			else
+			{
+				Debug.Log ("Killed by: " + type);
+			}
+
+
         }
         else
         {
-            Debug.Log("Character somehow died by somethign and we do not know what caused it.");
+            //Debug.Log("Character somehow died by somethign and we do not know what caused it.");
         }
     }
 	
