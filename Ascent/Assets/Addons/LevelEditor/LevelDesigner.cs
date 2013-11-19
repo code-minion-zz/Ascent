@@ -141,11 +141,11 @@ public class LevelDesigner : EditorWindow
 				
 				// Make sure our objects scale to increment.
                 // We will clamp to infinity as we do not know how big the maximum scale of an object will be.
-				Vector3 newScale = transform.localScale;
-				newScale.x = Mathf.Clamp(Mathf.Round(newScale.x / gridx) * gridx, gridx, Mathf.Infinity);
-                newScale.y = Mathf.Clamp(Mathf.Round(newScale.y / gridy) * gridy, gridy, Mathf.Infinity);
-                newScale.z = Mathf.Clamp(Mathf.Round(newScale.z / gridz) * gridz, gridz, Mathf.Infinity);
-				transform.localScale = newScale;			
+                //Vector3 newScale = transform.localScale;
+                //newScale.x = Mathf.Clamp(Mathf.Round(newScale.x / gridx) * gridx, gridx, Mathf.Infinity);
+                //newScale.y = Mathf.Clamp(Mathf.Round(newScale.y / gridy) * gridy, gridy, Mathf.Infinity);
+                //newScale.z = Mathf.Clamp(Mathf.Round(newScale.z / gridz) * gridz, gridz, Mathf.Infinity);
+                //transform.localScale = newScale;			
         	}
 		}	
 	}	
