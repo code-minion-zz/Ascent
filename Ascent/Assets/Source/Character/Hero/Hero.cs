@@ -47,4 +47,19 @@ public abstract class Hero : Character
     {
 
     }
+
+    void OnControllerColliderHit(ControllerColliderHit collision)
+    {
+        if (collision.transform.tag == "Door")
+        {
+            Debug.Log("Open Door");
+            Door door = collision.transform.GetComponent<Door>();
+            door.IsOpen = true;
+        }
+        else if (collision.transform.tag == "Loot")
+        {
+            CoinSack coins = collision.transform.GetComponent<CoinSack>();
+            coins.transform.gameObject.SetActive(false);
+        }
+    }
 }

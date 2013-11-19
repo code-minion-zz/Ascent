@@ -7,6 +7,7 @@ public class Floor : MonoBehaviour
     private List<Player> players;
     private GameObject[] startPoints;
     private GameObject CameraPrefab;
+    private Plane[] cameraFrustPlanes;
 
     // Camera offset
     private const float cameraOffset = 15.0f;
@@ -65,6 +66,8 @@ public class Floor : MonoBehaviour
         }
 
         CameraPrefab = Instantiate(go) as GameObject;
+
+        //CalculateCameraFrustum();
     }
 
 	public void AddEnemy(Enemy _enemy)
@@ -108,6 +111,22 @@ public class Floor : MonoBehaviour
         CameraPrefab.transform.position = lerpVector;
 
         //GameObject.Find("CameraBlur").transform.position = lerpVector;
+    }
+
+    private void CalculateCameraFrustum()
+    {
+        Camera cam = CameraPrefab.GetComponent<Camera>();
+        cameraFrustPlanes = GeometryUtility.CalculateFrustumPlanes(cam);
+
+        int count = 0;
+        foreach (Plane plane in cameraFrustPlanes)
+        {
+            GameObject p = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            p.name = "Plane " + count.ToString();
+            p.transform.position = -plane.normal * plane.distance;
+            p.transform.rotation = Quaternion.FromToRotation(Vector3.up, plane.normal);
+            count++;
+        }
     }
 
     void HandleDeadHeroes()

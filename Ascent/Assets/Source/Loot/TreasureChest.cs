@@ -123,20 +123,20 @@ public class TreasureChest : MonoBehaviour
         }        
     }
 
-    void OnTriggerStay(Collider stay)
-    {
-        string tag = stay.tag;
+    //void OnTriggerStay(Collider stay)
+    //{
+    //    string tag = stay.tag;
 
-        switch (tag)
-        {
-            case "Hero":
-                {
-                    canUse = true;
-                    //Hero hero = stay.GetComponent<Hero>();
-                }
-                break;
-        }
-    }
+    //    switch (tag)
+    //    {
+    //        case "Hero":
+    //            {
+    //                canUse = true;
+    //                //Hero hero = stay.GetComponent<Hero>();
+    //            }
+    //            break;
+    //    }
+    //}
 
     void OnTriggerExit(Collider exit)
     {
