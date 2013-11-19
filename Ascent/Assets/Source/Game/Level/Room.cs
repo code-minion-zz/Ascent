@@ -13,6 +13,7 @@ public class Room : MonoBehaviour
 
     private List<Enemy> enemies = new List<Enemy>();
     private List<TreasureChest> chests = new List<TreasureChest>();
+    public List<Door> doors = new List<Door>();
 
     #endregion
 
@@ -22,6 +23,18 @@ public class Room : MonoBehaviour
     {
         get { return enemies.ToArray(); }
     }
+
+    public TreasureChest[] Chests
+    {
+        get { return chests.ToArray(); }
+    }
+
+    public Door[] Doors
+    {
+        get { return doors.ToArray(); }
+    }
+
+    #endregion
 
     /// <summary>
     /// Populates the class with data obtained from the room.
@@ -59,7 +72,5 @@ public class Room : MonoBehaviour
         Debug.Log("ChestRoom(EnemyCount: " + enemies.Count + " " +
                   "ChestsCount: " + chests.Count);
     }
-
-    #endregion
 
 }

@@ -8,8 +8,8 @@ public class Whirlwind : Action
 {
 	//Character owner;
 	private const float animationTime = 2.333f;
-	private const float animationSpeed = 2.0f;
-	private float timeElapsed;
+    private const float eventAtTime = 1.0f;
+	//private const float animationSpeed = 2.0f;
 
 	public override void Initialise(Character owner)
 	{
@@ -18,25 +18,37 @@ public class Whirlwind : Action
 
 	public override void StartAbility()
 	{
-		timeElapsed = 0.0f;
 		owner.Animator.PlayAnimation("Whirlwind");
 		owner.Weapon.EnableCollision = true;
-		owner.Weapon.SetAttackProperties(20,Character.EDamageType.Physical);
+		owner.Weapon.SetAttackProperties(20, Character.EDamageType.Physical);
+
+        // Start the coroutines for handling the animation times.
+        owner.StartCoroutine(UpdateWhirlwindAbility());
+        owner.StartCoroutine(EndWhirlwindAbility());
 	}
 
-	public override void UpdateAbility()
+    public override void UpdateAbility()
+    {
+
+    }
+
+    public IEnumerator UpdateWhirlwindAbility()
 	{
-		timeElapsed += Time.deltaTime;
-
-		if (timeElapsed >= animationTime / animationSpeed)
-		{
-			owner.StopAbility();
-		}
+        // At 1 second into the animation we can do some other things.
+        yield return new WaitForSeconds(eventAtTime);
 	}
 
-	public override void EndAbility()
-	{
-		owner.Weapon.EnableCollision = false;
-		//owner.Animator.StopAnimation("Whirlwind");
-	}
+    public IEnumerator EndWhirlwindAbility()
+    {
+        // Wait for the end of the animation time.
+        yield return new WaitForSeconds(animationTime);
+
+        owner.StopAbility();
+    }
+
+    public override void EndAbility()
+    {
+        owner.Weapon.EnableCollision = false;
+        owner.Animator.StopAnimation("Whirlwind");
+    }
 }

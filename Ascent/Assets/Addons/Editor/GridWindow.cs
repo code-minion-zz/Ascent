@@ -107,8 +107,8 @@ namespace Ascent
             if (parentRoom != null)
             {
                 // Create the prefab at this location with the name of the parent.
-                UnityEngine.Object prefab = PrefabUtility.CreatePrefab("Assets/Editor/Prefabs/" + parentRoom.name + ".prefab", parentRoom, ReplacePrefabOptions.ConnectToPrefab);
-                Debug.Log("Createing prefab at path (Assets/Editor/Prefabs/" + parentRoom.name + ".prefab)");
+                UnityEngine.Object prefab = PrefabUtility.CreatePrefab("Assets/Addons/Editor/Prefabs/" + parentRoom.name + ".prefab", parentRoom, ReplacePrefabOptions.ConnectToPrefab);
+                Debug.Log("Createing prefab at path (Assets/Addons/Editor/Prefabs/" + parentRoom.name + ".prefab)");
 
                 // Destroy the parent room so that there is no room.
                 DestroyImmediate(parentRoom);

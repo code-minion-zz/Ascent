@@ -41,9 +41,9 @@ public class HeroAnimator : AnimatorController
     // Combat layer states
     // Taking a hit, swinging the sword and general combat mode.
     //static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
-    static int attackState = Animator.StringToHash("CombatLayer." + "SwingSword");
-    static int takingHit = Animator.StringToHash("CombatLayer." + "TakingHit");
-    static int whirlWindAttack = Animator.StringToHash("CombatLayer." + "HelixSpell");
+    static int attackState = Animator.StringToHash("Movement." + "SwingSword");
+    static int takingHit = Animator.StringToHash("Movement." + "TakingHit");
+    static int whirlWindAttack = Animator.StringToHash("Movement." + "HelixSpell");
 
     private Vector3 direction;
     private CharacterController controller;
@@ -123,7 +123,7 @@ public class HeroAnimator : AnimatorController
                     transform.LookAt(transform.position + direction);
                 }
             }
-            
+
             if (IsActiveState(layer, whirlWindAttack))
             {
                 if (!animator.IsInTransition(layer))
