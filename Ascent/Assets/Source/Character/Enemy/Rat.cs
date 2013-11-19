@@ -151,8 +151,11 @@ public class Rat : Enemy
 
 		// Populate with stats
         characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 100;
-        characterStatistics.CurrentHealth = 100;
+        characterStatistics.MaxHealth = 80;
+        characterStatistics.CurrentHealth = 80;
+        characterStatistics.Attack = 5;
+        characterStatistics.CurrencyBounty = 1;
+        characterStatistics.ExperienceBounty = 50;
 
         // Add abilities
         Action tackle = new EnemyTackle();

@@ -53,6 +53,8 @@ public class Game : MonoBehaviour
     // The game should add all components here so that they are ready for use when other objects require them.
     void Awake()
     {
+        Application.targetFrameRate = 60;
+
         DontDestroyOnLoad(gameObject);
         // Add monoehaviour components
         inputHandler = gameObject.AddComponent("InputHandler") as InputHandler;

@@ -61,6 +61,8 @@ public static class HeroBaseStats
 					stats.Finesse = HeroBaseStats.Warrior.finesse;
 					stats.Vitality = HeroBaseStats.Warrior.vitality;
 					stats.Spirit = HeroBaseStats.Warrior.spirit;
+                    stats.CurrentExperience = 0;
+                    stats.MaxExperience = 1000;
 				}
 				break;
 			case Character.EHeroClass.Rogue:
@@ -71,6 +73,8 @@ public static class HeroBaseStats
 					stats.Finesse = HeroBaseStats.Rogue.finesse;
 					stats.Vitality = HeroBaseStats.Rogue.vitality;
 					stats.Spirit = HeroBaseStats.Rogue.spirit;
+                    stats.CurrentExperience = 0;
+                    stats.MaxExperience = 1000;
 				}
 				break;
 			case Character.EHeroClass.Mage:
@@ -81,6 +85,8 @@ public static class HeroBaseStats
 					stats.Finesse = HeroBaseStats.Mage.finesse;
 					stats.Vitality = HeroBaseStats.Mage.vitality;
 					stats.Spirit = HeroBaseStats.Mage.spirit;
+                    stats.CurrentExperience = 0;
+                    stats.MaxExperience = 1000;
 				}
 				break;
 			default:
