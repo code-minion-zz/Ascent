@@ -28,11 +28,22 @@ public abstract class Enemy : Character
 
     protected RAIN.Core.AIRig ai;
 
+	protected StatBar hpBar;
+	public StatBar HPBar
+	{
+		get { return hpBar; }
+		set { hpBar = value; }
+	}
+
     #endregion
 
     #region Initialization
 
-	public abstract void Initialise();
+	public virtual void Initialise()
+	{
+		hpBar = HudManager.AddEnemyLifeBar();
+		hpBar.Init(StatBar.eStat.HP, characterStatistics);
+	}
 
     public override void Awake()
     {
@@ -52,6 +63,26 @@ public abstract class Enemy : Character
 	public override void Update () 
     {
         base.Update();
+
+		if (hpBar != null)
+		{
+			if (characterStatistics.CurrentHealth != characterStatistics.MaxHealth)
+			{
+				hpBar.enabled = true;
+			}
+			else
+			{
+				hpBar.enabled = false;
+			}
+			Vector3 screenPos = Game.Singleton.camera.WorldToViewportPoint(transform.position);
+
+			// TODO : Check if Rat is within main camera Frustum. If so, set the HP Bar's position
+			// in the HUD camera so that it overlays the rat.
+			//HudManager.Singleton.
+		}
+
+		// if rat is frozen, tint hp bar blue and apply frozen texture
+
         //switch(state)
         //{
         //    case STATE.IDLE:

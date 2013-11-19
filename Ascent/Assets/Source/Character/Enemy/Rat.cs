@@ -133,6 +133,7 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
+		base.Initialise();
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{

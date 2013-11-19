@@ -1,18 +1,26 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Hud manager.
 /// </summary>
 public class HudManager : MonoBehaviour {
 	
+	public static HudManager Singleton;
 	public	GameObject 	hudCamera;
 	private	Game		gameScript;
 	private	int			numPlayers;
 	public	PlayerHUD	Player1;
 	public	PlayerHUD	Player2;
 	public	PlayerHUD	Player3;
+	static	List<StatBar> enemyBars;
 	
+	public void OnEnable()
+	{
+		if (Singleton == null)
+			Singleton = this;
+	}
+
 	void Awake()
 	{
 		GameObject gameLoop = GameObject.Find("Game");
@@ -23,6 +31,7 @@ public class HudManager : MonoBehaviour {
 		}
 		gameScript = gameLoop.GetComponent<Game>();		
 		
+		enemyBars = new List<StatBar>();
 	}
 	
 	// Use this for initialization
@@ -40,7 +49,7 @@ public class HudManager : MonoBehaviour {
 				Player2.Init(gameScript.Players[1].Hero.GetComponent<Character>());
 
 				if (numPlayers > 2)
-				{				
+				{
 					Player3.Init(gameScript.Players[2].Hero.GetComponent<Character>());
 					Player3.gameObject.SetActive(true);
 				}
@@ -51,6 +60,12 @@ public class HudManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
+	}
+
+	public static StatBar AddEnemyLifeBar()
+	{
+		StatBar statBar = new StatBar();
+		enemyBars.Add(statBar);
+		return statBar;
 	}
 }
