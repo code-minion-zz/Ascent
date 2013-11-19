@@ -1,81 +1,55 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Hud manager.
+/// </summary>
 public class HudManager : MonoBehaviour {
 	
-	GameObject 	hudCamera;
-	Game		gameScript;
-	int			numPlayers;
-	//public StatBar		PlayerHP1;
-
-    public StatBar[] playerStatBars;
+	public	GameObject 	hudCamera;
+	private	Game		gameScript;
+	private	int			numPlayers;
+	public	PlayerHUD	Player1;
+	public	PlayerHUD	Player2;
+	public	PlayerHUD	Player3;
 	
 	void Awake()
 	{
-        //GameObject gameLoop = GameObject.Find("Game");
-        //if (gameLoop == null)
-        //{
-        //    Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
-        //    return;
-        //}
-        //gameScript = gameLoop.GetComponent<Game>();
-
-        //foreach (StatBar statBar in playerStatBars)
-        //{
-        //    statBar.gameObject.SetActive(false);
-        //}
+		GameObject gameLoop = GameObject.Find("Game");
+		if (gameLoop == null)
+		{
+			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
+			return;
+		}
+		gameScript = gameLoop.GetComponent<Game>();		
+		
 	}
 	
 	// Use this for initialization
 	void Start () 
 	{
-        //int numPlayers = gameScript.NumberOfPlayers;
-        gameScript = Game.Singleton;
+		int numPlayers = gameScript.NumberOfPlayers;
 
-        foreach (StatBar statBar in playerStatBars)
-        {
-            statBar.gameObject.SetActive(false);
-        }
+		if (numPlayers > 0)
+		{		
+			Player1.Init(gameScript.Players[0].Hero.GetComponent<Character>());
 
-        //switch (numPlayers)
-        //{
-        //    case 1 :
-        //    {
-        //        playerStatBars[0].Init(StatBar.eStat.HP, gameScript.Players[0].Hero.GetComponent<Character>().CharacterStats);
-        //    }
-        //    break;
-        //    case 2 :
-        //    {
-        //        playerStatBars[1].Init(StatBar.eStat.HP, gameScript.Players[1].Hero.GetComponent<Character>().CharacterStats);
-        //    }
-        //    break;
-        //    case 3 :
-        //    {
-				
-        //    }
-        //    break;
-        //    default :
-        //        Debug.LogError("HudManager : Unexpected number of players", this);
-        //    break;
-        //}
-        //PlayerHP1.Init(StatBar.eStat.HP, gameScript.Players[0].Hero.GetComponent<Character>().CharacterStats);
+			if (numPlayers > 1)
+			{
+				Player2.gameObject.SetActive(true);
+				Player2.Init(gameScript.Players[1].Hero.GetComponent<Character>());
 
-        numPlayers = gameScript.NumberOfPlayers;
-
-        for (int i = 0; i < numPlayers; ++i)
-        {
-            Character stats = gameScript.Players[i].Hero.GetComponent<Character>();
-
-            if (stats != null)
-            {
-                playerStatBars[i].gameObject.SetActive(true);
-                playerStatBars[i].Init(StatBar.eStat.HP, stats.CharacterStats);
-            }
-        }
+				if (numPlayers > 2)
+				{				
+					Player3.Init(gameScript.Players[2].Hero.GetComponent<Character>());
+					Player3.gameObject.SetActive(true);
+				}
+			}
+		}
 	}
-
-    // Update is called once per frame
-    void Update() 
+	
+	// Update is called once per frame
+	void Update () 
 	{
 	
 	}

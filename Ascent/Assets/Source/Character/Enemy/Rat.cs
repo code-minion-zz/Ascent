@@ -49,8 +49,13 @@ public class Rat : Enemy
     Transform childTarget;
     Vector3 targetPos;
 
+	public override void Awake()
+	{
+	}
+
     public override void Start()
 	{
+		Game.Singleton.Floor.AddEnemy(this);
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 

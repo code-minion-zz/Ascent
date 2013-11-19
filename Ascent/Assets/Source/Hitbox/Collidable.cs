@@ -7,16 +7,11 @@ public class Collidable : MonoBehaviour
 
 	#region Fields		
 
-
     uint        collisions = 0;
     //Character   owner;
     string      ownerTeam;
-//    bool        ignoreWall = false;    // ignore walls
-//    bool        ignoreGrounded = false;// ignore objects on the ground
-//    bool        ignoreFlying = false;  // ignore objects that are too high
-//    bool        ignoreFriend = true; // ignore friendly units
 
-    // remember these
+    // set once to remember what values these have
     static bool hasInit;
     static int WallLayer;
     static int CharacterLayer;
@@ -37,6 +32,11 @@ public class Collidable : MonoBehaviour
 
 	#region Properties
 
+	/// <summary>
+	/// Gets how many collisions this object has had since creation.
+	/// Useful if you want to stop an attack after a certain number of collisions,
+	/// or use the number of collisions for other calculations
+	/// </summary>
 	public uint CollisionCount
 	{
 		get { return collisions; }
@@ -78,6 +78,10 @@ public class Collidable : MonoBehaviour
         transform.forward = _forward;
     }
     	
+	/// <summary>
+	/// Handles the trigger enter event. The IF statements filter the collision to figure out what it is.
+	/// Once we know what it is, fire the corresponding event if it has subscribers.
+	/// </summary>
     void OnTriggerEnter(Collider other)
     {
         GameObject go = other.gameObject;
@@ -96,8 +100,6 @@ public class Collidable : MonoBehaviour
             }
 			else if (onCollisionEnterEnemy != null)					
 			{
-            // check if we cannot hit this for any reason
-			// report enemy collision
             	onCollisionEnterEnemy(go.GetComponent<Character>());
 	            ++collisions;
 	            return;
@@ -121,6 +123,5 @@ public class Collidable : MonoBehaviour
     {
 
     }
-	
 }
 

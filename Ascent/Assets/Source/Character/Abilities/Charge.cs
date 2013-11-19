@@ -110,7 +110,7 @@ public class Charge : Action
 	{
 		EndCharge();
 		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical);
-		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),distanceTraveled * 10f);
+		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
 	}
 	
 	/// <summary>

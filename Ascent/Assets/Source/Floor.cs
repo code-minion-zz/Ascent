@@ -24,10 +24,16 @@ public class Floor : MonoBehaviour
         get { return startPoints; }
     }
 
+	private List<Enemy> enemies;
+	public List<Enemy> Enemies
+	{
+		get { return enemies; }
+	}
+
     // Use this for initialization
     void Awake()
     {
-       
+		enemies = new List<Enemy>();
     }
 
     void Start()
@@ -63,6 +69,11 @@ public class Floor : MonoBehaviour
 
         //CalculateCameraFrustum();
     }
+
+	public void AddEnemy(Enemy _enemy)
+	{
+		enemies.Add(_enemy);
+	}
 
     #region Update
 
