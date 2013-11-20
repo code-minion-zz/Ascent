@@ -43,11 +43,10 @@ public class FloorSummary : MonoBehaviour
         {
             // Query this player's input
             InControl.InputDevice inputDevice = players[i].Input;
-            Debug.Log("A");
-            if (inputDevice.Action1) // TODO: Also check Start
+            if (inputDevice.Action1.WasPressed) // TODO: Also check Start
             {
                 // On A press go to the next screen
-                Debug.Log("A");
+                Application.LoadLevel(0);
                 return;
             }
 

@@ -15,13 +15,13 @@ public class HudManager : MonoBehaviour {
 	
 	void Awake()
 	{
-		GameObject gameLoop = GameObject.Find("Game");
-		if (gameLoop == null)
-		{
-			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
-			return;
-		}
-		gameScript = gameLoop.GetComponent<Game>();		
+        //GameObject gameLoop = ;
+        //if (gameLoop == null)
+        //{
+        //    Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
+        //    return;
+        //}
+		gameScript = Game.Singleton;		
 		
 	}
 	

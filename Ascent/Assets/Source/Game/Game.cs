@@ -8,9 +8,6 @@ public class Game : MonoBehaviour
 
 	public static Game Singleton;
 	// Number of players
-    public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool visualDebuggerPrefab = true;
-
 	private List<Player> players;
 	private InputHandler inputHandler;
     private Floor floor;
@@ -21,7 +18,7 @@ public class Game : MonoBehaviour
 
     public int NumberOfPlayers
     {
-        get { return playerCharacterType.Length; }
+        get { return players.Count; }
     }
 	
 	public InputHandler InputHandler
@@ -49,24 +46,32 @@ public class Game : MonoBehaviour
 			Singleton = this;
 	}
 
-    // This function is always called immediately when Instantiated and is called before the Start() function
-    // The game should add all components here so that they are ready for use when other objects require them.
-    void Awake()
+    public void Initialise(GameInitialiser.GameInitialisationValues initValues)
     {
-        Application.targetFrameRate = 60;
-
         DontDestroyOnLoad(gameObject);
+
+        Character.EHeroClass[] playerCharacterType = initValues.playerCharacterType;
+        Application.targetFrameRate = initValues.targetFrameRate;
+        
         // Add monoehaviour components
-        inputHandler = gameObject.AddComponent("InputHandler") as InputHandler;
+        inputHandler = gameObject.GetComponent("InputHandler") as InputHandler;
 
-        CreatePlayers();
+        CreatePlayers(playerCharacterType);
 
-        if (visualDebuggerPrefab)
+        if (initValues.useVisualDebugger)
         {
             Instantiate(Resources.Load("Prefabs/VisualDebugger"));
         }
 
         floor = GetComponent<Floor>();
+    }
+
+    // This function is always called immediately when Instantiated and is called before the Start() function
+    // The game should add all components here so that they are ready for use when other objects require them.
+
+    void Awake()
+    {
+
     }
 	
 	// Use this for initialization
@@ -80,7 +85,7 @@ public class Game : MonoBehaviour
 		// Not used atm...
     }
 
-    private void CreatePlayers()
+    private void CreatePlayers(Character.EHeroClass[] playerCharacterType)
     {
         players = new List<Player>();
 

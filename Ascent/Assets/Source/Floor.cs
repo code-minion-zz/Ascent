@@ -156,12 +156,13 @@ public class Floor : MonoBehaviour
     void EndFloor()
     {
         // Disable the whole floor( audio listener from the camera )
-        gameObject.SetActive(false);
+        enabled = false;
         CameraPrefab.SetActive(false);
 
         // Disable input on all heroes
         foreach (Player player in players)
         {
+            player.Hero.GetComponent<Hero>().HeroController.DisableInput();
             player.Hero.SetActive(false);
         } 
 
