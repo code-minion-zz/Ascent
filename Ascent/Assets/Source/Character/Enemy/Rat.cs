@@ -133,7 +133,6 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
-		base.Initialise();
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{
@@ -185,7 +184,8 @@ public class Rat : Enemy
         timeElapsed = Random.Range(0.0f, stateTimes[(int)ERatState.Wandering]);
 
         originalColour = gameObject.renderer.material.color;
-        
+		
+		base.Initialise();
 	}
 
 

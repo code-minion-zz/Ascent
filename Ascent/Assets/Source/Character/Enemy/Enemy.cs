@@ -74,7 +74,7 @@ public abstract class Enemy : Character
 			{
 				hpBar.enabled = false;
 			}
-			Vector3 screenPos = Game.Singleton.camera.WorldToViewportPoint(transform.position);
+			Vector3 screenPos = Game.Singleton.Floor.MainCamera.WorldToViewportPoint(transform.position);
 
 			// TODO : Check if Rat is within main camera Frustum. If so, set the HP Bar's position
 			// in the HUD camera so that it overlays the rat.
