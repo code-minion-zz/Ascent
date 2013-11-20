@@ -64,7 +64,7 @@ public class HudManager : MonoBehaviour {
 	{
 	}
 
-	public StatBar AddEnemyLifeBar()
+	public StatBar AddEnemyLifeBar(Vector3 characterScale)
 	{
 		GameObject go = Resources.Load("Prefabs/EnemyStatBar") as GameObject;
 		go = Instantiate(go) as GameObject;
@@ -73,7 +73,7 @@ public class HudManager : MonoBehaviour {
 
 		go.layer = LayerMask.NameToLayer("Character");
 		statBar.transform.parent = anchor.transform;
-		statBar.transform.localScale = Vector3.one;
+		statBar.transform.localScale = characterScale;
 
 		return statBar;
 	}

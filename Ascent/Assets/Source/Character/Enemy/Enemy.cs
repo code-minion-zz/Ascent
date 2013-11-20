@@ -43,7 +43,7 @@ public abstract class Enemy : Character
 
 	public virtual void Initialise()
 	{
-		hpBar = HudManager.Singleton.AddEnemyLifeBar();
+		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, characterStatistics);
 		hpBar.gameObject.SetActive(false);
 	}

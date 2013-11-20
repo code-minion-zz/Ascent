@@ -181,6 +181,7 @@ public class Boss : Enemy
 
         originalColour = gameObject.renderer.material.color;
 
+		base.Initialise();
     }
 
 
