@@ -61,7 +61,7 @@ public static class HeroBaseStats
 					stats.Finesse = HeroBaseStats.Warrior.finesse;
 					stats.Vitality = HeroBaseStats.Warrior.vitality;
 					stats.Spirit = HeroBaseStats.Warrior.spirit;
-                    stats.CurrentExperience = 0;
+                    stats.CurrentExperience = 300;
                     stats.MaxExperience = 1000;
 				}
 				break;
