@@ -35,14 +35,17 @@ public abstract class Enemy : Character
 		set { hpBar = value; }
 	}
 
+	protected bool updateHpBar = false;
+
     #endregion
 
     #region Initialization
 
 	public virtual void Initialise()
 	{
-		hpBar = HudManager.AddEnemyLifeBar();
+		hpBar = HudManager.Singleton.AddEnemyLifeBar();
 		hpBar.Init(StatBar.eStat.HP, characterStatistics);
+		hpBar.gameObject.SetActive(false);
 	}
 
     public override void Awake()
@@ -64,117 +67,20 @@ public abstract class Enemy : Character
     {
         base.Update();
 
-		if (hpBar != null)
+		if (updateHpBar)
 		{
 			if (characterStatistics.CurrentHealth != characterStatistics.MaxHealth)
 			{
-				hpBar.enabled = true;
+				hpBar.gameObject.SetActive(true);
 			}
-			else
-			{
-				hpBar.enabled = false;
-			}
+
 			Vector3 screenPos = Game.Singleton.Floor.MainCamera.WorldToViewportPoint(transform.position);
+			Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 
-			// TODO : Check if Rat is within main camera Frustum. If so, set the HP Bar's position
-			// in the HUD camera so that it overlays the rat.
-			//HudManager.Singleton.
+			hpBar.transform.position = barPos;
 		}
-
 		// if rat is frozen, tint hp bar blue and apply frozen texture
 
-        //switch(state)
-        //{
-        //    case STATE.IDLE:
-        //        {
-        //            if (Time.frameCount % 10 == 0)
-        //            {
-        //                targetPlayer = GetClosestPlayer();
-
-        //                if (targetPlayer != null)
-        //                {
-        //                    state = STATE.SEEK;
-        //                    waiting = 3.5f;
-        //                }
-        //            }
-        //        }
-        //        break;
-        //    case STATE.SEEK:
-        //        {
-        //            Vector3 direction = targetPlayer.Transform.position - transform.position;
-        //            transform.rotation = Quaternion.LookRotation(direction, new Vector3(0.0f, 1.0f, 0.0f));
-
-        //            Debug.DrawLine(transform.position, targetPlayer.Transform.position);
-
-        //            float distance = direction.sqrMagnitude;
-        //            if (distance > -5.0f && distance < 2.0f)
-        //            {
-        //                state = STATE.ATTACKING;
-        //                break;
-        //            }
-        //            else if (waiting > 0.0f)
-        //            {
-        //                waiting -= Time.deltaTime;
-        //            }
-        //            else
-        //            {
-        //                waiting = 0.35f;
-        //                state = STATE.WAIT;
-        //                break;
-        //            }
-
-        //            MoveTowardPlayer(targetPlayer);
-        //        }
-        //        break;
-        //    case STATE.ATTACKING:
-        //        {
-        //            //AttackTarget(targetPlayer);
-        //            Attack ();
-
-        //            targetPlayer = null;
-        //            state = STATE.WAIT;
-        //            waiting = 0.35f;                    
-        //        }
-        //        break;
-        //    case STATE.WAIT:
-        //        {
-        //            if (waiting > 0.0f)
-        //            {
-        //                waiting -= Time.deltaTime;
-        //            }
-        //            else
-        //            {
-        //                state = STATE.IDLE;
-        //            }
-        //        }
-        //        break;
-        //    case STATE.HIT:
-        //        {
-        //            if (waiting > 0.0f)
-        //            {
-        //                waiting -= Time.deltaTime;
-        //            }
-        //            else
-        //            {
-        //                state = STATE.IDLE;
-        //            }
-        //        }
-        //        break;
-        //    case STATE.DEAD:
-        //        {
-        //            if (waiting > 0.0f)
-        //            {
-        //                waiting -= Time.deltaTime;
-
-        //                transform.localScale = Vector3.Lerp(originalScale, new Vector3(0.0f, 0.0f, 0.0f), 0.1f * Time.deltaTime);
-        //            }
-        //            else
-        //            {
-        //                Object.Destroy(this.gameObject);
-        //            }
-        //        }
-        //        break;
-        //}
 	}
 
     #endregion
@@ -300,6 +206,23 @@ public abstract class Enemy : Character
 	{
 
     }
+	
+	void OnBecameVisible()
+	{
+		//Debug.Log ("Rat became visible", this);
+		if (hpBar != null)
+		{
+			updateHpBar = true;
+		}
+	}
 
+	void OnBecameInvisible()
+	{
+		if (hpBar != null)
+		{
+			hpBar.gameObject.SetActive(false);
+			updateHpBar = false;
+		}
+	}
     #endregion
 }

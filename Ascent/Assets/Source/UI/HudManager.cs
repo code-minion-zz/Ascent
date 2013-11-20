@@ -6,14 +6,16 @@ using System.Collections.Generic;
 /// </summary>
 public class HudManager : MonoBehaviour {
 	
-	public static HudManager Singleton;
-	public	GameObject 	hudCamera;
-	private	Game		gameScript;
-	private	int			numPlayers;
-	public	PlayerHUD	Player1;
-	public	PlayerHUD	Player2;
-	public	PlayerHUD	Player3;
-	static	List<StatBar> enemyBars;
+	public static 	HudManager Singleton;
+	public			Camera		hudCamera;
+	private			Game		gameScript;
+	private			int			numPlayers;
+	public			PlayerHUD	Player1;
+	public			PlayerHUD	Player2;
+	public			PlayerHUD	Player3;
+	protected		List<StatBar> enemyBars;
+
+	public UIAnchor anchor;
 	
 	public void OnEnable()
 	{
@@ -62,12 +64,15 @@ public class HudManager : MonoBehaviour {
 	{
 	}
 
-	public static StatBar AddEnemyLifeBar()
+	public StatBar AddEnemyLifeBar()
 	{
 		GameObject go = Resources.Load("Prefabs/StatBar") as GameObject;
 		go = Instantiate(go) as GameObject;
 		StatBar statBar = go.GetComponent<StatBar>();
 		enemyBars.Add(statBar);
+
+		statBar.transform.parent = anchor.transform;
+
 		return statBar;
 	}
 }
