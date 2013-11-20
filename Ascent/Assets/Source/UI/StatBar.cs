@@ -39,12 +39,15 @@ public class StatBar : MonoBehaviour {
 //			tick = 0;
 //			ownerStat.CurrentHealth --;
 //		}
-        AdjustBar();
+        //AdjustBar();
 	}
 	
 	public void Init(eStat stat, CharacterStatistics charStat)
 	{
 		ownerStat = charStat;
+
+		TrackStat = stat;
+
 		switch (stat)
 		{
 			case eStat.HP:
@@ -80,6 +83,25 @@ public class StatBar : MonoBehaviour {
 		
 		AdjustBar();
 	}
+
+	public void Shutdown()
+	{
+		switch (TrackStat)
+		{
+		case eStat.HP:
+			ownerStat.onMaxHealthChanged -= OnMaxValueChanged;
+			ownerStat.onCurHealthChanged -= OnCurValueChanged;
+			break;
+		case eStat.SP:
+			ownerStat.onMaxSpecialChanged -= OnMaxValueChanged;
+			ownerStat.onCurSpecialChanged -= OnCurValueChanged;
+			break;
+		case eStat.EXP:
+			ownerStat.onExpChanged -= OnCurValueChanged;
+			break;
+		}
+		gameObject.SetActive(false);
+	}
 	
 	void OnCurValueChanged(float value)
 	{
@@ -95,7 +117,16 @@ public class StatBar : MonoBehaviour {
 	
 	void AdjustBar()
 	{
-		barFront.width = (int)(defaultWidth / (maxVal/curVal));
+		int result =(int)(defaultWidth / (maxVal/curVal));
+		barFront.width = result;
+		if (result <= 0)
+		{
+			barFront.gameObject.SetActive(false);
+		}
+		else
+		{
+			barFront.gameObject.SetActive(true);
+		}
 	}	
 	
 	

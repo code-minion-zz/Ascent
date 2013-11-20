@@ -67,20 +67,31 @@ public abstract class Enemy : Character
     {
         base.Update();
 
-		if (updateHpBar)
+		if (!IsDead)
 		{
-			if (characterStatistics.CurrentHealth != characterStatistics.MaxHealth)
+			if (hpBar != null)
 			{
-				hpBar.gameObject.SetActive(true);
+				if (updateHpBar)
+				{
+					if (characterStatistics.CurrentHealth != characterStatistics.MaxHealth)
+					{
+						if (!hpBar.gameObject.activeInHierarchy)
+							hpBar.gameObject.SetActive(true);
+						Vector3 screenPos = Game.Singleton.Floor.MainCamera.WorldToViewportPoint(transform.position);
+						Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
+						barPos = new Vector3(barPos.x,barPos.y);
+						hpBar.transform.position = barPos;
+					}
+					else
+					{
+						if (hpBar.gameObject.activeInHierarchy)
+							hpBar.gameObject.SetActive(false);
+					}
+				}
 			}
-
-			Vector3 screenPos = Game.Singleton.Floor.MainCamera.WorldToViewportPoint(transform.position);
-			Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
-
-			hpBar.transform.position = barPos;
 		}
-		// if rat is frozen, tint hp bar blue and apply frozen texture
 
+		// TODO: if rat is frozen, tint hp bar blue and apply frozen texture
 	}
 
     #endregion
@@ -212,6 +223,7 @@ public abstract class Enemy : Character
 		//Debug.Log ("Rat became visible", this);
 		if (hpBar != null)
 		{
+			//hpBar.gameObject.SetActive(true);
 			updateHpBar = true;
 		}
 	}
@@ -220,9 +232,15 @@ public abstract class Enemy : Character
 	{
 		if (hpBar != null)
 		{
-			hpBar.gameObject.SetActive(false);
 			updateHpBar = false;
 		}
+	}
+
+	public override void OnDeath ()
+	{
+		base.OnDeath ();
+
+		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
     #endregion
 }
