@@ -184,7 +184,8 @@ public class Rat : Enemy
         timeElapsed = Random.Range(0.0f, stateTimes[(int)ERatState.Wandering]);
 
         originalColour = gameObject.renderer.material.color;
-        
+		
+		base.Initialise();
 	}
 
 

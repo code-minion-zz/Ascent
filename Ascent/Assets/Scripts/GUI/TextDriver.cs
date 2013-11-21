@@ -41,4 +41,9 @@ public class TextDriver : MonoBehaviour
     {
         Debug.Log("Destroy me");
     }
+
+    public void DeleteText()
+    {
+        Debug.Log("Text deleted");
+    }
 }

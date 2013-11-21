@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class FloatingText : MonoBehaviour
@@ -56,6 +57,7 @@ public class FloatingText : MonoBehaviour
     void Awake()
     {
         uiLabel = gameObject.GetComponent<UILabel>();
+        tweenPos = gameObject.GetComponent<TweenPosition>();
         guiCamera = NGUITools.FindCameraForLayer(gameObject.layer);
     }
 
@@ -77,6 +79,8 @@ public class FloatingText : MonoBehaviour
     public void SpawnAt(GameObject target)
     {
         Target = target;
+
+        StartCoroutine(RemoveObject());
     }
 
     public void Following()
@@ -87,5 +91,11 @@ public class FloatingText : MonoBehaviour
         pos = guiCamera.ViewportToWorldPoint(pos);
         pos.z = 0.0f;
         transform.position = pos;
+    }
+
+    IEnumerator RemoveObject()
+    {
+        yield return new WaitForSeconds(tweenPos.duration);
+        gameObject.SetActive(false);
     }
 }
