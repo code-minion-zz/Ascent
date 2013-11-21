@@ -23,6 +23,8 @@ public abstract class Character : MonoBehaviour
     protected bool isDead = false;
     protected Color originalColour;
 
+    protected FloatingText floatingText;
+
     protected float stunDuration;
 	
     protected Transform weaponSlot;
@@ -157,6 +159,9 @@ public abstract class Character : MonoBehaviour
         //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
         characterStatistics.CurrentHealth -= unmitigatedDamage;
+
+        // When the player takes a hit, spawn some damage text.
+        HudManager.Singleton.SpawnDamageText(this.gameObject, unmitigatedDamage);
 
         // If the character is dead
 		if (characterStatistics.CurrentHealth <= 0 && !isDead)

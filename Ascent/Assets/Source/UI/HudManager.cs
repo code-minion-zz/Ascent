@@ -5,13 +5,22 @@ using System.Collections;
 /// Hud manager.
 /// </summary>
 public class HudManager : MonoBehaviour {
-	
+
+    public static HudManager Singleton;
 	public	GameObject 	hudCamera;
 	private	Game		gameScript;
 	private	int			numPlayers;
 	public	PlayerHUD	Player1;
 	public	PlayerHUD	Player2;
 	public	PlayerHUD	Player3;
+
+    private GameObject floatingText;
+
+    public void OnEnable()
+    {
+        if (Singleton == null)
+            Singleton = this;
+    }
 	
 	void Awake()
 	{
@@ -21,8 +30,9 @@ public class HudManager : MonoBehaviour {
 			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
 			return;
 		}
-		gameScript = gameLoop.GetComponent<Game>();		
-		
+		gameScript = gameLoop.GetComponent<Game>();
+
+        floatingText = Resources.Load("Prefabs/FloatingText") as GameObject;
 	}
 	
 	// Use this for initialization
@@ -53,4 +63,23 @@ public class HudManager : MonoBehaviour {
 	{
 	
 	}
+
+    public void SpawnDamageText(GameObject target, int damage)
+    {
+        //GameObject go = Instantiate(floatingText) as GameObject;
+        //go = NGUITools.AddChild(go);
+        GameObject go = NGUITools.AddChild(target, floatingText);
+        FloatingText ft = go.GetComponent<FloatingText>();
+
+        if (ft != null)
+        {
+            ft.SpawnAt(target);
+            ft.UILabel.text = "" + damage;
+            ft.UILabel.color = Color.red;
+        }
+        else
+        {
+            Debug.Log("Could not find floating text component");
+        }
+    }
 }
