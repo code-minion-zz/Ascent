@@ -46,12 +46,12 @@ public class GameInitialiser : MonoBehaviour
 
         Game game = go.GetComponent<Game>();
 
-        game.Initialise(new GameInitialisationValues() 
-        { 
+        game.Initialise(new GameInitialisationValues()
+        {
             useVisualDebugger = useVisualDebugger,
             targetFrameRate = this.targetFrameRate,
             playerCharacterType = this.playerCharacterType,
- 
+
         });
 
 

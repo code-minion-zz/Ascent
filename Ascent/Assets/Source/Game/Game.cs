@@ -2,29 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Game : MonoBehaviour 
+public class Game : MonoBehaviour
 {
-	#region Fields
+    #region Fields
 
-	public static Game Singleton;
-	// Number of players
-	private List<Player> players;
-	private InputHandler inputHandler;
+    public static Game Singleton;
+    // Number of players
+    private List<Player> players;
+    private InputHandler inputHandler;
     private Floor floor;
-	
-	#endregion	
-	
-	#region Properties
+
+    #endregion
+
+    #region Properties
 
     public int NumberOfPlayers
     {
         get { return players.Count; }
     }
-	
-	public InputHandler InputHandler
-	{
-		get { return inputHandler; }
-	}
+
+    public InputHandler InputHandler
+    {
+        get { return inputHandler; }
+    }
 
     public List<Player> Players
     {
@@ -35,16 +35,16 @@ public class Game : MonoBehaviour
     {
         get { return floor; }
     }
-	
-	#endregion
-	
-	#region Initialization
 
-	public void OnEnable()
-	{
-		if (Singleton == null)
-			Singleton = this;
-	}
+    #endregion
+
+    #region Initialization
+
+    public void OnEnable()
+    {
+        if (Singleton == null)
+            Singleton = this;
+    }
 
     public void Initialise(GameInitialiser.GameInitialisationValues initValues)
     {
@@ -52,7 +52,7 @@ public class Game : MonoBehaviour
 
         Character.EHeroClass[] playerCharacterType = initValues.playerCharacterType;
         Application.targetFrameRate = initValues.targetFrameRate;
-        
+
         // Add monoehaviour components
         inputHandler = gameObject.GetComponent("InputHandler") as InputHandler;
 
@@ -71,18 +71,29 @@ public class Game : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
 
+        Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[1];
+        playerCharacterType[0] = Character.EHeroClass.Warrior;
+        Application.targetFrameRate = 60;
+
+        // Add monoehaviour components
+        inputHandler = gameObject.GetComponent("InputHandler") as InputHandler;
+
+        CreatePlayers(playerCharacterType);
+
+        floor = GetComponent<Floor>();
     }
-	
-	// Use this for initialization
-	void Start () 
-	{
-		// Not used atm...
-	}
+
+    // Use this for initialization
+    void Start()
+    {
+        // Not used atm...
+    }
 
     void Update()
     {
-		// Not used atm...
+        // Not used atm...
     }
 
     private void CreatePlayers(Character.EHeroClass[] playerCharacterType)
@@ -112,12 +123,12 @@ public class Game : MonoBehaviour
             newPlayer.SetInputDevice(device);
 
             //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
-            
+
 
             newPlayer.CreateHero(playerCharacterType[i]);
         }
     }
-	
-	#endregion
+
+    #endregion
 
 }

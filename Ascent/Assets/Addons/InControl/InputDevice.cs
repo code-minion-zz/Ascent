@@ -204,6 +204,14 @@ namespace InControl
 		public InputControl Action3 { get { return GetControl( InputControlType.Action3 ); } }
 		public InputControl Action4 { get { return GetControl( InputControlType.Action4 ); } }
 
+        public InputControl A { get { return GetControl(InputControlType.Action1); } }
+        public InputControl B { get { return GetControl(InputControlType.Action2); } }
+        public InputControl X { get { return GetControl(InputControlType.Action3); } }
+        public InputControl Y { get { return GetControl(InputControlType.Action4); } }
+
+        public InputControl Start { get { return GetControl(InputControlType.Start); } }
+        public InputControl Back { get { return GetControl(InputControlType.Back); } }
+
 		public InputControl LeftTrigger { get { return GetControl( InputControlType.LeftTrigger ); } }
 		public InputControl RightTrigger { get { return GetControl( InputControlType.RightTrigger ); } }
 

@@ -21,13 +21,14 @@ public class HudManager : MonoBehaviour {
         //    Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
         //    return;
         //}
-		gameScript = Game.Singleton;		
+		//gameScript = Game.Singleton;		
 		
 	}
 	
 	// Use this for initialization
 	void Start () 
 	{
+        gameScript = Game.Singleton;		
 		int numPlayers = gameScript.NumberOfPlayers;
 
 		if (numPlayers > 0)
