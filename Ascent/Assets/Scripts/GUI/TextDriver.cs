@@ -28,22 +28,11 @@ public class TextDriver : MonoBehaviour
             TweenPosition tp = ft.TweenPosition;
             tp.duration = 1.5f;
             tp.from = ft.transform.localPosition;
-            tp.to = tp.from + Vector3.up * 10.0f;
-            tp.callWhenFinished = "DestroyText";
+            tp.to = tp.from + Vector3.up * 100.0f;
         }
         else
         {
             Debug.Log("Floating text component null");
         }
-    }
-
-    public void DestroyText()
-    {
-        Debug.Log("Destroy me");
-    }
-
-    public void DeleteText()
-    {
-        Debug.Log("Text deleted");
     }
 }

@@ -156,7 +156,6 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
-        //Debug.Log(unmitigatedDamage);
         // Obtain the health stat and subtract damage amount to the health.
         characterStatistics.CurrentHealth -= unmitigatedDamage;
 

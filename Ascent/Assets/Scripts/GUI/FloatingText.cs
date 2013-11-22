@@ -67,7 +67,7 @@ public class FloatingText : MonoBehaviour
 
     public void LateUpdate()
     {
-        Following();
+        //Following();
     }
 
     public void DestroyText()
@@ -86,7 +86,7 @@ public class FloatingText : MonoBehaviour
     public void Following()
     {
         // Spawn the text at the top of the collider
-        Collider col = target.GetComponent<Collider>();
+        Collider col = target.GetComponentInChildren<Collider>();
         Vector3 pos = worldCamera.WorldToViewportPoint(target.transform.position + new Vector3(0.0f, col.bounds.extents.y, 0.0f));
         pos = guiCamera.ViewportToWorldPoint(pos);
         pos.z = 0.0f;

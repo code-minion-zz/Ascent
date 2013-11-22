@@ -106,7 +106,16 @@ public class Weapon : MonoBehaviour
                 break;
             case "Monster":
                 {
-                    CollideWithEnemy(other.GetComponent<Character>() as Enemy);
+                    Transform T = other.transform;
+                    Enemy enemy = T.GetComponent<Character>() as Enemy;
+
+                    while (T.parent != null && enemy == null)
+                    {
+                        T = T.parent;
+                        enemy = T.GetComponent<Character>() as Enemy;
+                    }
+
+                    CollideWithEnemy(enemy, other.collider);
                 }
                 break;
             default:
@@ -130,8 +139,13 @@ public class Weapon : MonoBehaviour
     /// When the weapon collides with an object of type enemy
     /// </summary>
     /// <param name="other">The enemy that the weapon collided with</param>
-    protected void CollideWithEnemy(Enemy other)
+    protected void CollideWithEnemy(Enemy other, Collider col)
     {
+        if (other == null)
+        {
+            Debug.Log("Could not find enemy script attached to object");
+            return;
+        }
         // If there is an object in this list that is the same
         // as this object it means we have a double collision.
         foreach (Object obj in other.LastObjectsDamagedBy)
@@ -147,7 +161,7 @@ public class Weapon : MonoBehaviour
 
         Vector3 direction = Vector3.Normalize(enemyPos - ownerPos);
         //Vector3 splatterStart = other.transform.position;
-        Vector3 splatterStart = other.collider.ClosestPointOnBounds(this.transform.position);
+        Vector3 splatterStart = col.ClosestPointOnBounds(this.transform.position);
 
         // Apply knock back and tell the enemy it was hit by this weapon object.
         // We can succesfully say we hit this character now and we set their last hit by to null.
@@ -155,7 +169,7 @@ public class Weapon : MonoBehaviour
 
         // Apply particle blood splatter and make it a parent of the enemy so that it will move with the enemy.
         // TODO: make a pool of these emitters and dont instantiate them on the frame.
-        GameObject bloodSplatter = Instantiate(bloodSplat, splatterStart, other.collider.transform.rotation) as GameObject;
+        GameObject bloodSplatter = Instantiate(bloodSplat, splatterStart, col.transform.rotation) as GameObject;
         bloodSplatter.transform.parent = other.transform;
 
         // Now we say ok this enemy was hit by this weapon.
