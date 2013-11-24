@@ -55,7 +55,7 @@ public class Rat : Enemy
 
     public override void Start()
 	{
-		Game.Singleton.Floor.AddEnemy(this);
+		Game.Singleton.Tower.CurrentFloor.AddEnemy(this);
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 

@@ -44,6 +44,7 @@ public class Floor : MonoBehaviour
 
 	void Start()
 	{
+
 		//Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
 		// Create the camera
 

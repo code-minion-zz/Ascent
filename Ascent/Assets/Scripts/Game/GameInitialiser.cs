@@ -26,13 +26,25 @@ public class GameInitialiser : MonoBehaviour
     {
         // Check if the game already exists.
 
-        GameObject go = Instantiate(Resources.Load("Prefabs/Game")) as GameObject;
-
         GameObject theGameObject = GameObject.Find("Game");
+		if (theGameObject != null)
+		{
+			Debug.Log("Game already exists no need to initialise a new one.");
+			// Get rid of the game initialiser
+			Destroy(this.gameObject);
+			return;
+		}
 
         if(theGameObject == null)
         {
             theGameObject = GameObject.Find("Game(Clone)");
+			if (theGameObject != null)
+			{
+				Debug.Log("Game already exists no need to initialise a new one.");
+				// Get rid of the game initialiser
+				Destroy(this.gameObject);
+				return;
+			}
 
             if (theGameObject == null)
             {
@@ -40,11 +52,11 @@ public class GameInitialiser : MonoBehaviour
 
                 theGameObject = Instantiate(Resources.Load("Prefabs/Game")) as GameObject;
             }
+
         }
 
         // Set the game with the right values.
-
-        Game game = go.GetComponent<Game>();
+		Game game = theGameObject.GetComponent<Game>();
 
         game.Initialise(new GameInitialisationValues()
         {
@@ -56,7 +68,6 @@ public class GameInitialiser : MonoBehaviour
 
 
         // Get rid of the game initialiser
-
         Destroy(this.gameObject);
 	}
 }

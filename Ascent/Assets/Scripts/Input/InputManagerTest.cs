@@ -71,7 +71,7 @@ public class InputManagerTest : MonoBehaviour
 						++nextEmptyPlayerSlot;
 
 
-						newPlayer.SetInputDevice(device);
+						newPlayer.BindInputDevice(device);
 
 						// Mayb register to events so it can disconnect itself
 					}

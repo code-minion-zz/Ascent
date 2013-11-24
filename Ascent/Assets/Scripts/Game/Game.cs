@@ -6,13 +6,31 @@ public class Game : MonoBehaviour
 {
 	#region Fields
 
-	public static Game Singleton;
+	private static Game singleton;
+	public static Game Singleton
+	{
+		get 
+		{
+			//if(singleton == null)
+			//{
+			//    Debug.Log("no game");	
+			//}
+			return singleton; 
+		}
+		private set { singleton = value; }
+	}
+
 	// Number of players
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
     public bool visualDebuggerPrefab = true;
 
 	private List<Player> players;
-    private Floor floor;
+    private Tower tower;
+
+	public string levelName;
+	private bool loadingLevel = false;
+
+	private bool initialised = false;
 	
 	#endregion	
 	
@@ -28,9 +46,9 @@ public class Game : MonoBehaviour
         get { return players; }
     }
 
-    public Floor Floor
+	public Tower Tower
     {
-        get { return floor; }
+        get { return tower; }
     }
 	
 	#endregion
@@ -45,26 +63,42 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+		playerCharacterType = initValues.playerCharacterType;
 
+		Application.targetFrameRate = initValues.targetFrameRate;
+
+		visualDebuggerPrefab = initValues.useVisualDebugger;
+
+		Initialise();
+	}
+
+	public void Initialise()
+	{
+		OnEnable();
+
+		DontDestroyOnLoad(gameObject);
+		// Add monoehaviour components
+
+		InputManager.Initialise();
+
+		CreatePlayers();
+
+		if (visualDebuggerPrefab)
+		{
+			Instantiate(Resources.Load("Prefabs/VisualDebugger"));
+		}
+
+		tower = GetComponent<Tower>();
 	}
 
     // This function is always called immediately when Instantiated and is called before the Start() function
     // The game should add all components here so that they are ready for use when other objects require them.
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        // Add monoehaviour components
-
-		InputManager.Initialise();
-
-        CreatePlayers();
-
-        if (visualDebuggerPrefab)
-        {
-            Instantiate(Resources.Load("Prefabs/VisualDebugger"));
-        }
-
-        floor = GetComponent<Floor>();
+		if (GameObject.Find("Game Initialiser") == null)
+		{
+			Initialise();
+		}
     }
 	
 	// Use this for initialization
@@ -75,7 +109,6 @@ public class Game : MonoBehaviour
 
     void Update()
     {
-		// Not used atm...
 		InputManager.Update();
     }
 
@@ -103,7 +136,7 @@ public class Game : MonoBehaviour
 				device = InputManager.GetDevice(0);
 			}
 
-			newPlayer.SetInputDevice(device);
+			newPlayer.BindInputDevice(device);
 
 			//newPlayer.SetInputDevice(InputManager.GetDevice(i));
 
@@ -111,6 +144,17 @@ public class Game : MonoBehaviour
 			newPlayer.CreateHero(playerCharacterType[i]);
 		}
     }
+
+	public void SetPlayers(List<Player> players)
+	{
+		this.players = players;
+	}
+
+	public void LoadLevel(string level)
+	{
+		levelName = level;
+		Application.LoadLevel("LoadingScreen");
+	}
 	
 	#endregion
 

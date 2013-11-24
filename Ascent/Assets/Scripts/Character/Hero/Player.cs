@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    public void SetInputDevice(InputDevice device)
+    public void BindInputDevice(InputDevice device)
 	{
 		this.input = device;
 	}
