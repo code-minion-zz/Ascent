@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
     public bool visualDebuggerPrefab = true;
 
 	private List<Player> players;
-	private InputHandler inputHandler;
+	private InputManager inputManager;
     private Floor floor;
 	
 	#endregion	
@@ -55,7 +55,7 @@ public class Game : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         // Add monoehaviour components
-        inputHandler = gameObject.AddComponent("InputHandler") as InputHandler;
+		inputManager = gameObject.AddComponent("InputManager") as InputManager;
 
         CreatePlayers();
 
@@ -82,33 +82,33 @@ public class Game : MonoBehaviour
     {
         players = new List<Player>();
 
-        for (int i = 0; i < NumberOfPlayers; ++i)
-        {
-            GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            Player newPlayer = player.GetComponent<Player>();
-            newPlayer.PlayerID = i;
-            players.Add(newPlayer);
+		//for (int i = 0; i < NumberOfPlayers; ++i)
+		//{
+		//    GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+		//    Player newPlayer = player.GetComponent<Player>();
+		//    newPlayer.PlayerID = i;
+		//    players.Add(newPlayer);
 
-            int iDevice = i;
+		//    int iDevice = i;
 
-            if (inputHandler.NumberOfDevices > 1)
-            {
-                iDevice += 1;
-            }
+		//    if (inputHandler.NumberOfDevices > 1)
+		//    {
+		//        iDevice += 1;
+		//    }
 
-            InControl.InputDevice device = inputHandler.GetDevice(iDevice);
-            if (device == null)
-            {
-                device = inputHandler.GetDevice(0);
-            }
+		//    InControl.InputDevice device = inputHandler.GetDevice(iDevice);
+		//    if (device == null)
+		//    {
+		//        device = inputHandler.GetDevice(0);
+		//    }
 
-            newPlayer.SetInputDevice(device);
+		//    newPlayer.SetInputDevice(device);
 
-            //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
+		//    //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
             
 
-            newPlayer.CreateHero(playerCharacterType[i]);
-        }
+		//    newPlayer.CreateHero(playerCharacterType[i]);
+		//}
     }
 	
 	#endregion
