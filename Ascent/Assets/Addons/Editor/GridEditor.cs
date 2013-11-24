@@ -27,6 +27,8 @@ namespace Ascent
             Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
             Vector3 mousePos = r.origin;
 
+            // TODO: Make this instantiated prefab connect to the right category based on 
+            // its layer.
             if (e.isKey && e.character == 'a')
             {
                 if (window.objectToCreate)
@@ -42,8 +44,10 @@ namespace Ascent
                     obj.transform.position = aligned;
 
                     // Setup the parent object.
-                    if (window.parentRoom != null)
-                        obj.transform.parent = window.parentRoom.transform;
+                    if (window.currentRoom != null)
+                    {
+                        obj.transform.parent = window.FindParentByLayer(obj.layer);
+                    }
 
                     Undo.RegisterCreatedObjectUndo(obj, "Create " + obj.name);
                 }

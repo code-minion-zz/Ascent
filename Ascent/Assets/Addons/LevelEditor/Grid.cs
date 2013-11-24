@@ -31,7 +31,6 @@ namespace Ascent
 
         void OnDrawGizmos()
         {
-            //Vector3 pos = Camera.current.transform.position;
             gridPosition = transform.position;
 
             if (showGrid)

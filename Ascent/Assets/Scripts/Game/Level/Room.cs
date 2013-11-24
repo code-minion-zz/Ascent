@@ -8,12 +8,10 @@ public class Room : MonoBehaviour
 {
     #region Fields
 
-    private Transform enemyTransform;
-    private Transform chestsTransform;
-
     private List<Enemy> enemies = new List<Enemy>();
     private List<TreasureChest> chests = new List<TreasureChest>();
     public List<Door> doors = new List<Door>();
+    private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
     #endregion
 
@@ -41,36 +39,89 @@ public class Room : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        enemyTransform = transform.FindChild("Enemies");
-        chestsTransform = transform.FindChild("TreasureChests");
-
-        if (enemyTransform != null)
-        {
-            // We are going to find the enemy component script inside all the enemies attached to this
-            // enemy transform.
-            foreach (Enemy enemy in enemyTransform.gameObject.GetComponentsInChildren<Enemy>())
-            {
-                enemies.Add(enemy);
-            }
-        }
-        else
-        {
-            Debug.Log("Enemies not found");
-        }
-
-        if (chestsTransform != null)
-        {
-            foreach (TreasureChest chest in chestsTransform.gameObject.GetComponentsInChildren<TreasureChest>())
-            {
-                chests.Add(chest);
-            }
-        }
+        // Make sure all the nodes are found and references.
+        FindAllNodes();
     }
 
     void Start()
     {
-        Debug.Log("ChestRoom(EnemyCount: " + enemies.Count + " " +
-                  "ChestsCount: " + chests.Count);
+        // Setup the references to the root node of all
+        Transform monsters = GetNodeByLayer("Monster").transform;
+        Transform items = GetNodeByLayer("Items").transform;
+        Transform floorTiles = GetNodeByLayer("Floor").transform;
+        Transform wallObjects = GetNodeByLayer("Wall").transform;
     }
 
+    /// <summary>
+    /// Adds a root node child to the room tree. This will serve as a transform for adding items
+    /// of same layer type to.
+    /// </summary>
+    /// <param name="name">The name of the node</param>
+    /// <param name="layer">The layer objects that the node holds</param>
+    public GameObject AddNewParentCategory(string name, int layer)
+    {
+        GameObject go = new GameObject(name);
+        go.transform.parent = transform;
+        go.layer = layer;
+
+        parentRootNodes.Add(layer, go);
+
+        return go;
+    }
+
+    /// <summary>
+    /// Gets the node associated with the given layer. These nodes are used for organizing 
+    /// objects of same layer into 1 node for the room.
+    /// </summary>
+    /// <param name="layer">The layer of the node we want to retrieve.</param>
+    /// <returns></returns>
+    public GameObject GetNodeByLayer(string layer)
+    {
+        GameObject go = null;
+        int nameLayer = LayerMask.NameToLayer(layer);
+
+        if (parentRootNodes.ContainsKey(nameLayer))
+        {
+            go = parentRootNodes[nameLayer];
+
+            if (go == null)
+            {
+                Debug.Log("The node for layer: " + layer + " does not exist");
+            }
+        }
+        else
+        {
+            Debug.Log("Could not find node with layer " + layer + 
+                " you may want to use AddNewParentCategory to add it");
+        }
+
+        return go;
+    }
+
+    /// <summary>
+    /// Fixes the tree structure by categorizing all objects into layers and nodes.
+    /// TODO: Implement this function.
+    /// </summary>
+    public void FixTreeStructure()
+    {
+
+    }
+
+    /// <summary>
+    /// Helper function to find all the nodes and add them to 
+    /// the dictionairy of node references.
+    /// </summary>
+    private void FindAllNodes()
+    {
+        // We want to get the second level nodes from this room object.
+        foreach (Transform T in transform)
+        {
+            if (!parentRootNodes.ContainsKey(T.gameObject.layer))
+            {
+                // We want to make sure that we have a reference to 
+                // all of the nodes in our room object.
+                parentRootNodes.Add(T.gameObject.layer, T.gameObject);
+            }
+        }
+    }
 }

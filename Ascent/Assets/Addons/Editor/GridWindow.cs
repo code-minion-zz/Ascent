@@ -9,12 +9,12 @@ namespace Ascent
     public class GridWindow : EditorWindow
 	{
         Grid grid; 
-        public UnityEngine.Object objectToCreate;
-        public UnityEngine.Object roomToLoad;
-        public GameObject parentRoom = null;
-        public string prefabName = "Room1";
+        public GameObject objectToCreate;
+        public GameObject roomToLoad;
+        public GameObject currentRoom = null;
+        public string roomName = "Room1";
 
-        Vector2 scrollPosition;
+        private Vector2 scrollPosition;
 
         public void Init()
         {
@@ -28,7 +28,7 @@ namespace Ascent
 
         void Update()
         {
-
+            UpdateActiveObject();
         }
 
         void OnGUI()
@@ -72,24 +72,21 @@ namespace Ascent
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
 
-            prefabName = EditorGUILayout.TextField("Room Name", prefabName);
+            roomName = EditorGUILayout.TextField("Room Name", roomName);
 
-            if (parentRoom != null)
-                parentRoom.name = prefabName;
+            if (currentRoom != null)
+                currentRoom.name = roomName;
 
             if (GUILayout.Button("Create New Room", GUILayout.Width(255)))
             {
-                // Save the room and delete it so we can start again.
-                SaveCurrentRoom();
-                DeleteCurrentRoom();
+                // Don't want to save the room just yet because its creating a prefab
+                // this prefab is being nested.
+                //SaveCurrentRoom();
+                //DeleteCurrentRoom();
                 CreateNewRoom();
             }
-            else if (GUILayout.Button("Add New Room", GUILayout.Width(255)))
-            {
-                SaveCurrentRoom();
-                CreateNewRoom();
-            }
-            else if (GUILayout.Button("Save Room Layout", GUILayout.Width(255)) && parentRoom != null)
+            
+            if (GUILayout.Button("Save Room Layout", GUILayout.Width(255)) && currentRoom != null)
             {
                 // Since we have a room to save lets go ahead and save it.
                 SaveCurrentRoom();
@@ -104,29 +101,40 @@ namespace Ascent
 
         private void SaveCurrentRoom()
         {
-            if (parentRoom != null)
+            if (currentRoom != null)
             {
                 // Create the prefab at this location with the name of the parent.
-                UnityEngine.Object prefab = PrefabUtility.CreatePrefab("Assets/Addons/Editor/Prefabs/" + parentRoom.name + ".prefab", parentRoom, ReplacePrefabOptions.ConnectToPrefab);
-                Debug.Log("Createing prefab at path (Assets/Addons/Editor/Prefabs/" + parentRoom.name + ".prefab)");
+                UnityEngine.Object prefab = PrefabUtility.CreatePrefab("Assets/Addons/Editor/Prefabs/" + currentRoom.name + ".prefab", currentRoom, ReplacePrefabOptions.ConnectToPrefab);
+                Debug.Log("Createing prefab at path (Assets/Addons/Editor/Prefabs/" + currentRoom.name + ".prefab)");
 
                 // Destroy the parent room so that there is no room.
-                DestroyImmediate(parentRoom);
+                DestroyImmediate(currentRoom);
 
                 // Instiate the newly created room and assign it back to the parent.
-                parentRoom = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                currentRoom = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
             }
         }
 
         private void DeleteCurrentRoom()
         {
-            if (parentRoom != null)
-                DestroyImmediate(parentRoom);
+            if (currentRoom != null)
+                DestroyImmediate(currentRoom);
         }
 
+        /// <summary>
+        /// Creates a new room game object and creates child nodes which hold
+        /// other objects to keep them all in a category.
+        /// </summary>
         private void CreateNewRoom()
         {
-            parentRoom = new GameObject(prefabName);
+            currentRoom = new GameObject(roomName);
+            Room room = currentRoom.AddComponent<Room>();
+
+            room.AddNewParentCategory("FloorTiles", LayerMask.NameToLayer("Floor"));
+            room.AddNewParentCategory("Walls", LayerMask.NameToLayer("Wall"));
+            room.AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+            room.AddNewParentCategory("Items", LayerMask.NameToLayer("Items"));
+            room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
         }
 
         private void LoadRoomGUI()
@@ -138,19 +146,54 @@ namespace Ascent
             {
                 if (GUILayout.Button("Insert into grid", GUILayout.Width(255)))
                 {
-                    // Save and delete this room
-                    //if (parentRoom != null)
-                    //{
-                    //    DeleteCurrentRoom();
-                    //}
-
                     // Instantiate the prefab of the loaded room
                     GameObject room = PrefabUtility.InstantiatePrefab(roomToLoad) as GameObject;
+
                     // Now we want to make the parent room which we will edit as the room prefab.
-                    parentRoom = room;
-                    prefabName = room.name;
-                    parentRoom.transform.position = grid.gridPosition;
+                    currentRoom = room;
+                    roomName = room.name;
+                    currentRoom.transform.position = grid.gridPosition;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Finds a specific node of a room based on the layer name.
+        /// </summary>
+        /// <param name="layer">The layer of the node</param>
+        /// <returns></returns>
+        public Transform FindParentByLayer(int layer)
+        {
+            Transform trans = null;
+
+            foreach (Transform node in currentRoom.transform)
+            {
+                if (node.gameObject.layer == layer)
+                {
+                    trans = node;
+                }
+            }
+
+            return trans;
+        }
+
+        /// <summary>
+        /// Makes the current room object the top level parent of a selected object.
+        /// </summary>
+        private void UpdateActiveObject()
+        {
+            GameObject go = Selection.activeGameObject;
+
+            if (go != null && go != currentRoom)
+            {
+                Transform T = go.transform;
+
+                while (T.parent != null)
+                {
+                    T = T.parent;
+                }
+
+                currentRoom = T.gameObject;
             }
         }
 
