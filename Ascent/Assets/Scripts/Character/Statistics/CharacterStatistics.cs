@@ -10,9 +10,9 @@ public class CharacterStatistics
 	protected int maxSpecial;
 	
 	protected int level;
-	protected int curExperience; 		// Also holds monster bounty 
+	protected int curExperience; 		// Also holds enemy bounty 
 	protected int maxExperience;
-	protected int currency; 			// Also holds monster bounty
+    protected int currency; 			// Also holds enemy bounty
 	
 	// primary stats
 	protected int power;				// Increases Attack

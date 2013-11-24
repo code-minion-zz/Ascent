@@ -11,116 +11,126 @@ using InControl;
 public class InputHandler : MonoBehaviour 
 {	
 	#region Fields
-	
-	enum PLAYER_ID
-	{
-		PLAYER_ONE,
-		PLAYER_TWO,
-		PLAYER_THREE
-	};
-
 
 	// Map to hold the player id and device assigned.
-	Dictionary<int, InputDevice> playerDevices = new Dictionary<int, InputDevice>();
+    InputDevice keyBoard;
+	List<InputDevice> gamePads = new List<InputDevice>();
+	List<InputDevice> devices = new List<InputDevice>();
 	
 	#endregion
 
     public int NumberOfDevices
     {
-        get { return playerDevices.Count; }
+        get { return gamePads.Count; }
     }
 
     void Awake()
     {
         // Setup the device manager and the events
         InputManager.Setup();
-        InputManager.OnDeviceAttached += OnAttached;
-        //InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name);
-        InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name);
-        InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
 
+		InputManager.OnDeviceAttached += OnDeviceAttached;
+		InputManager.OnDeviceDetached += OnDeviceDetached;
 
-        SetupPlayerDevices();
-        TestInputMappings();
+        EnumerateInputDevices();
+        //TestInputMappings();
     }
 
-    void OnAttached(InputDevice device)
+	void OnDestroy()
+	{
+		InputManager.OnDeviceAttached -= OnDeviceAttached;
+		InputManager.OnDeviceDetached -= OnDeviceDetached;
+	}
+
+	public void OnDeviceAttached(InputDevice device)
+	{
+		Debug.Log("Attached: " + device.Name + " " + device.Meta);
+
+		gamePads.Add(device);
+		devices.Add(device);
+
+		Debug.Log("Total Devices: " + InputManager.Devices.Count);
+	}
+
+	public void OnDeviceDetached(InputDevice device)
+	{
+		Debug.Log("Detached: " + device.Name + " " + device.Meta);
+
+		gamePads.Remove(device);
+		devices.Remove(device);
+
+		Debug.Log("Total Devices: " + InputManager.Devices.Count);
+	}
+
+    void EnumerateInputDevices()
     {
-        Debug.Log("Attached: " + device.Name);
+        // Get the available devices.
+        int count = InputManager.Devices.Count;
+        Debug.Log("Total Devices: " + count);
+
+        // Grab the keyboard 
+        keyBoard = InputManager.Devices[0];
+		devices.Add(InputManager.Devices[0]);
+        Debug.Log(0 + " " + keyBoard.Name + " " + keyBoard.Meta);
+		
+
+        if (keyBoard == null)
+        {
+            Debug.LogError("No keyboard Attached");
+        }
+
+        // Grab all other devices
+        for (int i = 1; i < count; ++i)
+        {
+            // Add the device to list of gamepads
+
+            InputDevice device = InputManager.Devices[i];
+
+            gamePads.Add(device);
+			devices.Add(device);
+
+            Debug.Log(i + " " + device.Name + " " + device.Meta);
+        }
+    }
+
+    public InputDevice GetKeyboard()
+    {
+        return (keyBoard);
+    }
+
+    public InputDevice GetFirstGamepad()
+    {
+        return (gamePads[0]);
     }
 	
-	// Use this for initialization
-	void Start () 
+	public InputDevice GetGamePadDevice(int playerId)
 	{
+        return (gamePads[playerId]);
+	}
 
-	}
-	
-	public InputDevice GetNextAvailable()
-	{
-		foreach (InputDevice device in InputManager.Devices)
-		{
-			if (!device.InUse)
-			{
-				device.InUse = true;
-				return (device);
-			}
-		}
-		
-		return (null);
-	}
-	
 	public InputDevice GetDevice(int playerId)
 	{
-		foreach(KeyValuePair<int, InputDevice> kvp in playerDevices)
-		{
-			if (playerId == kvp.Key)
-				return (kvp.Value);
-		}
-		
-		// No Device assigned for this player.
-		// We need to create one by getting the next available.
-		InputDevice dev = GetNextAvailable();
-		if (dev != null)
-		{
-			playerDevices.Add (playerId, dev);
-			return (dev);
-		}
-		
-		// No more available devices.
-		return (null);
+		return (devices[playerId]);
 	}
-	
-	void SetupPlayerDevices()
+
+	public List<InputDevice> GetAllInputDevices()
 	{
-		// Get the available devices.
-		int count = InputManager.Devices.Count;
-		Debug.Log ("Total Devices: " + count);
-		
-		int i = 0;
-		foreach (InputDevice device in InputManager.Devices)
-		{
-			// Add the device to the dict of player devices
-			device.InUse = true;
-			playerDevices.Add(i, device);
-			Debug.Log (i + " " + device.Name);
-			i++;			
-		}
+		return (devices);
 	}
 	
 	void FixedUpdate()
 	{
-#if !UNITY_EDITOR
+//#if UNITY_EDITOR
         InputManager.Update();
-#endif
-		//InputManager.Update();
+//#endif
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-#if UNITY_EDITOR
-        InputManager.Update();
-#endif
+//#if !UNITY_EDITOR
+//        InputManager.Update();
+//#endif
         // For each input device binded by the players - send an event
 	}
 

@@ -4,7 +4,7 @@ using System.Collections;
 public interface IAscentController 
 {
     void EnableInput(AscentInput inputDevice);
-    void DisableInput(AscentInput inputDevice);
+    void DisableInput();
 
     void OnX(ref  InControl.InputDevice device);
     void OnY(ref  InControl.InputDevice device);

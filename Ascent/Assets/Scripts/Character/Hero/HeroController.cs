@@ -30,6 +30,7 @@ public class HeroController : MonoBehaviour, IAscentController
     {
         InControl.InputDevice device = input.Device;
 
+        // L Stick
         //if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
         {
             float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
@@ -41,6 +42,23 @@ public class HeroController : MonoBehaviour, IAscentController
 
             heroAnimator.AnimMove(direction, speed);
         }
+
+        // R Stick
+
+        // Face
+        //if (device.Action1.WasPressed)
+        //{
+        //    hero.UseAbility(1); // pass in the ability binded to this key
+        //}
+
+        // Start 
+        
+        // Back
+        
+        // Triggers
+
+        // Bumpers
+
 
     }
 
@@ -56,21 +74,21 @@ public class HeroController : MonoBehaviour, IAscentController
         inputDevice.OnY += OnY;
         inputDevice.OnA += OnA;
         inputDevice.OnB += OnB;
-		inputDevice.OnLeftBumper += OnLBumper;
-		inputDevice.OnRightBumper += OnRBumper;
-		inputDevice.OnRightTrigger += OnRTrigger;
+        inputDevice.OnLeftBumper += OnLBumper;
+        inputDevice.OnRightBumper += OnRBumper;
+        inputDevice.OnRightTrigger += OnRTrigger;
     }
 
-    public void DisableInput(AscentInput inputDevice)
+    public void DisableInput()
     {
-        inputDevice.OnLStickMove -= OnLStickMove;
-        inputDevice.OnX -= OnX;
-        inputDevice.OnY -= OnY;
-        inputDevice.OnA -= OnA;
-        inputDevice.OnB -= OnB;
-		inputDevice.OnLeftBumper -= OnLBumper;
-		inputDevice.OnRightBumper -= OnRBumper;
-		inputDevice.OnRightTrigger -= OnRTrigger;
+        input.OnLStickMove -= OnLStickMove;
+        input.OnX -= OnX;
+        input.OnY -= OnY;
+        input.OnA -= OnA;
+        input.OnB -= OnB;
+        input.OnLeftBumper -= OnLBumper;
+        input.OnRightBumper -= OnRBumper;
+        input.OnRightTrigger -= OnRTrigger;
     }
 
     public void OnX(ref  InControl.InputDevice device)

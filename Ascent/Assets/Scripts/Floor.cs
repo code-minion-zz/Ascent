@@ -30,6 +30,12 @@ public class Floor : MonoBehaviour
 		get { return enemies; }
 	}
 
+    private FloorRecordKeeper recordKeeper;
+    public FloorRecordKeeper Records
+    {
+        get { return recordKeeper; }
+    }
+
     // Use this for initialization
     void Awake()
     {
@@ -83,6 +89,11 @@ public class Floor : MonoBehaviour
         // Update Camera
         UpdateCamPos();
         HandleDeadHeroes();
+
+        if(Input.GetKeyUp(KeyCode.F1))
+        {
+            EndFloor();
+        }
     }
 
     void UpdateCamPos()
@@ -140,6 +151,25 @@ public class Floor : MonoBehaviour
                 hero.Respawn(startPoints[0].transform.position);
             }
         }
+    }
+
+    void EndFloor()
+    {
+        // Disable the whole floor( audio listener from the camera )
+        enabled = false;
+        CameraPrefab.SetActive(false);
+
+        // Disable input on all heroes
+        foreach (Player player in players)
+        {
+            player.Hero.GetComponent<Hero>().HeroController.DisableInput();
+            player.Hero.SetActive(false);
+        } 
+
+        // Show summary screen
+        Instantiate(Resources.Load("Prefabs/FloorSummary"));
+
+        // Enable input on summary screen
     }
 
     #endregion
