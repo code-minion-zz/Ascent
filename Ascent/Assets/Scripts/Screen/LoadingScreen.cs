@@ -30,7 +30,7 @@ public class LoadingScreen : MonoBehaviour
 		Debug.Log(loadingText.text);
 		if(progress >= 1.0f)
 		{
-			Debug.Log("Load complete");
+			Debug.Log("Load complete: " + levelToLoad);
 			Application.LoadLevel(levelToLoad);
 		}
 	}
