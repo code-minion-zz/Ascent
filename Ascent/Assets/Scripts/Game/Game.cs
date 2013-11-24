@@ -38,7 +38,7 @@ public class Game : MonoBehaviour
 
     public int NumberOfPlayers
     {
-        get { return playerCharacterType.Length; }
+		get { return players.Count; }//playerCharacterType.Length; }
     }
 
     public List<Player> Players
