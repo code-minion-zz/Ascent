@@ -18,9 +18,6 @@ public class InputManager : MonoBehaviour
 
 	public static string platform { get; private set; }
 
-	static float initialTime;
-	static float currentTime;
-
 	static string prevJoystickHash = "";
 
 	const int maxJoysticks = 4;

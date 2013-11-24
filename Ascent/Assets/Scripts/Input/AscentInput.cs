@@ -6,13 +6,13 @@ using System.Collections;
 
 public class AscentInput
 {
-	private InControl.InputDevice device;
-	public InControl.InputDevice Device
+	private InputDevice device;
+	public InputDevice Device
 	{
 		get { return device; }
 	}
 
-	public delegate void AscentInputEventHandler(ref InControl.InputDevice device);
+	public delegate void AscentInputEventHandler(ref InputDevice device);
 
 	// D-Pad
 	public event AscentInputEventHandler OnDPadUp;
@@ -62,7 +62,7 @@ public class AscentInput
 	public event AscentInputEventHandler OnRightBumper_up;
 
 
-	public void Initialise(InControl.InputDevice device)
+	public void Initialise(InputDevice device)
 	{
 		this.device = device;
 	}

@@ -24,9 +24,9 @@ public class Game : MonoBehaviour
         get { return playerCharacterType.Length; }
     }
 	
-	public InputHandler InputHandler
+	public InputManager InputManager
 	{
-		get { return inputHandler; }
+		get { return InputManager; }
 	}
 
     public List<Player> Players
@@ -82,33 +82,33 @@ public class Game : MonoBehaviour
     {
         players = new List<Player>();
 
-		//for (int i = 0; i < NumberOfPlayers; ++i)
-		//{
-		//    GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-		//    Player newPlayer = player.GetComponent<Player>();
-		//    newPlayer.PlayerID = i;
-		//    players.Add(newPlayer);
+		for (int i = 0; i < NumberOfPlayers; ++i)
+		{
+			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+			Player newPlayer = player.GetComponent<Player>();
+			newPlayer.PlayerID = i;
+			players.Add(newPlayer);
 
-		//    int iDevice = i;
+			int iDevice = i;
 
-		//    if (inputHandler.NumberOfDevices > 1)
-		//    {
-		//        iDevice += 1;
-		//    }
+			if (InputManager.NumberOfDevices > 1)
+			{
+				iDevice += 1;
+			}
 
-		//    InControl.InputDevice device = inputHandler.GetDevice(iDevice);
-		//    if (device == null)
-		//    {
-		//        device = inputHandler.GetDevice(0);
-		//    }
+			InputDevice device = InputManager.GetDevice(iDevice);
+			if (device == null)
+			{
+				device = InputManager.GetDevice(0);
+			}
 
-		//    newPlayer.SetInputDevice(device);
+			newPlayer.SetInputDevice(device);
 
-		//    //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
-            
+			//newPlayer.SetInputDevice(InputManager.GetDevice(i));
 
-		//    newPlayer.CreateHero(playerCharacterType[i]);
-		//}
+
+			newPlayer.CreateHero(playerCharacterType[i]);
+		}
     }
 	
 	#endregion
