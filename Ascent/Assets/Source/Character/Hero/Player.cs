@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
 	#region Fields
 
-	private int playerId = 0;
+	int playerId = 0;
     private GameObject heroObject;
     private Hero heroScript;
     private InputDevice input;
@@ -40,8 +40,13 @@ public class Player : MonoBehaviour
 	{
 		this.input = device;
 
-		aInput = new AscentInput();
-		aInput.Initialise(device);
+		//aInput = new AscentInput();
+		//aInput.Initialise(device);
+	}
+
+	public void UnbindInputDevice()
+	{
+		this.input = null;
 	}
 
     public void Update()

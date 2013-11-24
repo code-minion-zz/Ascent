@@ -38,21 +38,21 @@ public class FloorSummary : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        // Update for each player
-        for (int i = 0; i < playerCount; ++i )
-        {
-            // Query this player's input
-            InControl.InputDevice inputDevice = players[i].Input;
-            if (inputDevice.Action1.WasPressed) // TODO: Also check Start
-            {
-                // On A press go to the next screen
-                Application.LoadLevel(0);
-                return;
-            }
+		//// Update for each player
+		//for (int i = 0; i < playerCount; ++i )
+		//{
+		//    // Query this player's input
+		//    InControl.InputDevice inputDevice = players[i].Input;
+		//    if (inputDevice.Action1.WasPressed) // TODO: Also check Start
+		//    {
+		//        // On A press go to the next screen
+		//        Application.LoadLevel(0);
+		//        return;
+		//    }
 
 
-            // Update this player's window
-            summaryWindows[i].Process();
-        }
+		//    // Update this player's window
+		//    summaryWindows[i].Process();
+		//}
 	}
 }

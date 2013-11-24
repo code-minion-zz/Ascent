@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CharacterSelect : MonoBehaviour 
 {
@@ -38,27 +39,41 @@ public class CharacterSelect : MonoBehaviour
         for (int i = 0; i < numberPlayers; ++i)
         {
             playerPanels[i] = background.FindChild("Player " + (i + 1) + " Panel");
-
-            if (i > 0)
-            {
-                playerPanels[i].gameObject.SetActive(false);
-            }
+            
+			playerPanels[i].gameObject.SetActive(false);
         }
 	}
 	
 	void Update () 
     {
-        // Check if other player's want to play
-        int deviceCount = Game.Singleton.InputHandler.NumberOfDevices;
+		//// We want to keep grabbing this list incase it changes
+		//List<InControl.InputDevice> devices = Game.Singleton.InputHandler.GetAllInputDevices();
 
-        for (int i = 1; i < deviceCount; ++i) // Start as 1 because player 1 will be on 0
-        {
-            InControl.InputDevice input = Game.Singleton.InputHandler.GetDevice(i);
+		//// Check if other player's want to play
+		//int deviceCount = devices.Count;
 
-            if (input.Start.IsPressed)
-            {
-                playerPanels[i].gameObject.SetActive(true);
-            }
-        }
+		//for (int i = 0; i < deviceCount; ++i) // Start as 1 because player 1 will be on 0
+		//{
+		//    InControl.InputDevice input = devices[i];
+
+		//    if (input.Start.IsPressed)
+		//    {
+		//        Debug.Log("Start / Enter");
+		//        // Bind it to the next player
+		//        playerPanels[i].gameObject.SetActive(true);
+		//    }
+		//}
+	}
+
+	public void OnDeviceAttached(InControl.InputDevice device)
+	{
+		// Request player/s press start/enter on the device
+	}
+
+	public void OnDeviceDetached(InControl.InputDevice device)
+	{
+		// If on floor or in menus - pause game and request player replug in the controller. 
+		// Has a timer that will expire so other players may continue.
+		// Unbind it
 	}
 }

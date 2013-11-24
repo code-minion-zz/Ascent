@@ -81,8 +81,9 @@ namespace InControl
 				var joystickNames = Input.GetJoystickNames();
 				for (int i = 0; i < joystickNames.Length; i++)
 				{
+					
 					DetectAttachedJoystickDevice( i + 1, joystickNames[i] );
-				}
+				}	
 			}
 			catch (Exception e)
 			{
@@ -118,7 +119,8 @@ namespace InControl
 				}
 			}
 
-			var inputDevice = new UnityInputDevice( deviceProfile, unityJoystickId );
+			//var inputDevice = new UnityInputDevice( deviceProfile, unityJoystickId );
+			var inputDevice = new XInputDevice(deviceProfile, unityJoystickId);
 			devices.Add( inputDevice );
 
 			InputManager.AttachDevice( inputDevice );

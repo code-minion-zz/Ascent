@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
 	// Map to hold the player id and device assigned.
     InputDevice keyBoard;
 	List<InputDevice> gamePads = new List<InputDevice>();
+	List<InputDevice> devices = new List<InputDevice>();
 	
 	#endregion
 
@@ -27,13 +28,39 @@ public class InputHandler : MonoBehaviour
     {
         // Setup the device manager and the events
         InputManager.Setup();
-        InputManager.OnDeviceAttached += inputDevice => Debug.Log("Attached: " + inputDevice.Name + " " + inputDevice.Meta);
-        InputManager.OnDeviceDetached += inputDevice => Debug.Log("Detached: " + inputDevice.Name + " " + inputDevice.Meta);
-        //InputManager.OnActiveDeviceChanged += inputDevice => Debug.Log("Active device changed to: " + inputDevice.Name);
+
+		InputManager.OnDeviceAttached += OnDeviceAttached;
+		InputManager.OnDeviceDetached += OnDeviceDetached;
 
         EnumerateInputDevices();
         //TestInputMappings();
     }
+
+	void OnDestroy()
+	{
+		InputManager.OnDeviceAttached -= OnDeviceAttached;
+		InputManager.OnDeviceDetached -= OnDeviceDetached;
+	}
+
+	public void OnDeviceAttached(InputDevice device)
+	{
+		Debug.Log("Attached: " + device.Name + " " + device.Meta);
+
+		gamePads.Add(device);
+		devices.Add(device);
+
+		Debug.Log("Total Devices: " + InputManager.Devices.Count);
+	}
+
+	public void OnDeviceDetached(InputDevice device)
+	{
+		Debug.Log("Detached: " + device.Name + " " + device.Meta);
+
+		gamePads.Remove(device);
+		devices.Remove(device);
+
+		Debug.Log("Total Devices: " + InputManager.Devices.Count);
+	}
 
     void EnumerateInputDevices()
     {
@@ -43,7 +70,9 @@ public class InputHandler : MonoBehaviour
 
         // Grab the keyboard 
         keyBoard = InputManager.Devices[0];
+		devices.Add(InputManager.Devices[0]);
         Debug.Log(0 + " " + keyBoard.Name + " " + keyBoard.Meta);
+		
 
         if (keyBoard == null)
         {
@@ -58,6 +87,7 @@ public class InputHandler : MonoBehaviour
             InputDevice device = InputManager.Devices[i];
 
             gamePads.Add(device);
+			devices.Add(device);
 
             Debug.Log(i + " " + device.Name + " " + device.Meta);
         }
@@ -73,9 +103,19 @@ public class InputHandler : MonoBehaviour
         return (gamePads[0]);
     }
 	
-	public InputDevice GetDevice(int playerId)
+	public InputDevice GetGamePadDevice(int playerId)
 	{
         return (gamePads[playerId]);
+	}
+
+	public InputDevice GetDevice(int playerId)
+	{
+		return (devices[playerId]);
+	}
+
+	public List<InputDevice> GetAllInputDevices()
+	{
+		return (devices);
 	}
 	
 	void FixedUpdate()

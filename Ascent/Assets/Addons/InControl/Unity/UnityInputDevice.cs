@@ -8,7 +8,7 @@ namespace InControl
 {
 	public class UnityInputDevice : InputDevice
 	{
-		public int JoystickId { get; private set; }
+		public int JoystickId { get; protected set; }
 
 
 		public UnityInputDevice( UnityInputDeviceProfile profile, int joystickId = 0 )
@@ -71,7 +71,7 @@ namespace InControl
 
 
 		protected override bool GetButtonState( string source )
-		{		
+		{
 			if (source == "")
 			{
 				return false;
