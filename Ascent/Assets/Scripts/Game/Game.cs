@@ -12,7 +12,6 @@ public class Game : MonoBehaviour
     public bool visualDebuggerPrefab = true;
 
 	private List<Player> players;
-	private InputHandler inputHandler;
     private Floor floor;
 	
 	#endregion	
@@ -23,11 +22,6 @@ public class Game : MonoBehaviour
     {
         get { return playerCharacterType.Length; }
     }
-	
-	public InputHandler InputHandler
-	{
-		get { return inputHandler; }
-	}
 
     public List<Player> Players
     {
@@ -49,13 +43,19 @@ public class Game : MonoBehaviour
 			Singleton = this;
 	}
 
+	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
+	{
+
+	}
+
     // This function is always called immediately when Instantiated and is called before the Start() function
     // The game should add all components here so that they are ready for use when other objects require them.
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
         // Add monoehaviour components
-        inputHandler = gameObject.AddComponent("InputHandler") as InputHandler;
+
+		InputManager.Initialise();
 
         CreatePlayers();
 
@@ -76,39 +76,40 @@ public class Game : MonoBehaviour
     void Update()
     {
 		// Not used atm...
+		InputManager.Update();
     }
 
     private void CreatePlayers()
     {
-        players = new List<Player>();
+		players = new List<Player>();
 
-        for (int i = 0; i < NumberOfPlayers; ++i)
-        {
-            GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-            Player newPlayer = player.GetComponent<Player>();
-            newPlayer.PlayerID = i;
-            players.Add(newPlayer);
+		for (int i = 0; i < NumberOfPlayers; ++i)
+		{
+			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+			Player newPlayer = player.GetComponent<Player>();
+			newPlayer.PlayerID = i;
+			players.Add(newPlayer);
 
-            int iDevice = i;
+			int iDevice = i;
 
-            if (inputHandler.NumberOfDevices > 1)
-            {
-                iDevice += 1;
-            }
+			if (InputManager.Devices.Count > 1)
+			{
+				iDevice += 1;
+			}
 
-            InControl.InputDevice device = inputHandler.GetDevice(iDevice);
-            if (device == null)
-            {
-                device = inputHandler.GetDevice(0);
-            }
+			InputDevice device = InputManager.GetDevice(iDevice);
+			if (device == null)
+			{
+				device = InputManager.GetDevice(0);
+			}
 
-            newPlayer.SetInputDevice(device);
+			newPlayer.SetInputDevice(device);
 
-            //newPlayer.SetInputDevice(inputHandler.GetDevice(i));
-            
+			//newPlayer.SetInputDevice(InputManager.GetDevice(i));
 
-            newPlayer.CreateHero(playerCharacterType[i]);
-        }
+
+			newPlayer.CreateHero(playerCharacterType[i]);
+		}
     }
 	
 	#endregion

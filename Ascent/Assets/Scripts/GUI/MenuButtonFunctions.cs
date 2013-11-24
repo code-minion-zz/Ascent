@@ -2,7 +2,8 @@
 using System.Collections;
 
 [AddComponentMenu("UI/Functionality/Load Level")]
-public class MenuButtonFunctions : MonoBehaviour {
+public class MenuButtonFunctions : MonoBehaviour 
+{
 	
 	public string levelName;
 	public GameObject defaultSelection;
@@ -18,7 +19,10 @@ public class MenuButtonFunctions : MonoBehaviour {
 	
 	public void GoToLevel()
 	{
-		if (enabled) Application.LoadLevel(levelName);
+        if (enabled)
+        {
+            Application.LoadLevel(levelName);
+        }
 	}	
 	
 	void Update()
