@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private Hero heroScript;
     private InputDevice input;
 
+    public UIPlayerPanel activePlayerPanel;
+
 	#endregion
 	
 	#region Properties

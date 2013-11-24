@@ -14,6 +14,8 @@ public class CharacterSelectScreen : MonoBehaviour
 	private List<Transform> charSelectPanel = new List<Transform>(3);
 	private List<Transform> readyLabels = new List<Transform>(4);
 
+    private List<UIPlayerPanel> playerPanel = new List<UIPlayerPanel>(3);
+
 	private int nextEmptyPlayerSlot = 0;
 
 	bool allReady = false;
@@ -30,10 +32,13 @@ public class CharacterSelectScreen : MonoBehaviour
 		xform = xform.FindChild("Background");
 
 		charSelectPanel.Add(xform.FindChild("Player 1 Panel"));
+        //playerPanel.Add(charSelectPanel[0].GetComponent<UIPlayerPanel>());
 		charSelectPanel[0].gameObject.SetActive(false);
 		charSelectPanel.Add(xform.FindChild("Player 2 Panel"));
+        //playerPanel.Add(charSelectPanel[1].GetComponent<UIPlayerPanel>());
 		charSelectPanel[1].gameObject.SetActive(false);
 		charSelectPanel.Add(xform.FindChild("Player 3 Panel"));
+        //playerPanel.Add(charSelectPanel[2].GetComponent<UIPlayerPanel>());
 		charSelectPanel[2].gameObject.SetActive(false);
 
 		readyLabels.Add(xform.FindChild("Ready 1"));
@@ -145,9 +150,14 @@ public class CharacterSelectScreen : MonoBehaviour
 						readyLabels[nextEmptyPlayerSlot].GetComponent<UILabel>().color = Color.red;
 						readyLabels[nextEmptyPlayerSlot].GetComponent<UILabel>().text = "Not Ready";
 
+                        newPlayer.BindInputDevice(device);
+
+                        newPlayer.activePlayerPanel = charSelectPanel[nextEmptyPlayerSlot].FindChild("LoadNew Panel").GetComponent<UIPlayerPanel>();
+                        newPlayer.activePlayerPanel.Initialise(newPlayer);
+
 						++nextEmptyPlayerSlot;
 
-						newPlayer.BindInputDevice(device);
+						
 
 						readyLabels[3].gameObject.SetActive(true);
 						readyLabels[3].GetComponent<UILabel>().color = Color.red;

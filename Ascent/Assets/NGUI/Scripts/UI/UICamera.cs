@@ -288,7 +288,7 @@ public class UICamera : MonoBehaviour
 	static List<Highlighted> mHighlighted = new List<Highlighted>();
 
 	// Selected widget (for input)
-	static GameObject mCurrentSelection = null;
+	static protected GameObject mCurrentSelection = null;
 	static GameObject mNextSelection = null;
 
 	// Mouse events
@@ -298,7 +298,7 @@ public class UICamera : MonoBehaviour
 	static GameObject mHover;
 
 	// Joystick/controller/keyboard event
-	static MouseOrTouch mController = new MouseOrTouch();
+	static protected MouseOrTouch mController = new MouseOrTouch();
 
 	// Used to ensure that joystick-based controls don't trigger that often
 	static float mNextEvent = 0f;
@@ -310,7 +310,7 @@ public class UICamera : MonoBehaviour
 	GameObject mTooltip = null;
 
 	// Mouse input is turned off on iOS
-	Camera mCam = null;
+	protected Camera mCam = null;
 	LayerMask mLayerMask;
 	float mTooltipTime = 0f;
 	bool mIsEditor = false;
@@ -389,7 +389,7 @@ public class UICamera : MonoBehaviour
 	/// button selects the next button, and then it also processes its 'tab' in turn, selecting the next one.
 	/// </summary>
 
-	System.Collections.IEnumerator ChangeSelection (GameObject go)
+    protected System.Collections.IEnumerator ChangeSelection(GameObject go)
 	{
 		yield return new WaitForEndOfFrame();
 		mCurrentSelection = go;
@@ -650,7 +650,7 @@ public class UICamera : MonoBehaviour
 	/// Using the keyboard will result in 1 or -1, depending on whether up or down keys have been pressed.
 	/// </summary>
 
-	static int GetDirection (KeyCode up, KeyCode down)
+	static protected int GetDirection (KeyCode up, KeyCode down)
 	{
 		if (Input.GetKeyDown(up)) return 1;
 		if (Input.GetKeyDown(down)) return -1;
@@ -661,7 +661,7 @@ public class UICamera : MonoBehaviour
 	/// Using the keyboard will result in 1 or -1, depending on whether up or down keys have been pressed.
 	/// </summary>
 
-	static int GetDirection (KeyCode up0, KeyCode up1, KeyCode down0, KeyCode down1)
+    static protected int GetDirection(KeyCode up0, KeyCode up1, KeyCode down0, KeyCode down1)
 	{
 		if (Input.GetKeyDown(up0) || Input.GetKeyDown(up1)) return 1;
 		if (Input.GetKeyDown(down0) || Input.GetKeyDown(down1)) return -1;
@@ -672,7 +672,7 @@ public class UICamera : MonoBehaviour
 	/// Using the joystick to move the UI results in 1 or -1 if the threshold has been passed, mimicking up/down keys.
 	/// </summary>
 
-	static int GetDirection (string axis)
+    static protected int GetDirection(string axis)
 	{
 		float time = Time.realtimeSinceStartup;
 
@@ -1121,7 +1121,7 @@ public class UICamera : MonoBehaviour
 	/// Process keyboard and joystick events.
 	/// </summary>
 
-	public void ProcessOthers ()
+	public virtual void ProcessOthers ()
 	{
 		currentTouchID = -100;
 		currentTouch = mController;
