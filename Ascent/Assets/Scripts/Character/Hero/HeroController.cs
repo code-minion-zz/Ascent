@@ -3,14 +3,14 @@ using System.Collections;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class HeroController : MonoBehaviour, IAscentController
+public class HeroController : MonoBehaviour, IInputEventHandler
 {
     HeroAnimator heroAnimator;
     //Weapon heroWeapon;
     Hero hero;
-    AscentInput input;
+    InputDevice input;
 
-    public AscentInput Input
+    public InputDevice Input
     {
         get { return input; }
     }
@@ -28,190 +28,270 @@ public class HeroController : MonoBehaviour, IAscentController
 
     void Update()
     {
-        InputDevice device = input.Device;
+		if (InputManager.IsPolling)
+		{
+			InputDevice device = input;
 
-        // L Stick
-        //if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
-        {
-            float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-            speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-            speed *= 1000.0f;
+			// L Stick
+			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+			{
+				float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+				speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+				speed *= 1000.0f;
 
-            // Direction vector to hold the input key press.
-            Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+				// Direction vector to hold the input key press.
+				Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
 
-            heroAnimator.AnimMove(direction, speed);
-        }
+				heroAnimator.AnimMove(direction, speed);
+			}
 
-        // R Stick
+			if (device.LeftStickButton.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
 
-        // Face
-        //if (device.Action1.WasPressed)
-        //{
-        //    hero.UseAbility(1); // pass in the ability binded to this key
-        //}
+			// R Stick
 
-        // Start 
-        
-        // Back
-        
-        // Triggers
+			if ((device.RightStickX.IsNotNull || device.RightStickY.IsNotNull))
+			{
+			}
 
-        // Bumpers
+			if (device.RightStickButton.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
 
+			// Face
+			if (device.Action1.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			if (device.Action2.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			if (device.Action3.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			if (device.Action4.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
 
+			// DPad
+			if (device.DPadLeft.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			else if (device.DPadRight.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			if (device.DPadUp.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+			else if (device.DPadDown.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			// Start 
+			if (device.Start.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			// Back
+			if (device.Back.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			// Triggers
+			if (device.LeftTrigger.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			if (device.RightTrigger.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			// Bumpers
+			if (device.LeftBumper.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+
+			if (device.RightBumper.WasPressed)
+			{
+				hero.UseAbility(0); // pass in the ability binded to this key
+			}
+		}
     }
 
 
     #region input
 
 
-    public void EnableInput(AscentInput inputDevice)
+    public void EnableInput(InputDevice inputDevice)
     {
-        input = inputDevice;
-        inputDevice.OnLStickMove += OnLStickMove;
-        inputDevice.OnX += OnX;
-        inputDevice.OnY += OnY;
-        inputDevice.OnA += OnA;
-        inputDevice.OnB += OnB;
-        inputDevice.OnLeftBumper += OnLBumper;
-        inputDevice.OnRightBumper += OnRBumper;
-        inputDevice.OnRightTrigger += OnRTrigger;
+		input = inputDevice;
+
+		if (!InputManager.IsPolling)
+		{
+			inputDevice.OnLStickMove += OnLStickMove;
+			inputDevice.OnX += OnX;
+			inputDevice.OnY += OnY;
+			inputDevice.OnA += OnA;
+			inputDevice.OnB += OnB;
+			inputDevice.OnLeftBumper += OnLBumper;
+			inputDevice.OnRightBumper += OnRBumper;
+			inputDevice.OnRightTrigger += OnRTrigger;
+		}
     }
 
     public void DisableInput()
     {
-        input.OnLStickMove -= OnLStickMove;
-        input.OnX -= OnX;
-        input.OnY -= OnY;
-        input.OnA -= OnA;
-        input.OnB -= OnB;
-        input.OnLeftBumper -= OnLBumper;
-        input.OnRightBumper -= OnRBumper;
-        input.OnRightTrigger -= OnRTrigger;
+		if (!InputManager.IsPolling)
+		{
+			input.OnLStickMove -= OnLStickMove;
+			input.OnX -= OnX;
+			input.OnY -= OnY;
+			input.OnA -= OnA;
+			input.OnB -= OnB;
+			input.OnLeftBumper -= OnLBumper;
+			input.OnRightBumper -= OnRBumper;
+			input.OnRightTrigger -= OnRTrigger;
+		}
+
+		input = null;
     }
 
-    public void OnX(ref  InputDevice device)
+    public void OnX(InputDevice device)
     {
         hero.UseAbility(0); // pass in the ability binded to this key
     }
 
-    public void OnY(ref  InputDevice device)
+    public void OnY(InputDevice device)
     {
 		
     }
 
-    public void OnA(ref  InputDevice device)
+    public void OnA(InputDevice device)
     {
 		hero.UseAbility(1); // pass in the ability binded to this key
     }
 
-    public void OnB(ref  InputDevice device)
+    public void OnB(InputDevice device)
     {
 		
     }
 
-    public void OnX_up(ref  InputDevice device)
+    public void OnX_up(InputDevice device)
     {
 
     }
 
-    public void OnY_up(ref  InputDevice device)
+    public void OnY_up(InputDevice device)
     {
 
     }
 
-    public void OnA_up(ref  InputDevice device)
+    public void OnA_up(InputDevice device)
     {
 
     }
 
-    public void OnB_up(ref  InputDevice device)
+    public void OnB_up(InputDevice device)
     {
 
     }
 
-    public void OnStart(ref  InputDevice device)
+    public void OnStart(InputDevice device)
     {
 
     }
 
-    public void OnStart_up(ref  InputDevice device)
+    public void OnStart_up(InputDevice device)
     {
 
     }
 
-    public void OnBack(ref  InputDevice device)
+    public void OnBack(InputDevice device)
     {
 
     }
 
-    public void OnBack_up(ref  InputDevice device)
+    public void OnBack_up(InputDevice device)
     {
 
     }
 
-    public void OnLTrigger(ref  InputDevice device)
+    public void OnLTrigger(InputDevice device)
     {
 
     }
 
-    public void OnLBumper(ref  InputDevice device)
+    public void OnLBumper(InputDevice device)
     {
 		hero.UseAbility(2); // pass in the ability binded to this key
     }
 
-    public void OnRTrigger(ref  InputDevice device)
+    public void OnRTrigger(InputDevice device)
     {
 		
     }
 
-    public void OnRBumper(ref  InputDevice device)
+    public void OnRBumper(InputDevice device)
     {
 		hero.UseAbility(3);
     }
 
-    public void OnDPadLeft(ref  InputDevice device)
+    public void OnDPadLeft(InputDevice device)
     {
 
     }
 
-    public void OnDPadRight(ref  InputDevice device)
+    public void OnDPadRight(InputDevice device)
     {
 
     }
 
-    public void OnDPadUp(ref  InputDevice device)
+    public void OnDPadUp(InputDevice device)
     {
 
     }
 
-    public void OnDPadDown(ref  InputDevice device)
+    public void OnDPadDown(InputDevice device)
     {
 
     }
 
-    public void OnDPadLeft_up(ref  InputDevice device)
+    public void OnDPadLeft_up(InputDevice device)
     {
 
     }
 
-    public void OnDPadRight_up(ref  InputDevice device)
+    public void OnDPadRight_up(InputDevice device)
     {
 
     }
 
-    public void OnDPadUp_up(ref  InputDevice device)
+    public void OnDPadUp_up(InputDevice device)
     {
 
     }
 
-    public void OnDPadDown_up(ref  InputDevice device)
+    public void OnDPadDown_up(InputDevice device)
     {
 
     }
 
-    public void OnLStickMove(ref  InputDevice device)
+    public void OnLStickMove(InputDevice device)
     {
         float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
         speed *= heroAnimator.MovementSpeed * Time.deltaTime;
@@ -224,27 +304,27 @@ public class HeroController : MonoBehaviour, IAscentController
         heroAnimator.AnimMove(direction, speed);
     }
 
-    public void OnLStick(ref  InputDevice device)
+    public void OnLStick(InputDevice device)
     {
 
     }
 
-    public void OnLStick_up(ref  InputDevice device)
+    public void OnLStick_up(InputDevice device)
     {
 
     }
 
-    public void OnRStickMove(ref  InputDevice device)
+    public void OnRStickMove(InputDevice device)
     {
 
     }
 
-    public void OnRStick(ref  InputDevice device)
+    public void OnRStick(InputDevice device)
     {
 
     }
 
-    public void OnRStick_up(ref  InputDevice device)
+    public void OnRStick_up(InputDevice device)
     {
 
     }

@@ -12,7 +12,6 @@ public class Game : MonoBehaviour
     public bool visualDebuggerPrefab = true;
 
 	private List<Player> players;
-	private InputManager inputManager;
     private Floor floor;
 	
 	#endregion	
@@ -23,11 +22,6 @@ public class Game : MonoBehaviour
     {
         get { return playerCharacterType.Length; }
     }
-	
-	public InputManager InputManager
-	{
-		get { return InputManager; }
-	}
 
     public List<Player> Players
     {
@@ -49,13 +43,19 @@ public class Game : MonoBehaviour
 			Singleton = this;
 	}
 
+	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
+	{
+
+	}
+
     // This function is always called immediately when Instantiated and is called before the Start() function
     // The game should add all components here so that they are ready for use when other objects require them.
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
         // Add monoehaviour components
-		inputManager = gameObject.AddComponent("InputManager") as InputManager;
+
+		InputManager.Initialise();
 
         CreatePlayers();
 
@@ -76,11 +76,12 @@ public class Game : MonoBehaviour
     void Update()
     {
 		// Not used atm...
+		InputManager.Update();
     }
 
     private void CreatePlayers()
     {
-        players = new List<Player>();
+		players = new List<Player>();
 
 		for (int i = 0; i < NumberOfPlayers; ++i)
 		{
@@ -91,7 +92,7 @@ public class Game : MonoBehaviour
 
 			int iDevice = i;
 
-			if (InputManager.NumberOfDevices > 1)
+			if (InputManager.Devices.Count > 1)
 			{
 				iDevice += 1;
 			}

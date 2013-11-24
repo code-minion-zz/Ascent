@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     private GameObject heroObject;
     private Hero heroScript;
     private InputDevice input;
-	public AscentInput aInput;
 
 	#endregion
 	
@@ -39,9 +38,6 @@ public class Player : MonoBehaviour
     public void SetInputDevice(InputDevice device)
 	{
 		this.input = device;
-
-		//aInput = new AscentInput();
-		//aInput.Initialise(device);
 	}
 
 	public void UnbindInputDevice()
@@ -54,10 +50,6 @@ public class Player : MonoBehaviour
         // TODO: Handle lost input device.
         //          Subscribe to detach event and disable input until it is reattached. 
         //          Then rebind the device to the hero controller.
-        if (aInput !=null)
-        {
-            aInput.Update();
-        }
     }
 
     // To create a brand new Hero
@@ -121,7 +113,7 @@ public class Player : MonoBehaviour
         }
 
         // Create the animator and controller for this hero (binds the input with the controller)
-        heroScript.Initialise(aInput, null);
+        heroScript.Initialise(input, null);
         // TODO: Do not make it active until gameplay starts
         heroObject.SetActive(true);
         heroObject.transform.parent = this.transform;

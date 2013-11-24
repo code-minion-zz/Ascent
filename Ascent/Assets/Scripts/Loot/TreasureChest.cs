@@ -154,7 +154,7 @@ public class TreasureChest : MonoBehaviour
         }
     }
 
-    public void OnY(ref InputDevice device)
+    public void OnY(InputDevice device)
     {
         if (canUse)
         {
