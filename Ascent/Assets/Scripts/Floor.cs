@@ -6,6 +6,7 @@ public class Floor : MonoBehaviour
 {
 	private List<Player> players;
 	private GameObject[] startPoints;
+    private GameObject startPoint;
 	private GameObject CameraPrefab;
 	private Plane[] cameraFrustPlanes;
 
@@ -60,17 +61,26 @@ public class Floor : MonoBehaviour
 		}
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+        startPoint = GameObject.FindGameObjectWithTag("StartPoint");
 
 		players = Game.Singleton.Players;
 
-		for (int i = 0; i < players.Count; ++i)
-		{
-			Vector3 pos = startPoints[i].transform.position;
-			//players[i].Hero.transform.position = pos;
-			//players[i].Hero.transform.rotation = Quaternion.identity;
-			players[i].transform.position = pos;
-			players[i].transform.rotation = Quaternion.identity;
-		}
+        //for (int i = 0; i < players.Count; ++i)
+        //{
+        //    Vector3 pos = startPoints[i].transform.position;
+        //    //players[i].Hero.transform.position = pos;
+        //    //players[i].Hero.transform.rotation = Quaternion.identity;
+        //    players[i].transform.position = pos;
+        //    players[i].transform.rotation = Quaternion.identity;
+        //}
+        for (int i = 0; i < players.Count; ++i)
+        {
+            Vector3 pos = startPoint.transform.position;
+            //players[i].Hero.transform.position = pos;
+            //players[i].Hero.transform.rotation = Quaternion.identity;
+            players[i].transform.position = pos;
+            players[i].transform.rotation = Quaternion.identity;
+        }
 
 		CameraPrefab = Instantiate(go) as GameObject;
 

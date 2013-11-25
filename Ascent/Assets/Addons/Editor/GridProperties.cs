@@ -125,13 +125,13 @@ public class GridProperties : EditorWindow
 
 	private void ShowHideGrid()
 	{
-        if (grid.gameObject.activeInHierarchy)
+        if (grid.showGrid == true)
         {
-            grid.gameObject.SetActive(false);
+            grid.showGrid = false;
         }
         else
         {
-            grid.gameObject.SetActive(true);
+            grid.showGrid = true;
         }
 	}
 	
