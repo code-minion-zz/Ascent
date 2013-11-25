@@ -77,7 +77,7 @@ public abstract class Enemy : Character
 					{
 						if (!hpBar.gameObject.activeInHierarchy)
 							hpBar.gameObject.SetActive(true);
-						Vector3 screenPos = Game.Singleton.Floor.MainCamera.WorldToViewportPoint(transform.position);
+						Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
 						Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 						barPos = new Vector3(barPos.x,barPos.y);
 						hpBar.transform.position = barPos;

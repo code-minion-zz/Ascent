@@ -23,34 +23,33 @@ public class HudManager : MonoBehaviour {
 		if (Singleton == null)
 			Singleton = this;
 	}
-	
-	void Awake()
+
+	public void Awake()
 	{
-		GameObject gameLoop = GameObject.Find("Game");
+		GameObject gameLoop = Game.Singleton.gameObject;
 		if (gameLoop == null)
 		{
 			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
 			return;
 		}
-		gameScript = gameLoop.GetComponent<Game>();		
-		
+		gameScript = gameLoop.GetComponent<Game>();
+
 		enemyBars = new List<StatBar>();
 	}
-	
-	// Use this for initialization
-	void Start () 
+
+	public void Start()
 	{
 		int numPlayers = gameScript.NumberOfPlayers;
-		
+
 		if (numPlayers > 0)
-		{		
+		{
 			Player1.Init(gameScript.Players[0].Hero.GetComponent<Character>());
-			
+
 			if (numPlayers > 1)
 			{
 				Player2.gameObject.SetActive(true);
 				Player2.Init(gameScript.Players[1].Hero.GetComponent<Character>());
-				
+
 				if (numPlayers > 2)
 				{
 					Player3.Init(gameScript.Players[2].Hero.GetComponent<Character>());
@@ -59,6 +58,7 @@ public class HudManager : MonoBehaviour {
 			}
 		}
 	}
+	
 	
 	// Update is called once per frame
 	void Update () 

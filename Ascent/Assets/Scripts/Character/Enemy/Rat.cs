@@ -55,7 +55,7 @@ public class Rat : Enemy
 
     public override void Start()
 	{
-		Game.Singleton.Floor.AddEnemy(this);
+		Game.Singleton.Tower.CurrentFloor.AddEnemy(this);
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 
@@ -156,8 +156,11 @@ public class Rat : Enemy
 
 		// Populate with stats
         characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 100;
-        characterStatistics.CurrentHealth = 100;
+        characterStatistics.MaxHealth = 80;
+        characterStatistics.CurrentHealth = 80;
+        characterStatistics.Attack = 5;
+        characterStatistics.CurrencyBounty = 1;
+        characterStatistics.ExperienceBounty = 50;
 
         // Add abilities
         Action tackle = new EnemyTackle();
