@@ -20,6 +20,10 @@ public class UIHeroSelectPanelContainer : MonoBehaviour
 
     public void Start()
     {
+        SimpleJSON.JSONNode node = SimpleJSON.JSON.Parse("yolo");
+        string value = node["someValue"].Value;
+
+
         // Grab reference to children
         loadNew = transform.FindChild("LoadNew Panel");
         loadHero = transform.FindChild("LoadHero Panel");
