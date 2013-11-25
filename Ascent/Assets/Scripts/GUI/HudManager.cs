@@ -43,6 +43,7 @@ public class HudManager : MonoBehaviour {
 
 		if (numPlayers > 0)
 		{
+			Player1.gameObject.SetActive(true);
 			Player1.Init(gameScript.Players[0].Hero.GetComponent<Character>());
 
 			if (numPlayers > 1)
