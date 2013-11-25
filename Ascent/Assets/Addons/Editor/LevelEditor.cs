@@ -42,6 +42,8 @@ namespace Ascent
         void Update()
         {
             UpdateActiveObject();
+
+            this.Repaint();
         }
 
         void GridUpdate(SceneView sceneView)

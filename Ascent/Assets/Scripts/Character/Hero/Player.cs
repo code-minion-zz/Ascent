@@ -47,6 +47,11 @@ public class Player : MonoBehaviour
 		this.input = null;
 	}
 
+    public void Start()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     public void Update()
     {
         // TODO: Handle lost input device.
