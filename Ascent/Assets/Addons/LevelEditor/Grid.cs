@@ -7,14 +7,11 @@ namespace Ascent
     {
         public float width = 1.0f;
         public float length = 1.0f;
-
         public float gridWidth = 10.0f;
         public float gridLength = 10.0f;
 
         public Color color = Color.green;
-
         public Vector3 gridPosition = Vector3.zero;
-
         public bool showGrid = true;
 
         // Use this for initialization

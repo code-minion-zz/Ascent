@@ -8,29 +8,11 @@ public class Room : MonoBehaviour
 {
     #region Fields
 
-    private List<Enemy> enemies = new List<Enemy>();
-    private List<TreasureChest> chests = new List<TreasureChest>();
-    public List<Door> doors = new List<Door>();
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
     #endregion
 
     #region Properties
-
-    public Enemy[] Enemies
-    {
-        get { return enemies.ToArray(); }
-    }
-
-    public TreasureChest[] Chests
-    {
-        get { return chests.ToArray(); }
-    }
-
-    public Door[] Doors
-    {
-        get { return doors.ToArray(); }
-    }
 
     #endregion
 
@@ -46,10 +28,12 @@ public class Room : MonoBehaviour
     void Start()
     {
         // Setup the references to the root node of all
-        Transform monsters = GetNodeByLayer("Monster").transform;
-        Transform items = GetNodeByLayer("Items").transform;
-        Transform floorTiles = GetNodeByLayer("Floor").transform;
-        Transform wallObjects = GetNodeByLayer("Wall").transform;
+        FixTreeStructure();
+
+        //Transform monsters = GetNodeByLayer("Monster").transform;
+        //Transform items = GetNodeByLayer("Items").transform;
+        //Transform floorTiles = GetNodeByLayer("Floor").transform;
+        //Transform wallObjects = GetNodeByLayer("Wall").transform;
     }
 
     /// <summary>
@@ -62,6 +46,7 @@ public class Room : MonoBehaviour
     {
         GameObject go = new GameObject(name);
         go.transform.parent = transform;
+        go.tag = "RoomNode";
         go.layer = layer;
 
         parentRootNodes.Add(layer, go);
@@ -101,10 +86,32 @@ public class Room : MonoBehaviour
     /// <summary>
     /// Fixes the tree structure by categorizing all objects into layers and nodes.
     /// TODO: Implement this function.
+    /// Note: This function could be potentially very slow.
     /// </summary>
     public void FixTreeStructure()
     {
+        foreach (Transform T in transform)
+        {
+            // If the object is not a parent container we need to put it in the right place.
+            if (T.tag != "RoomNode")
+            {
+                // Find out if the objects layer exists in here.
+                if (!parentRootNodes.ContainsKey(T.gameObject.layer))
+                {
+                    // We should create this layer node
+                    // and assign the transform to this 
+                    GameObject go = AddNewParentCategory(LayerMask.LayerToName(T.gameObject.layer), T.gameObject.layer);
+                    T.parent = go.transform;
+                }
+                else
+                {
+                    GameObject go = GetNodeByLayer(LayerMask.LayerToName(T.gameObject.layer));
+                    T.parent = go.transform;
+                }
 
+                return;
+            }
+        }
     }
 
     /// <summary>
