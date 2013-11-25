@@ -92,15 +92,32 @@ public class Collidable : MonoBehaviour
             {
 				if (onCollisionEnterFriend != null)
                 {
+                    Transform T = other.transform;
+                    Character character = T.GetComponent<Character>();
+
+                    while (T.parent != null && character == null)
+                    {
+                        T = T.parent;
+                        character = T.GetComponent<Character>();
+                    }
 					
-                	onCollisionEnterFriend(go.GetComponent<Character>());
+                	onCollisionEnterFriend(character);
                 	++collisions;
 					return;
                 }
             }
 			else if (onCollisionEnterEnemy != null)					
 			{
-            	onCollisionEnterEnemy(go.GetComponent<Character>());
+                Transform T = other.transform;
+                Character character = T.GetComponent<Character>();
+
+                while (T.parent != null && character == null)
+                {
+                    T = T.parent;
+                    character = T.GetComponent<Character>();
+                }
+
+            	onCollisionEnterEnemy(character);
 	            ++collisions;
 	            return;
 			}			

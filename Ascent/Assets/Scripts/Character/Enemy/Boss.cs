@@ -75,7 +75,11 @@ public class Boss : Enemy
             if (this.transform.rigidbody.isKinematic == false)
             {
                 this.transform.rigidbody.isKinematic = true;
-                this.transform.collider.enabled = false;
+
+                foreach (Collider col in this.transform.GetComponentsInChildren<Collider>())
+                {
+                    col.enabled = false;
+                }
             }
 
             // Death sequence end
