@@ -116,7 +116,7 @@ public class Game : MonoBehaviour
     {
 		players = new List<Player>();
 
-		for (int i = 0; i < NumberOfPlayers; ++i)
+		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
 			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
 			Player newPlayer = player.GetComponent<Player>();
