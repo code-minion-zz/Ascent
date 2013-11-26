@@ -227,23 +227,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 80
+  mWidth: 69
   mHeight: 28
   mDepth: 18
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
-  mTrueTypeFont: {fileID: 0}
-  mFont: {fileID: 11400000, guid: 7a48ea22e80d1ac4b97fdd87f9009546, type: 2}
+  mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  mFont: {fileID: 0}
   mText: Town
   mFontSize: 28
   mFontStyle: 0
   mEncoding: 1
   mMaxLineCount: 0
+  mGradientBottom: {r: .5, g: .5, b: .5, a: 1}
   mEffectStyle: 1
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 2
+  mMaterial: {fileID: 0}
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mSpacingX: 0
+  mSpacingY: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0
@@ -305,6 +311,7 @@ GameObject:
   - 114: {fileID: 234949798}
   - 114: {fileID: 234949797}
   - 114: {fileID: 234949800}
+  - 54: {fileID: 234949801}
   m_Layer: 15
   m_Name: UIPlayerPanel
   m_TagString: Untagged
@@ -398,7 +405,7 @@ MonoBehaviour:
     e33: 1
   mAlpha: 1
   mClipping: 0
-  mClipRange: {x: 0, y: 0, z: 759.226685, w: 800}
+  mClipRange: {x: 0, y: 0, z: 835.589966, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 2
 --- !u!114 &234949800
@@ -420,6 +427,21 @@ MonoBehaviour:
   initialSize: {x: 1, y: 1}
   borderPadding: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
+--- !u!54 &234949801
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234949794}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &434043726
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +623,7 @@ GameObject:
   - 20: {fileID: 478001083}
   - 114: {fileID: 478001082}
   - 114: {fileID: 478001081}
+  - 54: {fileID: 478001084}
   m_Layer: 15
   m_Name: Camera
   m_TagString: Untagged
@@ -723,6 +746,21 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
   m_OcclusionCulling: 1
+--- !u!54 &478001084
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478001079}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1133035488
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,8 +819,8 @@ MonoBehaviour:
   mDepth: 21
   autoResizeBoxCollider: 0
   keepCrispWhenShrunk: 1
-  mTrueTypeFont: {fileID: 0}
-  mFont: {fileID: 11400000, guid: ac44b8a25154a9d40a172ab5851e0986, type: 2}
+  mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  mFont: {fileID: 0}
   mText: 'Hi there!
 
 
@@ -791,11 +829,17 @@ MonoBehaviour:
   mFontStyle: 0
   mEncoding: 1
   mMaxLineCount: 0
+  mGradientBottom: {r: .5, g: .5, b: .5, a: 1}
   mEffectStyle: 0
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
   mOverflow: 0
+  mMaterial: {fileID: 0}
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mSpacingX: 0
+  mSpacingY: 0
   mShrinkToFit: 0
   mMaxLineWidth: 0
   mMaxLineHeight: 0

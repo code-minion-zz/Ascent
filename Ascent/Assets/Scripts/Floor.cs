@@ -121,17 +121,19 @@ public class Floor : MonoBehaviour
 			}
 		}
 
-		// Calculate camera position based off players
-		float x = totalVector.x / players.Count;
-		float y = CameraPrefab.transform.position.y;
-		float z = (totalVector.z / players.Count) - cameraOffset;
+		if (CameraPrefab != null)
+		{
+			// Calculate camera position based off players
+			float x = totalVector.x / players.Count;
+			float y = CameraPrefab.transform.position.y;
+			float z = (totalVector.z / players.Count) - cameraOffset;
 
-		Vector3 newVector = new Vector3(x, y, z);
-		Vector3 lerpVector = Vector3.Lerp(CameraPrefab.transform.position, newVector, 2.0f * Time.deltaTime);
+			Vector3 newVector = new Vector3(x, y, z);
+			Vector3 lerpVector = Vector3.Lerp(CameraPrefab.transform.position, newVector, 2.0f * Time.deltaTime);
 
-		// Set the position of our camera.
-		CameraPrefab.transform.position = lerpVector;
-
+			// Set the position of our camera.
+			CameraPrefab.transform.position = lerpVector;
+		}
 		//GameObject.Find("CameraBlur").transform.position = lerpVector;
 	}
 
