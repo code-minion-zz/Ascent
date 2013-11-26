@@ -10,20 +10,11 @@
 using System;
 namespace AssemblyCSharp
 {
-	public class ItemDatabase
+	public class Item
 	{
-		enum ItemList 
-		{
-			INVALID = -1,
-			SWORD,
-			SHIELD,
-			SWEATER,
-			MAX
-		}
-
-
-
-		public ItemDatabase ()
+		public string name;
+		public string description;
+		public Item ()
 		{
 		}
 	}
