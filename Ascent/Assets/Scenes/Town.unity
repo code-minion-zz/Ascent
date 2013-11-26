@@ -85,7 +85,7 @@ GameObject:
   - 65: {fileID: 23458624}
   - 114: {fileID: 23458623}
   m_Layer: 15
-  m_Name: Window
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,7 +133,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 500, y: 500, z: 0}
+  m_Size: {x: 500, y: 650, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &56385316
 GameObject:
@@ -158,7 +158,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 56385316}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 230, z: 0}
+  m_LocalPosition: {x: 0, y: 330, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 140165202}
@@ -304,6 +304,7 @@ GameObject:
   - 111: {fileID: 234949796}
   - 114: {fileID: 234949798}
   - 114: {fileID: 234949797}
+  - 114: {fileID: 234949800}
   m_Layer: 15
   m_Name: UIPlayerPanel
   m_TagString: Untagged
@@ -318,7 +319,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 234949794}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -435, y: 39.3699989, z: 0}
+  m_LocalPosition: {x: -450, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 23458622}
@@ -382,11 +383,11 @@ MonoBehaviour:
     e00: 400
     e01: 0
     e02: 0
-    e03: 435
+    e03: 450
     e10: 0
     e11: 400
     e12: 0
-    e13: -39.3699989
+    e13: 0
     e20: 0
     e21: 0
     e22: 400
@@ -397,9 +398,28 @@ MonoBehaviour:
     e33: 1
   mAlpha: 1
   mClipping: 0
-  mClipRange: {x: 0, y: 0, z: 0, w: 0}
+  mClipRange: {x: 0, y: 0, z: 759.226685, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 2
+--- !u!114 &234949800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234949794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b5bd8d2e1bcbe4580036799fb6ca41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCamera: {fileID: 478001083}
+  container: {fileID: 0}
+  style: 3
+  runOnlyOnce: 0
+  relativeSize: {x: .5, y: 1}
+  initialSize: {x: 1, y: 1}
+  borderPadding: {x: 0, y: 0}
+  widgetContainer: {fileID: 0}
 --- !u!1 &434043726
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +461,7 @@ MonoBehaviour:
   mColor: {r: .701492548, g: .701492548, b: .701492548, a: 1}
   mPivot: 4
   mWidth: 500
-  mHeight: 500
+  mHeight: 700
   mDepth: 16
   autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
@@ -851,7 +871,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1588516394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -19, z: 0}
+  m_LocalPosition: {x: 0, y: -20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 23458622}
@@ -869,7 +889,7 @@ MonoBehaviour:
   mColor: {r: .0895522237, g: .0842405409, b: .0654934198, a: 1}
   mPivot: 4
   mWidth: 494
-  mHeight: 457
+  mHeight: 656
   mDepth: 18
   autoResizeBoxCollider: 0
   mAtlas: {fileID: 11400000, guid: 2f2473f73b9ca724f9080d6d76009ea2, type: 2}
