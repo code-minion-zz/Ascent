@@ -75,7 +75,7 @@ public class UICamera : MonoBehaviour
 		UI,		// Perform a Physics.Raycast and sort by widget depth.
 	}
 
-	class Highlighted
+	protected class Highlighted
 	{
 		public GameObject go;
 		public int counter = 0;
@@ -300,11 +300,11 @@ public class UICamera : MonoBehaviour
 	static public GameObject fallThrough;
 
 	// List of currently highlighted items
-	static List<Highlighted> mHighlighted = new List<Highlighted>();
+	static protected List<Highlighted> mHighlighted = new List<Highlighted>();
 
 	// Selected widget (for input)
-	static GameObject mCurrentSelection = null;
-	static GameObject mNextSelection = null;
+	static protected GameObject mCurrentSelection = null;
+	static protected GameObject mNextSelection = null;
 
 	// Mouse events
 	static MouseOrTouch[] mMouse = new MouseOrTouch[] { new MouseOrTouch(), new MouseOrTouch(), new MouseOrTouch() };
@@ -313,7 +313,7 @@ public class UICamera : MonoBehaviour
 	static GameObject mHover;
 
 	// Joystick/controller/keyboard event
-	static MouseOrTouch mController = new MouseOrTouch();
+	static protected MouseOrTouch mController = new MouseOrTouch();
 
 	// Used to ensure that joystick-based controls don't trigger that often
 	static float mNextEvent = 0f;

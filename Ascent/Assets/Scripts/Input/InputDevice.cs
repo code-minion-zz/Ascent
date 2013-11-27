@@ -60,6 +60,11 @@ public class InputDevice
 	int filledAnalogCount = 0;
 	int filledButtonCount = 0;
 
+	/// <summary>
+	/// Gets or sets a value indicating whether this <see cref="InputDevice"/> in use.
+	/// In use means 'bound to a player'.
+	/// </summary>
+	/// <value><c>true</c> if in use; otherwise, <c>false</c>.</value>
 	public bool InUse
 	{
 		get { return isInUse; }
