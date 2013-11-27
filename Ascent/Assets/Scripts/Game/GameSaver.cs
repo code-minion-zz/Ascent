@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
+using SimpleJSON;
 
 public static class GameSaver
 {
-    const int maxSlots = 10;
+    public const int maxSlots = 10;
 
-    static List<HeroSave> LoadAllHeroSaves()
+    public static List<HeroSave> LoadAllHeroSaves()
     {
         List<HeroSave> heroSaves = new List<HeroSave>();
 
@@ -19,25 +18,33 @@ public static class GameSaver
         return heroSaves;
     }
 
-    static void DeleteSlot(HeroSave hero)
+    public static void DeleteSlot(HeroSave hero)
     {
         // Check if there is a hero in the slot
         // Delete that hero
     }
 
-    static void CreateSlot(HeroSave hero)
+    public static void CreateSlot(HeroSave hero)
     {
         // Check if there is an empty slot else inform the players that something needs to be deleted.
         // put new hero in
     }
 
-    static void SaveGame()
+    public static HeroSave LoadSlot()
     {
-        // Grab binary formatter
-        BinaryFormatter bin = new BinaryFormatter();
+        return null;
+    }
 
-        // Create save file
-        FileStream file = File.Create(Application.persistentDataPath + "/playersaves.dat");
+    public static void SaveGame()
+    {
+        SimpleJSON.JSONNode node = new SimpleJSON.JSONNode();
+        node.SaveToFile(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+
+        //// Grab binary formatter
+        //BinaryFormatter bin = new BinaryFormatter();
+        
+        //// Create save file
+        //FileStream file = File.Create(Application.persistentDataPath + "/playersaves.dat");
 
         // Save the heros
         List<Player> players = Game.Singleton.Players;
@@ -51,7 +58,29 @@ public static class GameSaver
              //Save inventory
              //Hero slot
 
-            bin.Serialize(file, p);
+            //bin.Serialize(file, p);
         }
+    }
+
+    public static void CreateTestSaves()
+    {
+        //JSONNode saveNode = JSON.Parse(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+        JSONClass saveNode = new JSONClass();
+        
+        //Debug.Log(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+
+        saveNode["Hero"] = "Mana";
+
+        Debug.Log(saveNode["Hero"]);
+
+        //JSONData data = new JSONData("Mana");
+
+        //saveNode.Add("Hero", data);
+
+        //string hello = saveNode["Hero"];
+
+        //Debug.Log(hello);
+
+        saveNode.SaveToFile(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
     }
 }
