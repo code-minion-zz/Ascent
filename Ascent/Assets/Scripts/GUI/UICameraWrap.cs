@@ -20,7 +20,7 @@ public class UICameraWrap : UICamera
 		}
 	}
 
-	void ProcessOthers()
+	public override void  ProcessOthers()
 	{
 		currentTouchID = -100;
 		currentTouch = mController;
