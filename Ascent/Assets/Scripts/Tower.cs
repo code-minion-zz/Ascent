@@ -17,4 +17,13 @@ public class Tower : MonoBehaviour
 		}
 		set { currentFloor = value; }
 	}
+
+    public void Start()
+    {
+        currentFloor = gameObject.GetComponent<Floor>();
+        if (currentFloor == null)
+        {
+            currentFloor = gameObject.AddComponent<Floor>();
+        }
+    }
 }
