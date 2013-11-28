@@ -11,6 +11,7 @@ namespace Ascent
         private Grid grid;
         private Vector2 scrollPosition;
         private string selectedRoom;
+        static int meshIndex = 0;
 
         public GameObject objectToCreate;
         public GameObject roomToLoad;
@@ -166,7 +167,21 @@ namespace Ascent
 
                 if (GUILayout.Button("Combine Selected Meshs", GUILayout.Width(255)))
                 {
-                    CombineMeshObject(Selection.gameObjects);
+                    CombineMeshObjects(Selection.activeGameObject);
+                }
+
+                if (GUILayout.Button("Group Selected", GUILayout.Width(255)))
+                {
+                    GameObject go = new GameObject();
+
+                    foreach (GameObject selected in Selection.gameObjects)
+                    {
+                        go.transform.parent = selected.transform.parent;
+                        selected.transform.parent = go.transform;
+                        go.layer = selected.layer;
+                        go.name = "Group: " + selected.name;
+                        go.tag = selected.tag;
+                    }
                 }
             }
 
@@ -183,7 +198,7 @@ namespace Ascent
             {
                 // Create the prefab at this location with the name of the parent.
                 UnityEngine.Object prefab = PrefabUtility.CreatePrefab("Assets/Addons/Editor/Prefabs/" + currentRoom.name + ".prefab", currentRoom, ReplacePrefabOptions.ConnectToPrefab);
-                Debug.Log("Createing prefab at path (Assets/Addons/Editor/Prefabs/" + currentRoom.name + ".prefab)");
+                Debug.Log("Creating prefab at path (Assets/Addons/Editor/Prefabs/" + currentRoom.name + ".prefab)");
 
                 // Destroy the parent room so that there is no room.
                 DestroyImmediate(currentRoom);
@@ -282,23 +297,92 @@ namespace Ascent
             }
         }
 
-        public void CombineMeshObject(GameObject[] meshes)
+        public void CombineMeshObjects(GameObject group)
+        {
+            MeshFilter[] meshFilters = group.GetComponentsInChildren<MeshFilter>();
+
+            MeshFilter meshF = group.GetComponent<MeshFilter>();
+            MeshRenderer meshR = group.GetComponent<MeshRenderer>();
+
+            if (meshF == null)
+                meshF = group.AddComponent<MeshFilter>();
+
+            if (meshR == null)
+                meshR = group.AddComponent<MeshRenderer>();
+
+            meshF.mesh = CombineMeshObject(meshFilters);
+        }
+
+        public Mesh CombineMeshObject(MeshFilter[] meshes)
         {
             Mesh mesh = new Mesh();
- 
+
             CombineInstance[] combineMeshes = new CombineInstance[meshes.Length];
             int count = 0;
-            foreach (GameObject c in meshes)
+            foreach (MeshFilter mF in meshes)
             {
-                MeshFilter mF = c.GetComponent<MeshFilter>();
                 combineMeshes[count].mesh = mF.sharedMesh;
-                combineMeshes[count].transform = c.transform.localToWorldMatrix;
+                combineMeshes[count].transform = mF.transform.localToWorldMatrix;
+                mF.gameObject.SetActive(false);
                 count++;
             }
 
-            mesh.CombineMeshes(combineMeshes);
+            mesh.CombineMeshes(combineMeshes, true);
             mesh.Optimize();
+            mesh.name = "CombinedMesh_" + meshIndex;
+
+            AssetDatabase.CreateAsset(mesh, "Assets/Addons/LevelEditor/Meshes/" + mesh.name + ".asset");
+            AssetDatabase.SaveAssets();
+
+            meshIndex++;
+
+            return mesh;
         }
+
+        //public Mesh CombineMeshObject(GameObject[] meshes)
+        //{
+        //    Mesh mesh = new Mesh();
+ 
+        //    CombineInstance[] combineMeshes = new CombineInstance[meshes.Length];
+        //    Debug.Log(meshes.Length);
+        //    int count = 0;
+        //    foreach (GameObject c in meshes)
+        //    {
+        //        MeshFilter mF = c.GetComponent<MeshFilter>();
+        //        combineMeshes[count].mesh = mF.sharedMesh;
+        //        combineMeshes[count].transform = c.transform.localToWorldMatrix;
+        //        mF.gameObject.SetActive(false);
+        //        count++;
+        //    }
+
+        //    mesh.CombineMeshes(combineMeshes);
+        //    mesh.Optimize();
+        //    mesh.name = "CombinedMesh_" + meshIndex;
+
+        //    AssetDatabase.CreateAsset(mesh, "Assets/Addons/LevelEditor/Meshes/" + mesh.name + ".asset");
+        //    AssetDatabase.SaveAssets();
+
+        //    meshIndex++;
+
+        //    return mesh;
+        //}
+
+        //public void CombineMeshObject(GameObject[] meshes)
+        //{
+        //    MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
+        //    CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        //    int i = 0;
+        //    while (i < meshFilters.Length) {
+        //        combine[i].mesh = meshFilters[i].sharedMesh;
+        //        combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+        //        meshFilters[i].gameObject.active = false;
+        //        i++;
+        //    }
+        //    transform.GetComponent<MeshFilter>().mesh = new Mesh();
+        //    transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine);
+        //    transform.gameObject.active = true;
+        //}
+    //}
 
         #endregion
     }
