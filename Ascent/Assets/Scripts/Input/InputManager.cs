@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
 		EventDriven
 	}
 
-	public const bool debugMessages = false;
+	public const bool debugMessages = true;
 	public const InputHandlingMethod inputHandlingMethod = InputHandlingMethod.Polling;
 
 	static public bool IsPolling
