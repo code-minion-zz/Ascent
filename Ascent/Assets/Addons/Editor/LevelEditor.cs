@@ -163,6 +163,11 @@ namespace Ascent
                         room.FixTreeStructure();
                     }
                 }
+
+                if (GUILayout.Button("Combine Selected Meshs", GUILayout.Width(255)))
+                {
+                    CombineMeshObject(Selection.gameObjects);
+                }
             }
 
             //LoadRoomGUI();
@@ -275,6 +280,24 @@ namespace Ascent
                 currentRoom = T.gameObject;
                 selectedRoom = currentRoom.name;
             }
+        }
+
+        public void CombineMeshObject(GameObject[] meshes)
+        {
+            Mesh mesh = new Mesh();
+ 
+            CombineInstance[] combineMeshes = new CombineInstance[meshes.Length];
+            int count = 0;
+            foreach (GameObject c in meshes)
+            {
+                MeshFilter mF = c.GetComponent<MeshFilter>();
+                combineMeshes[count].mesh = mF.sharedMesh;
+                combineMeshes[count].transform = c.transform.localToWorldMatrix;
+                count++;
+            }
+
+            mesh.CombineMeshes(combineMeshes);
+            mesh.Optimize();
         }
 
         #endregion
