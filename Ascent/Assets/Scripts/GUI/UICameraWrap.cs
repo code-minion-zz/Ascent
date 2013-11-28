@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Ascent/UI/UICamera Wrapper")]
 public class UICameraWrap : UICamera 
 {
 	InputDevice owner;	
