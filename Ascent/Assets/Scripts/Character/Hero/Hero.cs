@@ -12,7 +12,7 @@ public abstract class Hero : Character
         get { return heroController; }
     }
 
-	public abstract void Initialise(InputDevice input, HeroSave saveData);
+	public abstract void Initialise(InputDevice input, HeroSaveData saveData);
 
     public void SetColor(Color color)
     {

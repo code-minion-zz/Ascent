@@ -1,86 +1,83 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using SimpleJSON;
+using System.Xml;
 
 public static class GameSaver
 {
     public const int maxSlots = 10;
 
-    public static List<HeroSave> LoadAllHeroSaves()
+	public static HeroSaveDataList heroSaves;
+
+	public static HeroSaveDataList LoadAllHeroSaves()
     {
-        List<HeroSave> heroSaves = new List<HeroSave>();
+		heroSaves = XMLSerialiser.DeserializeObject(XMLSerialiser.LoadXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml"), "HeroSaveDataList") as HeroSaveDataList;
 
-        // TODO: Open XML save file
-        // Populate list with all heroSaves
-        // return the list
-
-        return heroSaves;
+		return heroSaves;
     }
 
-    public static void DeleteSlot(HeroSave hero)
+    public static void DeleteSlot(HeroSaveData hero)
     {
-        // Check if there is a hero in the slot
-        // Delete that hero
+		heroSaves.heroSaves.Remove(hero);
     }
 
-    public static void CreateSlot(HeroSave hero)
+    public static void CreateSlot(HeroSaveData hero)
     {
-        // Check if there is an empty slot else inform the players that something needs to be deleted.
-        // put new hero in
+		if (heroSaves.heroSaves.Count < maxSlots)
+		{
+			heroSaves.heroSaves.Add(hero);
+		}
     }
 
-    public static HeroSave LoadSlot()
+    public static void SaveGame(HeroSaveDataList saves)
     {
-        return null;
-    }
+		XMLSerialiser.CreateXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(heroSaves));
 
-    public static void SaveGame()
-    {
-        SimpleJSON.JSONNode node = new SimpleJSON.JSONNode();
-        node.SaveToFile(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+	   // // Save the heros
+	   // List<Player> players = Game.Singleton.Players;
 
-        //// Grab binary formatter
-        //BinaryFormatter bin = new BinaryFormatter();
-        
-        //// Create save file
-        //FileStream file = File.Create(Application.persistentDataPath + "/playersaves.dat");
+	   // foreach (Player p in players)
+	   // {
+	   //      //TODO: Save to XML file.
+	   //      //Save p.Hero into a file
+	   //      //Save into tower progression
+	   //      //Save statistics etc...
+	   //      //Save inventory
+	   //      //Hero slot
 
-        // Save the heros
-        List<Player> players = Game.Singleton.Players;
-
-        foreach (Player p in players)
-        {
-             //TODO: Save to XML file.
-             //Save p.Hero into a file
-             //Save into tower progression
-             //Save statistics etc...
-             //Save inventory
-             //Hero slot
-
-            //bin.Serialize(file, p);
-        }
+	   //     //bin.Serialize(file, p);
+	   // }
     }
 
     public static void CreateTestSaves()
     {
-        //JSONNode saveNode = JSON.Parse(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
-        JSONClass saveNode = new JSONClass();
-        
-        //Debug.Log(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+		HeroSaveDataList saves = new HeroSaveDataList();
 
-        saveNode["Hero"] = "Mana";
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(1) });
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(2) });
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(3) });
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(1) });
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(2) });
+		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(3) });
 
-        Debug.Log(saveNode["Hero"]);
-
-        //JSONData data = new JSONData("Mana");
-
-        //saveNode.Add("Hero", data);
-
-        //string hello = saveNode["Hero"];
-
-        //Debug.Log(hello);
-
-        saveNode.SaveToFile(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + "/playersaves.json");
+		XMLSerialiser.CreateXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(saves));
     }
+
+	public static ulong GetUniqueID(int iAddionalSeed)
+	{
+		var random = new System.Random();
+	
+		System.DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
+		double timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
+
+		string uniqueID = iAddionalSeed + "-"
+			+ Application.systemLanguage                 //Language
+		   + "-" + Application.platform                           //Device   
+		   + "-" + System.String.Format("{0:X}", System.Convert.ToInt32(timestamp))          //Time
+		   + "-" + System.String.Format("{0:X}", System.Convert.ToInt32(Time.time * 1000000))     //Time in game
+		   + "-" + System.String.Format("{0:X}", random.Next(1000000000));          //random number
+
+		
+		return (ulong)uniqueID.GetHashCode();
+	}
 }
