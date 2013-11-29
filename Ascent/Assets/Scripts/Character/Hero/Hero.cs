@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public abstract class Hero : Character 
 {
     protected HeroController heroController;
-	protected HeroEquipment equipment;
+	protected HeroBackpack backpack;
 
     public HeroController HeroController
     {
