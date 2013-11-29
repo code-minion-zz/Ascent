@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Ascent/NGUI/UICameraWrapper")]
 public class UICameraWrap : UICamera 
 {
 	InputDevice owner;	
-	
+
 	/// <summary>
 	/// Init Menu with the specified device. This needs to be called to set the owner.
 	/// Will not work otherwise.
@@ -20,7 +21,7 @@ public class UICameraWrap : UICamera
 		}
 	}
 
-	void ProcessOthers()
+	public override void ProcessOthers()
 	{
 		currentTouchID = -100;
 		currentTouch = mController;
