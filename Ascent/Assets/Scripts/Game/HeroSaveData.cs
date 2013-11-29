@@ -4,31 +4,26 @@ using System.Xml.Serialization;
 
 public class HeroSaveData 
 {
-	public int level;
+    // Save specific
+    public float saveTime;
+    public ulong id;
+
+    // Hero Statistics
+    public int level;
 	public Character.EHeroClass type;
-	public float saveTime;
-	public ulong id;
-	// Inventory
+	
+	// Hero Backpack 
+    public HeroBackpack backpack;
+    
+    // Hero Inventory
+    public HeroInventory inventory;
+
 	// Abilities
-	// Experience 
-	public Data manage;
-	public struct Data
-	{
-		//public int goldCount;
-		//public int floorLevel;
-		//public int gameTime;
-		//public int maxHealth;
-		//public int maxSpecial;
-	}
+    public Action actions;
 
 	public HeroSaveData()
 	{
 		saveTime = Time.time;
-		//manage.goldCount = 1;
-		//manage.floorLevel = 1;
-		//manage.gameTime = 1;
-		//manage.maxHealth = 1;
-		//manage.maxSpecial = 1;
 		level = 1;
 	}
 
