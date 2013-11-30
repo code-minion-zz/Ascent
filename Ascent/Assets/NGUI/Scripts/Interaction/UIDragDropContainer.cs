@@ -4,11 +4,9 @@
 //----------------------------------------------
 
 using UnityEngine;
-using UnityEditor;
 
-[CanEditMultipleObjects]
-[CustomEditor(typeof(UICameraWrap))]
-public class UICameraWrapEditor : UICameraEditor
+[AddComponentMenu("NGUI/Interaction/Drag and Drop Container")]
+public class UIDragDropContainer : MonoBehaviour
 {
-  
+	public Transform reparentTarget;
 }

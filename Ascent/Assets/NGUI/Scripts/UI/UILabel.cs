@@ -85,7 +85,9 @@ public class UILabel : UIWidget
 	int mLastWidth = 0;
 	int mLastHeight = 0;
 	int mPrintedSize = 0;
+#if UNITY_EDITOR
 	bool mUseDynamicFont = false;
+#endif
 
 	/// <summary>
 	/// Function used to determine if something has changed (and thus the geometry must be rebuilt)
@@ -550,6 +552,19 @@ public class UILabel : UIWidget
 	}
 
 	/// <summary>
+	/// Process the label's text before returning its drawing dimensions.
+	/// </summary>
+
+	public override Vector4 drawingDimensions
+	{
+		get
+		{
+			if (hasChanged) ProcessText();
+			return base.drawingDimensions;
+		}
+	}
+
+	/// <summary>
 	/// The max number of lines to be displayed for the label
 	/// </summary>
 
@@ -602,7 +617,7 @@ public class UILabel : UIWidget
 		}
 		set
 		{
-			if (!mEffectColor.Equals(value))
+			if (mEffectColor != value)
 			{
 				mEffectColor = value;
 				if (mEffectStyle != Effect.None) hasChanged = true;
@@ -872,6 +887,7 @@ public class UILabel : UIWidget
 		hasChanged = true;
 		mAllowProcessing = true;
 		ProcessAndRequest();
+		if (autoResizeBoxCollider) ResizeCollider();
 	}
 #endif
 
