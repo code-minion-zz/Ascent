@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class UIPlayerMenuScreen : MonoBehaviour 
 {
 	protected List<UIPlayerMenuWindow> windows;
+    protected bool initialised = false;
 
 	public virtual void Start()
 	{
@@ -14,6 +15,7 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		foreach (UIHeroSelect_Window win in foundWindows)
 		{
 			windows.Add(win);
+            win.Initialise();
 			win.gameObject.SetActive(false);
 		}
 	}

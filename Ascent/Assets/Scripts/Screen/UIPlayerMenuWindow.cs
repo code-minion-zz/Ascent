@@ -33,16 +33,16 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	public virtual void Start()
-	{
-		panels = new Dictionary<int, UIPlayerMenuPanel>();
+    public virtual void Initialise()
+    {
+        panels = new Dictionary<int, UIPlayerMenuPanel>();
 
-		parentScreen = transform.parent.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
+        parentScreen = transform.parent.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
 
-		AddAllMenuPanels();
-	}
+        AddAllMenuPanels();
+    }
 
-	public virtual void Initialise(Player player)
+	public virtual void SetPlayer(Player player)
 	{
 		this.player = player;
 

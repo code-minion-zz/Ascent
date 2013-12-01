@@ -25,11 +25,6 @@ public class UIHeroSelect_Window : UIPlayerMenuWindow
 		activePanel = panels[(int)EHeroSelectPanels.Main];
 	}
 
-	public override void Start()
-	{
-		base.Start();
-	}
-
 	public override void TransitionToPanel(int panel)
 	{
 		activePanel.gameObject.SetActive(false);

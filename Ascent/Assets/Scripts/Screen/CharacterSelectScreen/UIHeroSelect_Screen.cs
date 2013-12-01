@@ -95,7 +95,7 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 						newPlayer.BindInputDevice(device);
 
-						windows[nextEmptyPlayerSlot].Initialise(newPlayer);
+						windows[nextEmptyPlayerSlot].SetPlayer(newPlayer);
 
 						++nextEmptyPlayerSlot;
 					}
