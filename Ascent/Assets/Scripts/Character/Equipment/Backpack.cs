@@ -8,13 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace AssemblyCSharp
+
+public class Backpack
 {
-		public class ItemEffect
-		{
-				public ItemEffect ()
-				{
-				}
-		}
+
+	public Backpack ()
+	{
+	}
 }
 
