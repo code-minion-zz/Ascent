@@ -11,12 +11,15 @@ namespace Ascent
         private Grid grid;
         private Vector2 scrollPosition;
         private string selectedRoom;
-        static int meshIndex = 0;
+        private string meshName = "Mesh Name";
+        private bool foldOutMesh = false;
+        private bool objectFoldOut = false;
+        private const int buttonSize = 255;
 
-        public GameObject objectToCreate;
-        public GameObject roomToLoad;
-        public GameObject currentRoom = null;
-        public string roomName = "New Room";
+        private string roomName = "New Room";
+        private GameObject objectToCreate;
+        private GameObject roomToLoad;
+        private GameObject currentRoom = null;
 
         [MenuItem("Ascent/Level Editor %h")]
         private static void showEditor()
@@ -51,14 +54,7 @@ namespace Ascent
         {
             if (currentRoom == null || grid == null)
             {
-                if (currentRoom != null)
-                {
-                    grid = currentRoom.GetComponent<Grid>();
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
 
             UpdateActiveObject();
@@ -67,8 +63,6 @@ namespace Ascent
             Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
             Vector3 mousePos = r.origin;
 
-            // TODO: Make this instantiated prefab connect to the right category based on 
-            // its layer.
             if (e.isKey && e.character == 'a')
             {
                 if (objectToCreate != null)
@@ -124,7 +118,7 @@ namespace Ascent
             roomName = EditorGUILayout.TextField("Room Name", roomName);
 
             // Assign selected game object prefab
-            if (GUILayout.Button("Create New Room", GUILayout.Width(255)))
+            if (GUILayout.Button("Create New Room", GUILayout.Width(buttonSize)))
             {
                 // Don't want to save the room just yet because its creating a prefab
                 // this prefab is being nested.
@@ -143,7 +137,7 @@ namespace Ascent
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Separator();
 
-                //if (GUILayout.Button("Save Room Layout", GUILayout.Width(255)) && currentRoom != null)
+                //if (GUILayout.Button("Save Room Layout", GUILayout.Width(buttonSize)) && currentRoom != null)
                 //{
                 //    // Since we have a room to save lets go ahead and save it.
                 //    SaveCurrentRoom();
@@ -151,37 +145,40 @@ namespace Ascent
 
                 GUILayout.Label("Selected Room: " + selectedRoom);
 
-                if (GUILayout.Button("Fix Room Nodes", GUILayout.Width(255)))
-                {
-                    Room room = currentRoom.GetComponent<Room>();
+                objectFoldOut = EditorGUILayout.Foldout(objectFoldOut, "Room Options");
 
-                    if (room == null)
+                if (objectFoldOut == true)
+                {
+                    if (GUILayout.Button("Fix Room Nodes", GUILayout.Width(buttonSize)))
                     {
-                        Debug.Log("Failed to load Room: Please make sure the Room Script is attached to the room");
+                        Room room = currentRoom.GetComponent<Room>();
+
+                        if (room == null)
+                        {
+                            Debug.Log("Failed to load Room: Please make sure the Room Script is attached to the room");
+                        }
+                        else
+                        {
+                            room.FixTreeStructure();
+                        }
                     }
-                    else
+
+                    if (GUILayout.Button("Group Selected", GUILayout.Width(buttonSize)))
                     {
-                        room.FixTreeStructure();
+                        GroupObjects(Selection.gameObjects);
                     }
                 }
+            }
 
-                if (GUILayout.Button("Combine Selected Meshs", GUILayout.Width(255)))
+            foldOutMesh = EditorGUILayout.Foldout(foldOutMesh, "Mesh Options");
+            if (Selection.activeGameObject != null && foldOutMesh == true)
+            {
+                meshName = EditorGUILayout.TextField("New mesh name:", meshName);
+                EditorGUILayout.LabelField("Combine meshes in: " + Selection.activeGameObject.name);
+
+                if (GUILayout.Button("Combine Meshes", GUILayout.Width(buttonSize)))
                 {
-                    CombineMeshObjects(Selection.activeGameObject);
-                }
-
-                if (GUILayout.Button("Group Selected", GUILayout.Width(255)))
-                {
-                    GameObject go = new GameObject();
-
-                    foreach (GameObject selected in Selection.gameObjects)
-                    {
-                        go.transform.parent = selected.transform.parent;
-                        selected.transform.parent = go.transform;
-                        go.layer = selected.layer;
-                        go.name = "Group: " + selected.name;
-                        go.tag = selected.tag;
-                    }
+                    CombineMeshInGroup(Selection.activeGameObject);
                 }
             }
 
@@ -243,7 +240,7 @@ namespace Ascent
 
             if (roomToLoad != null)
             {
-                if (GUILayout.Button("Insert into grid", GUILayout.Width(255)))
+                if (GUILayout.Button("Insert into grid", GUILayout.Width(buttonSize)))
                 {
                     // Instantiate the prefab of the loaded room
                     GameObject room = PrefabUtility.InstantiatePrefab(roomToLoad) as GameObject;
@@ -294,10 +291,52 @@ namespace Ascent
 
                 currentRoom = T.gameObject;
                 selectedRoom = currentRoom.name;
+
+                // Update to the new grid
+                Grid otherGrid = currentRoom.GetComponent<Grid>();
+
+                // Since we found the grid we actually want to get the window to it's properties.
+                if (otherGrid != null && otherGrid != grid)
+                {
+                    grid = otherGrid;
+                    GridProperties gridProperties = EditorWindow.GetWindow<GridProperties>("Grid Properties");
+                    gridProperties.Init(grid);
+                }  
             }
         }
 
-        public void CombineMeshObjects(GameObject group)
+        /// <summary>
+        /// Groups the gameObjects and returns a new parent object
+        /// with the newly grouped objects as children
+        /// </summary>
+        /// <param name="gameObjects">The game objects to group</param>
+        /// <returns></returns>
+        public GameObject GroupObjects(GameObject[] gameObjects)
+        {
+            GameObject go = new GameObject();
+
+            foreach (GameObject g in gameObjects)
+            {
+                go.transform.parent = g.transform.parent;
+                go.transform.localPosition = Vector3.zero;
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one;
+
+                g.transform.parent = go.transform;
+                go.layer = g.layer;
+                go.name = "Group: " + g.name;
+                go.tag = g.tag;
+            }
+
+            return go;
+        }
+
+        /// <summary>
+        /// Combines all sub meshes in children of the group object. All meshes are combined and 
+        /// applied / added to the group object.
+        /// </summary>
+        /// <param name="group">The group object to make a mesh.</param>
+        public void CombineMeshInGroup(GameObject group)
         {
             MeshFilter[] meshFilters = group.GetComponentsInChildren<MeshFilter>();
 
@@ -311,8 +350,15 @@ namespace Ascent
                 meshR = group.AddComponent<MeshRenderer>();
 
             meshF.mesh = CombineMeshObject(meshFilters);
+
+            SaveMesh(meshF.mesh, meshName);
         }
 
+        /// <summary>
+        /// Combines a group of meshes together and returns the combined mesh.
+        /// </summary>
+        /// <param name="meshes">The meshes to combine.</param>
+        /// <returns></returns>
         public Mesh CombineMeshObject(MeshFilter[] meshes)
         {
             Mesh mesh = new Mesh();
@@ -329,60 +375,16 @@ namespace Ascent
 
             mesh.CombineMeshes(combineMeshes, true);
             mesh.Optimize();
-            mesh.name = "CombinedMesh_" + meshIndex;
-
-            AssetDatabase.CreateAsset(mesh, "Assets/Addons/LevelEditor/Meshes/" + mesh.name + ".asset");
-            AssetDatabase.SaveAssets();
-
-            meshIndex++;
 
             return mesh;
         }
 
-        //public Mesh CombineMeshObject(GameObject[] meshes)
-        //{
-        //    Mesh mesh = new Mesh();
- 
-        //    CombineInstance[] combineMeshes = new CombineInstance[meshes.Length];
-        //    Debug.Log(meshes.Length);
-        //    int count = 0;
-        //    foreach (GameObject c in meshes)
-        //    {
-        //        MeshFilter mF = c.GetComponent<MeshFilter>();
-        //        combineMeshes[count].mesh = mF.sharedMesh;
-        //        combineMeshes[count].transform = c.transform.localToWorldMatrix;
-        //        mF.gameObject.SetActive(false);
-        //        count++;
-        //    }
-
-        //    mesh.CombineMeshes(combineMeshes);
-        //    mesh.Optimize();
-        //    mesh.name = "CombinedMesh_" + meshIndex;
-
-        //    AssetDatabase.CreateAsset(mesh, "Assets/Addons/LevelEditor/Meshes/" + mesh.name + ".asset");
-        //    AssetDatabase.SaveAssets();
-
-        //    meshIndex++;
-
-        //    return mesh;
-        //}
-
-        //public void CombineMeshObject(GameObject[] meshes)
-        //{
-        //    MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-        //    CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-        //    int i = 0;
-        //    while (i < meshFilters.Length) {
-        //        combine[i].mesh = meshFilters[i].sharedMesh;
-        //        combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-        //        meshFilters[i].gameObject.active = false;
-        //        i++;
-        //    }
-        //    transform.GetComponent<MeshFilter>().mesh = new Mesh();
-        //    transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine);
-        //    transform.gameObject.active = true;
-        //}
-    //}
+        private void SaveMesh(Mesh mesh, string name)
+        {
+            mesh.name = name;
+            AssetDatabase.CreateAsset(mesh, "Assets/Addons/LevelEditor/Meshes/" + mesh.name + ".mesh");
+            AssetDatabase.SaveAssets();
+        }
 
         #endregion
     }
