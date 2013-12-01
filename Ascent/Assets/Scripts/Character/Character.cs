@@ -17,47 +17,48 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 	
-	protected List<Action> abilities = new List<Action>();
-	protected IAction activeAbility;
-	protected GameObject weaponPrefab;
-    protected bool isDead = false;
-    protected Color originalColour;
+	protected List<Action> 			abilities = new List<Action>();
+	protected IAction 				activeAbility;
+	protected GameObject 			weaponPrefab;
+    protected bool 					isDead = false;
+    protected Color 				originalColour;
 
-    protected FloatingText floatingText;
+    protected FloatingText 			floatingText;
 
-    protected float stunDuration;
+    protected float 				stunDuration;
 	
-    protected Transform weaponSlot;
+	protected Transform 			weaponSlot;
+	protected Collidable 			chargeBall;
+	protected Weapon 				equipedWeapon;
+	protected AnimatorController 	characterAnimator;
+	protected CharacterStatistics 	characterStatistics;
+	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
     }
-	
-	protected Collidable chargeBall;
+
 	public Collidable ChargeBall
 	{
 		get { return chargeBall; }
 	}
 
-    protected Weapon equipedWeapon;
     public Weapon Weapon
     {
         get { return equipedWeapon; }
     }
 
-    protected AnimatorController characterAnimator;
     public AnimatorController Animator
     {
         get { return characterAnimator; }
     }
 
-    protected CharacterStatistics characterStatistics;
     public CharacterStatistics CharacterStats
     {
         get { return characterStatistics; }
     }
 
-    protected List<Object> lastObjectsDamagedBy = new List<Object>();
     public List<Object> LastObjectsDamagedBy
     {
         get { return lastObjectsDamagedBy; }

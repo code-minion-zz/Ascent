@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-#pragma warning disable 0162
+//#pragma warning disable 0162
 
 public class KeyboardInputDevice : InputDevice
 {
@@ -18,6 +18,10 @@ public class KeyboardInputDevice : InputDevice
 		Initialise();
 	}
 
+	/// <summary>
+	/// Converts keyboard directional input to equivalent Horizontal/Vertical input
+	/// </summary>
+	/// <param name="target">Target Axis</param>
 	protected override float GetAnalogValue(Enum target)
 	{
 		float value = 0.0f;
@@ -94,12 +98,10 @@ public class KeyboardInputDevice : InputDevice
 
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages &&value != 0.0f)
 		{
-			if (value != 0.0f)
-			{
+
 				Debug.Log(name + " " + type + ": " + value);
-			}
 		}
 
 		return value;
@@ -134,12 +136,9 @@ public class KeyboardInputDevice : InputDevice
 			case InputControlType.Start: { buttonState = (Input.GetKey(KeyCode.Return) ? true : false); } break;
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages && buttonState)
 		{
-			if (buttonState)
-			{
-				Debug.Log(name + " " + type + ": " + buttonState);
-			}
+			Debug.Log(name + " " + type + ": " + buttonState);
 		}
 
 		return buttonState;
