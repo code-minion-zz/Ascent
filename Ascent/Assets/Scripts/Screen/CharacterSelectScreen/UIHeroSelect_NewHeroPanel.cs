@@ -58,6 +58,45 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
         UICamera.Notify(currentSelection.gameObject, "OnHover", true);
     }
 
+    public override void OnMenuOK(InputDevice device)
+    {
+        UICamera.Notify(currentSelection.gameObject, "OnPress", true);
+
+        EButtons current = (EButtons)currentButton;
+
+        switch(current)
+        {
+            case EButtons.Warrior:
+                {
+                    // Create this new warrior and assign it to this player
+                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Warrior"));
+                    parent.Player.Hero = go;
+                    go.transform.parent = parent.Player.transform;
+
+                    parent.TransitionToPanel();
+                }
+                break;
+            case EButtons.Rogue:
+                {
+                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Rogue"));
+                    parent.Player.Hero = go;
+
+                    
+
+                    //parent.TransitionToPanel();
+                }
+                break;
+            case EButtons.Mage:
+                {
+                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mage"));
+                    parent.Player.Hero = go;
+
+                    //parent.TransitionToPanel();
+                }
+                break;
+        }
+    }
+
 
 	public override void OnMenuCancel(InputDevice device)
 	{
