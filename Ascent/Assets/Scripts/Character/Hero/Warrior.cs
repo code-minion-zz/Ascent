@@ -75,6 +75,18 @@ public class Warrior : Hero
 		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
+
+		classStatMod = new Hero.HeroClassStatModifier();
+		classStatMod.PowerAttack = 1f;
+		classStatMod.FinesseCritChance = 1f;
+		classStatMod.FinesseCritBonus = 1f;
+		classStatMod.FinesseDodge = 1f;
+		classStatMod.FinesseBlock = 1f;
+		classStatMod.VitalityHP = 1f;
+		classStatMod.VitalityPhysRes = 1f;
+		classStatMod.VitalityHPRegen = 1f;
+		classStatMod.SpiritSP = 1f;
+		classStatMod.SpiritMagRes = 1f;
     }
 	
 	// public is called once per frame

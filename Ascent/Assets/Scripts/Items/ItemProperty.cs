@@ -11,7 +11,7 @@ public abstract class ItemProperty
 		this.hero = hero;
 	}
 
-	enum Condition
+	public enum Trigger
 	{
 		INVALID_CONDITION = -1,
 
@@ -27,6 +27,8 @@ public abstract class ItemProperty
 
 		MAX_CONDITION
 	}
+
+	public Trigger ipTrigger;
 }
 
 public class ConstantStatItemProperty : ItemProperty

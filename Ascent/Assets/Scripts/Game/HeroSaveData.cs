@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Xml.Serialization;
 
@@ -13,7 +13,7 @@ public class HeroSaveData
 	public Character.EHeroClass type;
 	
 	// Hero Backpack 
-    public HeroBackpack backpack;
+    public Backpack backpack;
     
     // Hero Inventory
     public HeroInventory inventory;
