@@ -74,6 +74,8 @@ public class Warrior : Hero
 		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
+
+        AddSkill(new WarStomp());
     }
 	
 	// public is called once per frame

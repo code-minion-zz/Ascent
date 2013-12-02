@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
         {
             case Character.EHeroClass.Warrior:
                 {
-                    Debug.Log("Made Warrior");
+                    Debug.Log("Made Warrior", this);
                     //go = Resources.Load("Prefabs/Warrior") as GameObject;
                     go = Resources.Load("Prefabs/OrcWarrior") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;

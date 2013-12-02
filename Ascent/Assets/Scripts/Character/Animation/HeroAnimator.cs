@@ -86,14 +86,20 @@ public class HeroAnimator : AnimatorController
 
 	}
 
-	// Events called by the animation
-	void EnableWeaponCollider()
-	{
-		Debug.Log ("Enable Collider");
+    public void AnimationBegin()
+    {
+        Debug.Log("War Stomp Begin");
+    }
 
+	// Events called by the animation
+    public void EnableWeaponCollider()
+	{
+
+        Debug.Log("Enable Collider ");
+        
 	}
 
-	void DisableWeaponCollider()
+	public void DisableWeaponCollider()
 	{
 		Debug.Log ("Disable collider");
 	}

@@ -3,6 +3,10 @@ using System.Collections;
 
 public abstract class Action : IAction
 {
+    protected float coolDown = 0.0f;
+    protected float currentTime = 0.0f;
+    protected string animationTrigger;
+
     protected Character owner;
     public Character Owner
     {
@@ -15,13 +19,42 @@ public abstract class Action : IAction
         get { return name; }
     }
 
+    public float CurrentTime
+    {
+        get { return currentTime; }
+    }
+
+    public float Length
+    {
+        get { return coolDown; }
+    }
+
     public virtual void Initialise(Character owner)
     {
        this.owner = owner;
        this.name = this.GetType().ToString();
     }
 
-    public abstract void StartAbility();
+    public virtual void StartAbility()
+    {
+        currentTime = 0.0f;
+        owner.Animator.PlayAnimation(animationTrigger);
+        owner.StartCoroutine(UpdateAction());
+    }
+
     public abstract void UpdateAbility();
-    public abstract void EndAbility();
+
+    public virtual void EndAbility()
+    {
+        owner.Animator.StopAnimation(animationTrigger);
+        currentTime = 0.0f;
+    }
+
+    public virtual IEnumerator UpdateAction()
+    {
+        currentTime += Time.deltaTime;
+        UpdateAbility();
+        yield return new WaitForSeconds(coolDown);
+        owner.StopAbility();
+    }
 }
