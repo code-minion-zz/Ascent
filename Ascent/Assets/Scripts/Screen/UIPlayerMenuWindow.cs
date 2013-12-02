@@ -22,8 +22,25 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	}
 
 	protected UIPlayerMenuPanel activePanel;
+    public UIPlayerMenuPanel ActivePanel
+    {
+        get { return activePanel; }
+        protected set { activePanel = value; }
+    }
 
 	protected UIPlayerMenuScreen parentScreen;
+    public UIPlayerMenuScreen ParentScreen
+    {
+        get { return parentScreen; }
+        protected set { parentScreen = value; }
+    }
+
+    protected bool ready;
+    public bool Ready
+    {
+        get { return ready; }
+        protected set { ready = value; }
+    }
 
 	public abstract void AddAllMenuPanels();
 	public abstract void TransitionToPanel(int panel);
@@ -32,6 +49,11 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	{
 		gameObject.SetActive(false);
 	}
+
+    public virtual void ReadyWindow(bool ready)
+    {
+        this.ready = ready;
+    }
 
     public virtual void Initialise()
     {
@@ -81,6 +103,11 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 			if (InputManager.IsPolling)
 			{
 				InputDevice device = player.Input;
+
+                if (device == null)
+                {
+                    return;
+                }
 
 				// Face
 				if (device.A.WasPressed)

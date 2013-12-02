@@ -21,6 +21,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 	List<InputDevice> devices;
 
+    bool allReady = false;
+
 
 	void OnDestroy()
 	{
@@ -56,16 +58,38 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 			}
 		}
 
-		// Check if players are ready to start or want to leave
-		UpdatePlayerStates();
+        int activePlayers = 0;
+        int readiedPlayers = 0;
+        foreach (UIPlayerMenuWindow win in windows)
+        {
+            if (win.gameObject.activeSelf)
+            {
+                ++activePlayers;
+                if (win.Ready)
+                {
+                    ++readiedPlayers;
+                }
+            }
+        }
+        if (activePlayers > 0)
+        {
+            if (activePlayers == readiedPlayers)
+            {
+                allReady = true;
+            }
+            else
+            {
+                allReady = false;
+            }
+        }
+        else
+        {
+            allReady = false;
+        }
+        Debug.Log(readiedPlayers + " " +allReady);
 
 		// Check if any players want to enter the game
 		AddNewPlayers();
-
-	}
-
-	public void UpdatePlayerStates()
-	{
 
 	}
 
@@ -119,11 +143,13 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 			{
 				if (p.Key.Input == device)
 				{
-					p.Key.Input.InUse = false;
-					p.Key.UnbindInputDevice();
-
-					playersToRemove.Add(p.Key);
-
+                    foreach (UIPlayerMenuWindow win in windows)
+                    {
+                        if(win.Player == p.Key)
+                        {
+                            win.CloseWindow();
+                        }
+                    }
 					continue;
 				}
 			}
@@ -143,6 +169,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 	public void CloseWindow(UIHeroSelect_Window window)
 	{
+        window.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.Main);
+        window.ReadyWindow(false);
 		window.Player.Input.InUse = false;
 		window.Player.UnbindInputDevice();
 		playersToRemove.Add(window.Player);

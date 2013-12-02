@@ -40,4 +40,9 @@ public class UIHeroSelect_Window : UIPlayerMenuWindow
 
 		base.CloseWindow();
 	}
+
+    public override void ReadyWindow(bool ready)
+    {
+        base.ReadyWindow(ready);
+    }
 }
