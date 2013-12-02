@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Warrior : Hero 
@@ -7,7 +7,7 @@ public class Warrior : Hero
 	
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {		
-        characterStatistics = null;
+        baseStatistics = null;
 
         if (saveData != null)
         {
@@ -19,7 +19,8 @@ public class Warrior : Hero
         {
             // Populate the hero with Inventory, stats, basic abilities (if any)
 
-            characterStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+            baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+			derivedStats = new DerivedStats(baseStatistics);
         }
 
         // Attach the weapon mesh

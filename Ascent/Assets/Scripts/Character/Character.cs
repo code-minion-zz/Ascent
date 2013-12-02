@@ -17,47 +17,54 @@ public abstract class Character : MonoBehaviour
         Magical,
     }
 	
-	protected List<Action> abilities = new List<Action>();
-	protected IAction activeAbility;
-	protected GameObject weaponPrefab;
-    protected bool isDead = false;
-    protected Color originalColour;
+	protected List<Action> 			abilities = new List<Action>();
+	protected IAction 				activeAbility;
+	protected GameObject 			weaponPrefab;
+    protected bool 					isDead = false;
+    protected Color 				originalColour;
 
-    protected FloatingText floatingText;
+    protected FloatingText 			floatingText;
 
-    protected float stunDuration;
+    protected float 				stunDuration;
 	
-    protected Transform weaponSlot;
+	protected Transform 			weaponSlot;
+	protected Collidable 			chargeBall;
+	protected Weapon 				equipedWeapon;
+	protected AnimatorController 	characterAnimator;
+	protected BaseStats 			baseStatistics;
+	protected DerivedStats			derivedStats;
+	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
     }
-	
-	protected Collidable chargeBall;
+
 	public Collidable ChargeBall
 	{
 		get { return chargeBall; }
 	}
 
-    protected Weapon equipedWeapon;
     public Weapon Weapon
     {
         get { return equipedWeapon; }
     }
 
-    protected AnimatorController characterAnimator;
     public AnimatorController Animator
     {
         get { return characterAnimator; }
-    }
+	}
+	
+	public BaseStats CharacterStats
+	{
+		get { return baseStatistics; }
+	}
+	
+	public DerivedStats DerivedStats
+	{
+		get { return derivedStats; }
+	}
 
-    protected CharacterStatistics characterStatistics;
-    public CharacterStatistics CharacterStats
-    {
-        get { return characterStatistics; }
-    }
-
-    protected List<Object> lastObjectsDamagedBy = new List<Object>();
     public List<Object> LastObjectsDamagedBy
     {
         get { return lastObjectsDamagedBy; }
@@ -157,19 +164,27 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
         // Obtain the health stat and subtract damage amount to the health.
-        characterStatistics.CurrentHealth -= unmitigatedDamage;
+        derivedStats.CurrentHealth -= unmitigatedDamage;
 
         // When the player takes a hit, spawn some damage text.
         HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
 
+		if(OnDamageTaken != null)
+		{
+			OnDamageTaken.Invoke();
+		}
+
         // If the character is dead
-		if (characterStatistics.CurrentHealth <= 0 && !isDead)
+		if (derivedStats.CurrentHealth <= 0 && !isDead)
         {
             // On Death settings
             // Update states to kill character
             OnDeath();
         }
     }
+
+	public delegate void DamageTaken();
+	public event DamageTaken OnDamageTaken;
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {

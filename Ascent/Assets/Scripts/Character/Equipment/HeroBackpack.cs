@@ -62,6 +62,8 @@ public class HeroBackpack
         }
     }
 
+    public List<Item> allItemsa = new List<Item>();
+
     protected Item[] allItems = new Item[kMaxItems];
     public Item[] AllItems
     {

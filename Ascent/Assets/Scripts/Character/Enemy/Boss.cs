@@ -1,4 +1,4 @@
-﻿// Developed by Mana Khamphanpheng 2013
+// Developed by Mana Khamphanpheng 2013
 
 // Dependencies
 using UnityEngine;
@@ -155,9 +155,9 @@ public class Boss : Enemy
         // ai.enabled = false;
 
         // Populate with stats
-        characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 250;
-        characterStatistics.CurrentHealth = 250;
+        baseStatistics = new BaseStats();
+		baseStatistics.Vitality = 25;
+		derivedStats = new DerivedStats(baseStatistics);
 
         // Add abilities
         Action tackle = new EnemyTackle();
