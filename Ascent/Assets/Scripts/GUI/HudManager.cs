@@ -68,7 +68,7 @@ public class HudManager : MonoBehaviour {
 	
 	public StatBar AddEnemyLifeBar(Vector3 characterScale)
 	{
-		GameObject go = Resources.Load("Prefabs/EnemyStatBar") as GameObject;
+		GameObject go = Resources.Load("Prefabs/UI/EnemyStatBar") as GameObject;
 		go = Instantiate(go) as GameObject;
 		StatBar statBar = go.GetComponent<StatBar>();
 		enemyBars.Add(statBar);

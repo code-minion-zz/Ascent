@@ -8,24 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-namespace AssemblyCSharp
+
+public abstract class Ability
 {
-	public class ItemDatabase
-	{
-		enum ItemList 
-		{
-			INVALID = -1,
-			SWORD,
-			SHIELD,
-			SWEATER,
-			MAX
-		}
-
-
-
-		public ItemDatabase ()
-		{
-		}
-	}
+	public abstract void Activate();
 }
 
+
+//public class SpawnSkull : Ability
+//{
+//	public override void Active()
+//	{
+//		// Instantiate skull
+//	}
+//}

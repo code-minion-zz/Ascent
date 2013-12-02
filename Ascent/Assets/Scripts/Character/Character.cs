@@ -31,7 +31,8 @@ public abstract class Character : MonoBehaviour
 	protected Collidable 			chargeBall;
 	protected Weapon 				equipedWeapon;
 	protected AnimatorController 	characterAnimator;
-	protected CharacterStatistics 	characterStatistics;
+	protected BaseStats 			baseStatistics;
+	protected DerivedStats			derivedStats;
 	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
 
     public Transform WeaponSlot
@@ -52,12 +53,17 @@ public abstract class Character : MonoBehaviour
     public AnimatorController Animator
     {
         get { return characterAnimator; }
-    }
-
-    public CharacterStatistics CharacterStats
-    {
-        get { return characterStatistics; }
-    }
+	}
+	
+	public BaseStats CharacterStats
+	{
+		get { return baseStatistics; }
+	}
+	
+	public DerivedStats DerivedStats
+	{
+		get { return derivedStats; }
+	}
 
     public List<Object> LastObjectsDamagedBy
     {
@@ -158,19 +164,27 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
         // Obtain the health stat and subtract damage amount to the health.
-        characterStatistics.CurrentHealth -= unmitigatedDamage;
+        derivedStats.CurrentHealth -= unmitigatedDamage;
 
         // When the player takes a hit, spawn some damage text.
         HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
 
+		if(OnDamageTaken != null)
+		{
+			OnDamageTaken.Invoke();
+		}
+
         // If the character is dead
-		if (characterStatistics.CurrentHealth <= 0 && !isDead)
+		if (derivedStats.CurrentHealth <= 0 && !isDead)
         {
             // On Death settings
             // Update states to kill character
             OnDeath();
         }
     }
+
+	public delegate void DamageTaken();
+	public event DamageTaken OnDamageTaken;
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {

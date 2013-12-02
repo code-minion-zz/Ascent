@@ -1,62 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CharacterStatistics
+
+/// <summary>
+/// TODO : Use properly
+/// </summary>
+public class DerivedStats
 {
-    protected int curHealth;
-	protected int maxHealth;
+	protected int curHealth =1;
+	protected int maxHealth =1;
 	
 	protected int curSpecial;
 	protected int maxSpecial;
-	
-	protected int level;
-	protected int curExperience; 		// Also holds enemy bounty 
-	protected int maxExperience;
-    protected int currency; 			// Also holds enemy bounty
-	
-	// primary stats
-	protected int power;				// Increases Attack
-	protected int finesse;				// Increases chance for crit, dodge, block, etc
-	protected int vitality;				// Increases Max HP, Physical Resistance, HP Regen
-	protected int spirit;				// Increases Max Special, Magic Resistance
-	
+			
 	// derived stats
 	// offensive
-	protected int attack;				// Power + Equipment + Buffs + Mods, usually affects damage
+	protected int attack;				// Power * Mods (example : mods = inner fire 10% attack bonus)
 	protected float criticalChance;		// Chance to do more damage
 	protected float criticalBonus;		// How much stronger are crits?
 	
 	// defensive
-	protected int armour;				// Contributes to Phys & Mag resistances, gained from buffs and equipment.
+	protected int 	armour;				// Contributes to Phys & Mag resistances, gained from buffs and equipment.
 	protected float physicalResistance;	// Reduces Phys damage taken by %. Value from 0 to 1.
 	protected float magicalResistance;	// Reduces Mag damage taken by %. Value from 0 to 1.
 		
 	protected float blockChance;
 	protected float dodgeChance;
-	
-	public delegate void CharacterStatisticEventHandler(float newValue);
+
+	public bool dirty = true;			// if stat is dirty, everything needs to be recalculated
+
 	public event CharacterStatisticEventHandler onMaxHealthChanged;
 	public event CharacterStatisticEventHandler onMaxSpecialChanged;
 	public event CharacterStatisticEventHandler onCurHealthChanged;
 	public event CharacterStatisticEventHandler onCurSpecialChanged;
-	public event CharacterStatisticEventHandler onLevelChanged;
-	public event CharacterStatisticEventHandler onExpChanged;
-	//public event CharacterStatisticEventHandler onMoneyChanged;
-	//public event CharacterStatisticEventHandler onPowerChanged;
-	//public event CharacterStatisticEventHandler onFinesseChanged;
-	//public event CharacterStatisticEventHandler onVitalityChanged;
-	//public event CharacterStatisticEventHandler onSpiritChanged;
 	//public event CharacterStatisticEventHandler onAttackChanged;
 	//public event CharacterStatisticEventHandler onCritChanceChanged;
 	//public event CharacterStatisticEventHandler onCritBonusChanged;
-	//public event CharacterStatisticEventHandler onAnyOffensiveChanged;
 	//public event CharacterStatisticEventHandler onArmorChanged;
 	//public event CharacterStatisticEventHandler onPhysResChanged;
 	//public event CharacterStatisticEventHandler onMagResChanged;
 	//public event CharacterStatisticEventHandler onBlockChanged;
 	//public event CharacterStatisticEventHandler onDodgeChanged;
-	//public event CharacterStatisticEventHandler onAnyDefensiveChanged;
 	public event CharacterStatisticEventHandler onAnyStatChanged;
+
+	public DerivedStats(BaseStats _base)
+	{
+		_base.onPowerChanged += HandlePowerChanged;
+		_base.onFinesseChanged += HandleFinesseChanged;
+		_base.onSpiritChanged += HandleSpiritChanged;
+		_base.onVitalityChanged += HandleVitalityChanged;
+
+		MaxHealth = _base.Vitality * 10;
+		//CurrentHealth = MaxHealth;
+	}
 
 	public  int CurrentHealth
 	{
@@ -74,7 +70,14 @@ public class CharacterStatistics
 		get { return maxHealth; }
 		set 
 		{ 
+			// scales current health up to new maximum
+			float percentage = 0;
+			if (maxHealth != 0)
+			{
+				percentage =  curHealth/maxHealth;
+			}
 			maxHealth = value;
+			curHealth =(int) percentage * maxHealth;
 			if (onMaxHealthChanged != null)		onMaxHealthChanged(maxHealth);
 			if (onAnyStatChanged != null)		onAnyStatChanged(0);
 		}
@@ -99,75 +102,6 @@ public class CharacterStatistics
 			if (onMaxSpecialChanged != null)	onMaxSpecialChanged(maxSpecial);
 			if (onAnyStatChanged != null)		onAnyStatChanged(0);
 		}
-	}
-
-	public  int Level
-	{
-		get { return level; }
-		set 
-		{ 
-			level = value; 
-			if (onLevelChanged != null)			onLevelChanged(level);			
-			if (onAnyStatChanged != null)		onAnyStatChanged(0);
-		}
-	}
-
-	public  int CurrentExperience
-	{
-		get { return curExperience; }
-		set { 
-			curExperience = value; 			
-			if (onExpChanged != null)			onExpChanged(curExperience);			
-			if (onAnyStatChanged != null)		onAnyStatChanged(0);
-		}
-	}
-
-	public  int MaxExperience
-	{
-		get { return maxExperience; }
-		set { maxExperience = value; }
-	}
-
-	public  int ExperienceBounty
-	{
-		get { return curExperience; }
-		set { curExperience = value; }
-	}
-
-	public  int CurrencyBounty
-	{
-		get { return currency; }
-		set { currency = value; }
-	}
-
-	public  int Currency
-	{
-		get { return currency; }
-		set { currency = value; }
-	}
-
-	public  int Power
-	{
-		get { return power; }
-		set { power = value; }
-	}
-
-	public  int Finesse
-	{
-		get { return finesse; }
-		set { finesse = value; }
-	}
-
-	public  int Vitality
-	{
-		get { return vitality; }
-		set { vitality = value; }
-	}
-
-	public  int Spirit
-	{
-		get { return spirit; }
-		set { spirit = value; }
 	}
 
 	public  int Attack
@@ -223,5 +157,28 @@ public class CharacterStatistics
         // We use the properties because this notifies events tied to the health to also update,
         // in cases such as GUI.
         CurrentHealth = MaxHealth;
-    }
+	}
+	
+	void HandlePowerChanged(float value)
+	{
+		Attack = (int)value;
+	}
+	
+	void HandleFinesseChanged(float value)
+	{
+		criticalChance = value;
+		criticalBonus = value;
+	}
+	
+	void HandleVitalityChanged(float value)
+	{
+		PhysicalResistance = value;
+		MaxHealth = (int)value * 10;
+	}
+	
+	void HandleSpiritChanged(float value)
+	{
+		MagicalResistance = value;
+		MaxSpecial = (int)value * 10;
+	}
 }

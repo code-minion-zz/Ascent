@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -28,7 +28,7 @@ public abstract class Hero : Character
         base.Respawn(position);
 
         // Reset the health
-        characterStatistics.ResetHealth();
+        derivedStats.ResetHealth();
     }
 
     /// <summary>

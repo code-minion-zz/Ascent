@@ -26,10 +26,10 @@ public class ItemEffect
 		MAX
 	}
 
-	CharacterStatistics stats;
+	BaseStats stats;
 
 	#region Properties
-	public CharacterStatistics Stats
+	public BaseStats Stats
 	{
 		get{ return stats; }
 	}

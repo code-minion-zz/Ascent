@@ -31,31 +31,12 @@ public class AccessoryItem : Item
         private set { }
     }
 
-    protected int power;
-    public int Power
-    {
-        get { return power; }
-        set { power = value; }
-    }
-
-    protected int finesse;
-    public int Finesse
-    {
-        get { return finesse; }
-        set { finesse = value; }
-    }
-
-    protected int vitality;
-    public int Vitality
-    {
-        get { return vitality; }
-        set { vitality = value; }
-    }
-
-    protected int spirit;
-    public int Spirit
-    {
-        get { return spirit; }
-        protected set { spirit = value; }
-    }
+	BaseStats stats;
+	
+	#region Properties
+	public BaseStats Stats
+	{
+		get{ return stats; }
+	}
+	#endregion
 }
