@@ -74,7 +74,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 		if (currentButton >= buttonMax)
 		{
-			currentButton = buttonMax - 1;
+			currentButton = 0;
 		}
 
 		return (buttons[currentButton]);

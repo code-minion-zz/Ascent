@@ -52,7 +52,7 @@ public class KeyboardInputDevice : InputDevice
 					if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
 					{
 						value = 0.0f;
-					}
+                    }
 					else if (Input.GetKey(KeyCode.DownArrow))
 					{
 						value = -1.0f;
