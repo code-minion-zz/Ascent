@@ -1149,7 +1149,7 @@ public class UICamera : MonoBehaviour
 	/// Process keyboard and joystick events.
 	/// </summary>
 
-	public void ProcessOthers ()
+	public virtual void ProcessOthers ()
 	{
 		currentTouchID = -100;
 		currentTouch = mController;

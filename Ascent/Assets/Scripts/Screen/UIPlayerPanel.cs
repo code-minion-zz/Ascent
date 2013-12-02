@@ -16,6 +16,10 @@ public abstract class UIPlayerPanel : MonoBehaviour
         get { return input; }
     }
 
+    public bool reenabled = false;
+
+    protected abstract void SetInitialState();
+
     protected abstract void OnUp();
     protected abstract void OnDown();
     protected abstract void OnLeft();
@@ -35,10 +39,10 @@ public abstract class UIPlayerPanel : MonoBehaviour
     protected abstract void OnRightTrigger();
     protected abstract void OnRightBumper();
 
-    //protected virtual void Start()
-    //{
-
-    //}
+    protected virtual void OnEnable()
+    {
+        reenabled = true;
+    }
 
     public virtual void Initialise(Player p)
     {
@@ -54,6 +58,11 @@ public abstract class UIPlayerPanel : MonoBehaviour
 	
 	protected virtual void Update () 
     {
+        if (reenabled)
+        {
+            reenabled = false;
+            SetInitialState();
+        }
 
         if (player != null)
         {

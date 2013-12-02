@@ -11,10 +11,6 @@ public class Game : MonoBehaviour
 	{
 		get 
 		{
-			//if(singleton == null)
-			//{
-			//    Debug.Log("no game");	
-			//}
 			return singleton; 
 		}
 		private set { singleton = value; }
@@ -23,13 +19,14 @@ public class Game : MonoBehaviour
 	// Number of players
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
     public bool visualDebuggerPrefab = true;
+    public string levelName;
+    public GameObject Cameras;
 
 	private List<Player> players;
     private Tower tower;
 
-	public string levelName;
-	private bool loadingLevel = false;
 
+	private bool loadingLevel = false;
 	private bool initialised = false;
 	
 	#endregion	
@@ -77,7 +74,6 @@ public class Game : MonoBehaviour
 		OnEnable();
 
 		DontDestroyOnLoad(gameObject);
-		// Add monoehaviour components
 
 		InputManager.Initialise();
 
@@ -119,6 +115,10 @@ public class Game : MonoBehaviour
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
 			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+            player.transform.localPosition = Vector3.zero;
+            player.transform.localRotation = Quaternion.identity;
+            player.transform.localScale = Vector3.one;
+
 			Player newPlayer = player.GetComponent<Player>();
 			newPlayer.PlayerID = i;
 			players.Add(newPlayer);

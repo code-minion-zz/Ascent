@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Warrior : Hero 
 {
     //bool chargeCollision = false;	
 	
-    public override void Initialise(InputDevice input, HeroSave saveData)
+    public override void Initialise(InputDevice input, HeroSaveData saveData)
     {		
-        characterStatistics = null;
+        baseStatistics = null;
 
         if (saveData != null)
         {
@@ -19,14 +19,17 @@ public class Warrior : Hero
         {
             // Populate the hero with Inventory, stats, basic abilities (if any)
 
-            characterStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+            baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+			derivedStats = new DerivedStats(baseStatistics);
         }
 
         // Attach the weapon mesh
 
         // Load the prefab
+        // TODO: Change this make it more easier to load
         weaponPrefab = Resources.Load("Prefabs/angelic_sword_03") as GameObject;
-        weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
+        //weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
+        weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
 
         if (weaponPrefab == null)
             Debug.Log("Weapon prefab not found");
@@ -35,8 +38,10 @@ public class Warrior : Hero
         // Assign its parent to this object, ideally we will equip it to the players
         // weapon bone.
         weaponPrefab = Instantiate(weaponPrefab) as GameObject;
-        weaponPrefab.transform.parent = weaponSlot.transform;
+        weaponPrefab.transform.parent = weaponSlot;
         weaponPrefab.transform.localPosition = Vector3.zero;
+        weaponPrefab.transform.localRotation = Quaternion.identity;
+        weaponPrefab.transform.localScale = Vector3.one;
 
 
         // Obtain the equiped weapon class from this weapon
@@ -70,6 +75,18 @@ public class Warrior : Hero
 		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
+
+		classStatMod = new Hero.HeroClassStatModifier();
+		classStatMod.PowerAttack = 1f;
+		classStatMod.FinesseCritChance = 1f;
+		classStatMod.FinesseCritBonus = 1f;
+		classStatMod.FinesseDodge = 1f;
+		classStatMod.FinesseBlock = 1f;
+		classStatMod.VitalityHP = 1f;
+		classStatMod.VitalityPhysRes = 1f;
+		classStatMod.VitalityHPRegen = 1f;
+		classStatMod.SpiritSP = 1f;
+		classStatMod.SpiritMagRes = 1f;
     }
 	
 	// public is called once per frame

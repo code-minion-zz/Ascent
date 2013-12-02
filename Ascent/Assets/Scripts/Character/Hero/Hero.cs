@@ -1,18 +1,53 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public abstract class Hero : Character 
 {
+	public struct HeroClassStatModifier
+	{
+		public float PowerAttack;
+		public float FinesseCritChance;
+		public float FinesseCritBonus;
+		public float FinesseDodge;
+		public float FinesseBlock;
+		public float VitalityHP;
+		public float VitalityPhysRes;
+		public float VitalityHPRegen;
+		public float SpiritSP;
+		public float SpiritMagRes;
+
+//		HeroClassStatModifier(float _powerAttack, float _finesseCritChance, 
+//		                      float _finesseCritBonus, float _finesseDodge, 
+//		                      float _finesseBlock, float _vitalityHP, 
+//		                      float _vitalityPhysRes, float _vitalityHpRegen, 
+//		                      float _spiritSP, float _spiritMagRes)
+//		{
+//
+//		}
+	}
+
+	protected HeroClassStatModifier classStatMod;
+
     protected HeroController heroController;
-	protected HeroEquipment equipment;
+	protected Backpack backpack;
 
-    public HeroController HeroController
-    {
-        get { return heroController; }
-    }
+	public HeroClassStatModifier ClassStatMod
+	{
+		get { return classStatMod; }
+	}
 
-	public abstract void Initialise(InputDevice input, HeroSave saveData);
+	public Backpack HeroBackpack
+	{
+		get { return backpack; }
+	}
+
+	public HeroController HeroController
+	{
+		get { return heroController; }
+	}
+
+	public abstract void Initialise(InputDevice input, HeroSaveData saveData);
 
     public void SetColor(Color color)
     {
@@ -28,7 +63,7 @@ public abstract class Hero : Character
         base.Respawn(position);
 
         // Reset the health
-        characterStatistics.ResetHealth();
+        derivedStats.ResetHealth();
     }
 
     /// <summary>

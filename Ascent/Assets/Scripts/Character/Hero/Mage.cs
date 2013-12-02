@@ -16,7 +16,7 @@ public class Mage : Hero
 
     }
 
-	public override void Initialise(InputDevice input, HeroSave saveData)
+	public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
 
     }
