@@ -1017,7 +1017,6 @@ MonoBehaviour:
   allowMultiTouch: 1
   useKeyboard: 1
   useController: 1
-  stickyPress: 1
   stickyTooltip: 1
   tooltipDelay: 1
   mouseDragThreshold: 4
@@ -1081,13 +1080,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 0}
   mBG: {fileID: 0}
   mFG: {fileID: 11400068}
   mValue: 0
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 0}
   foreground: {fileID: 400032}
   rawValue: 0
   direction: 2
@@ -1141,13 +1140,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 0}
   mBG: {fileID: 0}
   mFG: {fileID: 11400046}
   mValue: 0
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 0}
   foreground: {fileID: 400020}
   rawValue: 0
   direction: 2
@@ -1831,13 +1830,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 0}
   mBG: {fileID: 0}
   mFG: {fileID: 11400026}
   mValue: 0
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 0}
   foreground: {fileID: 400012}
   rawValue: 0
   direction: 2
@@ -2499,6 +2498,7 @@ MonoBehaviour:
   generateNormals: 0
   widgetsAreStatic: 0
   cullWhileDragging: 0
+  alwaysOnScreen: 0
   worldToLocal:
     e00: 239.999985
     e01: 0

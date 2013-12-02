@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -8,7 +8,7 @@ public class StatBar : MonoBehaviour {
 	
 	public UISprite barBack;
 	public UISprite barFront;
-	private CharacterStatistics ownerStat;
+	private Character owner;
 	private float defaultWidth;
 	
 	private float maxVal;
@@ -42,9 +42,9 @@ public class StatBar : MonoBehaviour {
         //AdjustBar();
 	}
 	
-	public void Init(eStat stat, CharacterStatistics charStat)
+	public void Init(eStat stat, Character _character)
 	{
-		ownerStat = charStat;
+		owner = _character;
 
 		TrackStat = stat;
 
@@ -52,27 +52,27 @@ public class StatBar : MonoBehaviour {
 		{
 			case eStat.HP:
 			{
-				maxVal = ownerStat.MaxHealth;
-				curVal = ownerStat.CurrentHealth;
-				ownerStat.onMaxHealthChanged += OnMaxValueChanged;
-				ownerStat.onCurHealthChanged += OnCurValueChanged;
+				maxVal = owner.DerivedStats.MaxHealth;
+				curVal = owner.DerivedStats.CurrentHealth;
+				owner.DerivedStats.onMaxHealthChanged += OnMaxValueChanged;
+				owner.DerivedStats.onCurHealthChanged += OnCurValueChanged;
 				barFront.color = Color.red;
 			}
 			break;
 			case eStat.SP:
 			{
-				maxVal = ownerStat.MaxSpecial;
-				curVal = ownerStat.CurrentSpecial;
-				ownerStat.onMaxSpecialChanged += OnMaxValueChanged;
-				ownerStat.onCurSpecialChanged += OnCurValueChanged;
+				maxVal = owner.DerivedStats.MaxSpecial;
+				curVal = owner.DerivedStats.CurrentSpecial;
+				owner.DerivedStats.onMaxSpecialChanged += OnMaxValueChanged;
+				owner.DerivedStats.onCurSpecialChanged += OnCurValueChanged;
 				barFront.color = Color.blue;
 			}
 			break;
 			case eStat.EXP:
 			{
 				maxVal = 100f;	// we assume that EXP caps at 100
-				curVal = ownerStat.CurrentExperience;
-				ownerStat.onExpChanged += OnCurValueChanged;
+				curVal = owner.CharacterStats.CurrentExperience;
+				owner.CharacterStats.onExpChanged += OnCurValueChanged;
 				barFront.color = Color.yellow;
 			}
 			break;
@@ -89,15 +89,15 @@ public class StatBar : MonoBehaviour {
 		switch (TrackStat)
 		{
 		case eStat.HP:
-			ownerStat.onMaxHealthChanged -= OnMaxValueChanged;
-			ownerStat.onCurHealthChanged -= OnCurValueChanged;
+			owner.DerivedStats.onMaxHealthChanged -= OnMaxValueChanged;
+			owner.DerivedStats.onCurHealthChanged -= OnCurValueChanged;
 			break;
 		case eStat.SP:
-			ownerStat.onMaxSpecialChanged -= OnMaxValueChanged;
-			ownerStat.onCurSpecialChanged -= OnCurValueChanged;
+			owner.DerivedStats.onMaxSpecialChanged -= OnMaxValueChanged;
+			owner.DerivedStats.onCurSpecialChanged -= OnCurValueChanged;
 			break;
 		case eStat.EXP:
-			ownerStat.onExpChanged -= OnCurValueChanged;
+			owner.CharacterStats.onExpChanged -= OnCurValueChanged;
 			break;
 		}
 		gameObject.SetActive(false);

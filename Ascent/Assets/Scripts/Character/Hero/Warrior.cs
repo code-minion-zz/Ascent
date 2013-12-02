@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Warrior : Hero 
@@ -7,7 +7,7 @@ public class Warrior : Hero
 	
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {		
-        characterStatistics = null;
+        baseStatistics = null;
 
         if (saveData != null)
         {
@@ -19,7 +19,8 @@ public class Warrior : Hero
         {
             // Populate the hero with Inventory, stats, basic abilities (if any)
 
-            characterStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+            baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+			derivedStats = new DerivedStats(baseStatistics);
         }
 
         // Attach the weapon mesh
@@ -74,8 +75,18 @@ public class Warrior : Hero
 		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
-
-        AddSkill(new WarStomp());
+		AddSkill(new WarStomp());
+		classStatMod = new Hero.HeroClassStatModifier();
+		classStatMod.PowerAttack = 1f;
+		classStatMod.FinesseCritChance = 1f;
+		classStatMod.FinesseCritBonus = 1f;
+		classStatMod.FinesseDodge = 1f;
+		classStatMod.FinesseBlock = 1f;
+		classStatMod.VitalityHP = 1f;
+		classStatMod.VitalityPhysRes = 1f;
+		classStatMod.VitalityHPRegen = 1f;
+		classStatMod.SpiritSP = 1f;
+		classStatMod.SpiritMagRes = 1f;
     }
 	
 	// public is called once per frame

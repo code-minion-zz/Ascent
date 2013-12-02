@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,7 +44,7 @@ public abstract class Enemy : Character
 	public virtual void Initialise()
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
-		hpBar.Init(StatBar.eStat.HP, characterStatistics);
+		hpBar.Init(StatBar.eStat.HP, this);
 		hpBar.gameObject.SetActive(false);
 	}
 
@@ -73,7 +73,7 @@ public abstract class Enemy : Character
 			{
 				if (updateHpBar)
 				{
-					if (characterStatistics.CurrentHealth != characterStatistics.MaxHealth)
+					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
 						if (!hpBar.gameObject.activeInHierarchy)
 							hpBar.gameObject.SetActive(true);
