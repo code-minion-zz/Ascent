@@ -28,6 +28,8 @@ public abstract class ItemProperty
 
 		MAX_CONDITION
 	}
+
+	public Trigger ipTrigger;
 }
 
 public class ConstantStatItemProperty : ItemProperty

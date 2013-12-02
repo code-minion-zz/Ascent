@@ -51,6 +51,11 @@ public abstract class Item
         protected set { baseValue = value; }
     }
 
+	public BetterList<ItemProperty> ItemProperties
+	{
+		get { return itemProperties; }
+	}
+
     protected virtual int CalculateSellValue()
     {
         // TODO: Find a formula for this. Or retrieve the value from elsewhere.

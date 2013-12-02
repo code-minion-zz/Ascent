@@ -4,13 +4,48 @@ using System.Collections.Generic;
 
 public abstract class Hero : Character 
 {
-    protected HeroController heroController;
-	protected HeroBackpack backpack;
+	public struct HeroClassStatModifier
+	{
+		public float PowerAttack;
+		public float FinesseCritChance;
+		public float FinesseCritBonus;
+		public float FinesseDodge;
+		public float FinesseBlock;
+		public float VitalityHP;
+		public float VitalityPhysRes;
+		public float VitalityHPRegen;
+		public float SpiritSP;
+		public float SpiritMagRes;
 
-    public HeroController HeroController
-    {
-        get { return heroController; }
-    }
+//		HeroClassStatModifier(float _powerAttack, float _finesseCritChance, 
+//		                      float _finesseCritBonus, float _finesseDodge, 
+//		                      float _finesseBlock, float _vitalityHP, 
+//		                      float _vitalityPhysRes, float _vitalityHpRegen, 
+//		                      float _spiritSP, float _spiritMagRes)
+//		{
+//
+//		}
+	}
+
+	protected HeroClassStatModifier classStatMod;
+
+    protected HeroController heroController;
+	protected Backpack backpack;
+
+	public HeroClassStatModifier ClassStatMod
+	{
+		get { return classStatMod; }
+	}
+
+	public Backpack HeroBackpack
+	{
+		get { return backpack; }
+	}
+
+	public HeroController HeroController
+	{
+		get { return heroController; }
+	}
 
 	public abstract void Initialise(InputDevice input, HeroSaveData saveData);
 

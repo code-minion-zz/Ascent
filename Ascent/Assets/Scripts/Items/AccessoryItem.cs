@@ -16,11 +16,11 @@ public class AccessoryItem : Item
 	BaseStats stats;
 	
 	#region Properties
-	public BetterList<ItemProperty> ItemProperties
-	{
-		get { return itemProperties; }
-		protected set { itemProperties = value; }
-	}
+//	public BetterList<ItemProperty> ItemProperties
+//	{
+//		get { return itemProperties; }
+//		protected set { itemProperties = value; }
+//	}
 	public int Durability
 	{
 		get { return durability; }

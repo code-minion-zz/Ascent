@@ -34,6 +34,7 @@ public abstract class Character : MonoBehaviour
 	protected BaseStats 			baseStatistics;
 	protected DerivedStats			derivedStats;
 	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+	protected BetterList<Buff>		buffList = new BetterList<Buff>();
 
     public Transform WeaponSlot
     {
@@ -69,6 +70,11 @@ public abstract class Character : MonoBehaviour
     {
         get { return lastObjectsDamagedBy; }
     }
+
+	public BetterList<Buff> BuffList
+	{
+		get { return buffList; }
+	}
 
     /// <summary>
     /// Returns true if the character is dead. 
