@@ -10,9 +10,6 @@ using System.Collections.Generic;
 /// <summary>
 /// Simple toggle functionality.
 /// </summary>
-/// 
-
-#pragma warning disable 0649
 
 [ExecuteInEditMode]
 [AddComponentMenu("NGUI/Interaction/Toggle")]
@@ -74,9 +71,9 @@ public class UIToggle : UIWidgetContainer
 
 	/// <summary>
 	/// Deprecated functionality. Use the 'group' option instead.
-	/// </summary>
-
-	[HideInInspector][SerializeField] Transform radioButtonRoot;
+    /// </summary>
+#pragma warning disable 0649
+    [HideInInspector][SerializeField] Transform radioButtonRoot;
 	[HideInInspector][SerializeField] bool startsChecked;
 	[HideInInspector][SerializeField] UISprite checkSprite;
 	[HideInInspector][SerializeField] Animation checkAnimation;
@@ -99,7 +96,22 @@ public class UIToggle : UIWidgetContainer
 	[System.Obsolete("Use 'value' instead")]
 	public bool isChecked { get { return value; } set { this.value = value; } }
 
-	void OnEnable ()  { list.Add(this); }
+	/// <summary>
+	/// Return the first active toggle within the specified group.
+	/// </summary>
+
+	static public UIToggle GetActiveToggle (int group)
+	{
+		for (int i = 0; i < list.size; ++i)
+		{
+			UIToggle toggle = list[i];
+			if (toggle != null && toggle.group == group && toggle.mIsActive)
+				return toggle;
+		}
+		return null;
+	}
+
+	void OnEnable () { list.Add(this); }
 	void OnDisable () { list.Remove(this); }
 
 	/// <summary>

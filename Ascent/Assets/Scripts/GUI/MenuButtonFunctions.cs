@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("UI/Functionality/Load Level")]
 public class MenuButtonFunctions : MonoBehaviour 
 {
 	

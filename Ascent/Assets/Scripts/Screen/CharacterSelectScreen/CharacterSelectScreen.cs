@@ -14,7 +14,7 @@ public class CharacterSelectScreen : MonoBehaviour
 	private List<Transform> charSelectPanel = new List<Transform>(3);
 	private List<Transform> readyLabels = new List<Transform>(4);
 
-    private List<UIPlayerPanel> playerPanel = new List<UIPlayerPanel>(3);
+    private List<UIHeroSelectPanelContainer> playerPanels = new List<UIHeroSelectPanelContainer>(3);
 
 	private int nextEmptyPlayerSlot = 0;
 
@@ -32,13 +32,13 @@ public class CharacterSelectScreen : MonoBehaviour
 		xform = xform.FindChild("Background");
 
 		charSelectPanel.Add(xform.FindChild("Player 1 Panel"));
-        //playerPanel.Add(charSelectPanel[0].GetComponent<UIPlayerPanel>());
+        playerPanels.Add(charSelectPanel[0].GetComponent<UIHeroSelectPanelContainer>());
 		charSelectPanel[0].gameObject.SetActive(false);
 		charSelectPanel.Add(xform.FindChild("Player 2 Panel"));
-        //playerPanel.Add(charSelectPanel[1].GetComponent<UIPlayerPanel>());
+        playerPanels.Add(charSelectPanel[1].GetComponent<UIHeroSelectPanelContainer>());
 		charSelectPanel[1].gameObject.SetActive(false);
 		charSelectPanel.Add(xform.FindChild("Player 3 Panel"));
-        //playerPanel.Add(charSelectPanel[2].GetComponent<UIPlayerPanel>());
+        playerPanels.Add(charSelectPanel[2].GetComponent<UIHeroSelectPanelContainer>());
 		charSelectPanel[2].gameObject.SetActive(false);
 
 		readyLabels.Add(xform.FindChild("Ready 1"));
@@ -96,11 +96,11 @@ public class CharacterSelectScreen : MonoBehaviour
 			if (readyLabels[p.PlayerID].GetComponent<UILabel>().color == Color.red &&
 				(p.Input.Start.WasPressed || p.Input.A.WasPressed))
 			{
-				// Player wants to ready up
-				readyLabels[p.PlayerID].GetComponent<UILabel>().color = Color.green;
-				readyLabels[p.PlayerID].GetComponent<UILabel>().text = "Ready";
+                //// Player wants to ready up
+                //readyLabels[p.PlayerID].GetComponent<UILabel>().color = Color.green;
+                //readyLabels[p.PlayerID].GetComponent<UILabel>().text = "Ready";
 
-				allReady = CheckAllPlayersReady();
+                //allReady = CheckAllPlayersReady();
 			}
 			else if (p.Input.B.WasPressed)
 			{

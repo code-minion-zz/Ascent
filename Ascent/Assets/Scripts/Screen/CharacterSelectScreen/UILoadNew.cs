@@ -15,22 +15,22 @@ public class UILoadNew : UIPlayerPanel
 
     UIButton[] buttons = new UIButton[(int)Button.Max];
 
-    void Start()
+    void Awake()
     {
-
-    }
-
-    void OnEnable()
-    {
-        Button currentButton = Button.Load;
-
         // Grab button references
         buttons[(int)Button.Load] = transform.FindChild("Load Button").GetComponent<UIButton>();
         buttons[(int)Button.New] = transform.FindChild("New Button").GetComponent<UIButton>();
-
-        // Select the load button to start
-        UICamera.Notify(buttons[(int)currentButton].gameObject, "OnHover", true);
     }
+
+    //protected override void OnEnable()
+    //{
+    //    base.OnEnable();
+    //}
+
+    //protected void OnDisable()
+    //{
+
+    //}
 
     UIButton NextButton()
     {
@@ -54,6 +54,14 @@ public class UILoadNew : UIPlayerPanel
         }
 
         return (buttons[(int)currentButton]);
+    }
+
+    protected override void SetInitialState()
+    {
+        Button currentButton = Button.Load;
+
+        // Select the load button to start
+        UICamera.Notify(buttons[(int)currentButton].gameObject, "OnHover", true);
     }
 
     protected override void OnUp()
@@ -80,7 +88,15 @@ public class UILoadNew : UIPlayerPanel
 
     protected override void OnA()
     {
-
+        //if (currentButton == Button.Load)
+        //{
+        //    transform.parent.GetComponent<UIHeroSelectPanelContainer>().ChangePanel(UIHeroSelectPanelContainer.ActivePanel.LoadHero);
+        //}
+        //else if (currentButton == Button.Load)
+        //{
+        //}
+        //UICamera.Notify(buttons[(int)currentButton].gameObject, "OnPress", true);
+        //UICamera.Notify(buttons[(int)currentButton].gameObject, "OnClick", true);
     }
 
     protected override void OnB()

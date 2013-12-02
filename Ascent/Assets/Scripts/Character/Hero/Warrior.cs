@@ -5,7 +5,7 @@ public class Warrior : Hero
 {
     //bool chargeCollision = false;	
 	
-    public override void Initialise(InputDevice input, HeroSave saveData)
+    public override void Initialise(InputDevice input, HeroSaveData saveData)
     {		
         characterStatistics = null;
 
