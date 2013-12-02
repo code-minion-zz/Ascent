@@ -5,13 +5,14 @@ using System.Collections.Generic;
 public abstract class ItemProperty 
 {
 	protected Hero hero;
+	int trigger;
 
 	public virtual void Initialise(Hero hero)
 	{
 		this.hero = hero;
 	}
 
-	enum Condition
+	public enum Trigger
 	{
 		INVALID_CONDITION = -1,
 
@@ -41,10 +42,10 @@ public class CriticalHitChanceItemProperty : ItemProperty
 
 public class AuraItemProperty : ItemProperty
 {
-	protected Hero hero;
+	//protected Hero hero;
 	protected AuraAbility aura;
 
-	public void Initialise(Hero hero)
+	public override void Initialise(Hero hero)
 	{
 		base.Initialise(hero);
 
@@ -84,7 +85,7 @@ public class OnDamageTakenItemProperty : ItemProperty
 	protected int chance;
 	protected Ability ability;
 
-	public void Initialise(Hero hero)
+	public override void Initialise(Hero hero)
 	{
 		base.Initialise(hero);
 		//ability = new SpawnSkull();
@@ -104,7 +105,7 @@ public class OnDamageTakenItemProperty : ItemProperty
 	{
 		if( Random.Range(0, 100) > chance)
 		{
-			ability.Activate();
+			ability.Activate(); 
 		}
 	}
 
