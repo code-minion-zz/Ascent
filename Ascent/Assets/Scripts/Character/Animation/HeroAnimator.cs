@@ -95,13 +95,13 @@ public class HeroAnimator : AnimatorController
     public void EnableWeaponCollider()
 	{
 
-        Debug.Log("Enable Collider ");
+        //Debug.Log("Enable Collider ");
         
 	}
 
 	public void DisableWeaponCollider()
 	{
-		Debug.Log ("Disable collider");
+		//Debug.Log ("Disable collider");
 	}
 	
 	// Update is called once per frame
