@@ -6,12 +6,14 @@ public class GameInitialiser : MonoBehaviour
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
     public bool useVisualDebugger = true;
     public int targetFrameRate = 60;
+    public Game.EGameState state = Game.EGameState.MainMenu;
 
     public class GameInitialisationValues
     {
         public bool useVisualDebugger;
         public int targetFrameRate;
         public Character.EHeroClass[] playerCharacterType;
+        public Game.EGameState initialGameState;
 
         // TODO:
         // Player values
@@ -60,11 +62,20 @@ public class GameInitialiser : MonoBehaviour
 
         game.Initialise(new GameInitialisationValues()
         {
+            initialGameState = state,
             useVisualDebugger = useVisualDebugger,
             targetFrameRate = this.targetFrameRate,
             playerCharacterType = this.playerCharacterType,
 
         });
+
+        theGameObject = GameObject.Find("Cameras");
+        if (theGameObject == null)
+        {
+            theGameObject = new GameObject();
+            theGameObject.name = "Cameras";
+            theGameObject.tag = "Cameras";
+        }
 
 
         // Get rid of the game initialiser

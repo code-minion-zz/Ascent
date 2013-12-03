@@ -4,6 +4,16 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
+    public delegate void SceneLoaded();
+    public SceneLoaded OnSceneLoadedEvent;
+
+    public enum EGameState
+    {
+        MainMenu,
+        Town,
+        Tower,
+    }
+
 	#region Fields
 
 	private static Game singleton;
@@ -25,9 +35,15 @@ public class Game : MonoBehaviour
 	private List<Player> players;
     private Tower tower;
 
-
 	private bool loadingLevel = false;
 	private bool initialised = false;
+
+    private EGameState gameState;
+    public EGameState GameState
+    {
+        get { return gameState; }
+        set { gameState = value; }
+    }
 	
 	#endregion	
 	
@@ -66,7 +82,29 @@ public class Game : MonoBehaviour
 
 		visualDebuggerPrefab = initValues.useVisualDebugger;
 
-		Initialise();
+        gameState = initValues.initialGameState;
+
+        Initialise();
+
+        switch (gameState)
+        {
+            case EGameState.MainMenu:
+                {
+
+                }
+                break;
+            case EGameState.Tower:
+                {
+                   tower.InitialiseFloor();
+                }
+                break;
+            case EGameState.Town:
+                {
+                }
+                break;
+        }
+
+
 	}
 
 	public void Initialise()
@@ -139,6 +177,25 @@ public class Game : MonoBehaviour
 		levelName = level;
 		Application.LoadLevel("LoadingScreen");
 	}
+
+    public void OnSceneLoaded()
+    {
+        if (OnSceneLoadedEvent != null)
+        {
+            OnSceneLoadedEvent.Invoke();
+        }
+    }
+
+    public void OnLevelWasLoaded(int iLevelID)
+    {
+        Debug.Log("Loaded");
+        OnSceneLoaded();
+
+        // Only when coming from the loading screen.
+        // Check which state we heading to. 
+        // Call the appropriate OnSceneLoaded function.
+        // 13th
+    }
 	
 	#endregion
 
