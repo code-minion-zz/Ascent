@@ -4,14 +4,12 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
-    public delegate void SceneLoaded();
-    public SceneLoaded OnSceneLoadedEvent;
-
     public enum EGameState
     {
         MainMenu,
         Town,
         Tower,
+		Loading,
     }
 
 	#region Fields
@@ -35,15 +33,14 @@ public class Game : MonoBehaviour
 	private List<Player> players;
     private Tower tower;
 
-	private bool loadingLevel = false;
-	private bool initialised = false;
-
     private EGameState gameState;
     public EGameState GameState
     {
         get { return gameState; }
         set { gameState = value; }
     }
+
+	private EGameState gameStateToLoad;
 	
 	#endregion	
 	
@@ -86,25 +83,7 @@ public class Game : MonoBehaviour
 
         Initialise();
 
-        switch (gameState)
-        {
-            case EGameState.MainMenu:
-                {
-
-                }
-                break;
-            case EGameState.Tower:
-                {
-                   tower.InitialiseFloor();
-                }
-                break;
-            case EGameState.Town:
-                {
-                }
-                break;
-        }
-
-
+		OnLevelWasLoaded(0);
 	}
 
 	public void Initialise()
@@ -130,6 +109,7 @@ public class Game : MonoBehaviour
 		InputManager.Update();
     }
 
+	// This is a helper function to create players with heroes at any stage of the game
     private void CreatePlayers()
     {
 		players = new List<Player>();
@@ -160,9 +140,6 @@ public class Game : MonoBehaviour
 
 			newPlayer.BindInputDevice(device);
 
-			//newPlayer.SetInputDevice(InputManager.GetDevice(i));
-
-
 			newPlayer.CreateHero(playerCharacterType[i]);
 		}
     }
@@ -172,29 +149,44 @@ public class Game : MonoBehaviour
 		this.players = players;
 	}
 
-	public void LoadLevel(string level)
+	public void LoadLevel(string level, EGameState state)
 	{
+		// This state will be used to handle the initialisation of the new scene
+		gameStateToLoad = state;
+		gameState = EGameState.Loading;
+		
+		// The Loading screen will grab this string and then load the correct scene
 		levelName = level;
+
 		Application.LoadLevel("LoadingScreen");
 	}
 
-    public void OnSceneLoaded()
-    {
-        if (OnSceneLoadedEvent != null)
-        {
-            OnSceneLoadedEvent.Invoke();
-        }
-    }
-
     public void OnLevelWasLoaded(int iLevelID)
     {
-        Debug.Log("Loaded");
-        OnSceneLoaded();
-
         // Only when coming from the loading screen.
-        // Check which state we heading to. 
-        // Call the appropriate OnSceneLoaded function.
-        // 13th
+		switch (gameState)
+		{
+			case EGameState.MainMenu:
+				{
+
+				}
+				break;
+			case EGameState.Tower:
+				{
+					tower.InitialiseFloor();
+				}
+				break;
+			case EGameState.Town:
+				{
+
+				}
+				break;
+			case EGameState.Loading:
+				{
+					gameState = gameStateToLoad;
+				}
+				break;
+		}
     }
 	
 	#endregion

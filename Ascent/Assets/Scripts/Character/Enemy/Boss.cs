@@ -49,16 +49,6 @@ public class Boss : Enemy
     Transform childTarget;
     Vector3 targetPos;
 
-    public override void Start()
-    {
-
-        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-        // TODO: move this.
-        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
-
-        Initialise();
-    }
 
     public override void Update()
     {
@@ -133,6 +123,12 @@ public class Boss : Enemy
 
     public override void Initialise()
     {
+
+		deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+		// TODO: move this.
+		bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
+
         // Grab the AI Rig from Rain AI
         if (ai == null)
         {

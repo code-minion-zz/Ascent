@@ -15,12 +15,12 @@ public class FloorCamera : MonoBehaviour
         get { return floorCamera; }
     }
 
-    public void Awake()
-    {
-        players = Game.Singleton.Players;
-        _transform = transform;
-        floorCamera = GetComponent<Camera>();
-    }
+	public void Initialise()
+	{
+		players = Game.Singleton.Players;
+		_transform = transform;
+		floorCamera = GetComponent<Camera>();
+	}
 
     public void LateUpdate()
     {

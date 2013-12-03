@@ -6,7 +6,7 @@ public class Floor : MonoBehaviour
 {
 	private List<Player> players;
 	private GameObject[] startPoints;
-	private GameObject FloorCamera;
+	private GameObject floorCamera;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -15,7 +15,7 @@ public class Floor : MonoBehaviour
 
 	public Camera MainCamera
 	{
-		get { return FloorCamera.camera; }
+		get { return floorCamera.camera; }
 	}
 
 	public GameObject[] StartPoints
@@ -37,57 +37,63 @@ public class Floor : MonoBehaviour
 
 	public void Initialise()
 	{
-        Debug.Log("INIT");
         //// TODO: Load the prefab for this level
         ////Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
 
-        //// Initialise the players onto the start points
-        //startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
-        //players = Game.Singleton.Players;
+		// Create HUD
+		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD"));
 
-        //for (int i = 0; i < players.Count; ++i)
-        //{
-        //    Vector3 pos = startPoints[i].transform.position;
-        //    players[i].Hero.transform.position = pos;
-        //    players[i].Hero.transform.rotation = Quaternion.identity;
-        //    players[i].Hero.transform.localScale = Vector3.one;
-        //}
+		// Initialise the players onto the start points
+		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+		players = Game.Singleton.Players;
 
-        //// Create the floor's camera
-        //GameObject go = null;
+		for (int i = 0; i < players.Count; ++i)
+		{
+			Vector3 pos = startPoints[i].transform.position;
+			players[i].Hero.transform.position = pos;
+			players[i].Hero.transform.rotation = Quaternion.identity;
+			players[i].Hero.transform.localScale = Vector3.one;
+			players[i].Hero.SetActive(true);
+		}
 
-        //if (orthographicCamera)
-        //{
-        //    go = Resources.Load("Prefabs/FloorCameraOrtho") as GameObject;
-        //}
-        //else
-        //{
-        //    go = Resources.Load("Prefabs/FloorCamera") as GameObject;
-        //}
+		// Create the floor's camera
+		GameObject go = null;
 
-        //FloorCamera = Instantiate(go) as GameObject;
-        //FloorCamera.name = "FloorCamera";
-        //FloorCamera.transform.parent = GameObject.FindGameObjectWithTag("Cameras").transform;
+		if (orthographicCamera)
+		{
+			go = Resources.Load("Prefabs/floorCameraOrtho") as GameObject;
+		}
+		else
+		{
+			go = Resources.Load("Prefabs/floorCamera") as GameObject;
+		}
 
-        //Debug.Log(FloorCamera.transform);
-        //Debug.Log(FloorCamera.transform.parent);
+		floorCamera = Instantiate(go) as GameObject;
+		floorCamera.name = "floorCamera";
 
+		floorCamera.GetComponent<FloorCamera>().Initialise();
 
-        //// Initialise all the enemies
-        //enemies = new List<Enemy>();
+		go = new GameObject();
+		go.name = "Cameras";
+		go.tag = "Cameras";
 
-        //GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+		floorCamera.transform.parent = go.transform;
 
-        //for (int i = 0; i < monsters.Length; ++i )
-        //{
-        //    Enemy thisEnemy = monsters[i].GetComponent<Enemy>();
+		// Initialise all the enemies
+		enemies = new List<Enemy>();
 
-        //    if (thisEnemy != null)
-        //    {
-        //        thisEnemy.Initialise();
-        //        enemies.Add(thisEnemy);
-        //    }
-        //}
+		GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+		for (int i = 0; i < monsters.Length; ++i)
+		{
+			Enemy thisEnemy = monsters[i].GetComponent<Enemy>();
+
+			if (thisEnemy != null)
+			{
+				thisEnemy.Initialise();
+				enemies.Add(thisEnemy);
+			}
+		}
 	}
 
 	public void AddEnemy(Enemy _enemy)
@@ -126,7 +132,7 @@ public class Floor : MonoBehaviour
 	{
 		// Disable the whole floor( audio listener from the camera )
 		enabled = false;
-		FloorCamera.SetActive(false);
+		floorCamera.SetActive(false);
 
 		// Disable input on all heroes
 		foreach (Player player in players)

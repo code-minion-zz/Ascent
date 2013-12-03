@@ -67,34 +67,24 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
         switch(current)
         {
             case EButtons.Warrior:
-                {
-                    // Create this new warrior and assign it to this player
-                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Warrior"));
-                    parent.Player.Hero = go;
-                    go.transform.parent = parent.Player.transform;
-
-                    parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);
+                {  
+					parent.Player.CreateHero(Character.EHeroClass.Warrior);
                 }
                 break;
             case EButtons.Rogue:
                 {
-                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Rogue"));
-                    parent.Player.Hero = go;
-                    go.transform.parent = parent.Player.transform;
-
-                    parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);
+					parent.Player.CreateHero(Character.EHeroClass.Rogue);
                 }
                 break;
             case EButtons.Mage:
                 {
-                    GameObject go = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Mage"));
-                    parent.Player.Hero = go;
-                    go.transform.parent = parent.Player.transform;
-
-                    parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);
+					parent.Player.CreateHero(Character.EHeroClass.Mage);
                 }
                 break;
         }
+
+		parent.Player.Hero.SetActive(false);
+		parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);
     }
 
 

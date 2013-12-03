@@ -98,12 +98,9 @@ public class KeyboardInputDevice : InputDevice
 
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages && value != 0.0f)
 		{
-			if (value != 0.0f)
-			{
-				Debug.Log(name + " " + type + ": " + value);
-			}
+			Debug.Log(name + " " + type + ": " + value);
 		}
 
 		return value;
@@ -138,12 +135,9 @@ public class KeyboardInputDevice : InputDevice
 			case InputControlType.Start: { buttonState = (Input.GetKey(KeyCode.Return) ? true : false); } break;
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages && buttonState)
 		{
-			if (buttonState)
-			{
-				Debug.Log(name + " " + type + ": " + buttonState);
-			}
+			Debug.Log(name + " " + type + ": " + buttonState);
 		}
 
 		return buttonState;

@@ -4,17 +4,8 @@ using System.Collections.Generic;
 
 public class UIHeroSelect_Screen : UIPlayerMenuScreen 
 {
-	private enum EPlayerState
-	{
-		Main_NoHero,
-		Main_HasHero,
-		Main_Ready,
-		LoadHero,
-		NewHero,
-	}
-
 	private const int maxPlayers = 3;
-	private Dictionary<Player, EPlayerState> players = new Dictionary<Player, EPlayerState>();
+	private List<Player> players = new List<Player>();
 	List<Player> playersToRemove = new List<Player>();
 
 	private int nextEmptyPlayerSlot = 0;
@@ -110,8 +101,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 						go.transform.parent = Game.Singleton.transform;
 						Player newPlayer = go.GetComponent<Player>() as Player;
 
-						players[newPlayer] = EPlayerState.Main_HasHero;
-
 						newPlayer.PlayerID = nextEmptyPlayerSlot;
 						newPlayer.name = newPlayer.name + nextEmptyPlayerSlot;
 
@@ -122,6 +111,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 						windows[nextEmptyPlayerSlot].SetPlayer(newPlayer);
 
 						++nextEmptyPlayerSlot;
+
+						players.Add(newPlayer);
 					}
 				}
 			}
@@ -139,13 +130,13 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		// Remove player from game if their device was in use
 		if (device.InUse)
 		{
-			foreach (KeyValuePair<Player, EPlayerState> p in players)
+			foreach (Player p in players)
 			{
-				if (p.Key.Input == device)
+				if (p.Input == device)
 				{
                     foreach (UIPlayerMenuWindow win in windows)
                     {
-                        if(win.Player == p.Key)
+                        if(win.Player == p)
                         {
                             win.CloseWindow();
                         }
@@ -178,6 +169,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
     public void StartGame()
     {
-        Game.Singleton.LoadLevel("Level");
+		Game.Singleton.SetPlayers(players);
+
+        Game.Singleton.LoadLevel("Level", Game.EGameState.Tower);
     }
 }

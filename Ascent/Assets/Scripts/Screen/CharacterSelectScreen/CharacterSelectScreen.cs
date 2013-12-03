@@ -207,7 +207,7 @@ public class CharacterSelectScreen : MonoBehaviour
 		Game.Singleton.SetPlayers(players);
 
 		// On to the next screen.
-		Game.Singleton.LoadLevel(levelToLoad);
+		Game.Singleton.LoadLevel(levelToLoad, Game.EGameState.Tower);
 	}
 
 	public void OnDeviceAttached(InputDevice device)

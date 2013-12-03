@@ -10,11 +10,6 @@ public class Tower : MonoBehaviour
 		set { currentFloor = value; }
 	}
 
-    public void Start()
-    {
-        Game.Singleton.OnSceneLoadedEvent += InitialiseFloor;
-    }
-
     public void InitialiseFloor()
     {
         currentFloor = gameObject.AddComponent<Floor>();

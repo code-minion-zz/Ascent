@@ -4,7 +4,7 @@ using System.Collections;
 public class GameInitialiser : MonoBehaviour 
 {
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool useVisualDebugger = true;
+    public bool useVisualDebugger = false;
     public int targetFrameRate = 60;
     public Game.EGameState state = Game.EGameState.MainMenu;
 
@@ -68,15 +68,6 @@ public class GameInitialiser : MonoBehaviour
             playerCharacterType = this.playerCharacterType,
 
         });
-
-        theGameObject = GameObject.Find("Cameras");
-        if (theGameObject == null)
-        {
-            theGameObject = new GameObject();
-            theGameObject.name = "Cameras";
-            theGameObject.tag = "Cameras";
-        }
-
 
         // Get rid of the game initialiser
         Destroy(this.gameObject);
