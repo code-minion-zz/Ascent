@@ -9,7 +9,7 @@ public class WarStomp : Action
         base.Initialise(owner);
 
         // TODO: remove this from hardcoded animation data.
-        coolDown = 3.0f;
+        animationLength = 3.0f;
         animationTrigger = "WarStomp";
     }
 

@@ -3,7 +3,8 @@ using System.Collections;
 
 public abstract class Action : IAction
 {
-    protected float coolDown = 0.0f;
+    protected float animationLength = 0.0f;
+    protected float coolDownTime = 0.0f;
     protected float currentTime = 0.0f;
     protected string animationTrigger;
 
@@ -26,7 +27,7 @@ public abstract class Action : IAction
 
     public float Length
     {
-        get { return coolDown; }
+        get { return animationLength; }
     }
 
     public virtual void Initialise(Character owner)
@@ -54,7 +55,7 @@ public abstract class Action : IAction
     {
         currentTime += Time.deltaTime;
         UpdateAbility();
-        yield return new WaitForSeconds(coolDown);
+        yield return new WaitForSeconds(animationLength);
         owner.StopAbility();
     }
 }

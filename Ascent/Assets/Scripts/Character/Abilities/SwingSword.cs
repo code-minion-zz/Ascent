@@ -4,32 +4,30 @@ using System.Collections.Generic;
 
 public class SwingSword : Action
 {
-	private const float animationSpeed =3.0f;
+	private const float animationSpeed = 3.0f;
     private int damage = 10;
 
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
-        coolDown = 1.167f;
+        animationLength = 1.167f / animationSpeed;
         animationTrigger = "SwingAttack";
+        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
-        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 
     public override void UpdateAbility()
     {
-        if (currentTime < (coolDown / animationSpeed) * 0.50f) // @ 50% time of the animation
+        if (currentTime <= (animationLength * 0.5f))
         {
-            // TODO: Get damage from the owner and ability formula
             owner.Weapon.SetAttackProperties(damage, Character.EDamageType.Physical);
             owner.Weapon.EnableCollision = true;
         }
-
-        if (currentTime >= (coolDown / animationSpeed))
+        else if (currentTime >= (animationLength))
         {
             owner.StopAbility();
         }
