@@ -137,12 +137,14 @@ public class Floor : MonoBehaviour
 		// Disable input on all heroes
 		foreach (Player player in players)
 		{
-			player.Hero.GetComponent<Hero>().HeroController.DisableInput();
+			//player.Hero.GetComponent<Hero>().HeroController.DisableInput();
 			player.Hero.SetActive(false);
 		}
 
 		// Show summary screen
-		Instantiate(Resources.Load("Prefabs/FloorSummary"));
+		//Instantiate(Resources.Load("Prefabs/FloorSummary"));
+
+        Game.Singleton.LoadLevel("Level2", Game.EGameState.Tower);
 
 		// Enable input on summary screen
 	}
