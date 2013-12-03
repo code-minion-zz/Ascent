@@ -32,6 +32,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		InputManager.OnDeviceDetached += OnDeviceDetached;
 
 		devices = InputManager.Devices;
+
+		GameSaver.LoadAllHeroSaves();
 	}
 
 	public void Update () 

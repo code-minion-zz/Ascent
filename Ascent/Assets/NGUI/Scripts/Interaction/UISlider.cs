@@ -6,6 +6,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+#pragma warning disable 0649
+
 /// <summary>
 /// Extended progress bar that has backwards compatibility logic and adds interaction support.
 /// </summary>
