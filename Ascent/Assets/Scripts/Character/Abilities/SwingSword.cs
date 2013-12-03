@@ -12,24 +12,22 @@ public class SwingSword : Action
         base.Initialise(owner);
         animationLength = 1.167f / animationSpeed;
         animationTrigger = "SwingAttack";
-        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
     }
 
     public override void StartAbility()
     {
+        animationLength = 1.167f / animationSpeed;
+        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
+
         base.StartAbility();
     }
 
     public override void UpdateAbility()
     {
-        if (currentTime <= (animationLength * 0.5f))
+        if (currentTime <= (animationLength * 0.9f))
         {
             owner.Weapon.SetAttackProperties(damage, Character.EDamageType.Physical);
             owner.Weapon.EnableCollision = true;
-        }
-        else if (currentTime >= (animationLength))
-        {
-            owner.StopAbility();
         }
     }
 
