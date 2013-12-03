@@ -75,7 +75,7 @@ public class Warrior : Hero
 		AddSkill(new Whirlwind());
 		
 		AddSkill(new Charge());
-
+		AddSkill(new WarStomp());
 		classStatMod = new Hero.HeroClassStatModifier();
 		classStatMod.PowerAttack = 1f;
 		classStatMod.FinesseCritChance = 1f;

@@ -34,16 +34,16 @@ public class HeroAnimator : AnimatorController
 
     // The following are movement layer states
     // We have a few movement states for the hero which are idle, jumping and running.
-    static int idleState = Animator.StringToHash("Movement." + "Idle");
-    static int jumpState = Animator.StringToHash("Movement." + "JumpRunning");
-    static int movementState = Animator.StringToHash("Movement." + "Movement");
+    static int idleState = Animator.StringToHash("Movement" + "Idle");
+    static int jumpState = Animator.StringToHash("Movement" + "JumpRunning");
+    static int movementState = Animator.StringToHash("Movement" + "Movement");
 
     // Combat layer states
     // Taking a hit, swinging the sword and general combat mode.
     //static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
     static int attackState = Animator.StringToHash("Movement." + "SwingSword");
     static int takingHit = Animator.StringToHash("Movement." + "TakingHit");
-    static int whirlWindAttack = Animator.StringToHash("Movement." + "HelixSpell");
+    static int whirlWindAttack = Animator.StringToHash("Movement." + "WhirlWind");
 
     private Vector3 direction;
     private CharacterController controller;
@@ -86,14 +86,20 @@ public class HeroAnimator : AnimatorController
 
 	}
 
-	// Events called by the animation
-	void EnableWeaponCollider()
-	{
-		Debug.Log ("Enable Collider");
+    public void AnimationBegin()
+    {
+        Debug.Log("War Stomp Begin");
+    }
 
+	// Events called by the animation
+    public void EnableWeaponCollider()
+	{
+
+        Debug.Log("Enable Collider ");
+        
 	}
 
-	void DisableWeaponCollider()
+	public void DisableWeaponCollider()
 	{
 		Debug.Log ("Disable collider");
 	}
@@ -105,26 +111,25 @@ public class HeroAnimator : AnimatorController
 
         gravityVelocity += Physics.gravity * Time.deltaTime;
 
-        //bool attacking = animator.GetBool("SwingAttack");
-        //bool jumping = animator.GetBool("Jump");
-        //bool rolling = animator.GetBool("Roll");
         bool takeHit = animator.GetBool("TakeHit");
         bool whirlWind = animator.GetBool("Whirlwind");
+        bool dying = animator.GetBool("Dying");
 
         for (int layer = 0; layer < layerCount; ++layer)
         {
+            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(layer);
             // Check if we are in the movement or idle state.
-            if (IsActiveState(layer, movementState) ||
-                IsActiveState(layer, idleState))
+            if (state.IsName("Movement") ||
+                state.IsName("Idle"))
             {
                 // We want to only change the direction of the player when we can.
-                if (!takeHit && !whirlWind)
+                if (!takeHit && !whirlWind && !dying)
                 {
                     transform.LookAt(transform.position + direction);
                 }
             }
 
-            if (IsActiveState(layer, whirlWindAttack))
+            if (state.IsName("WhirlWind"))
             {
                 if (!animator.IsInTransition(layer))
                 {
@@ -140,7 +145,7 @@ public class HeroAnimator : AnimatorController
 		
 
             // If the active state is the attack state
-            if (IsActiveState(layer, attackState))
+            if (state.IsName("SwingSword"))
             {
                 if (!animator.IsInTransition(layer))
                 {
@@ -155,7 +160,7 @@ public class HeroAnimator : AnimatorController
 
             // We want the hero to take a hit and stop it
             // when the transition ends.
-            if (IsActiveState(layer, takingHit))
+            if (state.IsName("TakingHit"))
             {
                 if (!animator.IsInTransition(layer))
                 {
@@ -168,7 +173,7 @@ public class HeroAnimator : AnimatorController
             }
 
             // If the hero is jumping
-            if (IsActiveState(layer, jumpState))
+            if (state.IsName("JumpRunning"))
             {
                 //  ..and not still in transition..
                 if (!animator.IsInTransition(layer))
