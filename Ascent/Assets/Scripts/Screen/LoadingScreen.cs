@@ -27,10 +27,11 @@ public class LoadingScreen : MonoBehaviour
 	{
 		float progress = (Application.GetStreamProgressForLevel(levelToLoad));
 		loadingText.text = "Loading: " + (progress * 100.0f) + "%";
-		Debug.Log(loadingText.text);
+		//Debug.Log(loadingText.text);
 		if(progress >= 1.0f)
 		{
-			Debug.Log("Load complete: " + levelToLoad);
+			//Debug.Log("Load complete: " + levelToLoad);
+
 			Application.LoadLevel(levelToLoad);
 		}
 	}

@@ -49,22 +49,6 @@ public class Rat : Enemy
     Transform childTarget;
     Vector3 targetPos;
 
-	public override void Awake()
-	{
-	}
-
-    public override void Start()
-	{
-		Game.Singleton.Tower.CurrentFloor.AddEnemy(this);
-
-        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-        // TODO: move this.
-        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
-
-        Initialise();
-	}
-
     public override void Update()
     {
         base.Update();
@@ -133,6 +117,11 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
+        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+        // TODO: move this.
+        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
+
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{

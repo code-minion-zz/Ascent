@@ -4,23 +4,19 @@ using System.Collections.Generic;
 
 public class UIHeroSelect_Screen : UIPlayerMenuScreen 
 {
-	private enum EPlayerState
-	{
-		Main_NoHero,
-		Main_HasHero,
-		Main_Ready,
-		LoadHero,
-		NewHero,
-	}
-
 	private const int maxPlayers = 3;
-	private Dictionary<Player, EPlayerState> players = new Dictionary<Player, EPlayerState>();
+	private List<Player> players = new List<Player>();
 	List<Player> playersToRemove = new List<Player>();
 
 	private int nextEmptyPlayerSlot = 0;
 
 	List<InputDevice> devices;
 
+    bool allReady = false;
+    public bool AllReady
+    {
+        get { return allReady; }
+    }
 
 	void OnDestroy()
 	{
@@ -36,6 +32,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		InputManager.OnDeviceDetached += OnDeviceDetached;
 
 		devices = InputManager.Devices;
+
+		GameSaver.LoadAllHeroSaves();
 	}
 
 	public void Update () 
@@ -49,23 +47,42 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 			}
 
 			playersToRemove.Clear();
-
-			if (players.Count == 0)
-			{
-				//readyLabels[3].gameObject.SetActive(false);
-			}
 		}
 
-		// Check if players are ready to start or want to leave
-		UpdatePlayerStates();
+        // Check if all players are ready
+        int activePlayers = 0;
+        int readiedPlayers = 0;
+        foreach (UIPlayerMenuWindow win in windows)
+        {
+            if (win.gameObject.activeSelf)
+            {
+                ++activePlayers;
+                if (win.Ready)
+                {
+                    ++readiedPlayers;
+                }
+            }
+        }
+        if (activePlayers > 0)
+        {
+            if (activePlayers == readiedPlayers)
+            {
+                allReady = true;
+            }
+            else
+            {
+                allReady = false;
+            }
+        }
+        else
+        {
+            allReady = false;
+        }
+
+
 
 		// Check if any players want to enter the game
 		AddNewPlayers();
-
-	}
-
-	public void UpdatePlayerStates()
-	{
 
 	}
 
@@ -86,8 +103,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 						go.transform.parent = Game.Singleton.transform;
 						Player newPlayer = go.GetComponent<Player>() as Player;
 
-						players[newPlayer] = EPlayerState.Main_HasHero;
-
 						newPlayer.PlayerID = nextEmptyPlayerSlot;
 						newPlayer.name = newPlayer.name + nextEmptyPlayerSlot;
 
@@ -98,6 +113,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 						windows[nextEmptyPlayerSlot].SetPlayer(newPlayer);
 
 						++nextEmptyPlayerSlot;
+
+						players.Add(newPlayer);
 					}
 				}
 			}
@@ -115,15 +132,17 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		// Remove player from game if their device was in use
 		if (device.InUse)
 		{
-			foreach (KeyValuePair<Player, EPlayerState> p in players)
+			foreach (Player p in players)
 			{
-				if (p.Key.Input == device)
+				if (p.Input == device)
 				{
-					p.Key.Input.InUse = false;
-					p.Key.UnbindInputDevice();
-
-					playersToRemove.Add(p.Key);
-
+                    foreach (UIPlayerMenuWindow win in windows)
+                    {
+                        if(win.Player == p)
+                        {
+                            win.CloseWindow();
+                        }
+                    }
 					continue;
 				}
 			}
@@ -143,8 +162,17 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 	public void CloseWindow(UIHeroSelect_Window window)
 	{
+        window.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.Main);
+        window.ReadyWindow(false);
 		window.Player.Input.InUse = false;
 		window.Player.UnbindInputDevice();
 		playersToRemove.Add(window.Player);
 	}
+
+    public void StartGame()
+    {
+		Game.Singleton.SetPlayers(players);
+
+        Game.Singleton.LoadLevel("Level", Game.EGameState.Tower);
+    }
 }

@@ -22,8 +22,25 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	}
 
 	protected UIPlayerMenuPanel activePanel;
+    public UIPlayerMenuPanel ActivePanel
+    {
+        get { return activePanel; }
+        protected set { activePanel = value; }
+    }
 
 	protected UIPlayerMenuScreen parentScreen;
+    public UIPlayerMenuScreen ParentScreen
+    {
+        get { return parentScreen; }
+        protected set { parentScreen = value; }
+    }
+
+    protected bool ready;
+    public bool Ready
+    {
+        get { return ready; }
+        protected set { ready = value; }
+    }
 
 	public abstract void AddAllMenuPanels();
 	public abstract void TransitionToPanel(int panel);
@@ -32,6 +49,11 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	{
 		gameObject.SetActive(false);
 	}
+
+    public virtual void ReadyWindow(bool ready)
+    {
+        this.ready = ready;
+    }
 
     public virtual void Initialise()
     {
@@ -82,6 +104,11 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 			{
 				InputDevice device = player.Input;
 
+                if (device == null)
+                {
+                    return;
+                }
+
 				// Face
 				if (device.A.WasPressed)
 				{
@@ -113,34 +140,76 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 				}
 
 				// DPad
-				if (device.DPadLeft.WasPressed || device.LeftStickX.WasPressed)
-				{
-					if (OnMenuLeft != null)
-					{
-						OnMenuLeft.Invoke(player.Input);
-					}
-				}
-				else if (device.DPadRight.WasPressed || device.LeftStickX.WasPressed)
-				{
-					if (OnMenuRight != null)
-					{
-						OnMenuRight.Invoke(player.Input);
-					}
-				}
-				if (device.DPadUp.WasPressed || device.LeftStickY.WasPressed)
-				{
-					if (OnMenuUp != null)
-					{
-						OnMenuUp.Invoke(player.Input);
-					}
-				}
-				else if (device.DPadDown.WasPressed || device.LeftStickY.WasPressed)
-				{
-					if (OnMenuDown != null)
-					{
-						OnMenuDown.Invoke(player.Input);
-					}
-				}
+                if (device.LeftStickX.WasPressed)
+                {
+                    if (device.LeftStickX.Value > 0.1f)
+                    {
+                        if (OnMenuRight != null)
+                        {
+                            OnMenuRight.Invoke(player.Input);
+                        }
+                    }
+                    else if (device.LeftStickX.Value < -0.1f)
+                    {
+                        if (OnMenuLeft != null)
+                        {
+                            OnMenuLeft.Invoke(player.Input);
+                        }
+                    }
+                }
+                else
+                {
+				    if (device.DPadLeft.WasPressed || device.LeftStickX.WasPressed)
+				    {
+					    if (OnMenuLeft != null)
+					    {
+						    OnMenuLeft.Invoke(player.Input);
+					    }
+				    }
+				    else if (device.DPadRight.WasPressed || device.LeftStickX.WasPressed)
+				    {
+					    if (OnMenuRight != null)
+					    {
+						    OnMenuRight.Invoke(player.Input);
+					    }
+				    }
+                }
+
+
+                if (device.LeftStickY.WasPressed)
+                {
+                    if (device.LeftStickY.Value > 0.1f)
+                    {
+                        if (OnMenuUp != null)
+                        {
+                            OnMenuUp.Invoke(player.Input);
+                        }
+                    }
+                    else if (device.LeftStickY.Value < -0.1f)
+                    {
+                        if (OnMenuDown != null)
+                        {
+                            OnMenuDown.Invoke(player.Input);
+                        }
+                    }
+                }
+                else
+                {
+                    if (device.DPadUp.WasPressed)
+                    {
+                        if (OnMenuUp != null)
+                        {
+                            OnMenuUp.Invoke(player.Input);
+                        }
+                    }
+                    else if (device.DPadDown.WasPressed)
+                    {
+                        if (OnMenuDown != null)
+                        {
+                            OnMenuDown.Invoke(player.Input);
+                        }
+                    }
+                }
 
 				// Start 
 				if (device.Start.WasPressed)

@@ -155,7 +155,6 @@ public class ActiveAnimation : MonoBehaviour
 
 	void Play (string clipName, Direction playDirection)
 	{
-		Debug.Log(clipName);
 		if (mAnim != null)
 		{
 			// We will sample the animation manually so that it works when the time is paused
