@@ -87,22 +87,6 @@ public class Game : MonoBehaviour
 		tower = GetComponent<Tower>();
 	}
 
-    // This function is always called immediately when Instantiated and is called before the Start() function
-    // The game should add all components here so that they are ready for use when other objects require them.
-    void Awake()
-    {
-		if (GameObject.Find("Game Initialiser") == null)
-		{
-			Initialise();
-		}
-    }
-	
-	// Use this for initialization
-	void Start () 
-	{
-		// Not used atm...
-	}
-
     void Update()
     {
 		InputManager.Update();

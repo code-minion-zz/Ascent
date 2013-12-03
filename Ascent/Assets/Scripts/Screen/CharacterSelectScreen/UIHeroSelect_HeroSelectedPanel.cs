@@ -5,10 +5,16 @@ public class UIHeroSelect_HeroSelectedPanel : UIPlayerMenuPanel
 {
     public override void OnMenuOK(InputDevice device)
     {
+        if (((UIHeroSelect_Screen)parent.ParentScreen).AllReady)
+        {
+            ((UIHeroSelect_Screen)parent.ParentScreen).StartGame();
+        }
+
         if (!parent.Ready)
         {
             parent.ReadyWindow(true);
         }
+
     }
 
     public override void OnMenuCancel(InputDevice device)

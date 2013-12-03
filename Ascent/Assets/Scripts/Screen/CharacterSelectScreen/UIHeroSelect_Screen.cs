@@ -22,7 +22,10 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 	List<InputDevice> devices;
 
     bool allReady = false;
-
+    public bool AllReady
+    {
+        get { return allReady; }
+    }
 
 	void OnDestroy()
 	{
@@ -51,13 +54,9 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 			}
 
 			playersToRemove.Clear();
-
-			if (players.Count == 0)
-			{
-				//readyLabels[3].gameObject.SetActive(false);
-			}
 		}
 
+        // Check if all players are ready
         int activePlayers = 0;
         int readiedPlayers = 0;
         foreach (UIPlayerMenuWindow win in windows)
@@ -86,7 +85,8 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
         {
             allReady = false;
         }
-        Debug.Log(readiedPlayers + " " +allReady);
+
+
 
 		// Check if any players want to enter the game
 		AddNewPlayers();
@@ -175,4 +175,9 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		window.Player.UnbindInputDevice();
 		playersToRemove.Add(window.Player);
 	}
+
+    public void StartGame()
+    {
+        Game.Singleton.LoadLevel("Level");
+    }
 }
