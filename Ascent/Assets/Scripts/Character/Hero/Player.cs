@@ -69,15 +69,14 @@ public class Player : MonoBehaviour
         {
             case Character.EHeroClass.Warrior:
                 {
-                    Debug.Log("Made Warrior");
-                    go = Resources.Load("Prefabs/Warrior") as GameObject;
+                    //go = Resources.Load("Prefabs/Warrior") as GameObject;
+                    go = Resources.Load("Prefabs/OrcWarrior") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.AddComponent<Warrior>();
                 }
                 break;
             case Character.EHeroClass.Rogue:
                 {
-                    Debug.Log("Made Rogue");
                     go = Resources.Load("Prefabs/Rogue") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.AddComponent<Rogue>();
@@ -85,7 +84,6 @@ public class Player : MonoBehaviour
                 break;
            case Character.EHeroClass.Mage:
                 {
-                    Debug.Log("Made Mage");
                     go = Resources.Load("Prefabs/Mage") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.AddComponent<Mage>();

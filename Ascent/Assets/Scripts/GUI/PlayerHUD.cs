@@ -12,9 +12,8 @@ public class PlayerHUD : MonoBehaviour {
 	public void Init(Character _owner)
 	{
 		owner = _owner;
-		hpBar.Init(StatBar.eStat.HP,owner.CharacterStats);
-		spBar.Init(StatBar.eStat.SP,owner.CharacterStats);
-		Debug.Log("PlayerHUD");
+		hpBar.Init(StatBar.eStat.HP,owner);
+		spBar.Init(StatBar.eStat.SP,owner);
 	}
 
 	// Use this for initialization

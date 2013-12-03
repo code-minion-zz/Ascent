@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 
 #pragma warning disable 0162
+#pragma warning disable 0429
 
 public class KeyboardInputDevice : InputDevice
 {
@@ -18,6 +19,10 @@ public class KeyboardInputDevice : InputDevice
 		Initialise();
 	}
 
+	/// <summary>
+	/// Converts keyboard directional input to equivalent Horizontal/Vertical input
+	/// </summary>
+	/// <param name="target">Target Axis</param>
 	protected override float GetAnalogValue(Enum target)
 	{
 		float value = 0.0f;
@@ -48,7 +53,7 @@ public class KeyboardInputDevice : InputDevice
 					if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.DownArrow))
 					{
 						value = 0.0f;
-					}
+                    }
 					else if (Input.GetKey(KeyCode.DownArrow))
 					{
 						value = -1.0f;
@@ -94,12 +99,9 @@ public class KeyboardInputDevice : InputDevice
 
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages && value != 0.0f)
 		{
-			if (value != 0.0f)
-			{
-				Debug.Log(name + " " + type + ": " + value);
-			}
+			Debug.Log(name + " " + type + ": " + value);
 		}
 
 		return value;
@@ -122,10 +124,10 @@ public class KeyboardInputDevice : InputDevice
 			case InputControlType.LeftBumper: { buttonState = (Input.GetKey(KeyCode.Q) ? true : false); } break;
 			case InputControlType.RightBumper: { buttonState = (Input.GetKey(KeyCode.W) ? true : false); } break;
 
-			case InputControlType.DPadUp: { buttonState = (Input.GetKey(KeyCode.Alpha1) ? true : false); } break;
-			case InputControlType.DPadDown: { buttonState = (Input.GetKey(KeyCode.Alpha2) ? true : false); } break;
-			case InputControlType.DPadLeft: { buttonState = (Input.GetKey(KeyCode.Alpha3) ? true : false); } break;
-			case InputControlType.DPadRight: { buttonState = (Input.GetKey(KeyCode.Alpha4) ? true : false); } break;
+            case InputControlType.DPadUp: { buttonState = (Input.GetKey(KeyCode.Alpha1) ? true : false); } break;
+            case InputControlType.DPadDown: { buttonState = (Input.GetKey(KeyCode.Alpha2) ? true : false); } break;
+            case InputControlType.DPadLeft: { buttonState = (Input.GetKey(KeyCode.Alpha3) ? true : false); } break;
+            case InputControlType.DPadRight: { buttonState = (Input.GetKey(KeyCode.Alpha4) ? true : false); } break;
 
 			case InputControlType.LeftStickButton: { buttonState = (Input.GetKey(KeyCode.E) ? true : false); } break;
 			case InputControlType.RightStickButton: { buttonState = (Input.GetKey(KeyCode.R) ? true : false); } break;
@@ -134,12 +136,9 @@ public class KeyboardInputDevice : InputDevice
 			case InputControlType.Start: { buttonState = (Input.GetKey(KeyCode.Return) ? true : false); } break;
 		}
 
-		if (InputManager.debugMessages)
+		if (InputManager.debugMessages && buttonState)
 		{
-			if (buttonState)
-			{
-				Debug.Log(name + " " + type + ": " + buttonState);
-			}
+			Debug.Log(name + " " + type + ": " + buttonState);
 		}
 
 		return buttonState;

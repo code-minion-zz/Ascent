@@ -1,4 +1,4 @@
-﻿// Developed by Mana Khamphanpheng 2013
+// Developed by Mana Khamphanpheng 2013
 
 // Dependencies
 using UnityEngine;
@@ -48,22 +48,6 @@ public class Rat : Enemy
     GameObject aiObject;
     Transform childTarget;
     Vector3 targetPos;
-
-	public override void Awake()
-	{
-	}
-
-    public override void Start()
-	{
-		Game.Singleton.Tower.CurrentFloor.AddEnemy(this);
-
-        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-        // TODO: move this.
-        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
-
-        Initialise();
-	}
 
     public override void Update()
     {
@@ -133,6 +117,11 @@ public class Rat : Enemy
 
 	public override void Initialise()
 	{
+        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+        // TODO: move this.
+        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
+
 		// Grab the AI Rig from Rain AI
 		if (ai == null)
 		{
@@ -155,12 +144,12 @@ public class Rat : Enemy
        // ai.enabled = false;
 
 		// Populate with stats
-        characterStatistics = new CharacterStatistics();
-        characterStatistics.MaxHealth = 80;
-        characterStatistics.CurrentHealth = 80;
-        characterStatistics.Attack = 5;
-        characterStatistics.CurrencyBounty = 1;
-        characterStatistics.ExperienceBounty = 50;
+        baseStatistics = new BaseStats();
+        baseStatistics.Vitality = 8;
+        baseStatistics.CurrencyBounty = 1;
+		baseStatistics.ExperienceBounty = 50;
+		derivedStats = new DerivedStats(baseStatistics);
+		derivedStats.Attack = 5;
 
         // Add abilities
         Action tackle = new EnemyTackle();

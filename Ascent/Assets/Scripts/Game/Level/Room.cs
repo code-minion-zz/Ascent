@@ -28,7 +28,7 @@ public class Room : MonoBehaviour
     void Start()
     {
         // Setup the references to the root node of all
-        FixTreeStructure();
+        //FixTreeStructure();
 
         //Transform monsters = GetNodeByLayer("Monster").transform;
         //Transform items = GetNodeByLayer("Items").transform;

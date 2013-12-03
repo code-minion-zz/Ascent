@@ -65,6 +65,13 @@ public class UIPanel : MonoBehaviour
 	public bool cullWhileDragging = false;
 
 	/// <summary>
+	/// Optimization flag. Makes the assumption that the panel's geometry
+	/// will always be on screen and the bounds don't need to be re-calculated.
+	/// </summary>
+
+	public bool alwaysOnScreen = false;
+
+	/// <summary>
 	/// Matrix that will transform the specified world coordinates to relative-to-panel coordinates.
 	/// </summary>
 
@@ -752,6 +759,8 @@ public class UIPanel : MonoBehaviour
 
 	static public UIDrawCall InsertWidget (UIWidget w)
 	{
+		UIPanel p = w.panel;
+		if (p == null) return null;
 		Material mat = w.material;
 		int depth = w.raycastDepth;
 		BetterList<UIDrawCall> dcs = UIDrawCall.activeList;
@@ -759,6 +768,7 @@ public class UIPanel : MonoBehaviour
 		for (int i = 0; i < dcs.size; ++i)
 		{
 			UIDrawCall dc = dcs.buffer[i];
+			if (dc.manager != p) continue;
 			int dcStart = (i == 0) ? int.MinValue : dcs.buffer[i-1].depthEnd + 1;
 			int dcEnd = (i + 1 == dcs.size) ? int.MaxValue : dcs.buffer[i+1].depthStart - 1;
 			
@@ -1043,6 +1053,7 @@ public class UIPanel : MonoBehaviour
 	void SubmitDrawCall (UIDrawCall dc)
 	{
 		dc.clipping = clipping;
+		dc.alwaysOnScreen = alwaysOnScreen && (clipping == UIDrawCall.Clipping.None || clipping == UIDrawCall.Clipping.ConstrainButDontClip);
 		dc.Set(mVerts, generateNormals ? mNorms : null, generateNormals ? mTans : null, mUvs, mCols);
 		mVerts.Clear();
 		mNorms.Clear();
