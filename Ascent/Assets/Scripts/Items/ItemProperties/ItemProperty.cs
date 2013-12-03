@@ -81,38 +81,3 @@ public class AuraAbility : Ability
 		// Apply effect onto characters in the list
 	}
 }
-
-public class OnDamageTakenItemProperty : ItemProperty
-{
-	protected int chance;
-	protected Ability ability;
-
-	public override void Initialise(Hero hero)
-	{
-		base.Initialise(hero);
-		//ability = new SpawnSkull();
-	}
-
-	public void OnEnable()
-	{
-		hero.OnDamageTaken += OnDamageTaken;
-	}
-
-	public void OnDisable()
-	{
-		hero.OnDamageTaken -= OnDamageTaken;
-	}
-
-	public void OnDamageTaken()
-	{
-		if( Random.Range(0, 100) > chance)
-		{
-			ability.Activate(); 
-		}
-	}
-
-	public void OnTargetHit(Character target)
-	{
-
-	}
-}
