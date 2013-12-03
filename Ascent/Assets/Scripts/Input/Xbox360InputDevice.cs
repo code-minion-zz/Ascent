@@ -79,6 +79,7 @@ public class Xbox360InputDevice : InputDevice
 
 		}
 
+#pragma warning disable 0162
 		if (InputManager.debugMessages)
 		{
 			if (value != 0.0f)
@@ -118,6 +119,7 @@ public class Xbox360InputDevice : InputDevice
 			case InputControlType.Start: { buttonState = (state.Buttons.Start == ButtonState.Pressed ? true : false); } break;
 		}
 
+#pragma warning disable 0162
 		if (InputManager.debugMessages)
 		{
 			if (buttonState)

@@ -98,6 +98,7 @@ public class KeyboardInputDevice : InputDevice
 
 		}
 
+#pragma warning disable 0162
 		if (InputManager.debugMessages && value != 0.0f)
 		{
 			Debug.Log(name + " " + type + ": " + value);
@@ -135,6 +136,7 @@ public class KeyboardInputDevice : InputDevice
 			case InputControlType.Start: { buttonState = (Input.GetKey(KeyCode.Return) ? true : false); } break;
 		}
 
+#pragma warning disable 0162
 		if (InputManager.debugMessages && buttonState)
 		{
 			Debug.Log(name + " " + type + ": " + buttonState);
