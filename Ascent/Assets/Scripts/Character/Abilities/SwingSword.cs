@@ -24,7 +24,9 @@ public class SwingSword : Action
 
     public override void UpdateAbility()
     {
-        if (currentTime <= (animationLength * 0.9f))
+        base.UpdateAbility();
+
+        if (currentTime >= (animationLength * 0.5f))
         {
             owner.Weapon.SetAttackProperties(damage, Character.EDamageType.Physical);
             owner.Weapon.EnableCollision = true;
