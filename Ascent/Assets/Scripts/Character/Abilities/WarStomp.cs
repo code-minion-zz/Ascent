@@ -16,6 +16,7 @@ public class WarStomp : Action
         // TODO: remove this from hardcoded animation data.
         animationLength = 3.0f;
         animationTrigger = "WarStomp";
+        coolDownTime = 5.0f;
 
         prefab = Resources.Load("Prefabs/WarStompEffect") as GameObject;
     }
@@ -24,6 +25,7 @@ public class WarStomp : Action
     {
         base.StartAbility();
 
+        // Creation of the stomp
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
         stompObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
