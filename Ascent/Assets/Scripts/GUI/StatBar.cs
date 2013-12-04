@@ -123,10 +123,10 @@ public class StatBar : MonoBehaviour {
 		{
 			barFront.gameObject.SetActive(false);
 		}
-		else
-		{
-			barFront.gameObject.SetActive(true);
-		}
+        //else
+        //{
+        //    barFront.gameObject.SetActive(true);
+        //}
 	}	
 	
 	

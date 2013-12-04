@@ -6,7 +6,7 @@ public class GameInitialiser : MonoBehaviour
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
     public bool useVisualDebugger = false;
     public int targetFrameRate = 60;
-    public Game.EGameState state = Game.EGameState.MainMenu;
+    public Game.EGameState state = Game.EGameState.Tower;
 
     public class GameInitialisationValues
     {

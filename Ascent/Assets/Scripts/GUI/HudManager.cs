@@ -73,7 +73,7 @@ public class HudManager : MonoBehaviour {
 		StatBar statBar = go.GetComponent<StatBar>();
 		enemyBars.Add(statBar);
 		
-		go.layer = LayerMask.NameToLayer("Character");
+		//go.layer = LayerMask.NameToLayer("Character");
 		statBar.transform.parent = anchor.transform;
 		statBar.transform.localScale = characterScale;
 		
