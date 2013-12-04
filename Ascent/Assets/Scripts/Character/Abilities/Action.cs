@@ -40,22 +40,21 @@ public abstract class Action : IAction
     {
         currentTime = 0.0f;
         owner.Animator.PlayAnimation(animationTrigger);
-        owner.StartCoroutine(UpdateAction());
     }
 
-    public abstract void UpdateAbility();
+    public virtual void UpdateAbility()
+    {
+        currentTime += Time.deltaTime;
+
+        if (currentTime >= animationLength)
+        {
+            owner.StopAbility();
+        }
+    }
 
     public virtual void EndAbility()
     {
         owner.Animator.StopAnimation(animationTrigger);
         currentTime = 0.0f;
-    }
-
-    public virtual IEnumerator UpdateAction()
-    {
-        currentTime += Time.deltaTime;
-        UpdateAbility();
-        yield return new WaitForSeconds(animationLength);
-        owner.StopAbility();
     }
 }
