@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WarStompEffect : MonoBehaviour {
+public class WarStompEffect : MonoBehaviour 
+{
 
 	// Use this for initialization
 	void Start () {

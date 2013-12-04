@@ -462,12 +462,13 @@ public class Rat : Enemy
             case "Hero":
                 {
                     Character otherCharacter = other.transform.GetComponent<Character>();
-
                     CollidWithHero(otherCharacter as Hero, other);
                 }
                 break;
         }
 
+        // TODO: Move this somewhere else. Should detect what you hit then determine 
+        // if there should be a stun applied.
         if (ratState == ERatState.ActionCharging)
         {
             ApplyStunEffect(2.5f);
@@ -498,6 +499,8 @@ public class Rat : Enemy
 
         if (ability != null && ability.GetType() == typeof(EnemyCharge))
         {
+            hero.LastObjectsDamagedBy.Add(this);
+
             EnemyCharge charge = ability as EnemyCharge;
             // Apply damage value to other character
             hero.ApplyDamage(charge.damageValue, charge.damageType);

@@ -5,14 +5,24 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class HeroController : MonoBehaviour, IInputEventHandler
 {
-    HeroAnimator heroAnimator;
-    //Weapon heroWeapon;
-    Hero hero;
-    InputDevice input;
+    private HeroAnimator heroAnimator;
+    private Hero hero;
+    private InputDevice input;
+    private bool actionBindingsEnabled = false;
 
     public InputDevice Input
     {
         get { return input; }
+    }
+
+    /// <summary>
+    /// Enables or disables the action binding, what this means is that
+    /// we can repurpose buttons for example the Y button for opening chests.
+    /// </summary>
+    public bool EnableActionBinding
+    {
+        get { return actionBindingsEnabled; }
+        set { actionBindingsEnabled = value; }
     }
 
     #region Intialization
@@ -134,6 +144,15 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 			{
 				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
+
+            if (!actionBindingsEnabled)
+            {
+                // We can bind something to this key.
+                if (device.Y.WasPressed)
+                {
+                    
+                }
+            }
 		}
     }
 
