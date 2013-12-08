@@ -25,6 +25,7 @@ public class GameSaverTests : MonoBehaviour
         textControls = GameObject.Find("Controls").guiText;
         textControls.text += "\n\nSave: " + saveKey + "\n" + 
                             "LoadAll :" + loadAllKey + "\n" +
+							"CreateTestSaves :" + createSavesKey + "\n" +
                             "ChooseSave: Up and Down";
 		textControls.richText = true;
 
@@ -99,6 +100,7 @@ public class GameSaverTests : MonoBehaviour
 			textControls.text = "Controls\n\n";
 			textControls.text += "Save: " + saveKey + "\n" +
 								"LoadAll :" + loadAllKey + "\n" +
+								"CreateTestSaves :" + createSavesKey + "\n" +
 								"ChooseSave: Up and Down";
 			textControls.richText = true;
 

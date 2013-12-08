@@ -18,18 +18,24 @@ static public class NGUIMath
 	/// Lerp function that doesn't clamp the 'factor' in 0-1 range.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public float Lerp (float from, float to, float factor) { return from * (1f - factor) + to * factor; }
 
 	/// <summary>
 	/// Clamp the specified integer to be between 0 and below 'max'.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public int ClampIndex (int val, int max) { return (val < 0) ? 0 : (val < max ? val : max - 1); }
 
 	/// <summary>
 	/// Wrap the index using repeating logic, so that for example +1 past the end means index of '1'.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public int RepeatIndex (int val, int max)
 	{
 		if (max < 1) return 0;
@@ -42,6 +48,8 @@ static public class NGUIMath
 	/// Ensure that the angle is within -180 to 180 range.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public float WrapAngle (float angle)
 	{
 		while (angle > 180f) angle -= 360f;
@@ -53,12 +61,16 @@ static public class NGUIMath
 	/// In the shader, equivalent function would be 'fract'
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public float Wrap01 (float val) { return val - Mathf.FloorToInt(val); }
 
 	/// <summary>
 	/// Convert a hexadecimal character to its decimal value.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public int HexToDecimal (char ch)
 	{
 		switch (ch)
@@ -94,6 +106,8 @@ static public class NGUIMath
 	/// It's coded because int.ToString(format) syntax doesn't seem to be supported by Unity's Flash. It just silently crashes.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public char DecimalToHexChar (int num)
 	{
 		if (num > 15) return 'F';
@@ -107,6 +121,8 @@ static public class NGUIMath
 	/// string.Format("{0,6:X}", num).Replace(' ', '0') doesn't work either. It returns the format string, not the formatted value.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public string DecimalToHex (int num)
 	{
 		num &= 0xFFFFFF;
@@ -128,6 +144,8 @@ static public class NGUIMath
 	/// Convert the specified color to RGBA32 integer format.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public int ColorToInt (Color c)
 	{
 		int retVal = 0;
@@ -142,6 +160,8 @@ static public class NGUIMath
 	/// Convert the specified RGBA32 integer to Color.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public Color IntToColor (int val)
 	{
 		float inv = 1f / 255f;
@@ -157,6 +177,8 @@ static public class NGUIMath
 	/// Convert the specified integer to a human-readable string representing the binary value. Useful for debugging bytes.
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public string IntToBinary (int val, int bits)
 	{
 		string final = "";
@@ -173,6 +195,8 @@ static public class NGUIMath
 	/// Convenience conversion function, allowing hex format (0xRrGgBbAa).
 	/// </summary>
 
+	[System.Diagnostics.DebuggerHidden]
+	[System.Diagnostics.DebuggerStepThrough]
 	static public Color HexToColor (uint val)
 	{
 		return IntToColor((int)val);
@@ -246,47 +270,6 @@ static public class NGUIMath
 		rect.xMax = Mathf.RoundToInt(rect.xMax);
 		rect.yMax = Mathf.RoundToInt(rect.yMax);
 		return ConvertToTexCoords(rect, width, height);
-	}
-
-	/// <summary>
-	/// The much-dreaded half-pixel offset of DirectX9:
-	/// http://drilian.com/2008/11/25/understanding-half-pixel-and-half-texel-offsets/
-	/// </summary>
-
-	static public Vector3 ApplyHalfPixelOffset (Vector3 pos)
-	{
-		RuntimePlatform platform = Application.platform;
-
-		if (platform == RuntimePlatform.WindowsPlayer ||
-			platform == RuntimePlatform.WindowsWebPlayer ||
-			platform == RuntimePlatform.WindowsEditor ||
-			platform == RuntimePlatform.XBOX360)
-		{
-			pos.x = pos.x - 0.5f;
-			pos.y = pos.y + 0.5f;
-		}
-		return pos;
-	}
-
-	/// <summary>
-	/// Per-pixel offset taking scale into consideration.
-	/// If the scale dimension is an odd number, it won't apply the offset.
-	/// This is useful for centered sprites.
-	/// </summary>
-
-	static public Vector3 ApplyHalfPixelOffset (Vector3 pos, Vector3 scale)
-	{
-		RuntimePlatform platform = Application.platform;
-
-		if (platform == RuntimePlatform.WindowsPlayer ||
-			platform == RuntimePlatform.WindowsWebPlayer ||
-			platform == RuntimePlatform.WindowsEditor ||
-			platform == RuntimePlatform.XBOX360)
-		{
-			if (Mathf.RoundToInt(scale.x) == (Mathf.RoundToInt(scale.x * 0.5f) * 2)) pos.x = pos.x - 0.5f;
-			if (Mathf.RoundToInt(scale.y) == (Mathf.RoundToInt(scale.y * 0.5f) * 2)) pos.y = pos.y + 0.5f;
-		}
-		return pos;
 	}
 
 	/// <summary>
@@ -410,6 +393,7 @@ static public class NGUIMath
 
 				for (int j = 0; j < 4; ++j)
 				{
+					//v = root.InverseTransformPoint(corners[j]);
 					v = toLocal.MultiplyPoint3x4(corners[j]);
 					vMax = Vector3.Max(v, vMax);
 					vMin = Vector3.Min(v, vMin);
@@ -426,34 +410,6 @@ static public class NGUIMath
 		}
 		return new Bounds(Vector3.zero, Vector3.zero);
 	}
-
-	/// <summary>
-	/// Convenience function.
-	/// </summary>
-
-	//static public Bounds CalculateRelativeInnerBounds (Transform root, UISprite sprite)
-	//{
-	//    if (sprite.type == UISprite.Type.Sliced)
-	//    {
-	//        Vector3 vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-	//        Vector3 vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-	//        Matrix4x4 toLocal = root.worldToLocalMatrix;
-	//        Vector3[] corners = sprite.innerWorldCorners;
-
-	//        for (int j = 0; j < 4; ++j)
-	//        {
-	//            Vector4 v = toLocal.MultiplyPoint3x4(corners[j]);
-	//            vMax = Vector3.Max(v, vMax);
-	//            vMin = Vector3.Min(v, vMin);
-	//        }
-
-	//        Bounds b = new Bounds(vMin, Vector3.zero);
-	//        b.Encapsulate(vMax);
-	//        return b;
-	//    }
-	//    return CalculateRelativeWidgetBounds(root, sprite.cachedTransform);
-	//}
 
 	/// <summary>
 	/// This code is not framerate-independent:
@@ -643,5 +599,188 @@ static public class NGUIMath
 		else v.y = 0f;
 
 		return v;
+	}
+
+	/// <summary>
+	/// Adjust the widget's position and size.
+	/// </summary>
+
+	static public void AdjustWidget (UIWidget w, Vector3 startLocalPos, int width, int height,
+		Vector3 worldDelta, UIWidget.Pivot pivot, int minWidth, int minHeight)
+	{
+		Transform t = w.cachedTransform;
+		Transform parent = t.parent;
+		Matrix4x4 parentToLocal = (parent != null) ? t.parent.worldToLocalMatrix : Matrix4x4.identity;
+		Matrix4x4 worldToLocal = parentToLocal;
+		Quaternion invRot = Quaternion.Inverse(t.localRotation);
+		worldToLocal = worldToLocal * Matrix4x4.TRS(Vector3.zero, invRot, Vector3.one);
+		Vector3 localDelta = worldToLocal.MultiplyVector(worldDelta);
+
+		float left = 0f;
+		float right = 0f;
+		float top = 0f;
+		float bottom = 0f;
+
+		Vector2 dragPivot = GetPivotOffset(pivot);
+
+		if (dragPivot.x == 0f && dragPivot.y == 1f)
+		{
+			left = localDelta.x;
+			top = localDelta.y;
+		}
+		else if (dragPivot.x == 0f && dragPivot.y == 0.5f)
+		{
+			left = localDelta.x;
+		}
+		else if (dragPivot.x == 0f && dragPivot.y == 0f)
+		{
+			left = localDelta.x;
+			bottom = localDelta.y;
+		}
+		else if (dragPivot.x == 0.5f && dragPivot.y == 1f)
+		{
+			top = localDelta.y;
+		}
+		else if (dragPivot.x == 0.5f && dragPivot.y == 0f)
+		{
+			bottom = localDelta.y;
+		}
+		else if (dragPivot.x == 1f && dragPivot.y == 1f)
+		{
+			right = localDelta.x;
+			top = localDelta.y;
+		}
+		else if (dragPivot.x == 1f && dragPivot.y == 0.5f)
+		{
+			right = localDelta.x;
+		}
+		else if (dragPivot.x == 1f && dragPivot.y == 0f)
+		{
+			right = localDelta.x;
+			bottom = localDelta.y;
+		}
+
+		AdjustWidget(w, startLocalPos, width, height,
+			Mathf.RoundToInt(left), Mathf.RoundToInt(top),
+			Mathf.RoundToInt(right), Mathf.RoundToInt(bottom), minWidth, minHeight);
+	}
+
+	/// <summary>
+	/// Adjust the widget's rectangle based on the specified modifier values.
+	/// </summary>
+
+	static public void AdjustWidget (UIWidget w, Vector3 startLocalPos, int width, int height,
+		int left, int top, int right, int bottom, int minWidth, int minHeight)
+	{
+		Vector2 pivot = w.pivotOffset;
+		Transform t = w.cachedTransform;
+		Quaternion rot = t.localRotation;
+
+		// Centered pivot means adjustments should be done by two pixels instead of 1
+		if (pivot.x == 0.5f)
+		{
+			right = ((right >> 1) << 1);
+			left = ((left >> 1) << 1);
+		}
+
+		if (pivot.y == 0.5f)
+		{
+			bottom = ((bottom >> 1) << 1);
+			top = ((top >> 1) << 1);
+		}
+
+		width += right - left;
+		height += top - bottom;
+
+		// Centered pivot means width and height must be dividable by two
+		if (pivot.x == 0.5f) width = ((width >> 1) << 1);
+		if (pivot.y == 0.5f) height = ((height >> 1) << 1);
+
+		Vector2 rotatedTL = new Vector2(left, top);
+		Vector2 rotatedTR = new Vector2(right, top);
+		Vector2 rotatedBL = new Vector2(left, bottom);
+		Vector2 rotatedBR = new Vector2(right, bottom);
+		Vector2 rotatedL = new Vector2(left, 0f);
+		Vector2 rotatedR = new Vector2(right, 0f);
+		Vector2 rotatedT = new Vector2(0f, top);
+		Vector2 rotatedB = new Vector2(0f, bottom);
+
+		rotatedTL = rot * rotatedTL;
+		rotatedTR = rot * rotatedTR;
+		rotatedBL = rot * rotatedBL;
+		rotatedBR = rot * rotatedBR;
+		rotatedL = rot * rotatedL;
+		rotatedR = rot * rotatedR;
+		rotatedT = rot * rotatedT;
+		rotatedB = rot * rotatedB;
+
+		if (pivot.x == 0f && pivot.y == 1f)
+		{
+			startLocalPos.x += rotatedTL.x;
+			startLocalPos.y += rotatedTL.y;
+		}
+		else if (pivot.x == 1f && pivot.y == 0f)
+		{
+			startLocalPos.x += rotatedBR.x;
+			startLocalPos.y += rotatedBR.y;
+		}
+		else if (pivot.x == 0f && pivot.y == 0f)
+		{
+			startLocalPos.x += rotatedBL.x;
+			startLocalPos.y += rotatedBL.y;
+		}
+		else if (pivot.x == 1f && pivot.y == 1f)
+		{
+			startLocalPos.x += rotatedTR.x;
+			startLocalPos.y += rotatedTR.y;
+		}
+		else if (pivot.x == 0f && pivot.y == 0.5f)
+		{
+			startLocalPos.x += rotatedL.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			startLocalPos.y += rotatedL.y + (rotatedT.y + rotatedB.y) * 0.5f;
+		}
+		else if (pivot.x == 1f && pivot.y == 0.5f)
+		{
+			startLocalPos.x += rotatedR.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			startLocalPos.y += rotatedR.y + (rotatedT.y + rotatedB.y) * 0.5f;
+		}
+		else if (pivot.x == 0.5f && pivot.y == 1f)
+		{
+			startLocalPos.x += rotatedT.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			startLocalPos.y += rotatedT.y + (rotatedL.y + rotatedR.y) * 0.5f;
+		}
+		else if (pivot.x == 0.5f && pivot.y == 0f)
+		{
+			startLocalPos.x += rotatedB.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			startLocalPos.y += rotatedB.y + (rotatedL.y + rotatedR.y) * 0.5f;
+		}
+		else if (pivot.x == 0.5f && pivot.y == 0.5f)
+		{
+			startLocalPos.x += (rotatedL.x + rotatedR.x + rotatedT.x + rotatedB.x) * 0.5f;
+			startLocalPos.y += (rotatedT.y + rotatedB.y + rotatedL.y + rotatedR.y) * 0.5f;
+		}
+		else
+		{
+			Debug.LogWarning("Pivot " + pivot + " dragging is not supported");
+		}
+
+		int minx = Mathf.Max(minWidth, w.minWidth);
+		int miny = Mathf.Max(minHeight, w.minHeight);
+
+		if (width < minx)
+		{
+			startLocalPos.x += Mathf.Lerp(0f, minx - width, pivot.x);
+			width = minx;
+		}
+
+		if (height < miny)
+		{
+			startLocalPos.y -= Mathf.Lerp(miny - height, 0f, pivot.y);
+			height = miny;
+		}
+
+		t.localPosition = startLocalPos;
+		w.width = width;
+		w.height = height;
 	}
 }

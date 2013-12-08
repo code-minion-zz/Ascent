@@ -100,22 +100,42 @@ public abstract class Character : MonoBehaviour
 		{
 			activeAbility.UpdateAbility();
 		}
-    }
 
-    public virtual void UpdateActiveAbility()
-    {
-        if (activeAbility != null)
+        // Update abilities that require cooldown
+        foreach (Action ability in abilities)
         {
-            activeAbility.UpdateAbility();
+            if (ability.IsOnCooldown == true)
+            {
+                Debug.Log("Ability on cooldown: " + ability.Name);
+                ability.UpdateCooldown();
+            }
         }
     }
+
+    //public virtual void UpdateActiveAbility()
+    //{
+    //    if (activeAbility != null)
+    //    {
+    //        activeAbility.UpdateAbility();
+    //    }
+    //}
 
     public virtual void UseAbility(int abilityID)
     {
 		if (activeAbility == null)
 		{
-			abilities[abilityID].StartAbility();
-			activeAbility = abilities[abilityID];
+            Action ability = abilities[abilityID];
+
+            // Make sure the cooldown is off otherwise we cannot use the ability
+            if (ability != null && ability.IsOnCooldown == false)
+            {
+                ability.StartAbility();
+                activeAbility = ability;
+            }
+            else
+            {
+                Debug.Log("Ability: " + ability.Name + " is on cooldown");
+            }
 		}
     }
 
@@ -128,9 +148,15 @@ public abstract class Character : MonoBehaviour
             {
                 Debug.LogError("Could not find and use ability: " + ability);
             }
-
-            action.StartAbility();
-            activeAbility = action;
+            else if (action.IsOnCooldown == false)
+            {
+                action.StartAbility();
+                activeAbility = action;
+            }
+            else
+            {
+                Debug.Log("Ability: " + action.Name + " is on cooldown");
+            }
         }
     }
 

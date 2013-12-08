@@ -45,8 +45,11 @@ public class InputManager : MonoBehaviour
 
 		string[] joystickNames = Input.GetJoystickNames();
 
-		int length = joystickNames.Length;
-		Debug.Log(length + " joysticks attached.");
+		if(InputManager.debugMessages)
+		{
+			int length = joystickNames.Length;
+			Debug.Log(length + " joysticks attached.");
+		}
 
 		//for (int i = 0; i < length; ++i)
 		//{
@@ -163,13 +166,21 @@ public class InputManager : MonoBehaviour
 
 	public static InputDevice GetDevice(int i)
 	{
-		return Devices[i];
+		if (i < Devices.Count)
+		{
+			return Devices[i];
+		}
+		return null;
 	}
 
 	static void AttachDevice(InputDevice inputDevice)
 	{
 		devices.Add(inputDevice);
-		Debug.Log("Connected: " + inputDevice.Name);
+
+		if (InputManager.debugMessages)
+		{
+			Debug.Log("Connected: " + inputDevice.Name);
+		}
 
 		if (OnDeviceAttached != null)
 		{

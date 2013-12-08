@@ -4,6 +4,14 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
+    public enum EGameState
+    {
+        MainMenu,
+        Town,
+        Tower,
+		Loading,
+    }
+
 	#region Fields
 
 	private static Game singleton;
@@ -25,9 +33,14 @@ public class Game : MonoBehaviour
 	private List<Player> players;
     private Tower tower;
 
+    private EGameState gameState;
+    public EGameState GameState
+    {
+        get { return gameState; }
+        set { gameState = value; }
+    }
 
-	private bool loadingLevel = false;
-	private bool initialised = false;
+	private EGameState gameStateToLoad;
 	
 	#endregion	
 	
@@ -66,7 +79,11 @@ public class Game : MonoBehaviour
 
 		visualDebuggerPrefab = initValues.useVisualDebugger;
 
-		Initialise();
+        gameState = initValues.initialGameState;
+
+        Initialise();
+
+		OnLevelWasLoaded(0);
 	}
 
 	public void Initialise()
@@ -87,27 +104,12 @@ public class Game : MonoBehaviour
 		tower = GetComponent<Tower>();
 	}
 
-    // This function is always called immediately when Instantiated and is called before the Start() function
-    // The game should add all components here so that they are ready for use when other objects require them.
-    void Awake()
-    {
-		if (GameObject.Find("Game Initialiser") == null)
-		{
-			Initialise();
-		}
-    }
-	
-	// Use this for initialization
-	void Start () 
-	{
-		// Not used atm...
-	}
-
     void Update()
     {
 		InputManager.Update();
     }
 
+	// This is a helper function to create players with heroes at any stage of the game
     private void CreatePlayers()
     {
 		players = new List<Player>();
@@ -138,9 +140,6 @@ public class Game : MonoBehaviour
 
 			newPlayer.BindInputDevice(device);
 
-			//newPlayer.SetInputDevice(InputManager.GetDevice(i));
-
-
 			newPlayer.CreateHero(playerCharacterType[i]);
 		}
     }
@@ -150,11 +149,45 @@ public class Game : MonoBehaviour
 		this.players = players;
 	}
 
-	public void LoadLevel(string level)
+	public void LoadLevel(string level, EGameState state)
 	{
+		// This state will be used to handle the initialisation of the new scene
+		gameStateToLoad = state;
+		gameState = EGameState.Loading;
+		
+		// The Loading screen will grab this string and then load the correct scene
 		levelName = level;
+
 		Application.LoadLevel("LoadingScreen");
 	}
+
+    public void OnLevelWasLoaded(int iLevelID)
+    {
+        // Only when coming from the loading screen.
+		switch (gameState)
+		{
+			case EGameState.MainMenu:
+				{
+
+				}
+				break;
+			case EGameState.Tower:
+				{
+					tower.InitialiseFloor();
+				}
+				break;
+			case EGameState.Town:
+				{
+
+				}
+				break;
+			case EGameState.Loading:
+				{
+					gameState = gameStateToLoad;
+				}
+				break;
+		}
+    }
 	
 	#endregion
 

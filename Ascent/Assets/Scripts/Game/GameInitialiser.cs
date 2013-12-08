@@ -4,14 +4,16 @@ using System.Collections;
 public class GameInitialiser : MonoBehaviour 
 {
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool useVisualDebugger = true;
+    public bool useVisualDebugger = false;
     public int targetFrameRate = 60;
+    public Game.EGameState state = Game.EGameState.Tower;
 
     public class GameInitialisationValues
     {
         public bool useVisualDebugger;
         public int targetFrameRate;
         public Character.EHeroClass[] playerCharacterType;
+        public Game.EGameState initialGameState;
 
         // TODO:
         // Player values
@@ -60,12 +62,12 @@ public class GameInitialiser : MonoBehaviour
 
         game.Initialise(new GameInitialisationValues()
         {
+            initialGameState = state,
             useVisualDebugger = useVisualDebugger,
             targetFrameRate = this.targetFrameRate,
             playerCharacterType = this.playerCharacterType,
 
         });
-
 
         // Get rid of the game initialiser
         Destroy(this.gameObject);

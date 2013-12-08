@@ -47,7 +47,7 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 
 			if (device.LeftStickButton.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// R Stick
@@ -58,77 +58,81 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 
 			if (device.RightStickButton.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// Face
 			if (device.Action1.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 			if (device.Action2.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
-			if (device.Action3.WasPressed)
-			{
-				hero.UseAbility(0); // pass in the ability binded to this key
-			}
-			if (device.Action4.WasPressed)
-			{
-				hero.UseAbility(0); // pass in the ability binded to this key
-			}
+            //if (device.Action3.WasPressed)
+            //{
+            //    hero.UseAbility(0); // pass in the ability binded to this key
+            //}
+            //if (device.Action4.WasPressed)
+            //{
+            //    hero.UseAbility(0); // pass in the ability binded to this key
+            //}
+            if (device.X.WasReleased)
+            {
+                hero.UseAbility(0);
+            }
 
 			// DPad
 			if (device.DPadLeft.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 			else if (device.DPadRight.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 			if (device.DPadUp.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 			else if (device.DPadDown.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// Start 
 			if (device.Start.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// Back
 			if (device.Back.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// Triggers
-			if (device.LeftTrigger.WasPressed)
+            if (device.LeftTrigger.WasPressed && device.Y.WasReleased)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			if (device.RightTrigger.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 
 			// Bumpers
-			if (device.LeftBumper.WasPressed)
+            if (device.LeftBumper.IsPressed && device.Y.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				hero.UseAbility(4); // pass in the ability binded to this key
 			}
 
 			if (device.RightBumper.WasPressed)
 			{
-				hero.UseAbility(0); // pass in the ability binded to this key
+				//hero.UseAbility(0); // pass in the ability binded to this key
 			}
 		}
     }

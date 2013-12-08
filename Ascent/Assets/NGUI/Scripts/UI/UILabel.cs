@@ -75,7 +75,6 @@ public class UILabel : UIWidget
 
 #if DYNAMIC_FONT
 	Font mActiveTTF = null;
-	UIRoot mRoot;
 #endif
 	bool mShouldBeProcessed = true;
 	string mProcessedText = null;
@@ -745,7 +744,6 @@ public class UILabel : UIWidget
 			mFontStyle = mFont.dynamicFontStyle;
 			mFont = null;
 		}
-		mRoot = NGUITools.FindInParents<UIRoot>(gameObject);
 		SetActiveFont(mTrueTypeFont);
 	}
 
@@ -777,6 +775,17 @@ public class UILabel : UIWidget
 		}
 	}
 #endif
+
+	/// <summary>
+	/// Get the sides of the rectangle relative to the specified transform.
+	/// The order is left, top, right, bottom.
+	/// </summary>
+
+	public override Vector3[] GetSides (Transform relativeTo)
+	{
+		if (hasChanged) ProcessText();
+		return base.GetSides(relativeTo);
+	}
 
 	/// <summary>
 	/// Upgrading labels is a bit different.
@@ -814,6 +823,17 @@ public class UILabel : UIWidget
 
 		if (GetComponent<BoxCollider>() != null)
 			NGUITools.AddWidgetCollider(gameObject, true);
+	}
+
+	/// <summary>
+	/// If the label is anchored it should not auto-resize.
+	/// </summary>
+
+	protected override void OnAnchor ()
+	{
+		if (mOverflow == Overflow.ResizeFreely || mOverflow == Overflow.ResizeHeight)
+			mOverflow = Overflow.ShrinkContent;
+		base.OnAnchor();
 	}
 
 	/// <summary>
@@ -897,6 +917,8 @@ public class UILabel : UIWidget
 
 	protected override void OnStart ()
 	{
+		base.OnStart();
+
 		// Legacy support
 		if (mLineWidth > 0f)
 		{
@@ -967,9 +989,13 @@ public class UILabel : UIWidget
 
 				bool fits = true;
 
-				NGUIText.current.lineWidth  = (mOverflow == Overflow.ResizeFreely) ? 1000000 : Mathf.RoundToInt(lw / mScale);
-				NGUIText.current.lineHeight = (mOverflow == Overflow.ResizeFreely || mOverflow == Overflow.ResizeHeight) ?
-					1000000 : Mathf.RoundToInt(lh / mScale);
+				NGUIText.current.lineWidth = (mOverflow == Overflow.ResizeFreely) ? 1000000 : Mathf.RoundToInt(lw / mScale);
+
+				if (mOverflow == Overflow.ResizeFreely || mOverflow == Overflow.ResizeHeight)
+				{
+					NGUIText.current.lineHeight = 1000000;
+				}
+				else NGUIText.current.lineHeight = Mathf.RoundToInt(lh / mScale);
 
 				if (lw > 0f || lh > 0f)
 				{
@@ -1094,7 +1120,7 @@ public class UILabel : UIWidget
 	void ApplyShadow (BetterList<Vector3> verts, BetterList<Vector2> uvs, BetterList<Color32> cols, int start, int end, float x, float y)
 	{
 		Color c = mEffectColor;
-		c.a *= alpha * mPanel.finalAlpha;
+		c.a *= finalAlpha;
 		Color32 col = (bitmapFont != null && bitmapFont.premultipliedAlpha) ? NGUITools.ApplyPMA(c) : c;
 
 		for (int i = start; i < end; ++i)
@@ -1122,7 +1148,7 @@ public class UILabel : UIWidget
 		int offset = verts.size;
 
 		Color col = color;
-		col.a *= mPanel.finalAlpha;
+		col.a = finalAlpha;
 		if (mFont != null && mFont.premultipliedAlpha) col = NGUITools.ApplyPMA(col);
 
 		string text = processedText;
@@ -1253,6 +1279,7 @@ public class UILabel : UIWidget
 		NGUIText.current.symbolStyle = mSymbols;
 		NGUIText.current.spacingX = mSpacingX;
 		NGUIText.current.spacingY = mSpacingY;
+		NGUIText.current.maxLines = mMaxLineCount;
 #if DYNAMIC_FONT
 		NGUIText.current.pixelDensity = (usePrintedSize && mRoot != null) ? 1f / mRoot.pixelSizeAdjustment : 1f;
 #else
@@ -1297,5 +1324,34 @@ public class UILabel : UIWidget
 				Localization.Localize(UIPopupList.current.value) :
 				UIPopupList.current.value;
 		}
+	}
+
+	/// <summary>
+	/// Convenience function -- wrap the current text given the label's settings and unlimited height.
+	/// </summary>
+
+	public bool Wrap (string text, out string final) { return Wrap(text, out final, 1000000); }
+
+	/// <summary>
+	/// Convenience function -- wrap the current text given the label's settings and the given height.
+	/// </summary>
+
+	public bool Wrap (string text, out string final, int height)
+	{
+		UpdateNGUIText();
+		NGUIText.current.lineHeight = height;
+
+		if (mFont != null)
+		{
+			return mFont.WrapText(text, out final);
+		}
+#if DYNAMIC_FONT
+		else if (mTrueTypeFont != null)
+		{
+			return NGUIText.WrapText(mTrueTypeFont, text, out final);
+		}
+#endif
+		final = null;
+		return false;
 	}
 }

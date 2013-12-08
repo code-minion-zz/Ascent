@@ -63,7 +63,7 @@ public class UIHeroSelect_MainPanel : UIPlayerMenuPanel
 	{
 		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
-		currentSelection = PrevButton();
+		currentSelection = NextButton();
 
 		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
