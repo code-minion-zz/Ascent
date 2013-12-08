@@ -187,11 +187,11 @@ public static class NGUIContextMenu
 
 			NGUIContextMenu.AddSeparator("Create/");
 
-			AddItem("Create/Anchor", false, AddChild<UIAnchor>, target);
 			AddItem("Create/Panel", false, AddPanel, target);
 			AddItem("Create/Scroll View", false, AddScrollView, target);
 			AddItem("Create/Grid", false, AddChild<UIGrid>, target);
 			AddItem("Create/Table", false, AddChild<UITable>, target);
+			AddItem("Create/Anchor (Legacy)", false, AddChild<UIAnchor>, target);
 
 			if (target.GetComponent<UIPanel>() != null)
 			{
@@ -317,10 +317,10 @@ public static class NGUIContextMenu
 	{
 		GameObject go = obj as GameObject;
 		if (go.GetComponent<UIWidget>() != null) go = go.transform.parent.gameObject;
-		go.name = "Scroll View";
 		UIPanel panel = NGUISettings.AddPanel(go);
 		panel.clipping = UIDrawCall.Clipping.SoftClip;
 		panel.gameObject.AddComponent<UIScrollView>();
+		panel.name = "Scroll View";
 		Selection.activeGameObject = panel.gameObject;
 	}
 

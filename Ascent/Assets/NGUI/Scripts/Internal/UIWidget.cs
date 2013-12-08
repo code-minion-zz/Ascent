@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 [ExecuteInEditMode]
 [AddComponentMenu("NGUI/UI/NGUI Widget")]
-public class UIWidget : MonoBehaviour
+public class UIWidget : UIRect
 {
 	/// <summary>
 	/// List of all the active widgets currently present in the scene.
@@ -40,7 +40,39 @@ public class UIWidget : MonoBehaviour
 	[HideInInspector][SerializeField] protected int mHeight = 100;
 	[HideInInspector][SerializeField] protected int mDepth = 0;
 
+	/// <summary>
+	/// If set to 'true', the box collider's dimensions will be adjusted to always match the widget whenever it resizes.
+	/// </summary>
+
+	public bool autoResizeBoxCollider = false;
+
+	/// <summary>
+	/// Hide the widget if it happens to be off-screen.
+	/// </summary>
+
+	public bool hideIfOffScreen = false;
+	
+	protected UIPanel mPanel;
+	protected bool mPlayMode = true;
 	protected Vector4 mDrawRegion = new Vector4(0f, 0f, 1f, 1f);
+
+	bool mStarted = false;
+	Vector3 mDiffPos;
+	Quaternion mDiffRot;
+	Vector3 mDiffScale;
+	Matrix4x4 mLocalToPanel;
+	bool mIsVisible = true;
+	float mLastAlpha = 0f;
+
+	/// <summary>
+	/// Internal usage -- draw call that's drawing the widget.
+	/// </summary>
+
+	[HideInInspector][System.NonSerialized] public UIDrawCall drawCall;
+
+	// Widget's generated geometry
+	protected UIGeometry mGeom = new UIGeometry();
+	protected Vector3[] mCorners = new Vector3[4];
 
 	/// <summary>
 	/// Draw region alters how the widget looks without modifying the widget's rectangle.
@@ -67,43 +99,10 @@ public class UIWidget : MonoBehaviour
 	}
 
 	/// <summary>
-	/// If set to 'true', the box collider's dimensions will be adjusted to always match the widget whenever it resizes.
+	/// Pivot offset in relative coordinates. Bottom-left is (0, 0). Top-right is (1, 1).
 	/// </summary>
 
-	public bool autoResizeBoxCollider = false;
-	
-	protected GameObject mGo;
-	protected Transform mTrans;
-	protected UIPanel mPanel;
-
-	protected bool mChanged = true;
-	protected bool mPlayMode = true;
-
-	bool mStarted = false;
-	Vector3 mDiffPos;
-	Quaternion mDiffRot;
-	Vector3 mDiffScale;
-	Matrix4x4 mLocalToPanel;
-	bool mVisibleByPanel = true;
-	float mLastAlpha = 0f;
-
-	/// <summary>
-	/// Internal usage -- draw call that's drawing the widget.
-	/// </summary>
-
-	[HideInInspector]
-	[System.NonSerialized]
-	public UIDrawCall drawCall;
-
-	// Widget's generated geometry
-	protected UIGeometry mGeom = new UIGeometry();
-	protected Vector3[] mCorners = new Vector3[4];
-
-	/// <summary>
-	/// Whether the widget is visible.
-	/// </summary>
-
-	public bool isVisible { get { return mVisibleByPanel && finalAlpha > 0.001f; } }
+	public Vector2 pivotOffset { get { return NGUIMath.GetPivotOffset(pivot); } }
 
 	/// <summary>
 	/// Widget's width in pixels.
@@ -167,8 +166,9 @@ public class UIWidget : MonoBehaviour
 		{
 			if (mColor != value)
 			{
+				bool alphaChange = (mColor.a != value.a);
 				mColor = value;
-				mChanged = true;
+				Invalidate(alphaChange);
 			}
 		}
 	}
@@ -185,12 +185,10 @@ public class UIWidget : MonoBehaviour
 		}
 		set
 		{
-			Color c = mColor;
-
-			if (c.a != value)
+			if (mColor.a != value)
 			{
-				c.a = value;
-				color = c;
+				mColor.a = value;
+				Invalidate(true);
 			}
 		}
 	}
@@ -199,14 +197,32 @@ public class UIWidget : MonoBehaviour
 	/// Widget's final alpha, after taking the panel's alpha into account.
 	/// </summary>
 
-	public float finalAlpha
+	public override float finalAlpha
 	{
 		get
 		{
-			if (mPanel == null) CreatePanel();
-			return (mPanel != null) ? mColor.a * mPanel.finalAlpha : mColor.a;
+			if (!mIsVisible) return 0f;
+			return (mParent != null) ? mParent.finalAlpha * mColor.a : mColor.a;
 		}
 	}
+
+	/// <summary>
+	/// Same as final alpha, except it doesn't take own visibility into consideration. Used by panels.
+	/// </summary>
+
+	public float cumulativeAlpha
+	{
+		get
+		{
+			return (mParent != null) ? mParent.finalAlpha * mColor.a : mColor.a;
+		}
+	}
+
+	/// <summary>
+	/// Whether the widget is currently visible.
+	/// </summary>
+
+	public bool isVisible { get { return mIsVisible && mGeom != null && mGeom.hasVertices; } }
 
 	/// <summary>
 	/// Change the pivot point and do not attempt to keep the widget in the same place by adjusting its transform.
@@ -265,7 +281,7 @@ public class UIWidget : MonoBehaviour
 			}
 		}
 	}
-	
+
 	/// <summary>
 	/// Depth controls the rendering order -- lowest to highest.
 	/// </summary>
@@ -308,7 +324,7 @@ public class UIWidget : MonoBehaviour
 	/// Local space corners of the widget. The order is bottom-left, top-left, top-right, bottom-right.
 	/// </summary>
 
-	public virtual Vector3[] localCorners
+	public override Vector3[] localCorners
 	{
 		get
 		{
@@ -345,7 +361,7 @@ public class UIWidget : MonoBehaviour
 	/// World-space corners of the widget. The order is bottom-left, top-left, top-right, bottom-right.
 	/// </summary>
 
-	public virtual Vector3[] worldCorners
+	public override Vector3[] worldCorners
 	{
 		get
 		{
@@ -390,32 +406,6 @@ public class UIWidget : MonoBehaviour
 				mDrawRegion.w == 1f ? y1 : Mathf.Lerp(y0, y1, mDrawRegion.w));
 		}
 	}
-
-	/// <summary>
-	/// Whether the widget has some geometry that can be drawn.
-	/// </summary>
-
-	public bool hasVertices { get { return mGeom != null && mGeom.hasVertices; } }
-
-	/// <summary>
-	/// Helper function that calculates the relative offset based on the current pivot.
-	/// X = 0 (left) to 1 (right)
-	/// Y = 0 (bottom) to 1 (top)
-	/// </summary>
-
-	public Vector2 pivotOffset { get { return NGUIMath.GetPivotOffset(pivot); } }
-
-	/// <summary>
-	/// Game object gets cached for speed. Can't simply return 'mGo' set in Awake because this function may be called on a prefab.
-	/// </summary>
-
-	public GameObject cachedGameObject { get { if (mGo == null) mGo = gameObject; return mGo; } }
-
-	/// <summary>
-	/// Transform gets cached for speed. Can't simply return 'mTrans' set in Awake because this function may be called on a prefab.
-	/// </summary>
-
-	public Transform cachedTransform { get { if (mTrans == null) mTrans = transform; return mTrans; } }
 
 	/// <summary>
 	/// Material used by the widget.
@@ -494,12 +484,42 @@ public class UIWidget : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Get the sides of the rectangle relative to the specified transform.
+	/// The order is left, top, right, bottom.
+	/// </summary>
+
+	public override Vector3[] GetSides (Transform relativeTo)
+	{
+		Vector2 offset = pivotOffset;
+
+		float x0 = -offset.x * mWidth;
+		float y0 = -offset.y * mHeight;
+		float x1 = x0 + mWidth;
+		float y1 = y0 + mHeight;
+		float cx = (y0 + y1) * 0.5f;
+		float cy = (x0 + x1) * 0.5f;
+
+		Transform wt = cachedTransform;
+		mCorners[0] = wt.TransformPoint(x0, cx, 0f);
+		mCorners[1] = wt.TransformPoint(cy, y1, 0f);
+		mCorners[2] = wt.TransformPoint(x1, cx, 0f);
+		mCorners[3] = wt.TransformPoint(cy, y0, 0f);
+
+		if (relativeTo != null)
+		{
+			for (int i = 0; i < 4; ++i)
+				mCorners[i] = relativeTo.InverseTransformPoint(mCorners[i]);
+		}
+		return mCorners;
+	}
+
+	/// <summary>
 	/// Adjust the widget's collider size to match the widget's dimensions.
 	/// </summary>
 
 	public void ResizeCollider ()
 	{
-		if (NGUITools.IsActive(this))
+		if (NGUITools.GetActive(this))
 		{
 			BoxCollider box = collider as BoxCollider;
 			if (box != null) NGUITools.UpdateWidgetCollider(box, true);
@@ -569,7 +589,7 @@ public class UIWidget : MonoBehaviour
 		{
 			drawCall.isDirty = true;
 		}
-		else if (isVisible && hasVertices)
+		else if (isVisible)
 		{
 			drawCall = UIPanel.InsertWidget(this);
 		}
@@ -598,9 +618,9 @@ public class UIWidget : MonoBehaviour
 	/// This callback is sent inside the editor notifying us that some property has changed.
 	/// </summary>
 
-	protected virtual void OnValidate()
+	protected override void OnValidate()
 	{
-		mChanged = true;
+		base.OnValidate();
 
 		// Prior to NGUI 2.7.0 width and height was specified as transform's local scale
 		if ((mWidth == 100 || mWidth == minWidth) &&
@@ -626,13 +646,6 @@ public class UIWidget : MonoBehaviour
 #endif
 
 	/// <summary>
-	/// Only sets the local flag, does not notify the panel.
-	/// In most cases you will want to use MarkAsChanged() instead.
-	/// </summary>
-
-	public void MarkAsChangedLite () { mChanged = true; }
-
-	/// <summary>
 	/// Tell the panel responsible for the widget that something has changed and the buffers need to be rebuilt.
 	/// </summary>
 
@@ -644,7 +657,7 @@ public class UIWidget : MonoBehaviour
 		UnityEditor.EditorUtility.SetDirty(this);
 #endif
 		// If we're in the editor, update the panel right away so its geometry gets updated.
-		if (mPanel != null && enabled && NGUITools.GetActive(gameObject) && !Application.isPlaying)
+		if (mPanel != null && enabled && NGUITools.GetActive(gameObject) && !mPlayMode)
 		{
 			SetDirty();
 			CheckLayer();
@@ -663,7 +676,7 @@ public class UIWidget : MonoBehaviour
 	{
 		if (mStarted && mPanel == null && enabled && NGUITools.GetActive(gameObject))
 		{
-			mPanel = UIPanel.Find(cachedTransform, mStarted);
+			mPanel = UIPanel.Find(cachedTransform, mStarted, cachedGameObject.layer);
 
 			if (mPanel != null)
 			{
@@ -685,7 +698,7 @@ public class UIWidget : MonoBehaviour
 				if (!inserted) list.Add(this);
 
 				CheckLayer();
-				mChanged = true;
+				Invalidate(true);
 				drawCall = UIPanel.InsertWidget(this);
 			}
 		}
@@ -709,11 +722,13 @@ public class UIWidget : MonoBehaviour
 	/// Checks to ensure that the widget is still parented to the right panel.
 	/// </summary>
 
-	public void ParentHasChanged ()
+	public override void ParentHasChanged ()
 	{
+		base.ParentHasChanged();
+
 		if (mPanel != null)
 		{
-			UIPanel p = UIPanel.Find(cachedTransform);
+			UIPanel p = UIPanel.Find(cachedTransform, true, cachedGameObject.layer);
 
 			if (mPanel != p)
 			{
@@ -737,9 +752,9 @@ public class UIWidget : MonoBehaviour
 	/// Mark the widget and the panel as having been changed.
 	/// </summary>
 
-	protected virtual void OnEnable ()
+	protected override void OnEnable ()
 	{
-		mChanged = true;
+		base.OnEnable();
 		RemoveFromPanel();
 
 		// Prior to NGUI 2.7.0 width and height was specified as transform's local scale
@@ -767,28 +782,144 @@ public class UIWidget : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Set the depth, call the virtual start function, and sure we have a panel to work with.
+	/// Virtual Start() functionality for widgets.
 	/// </summary>
 
-	void Start ()
+	protected override void OnStart () { mStarted = true; CreatePanel(); }
+
+	/// <summary>
+	/// Update the anchored edges and ensure the widget is registered with a panel.
+	/// </summary>
+
+	protected override void OnAnchor ()
 	{
-		mStarted = true;
-		OnStart();
-		CreatePanel();
+		float lt, bt, rt, tt;
+		Transform trans = cachedTransform;
+		Transform parent = trans.parent;
+		Vector3 pos = trans.localPosition;
+		Vector2 pvt = pivotOffset;
+
+		// Attempt to fast-path if all anchors match
+		if (leftAnchor.target == bottomAnchor.target &&
+			leftAnchor.target == rightAnchor.target &&
+			leftAnchor.target == topAnchor.target)
+		{
+			if (leftAnchor.rect != null)
+			{
+				Vector3[] sides = leftAnchor.rect.GetSides(parent);
+				lt = NGUIMath.Lerp(sides[0].x, sides[2].x, leftAnchor.relative) + leftAnchor.absolute;
+				rt = NGUIMath.Lerp(sides[0].x, sides[2].x, rightAnchor.relative) + rightAnchor.absolute;
+				bt = NGUIMath.Lerp(sides[3].y, sides[1].y, bottomAnchor.relative) + bottomAnchor.absolute;
+				tt = NGUIMath.Lerp(sides[3].y, sides[1].y, topAnchor.relative) + topAnchor.absolute;
+			}
+			else
+			{
+				// Anchored to a single transform
+				Vector2 lp = GetLocalPos(leftAnchor, parent);
+				lt = lp.x + leftAnchor.absolute;
+				bt = lp.y + bottomAnchor.absolute;
+				rt = lp.x + rightAnchor.absolute;
+				tt = lp.y + topAnchor.absolute;
+			}
+		}
+		else
+		{
+			// Left anchor point
+			if (leftAnchor.target)
+			{
+				if (leftAnchor.rect != null)
+				{
+					Vector3[] sides = leftAnchor.rect.GetSides(parent);
+					lt = NGUIMath.Lerp(sides[0].x, sides[2].x, leftAnchor.relative) + leftAnchor.absolute;
+				}
+				else
+				{
+					lt = GetLocalPos(leftAnchor, parent).x + leftAnchor.absolute;
+				}
+			}
+			else lt = pos.x - pvt.x * mWidth;
+
+			// Right anchor point
+			if (rightAnchor.target)
+			{
+				if (rightAnchor.rect != null)
+				{
+					Vector3[] sides = rightAnchor.rect.GetSides(parent);
+					rt = NGUIMath.Lerp(sides[0].x, sides[2].x, rightAnchor.relative) + rightAnchor.absolute;
+				}
+				else
+				{
+					rt = GetLocalPos(rightAnchor, parent).x + rightAnchor.absolute;
+				}
+			}
+			else rt = pos.x - pvt.x * mWidth + mWidth;
+
+			// Bottom anchor point
+			if (bottomAnchor.target)
+			{
+				if (bottomAnchor.rect != null)
+				{
+					Vector3[] sides = bottomAnchor.rect.GetSides(parent);
+					bt = NGUIMath.Lerp(sides[3].y, sides[1].y, bottomAnchor.relative) + bottomAnchor.absolute;
+				}
+				else
+				{
+					bt = GetLocalPos(bottomAnchor, parent).y + bottomAnchor.absolute;
+				}
+			}
+			else bt = pos.y - pvt.y * mHeight;
+
+			// Top anchor point
+			if (topAnchor.target)
+			{
+				if (topAnchor.rect != null)
+				{
+					Vector3[] sides = topAnchor.rect.GetSides(parent);
+					tt = NGUIMath.Lerp(sides[3].y, sides[1].y, topAnchor.relative) + topAnchor.absolute;
+				}
+				else
+				{
+					tt = GetLocalPos(topAnchor, parent).y + topAnchor.absolute;
+				}
+			}
+			else tt = pos.y - pvt.y * mHeight + mHeight;
+		}
+
+		// Calculate the new position, width and height
+		Vector3 newPos = new Vector3(Mathf.Lerp(lt, rt, pvt.x), Mathf.Lerp(bt, tt, pvt.y), pos.z);
+		int w = Mathf.FloorToInt(rt - lt + 0.5f);
+		int h = Mathf.FloorToInt(tt - bt + 0.5f);
+
+		// Don't let the width and height get too small
+		if (w < minWidth) w = minWidth;
+		if (h < minHeight) h = minHeight;
+
+		// Update the position if it has changed
+		if (Vector3.SqrMagnitude(pos - newPos) > 0.001f)
+		{
+			cachedTransform.localPosition = newPos;
+			mChanged = true;
+		}
+
+		// Update the width and height if it has changed
+		if (mWidth != w || mHeight != h)
+		{
+			mWidth = w;
+			mHeight = h;
+			mChanged = true;
+			if (autoResizeBoxCollider) ResizeCollider();
+		}
 	}
 
 	/// <summary>
-	/// Ensure that we have a panel to work with. The reason the panel isn't added in OnEnable()
-	/// is because OnEnable() is called right after Awake(), which is a problem when the widget
-	/// is brought in on a prefab object as it happens before it gets parented.
+	/// Ensure we have a panel to work with.
 	/// </summary>
 
-	public virtual void Update ()
+	protected override void OnUpdate ()
 	{
-		// Ensure we have a panel to work with by now
 		if (mPanel == null) CreatePanel();
 #if UNITY_EDITOR
-		else if (!Application.isPlaying) ParentHasChanged();
+		else if (!mPlayMode) ParentHasChanged();
 #endif
 	}
 
@@ -802,7 +933,11 @@ public class UIWidget : MonoBehaviour
 	/// Clear references.
 	/// </summary>
 
-	protected virtual void OnDisable () { RemoveFromPanel(); }
+	protected override void OnDisable ()
+	{
+		RemoveFromPanel();
+		base.OnDisable();
+	}
 
 	/// <summary>
 	/// Unregister this widget.
@@ -867,7 +1002,7 @@ public class UIWidget : MonoBehaviour
 
 	void OnDrawGizmos ()
 	{
-		if (isVisible && NGUITools.IsActive(this))
+		if (isVisible && NGUITools.GetActive(this))
 		{
 			if (UnityEditor.Selection.activeGameObject == gameObject && showHandles) return;
 
@@ -922,7 +1057,6 @@ public class UIWidget : MonoBehaviour
 		return false;
 	}
 
-	bool mForceVisible = false;
 	Vector3 mOldV0;
 	Vector3 mOldV1;
 
@@ -930,19 +1064,24 @@ public class UIWidget : MonoBehaviour
 	/// Update the widget and fill its geometry if necessary. Returns whether something was changed.
 	/// </summary>
 
-	public bool UpdateGeometry (bool forceVisible)
+	public bool UpdateGeometry (bool visible)
 	{
 		bool hasMatrix = false;
 		float final = finalAlpha;
-		bool visibleByAlpha = (final > 0.001f);
-		bool visibleByPanel = forceVisible || mVisibleByPanel;
 		bool moved = false;
+
+		// Is the visibility changing?
+		if (mIsVisible != visible)
+		{
+			mChanged = true;
+			mIsVisible = visible;
+		}
 
 		// Check to see if the widget has moved relative to the panel that manages it
 		if (HasTransformChanged())
 		{
 #if UNITY_EDITOR
-			if (!mPanel.widgetsAreStatic || !Application.isPlaying)
+			if (!mPanel.widgetsAreStatic || !mPlayMode)
 #else
 			if (!mPanel.widgetsAreStatic)
 #endif
@@ -973,36 +1112,17 @@ public class UIWidget : MonoBehaviour
 					mOldV1 = v1;
 				}
 			}
-
-			// Is the widget visible by the panel?
-			if (visibleByAlpha || mForceVisible != forceVisible)
-			{
-				mForceVisible = forceVisible;
-				visibleByPanel = forceVisible || mPanel.IsVisible(this);
-			}
-		}
-		else if (visibleByAlpha && mForceVisible != forceVisible)
-		{
-			mForceVisible = forceVisible;
-			visibleByPanel = mPanel.IsVisible(this);
-		}
-
-		// Is the visibility changing?
-		if (mVisibleByPanel != visibleByPanel)
-		{
-			mVisibleByPanel = visibleByPanel;
-			mChanged = true;
 		}
 
 		// Has the alpha changed?
-		if (mVisibleByPanel && mLastAlpha != final) mChanged = true;
+		if (visible && mLastAlpha != final) mChanged = true;
 		mLastAlpha = final;
 
 		if (mChanged)
 		{
 			mChanged = false;
 
-			if (isVisible && shader != null)
+			if (mIsVisible && finalAlpha > 0.001f && shader != null)
 			{
 				bool hadVertices = mGeom.hasVertices;
 				mGeom.Clear();
@@ -1076,12 +1196,6 @@ public class UIWidget : MonoBehaviour
 	/// </summary>
 
 	virtual public Vector4 border { get { return Vector4.zero; } }
-
-	/// <summary>
-	/// Virtual Start() functionality for widgets.
-	/// </summary>
-
-	virtual protected void OnStart () { }
 
 	/// <summary>
 	/// Virtual function called by the UIPanel that fills the buffers.
