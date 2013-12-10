@@ -127,6 +127,12 @@ namespace Ascent
                 CreateNewRoom();
             }
 
+            if (GUILayout.Button("Generate Dungeon", GUILayout.Width(buttonSize)))
+            {
+                DungeonGenerator gen = GameObject.FindGameObjectWithTag("World").GetComponent<DungeonGenerator>();
+                gen.GenerateDungeon();
+            }
+
             if (currentRoom != null)
             {
                 EditorGUILayout.BeginVertical();

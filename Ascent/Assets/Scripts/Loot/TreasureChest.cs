@@ -107,36 +107,44 @@ public class TreasureChest : MonoBehaviour
         return time;
     }
 
-    void OnTriggerEnter(Collider enter)
-    {
-        string tag = enter.tag;
-
-        switch (tag)
-        {
-            case "Hero":
-                {
-                    canUse = true;
-                    Hero hero = enter.GetComponent<Hero>();
-                    hero.HeroController.Input.OnY += OnY;
-                }
-                break;
-        }        
-    }
-
-    //void OnTriggerStay(Collider stay)
+    //void OnTriggerEnter(Collider enter)
     //{
-    //    string tag = stay.tag;
+    //    string tag = enter.tag;
 
     //    switch (tag)
     //    {
     //        case "Hero":
     //            {
     //                canUse = true;
-    //                //Hero hero = stay.GetComponent<Hero>();
+    //                Hero hero = enter.GetComponent<Hero>();
+    //                hero.HeroController.Input.OnY += OnY;
     //            }
     //            break;
-    //    }
+    //    }        
     //}
+
+    void OnTriggerStay(Collider stay)
+    {
+        string tag = stay.tag;
+
+        switch (tag)
+        {
+            case "Hero":
+                {
+                    canUse = true;
+                    Hero hero = stay.GetComponent<Hero>();
+                    hero.HeroController.EnableActionBinding = true;
+
+                    Debug.Log("Inside chest open area");
+
+                    if (hero.HeroController.Input.Y.WasPressed)
+                    {
+                        openChest = true;
+                    }
+                }
+                break;
+        }
+    }
 
     void OnTriggerExit(Collider exit)
     {
@@ -147,8 +155,10 @@ public class TreasureChest : MonoBehaviour
             case "Hero":
                 {
                     canUse = false;
+                    // Switch the action keys.
                     Hero hero = exit.GetComponent<Hero>();
-                    hero.HeroController.Input.OnY -= OnY;
+                    hero.HeroController.EnableActionBinding = false;
+                    Debug.Log("Exiting chest open area");
                 }
                 break;
         }

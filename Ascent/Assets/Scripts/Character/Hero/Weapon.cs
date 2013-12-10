@@ -65,9 +65,6 @@ public class Weapon : MonoBehaviour
                     // Sanity check to make sure that the other character still exists
                     if (other != null)
                     {
-                        // Apply damage value to other character
-                        other.ApplyDamage(damage, damageType);
-
                         //other.LastDamagedBy = null;
                         // We can remove this collision as it is no longer in effect.
                         other.LastObjectsDamagedBy.Remove(this);
@@ -154,6 +151,9 @@ public class Weapon : MonoBehaviour
                 return;
         }
 
+        // Now we say ok this enemy was hit by this weapon.
+        other.LastObjectsDamagedBy.Add(this);
+
         // Apply knockback direction by obtaining the distance between weapon pos and enemy pos.
         // We should apply knock back immediatly so that it does not look strange.
         Vector3 ownerPos = owner.transform.position;
@@ -163,6 +163,9 @@ public class Weapon : MonoBehaviour
         //Vector3 splatterStart = other.transform.position;
         Vector3 splatterStart = col.ClosestPointOnBounds(this.transform.position);
 
+        // Apply damage value to other character
+        other.ApplyDamage(damage, damageType);
+
         // Apply knock back and tell the enemy it was hit by this weapon object.
         // We can succesfully say we hit this character now and we set their last hit by to null.
         other.ApplyKnockback(direction, knockBackValue);
@@ -171,9 +174,6 @@ public class Weapon : MonoBehaviour
         // TODO: make a pool of these emitters and dont instantiate them on the frame.
         GameObject bloodSplatter = Instantiate(bloodSplat, splatterStart, col.transform.rotation) as GameObject;
         bloodSplatter.transform.parent = other.transform;
-
-        // Now we say ok this enemy was hit by this weapon.
-        other.LastObjectsDamagedBy.Add(this);
 
         // Update our list of collided targets
         // If a weapon has special properties where it may only be able to hit a number of targets, 

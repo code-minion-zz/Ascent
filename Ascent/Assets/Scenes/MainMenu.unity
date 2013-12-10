@@ -1565,7 +1565,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 32}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 296, y: 0, z: 0}
+  m_LocalPosition: {x: 298, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 105}
@@ -1670,7 +1670,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 41}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 296, y: 0, z: 0}
+  m_LocalPosition: {x: 298, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 108}
@@ -1707,7 +1707,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 44}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 296, y: 0, z: 0}
+  m_LocalPosition: {x: 298, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 117}
@@ -3293,13 +3293,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 102}
   mBG: {fileID: 0}
   mFG: {fileID: 205}
   mValue: 1
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 102}
   foreground: {fileID: 103}
   rawValue: 1
   direction: 2
@@ -3493,13 +3493,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 111}
   mBG: {fileID: 0}
   mFG: {fileID: 210}
   mValue: 1
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 111}
   foreground: {fileID: 110}
   rawValue: 1
   direction: 2
@@ -3593,13 +3593,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c20815eb3063c24290a61b7020a1836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thumb: {fileID: 114}
   mBG: {fileID: 0}
   mFG: {fileID: 217}
   mValue: 1
   mFill: 0
   numberOfSteps: 0
   onChange: []
-  thumb: {fileID: 114}
   foreground: {fileID: 115}
   rawValue: 1
   direction: 2
@@ -3986,7 +3986,6 @@ MonoBehaviour:
   allowMultiTouch: 1
   useKeyboard: 1
   useController: 1
-  stickyPress: 1
   stickyTooltip: 1
   tooltipDelay: 1
   mouseDragThreshold: 4
@@ -4451,6 +4450,7 @@ MonoBehaviour:
   generateNormals: 0
   widgetsAreStatic: 0
   cullWhileDragging: 0
+  alwaysOnScreen: 0
   worldToLocal:
     e00: 400
     e01: 0
@@ -4488,6 +4488,7 @@ MonoBehaviour:
   generateNormals: 0
   widgetsAreStatic: 0
   cullWhileDragging: 0
+  alwaysOnScreen: 0
   worldToLocal:
     e00: 400
     e01: 0
@@ -4525,6 +4526,7 @@ MonoBehaviour:
   generateNormals: 0
   widgetsAreStatic: 0
   cullWhileDragging: 0
+  alwaysOnScreen: 0
   worldToLocal:
     e00: 393.923096
     e01: 0
@@ -5641,6 +5643,7 @@ MonoBehaviour:
   generateNormals: 1
   widgetsAreStatic: 0
   cullWhileDragging: 0
+  alwaysOnScreen: 0
   worldToLocal:
     e00: 393.923096
     e01: 0

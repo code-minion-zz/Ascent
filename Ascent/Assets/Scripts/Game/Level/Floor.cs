@@ -94,6 +94,8 @@ public class Floor : MonoBehaviour
 				enemies.Add(thisEnemy);
 			}
 		}
+
+        Debug.Log("Enemies: " + enemies.Count);
 	}
 
 	public void AddEnemy(Enemy _enemy)
@@ -107,12 +109,18 @@ public class Floor : MonoBehaviour
 	void Update()
 	{
 		HandleDeadHeroes();
+        HandleDeadMonsters();
 
 		if (Input.GetKeyUp(KeyCode.F1))
 		{
 			EndFloor();
 		}
 	}
+
+    void HandleDeadMonsters()
+    {
+
+    }
 
     // TODO: Make all the players start spawn at the point.
 	void HandleDeadHeroes()

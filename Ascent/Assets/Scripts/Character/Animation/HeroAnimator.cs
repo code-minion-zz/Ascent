@@ -34,16 +34,16 @@ public class HeroAnimator : AnimatorController
 
     // The following are movement layer states
     // We have a few movement states for the hero which are idle, jumping and running.
-    static int idleState = Animator.StringToHash("Movement" + "Idle");
-    static int jumpState = Animator.StringToHash("Movement" + "JumpRunning");
-    static int movementState = Animator.StringToHash("Movement" + "Movement");
+    //static int idleState = Animator.StringToHash("Movement" + "Idle");
+    //static int jumpState = Animator.StringToHash("Movement" + "JumpRunning");
+    //static int movementState = Animator.StringToHash("Movement" + "Movement");
 
     // Combat layer states
     // Taking a hit, swinging the sword and general combat mode.
     //static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
-    static int attackState = Animator.StringToHash("Movement." + "SwingSword");
-    static int takingHit = Animator.StringToHash("Movement." + "TakingHit");
-    static int whirlWindAttack = Animator.StringToHash("Movement." + "WhirlWind");
+    //static int attackState = Animator.StringToHash("Movement." + "SwingSword");
+    //static int takingHit = Animator.StringToHash("Movement." + "TakingHit");
+    //static int whirlWindAttack = Animator.StringToHash("Movement." + "WhirlWind");
 
     private Vector3 direction;
     private CharacterController controller;
