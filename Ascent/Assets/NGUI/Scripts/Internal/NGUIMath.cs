@@ -602,185 +602,246 @@ static public class NGUIMath
 	}
 
 	/// <summary>
-	/// Adjust the widget's position and size.
+	/// Adjust the widget's position using the specified local delta coordinates.
 	/// </summary>
 
-	static public void AdjustWidget (UIWidget w, Vector3 startLocalPos, int width, int height,
-		Vector3 worldDelta, UIWidget.Pivot pivot, int minWidth, int minHeight)
+	static public void MoveWidget (UIWidget w, float x, float y)
 	{
+		int ix = Mathf.FloorToInt(x + 0.5f);
+		int iy = Mathf.FloorToInt(y + 0.5f);
+
 		Transform t = w.cachedTransform;
-		Transform parent = t.parent;
-		Matrix4x4 parentToLocal = (parent != null) ? t.parent.worldToLocalMatrix : Matrix4x4.identity;
-		Matrix4x4 worldToLocal = parentToLocal;
-		Quaternion invRot = Quaternion.Inverse(t.localRotation);
-		worldToLocal = worldToLocal * Matrix4x4.TRS(Vector3.zero, invRot, Vector3.one);
-		Vector3 localDelta = worldToLocal.MultiplyVector(worldDelta);
+		t.localPosition += new Vector3(ix, iy);
+		int anchorCount = 0;
 
-		float left = 0f;
-		float right = 0f;
-		float top = 0f;
-		float bottom = 0f;
-
-		Vector2 dragPivot = GetPivotOffset(pivot);
-
-		if (dragPivot.x == 0f && dragPivot.y == 1f)
+		if (w.leftAnchor.target)
 		{
-			left = localDelta.x;
-			top = localDelta.y;
-		}
-		else if (dragPivot.x == 0f && dragPivot.y == 0.5f)
-		{
-			left = localDelta.x;
-		}
-		else if (dragPivot.x == 0f && dragPivot.y == 0f)
-		{
-			left = localDelta.x;
-			bottom = localDelta.y;
-		}
-		else if (dragPivot.x == 0.5f && dragPivot.y == 1f)
-		{
-			top = localDelta.y;
-		}
-		else if (dragPivot.x == 0.5f && dragPivot.y == 0f)
-		{
-			bottom = localDelta.y;
-		}
-		else if (dragPivot.x == 1f && dragPivot.y == 1f)
-		{
-			right = localDelta.x;
-			top = localDelta.y;
-		}
-		else if (dragPivot.x == 1f && dragPivot.y == 0.5f)
-		{
-			right = localDelta.x;
-		}
-		else if (dragPivot.x == 1f && dragPivot.y == 0f)
-		{
-			right = localDelta.x;
-			bottom = localDelta.y;
+			++anchorCount;
+			w.leftAnchor.absolute += ix;
 		}
 
-		AdjustWidget(w, startLocalPos, width, height,
-			Mathf.RoundToInt(left), Mathf.RoundToInt(top),
-			Mathf.RoundToInt(right), Mathf.RoundToInt(bottom), minWidth, minHeight);
+		if (w.rightAnchor.target)
+		{
+			++anchorCount;
+			w.rightAnchor.absolute += ix;
+		}
+
+		if (w.bottomAnchor.target)
+		{
+			++anchorCount;
+			w.bottomAnchor.absolute += iy;
+		}
+
+		if (w.topAnchor.target)
+		{
+			++anchorCount;
+			w.topAnchor.absolute += iy;
+		}
+
+		// If all sides were anchored, we're done
+		if (anchorCount != 0) w.UpdateAnchors();
+	}
+
+	/// <summary>
+	/// Given the specified dragged pivot point, adjust the widget's dimensions.
+	/// </summary>
+
+	static public void ResizeWidget (UIWidget w, UIWidget.Pivot pivot, float x, float y, int minWidth, int minHeight)
+	{
+		if (pivot == UIWidget.Pivot.Center)
+		{
+			MoveWidget(w, x, y);
+			return;
+		}
+
+		Vector3 v = new Vector3(x, y);
+		v = Quaternion.Inverse(w.cachedTransform.localRotation) * v;
+
+		switch (pivot)
+		{
+			case UIWidget.Pivot.BottomLeft:
+			AdjustWidget(w, v.x, v.y, 0, 0, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.Left:
+			AdjustWidget(w, v.x, 0, 0, 0, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.TopLeft:
+			AdjustWidget(w, v.x, 0, 0, v.y, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.Top:
+			AdjustWidget(w, 0, 0, 0, v.y, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.TopRight:
+			AdjustWidget(w, 0, 0, v.x, v.y, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.Right:
+			AdjustWidget(w, 0, 0, v.x, 0, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.BottomRight:
+			AdjustWidget(w, 0, v.y, v.x, 0, minWidth, minHeight);
+			break;
+
+			case UIWidget.Pivot.Bottom:
+			AdjustWidget(w, 0, v.y, 0, 0, minWidth, minHeight);
+			break;
+		}
 	}
 
 	/// <summary>
 	/// Adjust the widget's rectangle based on the specified modifier values.
 	/// </summary>
 
-	static public void AdjustWidget (UIWidget w, Vector3 startLocalPos, int width, int height,
-		int left, int top, int right, int bottom, int minWidth, int minHeight)
+	static public void AdjustWidget (UIWidget w, float left, float bottom, float right, float top, int minWidth, int minHeight)
 	{
-		Vector2 pivot = w.pivotOffset;
+		Vector2 piv = w.pivotOffset;
 		Transform t = w.cachedTransform;
 		Quaternion rot = t.localRotation;
 
-		// Centered pivot means adjustments should be done by two pixels instead of 1
-		if (pivot.x == 0.5f)
+		// We should be working with whole integers
+		int iLeft = Mathf.FloorToInt(left + 0.5f);
+		int iBottom = Mathf.FloorToInt(bottom + 0.5f);
+		int iRight = Mathf.FloorToInt(right + 0.5f);
+		int iTop = Mathf.FloorToInt(top + 0.5f);
+
+		// Centered pivot should mean having to perform even number adjustments
+		if (piv.x == 0.5f)
 		{
-			right = ((right >> 1) << 1);
-			left = ((left >> 1) << 1);
+			iLeft = ((iLeft >> 1) << 1);
+			iRight = ((iRight >> 1) << 1);
 		}
 
-		if (pivot.y == 0.5f)
+		if (piv.y == 0.5f)
 		{
-			bottom = ((bottom >> 1) << 1);
-			top = ((top >> 1) << 1);
+			iBottom = ((iBottom >> 1) << 1);
+			iTop = ((iTop >> 1) << 1);
 		}
 
-		width += right - left;
-		height += top - bottom;
+		// The widget's position (pivot point) uses a different coordinate system than
+		// other corners. This is a source of major PITA, and results in a lot of extra math.
+		Vector3 rotatedTL = rot * new Vector3(iLeft, iTop);
+		Vector3 rotatedTR = rot * new Vector3(iRight, iTop);
+		Vector3 rotatedBL = rot * new Vector3(iLeft, iBottom);
+		Vector3 rotatedBR = rot * new Vector3(iRight, iBottom);
+		Vector3 rotatedL = rot * new Vector3(iLeft, 0f);
+		Vector3 rotatedR = rot * new Vector3(iRight, 0f);
+		Vector3 rotatedT = rot * new Vector3(0f, iTop);
+		Vector3 rotatedB = rot * new Vector3(0f, iBottom);
 
-		// Centered pivot means width and height must be dividable by two
-		if (pivot.x == 0.5f) width = ((width >> 1) << 1);
-		if (pivot.y == 0.5f) height = ((height >> 1) << 1);
+		Vector3 offset = Vector3.zero;
 
-		Vector2 rotatedTL = new Vector2(left, top);
-		Vector2 rotatedTR = new Vector2(right, top);
-		Vector2 rotatedBL = new Vector2(left, bottom);
-		Vector2 rotatedBR = new Vector2(right, bottom);
-		Vector2 rotatedL = new Vector2(left, 0f);
-		Vector2 rotatedR = new Vector2(right, 0f);
-		Vector2 rotatedT = new Vector2(0f, top);
-		Vector2 rotatedB = new Vector2(0f, bottom);
-
-		rotatedTL = rot * rotatedTL;
-		rotatedTR = rot * rotatedTR;
-		rotatedBL = rot * rotatedBL;
-		rotatedBR = rot * rotatedBR;
-		rotatedL = rot * rotatedL;
-		rotatedR = rot * rotatedR;
-		rotatedT = rot * rotatedT;
-		rotatedB = rot * rotatedB;
-
-		if (pivot.x == 0f && pivot.y == 1f)
+		if (piv.x == 0f && piv.y == 1f)
 		{
-			startLocalPos.x += rotatedTL.x;
-			startLocalPos.y += rotatedTL.y;
+			offset.x = rotatedTL.x;
+			offset.y = rotatedTL.y;
 		}
-		else if (pivot.x == 1f && pivot.y == 0f)
+		else if (piv.x == 1f && piv.y == 0f)
 		{
-			startLocalPos.x += rotatedBR.x;
-			startLocalPos.y += rotatedBR.y;
+			offset.x = rotatedBR.x;
+			offset.y = rotatedBR.y;
 		}
-		else if (pivot.x == 0f && pivot.y == 0f)
+		else if (piv.x == 0f && piv.y == 0f)
 		{
-			startLocalPos.x += rotatedBL.x;
-			startLocalPos.y += rotatedBL.y;
+			offset.x = rotatedBL.x;
+			offset.y = rotatedBL.y;
 		}
-		else if (pivot.x == 1f && pivot.y == 1f)
+		else if (piv.x == 1f && piv.y == 1f)
 		{
-			startLocalPos.x += rotatedTR.x;
-			startLocalPos.y += rotatedTR.y;
+			offset.x = rotatedTR.x;
+			offset.y = rotatedTR.y;
 		}
-		else if (pivot.x == 0f && pivot.y == 0.5f)
+		else if (piv.x == 0f && piv.y == 0.5f)
 		{
-			startLocalPos.x += rotatedL.x + (rotatedT.x + rotatedB.x) * 0.5f;
-			startLocalPos.y += rotatedL.y + (rotatedT.y + rotatedB.y) * 0.5f;
+			offset.x = rotatedL.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = rotatedL.y + (rotatedT.y + rotatedB.y) * 0.5f;
 		}
-		else if (pivot.x == 1f && pivot.y == 0.5f)
+		else if (piv.x == 1f && piv.y == 0.5f)
 		{
-			startLocalPos.x += rotatedR.x + (rotatedT.x + rotatedB.x) * 0.5f;
-			startLocalPos.y += rotatedR.y + (rotatedT.y + rotatedB.y) * 0.5f;
+			offset.x = rotatedR.x + (rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = rotatedR.y + (rotatedT.y + rotatedB.y) * 0.5f;
 		}
-		else if (pivot.x == 0.5f && pivot.y == 1f)
+		else if (piv.x == 0.5f && piv.y == 1f)
 		{
-			startLocalPos.x += rotatedT.x + (rotatedL.x + rotatedR.x) * 0.5f;
-			startLocalPos.y += rotatedT.y + (rotatedL.y + rotatedR.y) * 0.5f;
+			offset.x = rotatedT.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			offset.y = rotatedT.y + (rotatedL.y + rotatedR.y) * 0.5f;
 		}
-		else if (pivot.x == 0.5f && pivot.y == 0f)
+		else if (piv.x == 0.5f && piv.y == 0f)
 		{
-			startLocalPos.x += rotatedB.x + (rotatedL.x + rotatedR.x) * 0.5f;
-			startLocalPos.y += rotatedB.y + (rotatedL.y + rotatedR.y) * 0.5f;
+			offset.x = rotatedB.x + (rotatedL.x + rotatedR.x) * 0.5f;
+			offset.y = rotatedB.y + (rotatedL.y + rotatedR.y) * 0.5f;
 		}
-		else if (pivot.x == 0.5f && pivot.y == 0.5f)
+		else if (piv.x == 0.5f && piv.y == 0.5f)
 		{
-			startLocalPos.x += (rotatedL.x + rotatedR.x + rotatedT.x + rotatedB.x) * 0.5f;
-			startLocalPos.y += (rotatedT.y + rotatedB.y + rotatedL.y + rotatedR.y) * 0.5f;
-		}
-		else
-		{
-			Debug.LogWarning("Pivot " + pivot + " dragging is not supported");
+			offset.x = (rotatedL.x + rotatedR.x + rotatedT.x + rotatedB.x) * 0.5f;
+			offset.y = (rotatedT.y + rotatedB.y + rotatedL.y + rotatedR.y) * 0.5f;
 		}
 
 		int minx = Mathf.Max(minWidth, w.minWidth);
 		int miny = Mathf.Max(minHeight, w.minHeight);
 
-		if (width < minx)
+		// Calculate the widget's width and height after the requested adjustments
+		int finalWidth = w.width + iRight - iLeft;
+		int finalHeight = w.height + iTop - iBottom;
+
+		// Now it's time to constrain the width and height so that they can't go below min values
+		Vector3 constraint = Vector3.zero;
+
+		if (finalWidth < minx)
 		{
-			startLocalPos.x += Mathf.Lerp(0f, minx - width, pivot.x);
-			width = minx;
+			if (iLeft != 0)
+			{
+				constraint.x -= Mathf.Lerp(minx - finalWidth, 0f, piv.x);
+			}
+			else
+			{
+				constraint.x += Mathf.Lerp(0f, minx - finalWidth, piv.x);
+			}
+			finalWidth = minx;
 		}
 
-		if (height < miny)
+		if (finalHeight < miny)
 		{
-			startLocalPos.y -= Mathf.Lerp(miny - height, 0f, pivot.y);
-			height = miny;
+			if (iBottom != 0)
+			{
+				constraint.y -= Mathf.Lerp(miny - finalHeight, 0f, piv.y);
+			}
+			else
+			{
+				constraint.y += Mathf.Lerp(0f, miny - finalHeight, piv.y);
+			}
+			finalHeight = miny;
 		}
 
-		t.localPosition = startLocalPos;
-		w.width = width;
-		w.height = height;
+		// Constrain the rect
+		if (finalWidth < minWidth) finalWidth = minWidth;
+		if (finalHeight < minHeight) finalHeight = minHeight;
+
+		// Centered pivot requires power-of-two dimensions
+		if (piv.x == 0.5f) finalWidth = ((finalWidth >> 1) << 1);
+		if (piv.y == 0.5f) finalHeight = ((finalHeight >> 1) << 1);
+
+		// Update the position, width and height
+		Vector3 pos = t.localPosition + offset + rot * constraint;
+		t.localPosition = pos;
+		w.width = finalWidth;
+		w.height = finalHeight;
+
+		// If the widget is anchored, we should update the anchors as well
+		if (w.isAnchored)
+		{
+			t = t.parent;
+			float x = pos.x - piv.x * finalWidth;
+			float y = pos.y - piv.y * finalHeight;
+
+			if (w.leftAnchor.target) w.leftAnchor.SetHorizontal(t, x);
+			if (w.rightAnchor.target) w.rightAnchor.SetHorizontal(t, x + finalWidth);
+			if (w.bottomAnchor.target) w.bottomAnchor.SetVertical(t, y);
+			if (w.topAnchor.target) w.topAnchor.SetVertical(t, y + finalHeight);
+		}
 	}
 }

@@ -61,6 +61,10 @@ public class UIWidgetInspector : UIRectEditor
 	Vector2 mStartMouse = Vector2.zero;
 	Vector3 mStartRot = Vector3.zero;
 	Vector3 mStartDir = Vector3.right;
+	Vector2 mStartLeft = Vector2.zero;
+	Vector2 mStartRight = Vector2.zero;
+	Vector2 mStartBottom = Vector2.zero;
+	Vector2 mStartTop = Vector2.zero;
 	UIWidget.Pivot mDragPivot = UIWidget.Pivot.Center;
 
 	/// <summary>
@@ -224,20 +228,8 @@ public class UIWidgetInspector : UIRectEditor
 	/// Determine what kind of pivot point is under the mouse and update the cursor accordingly.
 	/// </summary>
 
-	static public UIWidget.Pivot GetPivotUnderMouse (Vector3[] worldPos, Event e, bool[] resizable, ref Action action)
+	static public UIWidget.Pivot GetPivotUnderMouse (Vector3[] worldPos, Event e, bool[] resizable, bool movable, ref Action action)
 	{
-		bool movable = true;
-
-		// If any point is not resizable, then the widget can't be moved
-		for (int i = 0; i < resizable.Length; ++i)
-		{
-			if (!resizable[i])
-			{
-				movable = false;
-				break;
-			}
-		}
-
 		// Time to figure out what kind of action is underneath the mouse
 		UIWidget.Pivot pivotUnderMouse = UIWidget.Pivot.Center;
 
@@ -306,9 +298,6 @@ public class UIWidgetInspector : UIRectEditor
 	static public void DrawAnchor (UIRect.AnchorPoint anchor, Transform myTrans, Vector3[] myCorners, int side, int id)
 	{
 		if (!anchor.target) return;
-
-		// Only draw anchor points if both widgets are aligned
-		if (Quaternion.Angle(anchor.target.rotation, myTrans.rotation) > 1f) return;
 
 		int i0, i1;
 
@@ -411,8 +400,6 @@ public class UIWidgetInspector : UIRectEditor
 					if (theirPos.y < myPos.y)
 						NGUIHandles.DrawCenteredLabel(pos, text);
 				}
-
-				// TODO: Don't draw relative values
 				GUI.color = Color.white;
 			}
 			Handles.EndGUI();
@@ -445,7 +432,7 @@ public class UIWidgetInspector : UIRectEditor
 		NGUIHandles.DrawShadowedLine(handles, handles[0], handles[3], handlesColor);
 
 		// If the widget is anchored, draw the anchors
-		if (mWidget.isAnchored && mAction == UIWidgetInspector.Action.None)
+		if (mWidget.isAnchored)
 		{
 			DrawAnchor(mWidget.leftAnchor, mWidget.cachedTransform, handles, 0, id);
 			DrawAnchor(mWidget.topAnchor, mWidget.cachedTransform, handles, 1, id);
@@ -461,20 +448,25 @@ public class UIWidgetInspector : UIRectEditor
 			if (showDetails) NGUIHandles.DrawSize(handles, mWidget.width, mWidget.height);
 		}
 
-		bool canResize = mWidget.canResize;
+		// Presence of the legacy stretch component prevents resizing
+		bool canResize = (mWidget.GetComponent<UIStretch>() == null);
 		bool[] resizable = new bool[8];
 
-		resizable[4] = canResize && mWidget.leftAnchor.target == null;		// left
-		resizable[5] = canResize && mWidget.topAnchor.target == null;		// top
-		resizable[6] = canResize && mWidget.rightAnchor.target == null;		// right
-		resizable[7] = canResize && mWidget.bottomAnchor.target == null;	// bottom
+		UILabel lbl = mWidget as UILabel;
+		bool autoResized = (lbl != null) && (lbl.overflowMethod == UILabel.Overflow.ResizeFreely);
+		bool autoHeight = autoResized || ((lbl != null) && (lbl.overflowMethod == UILabel.Overflow.ResizeHeight));
+
+		resizable[4] = canResize && !autoResized;	// left
+		resizable[5] = canResize && !autoHeight;	// top
+		resizable[6] = canResize && !autoResized;	// right
+		resizable[7] = canResize && !autoHeight;	// bottom
 
 		resizable[0] = resizable[7] && resizable[4]; // bottom-left
 		resizable[1] = resizable[5] && resizable[4]; // top-left
 		resizable[2] = resizable[5] && resizable[6]; // top-right
 		resizable[3] = resizable[7] && resizable[6]; // bottom-right
-
-		UIWidget.Pivot pivotUnderMouse = GetPivotUnderMouse(handles, e, resizable, ref actionUnderMouse);
+		
+		UIWidget.Pivot pivotUnderMouse = GetPivotUnderMouse(handles, e, resizable, true, ref actionUnderMouse);
 		
 		switch (type)
 		{
@@ -493,7 +485,7 @@ public class UIWidgetInspector : UIRectEditor
 						for (int i = 0; i < 4; ++i)
 							DrawKnob(handles[i], mWidget.pivot == pivotPoints[i], resizable[i], id);
 
-						if (Mathf.Abs(v1.y - v0.y) > 80f)
+						if ((v1 - v0).magnitude > 80f)
 						{
 							if (mWidget.leftAnchor.target == null || mWidget.leftAnchor.absolute != 0)
 								DrawKnob(handles[4], mWidget.pivot == pivotPoints[4], resizable[4], id);
@@ -502,7 +494,7 @@ public class UIWidgetInspector : UIRectEditor
 								DrawKnob(handles[6], mWidget.pivot == pivotPoints[6], resizable[6], id);
 						}
 
-						if (Mathf.Abs(v3.x - v0.x) > 80f)
+						if ((v3 - v0).magnitude > 80f)
 						{
 							if (mWidget.topAnchor.target == null || mWidget.topAnchor.absolute != 0)
 								DrawKnob(handles[5], mWidget.pivot == pivotPoints[5], resizable[5], id);
@@ -537,6 +529,15 @@ public class UIWidgetInspector : UIRectEditor
 					mStartDir = mStartDrag - t.position;
 					mStartWidth = mWidget.width;
 					mStartHeight = mWidget.height;
+					mStartLeft.x = mWidget.leftAnchor.relative;
+					mStartLeft.y = mWidget.leftAnchor.absolute;
+					mStartRight.x = mWidget.rightAnchor.relative;
+					mStartRight.y = mWidget.rightAnchor.absolute;
+					mStartBottom.x = mWidget.bottomAnchor.relative;
+					mStartBottom.y = mWidget.bottomAnchor.absolute;
+					mStartTop.x = mWidget.topAnchor.relative;
+					mStartTop.y = mWidget.topAnchor.absolute;
+
 					mDragPivot = pivotUnderMouse;
 					mActionUnderMouse = actionUnderMouse;
 					GUIUtility.hotControl = GUIUtility.keyboardControl = id;
@@ -591,11 +592,31 @@ public class UIWidgetInspector : UIRectEditor
 
 							if (mAction != Action.None)
 							{
+								// Reset the widget before adjusting anything
+								t.position = mWorldPos;
+								mWidget.width = mStartWidth;
+								mWidget.height = mStartHeight;
+								mWidget.leftAnchor.Set(mStartLeft.x, mStartLeft.y);
+								mWidget.rightAnchor.Set(mStartRight.x, mStartRight.y);
+								mWidget.bottomAnchor.Set(mStartBottom.x, mStartBottom.y);
+								mWidget.topAnchor.Set(mStartTop.x, mStartTop.y);
+
 								if (mAction == Action.Move)
 								{
+									// Move the widget
 									t.position = mWorldPos + (pos - mStartDrag);
-									t.localPosition = NGUISnap.Snap(t.localPosition, mWidget.localCorners,
-										e.modifiers != EventModifiers.Control);
+
+									// Snap the widget
+									Vector3 after = NGUISnap.Snap(t.localPosition, mWidget.localCorners, e.modifiers != EventModifiers.Control);
+
+									// Calculate the final delta
+									Vector3 localDelta = (after - mLocalPos);
+
+									// Restore the position
+									t.position = mWorldPos;
+
+									// Adjust the widget by the delta
+									NGUIMath.MoveWidget(mWidget, localDelta.x, localDelta.y);
 								}
 								else if (mAction == Action.Rotate)
 								{
@@ -614,11 +635,18 @@ public class UIWidgetInspector : UIRectEditor
 								}
 								else if (mAction == Action.Scale)
 								{
-									// World-space delta since the drag started
-									Vector3 delta = pos - mStartDrag;
+									// Move the widget
+									t.position = mWorldPos + (pos - mStartDrag);
+
+									// Calculate the final delta
+									Vector3 localDelta = (t.localPosition - mLocalPos);
+
+									// Restore the position
+									t.position = mWorldPos;
 
 									// Adjust the widget's position and scale based on the delta, restricted by the pivot
-									NGUIMath.AdjustWidget(mWidget, mLocalPos, mStartWidth, mStartHeight, delta, mDragPivot, 2, 2);
+									NGUIMath.ResizeWidget(mWidget, mDragPivot, localDelta.x, localDelta.y, 2, 2);
+									ReEvaluateAnchorType();
 								}
 							}
 						}
@@ -786,7 +814,7 @@ public class UIWidgetInspector : UIRectEditor
 #if UNITY_3_5 || UNITY_4_0 || UNITY_4_1
 				// Color tint
 				GUILayout.BeginHorizontal();
-				SerializedProperty sp = NGUIEditorTools.DrawProperty("Color", serializedObject, "mColor");
+				SerializedProperty sp = NGUIEditorTools.DrawProperty("Color", serializedObject, "mColor", GUILayout.MinWidth(20f));
 				if (GUILayout.Button("Copy", GUILayout.Width(50f)))
 					NGUISettings.color = sp.colorValue;
 				GUILayout.EndHorizontal();
@@ -798,7 +826,7 @@ public class UIWidgetInspector : UIRectEditor
 				GUILayout.EndHorizontal();
 				GUILayout.Space(6f);
 #else
-				NGUIEditorTools.DrawProperty("Color", serializedObject, "mColor");
+				NGUIEditorTools.DrawProperty("Color", serializedObject, "mColor", GUILayout.MinWidth(20f));
 #endif
 			}
 			else if (serializedObject.isEditingMultipleObjects)
@@ -881,7 +909,7 @@ public class UIWidgetInspector : UIRectEditor
 		{
 			EditorGUILayout.PrefixLabel("Depth");
 
-			if (GUILayout.Button("Back", GUILayout.Width(60f)))
+			if (GUILayout.Button("Back", GUILayout.MinWidth(46f)))
 			{
 				foreach (GameObject go in Selection.gameObjects)
 				{
@@ -892,7 +920,7 @@ public class UIWidgetInspector : UIRectEditor
 
 			NGUIEditorTools.DrawProperty("", serializedObject, "mDepth", GUILayout.MinWidth(20f));
 
-			if (GUILayout.Button("Forward", GUILayout.Width(68f)))
+			if (GUILayout.Button("Forward", GUILayout.MinWidth(60f)))
 			{
 				foreach (GameObject go in Selection.gameObjects)
 				{
@@ -1064,14 +1092,13 @@ public class UIWidgetInspector : UIRectEditor
 		}
 	}
 
-	protected override void DrawSimpleAnchors (bool reset)
+	protected override void OnDrawFinalProperties ()
 	{
-		base.DrawSimpleAnchors(reset);
+		if (mAnchorType == AnchorType.Advanced || !mWidget.isAnchored) return;
 
 		SerializedProperty sp = serializedObject.FindProperty("leftAnchor.target");
-		Transform trans = sp.objectReferenceValue as Transform;
 
-		if (trans != null && (trans.GetComponent<UIRect>() == null))
+		if (!IsRect(sp))
 		{
 			GUILayout.Space(3f);
 			GUILayout.BeginHorizontal();

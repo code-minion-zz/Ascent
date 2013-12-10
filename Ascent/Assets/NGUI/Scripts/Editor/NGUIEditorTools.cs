@@ -1237,9 +1237,9 @@ public class NGUIEditorTools
 
 		GUI.changed = false;
 #if UNITY_3_5
-		if (!GUILayout.Toggle(true, text, "dragtab")) state = !state;
+		if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) state = !state;
 #else
-		if (!GUILayout.Toggle(true, "<b><size=11>" + text + "</size></b>", "dragtab")) state = !state;
+		if (!GUILayout.Toggle(true, "<b><size=11>" + text + "</size></b>", "dragtab", GUILayout.MinWidth(20f))) state = !state;
 #endif
 		if (GUI.changed) EditorPrefs.SetBool(key, state);
 
@@ -1525,22 +1525,6 @@ public class NGUIEditorTools
 	{
 #if !UNITY_3_5 && !UNITY_4_0 && !UNITY_4_1 && !UNITY_4_2 && !UNITY_4_3
 		UnityEditor.Tools.hidden = hide && (UnityEditor.Tools.current == UnityEditor.Tool.Move);
-#endif
-	}
-
-	/// <summary>
-	/// Get the size of the game view. This is a hacky method using reflection due to the function being internal.
-	/// </summary>
-
-	static public Vector2 GetMainGameViewSize ()
-	{
-#if UNITY_3_5 || UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3
-		System.Type T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
-		System.Reflection.MethodInfo GetSizeOfMainGameView = T.GetMethod("GetSizeOfMainGameView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-		System.Object Res = GetSizeOfMainGameView.Invoke(null, null);
-		return (Vector2)Res;
-#else
-		return Handles.GetMainGameViewSize();
 #endif
 	}
 
