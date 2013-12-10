@@ -8,12 +8,12 @@ public class StatBar : MonoBehaviour {
 	
 	public UISprite barBack;
 	public UISprite barFront;
-	private Character owner;
+	public Character owner;
 	private float defaultWidth;
 	
 	private float maxVal;
 	private float curVal;
-	
+
 	public enum eStat
 	{
 		Invalid = -1,
@@ -22,24 +22,28 @@ public class StatBar : MonoBehaviour {
 		EXP		
 	};
 	public eStat TrackStat = eStat.Invalid;
-	
-	//float tick = 0.0f;
+
+	protected bool enableDraw = true;
+	public bool EnableDraw
+	{
+		get { return enableDraw;}
+		set 
+		{
+			enableDraw = value;
+			if (value)
+			{
+				StartDrawing();
+			}
+			else
+			{
+				StopDrawing();
+			}
+		}
+	}
 	
 	// Use this for initialization
 	void Awake () {
 		defaultWidth = barFront.width;
-	}
-	
-	void Update()
-	{
-		// debugging the hp bar
-//		tick += Time.deltaTime;
-//		if (tick > 1f)
-//		{
-//			tick = 0;
-//			ownerStat.CurrentHealth --;
-//		}
-        //AdjustBar();
 	}
 	
 	public void Init(eStat stat, Character _character)
@@ -128,6 +132,16 @@ public class StatBar : MonoBehaviour {
         //    barFront.gameObject.SetActive(true);
         //}
 	}	
-	
-	
+
+	protected void StopDrawing()
+	{
+		barBack.enabled = false;
+		barFront.enabled = false;
+	}	
+
+	protected void StartDrawing()
+	{
+		barBack.enabled = true;
+		barFront.enabled = true;
+	}
 }

@@ -518,6 +518,8 @@ public class Boss : Enemy
             hero.Animator.PlayAnimation("TakeHit");
         }
 
+        hero.LastObjectsDamagedBy.Add(this);
+
         // Update our list of collided targets
         // If a weapon has special properties where it may only be able to hit a number of targets, 
         // we would check to see if the count is too high before adding to the targets list.

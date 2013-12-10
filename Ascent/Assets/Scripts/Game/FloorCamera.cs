@@ -8,7 +8,7 @@ public class FloorCamera : MonoBehaviour
     private Transform _transform;
     private Camera floorCamera;
     private Plane[] cameraFrustPlanes;
-    private const float cameraOffset = 15.0f;
+    private const float cameraOffset = 5.0f;
 
     public Camera Camera
     {
@@ -33,9 +33,6 @@ public class FloorCamera : MonoBehaviour
         {
             // Ulter position of the camera to center on the players
             Vector3 totalVector = Vector3.zero;
-
-
-
 
             // Add up all the vectors
             foreach (Player player in players)

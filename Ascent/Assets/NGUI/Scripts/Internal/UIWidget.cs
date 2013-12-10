@@ -514,6 +514,46 @@ public class UIWidget : UIRect
 	}
 
 	/// <summary>
+	/// Set the widget's rectangle.
+	/// </summary>
+
+	public void SetRect (float x, float y, float width, float height)
+	{
+		Vector2 po = pivotOffset;
+
+		float fx = Mathf.Lerp(x, x + width, po.x);
+		float fy = Mathf.Lerp(y, y + height, po.y);
+
+		int finalWidth = Mathf.FloorToInt(width + 0.5f);
+		int finalHeight = Mathf.FloorToInt(height + 0.5f);
+
+		if (po.x == 0.5f) finalWidth = ((finalWidth >> 1) << 1);
+		if (po.y == 0.5f) finalHeight = ((finalHeight >> 1) << 1);
+
+		Transform t = cachedTransform;
+		Vector3 pos = t.localPosition;
+		pos.x = Mathf.Floor(fx + 0.5f);
+		pos.y = Mathf.Floor(fy + 0.5f);
+
+		if (finalWidth < minWidth) finalWidth = minWidth;
+		if (finalHeight < minHeight) finalHeight = minHeight;
+
+		t.localPosition = pos;
+		width = finalWidth;
+		height = finalHeight;
+
+		if (isAnchored)
+		{
+			t = t.parent;
+
+			if (leftAnchor.target) leftAnchor.SetHorizontal(t, x);
+			if (rightAnchor.target) rightAnchor.SetHorizontal(t, x + width);
+			if (bottomAnchor.target) bottomAnchor.SetVertical(t, y);
+			if (topAnchor.target) topAnchor.SetVertical(t, y + height);
+		}
+	}
+
+	/// <summary>
 	/// Adjust the widget's collider size to match the widget's dimensions.
 	/// </summary>
 
@@ -989,12 +1029,6 @@ public class UIWidget : UIRect
 			return UnityEditor.Tools.current == UnityEditor.Tool.View;
 		}
 	}
-
-	/// <summary>
-	/// Whether the widget can be resized using drag handles.
-	/// </summary>
-
-	public virtual bool canResize { get { return GetComponent<UIStretch>() == null; } }
 
 	/// <summary>
 	/// Draw some selectable gizmos.

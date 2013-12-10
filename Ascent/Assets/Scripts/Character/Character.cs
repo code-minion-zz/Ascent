@@ -23,8 +23,6 @@ public abstract class Character : MonoBehaviour
     protected bool 					isDead = false;
     protected Color 				originalColour;
 
-    protected FloatingText 			floatingText;
-
     protected float 				stunDuration;
 	
 	protected Transform 			weaponSlot;
@@ -96,10 +94,15 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Update()
     {
-		if (activeAbility != null)
-		{
-			activeAbility.UpdateAbility();
-		}
+        UpdateActiveAbility();
+    }
+
+    private void UpdateActiveAbility()
+    {
+        if (activeAbility != null)
+        {
+            activeAbility.UpdateAbility();
+        }
 
         // Update abilities that require cooldown
         foreach (Action ability in abilities)
@@ -111,14 +114,6 @@ public abstract class Character : MonoBehaviour
             }
         }
     }
-
-    //public virtual void UpdateActiveAbility()
-    //{
-    //    if (activeAbility != null)
-    //    {
-    //        activeAbility.UpdateAbility();
-    //    }
-    //}
 
     public virtual void UseAbility(int abilityID)
     {
@@ -243,6 +238,8 @@ public abstract class Character : MonoBehaviour
     public virtual void Respawn(Vector3 position)
     {
         isDead = false;
+        // Play this animation.
+        //Animator.PlayAnimation("Respawn");
         transform.position = position;
     }
 
@@ -253,11 +250,10 @@ public abstract class Character : MonoBehaviour
         // this character.
         isDead = true;
         
-        // Obtain the last object that killed this rat
+        // Obtain the last object that killed this character
         if (lastObjectsDamagedBy.Count > 0)
         {
             Object obj = LastObjectsDamagedBy[lastObjectsDamagedBy.Count - 1];
-
             System.Type type = obj.GetType();
 
             // Check if the type of object is a weapon

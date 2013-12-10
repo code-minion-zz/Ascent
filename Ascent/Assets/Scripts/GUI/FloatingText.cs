@@ -70,17 +70,14 @@ public class FloatingText : MonoBehaviour
         //Following();
     }
 
-    public void DestroyText()
+    public void DestroyText(float time)
     {
-        Debug.Log("Destroy me");
-        Destroy(gameObject);
+        Destroy(gameObject, time);
     }
 
     public void SpawnAt(GameObject target)
     {
         Target = target;
-
-        StartCoroutine(RemoveObject());
     }
 
     public void Following()
@@ -91,11 +88,5 @@ public class FloatingText : MonoBehaviour
         pos = guiCamera.ViewportToWorldPoint(pos);
         pos.z = 0.0f;
         transform.position = pos;
-    }
-
-    IEnumerator RemoveObject()
-    {
-        yield return new WaitForSeconds(tweenPos.duration);
-        gameObject.SetActive(false);
     }
 }
