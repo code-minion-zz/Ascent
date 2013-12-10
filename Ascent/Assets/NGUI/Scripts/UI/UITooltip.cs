@@ -24,6 +24,12 @@ public class UITooltip : MonoBehaviour
 
 	UIWidget[] mWidgets;
 
+	/// <summary>
+	/// Whether the tooltip is currently visible.
+	/// </summary>
+
+	static public bool isVisible { get { return (mInstance != null && mInstance.mTarget == 1f); } }
+
 	void Awake () { mInstance = this; }
 	void OnDestroy () { mInstance = null; }
 
@@ -48,7 +54,7 @@ public class UITooltip : MonoBehaviour
 	{
 		if (mCurrent != mTarget)
 		{
-			mCurrent = Mathf.Lerp(mCurrent, mTarget, Time.deltaTime * appearSpeed);
+			mCurrent = Mathf.Lerp(mCurrent, mTarget, RealTime.deltaTime * appearSpeed);
 			if (Mathf.Abs(mCurrent - mTarget) < 0.001f) mCurrent = mTarget;
 			SetAlpha(mCurrent * mCurrent);
 

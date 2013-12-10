@@ -71,9 +71,9 @@ public class UIToggle : UIWidgetContainer
 
 	/// <summary>
 	/// Deprecated functionality. Use the 'group' option instead.
-    /// </summary>
-#pragma warning disable 0649
-    [HideInInspector][SerializeField] Transform radioButtonRoot;
+	/// </summary>
+
+	[HideInInspector][SerializeField] Transform radioButtonRoot;
 	[HideInInspector][SerializeField] bool startsChecked;
 	[HideInInspector][SerializeField] UISprite checkSprite;
 	[HideInInspector][SerializeField] Animation checkAnimation;
