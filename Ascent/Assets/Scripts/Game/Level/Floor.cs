@@ -41,7 +41,7 @@ public class Floor : MonoBehaviour
         ////Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
 
 		// Create HUD
-		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD"));
+		GameObject.Instantiate(Resources.Load("Prefabs/UI/OldHUD"));
 
 		// Initialise the players onto the start points
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
