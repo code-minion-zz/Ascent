@@ -190,15 +190,16 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
+		int finalDamage = unmitigatedDamage;
         // Obtain the health stat and subtract damage amount to the health.
-        derivedStats.CurrentHealth -= unmitigatedDamage;
+        derivedStats.CurrentHealth -= finalDamage;
 
         // When the player takes a hit, spawn some damage text.
         HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
 
 		if(OnDamageTaken != null)
 		{
-			OnDamageTaken.Invoke();
+			OnDamageTaken.Invoke(finalDamage);
 		}
 
         // If the character is dead
@@ -210,7 +211,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-	public delegate void DamageTaken();
+	public delegate void DamageTaken(float amount);
 	public event DamageTaken OnDamageTaken;
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
