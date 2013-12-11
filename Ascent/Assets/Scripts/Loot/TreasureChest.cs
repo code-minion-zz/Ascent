@@ -76,6 +76,8 @@ public class TreasureChest : MonoBehaviour
 
                 // Spawn all the loot.
                 SpawnLoot();
+                // TODO: Create some randomness to spawning loot or gas
+                ReleasePoisonGas();
             }
         }
         else if (isOpened == true && openChest == false)
@@ -106,22 +108,6 @@ public class TreasureChest : MonoBehaviour
 
         return time;
     }
-
-    //void OnTriggerEnter(Collider enter)
-    //{
-    //    string tag = enter.tag;
-
-    //    switch (tag)
-    //    {
-    //        case "Hero":
-    //            {
-    //                canUse = true;
-    //                Hero hero = enter.GetComponent<Hero>();
-    //                hero.HeroController.Input.OnY += OnY;
-    //            }
-    //            break;
-    //    }        
-    //}
 
     void OnTriggerStay(Collider stay)
     {
@@ -175,7 +161,7 @@ public class TreasureChest : MonoBehaviour
     /// <summary>
     /// The chest will spawn loot out of the object.
     /// </summary>
-    private void SpawnLoot()
+    public void SpawnLoot()
     {
         foreach (GameObject lootObject in lootObjects)
         {
@@ -193,6 +179,51 @@ public class TreasureChest : MonoBehaviour
 
             lootObject.rigidbody.AddForce(force);
         }
+    }
+
+    /// <summary>
+    /// Releases poison gas cloud inflicting nearby players and monsters. 
+    /// - Damage dealt
+    /// - Duration
+    /// - Radius
+    /// - Poison Status effect
+    /// Values should be randomised later with the level generator.
+    /// </summary>
+    public void ReleasePoisonGas()
+    {
+        GameObject go = Resources.Load("Prefabs/PoisonGasCloud") as GameObject;
+        go = Instantiate(go, gameObject.transform.position, Quaternion.identity) as GameObject;
+        ParticleSystem ps = go.GetComponent<ParticleSystem>();
+
+        if (ps != null)
+        {
+            ps.Play();
+        }
+    }
+
+    /// <summary>
+    /// Releases chain lightning that continuously seeks the closest target and deals damage until it has reached
+    /// a specified number of targets
+    /// - Damage dealt
+    /// - Bounces (Number of targets)
+    /// Values should be randomised later with the level generator.
+    /// </summary>
+    public void ReleaseChainLightning()
+    {
+
+    }
+
+    /// <summary>
+    /// Releases expanding ring of ice from the center of the chest. Deals damage and inflicts a slow. 
+    /// a specified number of targets
+    /// - Damage dealt
+    /// - Radius
+    /// - Slow status effect
+    /// Values should be randomised later with the level generator.
+    /// </summary>
+    public void ReleaseIceNova()
+    {
+
     }
 
     private void ResetLoot()
