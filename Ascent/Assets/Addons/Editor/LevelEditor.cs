@@ -99,16 +99,16 @@ namespace Ascent
                     Debug.Log("Please select an object to place first. To select an object open the grid properties");
                 }
             }
-            else if (e.isKey && e.character == 'd')
-            {
-                //Undo.IncrementCurrentEventIndex();
-                //Undo.RegisterSceneUndo("Delete Selected Objects");
+            //else if (e.isKey && e.character == 'd')
+            //{
+            //    //Undo.IncrementCurrentEventIndex();
+            //    //Undo.RegisterSceneUndo("Delete Selected Objects");
 
-                foreach (GameObject obj in Selection.gameObjects)
-                {
-                    DestroyImmediate(obj);
-                }
-            }
+            //    foreach (GameObject obj in Selection.gameObjects)
+            //    {
+            //        DestroyImmediate(obj);
+            //    }
+            //}
         }
 
         void OnGUI()

@@ -10,6 +10,13 @@ public class FloorCamera : MonoBehaviour
     private Plane[] cameraFrustPlanes;
     private const float cameraOffset = 5.0f;
 
+    private int currentRoom = 0;
+    private int lastRoom = 3;
+    private bool transition = false;
+    private Vector3 startPos;
+    private Vector3 targetPos;
+    private float time;
+
     public Camera Camera
     {
         get { return floorCamera; }
@@ -22,9 +29,65 @@ public class FloorCamera : MonoBehaviour
 		floorCamera = GetComponent<Camera>();
 	}
 
-    public void LateUpdate()
+    public void Update()
     {
-        UpdateCameraPosition();
+        //UpdateCameraPosition();
+        if (transition)
+        {
+            time += Time.deltaTime * 0.50f;
+
+            if(time >= 1.0f)
+            {
+                time = 1.0f;
+                transition = false;
+            }
+            Vector3 lerpVector = Vector3.Lerp(startPos, targetPos, time);
+
+
+            transform.position = lerpVector;
+        }
+        else
+        {
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                ++currentRoom;
+
+                if (currentRoom > lastRoom)
+                {
+                    currentRoom = 0;
+                }
+
+                transition = true;
+                time = 0.0f;
+
+                startPos = _transform.position;
+
+                switch(currentRoom)
+                {
+                    case 0:
+                        {
+                            targetPos = new Vector3(0.0f, 30.0f, -4.8f);
+                        }
+                        break;
+                    case 1:
+                        {
+                            targetPos = new Vector3(30.0f, 30.0f, -4.8f);
+                        }
+                        break;
+                    case 2:
+                        {
+                            targetPos = new Vector3(30.0f, 30.0f, 15.2f);
+                        }
+                        break;
+                    case 3:
+                        {
+                            targetPos = new Vector3(0.0f, 30.0f, 15.2f);
+                        }
+                        break;
+                }
+                
+            }
+        }
     }
 
     void UpdateCameraPosition()
