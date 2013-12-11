@@ -45,9 +45,6 @@ public abstract class Enemy : Character
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
-		hpBar.gameObject.SetActive(false);
-		hpBar.gameObject.SetActive(true);
-		hpBar.gameObject.SetActive(false);
 
 		PositionHpBar();
 	}
@@ -80,14 +77,14 @@ public abstract class Enemy : Character
 					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
 						if (!hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(true);
+							NGUITools.SetActive (hpBar.gameObject, true);
 
 						PositionHpBar();
 					}
 					else
 					{
 						if (hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(false);
+							NGUITools.SetActive (hpBar.gameObject, false);
 					}
 				}
 			}
