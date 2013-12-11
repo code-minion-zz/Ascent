@@ -8,13 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+
 namespace AssemblyCSharp
 {
-		public class Inventory
+	public class Inventory : ItemContainer
+	{
+		int INVENTORYSIZE = 12;
+
+		protected override void Initialize()
 		{
-				public Inventory ()
-				{
-				}
+			items = new List<Item> (INVENTORYSIZE);
 		}
+	}
 }
 

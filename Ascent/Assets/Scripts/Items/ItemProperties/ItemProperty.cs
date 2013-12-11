@@ -1,17 +1,17 @@
-﻿//using UnityEngine;
-//using System.Collections;
-//using System.Collections.Generic;
-//
-//public abstract class ItemProperty 
-//{
-//	float timeAccumulator;
-//	//public abstract void Initialize();
-////	public abstract void CheckCondition();
-////	public abstract void DoAction ();	// condition is met, do action
-////	public abstract void OnEquip();
-////	public abstract void OnUnequip();
-//}
-//
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public abstract class ItemProperty 
+{
+	float timeAccumulator;
+	public abstract void Initialize();
+	public abstract void CheckCondition();
+	public abstract void DoAction ();	// condition is met, do action
+	public abstract void OnEquip();
+	public abstract void OnUnequip();
+}
+
 ///// <summary>
 ///// Performs an action every frame
 ///// </summary>

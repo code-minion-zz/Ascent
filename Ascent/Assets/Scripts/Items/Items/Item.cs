@@ -17,7 +17,7 @@ public abstract class Item
 	protected string name;
 	protected string description;
 	protected int level;
-	protected ItemGrade grade;
+//	protected ItemGrade grade;
 	protected int baseValue;
 	protected BetterList<ItemProperty> itemProperties;
 
@@ -39,11 +39,11 @@ public abstract class Item
         protected set { level = value; }
     }
 
-    public ItemGrade Grade
-    {
-        get { return grade; }
-        set { grade = value; }
-    }
+//    public ItemGrade Grade
+//    {
+//        get { return grade; }
+//        set { grade = value; }
+//    }
 
     public int BaseValue
     {

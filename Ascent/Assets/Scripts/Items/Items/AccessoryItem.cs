@@ -7,7 +7,8 @@ public class AccessoryItem : Item
    // protected List<ItemProperty> itemProperties;
     protected int durability;
     protected int durabilityMax;
-    public bool IsBroken
+	protected ItemGrade grade;
+	public bool IsBroken
     {
         get { return Durability > 0; }
         private set { }
@@ -21,6 +22,12 @@ public class AccessoryItem : Item
 //		get { return itemProperties; }
 //		protected set { itemProperties = value; }
 //	}
+	public int Grade
+	{
+		get { return (int)grade;}
+		set { grade = (ItemGrade)value; }
+	}
+
 	public int Durability
 	{
 		get { return durability; }
