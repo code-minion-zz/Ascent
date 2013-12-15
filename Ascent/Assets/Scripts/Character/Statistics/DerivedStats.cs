@@ -88,7 +88,16 @@ public class DerivedStats
 		get { return curSpecial; }
 		set 
 		{
-			curSpecial = value;
+			 curSpecial = value;
+             if (curSpecial > maxSpecial)
+             {
+                 curSpecial = maxSpecial;
+             }
+             else if (curSpecial < 0)
+             {
+                 curSpecial = 0;
+             }
+ 
 			if (onCurSpecialChanged != null)	onCurSpecialChanged(curSpecial);
 			if (onAnyStatChanged != null)		onAnyStatChanged(0);
 		}

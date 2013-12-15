@@ -14,17 +14,24 @@ public class Whirlwind : Action
 	public override void Initialise(Character owner)
 	{
 		base.Initialise(owner);
+
+        coolDownTime = 15.0f;
+        animationTrigger = "Whirlwind";
+        specialCost = 10;
 	}
 
 	public override void StartAbility()
 	{
-		owner.Animator.PlayAnimation("Whirlwind");
+        base.StartAbility();
+
 		owner.Weapon.EnableCollision = true;
 		owner.Weapon.SetAttackProperties(20, Character.EDamageType.Physical);
 
         // Start the coroutines for handling the animation times.
         owner.StartCoroutine(UpdateWhirlwindAbility());
         owner.StartCoroutine(EndWhirlwindAbility());
+
+        
 	}
 
     public override void UpdateAbility()

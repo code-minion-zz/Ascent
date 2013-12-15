@@ -97,4 +97,16 @@ public abstract class Hero : Character
             coins.transform.gameObject.SetActive(false);
         }
     }
+
+    public override void RefreshEverything()
+    {
+        // Resets hp and sp
+        base.RefreshEverything();
+
+        // Reset cooldowns
+        foreach(Action a in abilities)
+        {
+            a.RefreshCooldown();
+        }
+    }
 }

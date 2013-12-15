@@ -17,6 +17,7 @@ public class WarStomp : Action
         animationLength = 3.0f;
         animationTrigger = "WarStomp";
         coolDownTime = 5.0f;
+        specialCost = 10;
 
         prefab = Resources.Load("Prefabs/WarStompEffect") as GameObject;
     }

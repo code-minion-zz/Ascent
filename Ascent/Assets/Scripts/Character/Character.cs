@@ -74,6 +74,11 @@ public abstract class Character : MonoBehaviour
 		get { return buffList; }
 	}
 
+    public List<Action> Abilities
+    {
+        get { return abilities; }
+    }
+
     /// <summary>
     /// Returns true if the character is dead. 
     /// </summary>
@@ -109,7 +114,6 @@ public abstract class Character : MonoBehaviour
         {
             if (ability.IsOnCooldown == true)
             {
-                Debug.Log("Ability on cooldown: " + ability.Name);
                 ability.UpdateCooldown();
             }
         }
@@ -279,4 +283,10 @@ public abstract class Character : MonoBehaviour
 		skill.Initialise(this);
 		abilities.Add(skill);
 	}
+
+    public virtual void RefreshEverything()
+    {
+        derivedStats.CurrentHealth = derivedStats.MaxHealth;
+        derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+    }
 }

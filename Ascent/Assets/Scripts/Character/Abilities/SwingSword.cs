@@ -20,6 +20,8 @@ public class SwingSword : Action
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
 
         base.StartAbility();
+
+        owner.DerivedStats.CurrentSpecial += 2;
     }
 
     public override void UpdateAbility()

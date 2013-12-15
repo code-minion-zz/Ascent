@@ -28,7 +28,6 @@ namespace Ascent
 
         void OnDrawGizmos()
         {
-            Debug.Log(transform.position);
             gridPosition = transform.position;
 
             if (showGrid)
