@@ -88,7 +88,7 @@ public class HeroAnimator : AnimatorController
 
     public void AnimationBegin()
     {
-        Debug.Log("War Stomp Begin");
+        //Debug.Log("War Stomp Begin");
     }
 
 	// Events called by the animation

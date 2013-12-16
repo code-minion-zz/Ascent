@@ -131,10 +131,6 @@ public abstract class Character : MonoBehaviour
                 ability.StartAbility();
                 activeAbility = ability;
             }
-            else
-            {
-                Debug.Log("Ability: " + ability.Name + " is on cooldown");
-            }
 		}
     }
 

@@ -7,15 +7,20 @@ public class PlayerHUD : MonoBehaviour {
 	Hero owner;
 	public StatBar hpBar;
 	public StatBar spBar;
-    public UILabel ability1;
-    public UILabel ability2;
-    public UILabel ability3;
-    public UILabel ability4;
-    public UILabel item1;
-    public UILabel item2;
-    public UILabel item3;
-	// UIContainer buffIcons
-	// UIContainer skillIcons
+
+	private const int maxAbilities = 4;
+    public UILabel[] abilityLabels = new UILabel[maxAbilities];
+
+	private const int maxItems = 3;
+	public UILabel[] itemLabels = new UILabel[maxItems];
+
+	private const int maxBuffs = 3;
+	public UILabel[] buffLabels = new UILabel[maxBuffs];
+
+	private const int maxDebuffs = 3;
+	public UILabel[] debuffLabels = new UILabel[maxDebuffs];
+
+	public UILabel livesLabel;
 
 	public void Init(Hero _owner)
 	{
@@ -32,74 +37,58 @@ public class PlayerHUD : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
+		// Do Abilities
         List<Action> abilities = owner.Abilities;
 
-        ability1.text = abilities[1].Name + ". CD: " + abilities[1].RemainingCooldown;
-        if (abilities[1].RemainingCooldown <= 0.0f)
-        {
-            ability1.color = Color.green;
-        }
-        else
-        {
-            ability1.color = Color.red;
-        }
-        
+		int abilityID = 0;
+		for (int i = 0; i < abilityLabels.Length; ++i )
+		{
+			++abilityID;
 
-        ability2.text = abilities[2].Name + ". CD: " + abilities[2].RemainingCooldown;
-        if (abilities[2].RemainingCooldown <= 0.0f)
-        {
-            ability2.color = Color.green;
-        }
-        else
-        {
-            ability2.color = Color.red;
-        }
+			if (abilities[abilityID] != null)
+			{
+				abilityLabels[i].text = abilities[abilityID].Name + ". CD: " + abilities[abilityID].RemainingCooldown;
 
-        ability3.text = abilities[3].Name + ". CD: " + abilities[3].RemainingCooldown;
-        if (abilities[3].RemainingCooldown <= 0.0f)
-        {
-            ability3.color = Color.green;
-        }
-        else
-        {
-            ability3.color = Color.red;
-        }
+				if (abilities[abilityID].RemainingCooldown <= 0.0f)
+				{
+					abilityLabels[i].color = Color.green;
+				}
+				else
+				{
+					abilityLabels[i].color = Color.red;
+				}
+			}
+			else
+			{
+				abilityLabels[i].text = "NoAbility";
+			}
+		}
 
-        ability4.text = abilities[4].Name + ". CD: " + abilities[4].RemainingCooldown;
-        if (abilities[4].RemainingCooldown <= 0.0f)
-        {
-            ability4.color = Color.green;
-        }
-        else
-        {
-            ability4.color = Color.red;
-        }
+		// Do Items
+		//ConsumableItem[] consumables = owner.HeroBackpack.ConsumableItems;
 
-        //ConsumableItem[] items = owner.HeroBackpack.ConsumableItems;
-        //int itemCount = items.Length;
+		for (int i = 0; i < itemLabels.Length; ++i )
+		{
+			if (itemLabels[i] != null)
+			{
+				itemLabels[i].text = "NoItem" + ". Qty: " + "0" + ". CD: " + "0";
+			}
+			else
+			{
+				itemLabels[i].text = "NoItem";
+			}
+		}
 
-        //if (itemCount > 0)
-        //{
-        //    item1.text = items[0].Name + ". Qty: " + "0" + ". CD: " + "0";
+		// Do lives
+		livesLabel.text = "Lives: " + owner.DerivedStats.Lives;
 
-        //    //if(itemCount > 1)
-        //    //{
-        //    //    item2.text = ;
 
-        //    //    if(itemCount > 2)
-        //    //    {
-        //    //         item3.text = ;
-        //    //    }
-        //    //}
-        //}
-        //else
-        {
-            item1.text = "NoItem" + ". Qty: " + "0" + ". CD: " + "0";
-            item2.text = "NoItem" + ". Qty: " + "0" + ". CD: " + "0";
-            item3.text = "NoItem" + ". Qty: " + "0" + ". CD: " + "0";
-        }
+		// Do Buffs
+		//BetterList<Buff> buffs = owner.BuffList;
+
+		for (int i = 0; i < buffLabels.Length; ++i)
+		{
+			
+		}
 	}
-
-
-
 }

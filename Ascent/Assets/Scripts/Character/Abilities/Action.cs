@@ -108,7 +108,6 @@ public abstract class Action : IAction
             
             cooldownValue = 0.0f;
             isOnCooldown = false;
-            Debug.Log("Cooldown off: " + this.name);
         }
     }
 

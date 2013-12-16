@@ -6,13 +6,13 @@ using System.Collections.Generic;
 /// </summary>
 public class Room : MonoBehaviour
 {
+
     #region Fields
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
-    #endregion
-
-    #region Properties
+	private const int maxDoors = 4;
+	public Door[] doors = new Door[maxDoors];
 
     #endregion
 
@@ -35,6 +35,22 @@ public class Room : MonoBehaviour
         //Transform floorTiles = GetNodeByLayer("Floor").transform;
         //Transform wallObjects = GetNodeByLayer("Wall").transform;
     }
+
+	void Update()
+	{
+		CheckDoors();
+	}
+
+	void CheckDoors()
+	{
+		for (int i = 0; i < doors.Length; ++i )
+		{
+			if(doors[i] != null)
+			{
+				doors[i].Process();
+			}
+		}
+	}
 
     /// <summary>
     /// Adds a root node child to the room tree. This will serve as a transform for adding items

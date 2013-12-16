@@ -111,7 +111,7 @@ public class Game : MonoBehaviour
 
 	// This is a helper function to create players with heroes at any stage of the game
     private void CreatePlayers()
-    {
+	{
 		players = new List<Player>();
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)

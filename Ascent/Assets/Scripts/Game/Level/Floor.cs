@@ -4,9 +4,21 @@ using System.Collections.Generic;
 
 public class Floor : MonoBehaviour 
 {
+
+	public enum TransitionDirection
+	{
+		North = 0,
+		South,
+		East,
+		West
+	}
+
 	private List<Player> players;
 	private GameObject[] startPoints;
 	private GameObject floorCamera;
+	private Room currentRoom;
+	private Room targetRoom;
+	private FadePlane fadePlane;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -16,6 +28,11 @@ public class Floor : MonoBehaviour
 	public Camera MainCamera
 	{
 		get { return floorCamera.camera; }
+	}
+
+	public FloorCamera FloorCamera
+	{
+		get { return floorCamera.GetComponent<FloorCamera>(); }
 	}
 
 	public GameObject[] StartPoints
@@ -39,6 +56,8 @@ public class Floor : MonoBehaviour
 	{
         //// TODO: Load the prefab for this level
         ////Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
+
+		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 
 		// Create HUD
 		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD"));
@@ -94,6 +113,10 @@ public class Floor : MonoBehaviour
 				enemies.Add(thisEnemy);
 			}
 		}
+
+		go = Instantiate(Resources.Load("Prefabs/FadePlane")) as GameObject;
+		fadePlane = go.GetComponent<FadePlane>();
+		go.SetActive(false);
 
         Debug.Log("Enemies: " + enemies.Count);
 	}
@@ -155,6 +178,42 @@ public class Floor : MonoBehaviour
         Game.Singleton.LoadLevel("Level2", Game.EGameState.Tower);
 
 		// Enable input on summary screen
+	}
+
+
+	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
+	{
+		// Set old remove inactive and new one active
+
+		fadePlane.StartFade(1.5f, currentRoom.transform.position);
+
+		StartCoroutine(CoTransitionToRoom());
+
+		targetRoom = targetDoor.transform.parent.parent.GetComponent<Room>();
+		targetRoom.gameObject.SetActive(true);
+
+		// Move camera over
+		FloorCamera.TransitionToRoom(direction);
+
+		// Move heroes to the new room
+		foreach(Player p in players)
+		{
+			p.Hero.transform.position = targetDoor.transform.position;
+		}
+
+		targetDoor.SetAsStartDoor();
+
+	}
+
+	public IEnumerator CoTransitionToRoom()
+	{
+		yield return new WaitForSeconds(1.5f);
+
+		currentRoom.gameObject.SetActive(false);
+
+		currentRoom = targetRoom;
+
+		fadePlane.gameObject.SetActive(false);
 	}
 
 	#endregion

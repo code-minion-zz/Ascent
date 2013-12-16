@@ -13,9 +13,15 @@ public class FloorCamera : MonoBehaviour
     private int currentRoom = 0;
     private int lastRoom = 3;
     private bool transition = false;
+	private float waitTranisition = 0.0f;
     private Vector3 startPos;
     private Vector3 targetPos;
     private float time;
+
+	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
+	private const float verticalIncrement = 15.2f;
+	private const float horizontalIncrement = 30.0f;
+
 
     public Camera Camera
     {
@@ -34,60 +40,70 @@ public class FloorCamera : MonoBehaviour
         //UpdateCameraPosition();
         if (transition)
         {
-            time += Time.deltaTime * 0.50f;
 
-            if(time >= 1.0f)
-            {
-                time = 1.0f;
-                transition = false;
-            }
-            Vector3 lerpVector = Vector3.Lerp(startPos, targetPos, time);
+			if (waitTranisition < 0.5f)
+			{
+				waitTranisition += Time.deltaTime;
+			}
+			else
+			{
+				time += Time.deltaTime * 0.50f;
 
+				if (time >= 1.0f)
+				{
+					time = 1.0f;
+				}
+				Vector3 lerpVector = Vector3.Lerp(startPos, targetPos, time);
 
-            transform.position = lerpVector;
+				transform.position = lerpVector;
+			}
+			if(time == 1.0f)
+			{
+				transition = false;
+			}
         }
-        else
-        {
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                ++currentRoom;
+		//else
+		//{
+		//    if (Input.GetKeyUp(KeyCode.Space))
+		//    {
+		//        ++currentRoom;
 
-                if (currentRoom > lastRoom)
-                {
-                    currentRoom = 0;
-                }
+		//        if (currentRoom > lastRoom)
+		//        {
+		//            currentRoom = 0;
+		//        }
 
-                transition = true;
-                time = 0.0f;
+		//        transition = true;
+		//        time = 0.0f;
 
-                startPos = _transform.position;
+		//        startPos = _transform.position;
 
-                switch(currentRoom)
-                {
-                    case 0:
-                        {
-                            targetPos = new Vector3(0.0f, 30.0f, -4.8f);
-                        }
-                        break;
-                    case 1:
-                        {
-                            targetPos = new Vector3(30.0f, 30.0f, -4.8f);
-                        }
-                        break;
-                    case 2:
-                        {
-                            targetPos = new Vector3(30.0f, 30.0f, 15.2f);
-                        }
-                        break;
-                    case 3:
-                        {
-                            targetPos = new Vector3(0.0f, 30.0f, 15.2f);
-                        }
-                        break;
-                }
+		//        switch(currentRoom)
+		//        {
+		//            case 0:
+		//                {
+		//                    targetPos = new Vector3(0.0f, 30.0f, -4.8f);
+		//                }
+		//                break;
+		//            case 1:
+		//                {
+		//                    targetPos = new Vector3(30.0f, 30.0f, -4.8f);
+		//                }
+		//                break;
+		//            case 2:
+		//                {
+		//                    targetPos = new Vector3(30.0f, 30.0f, 15.2f);
+		//                }
+		//                break;
+		//            case 3:
+		//                {
+		//                    targetPos = new Vector3(0.0f, 30.0f, 15.2f);
+		//                }
+		//                break;
+		//        }
                 
-            }
-        }
+		//    }
+		//}
     }
 
     void UpdateCameraPosition()
@@ -133,4 +149,38 @@ public class FloorCamera : MonoBehaviour
             count++;
         }
     }
+
+	public void TransitionToRoom(Floor.TransitionDirection direction)
+	{
+		startPos = transform.position;
+		targetPos = transform.position;
+
+		switch (direction)
+		{
+			case Floor.TransitionDirection.North:
+				{
+					targetPos += new Vector3(0.0f, 0.0f, verticalIncrement);
+				}
+				break;
+			case Floor.TransitionDirection.South:
+				{
+					targetPos += new Vector3(0.0f, 0.0f, -verticalIncrement);
+				}
+				break;
+			case Floor.TransitionDirection.East:
+				{
+					targetPos += new Vector3(horizontalIncrement, 0.0f, 0.0f);
+				}
+				break;
+			case Floor.TransitionDirection.West:
+				{
+					targetPos += new Vector3(-horizontalIncrement, 0.0f, 0.0f);
+				}
+				break;
+		}
+
+		waitTranisition = 0.0f;
+		time = 0.0f;
+		transition = true;
+	}
 }

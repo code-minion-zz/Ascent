@@ -39,7 +39,7 @@ namespace Ascent
         private void DrawGrid()
         {
             Gizmos.color = color;
-            float count = 0.0f;
+            //float count = 0.0f;
             //// Draw the grid
             //for (float x = gridPosition.x - gridWidth - width; x < gridPosition.x + gridWidth; x += width)
             //{
