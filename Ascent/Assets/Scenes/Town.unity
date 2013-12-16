@@ -691,7 +691,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepCrispWhenShrunk: 1
-  mTrueTypeFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 0}
   mText: Town
   mFontSize: 28
@@ -724,7 +724,7 @@ GameObject:
   - 4: {fileID: 230080751}
   - 114: {fileID: 230080752}
   m_Layer: 15
-  m_Name: UI Root (3D)
+  m_Name: UI Root (2D)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -869,7 +869,7 @@ MonoBehaviour:
     e00: 400
     e01: 0
     e02: 0
-    e03: 450
+    e03: 450.812714
     e10: 0
     e11: 400
     e12: 0
@@ -1098,14 +1098,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4672396b9b81a2438d5321c4a24541b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 616984005}
   background: {fileID: 1393532141}
-  label: {fileID: 0}
-  grabSound: {fileID: 0}
-  placeSound: {fileID: 0}
-  errorSound: {fileID: 0}
+  label: {fileID: 702090791}
+  grabSound: {fileID: 8300000, guid: cab912f3009b43843b0a48ac3120c6ad, type: 3}
+  placeSound: {fileID: 8300000, guid: 4ecb26c462ed72b4dbfba168ff91e2fa, type: 3}
+  errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
-  slot: 0
+  slot: 1
 --- !u!1 &328067580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1726,8 +1726,8 @@ Camera:
   near clip plane: .100000001
   far clip plane: 100
   field of view: 60
-  orthographic: 0
-  orthographic size: 100
+  orthographic: 1
+  orthographic size: 1
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
@@ -1930,7 +1930,7 @@ GameObject:
   - 4: {fileID: 616984006}
   - 114: {fileID: 616984005}
   m_Layer: 15
-  m_Name: Sprite
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1967,11 +1967,11 @@ MonoBehaviour:
   mPivot: 4
   mWidth: 80
   mHeight: 80
-  mDepth: 19
+  mDepth: 4
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
-  mSpriteName: Smooth
+  mSpriteName: Orc Armor - Boots
   mFillCenter: 1
   mType: 1
   mFillDirection: 4
@@ -2781,7 +2781,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1368127938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.812698424, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 234949795}

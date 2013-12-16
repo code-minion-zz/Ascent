@@ -26,10 +26,12 @@ namespace AssemblyCSharp
 			BACKPACK_ITEM3,
 			MAX_BACKPACK
 		}
+
+		int BACKPACKSIZE = 7;
 		
 		protected override void Initialize()
 		{
-			items = new List<Item> (INVENTORYSIZE);
+			items = new List<Item> (BACKPACKSIZE);
 		}
 		
 		public Item GetItem(Slots index)
