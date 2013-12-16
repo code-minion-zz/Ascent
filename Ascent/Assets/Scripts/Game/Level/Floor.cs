@@ -19,6 +19,7 @@ public class Floor : MonoBehaviour
 	private Room currentRoom;
 	private Room targetRoom;
 	private FadePlane fadePlane;
+    private Room[] allRooms;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -119,6 +120,15 @@ public class Floor : MonoBehaviour
 		go.SetActive(false);
 
         Debug.Log("Enemies: " + enemies.Count);
+
+        allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
+
+        foreach (Room r in allRooms)
+        {
+            r.gameObject.SetActive(false);
+        }
+
+        currentRoom.gameObject.SetActive(true);
 	}
 
 	public void AddEnemy(Enemy _enemy)
@@ -154,7 +164,11 @@ public class Floor : MonoBehaviour
 
 			if (hero.IsDead)
 			{
-				hero.Respawn(startPoints[0].transform.position);
+                if (hero.DerivedStats.Lives > 0)
+                {
+				    hero.Respawn(currentRoom.EntryDoor.transform.position);
+                    --hero.DerivedStats.Lives;
+                }
 			}
 		}
 	}
@@ -184,7 +198,6 @@ public class Floor : MonoBehaviour
 	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
 	{
 		// Set old remove inactive and new one active
-
 		fadePlane.StartFade(1.5f, currentRoom.transform.position);
 
 		StartCoroutine(CoTransitionToRoom());

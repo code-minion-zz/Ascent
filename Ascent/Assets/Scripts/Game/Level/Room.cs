@@ -13,6 +13,13 @@ public class Room : MonoBehaviour
 
 	private const int maxDoors = 4;
 	public Door[] doors = new Door[maxDoors];
+    
+    private Door entryDoor;
+    public Door EntryDoor
+    {
+        get { return entryDoor; }
+        set { entryDoor = value; }
+    }
 
     #endregion
 

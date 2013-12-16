@@ -10,8 +10,6 @@ public class FloorCamera : MonoBehaviour
     private Plane[] cameraFrustPlanes;
     private const float cameraOffset = 5.0f;
 
-    private int currentRoom = 0;
-    private int lastRoom = 3;
     private bool transition = false;
 	private float waitTranisition = 0.0f;
     private Vector3 startPos;
