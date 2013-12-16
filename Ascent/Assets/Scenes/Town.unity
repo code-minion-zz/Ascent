@@ -154,7 +154,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 23458621}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
   m_Name: 
@@ -373,16 +373,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 48451302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &56385316
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,16 +618,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 128817322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &140165201
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +884,7 @@ MonoBehaviour:
     e33: 1
   mAlpha: 1
   mClipping: 0
-  mClipRange: {x: 0, y: 0, z: 818.058716, w: 800}
+  mClipRange: {x: 0, y: 0, z: 711.111145, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 0
 --- !u!114 &234949800
@@ -1141,16 +1143,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 328067580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &329243715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,16 +1327,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 380529547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 2135863390}
-  background: {fileID: 2098586281}
-  spacing: 128
-  padding: 10
+  icon: {fileID: 0}
+  background: {fileID: 0}
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &390929854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,16 +1375,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 390929854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &402809473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1768,16 +1773,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 517460483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &586848436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2261,16 +2267,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 744889118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!4 &744889120
 Transform:
   m_ObjectHideFlags: 0
@@ -2351,16 +2358,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 943714531}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &988280205
 GameObject:
   m_ObjectHideFlags: 0
@@ -3445,16 +3453,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1636042242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &1659683212
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,16 +3705,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1748836198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &1858922653
 GameObject:
   m_ObjectHideFlags: 0
@@ -3879,16 +3889,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1979039350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &2004280388
 GameObject:
   m_ObjectHideFlags: 0
@@ -3994,16 +4005,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2019737759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 849fd93d348255049af49ba16fb8bcb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 70841457d1e5b744593d9ffe219188ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemCount: 8
-  maxRows: 4
-  maxColumns: 4
-  template: {fileID: 0}
+  icon: {fileID: 0}
   background: {fileID: 0}
-  spacing: 128
-  padding: 10
+  label: {fileID: 0}
+  grabSound: {fileID: 0}
+  placeSound: {fileID: 0}
+  errorSound: {fileID: 0}
+  storage: {fileID: 0}
+  slot: 0
 --- !u!1 &2024155704
 GameObject:
   m_ObjectHideFlags: 0
