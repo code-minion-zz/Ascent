@@ -26,7 +26,6 @@ public abstract class Enemy : Character
     //private float waiting = 0.0f;
     private Vector3 originalScale;
 
-    protected RAIN.Core.AIRig ai;
 
 	protected StatBar hpBar;
 	public StatBar HPBar
