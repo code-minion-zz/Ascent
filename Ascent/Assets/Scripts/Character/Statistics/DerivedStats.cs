@@ -13,7 +13,7 @@ public class DerivedStats
 	protected int curSpecial;
 	protected int maxSpecial;
 
-	protected int lives;
+	protected int lives = 1;
 			
 	// derived stats
 	// offensive

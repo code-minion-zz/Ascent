@@ -100,6 +100,11 @@ public abstract class Character : MonoBehaviour
     public virtual void Update()
     {
         UpdateActiveAbility();
+        
+        foreach(Buff b in buffList)
+        {
+            b.Process();
+        }
     }
 
     private void UpdateActiveAbility()
@@ -284,5 +289,15 @@ public abstract class Character : MonoBehaviour
     {
         derivedStats.CurrentHealth = derivedStats.MaxHealth;
         derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+    }
+
+    public virtual void AddBuff(Buff buff)
+    {
+        buffList.Add(buff);
+    }
+
+    public virtual void RemoveBuff(Buff buff)
+    {
+        buffList.Remove(buff);
     }
 }

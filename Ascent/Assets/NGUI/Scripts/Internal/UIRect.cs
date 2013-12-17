@@ -27,6 +27,77 @@ public abstract class UIRect : MonoBehaviour
 
 		public AnchorPoint () { }
 		public AnchorPoint (float relative) { this.relative = relative; }
+
+		/// <summary>
+		/// Convenience function that sets the anchor's values.
+		/// </summary>
+
+		public void Set (float relative, float absolute)
+		{
+			this.relative = relative;
+			this.absolute = Mathf.FloorToInt(absolute + 0.5f);
+		}
+
+		/// <summary>
+		/// Set the anchor's value to the nearest of the 3 possible choices of (left, center, right) or (bottom, center, top).
+		/// </summary>
+
+		public void SetToNearest (float abs0, float abs1, float abs2) { SetToNearest(0f, 0.5f, 1f, abs0, abs1, abs2); }
+
+		/// <summary>
+		/// Set the anchor's value given the 3 possible anchor combinations. Chooses the one with the smallest absolute offset.
+		/// </summary>
+
+		public void SetToNearest (float rel0, float rel1, float rel2, float abs0, float abs1, float abs2)
+		{
+			float a0 = Mathf.Abs(abs0);
+			float a1 = Mathf.Abs(abs1);
+			float a2 = Mathf.Abs(abs2);
+
+			if (a0 < a1 && a0 < a2) Set(rel0, abs0);
+			else if (a1 < a0 && a1 < a2) Set(rel1, abs1);
+			else Set(rel2, abs2);
+		}
+
+		/// <summary>
+		/// Set the anchor's absolute coordinate relative to the specified parent, keeping the relative setting intact.
+		/// </summary>
+
+		public void SetHorizontal (Transform parent, float localPos)
+		{
+			if (rect)
+			{
+				Vector3[] sides = rect.GetSides(parent);
+				float targetPos = Mathf.Lerp(sides[0].x, sides[2].x, relative);
+				absolute = Mathf.FloorToInt(localPos - targetPos + 0.5f);
+			}
+			else
+			{
+				Vector3 targetPos = target.position;
+				if (parent != null) targetPos = parent.InverseTransformPoint(targetPos);
+				absolute = Mathf.FloorToInt(localPos - targetPos.x + 0.5f);
+			}
+		}
+
+		/// <summary>
+		/// Set the anchor's absolute coordinate relative to the specified parent, keeping the relative setting intact.
+		/// </summary>
+
+		public void SetVertical (Transform parent, float localPos)
+		{
+			if (rect)
+			{
+				Vector3[] sides = rect.GetSides(parent);
+				float targetPos = Mathf.Lerp(sides[3].y, sides[1].y, relative);
+				absolute = Mathf.FloorToInt(localPos - targetPos + 0.5f);
+			}
+			else
+			{
+				Vector3 targetPos = target.position;
+				if (parent != null) targetPos = parent.InverseTransformPoint(targetPos);
+				absolute = Mathf.FloorToInt(localPos - targetPos.y + 0.5f);
+			}
+		}
 	}
 
 	/// <summary>
@@ -227,6 +298,12 @@ public abstract class UIRect : MonoBehaviour
 			OnUpdate();
 		}
 	}
+
+	/// <summary>
+	/// Manually update anchored sides.
+	/// </summary>
+
+	public void UpdateAnchors () { if (isAnchored) OnAnchor(); }
 
 	/// <summary>
 	/// Update the dimensions of the rectangle using anchor points.

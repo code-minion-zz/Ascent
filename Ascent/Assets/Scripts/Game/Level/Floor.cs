@@ -166,8 +166,20 @@ public class Floor : MonoBehaviour
 			{
                 if (hero.DerivedStats.Lives > 0)
                 {
-				    hero.Respawn(currentRoom.EntryDoor.transform.position);
+                    if (currentRoom.startRoom)
+                    {
+                        hero.Respawn(startPoints[0].transform.position);
+                    }
+                    else
+                    {
+                        hero.Respawn(currentRoom.EntryDoor.transform.position);
+                    }
+
                     --hero.DerivedStats.Lives;
+                }
+                else
+                {
+                    hero.gameObject.SetActive(false);
                 }
 			}
 		}
@@ -214,6 +226,7 @@ public class Floor : MonoBehaviour
 			p.Hero.transform.position = targetDoor.transform.position;
 		}
 
+        targetRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
 
 	}

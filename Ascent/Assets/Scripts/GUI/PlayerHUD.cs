@@ -84,11 +84,19 @@ public class PlayerHUD : MonoBehaviour {
 
 
 		// Do Buffs
-		//BetterList<Buff> buffs = owner.BuffList;
+		BetterList<Buff> buffs = owner.BuffList;
 
-		for (int i = 0; i < buffLabels.Length; ++i)
-		{
-			
-		}
+ 
+        for (int i = 0; i < 3; ++i)
+        {
+            if (i < buffs.size && buffs[i] != null)
+            { 
+                buffLabels[i].text = buffs[i].Name + ": " + buffs[i].Duration;
+            }
+            else
+            {
+                buffLabels[i].text = "";
+            }
+        }
 	}
 }

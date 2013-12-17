@@ -54,41 +54,45 @@ public class Door : MonoBehaviour
 			}
 		}
 
-		if (!done)
-		{
-			int playerCount = Game.Singleton.Players.Count;
-			int currentPlayerCount = 0;
+        if (targetDoor != null)
+        {
 
-			// Check if all heroes are in here.
-			foreach (Player p in Game.Singleton.Players)
-			{
-				if (p.Hero.collider.bounds.Intersects(collider.bounds))
-				{
-					++currentPlayerCount;
-				}
-				else
-				{
-					break;
-				}
-			}
+            if (!done)
+            {
+                int playerCount = Game.Singleton.Players.Count;
+                int currentPlayerCount = 0;
 
-			if (currentPlayerCount > 0 &&
-				currentPlayerCount == playerCount)
-			{
-				standingOnDoorTimer += Time.deltaTime;
+                // Check if all heroes are in here.
+                foreach (Player p in Game.Singleton.Players)
+                {
+                    if (p.Hero.collider.bounds.Intersects(collider.bounds))
+                    {
+                        ++currentPlayerCount;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-				if (standingOnDoorTimer >= 1.0f)
-				{
-					Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
-					//gameObject.SetActive(false);
-					done = true;
-				}
-			}
-			else
-			{
-				standingOnDoorTimer = 0.0f;
-			}
-		}
+                if (currentPlayerCount > 0 &&
+                    currentPlayerCount == playerCount)
+                {
+                    standingOnDoorTimer += Time.deltaTime;
+
+                    if (standingOnDoorTimer >= 1.0f)
+                    {
+                        Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                        //gameObject.SetActive(false);
+                        done = true;
+                    }
+                }
+                else
+                {
+                    standingOnDoorTimer = 0.0f;
+                }
+            }
+        }
 	}
 
 	public void SetAsStartDoor()

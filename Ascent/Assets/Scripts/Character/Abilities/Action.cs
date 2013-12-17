@@ -4,6 +4,7 @@ using System.Collections;
 public abstract class Action : IAction
 {
     protected float animationLength = 0.0f;
+    protected float animationSpeed = 1.0f;
     protected float coolDownTime = 0.0f;
     protected float cooldownValue = 0.0f;
     protected float currentTime = 0.0f;
@@ -86,7 +87,7 @@ public abstract class Action : IAction
     /// </summary>
     public virtual void UpdateAbility()
     {
-        float timeVal = Time.deltaTime;
+        float timeVal = Time.deltaTime * animationSpeed;
         currentTime += timeVal;
 
         if (currentTime >= Length)

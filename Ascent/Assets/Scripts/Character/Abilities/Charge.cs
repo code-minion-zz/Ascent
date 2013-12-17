@@ -33,7 +33,7 @@ public class Charge : Action
 		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
 		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
 
-        coolDownTime = 10.0f;
+        coolDownTime = 5.0f;
         animationTrigger = "SwingAttack";
         specialCost = 5;
     }

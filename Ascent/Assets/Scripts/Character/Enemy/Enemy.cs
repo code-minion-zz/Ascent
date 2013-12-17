@@ -45,7 +45,7 @@ public abstract class Enemy : Character
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
-		hpBar.gameObject.SetActive(false);
+		NGUITools.SetActive(hpBar.gameObject,false);
 	}
 
     public override void Awake()
@@ -76,7 +76,8 @@ public abstract class Enemy : Character
 					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
 						if (!hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(true);
+							//hpBar.gameObject.SetActive(true);
+							NGUITools.SetActive(hpBar.gameObject,true);
 						Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
 						Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 						barPos = new Vector3(barPos.x,barPos.y);
@@ -85,7 +86,8 @@ public abstract class Enemy : Character
 					else
 					{
 						if (hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(false);
+							NGUITools.SetActive(hpBar.gameObject,false);
+							//hpBar.gameObject.SetActive(false);
 					}
 				}
 			}

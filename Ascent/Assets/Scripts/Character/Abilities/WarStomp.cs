@@ -15,9 +15,10 @@ public class WarStomp : Action
 
         // TODO: remove this from hardcoded animation data.
         animationLength = 3.0f;
+        animationSpeed = 3.0f;
         animationTrigger = "WarStomp";
         coolDownTime = 5.0f;
-        specialCost = 10;
+        specialCost = 5;
 
         prefab = Resources.Load("Prefabs/WarStompEffect") as GameObject;
     }
@@ -35,7 +36,7 @@ public class WarStomp : Action
         //sc.isTrigger = true;
 
         stompObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-        GameObject.Destroy(stompObject, animationLength);
+        GameObject.Destroy(stompObject, animationLength / animationSpeed);
     }
 
     public override void UpdateAbility()

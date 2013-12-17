@@ -13,6 +13,7 @@ public class Room : MonoBehaviour
 
 	private const int maxDoors = 4;
 	public Door[] doors = new Door[maxDoors];
+    public bool startRoom = false;
     
     private Door entryDoor;
     public Door EntryDoor
