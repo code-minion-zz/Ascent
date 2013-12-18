@@ -81,11 +81,11 @@ public class Floor : MonoBehaviour
 
 		if (orthographicCamera)
 		{
-			go = Resources.Load("Prefabs/floorCameraOrtho") as GameObject;
+			go = Resources.Load("Prefabs/Floors/floorCameraOrtho") as GameObject;
 		}
 		else
 		{
-			go = Resources.Load("Prefabs/floorCamera") as GameObject;
+            go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
 		}
 
 		floorCamera = Instantiate(go) as GameObject;
@@ -115,7 +115,8 @@ public class Floor : MonoBehaviour
 			}
 		}
 
-		go = Instantiate(Resources.Load("Prefabs/FadePlane")) as GameObject;
+		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+        Debug.Log(go);
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 

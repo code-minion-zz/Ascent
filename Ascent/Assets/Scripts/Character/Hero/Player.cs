@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
             case Character.EHeroClass.Warrior:
                 {
                     //go = Resources.Load("Prefabs/Warrior") as GameObject;
-                    go = Resources.Load("Prefabs/OrcWarrior") as GameObject;
+                    go = Resources.Load("Prefabs/Heroes/OrcWarrior") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
                     heroScript = heroObject.AddComponent<Warrior>();
                 }

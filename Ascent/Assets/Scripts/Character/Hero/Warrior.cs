@@ -29,7 +29,7 @@ public class Warrior : Hero
 
         // Load the prefab
         // TODO: Change this make it more easier to load
-        weaponPrefab = Resources.Load("Prefabs/angelic_sword_03") as GameObject;
+        weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_03") as GameObject;
         //weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
         weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
 
