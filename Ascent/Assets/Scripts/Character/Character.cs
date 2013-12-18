@@ -131,10 +131,12 @@ public abstract class Character : MonoBehaviour
             Action ability = abilities[abilityID];
 
             // Make sure the cooldown is off otherwise we cannot use the ability
-            if (ability != null && ability.IsOnCooldown == false)
+            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
             {
                 ability.StartAbility();
                 activeAbility = ability;
+
+                derivedStats.CurrentSpecial -= ability.SpecialCost;
             }
 		}
     }

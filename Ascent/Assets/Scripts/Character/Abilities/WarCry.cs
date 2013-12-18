@@ -29,7 +29,6 @@ public class WarCry : Action
 
     public override void EndAbility()
     {
-        Debug.Log("END" + animationTrigger);
         base.EndAbility();
     }
 }

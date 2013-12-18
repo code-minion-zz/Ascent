@@ -7,8 +7,8 @@ using System.Collections.Generic;
 
 public class Rat : Enemy 
 {
-    //// TODO: Move this
-    //private GameObject bloodSplat;
+    // TODO: Move this
+    private GameObject bloodSplat;
 
     //public enum ERatState
     //{
@@ -23,10 +23,10 @@ public class Rat : Enemy
     //    Max
     //}
 
-    //private float deathSequenceTime = 0.0f;    
-    //private float deathSequenceEnd = 1.0f;
-    //private Vector3 deathRotation = Vector3.zero;
-    //private float deathSpeed = 5.0f;
+    private float deathSequenceTime = 0.0f;
+    private float deathSequenceEnd = 1.0f;
+    private Vector3 deathRotation = Vector3.zero;
+    private float deathSpeed = 5.0f;
     //private List<Character> collidedTargets = new List<Character>();
 
     //float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,

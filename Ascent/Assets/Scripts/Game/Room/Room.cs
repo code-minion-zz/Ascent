@@ -22,6 +22,14 @@ public class Room : MonoBehaviour
         set { entryDoor = value; }
     }
 
+    protected List<Character> enemies;
+    public List<Character> Enemies
+    {
+        get { return enemies; }
+    }
+
+    public RoomFloorNav navMesh;
+
     #endregion
 
     /// <summary>
@@ -42,6 +50,21 @@ public class Room : MonoBehaviour
         //Transform items = GetNodeByLayer("Items").transform;
         //Transform floorTiles = GetNodeByLayer("Floor").transform;
         //Transform wallObjects = GetNodeByLayer("Wall").transform;
+    }
+
+    public void OnEnable()
+    {
+        if (enemies == null)
+        {
+            enemies = new List<Character>();
+
+            Enemy[] roomEnemies = gameObject.GetComponents<Enemy>() as Enemy[];
+
+            foreach (Enemy e in roomEnemies)
+            {
+                enemies.Add(e);
+            }
+        }
     }
 
 	void Update()

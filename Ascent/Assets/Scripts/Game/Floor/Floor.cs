@@ -25,6 +25,10 @@ public class Floor : MonoBehaviour
 	//private const float cameraOffset = 15.0f;
 	public bool orthographicCamera = false;
 
+    public Room CurrentRoom
+    {
+        get { return currentRoom; }
+    }
 
 	public Camera MainCamera
 	{
@@ -116,7 +120,6 @@ public class Floor : MonoBehaviour
 		}
 
 		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
-        Debug.Log(go);
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 

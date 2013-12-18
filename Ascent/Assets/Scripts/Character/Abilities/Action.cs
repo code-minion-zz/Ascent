@@ -77,8 +77,6 @@ public abstract class Action : IAction
         cooldownValue = CooldownTime;
         isOnCooldown = true;
         owner.Animator.PlayAnimation(animationTrigger);
-
-        owner.DerivedStats.CurrentSpecial -= specialCost;
     }
 
     /// <summary>
