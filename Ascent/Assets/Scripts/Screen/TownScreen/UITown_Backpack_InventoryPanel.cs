@@ -14,8 +14,15 @@ public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
     public void Update()
     {
 
-    }
+	}
+	
+	public override void OnMenuOK(InputDevice device)
+	{
+		// TODO: Change character's equipment
 
+		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.Backpack_Main_Panel);
+	}
+	
 	public override void OnMenuCancel(InputDevice device)
 	{
 		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.Backpack_Main_Panel);
