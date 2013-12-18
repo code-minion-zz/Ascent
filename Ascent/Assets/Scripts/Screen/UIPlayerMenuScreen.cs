@@ -12,7 +12,7 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		windows = new List<UIPlayerMenuWindow>();
 
 		UIPlayerMenuWindow[] foundWindows = GetComponentsInChildren<UIPlayerMenuWindow>();
-		foreach (UIHeroSelect_Window win in foundWindows)
+		foreach (UIPlayerMenuWindow win in foundWindows)
 		{
 			windows.Add(win);
             win.Initialise();

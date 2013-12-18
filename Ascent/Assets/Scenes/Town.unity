@@ -1060,6 +1060,7 @@ GameObject:
   - 114: {fileID: 234949797}
   - 114: {fileID: 234949800}
   - 54: {fileID: 234949801}
+  - 114: {fileID: 234949802}
   m_Layer: 14
   m_Name: Backpack (Panel)
   m_TagString: Untagged
@@ -1078,9 +1079,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 757538454}
-  - {fileID: 1119150459}
   - {fileID: 1963713498}
   - {fileID: 1196976522}
+  - {fileID: 1119150459}
   - {fileID: 56385317}
   - {fileID: 1939162536}
   - {fileID: 375891671}
@@ -1169,7 +1170,7 @@ MonoBehaviour:
     e10: 0
     e11: 400
     e12: 0
-    e13: -.902934551
+    e13: 0
     e20: 0
     e21: 0
     e22: 400
@@ -1217,6 +1218,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &234949802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 234949794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a7a89a7fd4af74285d2789f6d88549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &242328528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,8 +1392,9 @@ GameObject:
   - 4: {fileID: 272587883}
   - 114: {fileID: 272587884}
   - 114: {fileID: 272587885}
+  - 114: {fileID: 272587886}
   m_Layer: 14
-  m_Name: Accessory Slot
+  m_Name: Accessory1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1437,6 +1450,23 @@ MonoBehaviour:
   relativeOffset: {x: 0, y: -1.60000002}
   pixelOffset: {x: 0, y: 0}
   widgetContainer: {fileID: 0}
+--- !u!114 &272587886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 272587882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &298400758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,8 +1587,9 @@ GameObject:
   - 4: {fileID: 350512657}
   - 114: {fileID: 350512659}
   - 114: {fileID: 350512658}
+  - 114: {fileID: 350512660}
   m_Layer: 14
-  m_Name: Consumable Slot
+  m_Name: Consumable4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1614,6 +1645,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &350512660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 350512656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &359856505
 GameObject:
   m_ObjectHideFlags: 0
@@ -2774,8 +2822,9 @@ GameObject:
   - 4: {fileID: 594063875}
   - 114: {fileID: 594063877}
   - 114: {fileID: 594063876}
+  - 114: {fileID: 594063878}
   m_Layer: 14
-  m_Name: Accessory Slot
+  m_Name: Accessory4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2831,6 +2880,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &594063878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 594063874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &615154759
 GameObject:
   m_ObjectHideFlags: 0
@@ -3949,7 +4015,7 @@ MonoBehaviour:
     e10: 0
     e11: 400
     e12: 0
-    e13: 170.097061
+    e13: 171
     e20: 0
     e21: 0
     e22: 400
@@ -4587,8 +4653,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1056045197}
+  - 114: {fileID: 1056045198}
   m_Layer: 14
-  m_Name: UIPlayerPanel
+  m_Name: Backpack Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4607,6 +4674,17 @@ Transform:
   - {fileID: 234949795}
   - {fileID: 1273974304}
   m_Father: {fileID: 1368127939}
+--- !u!114 &1056045198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1056045196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 750f6975f161bfd4db728c7e790eb988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1080585446
 GameObject:
   m_ObjectHideFlags: 0
@@ -4949,6 +5027,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1196976522}
   - 114: {fileID: 1196976523}
+  - 114: {fileID: 1196976524}
   m_Layer: 14
   m_Name: Consumable Tab
   m_TagString: Untagged
@@ -4995,7 +5074,7 @@ MonoBehaviour:
     target: {fileID: 234949795}
     relative: .5
     absolute: 300
-  mColor: {r: .433823526, g: .433823526, b: .433823526, a: 1}
+  mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 180
   mHeight: 70
@@ -5009,6 +5088,23 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
+--- !u!114 &1196976524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1196976521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1196976521}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &1219644929
 GameObject:
   m_ObjectHideFlags: 0
@@ -5414,8 +5510,9 @@ GameObject:
   - 114: {fileID: 1273974307}
   - 114: {fileID: 1273974306}
   - 54: {fileID: 1273974305}
+  - 114: {fileID: 1273974311}
   m_Layer: 14
-  m_Name: Backpack
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5567,6 +5664,17 @@ MonoBehaviour:
   mClipRange: {x: 0, y: 0, z: 711.111084, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 0
+--- !u!114 &1273974311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1273974303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6e207766b5e9a41a20e504a0e556ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1281108917
 GameObject:
   m_ObjectHideFlags: 0
@@ -6116,7 +6224,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1368127938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .902934551, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1056045197}
@@ -6922,8 +7030,9 @@ GameObject:
   - 4: {fileID: 1613329169}
   - 114: {fileID: 1613329171}
   - 114: {fileID: 1613329170}
+  - 114: {fileID: 1613329172}
   m_Layer: 14
-  m_Name: Accessory Slot
+  m_Name: Accessory2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6979,6 +7088,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &1613329172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1613329168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &1625727812
 GameObject:
   m_ObjectHideFlags: 0
@@ -7290,8 +7416,9 @@ GameObject:
   - 4: {fileID: 1742220265}
   - 114: {fileID: 1742220267}
   - 114: {fileID: 1742220266}
+  - 114: {fileID: 1742220268}
   m_Layer: 14
-  m_Name: Accessory Slot
+  m_Name: Accessory3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7347,6 +7474,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &1742220268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1742220264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &1758050373
 GameObject:
   m_ObjectHideFlags: 0
@@ -7988,8 +8132,9 @@ GameObject:
   - 4: {fileID: 1922052422}
   - 114: {fileID: 1922052424}
   - 114: {fileID: 1922052423}
+  - 114: {fileID: 1922052425}
   m_Layer: 14
-  m_Name: Consumable Slot
+  m_Name: Consumable3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8045,6 +8190,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &1922052425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1922052421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &1925392630
 GameObject:
   m_ObjectHideFlags: 0
@@ -8055,8 +8217,9 @@ GameObject:
   - 4: {fileID: 1925392631}
   - 114: {fileID: 1925392633}
   - 114: {fileID: 1925392632}
+  - 114: {fileID: 1925392634}
   m_Layer: 14
-  m_Name: Consumable Slot
+  m_Name: Consumable1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8112,6 +8275,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &1925392634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1925392630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &1939162535
 GameObject:
   m_ObjectHideFlags: 0
@@ -8190,6 +8370,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1963713498}
   - 114: {fileID: 1963713499}
+  - 114: {fileID: 1963713500}
   m_Layer: 14
   m_Name: Accessory Tab
   m_TagString: Untagged
@@ -8250,6 +8431,23 @@ MonoBehaviour:
   mFillDirection: 4
   mFillAmount: 1
   mInvert: 0
+--- !u!114 &1963713500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1963713497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1963713497}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &2001961690
 GameObject:
   m_ObjectHideFlags: 0
@@ -8464,8 +8662,9 @@ GameObject:
   - 4: {fileID: 2004481734}
   - 114: {fileID: 2004481736}
   - 114: {fileID: 2004481735}
+  - 114: {fileID: 2004481737}
   m_Layer: 14
-  m_Name: Consumable Slot
+  m_Name: Consumable2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8521,6 +8720,23 @@ MonoBehaviour:
   errorSound: {fileID: 8300000, guid: ab4b41aa0a43dcc48a386073b6a1a0d9, type: 3}
   equipment: {fileID: 0}
   slot: 1
+--- !u!114 &2004481737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2004481733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 0}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  onClick: []
 --- !u!1 &2026877411
 GameObject:
   m_ObjectHideFlags: 0

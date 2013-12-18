@@ -59,7 +59,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
     {
         panels = new Dictionary<int, UIPlayerMenuPanel>();
 
-        parentScreen = transform.parent.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
+        //parentScreen = transform.parent.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
 
         AddAllMenuPanels();
     }

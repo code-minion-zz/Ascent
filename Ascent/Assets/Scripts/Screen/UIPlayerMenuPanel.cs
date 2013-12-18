@@ -17,6 +17,8 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 	{
 		parent.OnMenuUp += OnMenuUp;
 		parent.OnMenuDown += OnMenuDown;
+		parent.OnMenuLeft += OnMenuLeft;
+		parent.OnMenuRight += OnMenuRight;
 		parent.OnMenuStart += OnMenuOK;
 		parent.OnMenuA += OnMenuOK;
 		parent.OnMenuB += OnMenuCancel;
@@ -46,13 +48,23 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		DeregisterToInputEvents();
 	}
 
-
+	
 	public virtual void OnMenuUp(InputDevice device)
 	{
 		
 	}
-
+	
 	public virtual void OnMenuDown(InputDevice device)
+	{
+		
+	}
+
+	public virtual void OnMenuLeft(InputDevice device)
+	{
+		
+	}
+	
+	public virtual void OnMenuRight(InputDevice device)
 	{
 		
 	}
@@ -68,7 +80,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	}
 
-	protected UIButton NextButton()
+	protected virtual UIButton NextButton()
 	{
 		currentButton = ++currentButton;
 
@@ -80,7 +92,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		return (buttons[currentButton]);
 	}
 
-	protected UIButton PrevButton()
+	protected virtual UIButton PrevButton()
 	{
 		currentButton = --currentButton;
 

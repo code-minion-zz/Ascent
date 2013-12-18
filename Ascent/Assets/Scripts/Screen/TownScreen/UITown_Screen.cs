@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UIHeroSelect_Screen : UIPlayerMenuScreen 
+public class UITown_Screen : UIPlayerMenuScreen 
 {
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
@@ -12,11 +12,17 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 	List<InputDevice> devices;
 
-    bool allReady = false;
-    public bool AllReady
-    {
-        get { return allReady; }
-    }
+//    bool allReady = false;
+//    public bool AllReady
+//    {
+//        get { return allReady; }
+//    }
+
+	void OnDestroy()
+	{
+		InputManager.OnDeviceAttached -= OnDeviceAttached;
+		InputManager.OnDeviceDetached -= OnDeviceDetached;
+	}
 
 	public override void Start()
 	{
@@ -27,56 +33,57 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 		devices = InputManager.Devices;
 
-		GameSaver.LoadAllHeroSaves();
+		//GameSaver.LoadAllHeroSaves();
+		// TODO: Retrieve any player data into containers for this screen, if necessary.
 	}
 
 	public void Update () 
 	{
-		// Remove players that wish to leave
-		if (playersToRemove.Count > 0)
-		{
-			foreach (Player p in playersToRemove)
-			{
-				RemovePlayer(p);
-			}
-
-			playersToRemove.Clear();
-		}
+//		// Remove players that wish to leave
+//		if (playersToRemove.Count > 0)
+//		{
+//			foreach (Player p in playersToRemove)
+//			{
+//				RemovePlayer(p);
+//			}
+//
+//			playersToRemove.Clear();
+//		}
 
         // Check if all players are ready
         int activePlayers = 0;
-        int readiedPlayers = 0;
-        foreach (UIPlayerMenuWindow win in windows)
-        {
-            if (win.gameObject.activeSelf)
-            {
-                ++activePlayers;
-                if (win.Ready)
-                {
-                    ++readiedPlayers;
-                }
-            }
-        }
-        if (activePlayers > 0)
-        {
-            if (activePlayers == readiedPlayers)
-            {
-                allReady = true;
-            }
-            else
-            {
-                allReady = false;
-            }
-        }
-        else
-        {
-            allReady = false;
-        }
+//        int readiedPlayers = 0;
+//        foreach (UIPlayerMenuWindow win in windows)
+//        {
+//            if (win.gameObject.activeSelf)
+//            {
+//                ++activePlayers;
+//                if (win.Ready)
+//                {
+//                    ++readiedPlayers;
+//                }
+//            }
+//        }
+//        if (activePlayers > 0)
+//        {
+//            if (activePlayers == readiedPlayers)
+//            {
+//                allReady = true;
+//            }
+//            else
+//            {
+//                allReady = false;
+//            }
+//        }
+//        else
+//        {
+//            allReady = false;
+//        }
 
 
 
 		// Check if any players want to enter the game
-		AddNewPlayers();
+//		AddNewPlayers();
 
 	}
 
@@ -154,14 +161,15 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		Destroy(p.gameObject);
 	}
 
-	public void CloseWindow(UIHeroSelect_Window window)
-	{
-        window.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.Main);
-        window.ReadyWindow(false);
-		window.Player.Input.InUse = false;
-		window.Player.UnbindInputDevice();
-		playersToRemove.Add(window.Player);
-	}
+//	public void CloseWindow(UITown_Backpack_Window window)
+//	{
+//		//if (window.ActivePanel is UITown_Backpack_InventoryPanel)
+//        window.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.);
+//        window.ReadyWindow(false);
+//		window.Player.Input.InUse = false;
+//		window.Player.UnbindInputDevice();
+//		playersToRemove.Add(window.Player);
+//	}
 
     public void StartGame()
     {
