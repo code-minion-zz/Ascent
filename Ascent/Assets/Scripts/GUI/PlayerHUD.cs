@@ -98,5 +98,10 @@ public class PlayerHUD : MonoBehaviour {
                 buffLabels[i].text = "";
             }
         }
+
+        for (int i = 0; i < debuffLabels.Length; ++i)
+         {
+             debuffLabels[i].text = "";
+         }
 	}
 }
