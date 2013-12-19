@@ -136,6 +136,10 @@ public class AI_Agent : MonoBehaviour
                 }
                 break;
         }
+
+
+		Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(targetPos.x, 1.0f, targetPos.z), Color.red);
+		Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(actor.transform.position.x, 1.0f, actor.transform.position.z), Color.green);
     }
 
     protected List<Character> Sense(AI_Sense_Type senseType)
@@ -239,14 +243,5 @@ public class AI_Agent : MonoBehaviour
 
         actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
 		//actor.transform.forward = target - actor.transform.position;
-    }
-
-    public void OnDrawGizmos()
-    {
-		if(gameObject.activeSelf)
-		{
-			 Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(targetPos.x, 1.0f, targetPos.z), Color.red);
-			 Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(actor.transform.position.x, 1.0f, actor.transform.position.z), Color.green);
-		}
     }
 }

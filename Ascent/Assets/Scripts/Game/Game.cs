@@ -40,6 +40,8 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
+	public static bool running = false;
+
 	private EGameState gameStateToLoad;
 	
 	#endregion	
@@ -73,6 +75,8 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+		running = true;
+
 		playerCharacterType = initValues.playerCharacterType;
 
 		Application.targetFrameRate = initValues.targetFrameRate;
