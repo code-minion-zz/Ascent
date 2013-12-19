@@ -1166,11 +1166,11 @@ MonoBehaviour:
     e00: 400
     e01: 0
     e02: 0
-    e03: 450
+    e03: 449.080475
     e10: 0
     e11: 400
     e12: 0
-    e13: 0
+    e13: -.919540226
     e20: 0
     e21: 0
     e22: 400
@@ -1181,7 +1181,7 @@ MonoBehaviour:
     e33: 1
   mAlpha: 1
   mClipping: 0
-  mClipRange: {x: 0, y: 0, z: 711.111084, w: 800}
+  mClipRange: {x: 0, y: 0, z: 208.735626, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 0
 --- !u!114 &234949800
@@ -2279,6 +2279,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 475512536}
   - 114: {fileID: 475512537}
+  - 114: {fileID: 475512538}
   m_Layer: 15
   m_Name: Scene
   m_TagString: Untagged
@@ -2307,6 +2308,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 90b2b27c885e1544598b824822e98119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &475512538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 475512535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a90de3f6f7866644f963b5e25d6af571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &478001079
@@ -4011,11 +4023,11 @@ MonoBehaviour:
     e00: 400
     e01: 0
     e02: 0
-    e03: 450
+    e03: 449.080475
     e10: 0
     e11: 400
     e12: 0
-    e13: 171
+    e13: 170.08046
     e20: 0
     e21: 0
     e22: 400
@@ -5517,7 +5529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1273974304
 Transform:
   m_ObjectHideFlags: 0
@@ -5646,11 +5658,11 @@ MonoBehaviour:
     e00: 400
     e01: 0
     e02: 0
-    e03: 450
+    e03: 449.080475
     e10: 0
     e11: 400
     e12: 0
-    e13: -.902799964
+    e13: -.919405639
     e20: 0
     e21: 0
     e22: 400
@@ -5661,7 +5673,7 @@ MonoBehaviour:
     e33: 1
   mAlpha: 1
   mClipping: 0
-  mClipRange: {x: 0, y: 0, z: 711.111084, w: 800}
+  mClipRange: {x: 0, y: 0, z: 208.735626, w: 800}
   mClipSoftness: {x: 40, y: 40}
   mDepth: 0
 --- !u!114 &1273974311
@@ -6224,7 +6236,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1368127938}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: .919540226, y: .919540226, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1056045197}

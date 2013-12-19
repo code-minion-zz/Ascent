@@ -69,12 +69,14 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public override void AddAllMenuPanels()
 	{
-		panels[(int)EBackpackPanels.Backpack_Main_Panel] = GetComponentInChildren<UIHeroSelect_MainPanel>();
-		panels[(int)EBackpackPanels.Backpack_Inventory_Panel] = GetComponentInChildren<UIHeroSelect_LoadHeroPanel>();
+		UITown_Backpack_MainPanel mainpanel =  GetComponentInChildren<UITown_Backpack_MainPanel>();
+		UITown_Backpack_InventoryPanel inventory = GetComponentInChildren<UITown_Backpack_InventoryPanel>();
+		panels[(int)EBackpackPanels.Backpack_Main_Panel] = mainpanel;
+		panels[(int)EBackpackPanels.Backpack_Inventory_Panel] = inventory;
 		
 		foreach (KeyValuePair<int, UIPlayerMenuPanel> p in panels)
 		{
-			//p.Value.gameObject.SetActive(false);
+			p.Value.gameObject.SetActive(false);
 		}
 		
 		activePanel = panels[(int)EBackpackPanels.Backpack_Main_Panel];

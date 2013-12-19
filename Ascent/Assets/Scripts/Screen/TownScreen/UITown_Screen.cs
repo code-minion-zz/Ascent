@@ -6,7 +6,7 @@ public class UITown_Screen : UIPlayerMenuScreen
 {
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
-	List<Player> playersToRemove = new List<Player>();
+	//List<Player> playersToRemove = new List<Player>();
 
 	private int nextEmptyPlayerSlot = 0;
 
@@ -33,7 +33,27 @@ public class UITown_Screen : UIPlayerMenuScreen
 
 		devices = InputManager.Devices;
 
-		//GameSaver.LoadAllHeroSaves();
+		//TODO: put this back where it belongs
+		//players = Game.Singleton.Players;
+
+		GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+		//go.transform.parent = Game.Singleton.transform;
+		Player newPlayer = go.GetComponent<Player>() as Player;
+
+		newPlayer.PlayerID = 0;
+		newPlayer.name = newPlayer.name + 0;
+
+		windows[0].gameObject.SetActive(true);
+
+		// TODO: Rig up to input device properly
+		//newPlayer.BindInputDevice(InputManager.Devices[0]);
+
+		windows[0].SetPlayer(newPlayer);
+
+		players.Add(newPlayer);
+
+		windows[0].SetPlayer(players[0]);
+
 		// TODO: Retrieve any player data into containers for this screen, if necessary.
 	}
 
@@ -51,7 +71,7 @@ public class UITown_Screen : UIPlayerMenuScreen
 //		}
 
         // Check if all players are ready
-        int activePlayers = 0;
+//        int activePlayers = 0;
 //        int readiedPlayers = 0;
 //        foreach (UIPlayerMenuWindow win in windows)
 //        {
@@ -80,47 +100,45 @@ public class UITown_Screen : UIPlayerMenuScreen
 //            allReady = false;
 //        }
 
-
-
 		// Check if any players want to enter the game
 //		AddNewPlayers();
 
 	}
 
-	public void AddNewPlayers()
-	{
-		// Check if any players want to enter the game
-		if (players.Count < maxPlayers)
-		{
-			foreach (InputDevice device in devices)
-			{
-				if (!device.InUse)
-				{
-					if (device.Start.WasPressed || device.A.WasPressed)
-					{
-						device.InUse = true;
-
-						GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-						go.transform.parent = Game.Singleton.transform;
-						Player newPlayer = go.GetComponent<Player>() as Player;
-
-						newPlayer.PlayerID = nextEmptyPlayerSlot;
-						newPlayer.name = newPlayer.name + nextEmptyPlayerSlot;
-
-						windows[nextEmptyPlayerSlot].gameObject.SetActive(true);
-
-						newPlayer.BindInputDevice(device);
-
-						windows[nextEmptyPlayerSlot].SetPlayer(newPlayer);
-
-						++nextEmptyPlayerSlot;
-
-						players.Add(newPlayer);
-					}
-				}
-			}
-		}
-	}
+//	public void AddNewPlayers()
+//	{
+//		// Check if any players want to enter the game
+//		if (players.Count < maxPlayers)
+//		{
+//			foreach (InputDevice device in devices)
+//			{
+//				if (!device.InUse)
+//				{
+//					if (device.Start.WasPressed || device.A.WasPressed)
+//					{
+//						device.InUse = true;
+//
+//						GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+//						go.transform.parent = Game.Singleton.transform;
+//						Player newPlayer = go.GetComponent<Player>() as Player;
+//
+//						newPlayer.PlayerID = nextEmptyPlayerSlot;
+//						newPlayer.name = newPlayer.name + nextEmptyPlayerSlot;
+//
+//						windows[nextEmptyPlayerSlot].gameObject.SetActive(true);
+//
+//						newPlayer.BindInputDevice(device);
+//
+//						windows[nextEmptyPlayerSlot].SetPlayer(newPlayer);
+//
+//						++nextEmptyPlayerSlot;
+//
+//						players.Add(newPlayer);
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	public void OnDeviceAttached(InputDevice device)
 	{

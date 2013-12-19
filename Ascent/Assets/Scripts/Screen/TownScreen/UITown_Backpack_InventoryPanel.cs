@@ -3,11 +3,18 @@ using System.Collections;
 
 public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
 {
+	protected virtual void Start()
+	{
+
+	}
+
     public override void OnEnable()
     {
         // TODO : populate item list based on Backpack state
-		ShowMenu();
-
+		if (initialised)
+		{
+			ShowMenu();
+		}
         base.OnEnable();
     }
 
