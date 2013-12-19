@@ -33,6 +33,11 @@ public class InputManager : MonoBehaviour
 		get { return devices; }
 	}
 
+    public static InputDevice KeyBoard
+    {
+        get { return devices[0]; }
+    }
+
 	public static string platform { get; private set; }
 
 	static string prevJoystickHash = "";

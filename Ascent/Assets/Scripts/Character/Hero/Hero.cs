@@ -42,12 +42,21 @@ public abstract class Hero : Character
 		get { return backpack; }
 	}
 
+	protected HeroInventory heroInventory;
+	public HeroInventory HeroInventory
+	{
+		get { return heroInventory; }
+	}
+
 	public HeroController HeroController
 	{
 		get { return heroController; }
 	}
 
-	public abstract void Initialise(InputDevice input, HeroSaveData saveData);
+	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
+	{
+		heroInventory = new HeroInventory();
+	}
 
     public void SetColor(Color color)
     {
@@ -85,13 +94,28 @@ public abstract class Hero : Character
 
     void OnControllerColliderHit(ControllerColliderHit collision)
     {
-        if (collision.transform.tag == "Door")
-        {
-            Debug.Log("Open Door");
-            Door door = collision.transform.GetComponent<Door>();
-            door.IsOpen = true;
-        }
+		//if (collision.transform.tag == "Door")
+		//{
+		//    Debug.Log("Open Door");
+		//    Door door = collision.transform.GetComponent<Door>();
+		//    //door.IsOpen = true;
+		//}
+		//if (collision.transform.tag == "Loot")
+		//{
+		//    CoinSack coins = collision.transform.GetComponent<CoinSack>();
+		//    coins.transform.gameObject.SetActive(false);
+		//}
+    }
 
-        Debug.Log(collision.gameObject.name);
+    public override void RefreshEverything()
+    {
+        // Resets hp and sp
+        base.RefreshEverything();
+
+        // Reset cooldowns
+        foreach(Action a in abilities)
+        {
+            a.RefreshCooldown();
+        }
     }
 }

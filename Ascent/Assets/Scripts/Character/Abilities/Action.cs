@@ -4,11 +4,13 @@ using System.Collections;
 public abstract class Action : IAction
 {
     protected float animationLength = 0.0f;
+    protected float animationSpeed = 1.0f;
     protected float coolDownTime = 0.0f;
     protected float cooldownValue = 0.0f;
     protected float currentTime = 0.0f;
     protected bool isOnCooldown = false;
     protected string animationTrigger;
+    protected int specialCost;
 
     protected Character owner;
     public Character Owner
@@ -53,6 +55,11 @@ public abstract class Action : IAction
         get { return isOnCooldown; }
     }
 
+    public int SpecialCost
+    {
+        get { return specialCost; }
+    }
+
     public virtual void Initialise(Character owner)
     {
        this.owner = owner;
@@ -78,7 +85,7 @@ public abstract class Action : IAction
     /// </summary>
     public virtual void UpdateAbility()
     {
-        float timeVal = Time.deltaTime;
+        float timeVal = Time.deltaTime * animationSpeed;
         currentTime += timeVal;
 
         if (currentTime >= Length)
@@ -97,9 +104,9 @@ public abstract class Action : IAction
 
         if (cooldownValue <= 0.0f)
         {
+            
             cooldownValue = 0.0f;
             isOnCooldown = false;
-            Debug.Log("Cooldown off: " + this.name);
         }
     }
 
@@ -107,5 +114,10 @@ public abstract class Action : IAction
     {
         owner.Animator.StopAnimation(animationTrigger);
         currentTime = 0.0f;
+    }
+
+    public void RefreshCooldown()
+    {
+        cooldownValue = 0.0f;
     }
 }

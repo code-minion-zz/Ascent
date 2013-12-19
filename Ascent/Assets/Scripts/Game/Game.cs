@@ -40,6 +40,8 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
+	public static bool running = false;
+
 	private EGameState gameStateToLoad;
 	
 	#endregion	
@@ -73,6 +75,8 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+		running = true;
+
 		playerCharacterType = initValues.playerCharacterType;
 
 		Application.targetFrameRate = initValues.targetFrameRate;
@@ -111,7 +115,7 @@ public class Game : MonoBehaviour
 
 	// This is a helper function to create players with heroes at any stage of the game
     private void CreatePlayers()
-    {
+	{
 		players = new List<Player>();
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)

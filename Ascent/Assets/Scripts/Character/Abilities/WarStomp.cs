@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class WarStomp : Action
 {
     private const float explosionMaxRadius = 10.0f;
-    private const float speed = 4.0f;
     private GameObject stompObject;
     private GameObject prefab;
 
@@ -14,11 +13,13 @@ public class WarStomp : Action
         base.Initialise(owner);
 
         // TODO: remove this from hardcoded animation data.
-        animationLength = 3.0f;
+        animationLength = 1.2f;
+        animationSpeed = 2.0f;
         animationTrigger = "WarStomp";
         coolDownTime = 5.0f;
+        specialCost = 5;
 
-        prefab = Resources.Load("Prefabs/WarStompEffect") as GameObject;
+        prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
     }
 
     public override void StartAbility()
@@ -34,21 +35,19 @@ public class WarStomp : Action
         //sc.isTrigger = true;
 
         stompObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-        GameObject.Destroy(stompObject, animationLength);
+        GameObject.Destroy(stompObject, animationLength / animationSpeed);
     }
 
     public override void UpdateAbility()
     {
         base.UpdateAbility();
 
-        if (currentTime >= 1.5f)
-        {
+
             if (stompObject != null)
             {
                 stompObject.transform.position = owner.transform.position;
-                stompObject.transform.localScale = Vector3.Lerp(stompObject.transform.localScale, new Vector3(explosionMaxRadius, 0.0f, explosionMaxRadius), Time.deltaTime * speed);
+                stompObject.transform.localScale = Vector3.Lerp(stompObject.transform.localScale, new Vector3(explosionMaxRadius, 0.0f, explosionMaxRadius), Time.deltaTime * animationSpeed);
             }
-        }
     }
 
     public override void EndAbility()

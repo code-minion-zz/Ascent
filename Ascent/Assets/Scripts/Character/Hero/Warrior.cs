@@ -6,7 +6,9 @@ public class Warrior : Hero
     //bool chargeCollision = false;	
 	
     public override void Initialise(InputDevice input, HeroSaveData saveData)
-    {		
+    {
+		base.Initialise(input, saveData);
+
         baseStatistics = null;
 
         if (saveData != null)
@@ -18,16 +20,18 @@ public class Warrior : Hero
         else
         {
             // Populate the hero with Inventory, stats, basic abilities (if any)
-
+             
             baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
 			derivedStats = new DerivedStats(baseStatistics);
+            derivedStats.MaxSpecial = 25;
+            derivedStats.CurrentSpecial = 25;
         }
 
         // Attach the weapon mesh
 
         // Load the prefab
         // TODO: Change this make it more easier to load
-        weaponPrefab = Resources.Load("Prefabs/angelic_sword_03") as GameObject;
+        weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_03") as GameObject;
         //weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
         weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
 
@@ -70,12 +74,13 @@ public class Warrior : Hero
         // Add abilities
 		AddSkill(new SwingSword());
 		
-		AddSkill(new Jump());
+		//AddSkill(new Jump());
 		
 		AddSkill(new Whirlwind());
-		
 		AddSkill(new Charge());
 		AddSkill(new WarStomp());
+        AddSkill(new WarCry());
+
 		classStatMod = new Hero.HeroClassStatModifier();
 		classStatMod.PowerAttack = 1f;
 		classStatMod.FinesseCritChance = 1f;

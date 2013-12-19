@@ -32,12 +32,16 @@ public class Charge : Action
 
 		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
 		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
+
+        coolDownTime = 5.0f;
+        animationTrigger = "SwingAttack";
+        specialCost = 5;
     }
 	
     public override void StartAbility()
 	{
+        base.StartAbility();
 		Reset ();
-		ownerAnimator.SetBool("SwingAttack",true);		// play anim
 		owner.ChargeBall.gameObject.SetActive(true);	
 		prevAnimatorSpeed = ownerAnimator.speed;
 	}

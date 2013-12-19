@@ -74,6 +74,11 @@ public abstract class Character : MonoBehaviour
 		get { return buffList; }
 	}
 
+    public List<Action> Abilities
+    {
+        get { return abilities; }
+    }
+
     /// <summary>
     /// Returns true if the character is dead. 
     /// </summary>
@@ -95,6 +100,11 @@ public abstract class Character : MonoBehaviour
     public virtual void Update()
     {
         UpdateActiveAbility();
+        
+        foreach(Buff b in buffList)
+        {
+            b.Process();
+        }
     }
 
     private void UpdateActiveAbility()
@@ -109,7 +119,6 @@ public abstract class Character : MonoBehaviour
         {
             if (ability.IsOnCooldown == true)
             {
-                Debug.Log("Ability on cooldown: " + ability.Name);
                 ability.UpdateCooldown();
             }
         }
@@ -122,14 +131,12 @@ public abstract class Character : MonoBehaviour
             Action ability = abilities[abilityID];
 
             // Make sure the cooldown is off otherwise we cannot use the ability
-            if (ability != null && ability.IsOnCooldown == false)
+            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
             {
                 ability.StartAbility();
                 activeAbility = ability;
-            }
-            else
-            {
-                Debug.Log("Ability: " + ability.Name + " is on cooldown");
+
+                derivedStats.CurrentSpecial -= ability.SpecialCost;
             }
 		}
     }
@@ -190,15 +197,16 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
+		int finalDamage = unmitigatedDamage;
         // Obtain the health stat and subtract damage amount to the health.
-        derivedStats.CurrentHealth -= unmitigatedDamage;
+        derivedStats.CurrentHealth -= finalDamage;
 
         // When the player takes a hit, spawn some damage text.
         HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
 
 		if(OnDamageTaken != null)
 		{
-			OnDamageTaken.Invoke();
+			OnDamageTaken.Invoke(finalDamage);
 		}
 
         // If the character is dead
@@ -210,7 +218,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-	public delegate void DamageTaken();
+	public delegate void DamageTaken(float amount);
 	public event DamageTaken OnDamageTaken;
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
@@ -279,4 +287,20 @@ public abstract class Character : MonoBehaviour
 		skill.Initialise(this);
 		abilities.Add(skill);
 	}
+
+    public virtual void RefreshEverything()
+    {
+        derivedStats.CurrentHealth = derivedStats.MaxHealth;
+        derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+    }
+
+    public virtual void AddBuff(Buff buff)
+    {
+        buffList.Add(buff);
+    }
+
+    public virtual void RemoveBuff(Buff buff)
+    {
+        buffList.Remove(buff);
+    }
 }

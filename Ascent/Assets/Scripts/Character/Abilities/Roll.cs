@@ -6,26 +6,25 @@ using System.Collections;
 
 public class Roll : Action
 {
-	private const float animationTime = 1.8f;
-	private const float animationSpeed = 1.25f;
-	private float timeElapsed;
 
     public override void Initialise(Character owner)
 	{
+		animationLength = 1.8f;
+		animationSpeed = 1.25f;
         base.Initialise(owner);
 	}
 
     public override void StartAbility()
 	{
-		timeElapsed = 0.0f;
+		currentTime = 0.0f;
 		owner.Animator.PlayAnimation("Roll");
 	}
 
     public override void UpdateAbility()
 	{
-		timeElapsed += Time.deltaTime;
+		currentTime += Time.deltaTime;
 
-		if (timeElapsed >= animationTime / animationSpeed)
+		if (currentTime >= animationLength / animationSpeed)
 		{
 			owner.StopAbility();
 		}

@@ -26,7 +26,6 @@ public abstract class Enemy : Character
     //private float waiting = 0.0f;
     private Vector3 originalScale;
 
-    protected RAIN.Core.AIRig ai;
 
 	protected StatBar hpBar;
 	public StatBar HPBar
@@ -39,13 +38,18 @@ public abstract class Enemy : Character
 
     #endregion
 
+	public int health = 100;
+
     #region Initialization
 
-	public virtual void Initialise()
+	public abstract void Initialise();
+
+	protected void BaseInitialise()
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
-		hpBar.gameObject.SetActive(false);
+
+		PositionHpBar();
 	}
 
     public override void Awake()
@@ -76,16 +80,14 @@ public abstract class Enemy : Character
 					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
 						if (!hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(true);
-						Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
-						Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
-						barPos = new Vector3(barPos.x,barPos.y);
-						hpBar.transform.position = barPos;
+							NGUITools.SetActive (hpBar.gameObject, true);
+
+						PositionHpBar();
 					}
 					else
 					{
 						if (hpBar.gameObject.activeInHierarchy)
-							hpBar.gameObject.SetActive(false);
+							NGUITools.SetActive (hpBar.gameObject, false);
 					}
 				}
 			}
@@ -97,6 +99,14 @@ public abstract class Enemy : Character
     #endregion
 
     #region Operations
+
+	protected virtual void PositionHpBar()
+	{
+		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
+		Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
+		barPos = new Vector3(barPos.x,barPos.y);
+		hpBar.transform.position = barPos;
+	}
 
     protected Player GetClosestPlayer()
     {
