@@ -98,23 +98,23 @@ public class AI_Agent : MonoBehaviour
                 {
                     MoveTowardTarget();
 
-                    List<Character> sensedCharacters = Sense(AI_Sense_Type.ENEMIES);
-                    if (sensedCharacters.Count > 0)
-                    {
-                        targetChar = GetClosestSensedCharacter(ref sensedCharacters);
+					List<Character> sensedCharacters = Sense(AI_Sense_Type.ENEMIES);
+					if (sensedCharacters.Count > 0)
+					{
+						targetChar = GetClosestSensedCharacter(ref sensedCharacters);
 
-                        if (targetChar != null)
-                        {
-                            SetTargetPosition(targetChar.transform.position);
+						if (targetChar != null)
+						{
+							SetTargetPosition(targetChar.transform.position);
 
-                            ChangeState(AI_State.NEXT);
-                        }
-                    }
+							ChangeState(AI_State.NEXT);
+						}
+					}
 
-                    if (timeAccum >= stateTimes[(int)curState])
-                    {
-                        ChangeState(AI_State.IDLE);
-                    }
+					if (timeAccum >= stateTimes[(int)curState])
+					{
+						ChangeState(AI_State.IDLE);
+					}
                 }
                 break;
             case AI_State.ATTACK:
@@ -148,23 +148,33 @@ public class AI_Agent : MonoBehaviour
                 {
                     foreach (AI_Sensor sensor in sensors)
                     {
-                        sensor.SenseAll(ref sensedCharacters);
+						if (sensor.enabled)
+						{
+							sensor.SenseAll(ref sensedCharacters);
+						}
                     }
                 }
             break;
             case AI_Sense_Type.ALLIES:
                 {
                     foreach (AI_Sensor sensor in sensors)
-                    {
-                        sensor.SenseAllies(ref sensedCharacters);
+					{
+						if (sensor.enabled)
+						{
+							sensor.SenseAllies(ref sensedCharacters);
+						}
                     }
                 }
             break;
             case AI_Sense_Type.ENEMIES:
                 {
+					int i = 0;
                     foreach (AI_Sensor sensor in sensors)
                     {
-                        sensor.SenseEnemies(ref sensedCharacters);
+						if (sensor.enabled)
+						{
+							sensor.SenseEnemies(ref sensedCharacters);
+						}
                     }
                 }
             break;
@@ -228,11 +238,15 @@ public class AI_Agent : MonoBehaviour
         float doubleTime = timeAccum * 2.0f;
 
         actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
+		//actor.transform.forward = target - actor.transform.position;
     }
 
-    public void OnDrawGizmosSelected()
+    public void OnDrawGizmos()
     {
-        Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(targetPos.x, 1.0f, targetPos.z), Color.red);
-        Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(actor.transform.position.x, 1.0f, actor.transform.position.z), Color.green);
+		if(gameObject.activeSelf)
+		{
+			 Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(targetPos.x, 1.0f, targetPos.z), Color.red);
+			 Debug.DrawLine(new Vector3(curPos.x, 1.0f, curPos.z), new Vector3(actor.transform.position.x, 1.0f, actor.transform.position.z), Color.green);
+		}
     }
 }

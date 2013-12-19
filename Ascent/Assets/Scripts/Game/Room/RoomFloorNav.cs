@@ -26,28 +26,26 @@ public class RoomFloorNav : MonoBehaviour
     {
         Vector3 randomPos = new Vector3();
 
-        int randoms = 0;
-        bool inBounds = false;
-        do
-        {
-            randomPos.x = Random.Range((start.x - radius), (start.x + radius));
-            randomPos.z = Random.Range((start.z - radius), (start.z + radius));
+		int randoms = 0;
 
-            if (IsWithinBounds(randomPos))
-            {
-                return randomPos;
-            }
+		for (; ; )
+		{
+			Vector2 rand = Random.insideUnitCircle * Random.Range(radius, radius * 2.0f);
+			randomPos.x = start.x + (rand.x);
+			randomPos.z = start.z + (rand.y);
 
-            if (randoms > 15)
-            {
-                return start;
-            }
+			if (IsWithinBounds(randomPos))
+			{
+				return randomPos;
+			}
 
-            ++randoms;
-        } 
-        while (inBounds == false);
+			++randoms;
 
-        return randomPos;
+			if(randoms > 15)
+			{
+				return start;
+			}
+		}
     }
 
     // Get a random position inside rect and on circumference on a circle

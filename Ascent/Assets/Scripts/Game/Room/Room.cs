@@ -6,6 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class Room : MonoBehaviour
 {
+	
 	public enum ERoomObjects
 	{
 		INVALID = -1,

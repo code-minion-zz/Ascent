@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class AI_SphereSensor : AI_Sensor 
 {
-    public float radius;
+	public float radius = 5.0f;
 
-    public void OnDrawGizmosSelected()
+	float arcAngle = 45.0f;
+	Vector3 arcLine;
+	Vector3 arcLine2;
+
+    public void OnDrawGizmos()
     {
-        //Gizmos.DrawWireSphere(transform.position, radius);
-        Gizmos.DrawWireCube(transform.position, new Vector3(radius * 2.0f, 1.0f, radius * 2.0f));
+		if(enabled)
+		{
+			Gizmos.DrawWireSphere(transform.position, radius);
+		}
     }
 
     public override bool SenseAll(ref List<Character> sensedCharacters)
@@ -27,7 +34,7 @@ public class AI_SphereSensor : AI_Sensor
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-            if (Physics.CheckSphere(transform.position, radius))
+			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {
@@ -52,7 +59,7 @@ public class AI_SphereSensor : AI_Sensor
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-            if (Physics.CheckSphere(transform.position, radius))
+			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {
@@ -79,14 +86,11 @@ public class AI_SphereSensor : AI_Sensor
         {
             characters.Add(p.Hero.GetComponent<Hero>());
         }
-
+		
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-            if ((c.transform.position.x > transform.position.x - radius &&
-                c.transform.position.x < transform.position.x + radius &&
-                c.transform.position.z > transform.position.z - radius &&
-                c.transform.position.z < transform.position.z + radius))
+			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {
