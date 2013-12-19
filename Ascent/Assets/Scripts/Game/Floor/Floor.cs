@@ -65,7 +65,7 @@ public class Floor : MonoBehaviour
 		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 
 		// Create HUD
-		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD"));
+		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup"));
 
 		// Initialise the players onto the start points
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");

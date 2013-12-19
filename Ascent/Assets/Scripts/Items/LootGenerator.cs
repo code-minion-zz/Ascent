@@ -50,7 +50,7 @@ public static class LootGenerator
 			Level = floorNum,
 			Name = RandomAccessoryName(),
 			Description = RandomAccessoryDescription(),
-			Grade = grade,
+			GradeEnum = grade,
 		};
 
 		RandomAccessorySpecialProperties((AccessoryItem)newItem);
@@ -92,10 +92,10 @@ public static class LootGenerator
 		// Randomly choose properties based on level and grade.
 		// Property quantity is affected by grade.
 
-		ConstantStatItemProperty prop = new ConstantStatItemProperty();
-		prop.Stats.Power = 1;
+		//ConstantStatItemProperty prop = new ConstantStatItemProperty();
+		//prop.Stats.Power = 1;
 
-		accessoryItem.ItemProperties.Add(prop);
+		//accessoryItem.ItemProperties.Add(prop);
 	}
 
 	public static void RandomAccessoryBaseStats(AccessoryItem accessoryItem)
