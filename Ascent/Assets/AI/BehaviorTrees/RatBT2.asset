@@ -13,21 +13,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dataSerializer:
     _serializedData: <scriptableobject version="1.0" type="RAIN.BehaviorTrees.BTAsset"><fields><field
-      value="&lt;behaviortree version=&quot;1.0&quot; repeatuntil=&quot;&quot; name=&quot;RatBT2&quot;&gt;&lt;sequencer
+      value="&lt;behaviortree version=&quot;1.1&quot; repeatuntil=&quot;&quot; name=&quot;RatBT2&quot;&gt;&lt;sequencer
       usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;root&quot;&gt;&lt;selector
       usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; priority=&quot;&quot;
       name=&quot;selector&quot;&gt;&lt;constraint repeatuntil=&quot;&quot; priority=&quot;&quot;
       name=&quot;not performing action&quot; constraint=&quot;acting == false&quot;&gt;&lt;parallel
       tiebreaker=&quot;fail&quot; succeed=&quot;all&quot; repeatuntil=&quot;&quot;
-      name=&quot;parallel&quot; fail=&quot;any&quot;&gt;&lt;detect sensor=&quot;chargeRange&quot;
+      name=&quot;parallel&quot; fail=&quot;any&quot;&gt;&lt;detect sensor=&quot;&amp;quot;chargeRange&amp;quot;&quot;
       repeatuntil=&quot;running&quot; name=&quot;detect hero in chargeRange&quot;
       entityobjectvariable=&quot;targetCharge&quot; aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot;
-      aspect=&quot;heroVisual&quot; /&gt;&lt;detect sensor=&quot;attackRange&quot;
+      aspect=&quot;&amp;quot;heroVisual&amp;quot;&quot; /&gt;&lt;detect sensor=&quot;&amp;quot;attackRange&amp;quot;&quot;
       repeatuntil=&quot;running&quot; name=&quot;detect hero in attackRange&quot;
       entityobjectvariable=&quot;targetAttack&quot; aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot;
-      aspect=&quot;heroVisual&quot; /&gt;&lt;detect sensor=&quot;eyeRange&quot; repeatuntil=&quot;running&quot;
-      name=&quot;detect hero in eyeRange&quot; entityobjectvariable=&quot;targetMove&quot;
-      aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot; aspect=&quot;heroVisual&quot;
+      aspect=&quot;&amp;quot;heroVisual&amp;quot;&quot; /&gt;&lt;detect sensor=&quot;&amp;quot;eyeRange&amp;quot;&quot;
+      repeatuntil=&quot;running&quot; name=&quot;detect hero in eyeRange&quot; entityobjectvariable=&quot;targetMove&quot;
+      aspectvariable=&quot;&quot; aspectobjectvariable=&quot;&quot; aspect=&quot;&amp;quot;heroVisual&amp;quot;&quot;
       /&gt;&lt;selector usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; name=&quot;selector&quot;&gt;&lt;constraint
       repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;hero detected in attackRange&quot;
       constraint=&quot;targetAttack != null &quot;&gt;&lt;action repeatuntil=&quot;running&quot;

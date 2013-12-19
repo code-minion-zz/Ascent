@@ -91,5 +91,7 @@ public abstract class Hero : Character
             Door door = collision.transform.GetComponent<Door>();
             door.IsOpen = true;
         }
+
+        Debug.Log(collision.gameObject.name);
     }
 }

@@ -62,10 +62,19 @@ public class Player : MonoBehaviour
     // To create a brand new Hero
     public void CreateHero(Character.EHeroClass heroType)
     {
+        //heroScript = HeroFactory.CreateNewHero(heroType);
+
+        //if (heroScript == null)
+        //    Debug.LogError("Hero Script not found");
+
+        //heroObject = heroScript.gameObject;
+
+        //if (heroObject == null)
+        //    Debug.LogError("Hero is null");
+
         // TODO: Put this function into a object creation class of some sort.
         GameObject go = null;
-
-        switch(heroType)
+        switch (heroType)
         {
             case Character.EHeroClass.Warrior:
                 {
@@ -82,7 +91,7 @@ public class Player : MonoBehaviour
                     heroScript = heroObject.AddComponent<Rogue>();
                 }
                 break;
-           case Character.EHeroClass.Mage:
+            case Character.EHeroClass.Mage:
                 {
                     go = Resources.Load("Prefabs/Mage") as GameObject;
                     heroObject = GameObject.Instantiate(go) as GameObject;
