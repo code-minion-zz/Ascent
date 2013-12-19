@@ -67,6 +67,19 @@ public class RoomFloorNav : MonoBehaviour
         return Vector3.zero;
     }
 
+	public Vector3 GetRandomPositionOutsideRect(Vector3 startPos, Vector3 size)
+	{
+		Vector3 pos = Vector3.zero;
+
+		do
+		{
+			pos = GetRandomPosition();
+		}
+		while (MathRectHelper.IsWithinBounds(pos, startPos, size));
+
+		return pos;
+	}
+
     public bool IsWithinBounds(Vector3 position)
     {
         return (position.x > transform.position.x - groundBounds.extents.x &&

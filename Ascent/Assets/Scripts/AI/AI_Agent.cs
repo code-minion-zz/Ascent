@@ -19,8 +19,10 @@ public class AI_Agent : MonoBehaviour
         WANDER,
         ATTACK,
         CHARGE,
+
+	    NEXT,
         MAX,
-        NEXT,
+
     }
 
     protected enum AI_Sense_Type
@@ -38,7 +40,7 @@ public class AI_Agent : MonoBehaviour
 
     private Character targetChar;
 
-    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.0f, 1.0f, 0.5f, 0.0f };
+    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.0f, 1.0f, 0.5f, 0.0f, 0.0f };
 
 
     public void Awake()
@@ -88,7 +90,7 @@ public class AI_Agent : MonoBehaviour
                         ChangeState(AI_State.NEXT);
 
                         curPos = actor.transform.position;
-                        SetTargetPosition(containedRoom.navMesh.GetRandomPositionWithinRadius(curPos, 2.0f));
+                        SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(curPos, 2.0f));
                     }
                 }
                 break;

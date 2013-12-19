@@ -6,6 +6,16 @@ using System.Collections.Generic;
 /// </summary>
 public class Room : MonoBehaviour
 {
+	public enum ERoomObjects
+	{
+		INVALID = -1,
+
+		Enemy,
+		Chest,
+		Loot,
+
+		MAX,
+	}
 
     #region Fields
 
@@ -28,7 +38,24 @@ public class Room : MonoBehaviour
         get { return enemies; }
     }
 
-    public RoomFloorNav navMesh;
+	protected List<TreasureChest> chests;
+	public List<TreasureChest> Chests
+	{
+		get { return chests; }
+	}
+
+	protected List<LootDrop> lootDrops;
+	public List<LootDrop> LootDrops
+	{
+		get { return lootDrops; }
+	}
+
+    protected RoomFloorNav navMesh;
+	public RoomFloorNav NavMesh
+	{
+		get { return navMesh; }
+		set { navMesh = value; }
+	}
 
     #endregion
 
@@ -50,21 +77,75 @@ public class Room : MonoBehaviour
         //Transform items = GetNodeByLayer("Items").transform;
         //Transform floorTiles = GetNodeByLayer("Floor").transform;
         //Transform wallObjects = GetNodeByLayer("Wall").transform;
+
+		GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Rooms/RoomNav")) as GameObject;
+		go.transform.position = transform.position + go.transform.position;
+		go.transform.parent = transform;
+
+		navMesh = go.GetComponent<RoomFloorNav>();
     }
 
     public void OnEnable()
     {
         if (enemies == null)
         {
-            enemies = new List<Character>();
+			Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
 
-            Enemy[] roomEnemies = gameObject.GetComponents<Enemy>() as Enemy[];
+			if (roomEnemies.Length > 0)
+			{
+				enemies = new List<Character>();
 
-            foreach (Enemy e in roomEnemies)
-            {
-                enemies.Add(e);
-            }
+				foreach (Enemy e in roomEnemies)
+				{
+					if (!enemies.Contains(e))
+					{
+						enemies.Add(e);
+					}
+				}
+			}
         }
+
+		if(chests == null)
+		{
+			TreasureChest[] roomChest = gameObject.GetComponentsInChildren<TreasureChest>() as TreasureChest[];
+
+			if (roomChest.Length > 0)
+			{
+				chests = new List<TreasureChest>();
+
+				foreach (TreasureChest t in roomChest)
+				{
+					if (!chests.Contains(t))
+					{
+						chests.Add(t);
+					}
+				}
+			}
+		}
+
+		if (chests != null)
+		{
+			if (lootDrops == null)
+			{
+				foreach (TreasureChest c in chests)
+				{
+					LootDrop[] roomLoot = c.gameObject.GetComponentsInChildren<LootDrop>() as LootDrop[];
+
+					if (roomLoot.Length > 0)
+					{
+						lootDrops = new List<LootDrop>();
+
+						foreach (LootDrop t in roomLoot)
+						{
+							if (!lootDrops.Contains(t))
+							{
+								lootDrops.Add(t);
+							}
+						}
+					}
+				}
+			}
+		}
     }
 
 	void Update()
@@ -178,4 +259,48 @@ public class Room : MonoBehaviour
             }
         }
     }
+
+	public GameObject InstantiateGameObject(ERoomObjects type)
+	{
+		GameObject newObject = null;
+
+		switch (type)
+		{
+			case ERoomObjects.Chest:
+				{
+				}
+				break;
+			case ERoomObjects.Loot:
+				{
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Rooms/CoinSack")) as GameObject;
+
+					if(lootDrops == null)
+					{
+						lootDrops = new List<LootDrop>();
+					}
+
+					lootDrops.Add(newObject.GetComponent<LootDrop>());
+				}
+				break;
+			case ERoomObjects.Enemy:
+				{
+				}
+				break;
+		}
+
+		return newObject;
+	}
+
+	public void RemoveObject(ERoomObjects type, GameObject go)
+	{
+		switch(type)
+		{
+			case ERoomObjects.Loot:
+				{
+					lootDrops.Remove(go.GetComponent<LootDrop>());
+					Destroy(go);
+				}
+				break;
+		}
+	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -55,39 +56,7 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 				heroAnimator.AnimMove(direction, speed);
 			}
 
-			if (device.LeftStickButton.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
 
-			// R Stick
-
-			if ((device.RightStickX.IsNotNull || device.RightStickY.IsNotNull))
-			{
-			}
-
-			if (device.RightStickButton.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-			// Face
-            //if (device.Action1.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //if (device.Action2.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //if (device.Action3.WasPressed)
-            //{
-            //    hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //if (device.Action4.WasPressed)
-            //{
-            //    hero.UseAbility(0); // pass in the ability binded to this key
-            //}
             if (device.X.WasPressed)
             {
                 hero.UseAbility(0);
@@ -97,49 +66,6 @@ public class HeroController : MonoBehaviour, IInputEventHandler
             {
                 hero.RefreshEverything();
             }
-
-            //else if (device.Y.WasPressed)
-            //{
-            //    hero.UseAbility(4);
-            //}
-            //else if (device.B.WasPressed)
-            //{
-            //    hero.UseAbility(2);
-            //}
-            //else if (device.A.WasPressed)
-            //{
-            //    hero.UseAbility(3);
-            //}
-
-            //// DPad
-            //if (device.DPadLeft.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //else if (device.DPadRight.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //if (device.DPadUp.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //else if (device.DPadDown.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-
-            //// Start 
-            //if (device.Start.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-
-            //// Back
-            //if (device.Back.WasPressed)
-            //{
-            //    //hero.UseAbility(0); // pass in the ability binded to this key
-            //}
 
             if (device.LeftBumper.WasPressed)
             {
@@ -159,17 +85,96 @@ public class HeroController : MonoBehaviour, IInputEventHandler
                 hero.UseAbility(3);
             }
 
+			// We can bind something to this key.
+			if (device.Y.WasPressed)
+			{
+				ProcessInteractions();
+			}
 
-            if (!actionBindingsEnabled)
-            {
-                // We can bind something to this key.
-                if (device.Y.WasPressed)
-                {
+
+			//if (!actionBindingsEnabled)
+			//{
+			//    // We can bind something to this key.
+			//    if (device.Y.WasPressed)
+			//    {
                     
-                }
-            }
+			//    }
+			//}
 		}
     }
+
+	public void ProcessInteractions()
+	{
+		// NOTE: Only one of these may occur each time the button is pressed
+
+		Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+		Vector3 position = transform.position;
+
+		// Is there a chest to open?
+		List<TreasureChest> chests = curRoom.Chests;
+		if (chests != null)
+		{
+			// Are we in range of it?
+			foreach (TreasureChest c in chests)
+			{
+				if(c.TriggerRegion.IsInside(position))
+				{
+					// Can it be opened?
+					if (c.IsClosed)
+					{
+						c.OpenChest(); // I open the chest. No one else can.
+						
+						return; // An interaction has occured. Exit function now.
+					}
+				}
+			}
+		}
+
+		// Is there an item?
+		List<LootDrop> loot = curRoom.LootDrops;
+		if (loot != null)
+		{
+			// Find the closest item
+			LootDrop closestDrop = null;
+			float closestDistance = 10000.0f;
+			foreach (LootDrop l in loot)
+			{
+				if (!l.CanBePickedUp)
+				{
+					continue;
+				}
+
+				float distance = (position - l.transform.position).sqrMagnitude;
+
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestDrop = l;
+				}
+			}
+
+			if (closestDrop != null)
+			{
+				// Am I within range of the item?
+				if (closestDrop.TriggerRegion.IsInside(position))
+				{
+					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+
+					return; // An interaction has occured. Exit function now.
+				}
+			}
+		}
+
+
+		// Is there a door?
+		// Find closest door
+		// Has it already been opened?
+
+		// Is there a block?
+		// Find the closest block
+		// Is it already being interacted with?
+		// Has someone else started to interact with it?
+	}
 
 
     #region input

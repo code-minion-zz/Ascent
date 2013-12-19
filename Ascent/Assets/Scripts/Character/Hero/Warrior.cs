@@ -6,7 +6,9 @@ public class Warrior : Hero
     //bool chargeCollision = false;	
 	
     public override void Initialise(InputDevice input, HeroSaveData saveData)
-    {		
+    {
+		base.Initialise(input, saveData);
+
         baseStatistics = null;
 
         if (saveData != null)

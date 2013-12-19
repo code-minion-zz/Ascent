@@ -219,7 +219,12 @@ public class Floor : MonoBehaviour
 		StartCoroutine(CoTransitionToRoom());
 
 		targetRoom = targetDoor.transform.parent.parent.GetComponent<Room>();
-		targetRoom.gameObject.SetActive(true);
+
+		Room prevRoom = currentRoom;
+		currentRoom = targetRoom;
+		targetRoom = prevRoom;
+
+		currentRoom.gameObject.SetActive(true);
 
 		// Move camera over
 		FloorCamera.TransitionToRoom(direction);
@@ -230,7 +235,7 @@ public class Floor : MonoBehaviour
 			p.Hero.transform.position = targetDoor.transform.position;
 		}
 
-        targetRoom.EntryDoor = targetDoor;
+		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
 
 	}
@@ -239,9 +244,7 @@ public class Floor : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1.5f);
 
-		currentRoom.gameObject.SetActive(false);
-
-		currentRoom = targetRoom;
+		targetRoom.gameObject.SetActive(false);
 
 		fadePlane.gameObject.SetActive(false);
 	}

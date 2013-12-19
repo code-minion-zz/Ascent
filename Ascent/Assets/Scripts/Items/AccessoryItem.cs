@@ -40,5 +40,6 @@ public class AccessoryItem : Item
 	public AccessoryItem()
 	{
 		stats = new BaseStats();
+		itemProperties = new BetterList<ItemProperty>();
 	}
 }

@@ -34,7 +34,17 @@ public abstract class ItemProperty
 
 public class ConstantStatItemProperty : ItemProperty
 {
+	public ConstantStatItemProperty()
+	{
+		stats = new BaseStats();
+	}
 
+	protected BaseStats stats;
+	public BaseStats Stats
+	{
+		get { return stats; }
+		set { stats = value; }
+	}
 }
 
 public class CriticalHitChanceItemProperty : ItemProperty

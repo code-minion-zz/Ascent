@@ -4,203 +4,362 @@ using System.Collections.Generic;
 
 public class TreasureChest : MonoBehaviour
 {
-    #region Fields
+	protected enum EChestState
+	{
+		Closed = 0,
+		Openning,
+		DroppingLoot,
+		Openned,
 
-    public float doorOpenAngle = 90.0f;
-    public float smoothing = 20.0f;
-    public bool isOpened = false;
-    public bool openChest = false;
-    public int spawnCount = 10;
-    public GameObject loot;
+		NEXT,
+		MAX,
 
-    private bool canUse = false;
-    private Transform hinge;
-    private Transform lootSpawn;
-    private List<GameObject> lootObjects = new List<GameObject>();
+	}
 
-    private Vector3 defaultRot;
-    private Vector3 currentRot;
-    private Vector3 openRot;
+	protected enum EChestType
+	{
+		Loot = 0, // bit of everything
+		Consumables, // only consumables
+		Accessories, // only accessories
+		Trap, // a variation of a trap
+	}
 
-    float time = 0.0f;
+	protected EChestState curState = EChestState.Closed;
 
-    #endregion
+	protected float timeAccum = 0.0f;
+	protected float[] stateTimes = new float[(int)EChestState.MAX] { 0.0f, 0.25f, 0.15f, 0.0f, 0.0f };
 
-    #region Properties
+	protected EChestType chestType = EChestType.Loot;
 
-    public bool IsOpen
-    {
-        get { return isOpened; }
-        set { isOpened = value; }
-    }
+	public GameObject baseMesh;
+	public GameObject lidMesh;
 
-    #endregion
+    protected Quaternion defaultRot;
+	protected Quaternion openRot;
 
-    void Awake()
-    {
-        // The first child of the treasure chest should be the hinge.
-        hinge = transform.FindChild("pCylinder2");
-        lootSpawn = transform.FindChild("Loot");
-        loot = Resources.Load("Prefabs/CoinSack") as GameObject;
+	protected int quantityOfLoot;
+	protected List<Item> loot;
 
-        for (int i = 0; i < spawnCount; ++i)
-        {
-            GameObject spawnLoot = Instantiate(loot) as GameObject;
-            spawnLoot.transform.parent = lootSpawn;
-            spawnLoot.transform.localPosition = Vector3.zero;
-            spawnLoot.SetActive(false);
-            lootObjects.Add(spawnLoot);
-        }
-    }
+	protected Room containedRoom;
+
+	protected TriggerRegion triggerRegion;
+	public TriggerRegion TriggerRegion
+	{
+		get { return triggerRegion; }
+	}
+
+	public bool IsClosed
+	{
+		get { return (curState == EChestState.Closed); }
+	}
 
     // Use this for initialization
 	void Start () 
 	{
-        defaultRot = hinge.transform.eulerAngles;
-        currentRot = defaultRot;
+		triggerRegion = GetComponent<TriggerRegion>();
 
-        openRot = new Vector3(currentRot.x - doorOpenAngle, defaultRot.y, defaultRot.z);
+		defaultRot = lidMesh.transform.rotation;
+        openRot = new Quaternion(0.0f, 0.6f, 0.8f, 0.0f);
+
+		//RandomlySetChestType();
+
+		if (chestType == EChestType.Trap)
+		{
+			RandomlySetTrapProperties();
+		}
+		else
+		{
+			RandomlyGenerateLootDrops();
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-        if (isOpened == false && openChest == true)
-        {
-            if (SwingOpen() >= 1.0f)
-            {
-                currentRot = hinge.transform.eulerAngles;
-                openRot = new Vector3(currentRot.x + doorOpenAngle, currentRot.y, currentRot.z);
-                time = 0.0f;
-                isOpened = true;
+		timeAccum += Time.deltaTime;
+		if (timeAccum > stateTimes[(int)curState])
+		{
+			timeAccum = stateTimes[(int)curState];
+		}
 
-                // Spawn all the loot.
-                SpawnLoot();
-            }
-        }
-        else if (isOpened == true && openChest == false)
-        {
-            if (SwingClose() >= 1.0f)
-            {
-                currentRot = hinge.transform.eulerAngles;
-                openRot = new Vector3(currentRot.x - doorOpenAngle, currentRot.y, currentRot.z);
-                time = 0.0f;
-                isOpened = false;
-                ResetLoot();
-            }
-        }
+		switch (curState)
+		{
+			case EChestState.Closed:
+				{
+					// Do nothing until a player opens it.
+					// Opens via HeroController calling into Open chest.
+				}
+				break;
+			case EChestState.Openning:
+				{
+					// Open over time
+					lidMesh.transform.rotation = Quaternion.Slerp(defaultRot, openRot, timeAccum / stateTimes[(int)EChestState.Openning]);
+					
+					if (timeAccum >= stateTimes[(int)EChestState.Openning])
+					{
+						ChangeState(EChestState.NEXT);
+					}
+				}
+				break;
+			case EChestState.DroppingLoot:
+				{
+					if (chestType != EChestType.Trap)
+					{
+						if (timeAccum >= stateTimes[(int)EChestState.DroppingLoot])
+						{
+							// TODO: Change this to be the correct representation for this item.
+							GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject(Room.ERoomObjects.Loot);
+							go.transform.parent = this.transform;
+							Vector3 pos = this.transform.position;
+							pos.y = 5.0f;
+							go.transform.position = pos;
+
+							LootDrop lootDrop = go.GetComponent<LootDrop>();
+
+							// Assign this drop the randomly generated item
+							lootDrop.Item = loot[0];
+
+							lootDrop.StartFalling(containedRoom);
+
+							loot.RemoveAt(0);
+
+							timeAccum = 0.0f;
+
+							if (loot.Count == 0)
+							{
+								ChangeState(EChestState.NEXT);
+							}
+						}
+
+						//    foreach (GameObject lootObject in lootObjects)
+						//    {
+						//        //lootObject.SetActive(true);
+						//        //lootObject.rigidbody.AddExplosionForce(30.0f, lootSpawn.position, 20.0f);
+
+						//        lootObject.SetActive(true);
+
+
+						//        float radius = 100.0f;
+
+						//        Vector3 rand = Random.insideUnitSphere;
+						//        Vector3 newVec = new Vector3(Mathf.Clamp(rand.x, -1, 1), 30.0f, Mathf.Clamp(rand.z, -1, 1));
+						//        Vector3 force = new Vector3(newVec.x * radius, 30.0f, newVec.z * radius);
+
+						//        lootObject.rigidbody.AddForce(force);
+						//    }
+					}
+					else
+					{
+						// TODO: Make the trap things happen here...
+						
+						ChangeState(EChestState.NEXT);
+					}
+
+
+				}
+				break;
+			case EChestState.Openned:
+				{
+					// Do nothing.
+				}
+				break;
+		}
 	}
 
-    private float SwingOpen()
-    {
-        time += Time.deltaTime * smoothing;
-        hinge.transform.eulerAngles = Vector3.Lerp(currentRot, openRot, time);
+	public void OpenChest()
+	{
+		if(curState == EChestState.Closed)
+		{
+			containedRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
 
-        return time;
-    }
+			ChangeState(EChestState.NEXT);
+		}
+	}	
 
-    private float SwingClose()
-    {
-        time += Time.deltaTime * smoothing;
-        hinge.transform.eulerAngles = Vector3.Lerp(currentRot, openRot, time);
+	protected void RandomlySetChestType()
+	{
+		// Randomly choose the chest type
+		int iRandom = Random.Range(1, 10000);
+		float fRandom = (float)(iRandom / 10000);
 
-        return time;
-    }
+		// It is a weighted random (these values are in the GDD)
+		if (fRandom < 0.5f) // 50% chance
+		{
+			chestType = EChestType.Accessories;
+		}
+		else if (fRandom < 0.7f) // 20% chance
+		{
+			chestType = EChestType.Consumables;
+		}
+		else if (fRandom < 0.9f) // 20% chance
+		{
+			chestType = EChestType.Loot;
+		}
+		else if (fRandom < 1.0f) // 10% chance
+		{
+			chestType = EChestType.Trap;
+		}
+	}
 
-    //void OnTriggerEnter(Collider enter)
-    //{
-    //    string tag = enter.tag;
+	protected void RandomlyGenerateLootDrops()
+	{
+		// Refer to GDD on how this works.
+		// Right now just random a quantity and make bags drop over time.
+		// Drops do not need to be uniform.
 
-    //    switch (tag)
-    //    {
-    //        case "Hero":
-    //            {
-    //                canUse = true;
-    //                Hero hero = enter.GetComponent<Hero>();
-    //                hero.HeroController.Input.OnY += OnY;
-    //            }
-    //            break;
-    //    }        
-    //}
+		quantityOfLoot = Random.Range(5, 10); // TODO: include current bonuses to the roll
+		
+		// TODO: Randomly generate items to drop and add them into a list
+		loot = new List<Item>(quantityOfLoot);
+		
+		//GameObject.Instantiate(Resources.Load("Prefabs/Rooms/CoinSack"));
+		
+		for (int i = 0; i < quantityOfLoot;  ++i)
+		{
+			Item newItem = LootGenerator.RandomlyGenerateAccessory(Game.Singleton.Tower.CurrentFloorNumber);
+			loot.Add(newItem);
+		}
 
-    void OnTriggerStay(Collider stay)
-    {
-        string tag = stay.tag;
+		// Adjust loot dropping time
+		stateTimes[(int)EChestState.DroppingLoot] = stateTimes[(int)EChestState.DroppingLoot] * quantityOfLoot;
+	}
 
-        switch (tag)
-        {
-            case "Hero":
-                {
-                    canUse = true;
-                    Hero hero = stay.GetComponent<Hero>();
-                    hero.HeroController.EnableActionBinding = true;
+	protected void RandomlySetTrapProperties()
+	{
+		// TODO: Set Trap properties
+	}
 
-                    Debug.Log("Inside chest open area");
+	protected void ChangeState(EChestState state)
+	{
+		if (state == EChestState.NEXT)
+		{
+			++curState;
 
-                    if (hero.HeroController.Input.Y.WasPressed)
-                    {
-                        openChest = true;
-                    }
-                }
-                break;
-        }
-    }
+			if (curState == EChestState.MAX)
+			{
+				curState = 0;
+			}
+		}
+		else
+		{
+			curState = state;
+		}
 
-    void OnTriggerExit(Collider exit)
-    {
-        string tag = exit.tag;
+		timeAccum = 0.0f;
+	}
 
-        switch (tag)
-        {
-            case "Hero":
-                {
-                    canUse = false;
-                    // Switch the action keys.
-                    Hero hero = exit.GetComponent<Hero>();
-                    hero.HeroController.EnableActionBinding = false;
-                    Debug.Log("Exiting chest open area");
-                }
-                break;
-        }
-    }
+	//protected float SwingOpen()
+	//{
+	//    time += Time.deltaTime * smoothing;
+	//    hinge.transform.eulerAngles = Vector3.Lerp(currentRot, openRot, time);
 
-    public void OnY(InputDevice device)
-    {
-        if (canUse)
-        {
-            openChest = true;
-        }
-    }
+	//    return time;
+	//}
 
-    /// <summary>
-    /// The chest will spawn loot out of the object.
-    /// </summary>
-    private void SpawnLoot()
-    {
-        foreach (GameObject lootObject in lootObjects)
-        {
-            //lootObject.SetActive(true);
-            //lootObject.rigidbody.AddExplosionForce(30.0f, lootSpawn.position, 20.0f);
+	//protected float SwingClose()
+	//{
+	//    time += Time.deltaTime * smoothing;
+	//    hinge.transform.eulerAngles = Vector3.Lerp(currentRot, openRot, time);
 
-            lootObject.SetActive(true);
+	//    return time;
+	//}
+
+	////void OnTriggerEnter(Collider enter)
+	////{
+	////    string tag = enter.tag;
+
+	////    switch (tag)
+	////    {
+	////        case "Hero":
+	////            {
+	////                canUse = true;
+	////                Hero hero = enter.GetComponent<Hero>();
+	////                hero.HeroController.Input.OnY += OnY;
+	////            }
+	////            break;
+	////    }        
+	////}
+
+	//void OnTriggerStay(Collider stay)
+	//{
+	//    Debug.Log("Inside chest open area");
+	//    string tag = stay.tag;
+
+	//    switch (tag)
+	//    {
+	//        case "Hero":
+	//            {
+	//                Hero hero = stay.GetComponent<Hero>();
+	//                hero.HeroController.EnableActionBinding = true;
+
+	//                Debug.Log("Inside chest open area");
+
+	//                //if (hero.HeroController.Input.Y.WasPressed)
+	//                //{
+	//                //    openChest = true;
+	//                //}
+	//            }
+	//            break;
+	//    }
+	//}
+
+	//void OnTriggerExit(Collider exit)
+	//{
+	//    string tag = exit.tag;
+
+	//    switch (tag)
+	//    {
+	//        case "Hero":
+	//            {
+	//                canUse = false;
+	//                // Switch the action keys.
+	//                Hero hero = exit.GetComponent<Hero>();
+	//                hero.HeroController.EnableActionBinding = false;
+	//                Debug.Log("Exiting chest open area");
+	//            }
+	//            break;
+	//    }
+	//}
+
+	//public void OnY(InputDevice device)
+	//{
+	//    if (canUse)
+	//    {
+	//        openChest = true;
+	//    }
+	//}
+
+	///// <summary>
+	///// The chest will spawn loot out of the object.
+	///// </summary>
+	//protected void SpawnLoot()
+	//{
+	//    foreach (GameObject lootObject in lootObjects)
+	//    {
+	//        //lootObject.SetActive(true);
+	//        //lootObject.rigidbody.AddExplosionForce(30.0f, lootSpawn.position, 20.0f);
+
+	//        lootObject.SetActive(true);
 
 
-            float radius = 100.0f;
+	//        float radius = 100.0f;
 
-            Vector3 rand = Random.insideUnitSphere;
-            Vector3 newVec = new Vector3(Mathf.Clamp(rand.x, -1, 1), 30.0f, Mathf.Clamp(rand.z, -1, 1));
-            Vector3 force = new Vector3(newVec.x * radius, 30.0f, newVec.z * radius);
+	//        Vector3 rand = Random.insideUnitSphere;
+	//        Vector3 newVec = new Vector3(Mathf.Clamp(rand.x, -1, 1), 30.0f, Mathf.Clamp(rand.z, -1, 1));
+	//        Vector3 force = new Vector3(newVec.x * radius, 30.0f, newVec.z * radius);
 
-            lootObject.rigidbody.AddForce(force);
-        }
-    }
+	//        lootObject.rigidbody.AddForce(force);
+	//    }
+	//}
 
-    private void ResetLoot()
-    {
-        foreach (GameObject lootObject in lootObjects)
-        {
-            lootObject.SetActive(false);
-            lootObject.transform.position = lootSpawn.transform.position;
-        }
-    }
+	//protected void ResetLoot()
+	//{
+	//    foreach (GameObject lootObject in lootObjects)
+	//    {
+	//        lootObject.SetActive(false);
+	//        lootObject.transform.position = lootSpawn.transform.position;
+	//    }
+	//}
+
+
 }
