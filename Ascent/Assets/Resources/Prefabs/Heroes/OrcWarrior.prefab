@@ -543,6 +543,7 @@ GameObject:
   - 4: {fileID: 400170}
   - 143: {fileID: 14300000}
   - 95: {fileID: 9500000}
+  - 114: {fileID: 11400014}
   m_Layer: 10
   m_Name: OrcWarrior
   m_TagString: Hero
@@ -1078,6 +1079,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2a904778359b244a8502e60c4005715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000e97198569e8748b0dc853b06f9c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 1.5
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
