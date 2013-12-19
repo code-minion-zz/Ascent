@@ -123,8 +123,6 @@ public class Floor : MonoBehaviour
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
-        Debug.Log("Enemies: " + enemies.Count);
-
         allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 
         foreach (Room r in allRooms)

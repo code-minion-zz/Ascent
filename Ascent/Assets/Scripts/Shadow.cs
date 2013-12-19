@@ -22,8 +22,6 @@ public class Shadow : MonoBehaviour
 		parentTransform = transform;
 
 		shadowTransform.localScale = new Vector3(size, size, size);
-
-		Debug.Log(shadowTransform.rotation);
 	}
 
 	public void Update()
