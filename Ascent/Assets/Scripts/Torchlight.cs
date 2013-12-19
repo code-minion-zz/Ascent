@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Torchelight : MonoBehaviour {
+public class Torchlight : MonoBehaviour {
 	
 	public GameObject TorchLight;
 	public GameObject MainFlame;
@@ -12,7 +12,8 @@ public class Torchelight : MonoBehaviour {
 	public float IntensityLight;
 	
 
-	void Start () {
+	void Start () 
+	{
 		TorchLight.light.intensity=IntensityLight;
 		MainFlame.GetComponent<ParticleSystem>().emissionRate=IntensityLight*20f;
 		BaseFlame.GetComponent<ParticleSystem>().emissionRate=IntensityLight*15f;	

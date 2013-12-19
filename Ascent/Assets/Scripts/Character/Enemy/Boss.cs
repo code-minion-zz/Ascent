@@ -118,8 +118,9 @@ public class Boss : Enemy
     //    }
     //}
 
-    //public override void Initialise()
-    //{
+	public override void Initialise()
+	{
+	}
 
     //    deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 

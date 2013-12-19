@@ -1,23 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class AI_ArcSensor : AI_Sensor
 {
 	public float radius = 5.0f;
+	public float arcAngle = 45.0f;
 
-	float arcAngle = 45.0f;
-	Vector3 arcLine;
-	Vector3 arcLine2;
+	private Vector3 arcLine;
+	private Vector3 arcLine2;
 
+#if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
 		Handles.DrawWireArc(transform.parent.position, Vector3.up, arcLine, arcAngle, radius);
 	}
+#endif
 
-	public void Update()
+	public override void Update()
 	{
+		base.Update();
+
 		arcLine = MathRectHelper.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, -arcAngle * 0.5f);
 		arcLine2 = MathRectHelper.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, arcAngle * 0.5f);
 

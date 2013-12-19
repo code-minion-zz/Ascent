@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = false;
-        bloodSplat = Resources.Load("BloodSplat/BloodSplat") as GameObject;
+        bloodSplat = Resources.Load("Prefabs/Effects/BloodSplat") as GameObject;
         //enabled = false;
     }
 

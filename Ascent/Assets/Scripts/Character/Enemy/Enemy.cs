@@ -38,9 +38,13 @@ public abstract class Enemy : Character
 
     #endregion
 
+	public int health = 100;
+
     #region Initialization
 
-	public virtual void Initialise()
+	public abstract void Initialise();
+
+	protected void BaseInitialise()
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);

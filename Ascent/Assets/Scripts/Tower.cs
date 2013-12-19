@@ -18,6 +18,7 @@ public class Tower : MonoBehaviour
 
     public void InitialiseFloor()
     {
+		currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
         currentFloor.Initialise();
     }

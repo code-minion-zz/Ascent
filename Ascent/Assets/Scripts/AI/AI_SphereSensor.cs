@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class AI_SphereSensor : AI_Sensor 
 {
 	public float radius = 5.0f;
 
-	float arcAngle = 45.0f;
 	Vector3 arcLine;
 	Vector3 arcLine2;
 
+#if UNITY_EDITOR
     public void OnDrawGizmos()
     {
 		if(enabled)
@@ -18,6 +21,7 @@ public class AI_SphereSensor : AI_Sensor
 			Gizmos.DrawWireSphere(transform.position, radius);
 		}
     }
+#endif
 
     public override bool SenseAll(ref List<Character> sensedCharacters)
     {

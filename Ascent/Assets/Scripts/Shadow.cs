@@ -13,6 +13,7 @@ public class Shadow : MonoBehaviour
 	public void Start()
 	{
 		initialScale = size;
+		initialScale++;
 
 		GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Shadow")) as GameObject;
 

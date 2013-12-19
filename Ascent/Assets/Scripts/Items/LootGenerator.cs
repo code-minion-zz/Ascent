@@ -62,6 +62,7 @@ public static class LootGenerator
 	public static Item RandomlyGenerateConsumable(int floorNum)
 	{
 		Item.ItemGrade grade = RandomGrade();
+		grade++;
 
 		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX + 1));
 

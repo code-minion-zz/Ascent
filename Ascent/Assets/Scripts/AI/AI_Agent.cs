@@ -8,7 +8,7 @@ public class AI_Agent : MonoBehaviour
     protected List<AI_Behaviour> behaviours = new List<AI_Behaviour>();
     private Room containedRoom;
 
-    AI_State curState = AI_State.IDLE;
+	AI_State curState = AI_State.DELAY;
     float timeAccum = 0.0f;
 
     protected List<AI_Sensor> sensors = new List<AI_Sensor>();
@@ -21,6 +21,7 @@ public class AI_Agent : MonoBehaviour
         CHARGE,
 
 	    NEXT,
+		DELAY,
         MAX,
 
     }
@@ -40,7 +41,7 @@ public class AI_Agent : MonoBehaviour
 
     private Character targetChar;
 
-    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.0f, 1.0f, 0.5f, 0.0f, 0.0f };
+    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.25f, 1.25f, 1.5f, 0.0f, 0.0f, 5.0f };
 
 
     public void Awake()
@@ -59,6 +60,8 @@ public class AI_Agent : MonoBehaviour
         {
             sensors.Add(sense);
         }
+
+		stateTimes[(int)curState] = Random.Range(0.0f, 1.5f);
     }
 
     public void OnEnable()
@@ -69,6 +72,10 @@ public class AI_Agent : MonoBehaviour
 
     public void Update()
     {
+		if (actor.IsDead)
+		{
+			return;
+		}
         //foreach(AI_Behaviour b in behaviours)
         //{
         //    // Also check for exit or continue conditions....
@@ -83,6 +90,14 @@ public class AI_Agent : MonoBehaviour
 
         switch(curState)
         {
+			case AI_State.DELAY:
+				{
+					if (timeAccum >= stateTimes[(int)curState])
+					{
+						ChangeState(AI_State.IDLE);
+					}
+				}
+				break;
             case AI_State.IDLE:
                 {
                     if(timeAccum >= stateTimes[(int)curState])
@@ -90,7 +105,7 @@ public class AI_Agent : MonoBehaviour
                         ChangeState(AI_State.NEXT);
 
                         curPos = actor.transform.position;
-                        SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(curPos, 2.0f));
+                        SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(curPos, 7.5f));
                     }
                 }
                 break;
@@ -98,18 +113,18 @@ public class AI_Agent : MonoBehaviour
                 {
                     MoveTowardTarget();
 
-					List<Character> sensedCharacters = Sense(AI_Sense_Type.ENEMIES);
-					if (sensedCharacters.Count > 0)
-					{
-						targetChar = GetClosestSensedCharacter(ref sensedCharacters);
+					//List<Character> sensedCharacters = Sense(AI_Sense_Type.ENEMIES);
+					//if (sensedCharacters.Count > 0)
+					//{
+					//    targetChar = GetClosestSensedCharacter(ref sensedCharacters);
 
-						if (targetChar != null)
-						{
-							SetTargetPosition(targetChar.transform.position);
+					//    if (targetChar != null)
+					//    {
+					//        SetTargetPosition(targetChar.transform.position);
 
-							ChangeState(AI_State.NEXT);
-						}
-					}
+					//        ChangeState(AI_State.NEXT);
+					//    }
+					//}
 
 					if (timeAccum >= stateTimes[(int)curState])
 					{
@@ -119,6 +134,14 @@ public class AI_Agent : MonoBehaviour
                 break;
             case AI_State.ATTACK:
                 {
+					//if (timeAccum >= stateTimes[(int)curState] * 0.5f)
+					//{
+					//    SetTargetAttackPosition(targetChar.transform.position);
+					//}
+					//else if(timeAccum >= stateTimes[(int)curState] * 0.75f)
+					//{
+					//    SetTargetAttackPosition(targetChar.transform.position);
+					//}
                     MoveTowardTarget();
 
                     if (timeAccum >= stateTimes[(int)curState])
@@ -172,7 +195,6 @@ public class AI_Agent : MonoBehaviour
             break;
             case AI_Sense_Type.ENEMIES:
                 {
-					int i = 0;
                     foreach (AI_Sensor sensor in sensors)
                     {
 						if (sensor.enabled)
@@ -235,13 +257,25 @@ public class AI_Agent : MonoBehaviour
         targetRot = Quaternion.LookRotation(targetPos - curPos, Vector3.up);
     }
 
+	public void SetTargetAttackPosition(Vector3 targetPosition)
+	{
+		curRot = transform.rotation;
+		targetRot = Quaternion.LookRotation(targetPos - curPos, Vector3.up);
+	}
+
     public void MoveTowardTarget()
     {
-        actor.transform.position = Vector3.Lerp(curPos, targetPos, timeAccum / stateTimes[(int)curState]);
-
         float doubleTime = timeAccum * 2.0f;
 
-        actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
-		//actor.transform.forward = target - actor.transform.position;
+		actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
+		
+		if(curState == AI_State.ATTACK)
+		{
+			actor.rigidbody.AddForce(actor.transform.forward * 150.0f);
+		}
+		else
+		{
+			actor.transform.position = Vector3.Lerp(curPos, targetPos, timeAccum / stateTimes[(int)curState]);
+		}
     }
 }

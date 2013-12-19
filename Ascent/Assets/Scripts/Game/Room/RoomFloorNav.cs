@@ -48,6 +48,43 @@ public class RoomFloorNav : MonoBehaviour
 		}
     }
 
+	public Vector3 GetRandomOrthogonalPositionWithinRadius(Vector3 start, float radius)
+	{
+		Vector3 randomPos = new Vector3();
+
+		int randoms = 0;
+
+		for (; ; )
+		{
+			Vector2 rand = Random.insideUnitCircle * Random.Range(radius, radius * 2.0f);
+
+			if(Random.Range(0, 201) < 100)
+			{
+				randomPos.x = start.x + (rand.x);
+				randomPos.z = start.z;
+			}
+			else
+			{
+				randomPos.x = start.x;
+				randomPos.z = start.z + (rand.y);
+			}
+
+			if (IsWithinBounds(randomPos))
+			{
+				return randomPos;
+			}
+
+			++randoms;
+
+			if (randoms > 15)
+			{
+				return start;
+			}
+
+			randomPos = Vector3.zero;
+		}
+	}
+
     // Get a random position inside rect and on circumference on a circle
     public Vector3 GetRandomPositionOnCircumference(Vector3 start, float radius)
     {

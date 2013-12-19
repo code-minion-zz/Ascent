@@ -150,6 +150,49 @@ public class Floor : MonoBehaviour
 		{
 			EndFloor();
 		}
+
+		//DEBUG
+
+		if (Input.GetKeyUp(KeyCode.Keypad8)) // UP
+		{
+			foreach(Door d in currentRoom.doors)
+			{
+				if (d.targetDoor != null && d.direction == TransitionDirection.North)
+				{
+					TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
+				}
+			}
+		}
+		else if (Input.GetKeyUp(KeyCode.Keypad2))
+		{
+			foreach (Door d in currentRoom.doors)
+			{
+				if (d.targetDoor != null && d.direction == TransitionDirection.South)
+				{
+					TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
+				}
+			};
+		}
+		else if (Input.GetKeyUp(KeyCode.Keypad4))
+		{
+			foreach (Door d in currentRoom.doors)
+			{
+				if (d.targetDoor != null && d.direction == TransitionDirection.West)
+				{
+					TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
+				}
+			}
+		}
+		else if (Input.GetKeyUp(KeyCode.Keypad6))
+		{
+			foreach (Door d in currentRoom.doors)
+			{
+				if (d.targetDoor != null && d.direction == TransitionDirection.East)
+				{
+					TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
+				}
+			}
+		}
 	}
 
     void HandleDeadMonsters()
@@ -235,7 +278,6 @@ public class Floor : MonoBehaviour
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
-
 	}
 
 	public IEnumerator CoTransitionToRoom()
@@ -245,6 +287,29 @@ public class Floor : MonoBehaviour
 		targetRoom.gameObject.SetActive(false);
 
 		fadePlane.gameObject.SetActive(false);
+	}
+
+	public void TransitionToRoomImmediately(TransitionDirection direction, Door targetDoor)
+	{
+		targetRoom = targetDoor.transform.parent.parent.GetComponent<Room>();
+
+		currentRoom.gameObject.SetActive(false);
+		currentRoom = targetRoom;
+		currentRoom.gameObject.SetActive(true);
+
+		// Move camera over
+		FloorCamera.TransitionToRoom(direction);
+
+		// Move heroes to the new room
+		foreach (Player p in players)
+		{
+			p.Hero.transform.position = targetDoor.transform.position;
+		}
+
+		currentRoom.EntryDoor = targetDoor;
+		targetDoor.SetAsStartDoor();
+
+		targetRoom.gameObject.SetActive(true);
 	}
 
 	#endregion
