@@ -64,6 +64,7 @@ public abstract class Action : IAction
     {
        this.owner = owner;
        this.name = this.GetType().ToString();
+	   animationTrigger = this.name;
     }
 
     /// <summary>

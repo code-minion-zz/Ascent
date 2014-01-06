@@ -10,6 +10,10 @@ public class HeroController : MonoBehaviour, IInputEventHandler
     private Hero hero;
     private InputDevice input;
     private bool actionBindingsEnabled = false;
+	public GameObject actor;
+
+	bool vert;
+	bool horiz;
 
     public InputDevice Input
     {
@@ -32,6 +36,7 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 	{
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
+		actor = GameObject.Find("Cube");
 	}
 
     #endregion
@@ -46,15 +51,66 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
 			{
-				float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-				speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-				speed *= 1000.0f;
+				//float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+				//speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+				//speed *= 10000.0f;
 
-				// Direction vector to hold the input key press.
-				Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+				//// Direction vector to hold the input key press.
+				//Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
 
-				heroAnimator.AnimMove(direction, speed);
+				//heroAnimator.AnimMove(direction, speed);
+
+				
+				//transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
+
+				if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
+				{
+					vert = false;
+					
+				}
+				else
+				{
+					vert = true;
+				}
+
+				Vector3 moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
+				//Vector3 moveDirection = transform.forward * device.LeftStickY.Value;
+
+				if (vert)
+				{
+					transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
+				}
+				else
+				{
+					transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
+				}
+
+				moveDirection *= 6.0f;
+
+				
+				
+				GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
+
+				if (transform.forward == Vector3.right)
+				{
+					actor.transform.rotation = new Quaternion(0.2f, 0.7f, 0.2f, 0.7f);
+				}
+				else if (transform.forward == Vector3.left)
+				{
+					actor.transform.rotation = new Quaternion(0.2f, -0.7f, -0.2f, 0.7f);
+				}
+				else if (transform.forward == Vector3.forward)
+				{
+					actor.transform.rotation = new Quaternion(0.2f, 0.0f, 0.0f, 1.0f);
+				}
+				else if (transform.forward == Vector3.back)
+				{
+					actor.transform.rotation = new Quaternion(0.0f, 1.0f, 0.2f, 0.0f);
+				}
 			}
+
+			Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
+
 
 
             if (device.X.WasPressed)

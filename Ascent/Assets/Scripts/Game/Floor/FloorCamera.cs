@@ -23,6 +23,9 @@ public class FloorCamera : MonoBehaviour
 	private const float verticalIncrement = 20.0f;
 	private const float horizontalIncrement = 30.0f;
 
+	private Vector3 minCamera;
+	private Vector3 maxCamera;
+
 
     public Camera Camera
     {
@@ -34,10 +37,24 @@ public class FloorCamera : MonoBehaviour
 		players = Game.Singleton.Players;
 		_transform = transform;
 		floorCamera = GetComponent<Camera>();
+
+		minCamera = new Vector3(-2.0f, 25.0f, -2.0f);
+		maxCamera = new Vector3(2.0f, 25.0f, 2.0f);
 	}
 
     public void Update()
     {
+		UpdateCameraPosition();
+		transform.position = new Vector3(
+		    Mathf.Clamp(transform.position.x, minCamera.x, maxCamera.x),
+
+		    Mathf.Clamp(transform.position.y, minCamera.y, maxCamera.y),
+
+		    Mathf.Clamp(transform.position.z, minCamera.z, maxCamera.z));
+
+
+		//UpdateCameraRotation();
+
         //UpdateCameraPosition();
 		if (transition)
 		{
@@ -135,7 +152,7 @@ public class FloorCamera : MonoBehaviour
             // Calculate camera position based off players
             float x = totalVector.x / players.Count;
             float y = _transform.position.y;
-            float z = (totalVector.z / players.Count) - cameraOffset;
+            float z = (totalVector.z / players.Count);
 
             Vector3 newVector = new Vector3(x, y, z);
             Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
@@ -144,6 +161,37 @@ public class FloorCamera : MonoBehaviour
             _transform.position = lerpVector;
         }
     }
+
+	void UpdateCameraRotation()
+	{
+		if (players.Count > 0)
+		{
+			// Ulter position of the camera to center on the players
+			Vector3 totalVector = Vector3.zero;
+
+			// Add up all the vectors
+			foreach (Player player in players)
+			{
+				if (player != null)
+				{
+					totalVector += player.Hero.transform.position;
+				}
+			}
+
+			// Calculate camera position based off players
+			float x = totalVector.x / players.Count;
+			float y = totalVector.y;
+			float z = (totalVector.z / players.Count);
+
+			Vector3 newVector = new Vector3(x, y, z);
+			Debug.Log(newVector);
+			transform.LookAt(newVector, Vector3.up);
+			//Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
+
+			// Set the position of our camera.
+			//_transform.position = lerpVector;
+		}
+	}
 
     private void CalculateCameraFrustum()
     {
