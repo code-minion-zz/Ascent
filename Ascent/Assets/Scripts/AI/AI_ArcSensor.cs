@@ -25,11 +25,11 @@ public class AI_ArcSensor : AI_Sensor
 	{
 		base.Update();
 
-		arcLine = MathRectHelper.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, -arcAngle * 0.5f);
-		arcLine2 = MathRectHelper.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, arcAngle * 0.5f);
+		arcLine = MathUtility.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, -arcAngle * 0.5f);
+		arcLine2 = MathUtility.RotateAboutPoint(transform.parent.forward * radius, transform.parent.position, arcAngle * 0.5f);
 
-		Debug.DrawLine(transform.parent.position, transform.parent.position + arcLine.normalized * radius); // To the rotated arc
-		Debug.DrawLine(transform.parent.position, transform.parent.position + arcLine2.normalized * radius); // To the rotated arc
+		Debug.DrawLine(transform.parent.position, transform.parent.position + arcLine); // To the rotated arc
+		Debug.DrawLine(transform.parent.position, transform.parent.position + arcLine2); // To the rotated arc
 	}
 
 	public override bool SenseAll(ref List<Character> sensedCharacters)
@@ -47,7 +47,7 @@ public class AI_ArcSensor : AI_Sensor
 		// Check all characters to see if there is a collision
 		foreach (Character c in characters)
 		{
-			if (MathRectHelper.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
+			if (MathUtility.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
 			{
 				if (!sensedCharacters.Contains(c))
 				{
@@ -72,7 +72,7 @@ public class AI_ArcSensor : AI_Sensor
 		// Check all characters to see if there is a collision
 		foreach (Character c in characters)
 		{
-			if (MathRectHelper.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
+			if (MathUtility.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
 			{
 				if (!sensedCharacters.Contains(c))
 				{
@@ -103,7 +103,7 @@ public class AI_ArcSensor : AI_Sensor
 		// Check all characters to see if there is a collision
 		foreach (Character c in characters)
 		{
-			if (MathRectHelper.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
+			if (MathUtility.IsWithinCircleArc(c.transform.position, transform.position, arcLine, arcLine2, radius))
 			{
 				if (!sensedCharacters.Contains(c))
 				{

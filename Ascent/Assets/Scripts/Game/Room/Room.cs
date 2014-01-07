@@ -304,4 +304,99 @@ public class Room : MonoBehaviour
 				break;
 		}
 	}
+
+
+	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
+	{
+		Shape2D.EType type = shape.type;
+		switch(type)
+		{
+			case Shape2D.EType.Rect:
+				{
+				}
+				break;
+			case Shape2D.EType.Circle:
+				{
+				}
+				break;
+			case Shape2D.EType.Arc:
+				{
+					Arc arc = shape as Arc;
+
+					if (scope == Character.EScope.Enemy)
+					{
+						foreach(Enemy e in enemies)
+						{
+							bool inside = false;
+							//inside = MathUtility.IsWithinCircleArc(e.transform.position, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+							Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
+							Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
+
+							// TL
+							Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
+							inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+							#if UNITY_EDITOR
+							Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, extents.z));
+							#endif
+
+							// TR
+							if (!inside)
+							{
+								point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+								#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + extents);
+								#endif
+							}
+
+							// BL
+							if (!inside)
+							{
+								point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+								#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
+								#endif
+							}
+
+							// BR
+							if (!inside)
+							{
+								point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+								#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(extents.x, extents.y, -extents.z));
+								#endif
+							}
+
+							if(inside)
+							{
+								charactersColliding.Add(e);
+							}
+
+							
+							
+						}
+					}
+				}
+				break;
+		}
+
+
+		return charactersColliding.Count > 0;
+	}
+
+	public bool CheckCollisionAreas<T>(List<Shape2D> shapes, ref List<T> enemies)
+	{
+		//switch()
+		//{
+		//}
+
+		return false;
+	}
 }

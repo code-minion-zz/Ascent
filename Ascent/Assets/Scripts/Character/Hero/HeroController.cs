@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class HeroController : MonoBehaviour, IInputEventHandler
+public class HeroController : MonoBehaviour
 {
     private HeroAnimator heroAnimator;
     private Hero hero;
@@ -37,6 +37,18 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
 		actor = GameObject.Find("Cube");
+
+	}
+
+
+	public void EnableInput(InputDevice inputDevice)
+	{
+		input = inputDevice;
+	}
+
+	public void DisableInput()
+	{
+		input = null;
 	}
 
     #endregion
@@ -85,31 +97,32 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 					transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
 				}
 
-				moveDirection *= 6.0f;
+				//moveDirection;
 
-				
-				
-				GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
+				GetComponent<CharacterMotor>().Move(moveDirection);
+				//GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
 
-				if (transform.forward == Vector3.right)
-				{
-					actor.transform.rotation = new Quaternion(0.2f, 0.7f, 0.2f, 0.7f);
-				}
-				else if (transform.forward == Vector3.left)
-				{
-					actor.transform.rotation = new Quaternion(0.2f, -0.7f, -0.2f, 0.7f);
-				}
-				else if (transform.forward == Vector3.forward)
-				{
-					actor.transform.rotation = new Quaternion(0.2f, 0.0f, 0.0f, 1.0f);
-				}
-				else if (transform.forward == Vector3.back)
-				{
-					actor.transform.rotation = new Quaternion(0.0f, 1.0f, 0.2f, 0.0f);
-				}
+
+
+				//if (transform.forward == Vector3.right)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, 0.7f, 0.2f, 0.7f);
+				//}
+				//else if (transform.forward == Vector3.left)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, -0.7f, -0.2f, 0.7f);
+				//}
+				//else if (transform.forward == Vector3.forward)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, 0.0f, 0.0f, 1.0f);
+				//}
+				//else if (transform.forward == Vector3.back)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.0f, 1.0f, 0.2f, 0.0f);
+				//}
 			}
 
-			Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
+			//Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
 
 
 
@@ -231,203 +244,4 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 		// Is it already being interacted with?
 		// Has someone else started to interact with it?
 	}
-
-
-    #region input
-
-
-    public void EnableInput(InputDevice inputDevice)
-    {
-		input = inputDevice;
-
-		if (!InputManager.IsPolling)
-		{
-			inputDevice.OnLStickMove += OnLStickMove;
-			inputDevice.OnX += OnX;
-			inputDevice.OnY += OnY;
-			inputDevice.OnA += OnA;
-			inputDevice.OnB += OnB;
-			inputDevice.OnLeftBumper += OnLBumper;
-			inputDevice.OnRightBumper += OnRBumper;
-			inputDevice.OnRightTrigger += OnRTrigger;
-		}
-    }
-
-    public void DisableInput()
-    {
-		if (!InputManager.IsPolling)
-		{
-			input.OnLStickMove -= OnLStickMove;
-			input.OnX -= OnX;
-			input.OnY -= OnY;
-			input.OnA -= OnA;
-			input.OnB -= OnB;
-			input.OnLeftBumper -= OnLBumper;
-			input.OnRightBumper -= OnRBumper;
-			input.OnRightTrigger -= OnRTrigger;
-		}
-
-		input = null;
-    }
-
-    public void OnX(InputDevice device)
-    {
-        hero.UseAbility(0); // pass in the ability binded to this key
-    }
-
-    public void OnY(InputDevice device)
-    {
-		
-    }
-
-    public void OnA(InputDevice device)
-    {
-		hero.UseAbility(1); // pass in the ability binded to this key
-    }
-
-    public void OnB(InputDevice device)
-    {
-		
-    }
-
-    public void OnX_up(InputDevice device)
-    {
-
-    }
-
-    public void OnY_up(InputDevice device)
-    {
-
-    }
-
-    public void OnA_up(InputDevice device)
-    {
-
-    }
-
-    public void OnB_up(InputDevice device)
-    {
-
-    }
-
-    public void OnStart(InputDevice device)
-    {
-
-    }
-
-    public void OnStart_up(InputDevice device)
-    {
-
-    }
-
-    public void OnBack(InputDevice device)
-    {
-
-    }
-
-    public void OnBack_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLTrigger(InputDevice device)
-    {
-
-    }
-
-    public void OnLBumper(InputDevice device)
-    {
-		hero.UseAbility(2); // pass in the ability binded to this key
-    }
-
-    public void OnRTrigger(InputDevice device)
-    {
-		
-    }
-
-    public void OnRBumper(InputDevice device)
-    {
-		hero.UseAbility(3);
-    }
-
-    public void OnDPadLeft(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadLeft_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLStickMove(InputDevice device)
-    {
-        float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-        speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-        speed *= 1000.0f;
-
-        // Direction vector to hold the input key press.
-        Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-
-        // Tell the hero animator to update the speed and direction.
-        heroAnimator.AnimMove(direction, speed);
-    }
-
-    public void OnLStick(InputDevice device)
-    {
-
-    }
-
-    public void OnLStick_up(InputDevice device)
-    {
-
-    }
-
-    public void OnRStickMove(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick_up(InputDevice device)
-    {
-
-    }
-
-
-    #endregion
 }

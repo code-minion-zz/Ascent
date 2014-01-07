@@ -13,7 +13,7 @@ public class TriggerRegion : MonoBehaviour
 
 	public bool IsInside(Vector3 pointToTest)
 	{
-		IsHit = MathRectHelper.IsWithinBounds(pointToTest, this.transform.position, new Vector3(size.x, 1.0f, size.y));
+		IsHit = MathUtility.IsWithinBounds(pointToTest, this.transform.position, new Vector3(size.x, 1.0f, size.y));
 		return IsHit;
 	}
 

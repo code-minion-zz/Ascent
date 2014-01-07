@@ -41,7 +41,7 @@ public class AI_Agent : MonoBehaviour
 
     private Character targetChar;
 
-    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.25f, 1.25f, 1.5f, 0.0f, 0.0f, 5.0f };
+    private float[] stateTimes = new float[(int)AI_State.MAX] { 0.25f, 2.25f, 1.5f, 0.0f, 0.0f, 5.0f };
 
 
     public void Awake()
@@ -252,9 +252,13 @@ public class AI_Agent : MonoBehaviour
     {
         curPos = transform.position;
         targetPos = targetPosition;
+		targetPos.y = transform.position.y;
 
-        curRot = transform.rotation;
-        targetRot = Quaternion.LookRotation(targetPos - curPos, Vector3.up);
+       // curRot = transform.rotation;
+        //targetRot = Quaternion.LookRotation(targetPos - curPos, Vector3.up);
+		//actor.transform.rotation = targetRot;
+
+	
     }
 
 	public void SetTargetAttackPosition(Vector3 targetPosition)
@@ -267,15 +271,26 @@ public class AI_Agent : MonoBehaviour
     {
         float doubleTime = timeAccum * 2.0f;
 
-		actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
+		//actor.transform.rotation = Quaternion.Slerp(curRot, targetRot, doubleTime / (stateTimes[(int)curState] * 0.5f));
+
 		
-		if(curState == AI_State.ATTACK)
+		//if(curState == AI_State.ATTACK)
+		//{
+		//    actor.rigidbody.AddForce(actor.transform.forward * 150.0f);
+		//}
+		//else
+		//{
+		//    actor.transform.position = Vector3.Lerp(curPos, targetPos, timeAccum / stateTimes[(int)curState]);
+		//}
+
+
+		actor.Motor.Move(actor.transform.forward);
+		//actor.GetComponent<CharacterController>().Move(actor.transform.forward * 3.0f * Time.deltaTime);
+		actor.transform.LookAt(targetPos);
+
+		if(MathUtility.IsWithinCircle(actor.transform.position, targetPos, 0.25f))
 		{
-			actor.rigidbody.AddForce(actor.transform.forward * 150.0f);
-		}
-		else
-		{
-			actor.transform.position = Vector3.Lerp(curPos, targetPos, timeAccum / stateTimes[(int)curState]);
+			ChangeState(AI_State.IDLE);
 		}
     }
 }
