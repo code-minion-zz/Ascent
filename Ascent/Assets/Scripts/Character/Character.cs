@@ -114,7 +114,7 @@ public abstract class Character : MonoBehaviour
 
 		OnMove();
 
-		motor = gameObject.GetComponentSafe<CharacterMotor>();
+		motor = GetComponentInChildren<CharacterMotor>();
 		motor.Initialise();
 	}
 

@@ -147,22 +147,7 @@ public class Rat : Enemy
 	   //this.gameObject.SetActive(false);
    }
 
-   //public void OnCollisionEnter(Collision other)
-   //{
-   //    string tag = other.transform.tag;
-
-   //    switch (tag)
-   //    {
-   //        case "Hero":
-   //            {
-   //                Character otherCharacter = other.transform.GetComponent<Character>();
-   //                CollideWithHero(otherCharacter as Hero, other);
-   //            }
-   //            break;
-   //    }
-   //}
-
-   public void OnTriggerEnter(Collider other)
+   public void OnCollisionEnter(Collision other)
    {
 	   string tag = other.transform.tag;
 
@@ -178,11 +163,27 @@ public class Rat : Enemy
 	   }
    }
 
+   //public void OnTriggerEnter(Collider other)
+   //{
+   //    string tag = other.transform.tag;
+
+   //    switch (tag)
+   //    {
+   //        case "Hero":
+   //            {
+   //                Debug.Log("Hero");
+   //                Character otherCharacter = other.transform.GetComponent<Character>();
+   //                CollideWithHero(otherCharacter as Hero, other);
+   //            }
+   //            break;
+   //    }
+   //}
+
    /// <summary>
    /// When the rat collides with a hero
    /// </summary>
    /// <param name="hero"></param>
-   private void CollideWithHero(Hero hero, Collider collision)
+   private void CollideWithHero(Hero hero, Collision collision)
    {
 	   // If there is an object in this list that is the same
 	   // as this object it means we have a double collision.
@@ -208,7 +209,7 @@ public class Rat : Enemy
 	   //hero.ApplyDamage(charge.damageValue, charge.damageType);
 	   hero.ApplyDamage(3, EDamageType.Physical);
 
-	   //ContactPoint contact = collision. . contacts[0];
+	   //ContactPoint contact = collision.contacts[0];
 	   Vector3 direction = (collision.transform.position - transform.position).normalized;
 	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
 
