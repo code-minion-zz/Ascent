@@ -90,9 +90,6 @@ public class CharacterMotor : MonoBehaviour
 {
 	public GameObject actor;
 
-	private CharacterController controller;
-
-
 	private Vector3 movementForce;
 	public float speed = 6.0f;
 	public float gravity = 10.0f;
@@ -104,16 +101,38 @@ public class CharacterMotor : MonoBehaviour
 	private Vector3 knockbackDirection;
 	private float knockbackMag;
 	private float knockbackDecel = 0.65f;
+
+	// Grid Movement
+	public bool moving;
+	float offset = 1.0f;
+	float moveTime = 0.5f;
+	float timeAccum;
+
+	Vector3 startPos;
+	Vector3 targetPos;
 	
 	public virtual void Initialise()
 	{
 		rigidbody.freezeRotation = true;
 		rigidbody.useGravity = false;
-		controller = actor.GetComponentSafe<CharacterController>();
 	}
 
 	public virtual void FixedUpdate()
 	{
+	
+		if (moving)
+		{
+			timeAccum += Time.deltaTime;
+			if(timeAccum > moveTime)
+			{
+				timeAccum = 1.0f;
+				moving = false;
+			}
+
+			 transform.position = Vector3.Lerp(startPos, targetPos, timeAccum / moveTime);
+			 return;
+		}
+
 		// Calculate how fast we should be moving
 		Vector3 targetVelocity = Vector3.zero;
 		//Debug.Log(targetVelocity);
@@ -177,5 +196,22 @@ public class CharacterMotor : MonoBehaviour
 	{
 		knockbackDirection = new Vector3(direction.x, 0.0f, direction.z);
 		knockbackMag = mag * 1000.0f;
+	}
+
+	public void MoveAlongGrid(Vector3 direction)
+	{
+		if (!moving)
+		{
+			moving = true;
+			timeAccum = 0.0f;
+			startPos = transform.position;
+			targetPos = startPos + direction.normalized * offset;
+		};
+	}
+
+	public void StopMovingAlongGrid()
+	{
+		timeAccum = 1.0f;
+		moving = false;
 	}
 }

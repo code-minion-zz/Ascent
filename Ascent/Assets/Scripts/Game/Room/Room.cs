@@ -51,6 +51,13 @@ public class Room : MonoBehaviour
 		get { return lootDrops; }
 	}
 
+
+	protected List<MoveableBlock> moveables;
+	public List<MoveableBlock> Moveables
+	{
+		get { return moveables; }
+	}
+
     protected RoomFloorNav navMesh;
 	public RoomFloorNav NavMesh
 	{
@@ -143,6 +150,23 @@ public class Room : MonoBehaviour
 								lootDrops.Add(t);
 							}
 						}
+					}
+				}
+			}
+		}
+
+		if(moveables == null)
+		{
+			MoveableBlock[] roomMoveables = gameObject.GetComponentsInChildren<MoveableBlock>() as MoveableBlock[];
+			if (roomMoveables.Length > 0)
+			{
+				moveables = new List<MoveableBlock>();
+
+				foreach (MoveableBlock m in roomMoveables)
+				{
+					if (!moveables.Contains(m))
+					{
+						moveables.Add(m);
 					}
 				}
 			}
@@ -325,8 +349,17 @@ public class Room : MonoBehaviour
 
 					if (scope == Character.EScope.Enemy)
 					{
+						if (enemies == null)
+						{
+							break;
+						}
 						foreach(Enemy e in enemies)
 						{
+							if(e.IsDead)
+							{
+								continue;
+							}
+
 							bool inside = false;
 							//inside = MathUtility.IsWithinCircleArc(e.transform.position, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
 

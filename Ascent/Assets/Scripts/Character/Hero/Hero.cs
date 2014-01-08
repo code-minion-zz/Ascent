@@ -128,4 +128,15 @@ public abstract class Hero : Character
             a.RefreshCooldown();
         }
     }
+
+	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type)
+	{
+		if (heroController.GrabbingObject)
+		{
+			heroController.ReleaseGrabbedObject();
+			GetComponent<CharacterMotor>().StopMovingAlongGrid();
+		}
+
+		base.ApplyDamage(unmitigatedDamage, type);
+	}
 }

@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TriggerRegion : MonoBehaviour
 {
-	public Vector2 size;
+	public List<Vector2> regions = new List<Vector2>();
 
 	public bool IsHit
 	{
@@ -13,10 +14,18 @@ public class TriggerRegion : MonoBehaviour
 
 	public bool IsInside(Vector3 pointToTest)
 	{
-		IsHit = MathUtility.IsWithinBounds(pointToTest, this.transform.position, new Vector3(size.x, 1.0f, size.y));
+		foreach (Vector2 v in regions)
+		{
+			IsHit = MathUtility.IsWithinBounds(pointToTest, this.transform.position, new Vector3(v.x, 1.0f, v.y));
+			
+			if(IsHit)
+				return IsHit;
+		}
+
 		return IsHit;
 	}
 
+#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
 		Vector3 pos = transform.position;
@@ -26,7 +35,11 @@ public class TriggerRegion : MonoBehaviour
 			Gizmos.color = Color.red;
 		}
 
-		Gizmos.DrawWireCube(new Vector3(pos.x, 0.1f, pos.z), new Vector3(size.x, 0.1f, size.y));
+		foreach (Vector2 v in regions)
+		{
+			Gizmos.DrawWireCube(new Vector3(pos.x, 0.1f, pos.z), new Vector3(v.x, 0.1f, v.y));
+		}
 		
 	}
+#endif
 }
