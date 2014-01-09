@@ -13,6 +13,13 @@ public class Floor : MonoBehaviour
 		West
 	}
 
+	public GameObject groundPrefab = Resources.Load("Prefabs/RoomWalls/Ground") as GameObject;
+	public GameObject wallPrefab = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
+	public GameObject wallWindowPrefab = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
+	public GameObject doorPrefab = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
+	public GameObject cornerPrefab = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
+	public GameObject archPrefab = Resources.Load("Prefabs/RoomWalls/Archway") as GameObject;
+
 	private List<Player> players;
 	private GameObject[] startPoints;
 	private GameObject floorCamera;
@@ -153,40 +160,48 @@ public class Floor : MonoBehaviour
 
 		//DEBUG
 
-		if (Input.GetKeyUp(KeyCode.Keypad8)) // UP
+		Door[] roomDoors = currentRoom.doors.doors;
+		
+		InputDevice input = Game.Singleton.Players[0].Input;
+
+		if (Input.GetKeyUp(KeyCode.Keypad8) || input.DPadUp.WasReleased) // UP
 		{
-			foreach(Door d in currentRoom.doors)
+			foreach (Door d in roomDoors)
 			{
+				if (d == null) continue;
 				if (d.targetDoor != null && d.direction == TransitionDirection.North)
 				{
 					TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
 				}
 			}
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad2))
+		else if (Input.GetKeyUp(KeyCode.Keypad2) || input.DPadDown.WasReleased)
 		{
-			foreach (Door d in currentRoom.doors)
+			foreach (Door d in roomDoors)
 			{
+				if (d == null) continue;
 				if (d.targetDoor != null && d.direction == TransitionDirection.South)
 				{
 					TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
 				}
 			};
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad4))
+		else if (Input.GetKeyUp(KeyCode.Keypad4) || input.DPadLeft.WasReleased)
 		{
-			foreach (Door d in currentRoom.doors)
+			foreach (Door d in roomDoors)
 			{
+				if (d == null) continue;
 				if (d.targetDoor != null && d.direction == TransitionDirection.West)
 				{
 					TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
 				}
 			}
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad6))
+		else if (Input.GetKeyUp(KeyCode.Keypad6) || input.DPadRight.WasReleased)
 		{
-			foreach (Door d in currentRoom.doors)
+			foreach (Door d in roomDoors)
 			{
+				if (d == null) continue;
 				if (d.targetDoor != null && d.direction == TransitionDirection.East)
 				{
 					TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
@@ -259,7 +274,7 @@ public class Floor : MonoBehaviour
 
 		StartCoroutine(CoTransitionToRoom());
 
-		targetRoom = targetDoor.transform.parent.parent.GetComponent<Room>();
+		targetRoom = targetDoor.transform.parent.parent.parent.GetComponent<Room>();
 
 		Room prevRoom = currentRoom;
 		currentRoom = targetRoom;
@@ -267,14 +282,14 @@ public class Floor : MonoBehaviour
 
 		currentRoom.gameObject.SetActive(true);
 
-		// Move camera over
-		FloorCamera.TransitionToRoom(direction);
-
 		// Move heroes to the new room
-		foreach(Player p in players)
+		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
 		}
+
+		// Move camera over
+		FloorCamera.TransitionToRoom(direction);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
@@ -286,25 +301,25 @@ public class Floor : MonoBehaviour
 
 		targetRoom.gameObject.SetActive(false);
 
-		fadePlane.gameObject.SetActive(false);
+		//fadePlane.gameObject.SetActive(false);
 	}
 
 	public void TransitionToRoomImmediately(TransitionDirection direction, Door targetDoor)
 	{
-		targetRoom = targetDoor.transform.parent.parent.GetComponent<Room>();
+		targetRoom = targetDoor.transform.parent.parent.parent.GetComponent<Room>();
 
 		currentRoom.gameObject.SetActive(false);
 		currentRoom = targetRoom;
 		currentRoom.gameObject.SetActive(true);
-
-		// Move camera over
-		FloorCamera.TransitionToRoom(direction);
 
 		// Move heroes to the new room
 		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
 		}
+
+		// Move camera over
+		FloorCamera.TransitionToRoom(direction);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();

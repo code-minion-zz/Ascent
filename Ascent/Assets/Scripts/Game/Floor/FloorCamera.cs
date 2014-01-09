@@ -20,11 +20,11 @@ public class FloorCamera : MonoBehaviour
 	private float transitionTime = 2.0f;
 
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
-	private const float verticalIncrement = 20.0f;
-	private const float horizontalIncrement = 30.0f;
+	private const float verticalIncrement = 25.0f;
+	private const float horizontalIncrement = 25.0f;
 
-	private Vector3 minCamera;
-	private Vector3 maxCamera;
+	public Vector3 minCamera;
+	public Vector3 maxCamera;
 
 
     public Camera Camera
@@ -37,21 +37,10 @@ public class FloorCamera : MonoBehaviour
 		players = Game.Singleton.Players;
 		_transform = transform;
 		floorCamera = GetComponent<Camera>();
-
-		minCamera = new Vector3(-2.0f, 25.0f, -2.0f);
-		maxCamera = new Vector3(2.0f, 25.0f, 2.0f);
 	}
 
     public void Update()
     {
-		UpdateCameraPosition();
-		transform.position = new Vector3(
-		    Mathf.Clamp(transform.position.x, minCamera.x, maxCamera.x),
-
-		    Mathf.Clamp(transform.position.y, minCamera.y, maxCamera.y),
-
-		    Mathf.Clamp(transform.position.z, minCamera.z, maxCamera.z));
-
 
 		//UpdateCameraRotation();
 
@@ -77,11 +66,13 @@ public class FloorCamera : MonoBehaviour
 			if (time == transitionTime)
 			{
 				transition = false;
+				
 			}
 		}
 		else
 		{
-
+			UpdateCameraPosition();
+			transform.position = ClampPositionIntoBounds(transform.position);
 		}
 
 		if(Input.GetKeyUp(KeyCode.Keypad5))
@@ -135,32 +126,22 @@ public class FloorCamera : MonoBehaviour
 
     void UpdateCameraPosition()
     {
-        if (players.Count > 0)
-        {
-            // Ulter position of the camera to center on the players
-            Vector3 totalVector = Vector3.zero;
-
-            // Add up all the vectors
-            foreach (Player player in players)
-            {
-                if (player != null)
-                {
-                    totalVector += player.Hero.transform.position;
-                }
-            }
-
-            // Calculate camera position based off players
-            float x = totalVector.x / players.Count;
-            float y = _transform.position.y;
-            float z = (totalVector.z / players.Count);
-
-            Vector3 newVector = new Vector3(x, y, z);
-            Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
-
-            // Set the position of our camera.
-            _transform.position = lerpVector;
-        }
+        Vector3 newVector = CalculateAveragePlayerPosition();
+        Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
+		
+		// Set the position of our camera.
+        _transform.position = lerpVector;
     }
+
+	private Vector3 ClampPositionIntoBounds(Vector3 pos)
+	{
+		return new Vector3(
+		Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
+
+		Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
+
+		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+	}
 
 	void UpdateCameraRotation()
 	{
@@ -193,6 +174,33 @@ public class FloorCamera : MonoBehaviour
 		}
 	}
 
+	private Vector3 CalculateAveragePlayerPosition()
+	{
+		if (players.Count > 0)
+		{
+			// Ulter position of the camera to center on the players
+			Vector3 totalVector = Vector3.zero;
+
+			// Add up all the vectors
+			foreach (Player player in players)
+			{
+				if (player != null)
+				{
+					totalVector += player.Hero.transform.position;
+				}
+			}
+
+			// Calculate camera position based off players
+			float x = totalVector.x / players.Count;
+			float y = _transform.position.y;
+			float z = (totalVector.z / players.Count);
+
+			return new Vector3(x, y, z);
+		}
+
+		return _transform.position;
+	}
+
     private void CalculateCameraFrustum()
     {
         cameraFrustPlanes = GeometryUtility.CalculateFrustumPlanes(floorCamera);
@@ -211,9 +219,7 @@ public class FloorCamera : MonoBehaviour
 	public void TransitionToRoom(Floor.TransitionDirection direction)
 	{
 		startPos = transform.position;
-		targetPos = transform.position;
-
-		targetPos += GetDirectionVector(direction);
+		targetPos = ClampPositionIntoBounds(CalculateAveragePlayerPosition());
 
 		waitTranisition = 0.0f;
 		time = 0.0f;

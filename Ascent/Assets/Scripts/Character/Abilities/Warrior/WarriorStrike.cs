@@ -38,12 +38,16 @@ public class WarriorStrike : Action
 		cooldownValue = CooldownTime;
 		isOnCooldown = true;
 		performed = false;
+
+		swingArc.Process();
 	}
 
 	public override void UpdateAbility()
 	{
 		float timeVal = Time.deltaTime * animationSpeed;
 		currentTime += timeVal;
+
+		swingArc.Process();
 
 		if (!performed)
 		{

@@ -18,6 +18,9 @@ public class MoveableBlock : Interactable
 	public override void Start () 
 	{
 		base.Start();
+
+		//GetComponent<Shadow>().Initialise();
+		//GetComponentInChildren<CharacterTilt>().Process();
 	}
 	
 	// Update is called once per frame
@@ -54,6 +57,9 @@ public class MoveableBlock : Interactable
 
 			 transform.position = Vector3.Lerp(startPos, targetPos, timeAccum / moveTime);
 		}
+
+		//GetComponent<Shadow>().Process();
+		//GetComponentInChildren<CharacterTilt>().Process();
 	}
 
 	public void Move(Vector3 direction)

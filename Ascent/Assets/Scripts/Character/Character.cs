@@ -141,13 +141,16 @@ public abstract class Character : MonoBehaviour
 	/// <summary>
 	/// Updates the character tilt and shadow
 	/// </summary>
-	protected void OnMove()
+	public void OnMove()
 	{
-		CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
-		tilt.Process();
+		if (!isDead)
+		{
+			CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
+			tilt.Process();
 
-		Shadow shadow = GetComponentInChildren<Shadow>();
-		shadow.Process();
+			Shadow shadow = GetComponentInChildren<Shadow>();
+			shadow.Process();
+		}
 	}
 
     private void UpdateActiveAbility()

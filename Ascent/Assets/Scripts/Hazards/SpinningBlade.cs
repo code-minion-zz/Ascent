@@ -57,7 +57,7 @@ public class SpinningBlade : MonoBehaviour
 
 			newBlade.transform.localScale = new Vector3(newBlade.transform.localScale.x + bladeLength, newBlade.transform.localScale.y, newBlade.transform.localScale.z);
 
-			Vector3 offset = new Vector3(0.0f, 1.0f, 3.5f + bladeLength * 0.5f);
+			Vector3 offset = new Vector3(0.0f, 1.0f, 3.0f + bladeLength * 0.5f);
 			newBlade.transform.position += offset + new Vector3(transform.position.x, 0.0f, transform.position.z);
 
 			float angle = (360.0f / bladeCount) * (float)bladeDirection;

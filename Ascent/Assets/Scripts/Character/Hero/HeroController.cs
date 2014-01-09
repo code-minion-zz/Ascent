@@ -8,7 +8,7 @@ public class HeroController : MonoBehaviour
     private Hero hero;
     private InputDevice input;
     private bool actionBindingsEnabled = false;
-	public GameObject actor;
+	public Character actor;
 
 	private MoveableBlock grabbedObject;
 	public bool GrabbingObject
@@ -41,7 +41,7 @@ public class HeroController : MonoBehaviour
 	{
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
-		actor = GameObject.Find("Cube");
+		//actor = GameObject.Find("Cube").GetComponent<C>;
 
 	}
 
@@ -146,6 +146,7 @@ public class HeroController : MonoBehaviour
 				}
 
 				GetComponent<CharacterMotor>().Move(moveDirection);
+				GetComponent<Character>().OnMove();
 				//GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
 
 
@@ -312,7 +313,9 @@ public class HeroController : MonoBehaviour
 			if (closestBlock.TriggerRegion.IsInside(position))
 			{
 				// Is it in front?
-				Vector3 direction = (transform.position - closestBlock.transform.position).normalized;
+				Vector3 pos = closestBlock.transform.position;
+				pos.y = transform.position.y;
+				Vector3 direction = (transform.position - pos).normalized;
 				float dot = Vector3.Dot(direction, transform.forward);
 
 				if (dot < -0.8f)
@@ -326,6 +329,7 @@ public class HeroController : MonoBehaviour
 
 						vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
 
+						
 						return;
 					}
 				}

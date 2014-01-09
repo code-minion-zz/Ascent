@@ -155,7 +155,6 @@ public class Rat : Enemy
 	   {
 		   case "Hero":
 			   {
-				   Debug.Log("Hero");
 				   Character otherCharacter = other.transform.GetComponent<Character>();
 				   CollideWithHero(otherCharacter as Hero, other);
 			   }

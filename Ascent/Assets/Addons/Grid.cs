@@ -64,8 +64,8 @@ namespace Ascent
             // Left to right
             for (float x = 0.0f; x < gridWidth+1; ++x)
             {
-                Vector3 startHorrizontal = new Vector3(gridPosition.x - gridLength / 2.0f, 0.0f, (gridPosition.z - gridWidth / 2.0f) + x * width);
-                Vector3 endHorrizontal = new Vector3(gridPosition.x + gridLength / 2.0f, 0.0f, (gridPosition.z - gridWidth / 2.0f) + x * width);
+                Vector3 startHorrizontal = new Vector3(gridPosition.x - gridLength / 2.0f, 0.1f, (gridPosition.z - gridWidth / 2.0f) + x * width);
+				Vector3 endHorrizontal = new Vector3(gridPosition.x + gridLength / 2.0f, 0.1f, (gridPosition.z - gridWidth / 2.0f) + x * width);
 
                 Gizmos.DrawLine(startHorrizontal, endHorrizontal);
             }
@@ -73,8 +73,8 @@ namespace Ascent
             // Up to down
             for (float y = 0.0f; y < gridLength+1; ++y)
             {
-                Vector3 startVert = new Vector3((gridPosition.x - gridLength / 2.0f) + y * length, 0.0f, gridPosition.z + (gridWidth / 2.0f));
-                Vector3 endVert = new Vector3((gridPosition.x - gridLength / 2.0f) + y * length, 0.0f, gridPosition.z - (gridWidth / 2.0f));
+				Vector3 startVert = new Vector3((gridPosition.x - gridLength / 2.0f) + y * length, 0.1f, gridPosition.z + (gridWidth / 2.0f));
+				Vector3 endVert = new Vector3((gridPosition.x - gridLength / 2.0f) + y * length, 0.1f, gridPosition.z - (gridWidth / 2.0f));
 
                 Gizmos.DrawLine(startVert, endVert);
             }
