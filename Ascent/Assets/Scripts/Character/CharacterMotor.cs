@@ -174,8 +174,6 @@ public class CharacterMotor : MonoBehaviour
 
 		targetVelocity = (targetVelocity.normalized * speed) + knockbackVel;
 
-		
-
 		// Apply a force that attempts to reach our target velocity
 		Vector3 velocity = rigidbody.velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);

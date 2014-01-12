@@ -112,7 +112,7 @@ public class HeroAnimator : AnimatorController
                 // We want to only change the direction of the player when we can.
                 if (!takeHit && !whirlWind && !dying)
                 {
-                    transform.LookAt(transform.position + direction);
+                   // transform.LookAt(transform.position + direction);
                 }
             }
 
@@ -196,22 +196,22 @@ public class HeroAnimator : AnimatorController
 
     #region animations
 
-    void OnAnimatorMove()
-    {
-		//Vector3 deltaPos = animator.deltaPosition;
-		//deltaPos += gravityVelocity * Time.deltaTime;
+    //void OnAnimatorMove()
+    //{
+    //    //Vector3 deltaPos = animator.deltaPosition;
+    //    //deltaPos += gravityVelocity * Time.deltaTime;
 
-		//if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
-		//{
-		//    gravityVelocity = Vector3.zero;
-		//}
+    //    //if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
+    //    //{
+    //    //    gravityVelocity = Vector3.zero;
+    //    //}
 
-		//transform.Rotate(animator.deltaRotation.eulerAngles);
-    }
+    //    //transform.Rotate(animator.deltaRotation.eulerAngles);
+    //}
 
     public void AnimMove(Vector3 direction, float speed)
     {
-        this.direction = direction;
+        //this.direction = direction;
         animator.SetFloat("Speed", speed);
     }
 
