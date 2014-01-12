@@ -145,8 +145,8 @@ public abstract class Character : MonoBehaviour
 	{
 		if (!isDead)
 		{
-			CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
-			tilt.Process();
+			//CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
+			//tilt.Process();
 
 			Shadow shadow = GetComponentInChildren<Shadow>();
 			shadow.Process();
