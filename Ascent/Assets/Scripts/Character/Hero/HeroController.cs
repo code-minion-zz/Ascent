@@ -166,7 +166,8 @@ public class HeroController : MonoBehaviour
 
             if (device.LeftBumper.WasPressed)
             {
-                hero.UseAbility(1);
+                //hero.UseAbility(1);
+                hero.UseAbility(3);
             }
             else if (device.LeftTrigger.WasPressed)
             {

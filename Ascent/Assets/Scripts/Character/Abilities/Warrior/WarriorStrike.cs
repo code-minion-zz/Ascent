@@ -48,8 +48,7 @@ public class WarriorStrike : Action
 
 	public override void UpdateAbility()
 	{
-		float timeVal = Time.deltaTime * animationSpeed;
-		currentTime += timeVal;
+        base.UpdateAbility();
 
 		swingArc.Process();
 
@@ -70,16 +69,10 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
-
-		if (currentTime >= Length)
-		{
-			owner.StopAbility();
-		}
 	}
 
 	public override void EndAbility()
 	{
-		currentTime = 0.0f;
         base.EndAbility();
 	}
 
