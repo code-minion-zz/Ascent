@@ -54,9 +54,11 @@ public class Arrow : MonoBehaviour
 
 		switch (collision.transform.tag)
 		{
-		case "Hero":
-			CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
-			break;
+			case "Hero":
+				{
+					CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
+				}
+				break;
 		}
     }
 
@@ -69,6 +71,7 @@ public class Arrow : MonoBehaviour
 	{
 		// Apply damage to the hero
 		hero.ApplyDamage(damage, Character.EDamageType.Physical);
+		hero.ApplyKnockback(-collision.contacts[0].normal, 1.0f);
 
 	}
 }

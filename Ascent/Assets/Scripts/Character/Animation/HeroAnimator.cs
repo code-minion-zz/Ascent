@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(CharacterController))]
 public class HeroAnimator : AnimatorController  
 {
     #region Enums
@@ -46,26 +45,17 @@ public class HeroAnimator : AnimatorController
     //static int whirlWindAttack = Animator.StringToHash("Movement." + "WhirlWind");
 
     private Vector3 direction;
-    private CharacterController controller;
     private bool useCurves = true;
     private Vector3 gravityVelocity = Vector3.zero;
 
     #endregion
 
-    #region Properties
 
     public float MovementSpeed
     {
         get { return movementSpeed; }
         set { movementSpeed = value; }
     }
-
-    public CharacterController Controller
-    {
-        get { return controller; }
-    }
-
-    #endregion
 
     public override void Awake()
     {
@@ -76,9 +66,6 @@ public class HeroAnimator : AnimatorController
     public override void Start() 
     {
         base.Start();
-
-        // Select the collider component that we will use.
-        controller = GetComponent<CharacterController>();
 	}
 
 	void OnAnimationEvent()
@@ -142,7 +129,7 @@ public class HeroAnimator : AnimatorController
                     StopAnimation("Whirlwind");
                 }
             }
-		
+
 
             // If the active state is the attack state
             if (state.IsName("SwingSword"))
@@ -181,7 +168,7 @@ public class HeroAnimator : AnimatorController
                     if (useCurves)
                     {
                         // ..set the collider height to a float curve in the clip called ColliderHeight
-                        controller.height = animator.GetFloat("ColliderHeight");
+                        //controller.height = animator.GetFloat("ColliderHeight");
                     }
 
                     // reset the Jump bool so we can jump again, and so that the state does not loop 
@@ -211,21 +198,21 @@ public class HeroAnimator : AnimatorController
 
     void OnAnimatorMove()
     {
-        Vector3 deltaPos = animator.deltaPosition;
-        deltaPos += gravityVelocity * Time.deltaTime;
+		//Vector3 deltaPos = animator.deltaPosition;
+		//deltaPos += gravityVelocity * Time.deltaTime;
 
-        if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
-        {
-            gravityVelocity = Vector3.zero;
-        }
+		//if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
+		//{
+		//    gravityVelocity = Vector3.zero;
+		//}
 
-        transform.Rotate(animator.deltaRotation.eulerAngles);
+		//transform.Rotate(animator.deltaRotation.eulerAngles);
     }
 
     public void AnimMove(Vector3 direction, float speed)
     {
-        this.direction = direction;
-        animator.SetFloat("Speed", speed);
+        //this.direction = direction;
+        //animator.SetFloat("Speed", speed);
     }
 
     #endregion

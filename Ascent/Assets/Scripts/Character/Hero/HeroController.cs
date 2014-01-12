@@ -2,14 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
-[RequireComponent(typeof(CharacterController))]
-public class HeroController : MonoBehaviour, IInputEventHandler
+public class HeroController : MonoBehaviour
 {
     private HeroAnimator heroAnimator;
     private Hero hero;
     private InputDevice input;
     private bool actionBindingsEnabled = false;
+	public Character actor;
+
+	private MoveableBlock grabbedObject;
+	public bool GrabbingObject
+	{
+		get { return grabbedObject != null; }
+	}
+	private bool vertGrab;
+
+	bool vert;
+	bool horiz;
 
     public InputDevice Input
     {
@@ -32,6 +41,19 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 	{
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
+		//actor = GameObject.Find("Cube").GetComponent<C>;
+
+	}
+
+
+	public void EnableInput(InputDevice inputDevice)
+	{
+		input = inputDevice;
+	}
+
+	public void DisableInput()
+	{
+		input = null;
 	}
 
     #endregion
@@ -43,18 +65,112 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 		{
 			InputDevice device = input;
 
+			if (grabbedObject != null)
+			{
+				if(device.Y.WasReleased)
+				{
+					ReleaseGrabbedObject();
+				}
+			}
+
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
 			{
-				float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-				speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-				speed *= 1000.0f;
+				//float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+				//speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+				//speed *= 10000.0f;
 
-				// Direction vector to hold the input key press.
-				Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+				//// Direction vector to hold the input key press.
+				//Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
 
-				heroAnimator.AnimMove(direction, speed);
+				//heroAnimator.AnimMove(direction, speed);
+
+				
+				//transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
+
+				if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
+				{
+					vert = false;
+					
+				}
+				else
+				{
+					vert = true;
+				}
+
+				Vector3 moveDirection = Vector3.zero;
+
+				if (grabbedObject != null)
+				{
+					Debug.DrawLine(transform.position, grabbedObject.transform.position);
+					
+					if(!grabbedObject.moving)
+					{
+						if (vertGrab)
+						{
+							moveDirection = new Vector3(0, 0, device.LeftStickY.Value);
+
+							if (Mathf.Abs(device.LeftStickY.Value) > 0.1f)
+							{
+
+								grabbedObject.Move(moveDirection);
+								GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+							}
+						
+						}
+						else
+						{
+							moveDirection = new Vector3(device.LeftStickX.Value, 0, 0);
+
+							if (Mathf.Abs(device.LeftStickX.Value) > 0.1f)
+							{
+								grabbedObject.Move(moveDirection);
+								GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+							}
+						}
+					}
+
+				}
+				else if (!GetComponent<CharacterMotor>().moving)
+				{
+					moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
+
+					if (vert)
+					{
+						transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
+					}
+					else
+					{
+						transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
+					}
+				}
+
+				GetComponent<CharacterMotor>().Move(moveDirection);
+				GetComponent<Character>().OnMove();
+				//GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
+
+
+
+				//if (transform.forward == Vector3.right)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, 0.7f, 0.2f, 0.7f);
+				//}
+				//else if (transform.forward == Vector3.left)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, -0.7f, -0.2f, 0.7f);
+				//}
+				//else if (transform.forward == Vector3.forward)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.2f, 0.0f, 0.0f, 1.0f);
+				//}
+				//else if (transform.forward == Vector3.back)
+				//{
+				//    actor.transform.rotation = new Quaternion(0.0f, 1.0f, 0.2f, 0.0f);
+				//}
 			}
+
+			//Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
+
 
 
             if (device.X.WasPressed)
@@ -171,207 +287,59 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 		// Has it already been opened?
 
 		// Is there a block?
-		// Find the closest block
-		// Is it already being interacted with?
-		// Has someone else started to interact with it?
+		List<MoveableBlock> moveables = curRoom.Moveables;
+		if (moveables != null)
+		{
+			// Find the closest block
+			MoveableBlock closestBlock = null;
+			float closestDistance = 10000.0f;
+
+			foreach (MoveableBlock m in moveables)
+			{
+				if (m.grabbed)
+				{
+					continue;
+				}
+
+				float distance = (position - m.transform.position).sqrMagnitude;
+
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestBlock = m;
+				}
+			}
+			// Are we in range of it?
+			if (closestBlock.TriggerRegion.IsInside(position))
+			{
+				// Is it in front?
+				Vector3 pos = closestBlock.transform.position;
+				pos.y = transform.position.y;
+				Vector3 direction = (transform.position - pos).normalized;
+				float dot = Vector3.Dot(direction, transform.forward);
+
+				if (dot < -0.8f)
+				{
+					// Has it been grabbed yet?
+					if (!closestBlock.grabbed)
+					{
+						// Grab it
+						grabbedObject = closestBlock;
+						closestBlock.grabbed = true;
+
+						vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
+
+						
+						return;
+					}
+				}
+			}
+		}
 	}
 
-
-    #region input
-
-
-    public void EnableInput(InputDevice inputDevice)
-    {
-		input = inputDevice;
-
-		if (!InputManager.IsPolling)
-		{
-			inputDevice.OnLStickMove += OnLStickMove;
-			inputDevice.OnX += OnX;
-			inputDevice.OnY += OnY;
-			inputDevice.OnA += OnA;
-			inputDevice.OnB += OnB;
-			inputDevice.OnLeftBumper += OnLBumper;
-			inputDevice.OnRightBumper += OnRBumper;
-			inputDevice.OnRightTrigger += OnRTrigger;
-		}
-    }
-
-    public void DisableInput()
-    {
-		if (!InputManager.IsPolling)
-		{
-			input.OnLStickMove -= OnLStickMove;
-			input.OnX -= OnX;
-			input.OnY -= OnY;
-			input.OnA -= OnA;
-			input.OnB -= OnB;
-			input.OnLeftBumper -= OnLBumper;
-			input.OnRightBumper -= OnRBumper;
-			input.OnRightTrigger -= OnRTrigger;
-		}
-
-		input = null;
-    }
-
-    public void OnX(InputDevice device)
-    {
-        hero.UseAbility(0); // pass in the ability binded to this key
-    }
-
-    public void OnY(InputDevice device)
-    {
-		
-    }
-
-    public void OnA(InputDevice device)
-    {
-		hero.UseAbility(1); // pass in the ability binded to this key
-    }
-
-    public void OnB(InputDevice device)
-    {
-		
-    }
-
-    public void OnX_up(InputDevice device)
-    {
-
-    }
-
-    public void OnY_up(InputDevice device)
-    {
-
-    }
-
-    public void OnA_up(InputDevice device)
-    {
-
-    }
-
-    public void OnB_up(InputDevice device)
-    {
-
-    }
-
-    public void OnStart(InputDevice device)
-    {
-
-    }
-
-    public void OnStart_up(InputDevice device)
-    {
-
-    }
-
-    public void OnBack(InputDevice device)
-    {
-
-    }
-
-    public void OnBack_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLTrigger(InputDevice device)
-    {
-
-    }
-
-    public void OnLBumper(InputDevice device)
-    {
-		hero.UseAbility(2); // pass in the ability binded to this key
-    }
-
-    public void OnRTrigger(InputDevice device)
-    {
-		
-    }
-
-    public void OnRBumper(InputDevice device)
-    {
-		hero.UseAbility(3);
-    }
-
-    public void OnDPadLeft(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadLeft_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLStickMove(InputDevice device)
-    {
-        float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-        speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-        speed *= 1000.0f;
-
-        // Direction vector to hold the input key press.
-        Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-
-        // Tell the hero animator to update the speed and direction.
-        heroAnimator.AnimMove(direction, speed);
-    }
-
-    public void OnLStick(InputDevice device)
-    {
-
-    }
-
-    public void OnLStick_up(InputDevice device)
-    {
-
-    }
-
-    public void OnRStickMove(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick_up(InputDevice device)
-    {
-
-    }
-
-
-    #endregion
+	public void ReleaseGrabbedObject()
+	{
+		grabbedObject.grabbed = false;
+		grabbedObject = null;
+	}
 }

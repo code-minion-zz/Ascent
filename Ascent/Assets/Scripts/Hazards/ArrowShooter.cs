@@ -20,9 +20,11 @@ public class ArrowShooter : MonoBehaviour
 	void Start () 
     {
         arrowPool = new ObjectPool(projectile, projectilePoolCount, this.transform, "Arrow");
-        direction = (transform.FindChild("Shooter").transform.position - transform.FindChild("Base").transform.position).normalized;
+       // direction = (transform.FindChild("Shooter").transform.position - transform.FindChild("Base").transform.position).normalized;
         //spawnPoint = transform.FindChild("Shooter").transform.position + (direction * 1.0f);
-		spawnPoint = transform.FindChild("Shooter").transform.position + direction;
+		direction = transform.forward;
+		spawnPoint = transform.FindChild("Shooter").transform.position + direction* 0.5f;
+		
 	}
 	
 	// Update is called once per frame
@@ -40,8 +42,12 @@ public class ArrowShooter : MonoBehaviour
                 Arrow newArrow = po.script as Arrow;
                 newArrow.Initialise(arrowLifeSpan, direction, projectileSpeed, projectileDamage);
 				po.go.transform.position = spawnPoint;
-				po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+				//po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
+				//po.go.transform.LookAt(direction * 5.0f);
+				po.go.transform.rotation = transform.rotation;
                 po.go.SetActive(true);
+				po.go.rigidbody.angularVelocity = Vector3.zero;
+				po.go.rigidbody.velocity = Vector3.zero;
 
 				//po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
                 //po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
@@ -54,6 +60,7 @@ public class ArrowShooter : MonoBehaviour
             {
                 //Debug.Log(name + " ran out of " + projectile.ToString() + " to fire.");
             }
-        }
+        }	
 	}
+
 }

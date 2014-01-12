@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Action : IAction
+public abstract class Action
 {
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
@@ -64,6 +64,7 @@ public abstract class Action : IAction
     {
        this.owner = owner;
        this.name = this.GetType().ToString();
+	   animationTrigger = this.name;
     }
 
     /// <summary>
@@ -120,4 +121,9 @@ public abstract class Action : IAction
     {
         cooldownValue = 0.0f;
     }
+
+	public virtual void DebugDraw()
+	{
+
+	}
 }

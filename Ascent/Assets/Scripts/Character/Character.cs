@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 public abstract class Character : MonoBehaviour
 {
+	public enum EScope
+	{
+		Hero,
+		Enemy,
+		All,
+	}
+
 	public enum EHeroClass
 	{
 		Warrior,
@@ -18,12 +25,15 @@ public abstract class Character : MonoBehaviour
     }
 	
 	protected List<Action> 			abilities = new List<Action>();
-	protected IAction 				activeAbility;
+	protected Action 				activeAbility;
 	protected GameObject 			weaponPrefab;
     protected bool 					isDead = false;
     protected Color 				originalColour;
 
     protected float 				stunDuration;
+	protected float					stunTimeAccum;
+	protected float					flickerDuration = 0.5f;
+	protected float					flickerTimeAccum;
 	
 	protected Transform 			weaponSlot;
 	protected Collidable 			chargeBall;
@@ -33,6 +43,15 @@ public abstract class Character : MonoBehaviour
 	protected DerivedStats			derivedStats;
 	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
 	protected BetterList<Buff>		buffList = new BetterList<Buff>();
+
+	protected CharacterMotor motor;
+	public CharacterMotor Motor
+	{
+		get { return motor;  }
+	}
+
+	public delegate void DamageTaken(float amount);
+	public event DamageTaken OnDamageTaken;
 
     public Transform WeaponSlot
     {
@@ -87,40 +106,58 @@ public abstract class Character : MonoBehaviour
         get { return isDead; }
     }
 
-    public virtual void Awake()
-    {
-        // To be derived
-    }
 
-    public virtual void Start()
-    {
-        // To be derived
-    }
+	public virtual void Initialise()
+	{
+		Shadow shadow = GetComponentInChildren<Shadow>();
+		shadow.Initialise();
+
+		OnMove();
+
+		motor = GetComponentInChildren<CharacterMotor>();
+		motor.Initialise();
+	}
 
     public virtual void Update()
     {
         UpdateActiveAbility();
+
+		// Update abilities that require cooldown
+		foreach (Action ability in abilities)
+		{
+			if (ability.IsOnCooldown == true)
+			{
+				ability.UpdateCooldown();
+			}
+		}
         
+		// Process all the buffs
         foreach(Buff b in buffList)
         {
             b.Process();
         }
     }
 
+	/// <summary>
+	/// Updates the character tilt and shadow
+	/// </summary>
+	public void OnMove()
+	{
+		if (!isDead)
+		{
+			CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
+			tilt.Process();
+
+			Shadow shadow = GetComponentInChildren<Shadow>();
+			shadow.Process();
+		}
+	}
+
     private void UpdateActiveAbility()
     {
         if (activeAbility != null)
         {
             activeAbility.UpdateAbility();
-        }
-
-        // Update abilities that require cooldown
-        foreach (Action ability in abilities)
-        {
-            if (ability.IsOnCooldown == true)
-            {
-                ability.UpdateCooldown();
-            }
         }
     }
 
@@ -141,27 +178,6 @@ public abstract class Character : MonoBehaviour
 		}
     }
 
-    public virtual void UseAbility(string ability)
-    {
-        if (activeAbility == null)
-        {
-            Action action = abilities.Find(a => a.Name == ability); // this is a lambda 
-            if (action == null)
-            {
-                Debug.LogError("Could not find and use ability: " + ability);
-            }
-            else if (action.IsOnCooldown == false)
-            {
-                action.StartAbility();
-                activeAbility = action;
-            }
-            else
-            {
-                Debug.Log("Ability: " + action.Name + " is on cooldown");
-            }
-        }
-    }
-
 	public Action GetAbility(string ability)
 	{
 		if (activeAbility == null)
@@ -177,15 +193,6 @@ public abstract class Character : MonoBehaviour
 		return null;
 	}
 
-	public virtual void InterruptAbility()
-	{
-		if (activeAbility != null)
-		{
-			activeAbility.EndAbility();
-			activeAbility = null;
-		}
-	}
-
 	public virtual void StopAbility()
 	{
 		if (activeAbility != null)
@@ -198,6 +205,7 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
     {
 		int finalDamage = unmitigatedDamage;
+
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
@@ -218,13 +226,15 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-	public delegate void DamageTaken(float amount);
-	public event DamageTaken OnDamageTaken;
+
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {
 		// Taking damage may or may not interrupt the current ability
-		transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
+		direction = new Vector3(direction.x, 0.0f, direction.z);
+		//transform.GetComponent<CharacterController>().Move(direction * magnitude);
+		motor.SetKnockback(direction, magnitude);
+		//transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
     }
 
     public virtual void ApplySpellEffect()
@@ -245,6 +255,7 @@ public abstract class Character : MonoBehaviour
     public virtual void Respawn(Vector3 position)
     {
         isDead = false;
+
         // Play this animation.
         //Animator.PlayAnimation("Respawn");
         transform.position = position;
@@ -269,12 +280,7 @@ public abstract class Character : MonoBehaviour
             if (type == typeof(Weapon))
             {
                 Weapon weapon = obj as Weapon;
-                Debug.Log("Killed by: " + weapon.Owner);
             }
-			else
-			{
-				Debug.Log ("Killed by: " + type);
-			}
         }
         else
         {
@@ -303,4 +309,14 @@ public abstract class Character : MonoBehaviour
     {
         buffList.Remove(buff);
     }
+
+	#if UNITY_EDITOR
+	public void OnDrawGizmos()
+	{
+		if (activeAbility !=null)
+		{
+			activeAbility.DebugDraw();
+		}
+	}
+	#endif
 }

@@ -4,7 +4,6 @@ using System.Collections;
 public class GameInitialiser : MonoBehaviour 
 {
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool useVisualDebugger = false;
     public int targetFrameRate = 60;
     public Game.EGameState state = Game.EGameState.Tower;
 
@@ -63,7 +62,6 @@ public class GameInitialiser : MonoBehaviour
         game.Initialise(new GameInitialisationValues()
         {
             initialGameState = state,
-            useVisualDebugger = useVisualDebugger,
             targetFrameRate = this.targetFrameRate,
             playerCharacterType = this.playerCharacterType,
 

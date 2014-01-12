@@ -26,7 +26,6 @@ public class Game : MonoBehaviour
 
 	// Number of players
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool visualDebuggerPrefab = true;
     public string levelName;
     public GameObject Cameras;
 
@@ -81,8 +80,6 @@ public class Game : MonoBehaviour
 
 		Application.targetFrameRate = initValues.targetFrameRate;
 
-		visualDebuggerPrefab = initValues.useVisualDebugger;
-
         gameState = initValues.initialGameState;
 
         Initialise();
@@ -99,11 +96,6 @@ public class Game : MonoBehaviour
 		InputManager.Initialise();
 
 		CreatePlayers();
-
-		if (visualDebuggerPrefab)
-		{
-			Instantiate(Resources.Load("Prefabs/VisualDebugger"));
-		}
 
 		tower = GetComponent<Tower>();
 	}

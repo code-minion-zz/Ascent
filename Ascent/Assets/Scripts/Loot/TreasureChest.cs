@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class TreasureChest : MonoBehaviour
+public class TreasureChest : Interactable
 {
 	protected enum EChestState
 	{
@@ -42,11 +42,6 @@ public class TreasureChest : MonoBehaviour
 
 	protected Room containedRoom;
 
-	protected TriggerRegion triggerRegion;
-	public TriggerRegion TriggerRegion
-	{
-		get { return triggerRegion; }
-	}
 
 	public bool IsClosed
 	{
@@ -54,10 +49,9 @@ public class TreasureChest : MonoBehaviour
 	}
 
     // Use this for initialization
-	void Start () 
+	public override void Start () 
 	{
-		triggerRegion = GetComponent<TriggerRegion>();
-
+		base.Start();
 		defaultRot = lidMesh.transform.rotation;
         openRot = new Quaternion(0.0f, 0.6f, 0.8f, 0.0f);
 

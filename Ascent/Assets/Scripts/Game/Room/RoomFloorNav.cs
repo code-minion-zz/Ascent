@@ -110,7 +110,7 @@ public class RoomFloorNav : MonoBehaviour
 		{
 			pos = GetRandomPosition();
 		}
-		while (MathRectHelper.IsWithinBounds(pos, startPos, size));
+		while (MathUtility.IsWithinBounds(pos, startPos, size));
 
 		return pos;
 	}

@@ -27,37 +27,44 @@ public class Door : MonoBehaviour
 	{
 		if (targetDoor != null)
 		{
-			Vector3 dir = (transform.position - targetDoor.transform.position).normalized;
+			Vector3 dir = (targetDoor.transform.position - transform.position).normalized;
 
-			Vector3 a = transform.position - dir * 7.5f;
-			Vector3 b = targetDoor.transform.position + dir * 7.5f;
-			
-			a.x = a.x - 1.5f;
-			a.z = a.z - 1.5f;
+			Vector3 a = transform.position + dir * 7.5f;
+			Vector3 b = targetDoor.transform.position - dir * 9.0f;
 
-			b.x = b.x + 1.5f;
-			b.z = b.z + 1.5f;
+			if (direction == Floor.TransitionDirection.North)
+			{
+				a.x = a.x - 1.5f;
+				b.x = b.x - 1.5f;
+			}
+			else if (direction == Floor.TransitionDirection.South)
+			{
+				a.x = a.x + 1.5f;
+				b.x = b.x + 1.5f; 
+			}
+			else if (direction == Floor.TransitionDirection.East)
+			{
+				a.z = a.z - 1.5f;
+				b.z = b.z - 1.5f;
+			}
+			else if (direction == Floor.TransitionDirection.West)
+			{
+				a.z = a.z + 1.5f;
+				b.z = b.z + 1.5f;
+			}
 
 			a.y = 2.5f;
 			b.y = 2.5f;
 
 			Gizmos.DrawLine(a, b);
+			Handles.ArrowCap(0, a, Quaternion.LookRotation(dir, Vector3.up), 1.5f);
 
 			a = transform.position;
 			a.y = 5.0f;
-
 			Handles.ArrowCap(0, a, Quaternion.LookRotation(FloorCamera.GetDirectionVector(direction), Vector3.up), 1.5f);
 		}
 	}
 #endif
-
-	//public void Update()
-	//{
-	//    if (targetDoor != null)
-	//    {
-	//        Debug.DrawLine(transform.position, targetDoor.transform.position);
-	//    }
-	//}
 
 	public void OnEnable()
 	{
@@ -106,6 +113,7 @@ public class Door : MonoBehaviour
                 // Check if all heroes are in here.
                 foreach (Player p in Game.Singleton.Players)
                 {
+
                     if (p.Hero.collider.bounds.Intersects(collider.bounds))
                     {
                         ++currentPlayerCount;
@@ -120,9 +128,9 @@ public class Door : MonoBehaviour
                     currentPlayerCount == playerCount)
                 {
                     standingOnDoorTimer += Time.deltaTime;
-
                     if (standingOnDoorTimer >= 1.0f)
                     {
+						
                         Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
                         //gameObject.SetActive(false);
                         done = true;
@@ -141,114 +149,4 @@ public class Door : MonoBehaviour
 		startDoor = true;
 		done = true;
 	}
-	
-	//#region Fields
-	//public float doorOpenAngle = 90.0f;
-	//public float smoothing = 2.0f;
-	
-	//public bool isDoorOpen = false;
-	//public bool isLocked = false;
-	
-	//private Vector3 defaultRot;
-	//private Vector3 openRot;
-
-	//public Vector3 openDirection;
-	//private Vector3 defaultPosition;
-	
-	//#endregion
-	
-	//#region Properties
-	
-	//public bool IsOpen 
-	//{
-	//    get { return isDoorOpen; }
-	//    set { isDoorOpen = value; }
-	//}
-	
-	//public bool IsLocked
-	//{
-	//    get { return isLocked; }
-	//    set { isLocked = value; }
-	//}
-	
-	//#endregion
-	
-	//// Use this for initialization
-	//void Start () 
-	//{
-	//    defaultRot = transform.eulerAngles;
-	//    openRot = new Vector3(defaultRot.x + doorOpenAngle, defaultRot.y, defaultRot.z);
-
-	//    defaultPosition = transform.position;
-	//}
-	
-	//// Update is called once per frame
-	//void Update () 
-	//{
-	//    if (IsLocked == false)
-	//    {
-	//        if (IsOpen)
-	//        {
-	//            //SwingOpen();
-	//            SlideOpen();
-	//        }
-	//        //else
-	//        //{
-	//        //    // SwingClose();
-	//        //    SlideClose();
-	//        //}
-	//    }
-	//    else
-	//    {
-	//        //Debug.Log("Door is locked");
-	//    }
-	//}
-
-	//private void SlideOpen()
-	//{
-	//    transform.position = Vector3.Lerp(transform.position, defaultPosition + (openDirection * 4.0f), Time.deltaTime * 5.0f);
-	//}
-
-	//private void SlideClose()
-	//{
-	//    transform.position = Vector3.Lerp(transform.position, defaultPosition, Time.deltaTime * 5.0f);
-	//}
-
-	//private void SwingOpen()
-	//{
-	//    transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, openRot,
-	//        Time.deltaTime * smoothing);
-	//}
-
-	//private void SwingClose()
-	//{
-	//    transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, defaultRot,
-	//        Time.deltaTime * smoothing);	
-	//}
-	
-	//#region Collision
-	
-	//void OnCollisionEnter(Collision collision)
-	//{
-	//    if (collision.transform.tag == "Hero")
-	//    {
-	//        if (IsOpen == false)
-	//        {
-	//            Debug.Log("Door opened");
-	//            IsOpen = true;
-	//        }
-	//        else
-	//        {
-	//            Debug.Log("Door closed");
-	//            IsOpen = false;	
-	//        }
-	//    }		
-	//}
-	
-	//void OnCollisionExit(Collision collisionInfo)
-	//{
-	//    //IsOpen = true;		
-	//}	
-	
-	//#endregion
 }

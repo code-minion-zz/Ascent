@@ -97,6 +97,8 @@ public class Rat : Enemy
                 }
             }
 		}
+
+		OnMove();
     }
 
    public override void Initialise()
@@ -128,7 +130,7 @@ public class Rat : Enemy
 
 	   //originalColour = gameObject.renderer.material.color;
 
-	   base.BaseInitialise();
+	   base.Initialise();
    }
 
 
@@ -160,6 +162,22 @@ public class Rat : Enemy
 	   }
    }
 
+   //public void OnTriggerEnter(Collider other)
+   //{
+   //    string tag = other.transform.tag;
+
+   //    switch (tag)
+   //    {
+   //        case "Hero":
+   //            {
+   //                Debug.Log("Hero");
+   //                Character otherCharacter = other.transform.GetComponent<Character>();
+   //                CollideWithHero(otherCharacter as Hero, other);
+   //            }
+   //            break;
+   //    }
+   //}
+
    /// <summary>
    /// When the rat collides with a hero
    /// </summary>
@@ -190,12 +208,17 @@ public class Rat : Enemy
 	   //hero.ApplyDamage(charge.damageValue, charge.damageType);
 	   hero.ApplyDamage(3, EDamageType.Physical);
 
-	   ContactPoint contact = collision.contacts[0];
-	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+	   //ContactPoint contact = collision.contacts[0];
+	   Vector3 direction = (collision.transform.position - transform.position).normalized;
+	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
+
+
+	   hero.ApplyKnockback(direction, 1.0f);
+
 
 	   // Apply particle blood splatter and make it a parent of the hero so that it will move with the hero.
 	   // TODO: make a pool of these emitters and dont instantiate them on the frame.
-	  GameObject bloodSplatter = Instantiate(bloodSplat, contact.point, rot) as GameObject;
+	   GameObject bloodSplatter = Instantiate(bloodSplat, collision.transform.position, rot) as GameObject;
 	   bloodSplatter.transform.parent = hero.transform;
 
 	   // Heroes are going to take a hit and play the animation.

@@ -64,7 +64,7 @@ public class Charge : Action
 		{			
 	        //owner.transform.position += moveVec;
 
-            heroController.Controller.Move(moveVec);
+            //heroController.Controller.Move(moveVec);
 
 	        distanceTraveled += moveVec.magnitude;
 			

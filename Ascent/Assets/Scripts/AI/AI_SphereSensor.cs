@@ -38,7 +38,7 @@ public class AI_SphereSensor : AI_Sensor
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
+			if (MathUtility.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {
@@ -63,7 +63,7 @@ public class AI_SphereSensor : AI_Sensor
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
+			if (MathUtility.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {
@@ -94,7 +94,7 @@ public class AI_SphereSensor : AI_Sensor
         // Check all characters to see if there is a collision
         foreach (Character c in characters)
         {
-			if (MathRectHelper.IsWithinCircle(c.transform.position, transform.position, radius))
+			if (MathUtility.IsWithinCircle(c.transform.position, transform.position, radius))
             {
                 if (!sensedCharacters.Contains(c))
                 {

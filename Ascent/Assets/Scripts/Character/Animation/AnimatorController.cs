@@ -88,7 +88,7 @@ public class AnimatorController : MonoBehaviour
 
     public virtual void PlayAnimation(string animation)
     {
-        animator.SetBool(animation, true);
+       // animator.SetBool(animation, true);
     }
 
     /// <summary>

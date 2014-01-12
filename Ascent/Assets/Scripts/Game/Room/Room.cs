@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 /// <summary>
 /// The room class should be attached to every room on a floor. It contains references to all of the objects in the room.
 /// </summary>
@@ -22,8 +26,13 @@ public class Room : MonoBehaviour
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
+	public Vector3 minCamera = new Vector3(-2.0f, 24.0f, -2.0f);
+	public Vector3 maxCamera = new Vector3(2.0f, 24.0f, 2.0f);
+	private Vector3 curMinCamera = new Vector3(-2.0f, 24.0f, -2.0f);
+	private Vector3 curMaxCamera = new Vector3(2.0f, 24.0f, 2.0f);
+
 	private const int maxDoors = 4;
-	public Door[] doors = new Door[maxDoors];
+	public Doors doors;
     public bool startRoom = false;
     
     private Door entryDoor;
@@ -49,6 +58,13 @@ public class Room : MonoBehaviour
 	public List<LootDrop> LootDrops
 	{
 		get { return lootDrops; }
+	}
+
+
+	protected List<MoveableBlock> moveables;
+	public List<MoveableBlock> Moveables
+	{
+		get { return moveables; }
 	}
 
     protected RoomFloorNav navMesh;
@@ -79,15 +95,22 @@ public class Room : MonoBehaviour
         //Transform floorTiles = GetNodeByLayer("Floor").transform;
         //Transform wallObjects = GetNodeByLayer("Wall").transform;
 
-		GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Rooms/RoomNav")) as GameObject;
+		GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
 		go.transform.position = transform.position + go.transform.position;
 		go.transform.parent = transform;
 
 		navMesh = go.GetComponent<RoomFloorNav>();
+
+		doors = GetComponentInChildren<Doors>();
     }
 
     public void OnEnable()
     {
+		Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
+		Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+		curMinCamera = minCamera;
+		curMaxCamera = maxCamera;
+
         if (enemies == null)
         {
 			Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
@@ -147,20 +170,49 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
+
+		if(moveables == null)
+		{
+			MoveableBlock[] roomMoveables = gameObject.GetComponentsInChildren<MoveableBlock>() as MoveableBlock[];
+			if (roomMoveables.Length > 0)
+			{
+				moveables = new List<MoveableBlock>();
+
+				foreach (MoveableBlock m in roomMoveables)
+				{
+					if (!moveables.Contains(m))
+					{
+						moveables.Add(m);
+					}
+				}
+			}
+		}
     }
 
 	void Update()
 	{
 		CheckDoors();
+
+		if (minCamera != curMinCamera)
+		{
+			curMinCamera = minCamera;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
+		}
+		if (maxCamera != curMaxCamera)
+		{
+			curMaxCamera = maxCamera;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+		}
 	}
 
 	void CheckDoors()
 	{
-		for (int i = 0; i < doors.Length; ++i )
+		Door[] roomDoors = doors.doors;
+		for (int i = 0; i < roomDoors.Length; ++i)
 		{
-			if(doors[i] != null)
+			if (roomDoors[i] != null)
 			{
-				doors[i].Process();
+				roomDoors[i].Process();
 			}
 		}
 	}
@@ -273,7 +325,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Loot:
 				{
-					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Rooms/CoinSack")) as GameObject;
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/CoinSack")) as GameObject;
 
 					if(lootDrops == null)
 					{
@@ -303,5 +355,106 @@ public class Room : MonoBehaviour
 				}
 				break;
 		}
+	}
+
+
+	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
+	{
+		Shape2D.EType type = shape.type;
+		switch(type)
+		{
+			case Shape2D.EType.Rect:
+				{
+				}
+				break;
+			case Shape2D.EType.Circle:
+				{
+				}
+				break;
+			case Shape2D.EType.Arc:
+				{
+					Arc arc = shape as Arc;
+
+					if (scope == Character.EScope.Enemy)
+					{
+						if (enemies == null)
+						{
+							break;
+						}
+						foreach(Enemy e in enemies)
+						{
+							if(e.IsDead)
+							{
+								continue;
+							}
+
+							bool inside = false;
+		
+							Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
+							Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
+
+					
+							// TL
+							Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
+							inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+#if UNITY_EDITOR
+							Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, extents.z));
+#endif
+
+							// TR
+							if (!inside)
+							{
+								point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + extents);
+#endif
+							}
+
+							// BL
+							if (!inside)
+							{
+								point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
+#endif
+							}
+
+							// BR
+							if (!inside)
+							{
+								point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
+								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+
+#if UNITY_EDITOR
+								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(extents.x, extents.y, -extents.z));
+#endif
+							}
+
+							if(inside)
+							{
+							
+								charactersColliding.Add(e);
+							}
+						}
+					}
+				}
+				break;
+		}
+
+
+		return charactersColliding.Count > 0;
+	}
+
+	public bool CheckCollisionAreas<T>(List<Shape2D> shapes, ref List<T> enemies)
+	{
+		//switch()
+		//{
+		//}
+
+		return false;
 	}
 }

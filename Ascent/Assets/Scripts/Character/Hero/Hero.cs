@@ -56,6 +56,8 @@ public abstract class Hero : Character
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
 		heroInventory = new HeroInventory();
+
+		base.Initialise();
 	}
 
     public void SetColor(Color color)
@@ -92,6 +94,14 @@ public abstract class Hero : Character
 
     }
 
+	//void OnTriggerEnter(Collider collision)
+	//{
+	//    if (collision.transform.tag == "Monster")
+	//    {
+
+	//    }
+	//}
+
     void OnControllerColliderHit(ControllerColliderHit collision)
     {
 		//if (collision.transform.tag == "Door")
@@ -118,4 +128,15 @@ public abstract class Hero : Character
             a.RefreshCooldown();
         }
     }
+
+	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type)
+	{
+		if (heroController.GrabbingObject)
+		{
+			heroController.ReleaseGrabbedObject();
+			GetComponent<CharacterMotor>().StopMovingAlongGrid();
+		}
+
+		base.ApplyDamage(unmitigatedDamage, type);
+	}
 }

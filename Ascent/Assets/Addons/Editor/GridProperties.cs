@@ -84,12 +84,13 @@ public class GridProperties : EditorWindow
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(" Grid Width ");
-                    grid.gridWidth = EditorGUILayout.FloatField(grid.gridWidth, GUILayout.Width(50));
+					grid.gridLength = EditorGUILayout.FloatField(grid.gridLength, GUILayout.Width(50));
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(" Grid Length ");
-                    grid.gridLength = EditorGUILayout.FloatField(grid.gridLength, GUILayout.Width(50));
+					grid.gridWidth = EditorGUILayout.FloatField(grid.gridWidth, GUILayout.Width(50));
+
                 }
                 GUILayout.EndHorizontal();
 
