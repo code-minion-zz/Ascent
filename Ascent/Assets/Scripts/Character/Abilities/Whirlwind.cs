@@ -26,8 +26,8 @@ public class Whirlwind : Action
 	{
         base.StartAbility();
 
-		owner.Weapon.EnableCollision = true;
-		owner.Weapon.SetAttackProperties(20, Character.EDamageType.Physical);
+		//owner.Weapon.EnableCollision = true;
+		//owner.Weapon.SetAttackProperties(20, Character.EDamageType.Physical);
 
         // Start the coroutines for handling the animation times.
         //owner.StartCoroutine(UpdateWhirlwindAbility());

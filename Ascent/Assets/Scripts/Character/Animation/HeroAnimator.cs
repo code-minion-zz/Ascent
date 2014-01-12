@@ -211,8 +211,8 @@ public class HeroAnimator : AnimatorController
 
     public void AnimMove(Vector3 direction, float speed)
     {
-        //this.direction = direction;
-        //animator.SetFloat("Speed", speed);
+        this.direction = direction;
+        animator.SetFloat("Speed", speed);
     }
 
     #endregion

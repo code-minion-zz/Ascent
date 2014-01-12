@@ -15,13 +15,13 @@ public class WarriorStrike : Action
 
 	public override void Initialise(Character owner)
     {
-		animationLength = 0.0f;
-		animationSpeed = 1.0f;
+        animationSpeed = 3.0f;
+        animationLength = 1.167f / animationSpeed;
 		coolDownTime = 0.0f;
 		cooldownValue = 0.0f;
 		currentTime = 0.0f;
 		isOnCooldown = false;
-		animationTrigger = Name;
+		animationTrigger = "SwingAttack";
 		specialCost = 0;
 
 		swingArc = new Arc();
@@ -39,7 +39,11 @@ public class WarriorStrike : Action
 		isOnCooldown = true;
 		performed = false;
 
+        animationLength = 1.167f / animationSpeed;
+        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
+
 		swingArc.Process();
+        base.StartAbility();
 	}
 
 	public override void UpdateAbility()
@@ -76,6 +80,7 @@ public class WarriorStrike : Action
 	public override void EndAbility()
 	{
 		currentTime = 0.0f;
+        base.EndAbility();
 	}
 
 	public override void DebugDraw()

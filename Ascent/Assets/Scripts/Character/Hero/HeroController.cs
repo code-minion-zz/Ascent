@@ -74,103 +74,84 @@ public class HeroController : MonoBehaviour
 			}
 
 			// L Stick
-			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
-			{
-				//float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-				//speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-				//speed *= 10000.0f;
+            if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+            {
 
-				//// Direction vector to hold the input key press.
-				//Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-
-				//heroAnimator.AnimMove(direction, speed);
-
-				
-				//transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
-
-				if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
-				{
-					vert = false;
-					
-				}
-				else
-				{
-					vert = true;
-				}
-
-				Vector3 moveDirection = Vector3.zero;
-
-				if (grabbedObject != null)
-				{
-					Debug.DrawLine(transform.position, grabbedObject.transform.position);
-					
-					if(!grabbedObject.moving)
-					{
-						if (vertGrab)
-						{
-							moveDirection = new Vector3(0, 0, device.LeftStickY.Value);
-
-							if (Mathf.Abs(device.LeftStickY.Value) > 0.1f)
-							{
-
-								grabbedObject.Move(moveDirection);
-								GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
-							}
-						
-						}
-						else
-						{
-							moveDirection = new Vector3(device.LeftStickX.Value, 0, 0);
-
-							if (Mathf.Abs(device.LeftStickX.Value) > 0.1f)
-							{
-								grabbedObject.Move(moveDirection);
-								GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
-							}
-						}
-					}
-
-				}
-				else if (!GetComponent<CharacterMotor>().moving)
-				{
-					moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
-
-					if (vert)
-					{
-						transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
-					}
-					else
-					{
-						transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
-					}
-				}
-
-				GetComponent<CharacterMotor>().Move(moveDirection);
-				GetComponent<Character>().OnMove();
-				//GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
+                ////transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
 
 
+                if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
+                {
+                    vert = false;
 
-				//if (transform.forward == Vector3.right)
-				//{
-				//    actor.transform.rotation = new Quaternion(0.2f, 0.7f, 0.2f, 0.7f);
-				//}
-				//else if (transform.forward == Vector3.left)
-				//{
-				//    actor.transform.rotation = new Quaternion(0.2f, -0.7f, -0.2f, 0.7f);
-				//}
-				//else if (transform.forward == Vector3.forward)
-				//{
-				//    actor.transform.rotation = new Quaternion(0.2f, 0.0f, 0.0f, 1.0f);
-				//}
-				//else if (transform.forward == Vector3.back)
-				//{
-				//    actor.transform.rotation = new Quaternion(0.0f, 1.0f, 0.2f, 0.0f);
-				//}
-			}
+                }
+                else
+                {
+                    vert = true;
+                }
+
+                Vector3 moveDirection = Vector3.zero;
+
+                if (grabbedObject != null)
+                {
+                    Debug.DrawLine(transform.position, grabbedObject.transform.position);
+
+                    if (!grabbedObject.moving)
+                    {
+                        if (vertGrab)
+                        {
+                            moveDirection = new Vector3(0, 0, device.LeftStickY.Value);
+
+                            if (Mathf.Abs(device.LeftStickY.Value) > 0.1f)
+                            {
+
+                                grabbedObject.Move(moveDirection);
+                                GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+                            }
+
+                        }
+                        else
+                        {
+                            moveDirection = new Vector3(device.LeftStickX.Value, 0, 0);
+
+                            if (Mathf.Abs(device.LeftStickX.Value) > 0.1f)
+                            {
+                                grabbedObject.Move(moveDirection);
+                                GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+                            }
+                        }
+                    }
+
+                }
+                else if (!GetComponent<CharacterMotor>().moving)
+                {
+                    moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
+
+                    if (vert)
+                    {
+                        transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
+                    }
+                    else
+                    {
+                        transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
+                    }
+                }
+
+                GetComponent<CharacterMotor>().Move(moveDirection);
+                GetComponent<Character>().OnMove();
+                //GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
+
+                //Debug.Log(device.LeftStickX);
+                float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+                speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+                speed *= 10000.0f;
+
+                //// Direction vector to hold the input key press.
+                Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+                heroAnimator.AnimMove(direction, speed);
+            }
 
 			//Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
-
 
 
             if (device.X.WasPressed)

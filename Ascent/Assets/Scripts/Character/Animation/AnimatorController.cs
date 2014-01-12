@@ -88,7 +88,7 @@ public class AnimatorController : MonoBehaviour
 
     public virtual void PlayAnimation(string animation)
     {
-       // animator.SetBool(animation, true);
+        animator.SetBool(animation, true);
     }
 
     /// <summary>
@@ -102,6 +102,7 @@ public class AnimatorController : MonoBehaviour
 
 	public virtual void StopAnimation(string animation)
 	{
+        Debug.Log(animation);
 		animator.SetBool(animation, false);
 	}
 }
