@@ -76,10 +76,6 @@ public class HeroController : MonoBehaviour
 			// L Stick
             if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
             {
-
-                ////transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
-
-
                 if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
                 {
                     vert = false;
@@ -139,17 +135,20 @@ public class HeroController : MonoBehaviour
 
                 GetComponent<CharacterMotor>().Move(moveDirection);
                 GetComponent<Character>().OnMove();
-                //GetComponent<CharacterController>().Move(moveDirection * Time.deltaTime);
 
-                //Debug.Log(device.LeftStickX);
                 float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
                 speed *= heroAnimator.MovementSpeed * Time.deltaTime;
                 speed *= 10000.0f;
 
-                //// Direction vector to hold the input key press.
+                // Direction vector to hold the input key press.
                 Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
                 heroAnimator.AnimMove(direction, speed);
+
+                transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+                //transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
             }
+           
 
 			//Debug.DrawLine(transform.position, transform.position + transform.forward * 2.5f);
 
