@@ -17,6 +17,7 @@ public class BaseStats
 	protected int vitality;				// Increases Max HP, Physical Resistance, HP Regen
 	protected int spirit;				// Increases Max Special, Magic Resistance
 		
+#pragma warning disable 0067
 	public event CharacterStatisticEventHandler onLevelChanged;
 	public event CharacterStatisticEventHandler onExpChanged;
 	//public event CharacterStatisticEventHandler onMoneyChanged;

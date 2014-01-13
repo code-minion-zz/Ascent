@@ -26,7 +26,6 @@ public class Game : MonoBehaviour
 
 	// Number of players
     public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public bool visualDebuggerPrefab = true;
     public string levelName;
     public GameObject Cameras;
 
@@ -39,6 +38,8 @@ public class Game : MonoBehaviour
         get { return gameState; }
         set { gameState = value; }
     }
+
+	public static bool running = false;
 
 	private EGameState gameStateToLoad;
 	
@@ -73,11 +74,11 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+		running = true;
+
 		playerCharacterType = initValues.playerCharacterType;
 
 		Application.targetFrameRate = initValues.targetFrameRate;
-
-		visualDebuggerPrefab = initValues.useVisualDebugger;
 
         gameState = initValues.initialGameState;
 
@@ -96,11 +97,6 @@ public class Game : MonoBehaviour
 
 		CreatePlayers();
 
-		if (visualDebuggerPrefab)
-		{
-			Instantiate(Resources.Load("Prefabs/VisualDebugger"));
-		}
-
 		tower = GetComponent<Tower>();
 	}
 
@@ -111,7 +107,7 @@ public class Game : MonoBehaviour
 
 	// This is a helper function to create players with heroes at any stage of the game
     private void CreatePlayers()
-    {
+	{
 		players = new List<Player>();
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class SwingSword : Action
 {
-	private const float animationSpeed = 3.0f;
-    private int damage = 10;
+    private int damage = 20;
 
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
+		
+		animationSpeed = 3.0f;
         animationLength = 1.167f / animationSpeed;
         animationTrigger = "SwingAttack";
     }
@@ -20,6 +21,8 @@ public class SwingSword : Action
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
 
         base.StartAbility();
+
+        owner.DerivedStats.CurrentSpecial += 2;
     }
 
     public override void UpdateAbility()

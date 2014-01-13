@@ -36,7 +36,7 @@ public abstract class Item
     public int Level
     {
         get { return level; }
-        protected set { level = value; }
+        set { level = value; }
     }
 
 //    public ItemGrade Grade
@@ -48,7 +48,7 @@ public abstract class Item
     public int BaseValue
     {
         get { return baseValue; }
-        protected set { baseValue = value; }
+        set { baseValue = value; }
     }
 
 	public BetterList<ItemProperty> ItemProperties

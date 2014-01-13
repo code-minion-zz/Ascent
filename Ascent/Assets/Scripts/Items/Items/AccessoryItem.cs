@@ -22,10 +22,22 @@ public class AccessoryItem : Item
 //		get { return itemProperties; }
 //		protected set { itemProperties = value; }
 //	}
+	//public int Grade
+	//{
+	//    get { return (int)grade;}
+	//    set { grade = (ItemGrade)value; }
+	//}
+
 	public int Grade
 	{
-		get { return (int)grade;}
+		get { return (int)grade; }
 		set { grade = (ItemGrade)value; }
+	}
+
+	public ItemGrade GradeEnum
+	{
+		get { return grade; }
+		set { grade = value; }
 	}
 
 	public int Durability
@@ -47,5 +59,6 @@ public class AccessoryItem : Item
 	public AccessoryItem()
 	{
 		stats = new BaseStats();
+		itemProperties = new BetterList<ItemProperty>();
 	}
 }

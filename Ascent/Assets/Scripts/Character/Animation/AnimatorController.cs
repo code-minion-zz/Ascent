@@ -102,6 +102,7 @@ public class AnimatorController : MonoBehaviour
 
 	public virtual void StopAnimation(string animation)
 	{
+        Debug.Log(animation);
 		animator.SetBool(animation, false);
 	}
 }

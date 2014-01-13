@@ -20,13 +20,8 @@ public abstract class Enemy : Character
 
     #region Fields
 
-    public int teamId = 2;
-
     private Player targetPlayer;
-    //private float waiting = 0.0f;
     private Vector3 originalScale;
-
-    protected RAIN.Core.AIRig ai;
 
 	protected StatBar hpBar;
 	public StatBar HPBar
@@ -39,24 +34,18 @@ public abstract class Enemy : Character
 
     #endregion
 
+	public int health = 100;
+
     #region Initialization
 
-	public virtual void Initialise()
+	public override void Initialise()
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
 
 		PositionHpBar();
-	}
 
-    public override void Awake()
-    {
-        // To be derived
-    }
-
-	public override void Start () 
-    {
-        // To be derived
+		base.Initialise();
 	}
 
     #endregion
