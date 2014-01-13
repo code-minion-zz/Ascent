@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Circle : MonoBehaviour {
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-	// Use this for initialization
-	void Start () {
-	
+public class Circle : Shape2D 
+{
+    public float radius;
+
+    public Transform transform;
+
+	public Circle()
+	{
+		type = Shape2D.EType.Circle;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public void DebugDraw()
+    {
+        Handles.DrawWireDisc(transform.position, Vector3.up, radius);
+    }
 }

@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class HeroInventory 
 {
+    private const int MAX_INVENTORY_SLOTS = 15;
+
 	private List<Item> items;
+
 	public List<Item> Items
 	{
 		get { return items; }
@@ -18,6 +21,9 @@ public class HeroInventory
 
 	public void AddItem(Item newItem)
 	{
-		items.Add(newItem);
+        if (items.Count < MAX_INVENTORY_SLOTS)
+        {
+            items.Add(newItem);
+        }
 	}
 }

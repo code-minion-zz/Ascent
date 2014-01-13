@@ -369,6 +369,36 @@ public class Room : MonoBehaviour
 				break;
 			case Shape2D.EType.Circle:
 				{
+                    Circle circle = shape as Circle;
+
+                    if (scope == Character.EScope.Enemy)
+                    {
+                        if (enemies == null)
+                        {
+                            break;
+                        }
+
+                        foreach (Enemy e in enemies)
+                        {
+                            if (e.IsDead)
+                            {
+                                continue;
+                            }
+
+                            bool inside = false;
+
+                            // Check the radius of the circle shape against the extents of the enemy.
+                            Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
+                            Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
+
+                            inside = MathUtility.IsCircleCircle(circle.transform.position, circle.radius, pos, (extents.x + extents.z * 0.5f));
+
+                            if (inside)
+                            {
+                                charactersColliding.Add(e);
+                            }
+                        }
+                    }
 				}
 				break;
 			case Shape2D.EType.Arc:
@@ -381,6 +411,7 @@ public class Room : MonoBehaviour
 						{
 							break;
 						}
+
 						foreach(Enemy e in enemies)
 						{
 							if(e.IsDead)

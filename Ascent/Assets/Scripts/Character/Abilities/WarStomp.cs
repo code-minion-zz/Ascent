@@ -9,13 +9,11 @@ public class WarStomp : Action
     private GameObject prefab;
     private bool performed;
 
-    public float radius = 3.14f;
-    public float arcAngle = 365.0f;
+    public float radius = 3.0f;
     public float knockBack = 10.0f;
+    public int damage = 28;
 
-    private Vector3 arcLine;
-    private Vector3 arcLine2;
-    private Arc swingArc;
+    private Circle collisionShape;
 
     public override void Initialise(Character owner)
     {
@@ -25,32 +23,27 @@ public class WarStomp : Action
         animationLength = 1.2f;
         animationSpeed = 2.0f;
         animationTrigger = "WarStomp";
-        coolDownTime = 0.0f;
+        coolDownTime = 3.0f;
         specialCost = 5;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
-
-        swingArc = new Arc();
-        swingArc.radius = radius;
-        swingArc.arcAngle = arcAngle;
-        swingArc.transform = owner.transform;
+        collisionShape = new Circle();
+        collisionShape.radius = radius;
+        collisionShape.transform = owner.transform;
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
 
-        // Creation of the stomp
+        // Creation of the stomp visual appearence.
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
-        stompObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-
-        //SphereCollider sc = stompObject.GetComponent<SphereCollider>();
-        //sc.isTrigger = true;
-
-        stompObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+        stompObject.transform.localScale = new Vector3(0.0f, 1.0f, 0.0f);
         GameObject.Destroy(stompObject, animationLength / animationSpeed);
+
+        performed = false;
     }
 
     public override void UpdateAbility()
@@ -60,10 +53,8 @@ public class WarStomp : Action
         if (stompObject != null)
         {
             stompObject.transform.position = owner.transform.position;
-            stompObject.transform.localScale = Vector3.Lerp(stompObject.transform.localScale, new Vector3(explosionMaxRadius, 0.0f, explosionMaxRadius), Time.deltaTime * animationSpeed);
+            stompObject.transform.localScale = Vector3.Lerp(stompObject.transform.localScale, new Vector3(explosionMaxRadius, 1.0f, explosionMaxRadius), Time.deltaTime * animationSpeed);
         }
-
-        swingArc.Process();
 
         if (!performed)
         {
@@ -71,11 +62,11 @@ public class WarStomp : Action
             {
                 List<Character> enemies = new List<Character>();
 
-                if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
+                if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(collisionShape, Character.EScope.Enemy, ref enemies))
                 {
                     foreach (Enemy e in enemies)
                     {
-                        e.ApplyDamage(10, Character.EDamageType.Physical);
+                        e.ApplyDamage(damage, Character.EDamageType.Physical);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBack);
                     }
                 }
@@ -92,6 +83,6 @@ public class WarStomp : Action
 
     public override void DebugDraw()
     {
-        swingArc.DebugDraw();
+        collisionShape.DebugDraw();
     }
 }

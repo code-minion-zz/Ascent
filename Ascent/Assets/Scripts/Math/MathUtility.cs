@@ -93,10 +93,14 @@ public class MathUtility
 				point.z < rectPosition.z + rectSize.z * 0.5f);
 	}
 
+    public static bool IsCircleCircle(Vector3 point1, float radius1, Vector3 point2, float radius2)
+    {
+        return ((Mathf.Pow((point2.x-point1.x), 2.0f) + Mathf.Pow((point1.z-point2.z), 2.0f)) <= Mathf.Pow((radius1+radius2), 2.0f));
+    }
+
 	public static bool IsWithinCircle(Vector3 point, Vector3 circlePos, float radius)
 	{
 		float squareDist = (Mathf.Pow((circlePos.x - point.x), 2.0f)) + (Mathf.Pow((circlePos.z - point.z), 2.0f));
-
 		return squareDist <= Mathf.Pow(radius, 2.0f);
 	}
 

@@ -8,9 +8,6 @@ public class WarriorStrike : Action
 	public float radius = 2.25f;
 	public float arcAngle = 85.0f;
 
-	private Vector3 arcLine;
-	private Vector3 arcLine2;
-
 	private Arc swingArc;
 
 	public override void Initialise(Character owner)
