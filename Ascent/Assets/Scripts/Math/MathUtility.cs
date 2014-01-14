@@ -114,9 +114,9 @@ public class MathUtility
 		//Debug.DrawLine(sectorEnd, relPoint, Color.green);
 		//Debug.DrawLine(relPoint, circlePos, Color.green);
 
-		return !AreClockwise(sectorEnd, relPoint) &&
-				AreClockwise(sectorStart, relPoint) &&
-				IsWithinCircle(point, circlePos, radius);
+        return !AreClockwise(sectorEnd, relPoint) &&
+                AreClockwise(sectorStart, relPoint) &&
+                IsWithinCircle(point, circlePos, radius);
 	}
 
 	private static bool AreClockwise(Vector3 v1, Vector3 v2)

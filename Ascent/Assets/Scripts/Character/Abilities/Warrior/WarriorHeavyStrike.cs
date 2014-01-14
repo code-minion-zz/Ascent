@@ -53,6 +53,12 @@ public class WarriorHeavyStrike : Action
                     {
                         e.ApplyDamage(25, Character.EDamageType.Physical);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
+
+                        // Create a blood splatter effect on the enemy.
+                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
+
+                        // Tell the hud manager to spawn text.
+                        HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25);
                     }
                 }
 
@@ -66,8 +72,10 @@ public class WarriorHeavyStrike : Action
         base.EndAbility();
     }
 
+#if UNITY_EDITOR
     public override void DebugDraw()
     {
         swingArc.DebugDraw();
     }
+#endif
 }

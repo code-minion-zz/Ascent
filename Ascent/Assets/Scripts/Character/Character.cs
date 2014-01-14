@@ -344,7 +344,7 @@ public abstract class Character : MonoBehaviour
         buffList.Remove(buff);
     }
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
 		if (activeAbility !=null)
@@ -352,5 +352,5 @@ public abstract class Character : MonoBehaviour
 			activeAbility.DebugDraw();
 		}
 	}
-	#endif
+#endif
 }

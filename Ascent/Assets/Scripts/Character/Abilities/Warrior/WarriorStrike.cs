@@ -58,6 +58,7 @@ public class WarriorStrike : Action
 
 				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 				{
+
 					foreach(Enemy e in enemies)
 					{
                         // Apply damage and knockback to the enemey.
