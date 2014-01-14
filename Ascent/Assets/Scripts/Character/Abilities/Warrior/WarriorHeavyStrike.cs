@@ -12,8 +12,8 @@ public class WarriorHeavyStrike : Action
 
     public override void Initialise(Character owner)
     {
-        animationSpeed = 3.0f;
-        animationLength = 1.167f / 1.5f;
+        animationSpeed = 1.5f;
+        animationLength = 1.167f / animationSpeed;
         coolDownTime = 5.0f;
         currentTime = 0.0f;
         animationTrigger = "SwingAttack";
@@ -68,14 +68,6 @@ public class WarriorHeavyStrike : Action
 
     public override void DebugDraw()
     {
-        //arcLine = MathUtility.RotateAboutPoint(owner.transform.forward * radius, owner.transform.position, -arcAngle * 0.5f);
-        //arcLine2 = MathUtility.RotateAboutPoint(owner.transform.forward * radius, owner.transform.position, arcAngle * 0.5f);
-
-        //Debug.DrawLine(owner.transform.position, owner.transform.position + arcLine); // To the rotated arc
-        //Debug.DrawLine(owner.transform.position, owner.transform.position + arcLine2); // To the rotated arc
-
-        //Handles.DrawWireArc(owner.transform.position, Vector3.up, arcLine, arcAngle, radius);
-
         swingArc.DebugDraw();
     }
 }

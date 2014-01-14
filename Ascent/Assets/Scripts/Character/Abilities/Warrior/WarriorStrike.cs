@@ -14,7 +14,7 @@ public class WarriorStrike : Action
 
 	public override void Initialise(Character owner)
     {
-        animationSpeed = 3.0f;
+        animationSpeed = 2.0f;
         animationLength = 1.167f / animationSpeed;
 		coolDownTime = animationLength;
 		animationTrigger = "SwingAttack";

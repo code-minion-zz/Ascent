@@ -59,13 +59,12 @@ public class Rat : Enemy
 
                 if (stunDuration < 0.0f)
                 {
-                    gameObject.renderer.material.color = originalColour;
+                    GetComponentInChildren<Renderer>().material.color = originalColour;
                 }
             }
 	    }
 
         RemoveCollisions();
-	    OnMove();
     }
 
    public override void Initialise()
@@ -117,7 +116,11 @@ public class Rat : Enemy
 		   case "Hero":
 			   {
 				   Character otherCharacter = other.transform.GetComponent<Character>();
-				   CollideWithHero(otherCharacter as Hero, other);
+
+                   if (!IsStunned && !otherCharacter.IsInvulnerable)
+                   {
+				        CollideWithHero(otherCharacter as Hero, other);
+                   }
 			   }
 			   break;
 	   }
