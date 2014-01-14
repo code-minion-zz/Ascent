@@ -75,14 +75,6 @@ public class WarriorStrike : Action
 
 	public override void DebugDraw()
 	{		
-		//arcLine = MathUtility.RotateAboutPoint(owner.transform.forward * radius, owner.transform.position, -arcAngle * 0.5f);
-		//arcLine2 = MathUtility.RotateAboutPoint(owner.transform.forward * radius, owner.transform.position, arcAngle * 0.5f);
-
-		//Debug.DrawLine(owner.transform.position, owner.transform.position + arcLine); // To the rotated arc
-		//Debug.DrawLine(owner.transform.position, owner.transform.position + arcLine2); // To the rotated arc
-
-		//Handles.DrawWireArc(owner.transform.position, Vector3.up, arcLine, arcAngle, radius);
-
 		swingArc.DebugDraw();
 	}
 }

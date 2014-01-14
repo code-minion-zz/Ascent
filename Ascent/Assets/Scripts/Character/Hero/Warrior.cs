@@ -77,7 +77,7 @@ public class Warrior : Hero
 		
 		//AddSkill(new Jump());
 		
-		AddSkill(new WarriorWhirlwind());
+		AddSkill(new WarriorHeavyStrike());
 		AddSkill(new WarriorCharge());
 		AddSkill(new WarriorWarStomp());
         AddSkill(new WarCry());

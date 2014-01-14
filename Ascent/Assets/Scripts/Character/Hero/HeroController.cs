@@ -4,6 +4,22 @@ using System.Collections.Generic;
 
 public class HeroController : MonoBehaviour
 {
+    public enum HeroAction
+    {
+        None = -1,
+
+        Strike = 0,
+        Interaction,
+        Confirm,
+        Cancel,
+
+        Action1 = 1,
+        Action2 = 2,
+        Action3 = 3,
+        Action4 = 4 
+
+    }
+
     private HeroAnimator heroAnimator;
     private Hero hero;
     private InputDevice input;
@@ -158,7 +174,7 @@ public class HeroController : MonoBehaviour
 
             if (device.X.WasPressed)
             {
-                hero.UseAbility(0);
+                hero.UseAbility((int)HeroAction.Strike);
             }
 
             if(device.Back.WasPressed)
@@ -169,20 +185,20 @@ public class HeroController : MonoBehaviour
             if (device.LeftBumper.WasPressed)
             {
                 //hero.UseAbility(1);
-                hero.UseAbility(3);
+                hero.UseAbility((int)HeroAction.Action1);
             }
             else if (device.LeftTrigger.WasPressed)
             {
-                hero.UseAbility(4);
+                hero.UseAbility((int)HeroAction.Action4);
             }
             else if(device.RightBumper.WasPressed)
             {
-                hero.UseAbility(2); // pass in the ability binded to this key
+                hero.UseAbility((int)HeroAction.Action2); // pass in the ability binded to this key
                 
             }
             else if (device.RightTrigger.WasPressed)
             {
-                hero.UseAbility(3);
+                hero.UseAbility((int)HeroAction.Action4);
             }
 
 			// We can bind something to this key.

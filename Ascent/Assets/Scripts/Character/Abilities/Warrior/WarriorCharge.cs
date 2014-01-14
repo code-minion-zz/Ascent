@@ -28,6 +28,8 @@ public class WarriorCharge : Action
     private Vector3 targetPos;
 
     private CharacterMotor charMotor;
+
+    private Circle circle;
 	
     public override void Initialise(Character owner)
     {
@@ -38,7 +40,7 @@ public class WarriorCharge : Action
 		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
 		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
 
-        coolDownTime = 0.0f;
+        coolDownTime = 5.0f;
         animationTrigger = "SwingAttack";
         specialCost = 5;
 
@@ -46,6 +48,10 @@ public class WarriorCharge : Action
         travelTime = animationLength;
 
         charMotor = owner.GetComponentInChildren<CharacterMotor>();
+
+        circle = new Circle();
+        circle.radius = 2.0f;
+        circle.transform = owner.transform;
     }
 	
     public override void StartAbility()
@@ -91,6 +97,7 @@ public class WarriorCharge : Action
 
         if (currentTime == travelTime)
         {
+
             owner.StopAbility();
         }
         //motor.SpecialMove(motion);
