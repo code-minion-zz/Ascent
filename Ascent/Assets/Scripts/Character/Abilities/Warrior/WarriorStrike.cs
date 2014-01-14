@@ -14,7 +14,7 @@ public class WarriorStrike : Action
 
 	public override void Initialise(Character owner)
     {
-        animationSpeed = 3.0f;
+        animationSpeed = 2.0f;
         animationLength = 1.167f / animationSpeed;
 		coolDownTime = animationLength;
 		animationTrigger = "SwingAttack";
@@ -58,6 +58,7 @@ public class WarriorStrike : Action
 
 				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 				{
+
 					foreach(Enemy e in enemies)
 					{
                         // Apply damage and knockback to the enemey.

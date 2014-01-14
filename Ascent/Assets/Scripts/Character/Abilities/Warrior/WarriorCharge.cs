@@ -3,6 +3,8 @@
 // Dependencies
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 /// <summary>
 /// Charging Action/Skill. 
@@ -16,7 +18,7 @@ public class WarriorCharge : Action
 	private float actionSpeed = 15f;
 	
     private float distanceTraveled;
-	private float distanceMax = 10f;
+	private float distanceMax = 7.5f;
 	
 	private Animator ownerAnimator;
     private HeroAnimator heroController;
@@ -44,7 +46,7 @@ public class WarriorCharge : Action
         animationTrigger = "SwingAttack";
         specialCost = 5;
 
-        animationLength = 1.0f;
+        animationLength = 0.35f;
         travelTime = animationLength;
 
         charMotor = owner.GetComponentInChildren<CharacterMotor>();
@@ -64,19 +66,20 @@ public class WarriorCharge : Action
         startPos = owner.transform.position;
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
+        if (Physics.Raycast(new Ray(startPos - owner.transform.forward, owner.transform.forward), out hitInfo, distanceMax))
         {
-            targetPos = hitInfo.point - (owner.transform.forward);
+            targetPos = hitInfo.point - (owner.transform.forward * 0.25f);
 
-            travelTime = hitInfo.distance / distanceMax;
+            travelTime = (hitInfo.distance / distanceMax) * animationLength;
         }
         else
         {
-            targetPos = startPos + owner.transform.forward * (distanceMax - 1.0f);
+            targetPos = startPos + owner.transform.forward * (distanceMax - 0.5f);
             travelTime = animationLength;
         }
 
-        charMotor.canMove = false;
+        owner.ApplyInvulnerabilityEffect(animationLength);
+        //charMotor.canMove = false;
 	}
 
     public override void UpdateAbility()
@@ -97,7 +100,22 @@ public class WarriorCharge : Action
 
         if (currentTime == travelTime)
         {
+           List<Character> enemies = new List<Character>();
 
+           if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+           {
+               foreach (Enemy e in enemies)
+               {
+                   e.ApplyDamage(2, Character.EDamageType.Physical);
+                   e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
+                   e.ApplyStunEffect(2.0f);
+
+                   // Create a blood splatter effect on the enemy.
+                   Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
+               }
+           }
+
+           owner.ApplyInvulnerabilityEffect(0.0f);
             owner.StopAbility();
         }
         //motor.SpecialMove(motion);
@@ -142,7 +160,7 @@ public class WarriorCharge : Action
 		ownerAnimator.speed = prevAnimatorSpeed;
 		ownerAnimator.SetBool("SwingAttack",false);
 
-        charMotor.canMove = true;
+        //charMotor.canMove = true;
 	}
 	
 	private void Reset()
@@ -185,4 +203,11 @@ public class WarriorCharge : Action
 		ownerAnimator.speed = 0.8f;
 		owner.ChargeBall.gameObject.SetActive(false);
 	}
+
+#if UNITY_EDITOR
+    public override void DebugDraw()
+    {
+        circle.DebugDraw();
+    }
+#endif
 }

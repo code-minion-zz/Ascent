@@ -424,50 +424,48 @@ public class Room : MonoBehaviour
 							Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
 							Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
 
-					
-							// TL
-							Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
-							inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+                            // TL
+                            Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
+                            inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
 #if UNITY_EDITOR
-							Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, extents.z));
+                            Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, extents.z));
 #endif
 
-							// TR
-							if (!inside)
-							{
-								point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
-								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+                            // TR
+                            if (!inside)
+                            {
+                                point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-								Debug.DrawLine(e.transform.position, e.transform.position + extents);
+                                Debug.DrawLine(e.transform.position, e.transform.position + extents);
 #endif
-							}
+                            }
 
-							// BL
-							if (!inside)
-							{
-								point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
-								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+                            // BL
+                            if (!inside)
+                            {
+                                point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
+                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
+                                Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
 #endif
-							}
+                            }
 
-							// BR
-							if (!inside)
-							{
-								point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
-								inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.arcLine, arc.arcLine2, arc.radius);
+                            // BR
+                            if (!inside)
+                            {
+                                point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
+                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-								Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(extents.x, extents.y, -extents.z));
+                                Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(extents.x, extents.y, -extents.z));
 #endif
-							}
+                            }
 
 							if(inside)
 							{
-							
 								charactersColliding.Add(e);
 							}
 						}
