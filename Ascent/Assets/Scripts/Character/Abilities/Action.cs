@@ -6,9 +6,9 @@ public abstract class Action
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
     protected float coolDownTime = 0.0f;
-    protected float cooldownValue = 0.0f;
+    private float cooldownValue = 0.0f;
     protected float currentTime = 0.0f;
-    protected bool isOnCooldown = false;
+    private bool isOnCooldown = false;
     protected string animationTrigger;
     protected int specialCost;
 
@@ -64,7 +64,6 @@ public abstract class Action
     {
        this.owner = owner;
        this.name = this.GetType().ToString();
-	   //animationTrigger = this.name;
     }
 
     /// <summary>

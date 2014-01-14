@@ -16,8 +16,10 @@ public class Circle : Shape2D
 		type = Shape2D.EType.Circle;
 	}
 
+#if UNITY_EDITOR
     public void DebugDraw()
     {
         Handles.DrawWireDisc(transform.position, Vector3.up, radius);
     }
+#endif
 }

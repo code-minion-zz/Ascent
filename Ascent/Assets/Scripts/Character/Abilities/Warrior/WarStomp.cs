@@ -68,6 +68,9 @@ public class WarStomp : Action
                     {
                         e.ApplyDamage(damage, Character.EDamageType.Physical);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBack);
+
+                        // Create a blood splatter effect on the enemy.
+                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
                     }
                 }
 
@@ -81,8 +84,10 @@ public class WarStomp : Action
         base.EndAbility();
     }
 
+#if UNITY_EDITOR
     public override void DebugDraw()
     {
         collisionShape.DebugDraw();
     }
+#endif
 }

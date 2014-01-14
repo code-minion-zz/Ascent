@@ -170,6 +170,8 @@ public abstract class Character : MonoBehaviour
             // Make sure the cooldown is off otherwise we cannot use the ability
             if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
             {
+                // TODO: Check if we are not in a state that denies abilities to perform.
+
                 ability.StartAbility();
                 activeAbility = ability;
 
@@ -209,10 +211,7 @@ public abstract class Character : MonoBehaviour
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
-        // When the player takes a hit, spawn some damage text.
-        HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
-
-		if(OnDamageTaken != null)
+		if (OnDamageTaken != null)
 		{
 			OnDamageTaken.Invoke(finalDamage);
 		}
@@ -225,8 +224,6 @@ public abstract class Character : MonoBehaviour
             OnDeath();
         }
     }
-
-
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {

@@ -165,21 +165,32 @@ public class HeroController : MonoBehaviour
 
             if (device.LeftBumper.WasPressed)
             {
-                //hero.UseAbility(1);
-                hero.UseAbility(3);
+                if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                {
+                    hero.UseAbility(1);
+                }
             }
             else if (device.LeftTrigger.WasPressed)
             {
-                hero.UseAbility(4);
+                if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                {
+                    hero.UseAbility(4);
+                }
             }
             else if(device.RightBumper.WasPressed)
             {
-                hero.UseAbility(2); // pass in the ability binded to this key
+                if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                {
+                    hero.UseAbility(2); // pass in the ability binded to this key
+                }
                 
             }
             else if (device.RightTrigger.WasPressed)
             {
-                hero.UseAbility(3);
+                if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                {
+                    hero.UseAbility(3);
+                }
             }
 
 			// We can bind something to this key.
@@ -187,16 +198,6 @@ public class HeroController : MonoBehaviour
 			{
 				ProcessInteractions();
 			}
-
-
-			//if (!actionBindingsEnabled)
-			//{
-			//    // We can bind something to this key.
-			//    if (device.Y.WasPressed)
-			//    {
-                    
-			//    }
-			//}
 		}
     }
 
