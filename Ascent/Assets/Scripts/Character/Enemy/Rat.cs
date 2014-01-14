@@ -7,22 +7,6 @@ using System.Collections.Generic;
 
 public class Rat : Enemy 
 {
-    // TODO: Move this
-    private GameObject bloodSplat;
-
-    //public enum ERatState
-    //{
-    //    Idle,
-    //    Idle2,
-    //    Wandering,
-    //    Seeking,
-    //    ActionAttacking,
-    //    ActionCharging,
-    //    Flinching,
-    //    Dying,
-    //    Max
-    //}
-
     private float deathSequenceTime = 0.0f;
     private float deathSequenceEnd = 1.0f;
     private Vector3 deathRotation = Vector3.zero;
@@ -30,23 +14,7 @@ public class Rat : Enemy
 
     private List<Character> collidedTargets = new List<Character>();
 
-    //float[] stateTimes = new float[(int)ERatState.Max] { 0.5f,
-    //                                                    0.5f,
-    //                                                    2.0f,
-    //                                                    0.0f,
-    //                                                    0.0f,
-    //                                                    0.0f,
-    //                                                    0.2f,
-    //                                                    0.0f };
-    //float timeElapsed = 0.0f;
-    //ERatState ratState;
-    //Transform target;
-    //IList<RAIN.Perception.Sensors.RAINSensor> sensors;
-    //GameObject aiObject;
-    //Transform childTarget;
-    //Vector3 targetPos;
-
-   public override void Update()
+    public override void Update()
     {
         base.Update();
 
@@ -64,50 +32,45 @@ public class Rat : Enemy
 
             // Death sequence end
             if (deathSequenceTime >= deathSequenceEnd)
-			{
+		    {
                 // When the death sequence has finished we want to make this object not active
                 // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
                 deathSequenceTime = 0.0f;
-                this.gameObject.SetActive(false);
-				DestroyObject(this.gameObject);
-            }
-            //else
-            {
-				
-                // During death sequence we can do some thing in here
-                // For now we will rotate the rat on the z axis.
-                this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
 
-                // If the rotation is done early we can end the sequence.
-                if (this.transform.eulerAngles == deathRotation)
-                {
-                    deathSequenceTime = deathSequenceEnd;
-                }
+                this.gameObject.SetActive(false);
+			    DestroyObject(this.gameObject);
+            }
+				
+            // During death sequence we can do some thing in here
+            // For now we will rotate the rat on the z axis.
+            this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+
+            // If the rotation is done early we can end the sequence.
+            if (this.transform.eulerAngles == deathRotation)
+            {
+                deathSequenceTime = deathSequenceEnd;
             }
         }
         else
         {
-            //if (stunDuration > 0.0f)
-            //{
-            //    stunDuration -= Time.deltaTime;
+            if (stunDuration > 0.0f)
+            {
+                stunDuration -= Time.deltaTime;
 
-            //    if (stunDuration < 0.0f)
-            //    {
-            //        gameObject.renderer.material.color = originalColour;
-            //    }
-            //}
-		}
+                if (stunDuration < 0.0f)
+                {
+                    gameObject.renderer.material.color = originalColour;
+                }
+            }
+	    }
 
-		OnMove();
+        RemoveCollisions();
+	    OnMove();
     }
 
    public override void Initialise()
    {
 	   deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-	   // TODO: move this.
-	   
-	   bloodSplat = Resources.Load("Prefabs/Effects/BloodSplat") as GameObject;
 
 	   // Populate with stats
 	   baseStatistics = new BaseStats();
@@ -127,8 +90,6 @@ public class Rat : Enemy
 	   Action charge = new EnemyCharge();
 	   charge.Initialise(this);
 	   abilities.Add(charge);
-
-	   //originalColour = gameObject.renderer.material.color;
 
 	   base.Initialise();
    }
@@ -162,75 +123,32 @@ public class Rat : Enemy
 	   }
    }
 
-   //public void OnTriggerEnter(Collider other)
-   //{
-   //    string tag = other.transform.tag;
-
-   //    switch (tag)
-   //    {
-   //        case "Hero":
-   //            {
-   //                Debug.Log("Hero");
-   //                Character otherCharacter = other.transform.GetComponent<Character>();
-   //                CollideWithHero(otherCharacter as Hero, other);
-   //            }
-   //            break;
-   //    }
-   //}
-
    /// <summary>
    /// When the rat collides with a hero
    /// </summary>
    /// <param name="hero"></param>
    private void CollideWithHero(Hero hero, Collision collision)
    {
-	   // If there is an object in this list that is the same
-	   // as this object it means we have a double collision.
-	   //foreach (Object obj in hero.LastObjectsDamagedBy)
-	   //{
-	   //    if (obj == this)
-	   //        return;
-	   //}
-
-	   // Find the ability that this rat last performed
-	   //Action ability = null;
-	   //if (abilities.Count > 0)
-	   //{
-	   //    ability = abilities[abilities.Count - 1];
-	   //}
-
-	   //if (ability != null && ability.GetType() == typeof(EnemyCharge))
-	   //{
 	   hero.LastObjectsDamagedBy.Add(this);
 
-	   //EnemyCharge charge = ability as EnemyCharge;
-	   // Apply damage value to other character
-	   //hero.ApplyDamage(charge.damageValue, charge.damageType);
 	   hero.ApplyDamage(3, EDamageType.Physical);
 
 	   //ContactPoint contact = collision.contacts[0];
 	   Vector3 direction = (collision.transform.position - transform.position).normalized;
 	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
 
-
 	   hero.ApplyKnockback(direction, 1.0f);
 
-
-	   // Apply particle blood splatter and make it a parent of the hero so that it will move with the hero.
-	   // TODO: make a pool of these emitters and dont instantiate them on the frame.
-	   GameObject bloodSplatter = Instantiate(bloodSplat, collision.transform.position, rot) as GameObject;
-	   bloodSplatter.transform.parent = hero.transform;
+       Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
 
 	   // Heroes are going to take a hit and play the animation.
+       // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
 	   hero.Animator.PlayAnimation("TakeHit");
-	   //}
 
 	   // Update our list of collided targets
 	   // If a weapon has special properties where it may only be able to hit a number of targets, 
 	   // we would check to see if the count is too high before adding to the targets list.
 	   collidedTargets.Add(hero);
-
-	  // Debug.Log(this.name + " collides with " + hero);
    }
 
    private void RemoveCollisions()

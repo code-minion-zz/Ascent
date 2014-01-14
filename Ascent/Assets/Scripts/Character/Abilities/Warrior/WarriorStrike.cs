@@ -4,23 +4,23 @@ using System.Collections.Generic;
 
 public class WarriorStrike : Action
 {
-	bool performed = false;
-	public float radius = 2.25f;
+	public float radius = 2.5f;
 	public float arcAngle = 85.0f;
+    public int damage = 0;
+    public float knockBackValue = 0.0f;
 
+    private bool performed = false;
 	private Arc swingArc;
 
 	public override void Initialise(Character owner)
     {
         animationSpeed = 3.0f;
-        animationLength = 1.167f / 1.5f;
-		coolDownTime = 0.0f;
-		cooldownValue = 0.0f;
-		currentTime = 0.0f;
-		isOnCooldown = false;
+        animationLength = 1.167f / animationSpeed;
+		coolDownTime = animationLength;
 		animationTrigger = "SwingAttack";
 		specialCost = 0;
 
+        // Defines the collision shape and properties of this ability.
 		swingArc = new Arc();
 		swingArc.radius = radius;
 		swingArc.arcAngle = arcAngle;
@@ -31,35 +31,44 @@ public class WarriorStrike : Action
 
 	public override void StartAbility()
 	{
-		currentTime = 0.0f;
-		cooldownValue = CooldownTime;
-		isOnCooldown = true;
-		performed = false;
+        base.StartAbility();
 
+		performed = false;
         animationLength = 1.167f / animationSpeed;
+        coolDownTime = animationLength;
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
 
-		swingArc.Process();
-        base.StartAbility();
+        if (owner.Weapon != null)
+        {
+            // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
+            damage = owner.Weapon.Damage + 0;
+            knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
+        }
 	}
 
 	public override void UpdateAbility()
 	{
         base.UpdateAbility();
 
-		swingArc.Process();
-
 		if (!performed)
 		{
-			if (currentTime >= animationLength * 0.5f)
+			if (currentTime >= animationLength * 0.7f)
 			{
 				List<Character> enemies = new List<Character>();
+
 				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 				{
 					foreach(Enemy e in enemies)
 					{
-						e.ApplyDamage(10, Character.EDamageType.Physical);
-						e.ApplyKnockback(e.transform.position - owner.transform.position, 1.0f);
+                        // Apply damage and knockback to the enemey.
+						e.ApplyDamage(damage, Character.EDamageType.Physical);
+                        e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
+
+                        // Create a blood splatter effect on the enemy.
+                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
+
+                        // Tell the hud manager to spawn text.
+                        HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
 					}
 				}
 
@@ -73,8 +82,10 @@ public class WarriorStrike : Action
         base.EndAbility();
 	}
 
+#if UNITY_EDITOR
 	public override void DebugDraw()
-	{		
+	{
 		swingArc.DebugDraw();
 	}
+#endif
 }

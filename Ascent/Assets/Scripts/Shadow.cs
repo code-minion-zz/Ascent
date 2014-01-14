@@ -40,7 +40,7 @@ public class Shadow : MonoBehaviour
 	{
 		Vector3 newPos = parentTransform.position;
 		shadowTransform.localScale = new Vector3(size, size, size);
-		shadowTransform.position = new Vector3(newPos.x, 0.01f, newPos.z + offsetZ);
+		shadowTransform.position = new Vector3(newPos.x, 0.1f, newPos.z + offsetZ);
 		shadowTransform.rotation = new Quaternion(0.7f, 0.0f, 0.0f, 0.7f);
 	}
 

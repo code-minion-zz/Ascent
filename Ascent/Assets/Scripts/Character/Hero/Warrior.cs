@@ -31,8 +31,7 @@ public class Warrior : Hero
 
         // Load the prefab
         // TODO: Change this make it more easier to load
-        weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_03") as GameObject;
-        //weaponSlot = transform.FindChild("Reference/Hips/Spine/Chest/RightShoulder/RightArm/RightForeArm/RightHand/WeaponSlot1");
+        weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_02") as GameObject;
         weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
 
         if (weaponPrefab == null)
@@ -48,11 +47,9 @@ public class Warrior : Hero
         weaponPrefab.transform.localScale = Vector3.one;
 
 
-		//// Obtain the equiped weapon class from this weapon
+		// Obtain the equiped weapon class from this weapon
 		equipedWeapon = weaponPrefab.GetComponent<Weapon>();
-
 		equipedWeapon.Initialise(this);
-
 
         // Add the animator and controller
         characterAnimator = gameObject.AddComponent<HeroAnimator>();
@@ -72,12 +69,8 @@ public class Warrior : Hero
 		chargeBall.Init(this);
 		
         // Add abilities
-
 		AddSkill(new WarriorStrike());
-		
-		//AddSkill(new Jump());
-		
-		AddSkill(new WarriorHeavyStrike());
+		AddSkill(new WarriorWhirlwind());
 		AddSkill(new WarriorCharge());
 		AddSkill(new WarriorWarStomp());
         AddSkill(new WarCry());

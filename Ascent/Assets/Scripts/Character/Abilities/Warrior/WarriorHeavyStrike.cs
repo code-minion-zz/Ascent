@@ -15,9 +15,7 @@ public class WarriorHeavyStrike : Action
         animationSpeed = 3.0f;
         animationLength = 1.167f / 1.5f;
         coolDownTime = 5.0f;
-        cooldownValue = 0.0f;
         currentTime = 0.0f;
-        isOnCooldown = false;
         animationTrigger = "SwingAttack";
         specialCost = 0;
 
@@ -32,22 +30,17 @@ public class WarriorHeavyStrike : Action
     public override void StartAbility()
     {
         currentTime = 0.0f;
-        cooldownValue = CooldownTime;
-        isOnCooldown = true;
         performed = false;
 
         animationLength = 1.167f / animationSpeed;
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
 
-        swingArc.Process();
         base.StartAbility();
     }
 
     public override void UpdateAbility()
     {
         base.UpdateAbility();
-
-        swingArc.Process();
 
         if (!performed)
         {

@@ -42,6 +42,22 @@ public class Game : MonoBehaviour
 	public static bool running = false;
 
 	private EGameState gameStateToLoad;
+
+    private EffectFactory effectFactory;
+
+    public EffectFactory EffectFactory
+    {
+        get 
+        {
+            if (effectFactory == null)
+            {
+                effectFactory = this.gameObject.AddComponent<EffectFactory>();
+                return effectFactory;
+            }
+
+            return effectFactory; 
+        }
+    }
 	
 	#endregion	
 	
@@ -98,6 +114,8 @@ public class Game : MonoBehaviour
 		CreatePlayers();
 
 		tower = GetComponent<Tower>();
+
+        this.gameObject.AddComponent<EffectFactory>();
 	}
 
     void Update()
