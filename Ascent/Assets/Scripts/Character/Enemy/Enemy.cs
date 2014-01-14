@@ -86,6 +86,18 @@ public abstract class Enemy : Character
 
     #region Operations
 
+    public override void SubUpdate()
+    {
+        AI_Agent ai = GetComponentInChildren<AI_Agent>();
+
+        if (ai != null)
+        {
+            ai.Process();
+        }
+
+        base.SubUpdate();
+    }
+
 	protected virtual void PositionHpBar()
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);

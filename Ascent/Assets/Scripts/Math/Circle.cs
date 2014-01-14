@@ -18,6 +18,8 @@ public class Circle : Shape2D
 
     public void DebugDraw()
     {
+#if UNITY_EDITOR
         Handles.DrawWireDisc(transform.position, Vector3.up, radius);
+#endif
     }
 }
