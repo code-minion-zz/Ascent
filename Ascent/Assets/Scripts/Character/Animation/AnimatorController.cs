@@ -41,7 +41,17 @@ public class AnimatorController : MonoBehaviour
 
     #endregion
 
-    public virtual void Update()
+    //public virtual void Update()
+    //{
+    //    // Loop through the layers finding the current state info for each layer.
+    //    for (int layer = 0; layer < animator.layerCount; ++layer)
+    //    {
+    //        // Put our active state for the layer into the dictionairy
+    //        activeState[layer] = animator.GetCurrentAnimatorStateInfo(layer);
+    //    }
+    //}
+
+    public virtual void FixedUpdate()
     {
         // Loop through the layers finding the current state info for each layer.
         for (int layer = 0; layer < animator.layerCount; ++layer)
@@ -49,29 +59,6 @@ public class AnimatorController : MonoBehaviour
             // Put our active state for the layer into the dictionairy
             activeState[layer] = animator.GetCurrentAnimatorStateInfo(layer);
         }
-
-        //// Get a reference to the Animator Controller:
-        //UnityEditorInternal.AnimatorController ac = GetComponent<Animator>().runtimeAnimatorController as UnityEditorInternal.AnimatorController;
- 
-        //// Number of layers:
-        //int layerCount = ac.layerCount;
-        //Debug.Log(string.Format("Layer Count: {0}", layerCount));
- 
-        //// Names of each layer:
-        //for (int layer = 0; layer < layerCount; layer++) {
-        //    Debug.Log(string.Format("Layer {0}: {1}", layer, ac.GetLayer(layer).name));
-        //}
- 
-        //// States on layer 0:
-        //UnityEditorInternal.StateMachine sm = ac.GetLayer(0).stateMachine;
-
-        //for (int i = 0; i < sm.stateCount; ++i)
-        //{
-        //    if (sm.GetState(i).uniqueName == "Movement.WarStomp")
-        //    {
-        //        Debug.Log(string.Format("State: {0}", sm.GetState(i).uniqueName));
-        //    }
-        //}
     }
 
     // Check if the active state for the given layer is the state
@@ -102,7 +89,6 @@ public class AnimatorController : MonoBehaviour
 
 	public virtual void StopAnimation(string animation)
 	{
-        Debug.Log(animation);
 		animator.SetBool(animation, false);
 	}
 }

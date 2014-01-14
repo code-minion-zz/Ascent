@@ -34,7 +34,9 @@ public abstract class Character : MonoBehaviour
 	protected float					stunTimeAccum;
 	protected float					flickerDuration = 0.5f;
 	protected float					flickerTimeAccum;
-	
+    protected float                 invulnerableDuration;
+    protected float                 invulnerableTimeAccum;
+
 	protected Transform 			weaponSlot;
 	protected Collidable 			chargeBall;
 	protected Weapon 				equipedWeapon;
@@ -98,6 +100,16 @@ public abstract class Character : MonoBehaviour
         get { return abilities; }
     }
 
+    public bool IsStunned
+    {
+        get { return stunDuration > 0.0f; }
+    }
+
+    public bool IsInvulnerable
+    {
+        get { return invulnerableDuration > 0.0f; }
+    }
+
     /// <summary>
     /// Returns true if the character is dead. 
     /// </summary>
@@ -111,8 +123,6 @@ public abstract class Character : MonoBehaviour
 	{
 		Shadow shadow = GetComponentInChildren<Shadow>();
 		shadow.Initialise();
-
-		OnMove();
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		motor.Initialise();
@@ -137,6 +147,16 @@ public abstract class Character : MonoBehaviour
             b.Process();
         }
 
+        if (invulnerableDuration > 0.0f)
+        {
+            invulnerableDuration -= Time.deltaTime;
+
+            if (invulnerableDuration < 0.0f)
+            {
+                GetComponentInChildren<Renderer>().material.color = originalColour;
+            }
+        }
+
         if (stunDuration > 0.0f)
         {
             stunDuration -= Time.deltaTime;
@@ -159,21 +179,6 @@ public abstract class Character : MonoBehaviour
         // To be derived
     }
 
-	/// <summary>
-	/// Updates the character tilt and shadow
-	/// </summary>
-	public void OnMove()
-	{
-		if (!isDead)
-		{
-			//CharacterTilt tilt = GetComponentInChildren<CharacterTilt>();
-			//tilt.Process();
-
-			Shadow shadow = GetComponentInChildren<Shadow>();
-			shadow.Process();
-		}
-	}
-
     private void UpdateActiveAbility()
     {
         if (activeAbility != null)
@@ -191,10 +196,15 @@ public abstract class Character : MonoBehaviour
             // Make sure the cooldown is off otherwise we cannot use the ability
             if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
             {
+                // TODO: Check if we are not in a state that denies abilities to perform.
+
                 ability.StartAbility();
                 activeAbility = ability;
 
                 derivedStats.CurrentSpecial -= ability.SpecialCost;
+
+                motor.StopMovement();
+                motor.canMove = false;
             }
 		}
     }
@@ -220,6 +230,8 @@ public abstract class Character : MonoBehaviour
 		{
 			activeAbility.EndAbility();
 			activeAbility = null;
+
+            motor.canMove = true; 
 		}
 	}
 
@@ -230,10 +242,7 @@ public abstract class Character : MonoBehaviour
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
-        // When the player takes a hit, spawn some damage text.
-        HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, unmitigatedDamage);
-
-		if(OnDamageTaken != null)
+		if (OnDamageTaken != null)
 		{
 			OnDamageTaken.Invoke(finalDamage);
 		}
@@ -246,8 +255,6 @@ public abstract class Character : MonoBehaviour
             OnDeath();
         }
     }
-
-
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {
@@ -265,9 +272,14 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyStunEffect(float duration)
     {
-        Debug.Log("Stunned: " + duration);
         stunDuration = duration;
         GetComponentInChildren<Renderer>().material.color = Color.yellow;
+    }
+
+    public virtual void ApplyInvulnerabilityEffect(float duration)
+    {
+        invulnerableDuration = duration;
+        GetComponentInChildren<Renderer>().material.color = Color.blue;
     }
 
     /// <summary>
@@ -332,7 +344,7 @@ public abstract class Character : MonoBehaviour
         buffList.Remove(buff);
     }
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
 		if (activeAbility !=null)
@@ -340,5 +352,5 @@ public abstract class Character : MonoBehaviour
 			activeAbility.DebugDraw();
 		}
 	}
-	#endif
+#endif
 }

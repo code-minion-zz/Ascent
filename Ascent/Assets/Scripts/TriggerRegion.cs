@@ -39,7 +39,6 @@ public class TriggerRegion : MonoBehaviour
 		{
 			Gizmos.DrawWireCube(new Vector3(pos.x, 0.1f, pos.z), new Vector3(v.x, 0.1f, v.y));
 		}
-		
 	}
 #endif
 }

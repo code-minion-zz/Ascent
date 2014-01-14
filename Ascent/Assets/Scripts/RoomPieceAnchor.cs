@@ -57,7 +57,7 @@ public class RoomPieceAnchor : MonoBehaviour
 
 		go.transform.position = transform.position;
 		go.transform.rotation = transform.rotation;
-		go.transform.parent		= transform.parent;
+		go.transform.parent	= transform.parent;
 
 		GameObject.Destroy(gameObject);
 	}

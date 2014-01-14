@@ -6,6 +6,7 @@ public class HeroAnimator : AnimatorController
 {
     #region Enums
 
+    // TODO: Use these states somewhere.
     public enum EHeroState // State defines what actions are allowed, and what animations to play
     {
         PS_INVALID_STATE = -1,
@@ -31,25 +32,38 @@ public class HeroAnimator : AnimatorController
     // walk or run depending on the value. Lower value is closer to walk.
     public float movementSpeed = 10.0f;
 
-    // The following are movement layer states
-    // We have a few movement states for the hero which are idle, jumping and running.
-    //static int idleState = Animator.StringToHash("Movement" + "Idle");
-    //static int jumpState = Animator.StringToHash("Movement" + "JumpRunning");
-    //static int movementState = Animator.StringToHash("Movement" + "Movement");
-
-    // Combat layer states
-    // Taking a hit, swinging the sword and general combat mode.
-    //static int combatState = Animator.StringToHash("CombatLayer." + "CombatMode");
-    //static int attackState = Animator.StringToHash("Movement." + "SwingSword");
-    //static int takingHit = Animator.StringToHash("Movement." + "TakingHit");
-    //static int whirlWindAttack = Animator.StringToHash("Movement." + "WhirlWind");
-
     private Vector3 direction;
-    private bool useCurves = true;
     private Vector3 gravityVelocity = Vector3.zero;
+    private bool takeHit = false;
+    private bool dying = false;
 
     #endregion
 
+    /// <summary>
+    /// Returns if the animator is taking a hit. Sets the animator to take a hit.
+    /// </summary>
+    public bool TakeHit
+    {
+        get { return takeHit; }
+        set
+        {
+            takeHit = value;
+            animator.SetBool("TakeHit", value);
+        }
+    }
+
+    /// <summary>
+    /// Returns if the animator is dying. Sets the animator to the dying state.
+    /// </summary>
+    public bool Dying
+    {
+        get { return dying; }
+        set
+        {
+            dying = value;
+            animator.SetBool("Dying", value);
+        }
+    }
 
     public float MovementSpeed
     {
@@ -67,54 +81,22 @@ public class HeroAnimator : AnimatorController
     {
         base.Start();
 	}
-
-	void OnAnimationEvent()
-	{
-
-	}
-
-    public void AnimationBegin()
-    {
-        //Debug.Log("War Stomp Begin");
-    }
-
-	// Events called by the animation
-    public void EnableWeaponCollider()
-	{
-
-        //Debug.Log("Enable Collider ");
-        
-	}
-
-	public void DisableWeaponCollider()
-	{
-		//Debug.Log ("Disable collider");
-	}
 	
 	// Update is called once per frame
-	public override void Update () 
+	public override void FixedUpdate () 
     {
-        base.Update();
+        base.FixedUpdate();
 
         gravityVelocity += Physics.gravity * Time.deltaTime;
 
-        bool takeHit = animator.GetBool("TakeHit");
+        takeHit = animator.GetBool("TakeHit");
+        dying = animator.GetBool("Dying");
         bool whirlWind = animator.GetBool("Whirlwind");
-        bool dying = animator.GetBool("Dying");
 
         for (int layer = 0; layer < layerCount; ++layer)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(layer);
             // Check if we are in the movement or idle state.
-            if (state.IsName("Movement") ||
-                state.IsName("Idle"))
-            {
-                // We want to only change the direction of the player when we can.
-                if (!takeHit && !whirlWind && !dying)
-                {
-                   // transform.LookAt(transform.position + direction);
-                }
-            }
 
             if (state.IsName("WhirlWind"))
             {
@@ -130,65 +112,18 @@ public class HeroAnimator : AnimatorController
                 }
             }
 
-
-            // If the active state is the attack state
-            if (state.IsName("SwingSword"))
-            {
-                if (!animator.IsInTransition(layer))
-                {
-                    // Here we can get the normalized time. big BOI
-                    //Debug.Log("Swing attack Interval: " + animator.GetCurrentAnimatorStateInfo(layer).normalizedTime % 1.0f);
-                }
-                else
-                {
-                    //StopAnimation("SwingAttack");
-                }
-            }
-
             // We want the hero to take a hit and stop it
             // when the transition ends.
             if (state.IsName("TakingHit"))
             {
-                if (!animator.IsInTransition(layer))
+                if (animator.IsInTransition(layer))
                 {
 
                 }
                 else
                 {
-                    StopAnimation("TakeHit");
-                }
-            }
-
-            // If the hero is jumping
-            if (state.IsName("JumpRunning"))
-            {
-                //  ..and not still in transition..
-                if (!animator.IsInTransition(layer))
-                {
-                    if (useCurves)
-                    {
-                        // ..set the collider height to a float curve in the clip called ColliderHeight
-                        //controller.height = animator.GetFloat("ColliderHeight");
-                    }
-
-                    // reset the Jump bool so we can jump again, and so that the state does not loop 
-                    //animator.SetBool("Jump", false);
-                }
-
-                // Raycast down from the center of the character.. 
-                Ray ray = new Ray(transform.position + Vector3.up, -Vector3.up);
-                RaycastHit hitInfo = new RaycastHit();
-
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    // ..if distance to the ground is more than 1.75, use Match Target
-                    if (hitInfo.distance > 1.75f)
-                    {
-                        // MatchTarget allows us to take over animation and smoothly transition our character towards a location - the hit point from the ray.
-                        // Here we're telling the Root of the character to only be influenced on the Y axis (MatchTargetWeightMask) and only occur between 0.35 and 0.5
-                        // of the timeline of our animation clip
-                        animator.MatchTarget(hitInfo.point, Quaternion.identity, AvatarTarget.Root, new MatchTargetWeightMask(new Vector3(0, 1, 0), 0), 0.35f, 0.5f);
-                    }
+                    TakeHit = false;
+                    //StopAnimation("TakeHit");
                 }
             }
         }
