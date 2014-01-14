@@ -19,7 +19,9 @@ public class Circle : Shape2D
 #if UNITY_EDITOR
     public void DebugDraw()
     {
+#if UNITY_EDITOR
         Handles.DrawWireDisc(transform.position, Vector3.up, radius);
+#endif
     }
 #endif
 }

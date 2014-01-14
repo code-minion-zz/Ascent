@@ -136,6 +136,27 @@ public abstract class Character : MonoBehaviour
         {
             b.Process();
         }
+
+        if (stunDuration > 0.0f)
+        {
+            stunDuration -= Time.deltaTime;
+
+            GetComponentInChildren<CharacterMotor>().StopMovement();
+
+            if (stunDuration < 0.0f)
+            {
+                GetComponentInChildren<Renderer>().material.color = originalColour;
+            }
+        }
+        else
+        {
+            SubUpdate();
+        }
+    }
+
+    public virtual void SubUpdate()
+    {
+        // To be derived
     }
 
 	/// <summary>
@@ -243,6 +264,7 @@ public abstract class Character : MonoBehaviour
     {
         Debug.Log("Stunned: " + duration);
         stunDuration = duration;
+        GetComponentInChildren<Renderer>().material.color = Color.yellow;
     }
 
     /// <summary>
