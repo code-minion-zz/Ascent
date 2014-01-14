@@ -70,7 +70,7 @@ public class AI_Agent : MonoBehaviour
 
     }
 
-    public void Update()
+    public void Process()
     {
 		if (actor.IsDead)
 		{

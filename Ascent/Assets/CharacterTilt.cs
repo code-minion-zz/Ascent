@@ -23,30 +23,30 @@ public class CharacterTilt : MonoBehaviour
 
 	public void Process()
 	{
-		//int curFrame = Time.frameCount;
+        int curFrame = Time.frameCount;
 
-		//if (frame != curFrame)
-		//{
-		//    parentTrans = transform.parent.transform;
+        if (frame != curFrame)
+        {
+            parentTrans = transform.parent.transform;
 
-		//    if (Mathf.Approximately(parentTrans.forward.x, 1.0f))
-		//    {
-		//        transform.localRotation = Quaternion.Euler(rightRotation);
-		//    }
-		//    else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
-		//    {
-		//        transform.localRotation = Quaternion.Euler(-rightRotation);
-		//    }
-		//    else if (Mathf.Approximately(parentTrans.forward.z, 1.0f))
-		//    {
-		//        transform.localRotation = Quaternion.Euler(forwardRotation);
-		//    }
-		//    else if (Mathf.Approximately(parentTrans.forward.z, -1.0f))
-		//    {
-		//        transform.localRotation = Quaternion.Euler(-forwardRotation);
-		//    }
+            if (Mathf.Approximately(parentTrans.forward.x, 1.0f))
+            {
+                transform.localRotation = Quaternion.Euler(rightRotation);
+            }
+            else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
+            {
+                transform.localRotation = Quaternion.Euler(-rightRotation);
+            }
+            else if (Mathf.Approximately(parentTrans.forward.z, 1.0f))
+            {
+                transform.localRotation = Quaternion.Euler(forwardRotation);
+            }
+            else if (Mathf.Approximately(parentTrans.forward.z, -1.0f))
+            {
+                transform.localRotation = Quaternion.Euler(-forwardRotation);
+            }
 
-		//    frame = curFrame;
-		//}
+            frame = curFrame;
+        }
 	}
 }

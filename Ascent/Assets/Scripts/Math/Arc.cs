@@ -31,6 +31,8 @@ public class Arc : Shape2D
 		Debug.DrawLine(transform.position, transform.position + arcLine); // To the rotated arc
 		Debug.DrawLine(transform.position, transform.position + arcLine2); // To the rotated arc
 
+#if UNITY_EDITOR
 		Handles.DrawWireArc(transform.position, Vector3.up, arcLine, arcAngle, radius);
+#endif
 	}
 }

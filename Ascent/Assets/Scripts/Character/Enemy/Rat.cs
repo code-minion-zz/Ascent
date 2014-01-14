@@ -87,15 +87,15 @@ public class Rat : Enemy
         }
         else
         {
-            if (stunDuration > 0.0f)
-            {
-                stunDuration -= Time.deltaTime;
+            //if (stunDuration > 0.0f)
+            //{
+            //    stunDuration -= Time.deltaTime;
 
-                if (stunDuration < 0.0f)
-                {
-                    gameObject.renderer.material.color = originalColour;
-                }
-            }
+            //    if (stunDuration < 0.0f)
+            //    {
+            //        gameObject.renderer.material.color = originalColour;
+            //    }
+            //}
 		}
 
 		OnMove();

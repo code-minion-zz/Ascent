@@ -13,7 +13,7 @@ public class WarriorStrike : Action
 	public override void Initialise(Character owner)
     {
         animationSpeed = 3.0f;
-        animationLength = 1.167f / animationSpeed;
+        animationLength = 1.167f / 1.5f;
 		coolDownTime = 0.0f;
 		cooldownValue = 0.0f;
 		currentTime = 0.0f;
