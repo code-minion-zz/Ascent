@@ -19,12 +19,14 @@ public class SpinningBlade : MonoBehaviour
     public int bladeCount;
     public EBladeDirection bladeDirection;
     public float rotationSpeed;
-    public float bladeDamage;
+    public int bladeDamage;
 	public float bladeLength;
 
 	private TBlade[] blades;
 	private int previousBladeCount;
 	private float previousBladeLength;
+
+	private bool blocked;
 
 	void Start () 
     {
@@ -55,7 +57,7 @@ public class SpinningBlade : MonoBehaviour
 
 			newBlade.transform.localScale = new Vector3(newBlade.transform.localScale.x + bladeLength, newBlade.transform.localScale.y, newBlade.transform.localScale.z);
 
-			Vector3 offset = new Vector3(0.0f, 1.0f, 3.5f + bladeLength * 0.5f);
+			Vector3 offset = new Vector3(0.0f, 1.0f, 3.0f + bladeLength * 0.5f);
 			newBlade.transform.position += offset + new Vector3(transform.position.x, 0.0f, transform.position.z);
 
 			float angle = (360.0f / bladeCount) * (float)bladeDirection;
@@ -73,7 +75,14 @@ public class SpinningBlade : MonoBehaviour
 	
 	void Update () 
     {
-       gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
+		if (!blocked)
+		{
+			gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
+		}
+		else
+		{
+			gameObject.transform.Rotate(new Vector3(0.0f, Mathf.PingPong(Time.time * rotationSpeed, -0.05f), 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
+		}
 
 		// TODO: Remove this for optimisation
 	   if (previousBladeCount != bladeCount || previousBladeLength != bladeLength)
@@ -81,5 +90,15 @@ public class SpinningBlade : MonoBehaviour
 			Shutdown();
 			Initialise();
 		}
+	}
+
+	public void HaltRotation()
+	{
+		blocked = true;
+	}
+
+	public void ResumeRotation()
+	{
+		blocked = false;
 	}
 }

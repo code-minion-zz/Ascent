@@ -68,6 +68,18 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: WarCry
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Strike
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
     m_Name: Movement
@@ -784,24 +796,6 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
---- !u!1101 &110106611
-Transition:
-  m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_SrcState: {fileID: 110217981}
-  m_DstState: {fileID: 110200000}
-  m_TransitionDuration: .0833333284
-  m_TransitionOffset: 0
-  m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: Dying
-    m_EventTreshold: 0
-    m_ExitTime: .916666687
-  m_Atomic: 1
-  m_Solo: 0
-  m_Mute: 0
 --- !u!1101 &110107915
 Transition:
   m_ObjectHideFlags: 3
@@ -964,6 +958,24 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110111770
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110271666}
+  m_DstState: {fileID: 110217465}
+  m_TransitionDuration: .319148749
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Strike
+    m_EventTreshold: 0
+    m_ExitTime: .680851221
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110112774
 Transition:
   m_ObjectHideFlags: 3
@@ -1106,6 +1118,24 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110114800
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110217465}
+  m_DstState: {fileID: 110271666}
+  m_TransitionDuration: .208333328
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strike
+    m_EventTreshold: 0
+    m_ExitTime: .791666687
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110114972
 Transition:
   m_ObjectHideFlags: 3
@@ -1139,6 +1169,24 @@ Transition:
     m_ConditionEvent: Jump
     m_EventTreshold: 0
     m_ExitTime: .861111104
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
+--- !u!1101 &110116404
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110200000}
+  m_DstState: {fileID: 110298504}
+  m_TransitionDuration: .101351351
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: WarCry
+    m_EventTreshold: 0
+    m_ExitTime: .89864862
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -1762,6 +1810,24 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110145746
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110298504}
+  m_DstState: {fileID: 110200000}
+  m_TransitionDuration: .149999991
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: WarCry
+    m_EventTreshold: 0
+    m_ExitTime: .850000024
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110146474
 Transition:
   m_ObjectHideFlags: 3
@@ -2054,6 +2120,24 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110155288
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110271666}
+  m_DstState: {fileID: 110298504}
+  m_TransitionDuration: .319148749
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: WarCry
+    m_EventTreshold: 0
+    m_ExitTime: .680851221
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110157300
 Transition:
   m_ObjectHideFlags: 3
@@ -2135,6 +2219,24 @@ Transition:
     m_ConditionEvent: WarStomp
     m_EventTreshold: 0
     m_ExitTime: .892857134
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
+--- !u!1101 &110159952
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110217465}
+  m_DstState: {fileID: 110200000}
+  m_TransitionDuration: .208333328
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strike
+    m_EventTreshold: 0
+    m_ExitTime: .791666687
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -2530,6 +2632,24 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110176403
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110200000}
+  m_DstState: {fileID: 110217465}
+  m_TransitionDuration: .101351351
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Strike
+    m_EventTreshold: 0
+    m_ExitTime: .89864862
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110176606
 Transition:
   m_ObjectHideFlags: 3
@@ -2600,7 +2720,7 @@ Transition:
   m_TransitionOffset: 0
   m_Conditions:
   - m_ConditionMode: 5
-    m_ConditionEvent: 
+    m_ConditionEvent: WarCry
     m_EventTreshold: 0
     m_ExitTime: .785714269
   - m_ConditionMode: 3
@@ -2781,6 +2901,24 @@ Transition:
     m_ConditionEvent: Roll
     m_EventTreshold: 0
     m_ExitTime: .858490586
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
+--- !u!1101 &110187994
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110217981}
+  m_DstState: {fileID: 110200000}
+  m_TransitionDuration: .0833333284
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: WarStomp
+    m_EventTreshold: 0
+    m_ExitTime: .916666687
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -3030,6 +3168,28 @@ Transition:
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
+--- !u!1101 &110194583
+Transition:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_SrcState: {fileID: 110298504}
+  m_DstState: {fileID: 110271666}
+  m_TransitionDuration: .100000001
+  m_TransitionOffset: 0
+  m_Conditions:
+  - m_ConditionMode: 5
+    m_ConditionEvent: Strike
+    m_EventTreshold: 0
+    m_ExitTime: .899999976
+  - m_ConditionMode: 2
+    m_ConditionEvent: WarCry
+    m_EventTreshold: 0
+    m_ExitTime: .899999976
+  m_Atomic: 1
+  m_Solo: 0
+  m_Mute: 0
 --- !u!1101 &110194982
 Transition:
   m_ObjectHideFlags: 3
@@ -3113,7 +3273,7 @@ State:
   m_Motions:
   - {fileID: 7400000, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
   m_ParentStateMachine: {fileID: 110700000}
-  m_Position: {x: 336, y: 132, z: 0}
+  m_Position: {x: 336, y: 144, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 
@@ -3222,6 +3382,21 @@ State:
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 
+--- !u!1102 &110217465
+State:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Strike
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Motions:
+  - {fileID: 7400014, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+  m_ParentStateMachine: {fileID: 110700000}
+  m_Position: {x: 720, y: 204, z: 0}
+  m_IKOnFeet: 0
+  m_Mirror: 0
+  m_Tag: 
 --- !u!1102 &110217593
 State:
   m_ObjectHideFlags: 3
@@ -3243,10 +3418,10 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: WarStomp
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Motions:
-  - {fileID: 7400032, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+  - {fileID: 7400010, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
   m_ParentStateMachine: {fileID: 110700000}
   m_Position: {x: 720, y: 84, z: 0}
   m_IKOnFeet: 0
@@ -3378,7 +3553,7 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Whirlwind
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Motions:
   - {fileID: 7400006, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
@@ -3738,12 +3913,27 @@ State:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SwingSword
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Motions:
   - {fileID: 20697946}
   m_ParentStateMachine: {fileID: 110700000}
   m_Position: {x: 720, y: 12, z: 0}
+  m_IKOnFeet: 0
+  m_Mirror: 0
+  m_Tag: 
+--- !u!1102 &110298504
+State:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: WarCry
+  m_Speed: 2
+  m_CycleOffset: 0
+  m_Motions:
+  - {fileID: 7400024, guid: 0ecc49077b854b74d985d6ca368cf8de, type: 3}
+  m_ParentStateMachine: {fileID: 110700000}
+  m_Position: {x: 720, y: 144, z: 0}
   m_IKOnFeet: 0
   m_Mirror: 0
   m_Tag: 
@@ -3764,6 +3954,8 @@ StateMachine:
   - {fileID: 110274914}
   - {fileID: 110271666}
   - {fileID: 110200000}
+  - {fileID: 110298504}
+  - {fileID: 110217465}
   m_ChildStateMachine: []
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
@@ -3779,6 +3971,8 @@ StateMachine:
       - {fileID: 110176606}
       - {fileID: 110148921}
       - {fileID: 110100000}
+      - {fileID: 110116404}
+      - {fileID: 110176403}
     data:
       first: {fileID: 110268859}
       second:
@@ -3802,7 +3996,7 @@ StateMachine:
     data:
       first: {fileID: 110217981}
       second:
-      - {fileID: 110106611}
+      - {fileID: 110187994}
     data:
       first: {fileID: 110274914}
       second:
@@ -3817,6 +4011,18 @@ StateMachine:
       - {fileID: 110122452}
       - {fileID: 110120908}
       - {fileID: 110172313}
+      - {fileID: 110155288}
+      - {fileID: 110111770}
+    data:
+      first: {fileID: 110298504}
+      second:
+      - {fileID: 110194583}
+      - {fileID: 110145746}
+    data:
+      first: {fileID: 110217465}
+      second:
+      - {fileID: 110159952}
+      - {fileID: 110114800}
     data:
       first: {fileID: 110212141}
       second:

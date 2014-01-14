@@ -1,14 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-
-[RequireComponent(typeof(CharacterController))]
-public class HeroController : MonoBehaviour, IInputEventHandler
+public class HeroController : MonoBehaviour
 {
+    public enum HeroAction
+    {
+        None = -1,
+
+        Strike = 0,
+        Interaction,
+        Confirm,
+        Cancel,
+
+        Action1 = 1,
+        Action2 = 2,
+        Action3 = 3,
+        Action4 = 4
+
+    }
+
     private HeroAnimator heroAnimator;
     private Hero hero;
     private InputDevice input;
     private bool actionBindingsEnabled = false;
+	public Character actor;
+
+	private MoveableBlock grabbedObject;
+	public bool GrabbingObject
+	{
+		get { return grabbedObject != null; }
+	}
+	private bool vertGrab;
+
+	bool vert;
+	bool horiz;
 
     public InputDevice Input
     {
@@ -31,6 +57,19 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 	{
 		this.hero = hero;
 		heroAnimator = hero.Animator as HeroAnimator;
+		//actor = GameObject.Find("Cube").GetComponent<C>;
+
+	}
+
+
+	public void EnableInput(InputDevice inputDevice)
+	{
+		input = inputDevice;
+	}
+
+	public void DisableInput()
+	{
+		input = null;
 	}
 
     #endregion
@@ -42,316 +81,265 @@ public class HeroController : MonoBehaviour, IInputEventHandler
 		{
 			InputDevice device = input;
 
-			// L Stick
-			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
-			{
-				float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-				speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-				speed *= 1000.0f;
-
-				// Direction vector to hold the input key press.
-				Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-
-				heroAnimator.AnimMove(direction, speed);
-			}
-
-			if (device.LeftStickButton.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-			// R Stick
-
-			if ((device.RightStickX.IsNotNull || device.RightStickY.IsNotNull))
-			{
-			}
-
-			if (device.RightStickButton.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-			// Face
-			if (device.Action1.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-			if (device.Action2.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-            //if (device.Action3.WasPressed)
-            //{
-            //    hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            //if (device.Action4.WasPressed)
-            //{
-            //    hero.UseAbility(0); // pass in the ability binded to this key
-            //}
-            if (device.X.WasReleased)
+            if (GetComponent<CharacterMotor>().canMove)
             {
-                hero.UseAbility(0);
-            }
+                if (grabbedObject != null)
+                {
+                    if (device.Y.WasReleased)
+                    {
+                        ReleaseGrabbedObject();
+                    }
+                }
 
-			// DPad
-			if (device.DPadLeft.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-			else if (device.DPadRight.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-			if (device.DPadUp.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-			else if (device.DPadDown.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
+                if (device.X.WasPressed)
+                {
+                    hero.UseAbility((int)HeroAction.Strike);
+                }
 
-			// Start 
-			if (device.Start.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
+                if (device.LeftBumper.WasPressed)
+                {
+                    if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                    {
+                        hero.UseAbility((int)HeroAction.Action1);
+                    }
+                }
+                else if (device.LeftTrigger.WasPressed)
+                {
+                    if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                    {
+                        hero.UseAbility((int)HeroAction.Action4);
+                    }
+                }
+                else if (device.RightBumper.WasPressed)
+                {
+                    if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                    {
+                        hero.UseAbility((int)HeroAction.Action2); // pass in the ability binded to this key
+                    }
 
-			// Back
-			if (device.Back.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
+                }
+                else if (device.RightTrigger.WasPressed)
+                {
+                    if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                    {
+                        hero.UseAbility((int)HeroAction.Action3);
+                    }
+                }
 
-			// Triggers
-            if (device.LeftTrigger.WasPressed && device.Y.WasReleased)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-			if (device.RightTrigger.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-			// Bumpers
-            if (device.LeftBumper.IsPressed && device.Y.WasPressed)
-			{
-				hero.UseAbility(4); // pass in the ability binded to this key
-			}
-
-			if (device.RightBumper.WasPressed)
-			{
-				//hero.UseAbility(0); // pass in the ability binded to this key
-			}
-
-            if (!actionBindingsEnabled)
-            {
                 // We can bind something to this key.
                 if (device.Y.WasPressed)
                 {
-                    
+                    ProcessInteractions();
                 }
+
+                if (GetComponent<CharacterMotor>().canMove)
+                   {
+                    // L Stick
+                    if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+                    {
+                        if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
+                        {
+                            vert = false;
+
+                        }
+                        else
+                        {
+                            vert = true;
+                        }
+
+                        Vector3 moveDirection = Vector3.zero;
+
+                        if (grabbedObject != null)
+                        {
+                            Debug.DrawLine(transform.position, grabbedObject.transform.position);
+
+                            if (!grabbedObject.moving)
+                            {
+                                if (vertGrab)
+                                {
+                                    moveDirection = new Vector3(0, 0, device.LeftStickY.Value);
+
+                                    if (Mathf.Abs(device.LeftStickY.Value) > 0.1f)
+                                    {
+
+                                        grabbedObject.Move(moveDirection);
+                                        GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+                                    }
+
+                                }
+                                else
+                                {
+                                    moveDirection = new Vector3(device.LeftStickX.Value, 0, 0);
+
+                                    if (Mathf.Abs(device.LeftStickX.Value) > 0.1f)
+                                    {
+                                        grabbedObject.Move(moveDirection);
+                                        GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+                                    }
+                                }
+                            }
+
+                        }
+                        else if (!GetComponent<CharacterMotor>().moving)
+                        {
+                            moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
+
+                            if (vert)
+                            {
+                                transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
+                            }
+                            else
+                            {
+                                transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
+                            }
+                        }
+
+                        GetComponent<CharacterMotor>().Move(moveDirection);
+
+                        float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
+                        speed *= heroAnimator.MovementSpeed * Time.deltaTime;
+                        speed *= 10000.0f;
+
+                        // Direction vector to hold the input key press.
+                        Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
+                        heroAnimator.AnimMove(direction, speed);
+
+                        transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+                        //transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
+                    }
+                }
+      
+            }
+
+            if (device.Back.WasPressed)
+            {
+                hero.RefreshEverything();
             }
 		}
     }
 
+	public void ProcessInteractions()
+	{
+		// NOTE: Only one of these may occur each time the button is pressed
 
-    #region input
+		Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+		Vector3 position = transform.position;
 
-
-    public void EnableInput(InputDevice inputDevice)
-    {
-		input = inputDevice;
-
-		if (!InputManager.IsPolling)
+		// Is there a chest to open?
+		List<TreasureChest> chests = curRoom.Chests;
+		if (chests != null)
 		{
-			inputDevice.OnLStickMove += OnLStickMove;
-			inputDevice.OnX += OnX;
-			inputDevice.OnY += OnY;
-			inputDevice.OnA += OnA;
-			inputDevice.OnB += OnB;
-			inputDevice.OnLeftBumper += OnLBumper;
-			inputDevice.OnRightBumper += OnRBumper;
-			inputDevice.OnRightTrigger += OnRTrigger;
-		}
-    }
-
-    public void DisableInput()
-    {
-		if (!InputManager.IsPolling)
-		{
-			input.OnLStickMove -= OnLStickMove;
-			input.OnX -= OnX;
-			input.OnY -= OnY;
-			input.OnA -= OnA;
-			input.OnB -= OnB;
-			input.OnLeftBumper -= OnLBumper;
-			input.OnRightBumper -= OnRBumper;
-			input.OnRightTrigger -= OnRTrigger;
+			// Are we in range of it?
+			foreach (TreasureChest c in chests)
+			{
+				if(c.TriggerRegion.IsInside(position))
+				{
+					// Can it be opened?
+					if (c.IsClosed)
+					{
+						c.OpenChest(); // I open the chest. No one else can.
+						
+						return; // An interaction has occured. Exit function now.
+					}
+				}
+			}
 		}
 
-		input = null;
-    }
+		// Is there an item?
+		List<LootDrop> loot = curRoom.LootDrops;
+		if (loot != null)
+		{
+			// Find the closest item
+			LootDrop closestDrop = null;
+			float closestDistance = 10000.0f;
+			foreach (LootDrop l in loot)
+			{
+				if (!l.CanBePickedUp)
+				{
+					continue;
+				}
 
-    public void OnX(InputDevice device)
-    {
-        hero.UseAbility(0); // pass in the ability binded to this key
-    }
+				float distance = (position - l.transform.position).sqrMagnitude;
 
-    public void OnY(InputDevice device)
-    {
-		
-    }
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestDrop = l;
+				}
+			}
 
-    public void OnA(InputDevice device)
-    {
-		hero.UseAbility(1); // pass in the ability binded to this key
-    }
+			if (closestDrop != null)
+			{
+				// Am I within range of the item?
+				if (closestDrop.TriggerRegion.IsInside(position))
+				{
+					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
 
-    public void OnB(InputDevice device)
-    {
-		
-    }
-
-    public void OnX_up(InputDevice device)
-    {
-
-    }
-
-    public void OnY_up(InputDevice device)
-    {
-
-    }
-
-    public void OnA_up(InputDevice device)
-    {
-
-    }
-
-    public void OnB_up(InputDevice device)
-    {
-
-    }
-
-    public void OnStart(InputDevice device)
-    {
-
-    }
-
-    public void OnStart_up(InputDevice device)
-    {
-
-    }
-
-    public void OnBack(InputDevice device)
-    {
-
-    }
-
-    public void OnBack_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLTrigger(InputDevice device)
-    {
-
-    }
-
-    public void OnLBumper(InputDevice device)
-    {
-		hero.UseAbility(2); // pass in the ability binded to this key
-    }
-
-    public void OnRTrigger(InputDevice device)
-    {
-		
-    }
-
-    public void OnRBumper(InputDevice device)
-    {
-		hero.UseAbility(3);
-    }
-
-    public void OnDPadLeft(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadLeft_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadRight_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadUp_up(InputDevice device)
-    {
-
-    }
-
-    public void OnDPadDown_up(InputDevice device)
-    {
-
-    }
-
-    public void OnLStickMove(InputDevice device)
-    {
-        float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-        speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-        speed *= 1000.0f;
-
-        // Direction vector to hold the input key press.
-        Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-
-        // Tell the hero animator to update the speed and direction.
-        heroAnimator.AnimMove(direction, speed);
-    }
-
-    public void OnLStick(InputDevice device)
-    {
-
-    }
-
-    public void OnLStick_up(InputDevice device)
-    {
-
-    }
-
-    public void OnRStickMove(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick(InputDevice device)
-    {
-
-    }
-
-    public void OnRStick_up(InputDevice device)
-    {
-
-    }
+					return; // An interaction has occured. Exit function now.
+				}
+			}
+		}
 
 
-    #endregion
+		// Is there a door?
+		// Find closest door
+		// Has it already been opened?
+
+		// Is there a block?
+		List<MoveableBlock> moveables = curRoom.Moveables;
+		if (moveables != null)
+		{
+			// Find the closest block
+			MoveableBlock closestBlock = null;
+			float closestDistance = 10000.0f;
+
+			foreach (MoveableBlock m in moveables)
+			{
+				if (m.grabbed)
+				{
+					continue;
+				}
+
+				float distance = (position - m.transform.position).sqrMagnitude;
+
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestBlock = m;
+				}
+			}
+			// Are we in range of it?
+			if (closestBlock.TriggerRegion.IsInside(position))
+			{
+				// Is it in front?
+				Vector3 pos = closestBlock.transform.position;
+				pos.y = transform.position.y;
+				Vector3 direction = (transform.position - pos).normalized;
+				float dot = Vector3.Dot(direction, transform.forward);
+
+				if (dot < -0.8f)
+				{
+					// Has it been grabbed yet?
+					if (!closestBlock.grabbed)
+					{
+						// Grab it
+						grabbedObject = closestBlock;
+						closestBlock.grabbed = true;
+
+						vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
+
+						
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	public void ReleaseGrabbedObject()
+	{
+		grabbedObject.grabbed = false;
+		grabbedObject = null;
+	}
 }

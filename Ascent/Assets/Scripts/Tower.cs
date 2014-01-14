@@ -10,9 +10,17 @@ public class Tower : MonoBehaviour
 		set { currentFloor = value; }
 	}
 
+	private int currentFloorNumber;
+	public int CurrentFloorNumber
+	{
+		get { return currentFloorNumber; }
+	}
+
     public void InitialiseFloor()
     {
+		currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
         currentFloor.Initialise();
     }
+
 }

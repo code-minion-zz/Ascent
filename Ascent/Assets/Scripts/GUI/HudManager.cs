@@ -44,16 +44,16 @@ public class HudManager : MonoBehaviour {
 		if (numPlayers > 0)
 		{
 			Player1.gameObject.SetActive(true);
-			Player1.Init(gameScript.Players[0].Hero.GetComponent<Character>());
+			Player1.Init(gameScript.Players[0].Hero.GetComponent<Hero>());
 
 			if (numPlayers > 1)
 			{
 				Player2.gameObject.SetActive(true);
-				Player2.Init(gameScript.Players[1].Hero.GetComponent<Character>());
+                Player2.Init(gameScript.Players[1].Hero.GetComponent<Hero>());
 
 				if (numPlayers > 2)
 				{
-					Player3.Init(gameScript.Players[2].Hero.GetComponent<Character>());
+                    Player3.Init(gameScript.Players[2].Hero.GetComponent<Hero>());
 					Player3.gameObject.SetActive(true);
 				}
 			}

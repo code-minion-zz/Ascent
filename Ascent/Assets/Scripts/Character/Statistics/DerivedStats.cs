@@ -12,6 +12,8 @@ public class DerivedStats
 	
 	protected int curSpecial;
 	protected int maxSpecial;
+
+	protected int lives = 1;
 			
 	// derived stats
 	// offensive
@@ -88,7 +90,16 @@ public class DerivedStats
 		get { return curSpecial; }
 		set 
 		{
-			curSpecial = value;
+			 curSpecial = value;
+             if (curSpecial > maxSpecial)
+             {
+                 curSpecial = maxSpecial;
+             }
+             else if (curSpecial < 0)
+             {
+                 curSpecial = 0;
+             }
+ 
 			if (onCurSpecialChanged != null)	onCurSpecialChanged(curSpecial);
 			if (onAnyStatChanged != null)		onAnyStatChanged(0);
 		}
@@ -101,6 +112,15 @@ public class DerivedStats
 			maxSpecial = value; 
 			if (onMaxSpecialChanged != null)	onMaxSpecialChanged(maxSpecial);
 			if (onAnyStatChanged != null)		onAnyStatChanged(0);
+		}
+	}
+
+	public int Lives
+	{
+		get { return lives; }
+		set
+		{
+			lives = value;
 		}
 	}
 

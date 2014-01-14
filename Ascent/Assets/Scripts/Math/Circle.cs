@@ -1,0 +1,27 @@
+﻿using UnityEngine;
+using System.Collections;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+public class Circle : Shape2D 
+{
+    public float radius;
+
+    public Transform transform;
+
+	public Circle()
+	{
+		type = Shape2D.EType.Circle;
+	}
+
+#if UNITY_EDITOR
+    public void DebugDraw()
+    {
+#if UNITY_EDITOR
+        Handles.DrawWireDisc(transform.position, Vector3.up, radius);
+#endif
+    }
+#endif
+}
