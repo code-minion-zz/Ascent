@@ -70,10 +70,10 @@ public class Warrior : Hero
 		
         // Add abilities
 		AddSkill(new WarriorStrike());
-		AddSkill(new WarriorWhirlwind());
+		AddSkill(new WarriorHeavyStrike());
 		AddSkill(new WarriorCharge());
 		AddSkill(new WarriorWarStomp());
-        AddSkill(new WarCry());
+        AddSkill(new WarriorWarCry());
 
 		classStatMod = new Hero.HeroClassStatModifier();
 		classStatMod.PowerAttack = 1f;
