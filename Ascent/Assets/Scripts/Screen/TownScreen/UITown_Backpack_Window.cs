@@ -32,6 +32,8 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 		set 
 		{
 			currentTab = value;
+
+			//gameObject.GetComponent<TweenColor>().PlayReverse();
 			// TODO: Invoke transition logic here
 		}
 	}

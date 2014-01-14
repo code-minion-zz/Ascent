@@ -4,8 +4,7 @@ using System.Collections.Generic;
 
 public class UITown_Backpack_MainPanel : UIPlayerMenuPanel 
 {
-
-	private enum EButtons
+	enum EButtons
 	{
 		ACC1,
 		ACC2,
@@ -20,12 +19,17 @@ public class UITown_Backpack_MainPanel : UIPlayerMenuPanel
 	}
 
 	int		 lastActiveButton = 0;
-	//UIButton lastActiveButton;
+
+	BetterList<GameObject> tabs = new BetterList<GameObject>();
+
 
 	public virtual void Start()
 	{
 		buttons = new UIButton[(int)EButtons.MAX];
 		
+		tabs.Add(transform.FindChild("Accessory Tab").gameObject);
+		tabs.Add(transform.FindChild("Consumable Tab").gameObject); 
+
 		Transform accessories = transform.Find ("Accessories");
 		Transform consumables = transform.Find ("Consumables");
 
@@ -46,6 +50,8 @@ public class UITown_Backpack_MainPanel : UIPlayerMenuPanel
 		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 
 		buttonMax = (int)EButtons.MAX;
+
+		//tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
 
 		initialised = true;
 	}
