@@ -143,7 +143,9 @@ public class Rat : Enemy
 
 	   // Heroes are going to take a hit and play the animation.
        // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
-	   hero.Animator.PlayAnimation("TakeHit");
+	   //hero.Animator.PlayAnimation("TakeHit");
+       HeroAnimator heroAnim = hero.Animator as HeroAnimator;
+       heroAnim.TakeHit = true;
 
 	   // Update our list of collided targets
 	   // If a weapon has special properties where it may only be able to hit a number of targets, 

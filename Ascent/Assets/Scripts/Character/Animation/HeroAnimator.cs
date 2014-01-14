@@ -89,7 +89,7 @@ public class HeroAnimator : AnimatorController
 
         gravityVelocity += Physics.gravity * Time.deltaTime;
 
-        takeHit = animator.GetBool("TakeHit");
+        //takeHit = animator.GetBool("TakeHit");
         dying = animator.GetBool("Dying");
         bool whirlWind = animator.GetBool("Whirlwind");
 
