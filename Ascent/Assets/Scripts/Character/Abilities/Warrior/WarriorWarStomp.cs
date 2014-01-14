@@ -66,9 +66,12 @@ public class WarriorWarStomp : Action
                 {
                     foreach (Enemy e in enemies)
                     {
-                        //e.ApplyDamage(damage, Character.EDamageType.Physical);
+                        e.ApplyDamage(damage, Character.EDamageType.Physical);
                         //e.ApplyKnockback(e.transform.position - owner.transform.position, knockBack);
                         e.ApplyStunEffect(2.25f);
+
+                        // Create a blood splatter effect on the enemy.
+                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
                     }
                 }
 
@@ -82,8 +85,10 @@ public class WarriorWarStomp : Action
         base.EndAbility();
     }
 
+#if UNITY_EDITOR
     public override void DebugDraw()
     {
         collisionShape.DebugDraw();
     }
+#endif
 }
