@@ -41,7 +41,7 @@ public class WarriorStrike : Action
         if (owner.Weapon != null)
         {
             // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-            damage = owner.Weapon.Damage + 0;
+            damage = owner.Weapon.Damage + 10;
             knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
         }
 	}

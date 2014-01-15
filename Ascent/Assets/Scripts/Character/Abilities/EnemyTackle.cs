@@ -18,7 +18,7 @@ public class EnemyTackle : Action
     public override void StartAbility()
     {
 		original = owner.renderer.material.color;
-		owner.renderer.material.color = Color.red;
+        owner.SetColor(Color.red);
 
 		timeElapsed = 0.0f;
 
@@ -44,7 +44,7 @@ public class EnemyTackle : Action
 
     public override void EndAbility()
     {
-		owner.renderer.material.color = original;
+		owner.SetColor(original);
 		owner.transform.position = originalPos;
 
 		//owner.transform.position = originalPos;

@@ -106,6 +106,7 @@ public class WarriorCharge : Action
            {
                foreach (Enemy e in enemies)
                {
+                   e.LastDamagedBy = owner;
                    e.ApplyDamage(2, Character.EDamageType.Physical);
                    e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
                    e.ApplyStunEffect(2.0f);
@@ -115,8 +116,7 @@ public class WarriorCharge : Action
                }
            }
 
-           owner.ApplyInvulnerabilityEffect(0.0f);
-            owner.StopAbility();
+           owner.StopAbility();
         }
         //motor.SpecialMove(motion);
        
@@ -189,6 +189,7 @@ public class WarriorCharge : Action
 	private void OnHitEnemy(Character other)
 	{
 		EndCharge();
+        other.LastDamagedBy = owner;
 		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical);
 		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
 	}

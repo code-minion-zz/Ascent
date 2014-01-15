@@ -18,7 +18,7 @@ public class TextDriver : MonoBehaviour
             ft.follow = true;
             ft.UILabel.text = "" + damage;
             ft.UILabel.color = Color.red;
-            ft.Following();
+            //ft.Following();
 
             TweenPosition tp = ft.TweenPosition;
             tp.duration = 1.5f;

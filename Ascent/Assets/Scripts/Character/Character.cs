@@ -37,7 +37,7 @@ public abstract class Character : MonoBehaviour
 	protected Action 				activeAbility;
 	protected GameObject 			weaponPrefab;
     protected bool 					isDead = false;
-    protected Color                 originalColour;
+    protected Color                 originalColour = Color.white;
 
     protected float 				stunDuration;
 	protected float					stunTimeAccum;
@@ -64,6 +64,12 @@ public abstract class Character : MonoBehaviour
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
+    }
+
+    public Color OrigionalColor
+    {
+        get { return originalColour; }
+        set { originalColour = value; }
     }
 
 	public Collidable ChargeBall
@@ -133,6 +139,8 @@ public abstract class Character : MonoBehaviour
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		motor.Initialise();
+
+        SetColor(OrigionalColor);
 	}
 
     public virtual void Update()
@@ -160,6 +168,7 @@ public abstract class Character : MonoBehaviour
 
             if (invulnerableDuration < 0.0f)
             {
+                invulnerableDuration = 0.0f;
                 SetColor(originalColour);
             }
         }
@@ -172,6 +181,7 @@ public abstract class Character : MonoBehaviour
 
             if (stunDuration < 0.0f)
             {
+                stunDuration = 0.0f;
                 SetColor(originalColour);
             }
         }
