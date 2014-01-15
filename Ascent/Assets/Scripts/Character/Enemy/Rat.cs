@@ -63,8 +63,6 @@ public class Rat : Enemy
                 }
             }
 	    }
-
-        RemoveCollisions();
     }
 
    public override void Initialise()
@@ -132,8 +130,7 @@ public class Rat : Enemy
    /// <param name="hero"></param>
    private void CollideWithHero(Hero hero, Collision collision)
    {
-	   hero.LastObjectsDamagedBy.Add(this);
-
+       hero.LastDamagedBy = this;
 	   hero.ApplyDamage(3, EDamageType.Physical);
 
 	   //ContactPoint contact = collision.contacts[0];
@@ -154,20 +151,5 @@ public class Rat : Enemy
 	   // If a weapon has special properties where it may only be able to hit a number of targets, 
 	   // we would check to see if the count is too high before adding to the targets list.
 	   collidedTargets.Add(hero);
-   }
-
-   private void RemoveCollisions()
-   {
-	   foreach (Character other in collidedTargets)
-	   {
-		   // Sanity check to make sure that the other character still exists
-		   if (other != null)
-		   {
-			   // We can remove this collision as it is no longer in effect.
-			   other.LastObjectsDamagedBy.Remove(this);
-		   }
-	   }
-
-	   collidedTargets.Clear();
    }
 }

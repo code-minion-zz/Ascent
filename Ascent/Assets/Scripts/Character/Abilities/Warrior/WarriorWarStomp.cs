@@ -66,6 +66,8 @@ public class WarriorWarStomp : Action
                 {
                     foreach (Enemy e in enemies)
                     {
+                        // Update the enemey to be damaged by.
+                        e.LastDamagedBy = owner;
                         e.ApplyDamage(damage, Character.EDamageType.Physical);
                         //e.ApplyKnockback(e.transform.position - owner.transform.position, knockBack);
                         e.ApplyStunEffect(2.25f);

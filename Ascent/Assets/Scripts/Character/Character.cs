@@ -23,6 +23,11 @@ public abstract class Character : MonoBehaviour
         Physical,
         Magical,
     }
+
+    // The event delegate handler we will use to take in the character
+    public delegate void CharacterEventHandler(Character charater);
+
+    public event CharacterEventHandler onDeath;
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
@@ -43,7 +48,7 @@ public abstract class Character : MonoBehaviour
 	protected AnimatorController 	characterAnimator;
 	protected BaseStats 			baseStatistics;
 	protected DerivedStats			derivedStats;
-	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+    protected Character             lastDamagedBy;
 	protected BetterList<Buff>		buffList = new BetterList<Buff>();
 
 	protected CharacterMotor motor;
@@ -85,9 +90,10 @@ public abstract class Character : MonoBehaviour
 		get { return derivedStats; }
 	}
 
-    public List<Object> LastObjectsDamagedBy
+    public Character LastDamagedBy
     {
-        get { return lastObjectsDamagedBy; }
+        get { return lastDamagedBy; }
+        set { lastDamagedBy = value; }
     }
 
 	public BetterList<Buff> BuffList
@@ -301,24 +307,11 @@ public abstract class Character : MonoBehaviour
         // The reason we do this is when we pool objects we will re-use 
         // this character.
         isDead = true;
-        
-        // Obtain the last object that killed this character
-        if (lastObjectsDamagedBy.Count > 0)
-        {
-            Object obj = LastObjectsDamagedBy[lastObjectsDamagedBy.Count - 1];
-            System.Type type = obj.GetType();
 
-            // Check if the type of object is a weapon
-            // then we can get the owner character.
-            // TODO: Maybe the character should only know the object it was killed by and other characters will handle being killed by specific objects.
-            if (type == typeof(Weapon))
-            {
-                Weapon weapon = obj as Weapon;
-            }
-        }
-        else
+        // Notify subscribers of the death.
+        if (onDeath != null)
         {
-            //Debug.Log("Character somehow died by somethign and we do not know what caused it.");
+            onDeath(this);
         }
     }
 	
