@@ -69,8 +69,8 @@ public class FloorInstanceReward
             //Debug.Log("Current EXP: " + hero.CharacterStats.CurrentExperience);
 
             // Apply rewards
-            int goldBonus = (int)((float)hero.CharacterStats.Currency * goldBonusPercentage / 100.0f);
-            int expBonus = (int)((float)hero.CharacterStats.CurrentExperience * expBonusPercentage / 100.0f);
+            int goldBonus = (int)((float)hero.FloorStatistics.TotalCoinsLooted * goldBonusPercentage / 100.0f);
+            int expBonus = (int)((float)hero.FloorStatistics.ExperienceGained * expBonusPercentage / 100.0f);
 
             hero.CharacterStats.Currency += goldBonus;
             hero.CharacterStats.CurrentExperience += expBonus;

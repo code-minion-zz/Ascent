@@ -64,7 +64,7 @@ public abstract class Hero : Character
 		base.Initialise();
 	}
 
-    public void SetColor(Color color)
+    public override void SetColor(Color color)
     {
         SkinnedMeshRenderer[] renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer render in renderers)

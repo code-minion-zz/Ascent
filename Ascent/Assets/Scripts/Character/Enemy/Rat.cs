@@ -12,8 +12,6 @@ public class Rat : Enemy
     private Vector3 deathRotation = Vector3.zero;
     private float deathSpeed = 5.0f;
 
-    private List<Character> collidedTargets = new List<Character>();
-
     public override void Update()
     {
         base.Update();
@@ -51,18 +49,6 @@ public class Rat : Enemy
                 deathSequenceTime = deathSequenceEnd;
             }
         }
-        else
-        {
-            if (stunDuration > 0.0f)
-            {
-                stunDuration -= Time.deltaTime;
-
-                if (stunDuration < 0.0f)
-                {
-                    GetComponentInChildren<Renderer>().material.color = originalColour;
-                }
-            }
-	    }
     }
 
    public override void Initialise()
@@ -88,21 +74,15 @@ public class Rat : Enemy
 	   charge.Initialise(this);
 	   abilities.Add(charge);
 
+       originalColour = Color.white;
+
 	   base.Initialise();
    }
-
 
    // We want to override the on death for this rat as we have some specific behaviour here.
    public override void OnDeath()
    {
 	   base.OnDeath();
-	   // Play some cool animation
-	   // Maybe even play a sound here
-	   // Maybe even drop some loot here
-
-	   // Rat is going to destroy itself now
-	   //DestroyObject(this.gameObject);
-	   //this.gameObject.SetActive(false);
    }
 
    public void OnCollisionEnter(Collision other)
@@ -146,10 +126,5 @@ public class Rat : Enemy
 	   //hero.Animator.PlayAnimation("TakeHit");
        HeroAnimator heroAnim = hero.Animator as HeroAnimator;
        heroAnim.TakeHit = true;
-
-	   // Update our list of collided targets
-	   // If a weapon has special properties where it may only be able to hit a number of targets, 
-	   // we would check to see if the count is too high before adding to the targets list.
-	   collidedTargets.Add(hero);
    }
 }
