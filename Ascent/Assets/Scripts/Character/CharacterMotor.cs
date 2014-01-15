@@ -14,8 +14,6 @@ public class CharacterMotor : MonoBehaviour
 	public bool canJump = true;
     public bool canMove = true;
 	public float jumpHeight = 2.0f;
-	private bool grounded = false;
-
 
     private Vector3 specialMovementForce;
 

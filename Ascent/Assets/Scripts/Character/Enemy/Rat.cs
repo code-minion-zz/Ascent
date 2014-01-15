@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public class Rat : Enemy 
 {
+    private AIAgent agent;
+
     private float deathSequenceTime = 0.0f;
     private float deathSequenceEnd = 1.0f;
     private Vector3 deathRotation = Vector3.zero;
@@ -69,6 +71,25 @@ public class Rat : Enemy
 
    public override void Initialise()
    {
+       agent = new AIAgent();
+
+       // Defensive behaviour
+       AIBehaviour behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+       AITrigger trigger = behaviour.AddTrigger();
+       trigger.Priority = AITrigger.EConditionalExit.Continue;
+       trigger.AddCondition(new AICondition_HP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.LessThan, 0.20f));
+       trigger.AddCondition(new AICondition_SP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.LessThan, 0.20f));
+       trigger.AddCondition(new AICondition_Attacked(this));
+       trigger.AddCondition(new AICondition_Timer(10.0f));
+       trigger.OnTriggered += OnTrigger;
+
+       // Aggressive
+       behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+       trigger = behaviour.AddTrigger();
+       trigger.Priority = AITrigger.EConditionalExit.Continue;
+       trigger.AddCondition(new AICondition_Sensor(new AISensor(AISensor.EType.FirstFound, AISensor.EScope.Enemies)));
+       trigger.OnTriggered += OnTrigger;
+
 	   deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 
 	   // Populate with stats
@@ -93,6 +114,11 @@ public class Rat : Enemy
 	   base.Initialise();
    }
 
+
+   protected void OnTrigger()
+   {
+
+   }
 
    // We want to override the on death for this rat as we have some specific behaviour here.
    public override void OnDeath()
