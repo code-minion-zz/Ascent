@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2013 Tasharen Entertainment
+// Copyright © 2011-2014 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -22,7 +22,6 @@ public class UISlider : UIProgressBar
 	}
 
 	// Deprecated functionality. Use 'foregroundWidget' instead.
-#pragma warning disable 0649
 	[HideInInspector][SerializeField] Transform foreground;
 
 	// Deprecated functionality
@@ -89,6 +88,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnPressBackground (GameObject go, bool isPressed)
 	{
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
 		mCam = UICamera.currentCamera;
 		value = ScreenToValue(UICamera.lastTouchPosition);
 		if (!isPressed && onDragFinished != null) onDragFinished();
@@ -100,6 +100,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnDragBackground (GameObject go, Vector2 delta)
 	{
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
 		mCam = UICamera.currentCamera;
 		value = ScreenToValue(UICamera.lastTouchPosition);
 	}
@@ -110,6 +111,8 @@ public class UISlider : UIProgressBar
 
 	protected void OnPressForeground (GameObject go, bool isPressed)
 	{
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
+
 		if (isPressed)
 		{
 			mOffset = (mFG == null) ? 0f :
@@ -124,6 +127,7 @@ public class UISlider : UIProgressBar
 
 	protected void OnDragForeground (GameObject go, Vector2 delta)
 	{
+		if (UICamera.currentScheme == UICamera.ControlScheme.Controller) return;
 		mCam = UICamera.currentCamera;
 		value = mOffset + ScreenToValue(UICamera.lastTouchPosition);
 	}
