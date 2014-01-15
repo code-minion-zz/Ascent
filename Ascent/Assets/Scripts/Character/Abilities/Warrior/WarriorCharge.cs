@@ -11,20 +11,13 @@ using System.Collections.Generic;
 /// Deals damage and knockback based on distance traveled (in other words, momentum)
 /// </summary>
 public class WarriorCharge : Action 
-{
-	private float halfWayPoint = 0.2f;
-	//private float endChargeTime = 0.2f;
-	private float prevAnimatorSpeed = 0f;
-	private float actionSpeed = 15f;
-	
+{	
     private float distanceTraveled;
 	private float distanceMax = 7.5f;
 	
 	private Animator ownerAnimator;
     private HeroAnimator heroController;
 	
-	private bool endCharge = false;
-
     private float travelTime;
     private Vector3 startPos;
     private Vector3 targetPos;
@@ -60,21 +53,19 @@ public class WarriorCharge : Action
 	{
         base.StartAbility();
 		Reset ();
-		//owner.ChargeBall.gameObject.SetActive(true);	
-		prevAnimatorSpeed = ownerAnimator.speed;
 
         startPos = owner.transform.position;
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(new Ray(startPos - owner.transform.forward, owner.transform.forward), out hitInfo, distanceMax))
+        if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
         {
-            targetPos = hitInfo.point - (owner.transform.forward * 0.25f);
+            targetPos = hitInfo.point - (owner.transform.forward );
 
             travelTime = (hitInfo.distance / distanceMax) * animationLength;
         }
         else
         {
-            targetPos = startPos + owner.transform.forward * (distanceMax - 0.5f);
+            targetPos = startPos + owner.transform.forward * (distanceMax);
             travelTime = animationLength;
         }
 
@@ -157,7 +148,6 @@ public class WarriorCharge : Action
     public override void EndAbility()
 	{	
         owner.ChargeBall.gameObject.SetActive(false);
-		ownerAnimator.speed = prevAnimatorSpeed;
 		ownerAnimator.SetBool("SwingAttack",false);
 
         //charMotor.canMove = true;
@@ -167,7 +157,6 @@ public class WarriorCharge : Action
 	{	
 		//timeElapsed = 0.0f;
     	distanceTraveled = 0f;
-		endCharge = false;
 	}
 	
 	/// <summary>
@@ -199,8 +188,6 @@ public class WarriorCharge : Action
 	/// </summary>
 	private void EndCharge()
 	{
-		endCharge = true;
-		//timeElapsed = 0f;
 		ownerAnimator.speed = 0.8f;
 		owner.ChargeBall.gameObject.SetActive(false);
 	}
