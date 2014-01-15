@@ -165,10 +165,14 @@ public class Floor : MonoBehaviour
             // This may break if the enemy was killed by something else such as a trap with no owner maybe?
             Hero hero = character.LastDamagedBy as Hero;
             hero.FloorStatistics.NumberOfMonstersKilled++;
+
+            hero.FloorStatistics.ExperienceGained += character.CharacterStats.ExperienceBounty;
         }
 
         // Deactivate dead enemies
+        // Unsubscribe from listening to events from this enemy.
         character.gameObject.SetActive(false);
+        character.onDeath -= OnEnemyDeath;
     }
 
 	// Update is called once per frame
@@ -233,24 +237,6 @@ public class Floor : MonoBehaviour
 			}
 		}
 	}
-
-    //void HandleDeadMonsters()
-    //{
-    //    foreach (Enemy enemy in enemies)
-    //    {
-    //        if (enemy.IsDead)
-    //        {
-    //            if (enemy.LastDamagedBy != null)
-    //            {
-    //                Hero hero = enemy.LastDamagedBy as Hero;
-    //                hero.FloorStatistics.NumberOfMonstersKilled++;
-    //            }
-
-    //            // Deactivate dead enemies
-    //            enemy.gameObject.SetActive(false);
-    //        }
-    //    }
-    //}
 
     // TODO: Make all the players start spawn at the point.
 	void HandleDeadHeroes()
