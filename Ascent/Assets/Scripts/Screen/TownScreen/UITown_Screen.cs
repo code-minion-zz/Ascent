@@ -46,7 +46,7 @@ public class UITown_Screen : UIPlayerMenuScreen
 		windows[0].gameObject.SetActive(true);
 
 		// TODO: Rig up to input device properly
-		//newPlayer.BindInputDevice(InputManager.Devices[0]);
+		newPlayer.BindInputDevice(InputManager.Devices[0]);
 
 		windows[0].SetPlayer(newPlayer);
 
@@ -102,7 +102,7 @@ public class UITown_Screen : UIPlayerMenuScreen
 
 		// Check if any players want to enter the game
 //		AddNewPlayers();
-
+		//Debug.Log(devices[0].OnLSti);
 	}
 
 //	public void AddNewPlayers()

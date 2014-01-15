@@ -6,7 +6,7 @@ public class UITown_Backpack_MainPanel : UIPlayerMenuPanel
 {
 	enum EButtons
 	{
-		ACC1,
+		ACC1 = 0,
 		ACC2,
 		ACC3,
 		ACC4,
