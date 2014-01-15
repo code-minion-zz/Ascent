@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class Floor : MonoBehaviour 
 {
-
 	public enum TransitionDirection
 	{
 		North = 0,
@@ -21,12 +20,14 @@ public class Floor : MonoBehaviour
 	public GameObject archPrefab = Resources.Load("Prefabs/RoomWalls/Archway") as GameObject;
 
 	private List<Player> players;
+    private List<Enemy> enemies;
 	private GameObject[] startPoints;
 	private GameObject floorCamera;
 	private Room currentRoom;
 	private Room targetRoom;
 	private FadePlane fadePlane;
     private Room[] allRooms;
+    private FloorInstanceReward floorInstanceReward;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -52,17 +53,20 @@ public class Floor : MonoBehaviour
 		get { return startPoints; }
 	}
 
-	private List<Enemy> enemies;
+    public FloorInstanceReward FloorInstanceReward
+    {
+        get { return floorInstanceReward; }
+    }
+
 	public List<Enemy> Enemies
 	{
 		get { return enemies; }
 	}
 
-	//private FloorRecordKeeper recordKeeper;
-	//public FloorRecordKeeper Records
-	//{
-	//    get { return recordKeeper; }
-	//}
+    public List<Player> Players
+    {
+        get { return players; }
+    }
 
 	public void Initialise()
 	{
@@ -85,6 +89,9 @@ public class Floor : MonoBehaviour
 			players[i].Hero.transform.rotation = Quaternion.identity;
 			players[i].Hero.transform.localScale = Vector3.one;
 			players[i].Hero.SetActive(true);
+            
+            // Reset individual hero floor records.
+            players[i].Hero.GetComponent<Hero>().ResetFloorStatistics();
 		}
 
 		// Create the floor's camera
@@ -122,6 +129,7 @@ public class Floor : MonoBehaviour
 			if (thisEnemy != null)
 			{
 				thisEnemy.Initialise();
+                thisEnemy.onDeath += OnEnemyDeath;
 				enemies.Add(thisEnemy);
 			}
 		}
@@ -138,6 +146,9 @@ public class Floor : MonoBehaviour
         }
 
         currentRoom.gameObject.SetActive(true);
+
+        // Create the floor record keeper.
+        floorInstanceReward = new FloorInstanceReward(this);
 	}
 
 	public void AddEnemy(Enemy _enemy)
@@ -147,11 +158,28 @@ public class Floor : MonoBehaviour
 
 	#region Update
 
+    public void OnEnemyDeath(Character character)
+    {
+        if (character.LastDamagedBy != null)
+        {
+            // This may break if the enemy was killed by something else such as a trap with no owner maybe?
+            Hero hero = character.LastDamagedBy as Hero;
+            hero.FloorStatistics.NumberOfMonstersKilled++;
+
+            hero.FloorStatistics.ExperienceGained += character.CharacterStats.ExperienceBounty;
+        }
+
+        // Deactivate dead enemies
+        // Unsubscribe from listening to events from this enemy.
+        character.gameObject.SetActive(false);
+        character.onDeath -= OnEnemyDeath;
+    }
+
 	// Update is called once per frame
 	void Update()
 	{
 		HandleDeadHeroes();
-        HandleDeadMonsters();
+        //HandleDeadMonsters();
 
 		if (Input.GetKeyUp(KeyCode.F1))
 		{
@@ -210,11 +238,6 @@ public class Floor : MonoBehaviour
 		}
 	}
 
-    void HandleDeadMonsters()
-    {
-
-    }
-
     // TODO: Make all the players start spawn at the point.
 	void HandleDeadHeroes()
 	{
@@ -236,6 +259,7 @@ public class Floor : MonoBehaviour
                     }
 
                     --hero.DerivedStats.Lives;
+                    hero.FloorStatistics.NumberOfDeaths++;
                 }
                 else
                 {
@@ -260,6 +284,8 @@ public class Floor : MonoBehaviour
 
 		// Show summary screen
 		//Instantiate(Resources.Load("Prefabs/FloorSummary"));
+
+        floorInstanceReward.ApplyFloorInstanceRewards();
 
         Game.Singleton.LoadLevel("Level2", Game.EGameState.Tower);
 

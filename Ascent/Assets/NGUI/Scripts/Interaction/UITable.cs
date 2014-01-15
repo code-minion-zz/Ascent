@@ -1,6 +1,6 @@
 //----------------------------------------------
 //            NGUI: Next-Gen UI kit
-// Copyright © 2011-2013 Tasharen Entertainment
+// Copyright © 2011-2014 Tasharen Entertainment
 //----------------------------------------------
 
 using UnityEngine;
@@ -23,16 +23,49 @@ public class UITable : UIWidgetContainer
 		Up,
 	}
 
+	/// <summary>
+	/// How many columns there will be before a new line is started. 0 means unlimited.
+	/// </summary>
+
 	public int columns = 0;
+
+	/// <summary>
+	/// Which way the new lines will be added.
+	/// </summary>
+
 	public Direction direction = Direction.Down;
+
+	/// <summary>
+	/// Whether the table's contents will be sorted alphabetically.
+	/// </summary>
+
 	public bool sorted = false;
+
+	/// <summary>
+	/// Whether inactive children will be discarded from the table's calculations.
+	/// </summary>
+
 	public bool hideInactive = true;
+
+	/// <summary>
+	/// Whether the parent container will be notified of the table's changes.
+	/// </summary>
+
 	public bool keepWithinPanel = false;
-	public OnReposition onReposition;
+
+	/// <summary>
+	/// Padding around each entry, in pixels.
+	/// </summary>
+
 	public Vector2 padding = Vector2.zero;
 
+	/// <summary>
+	/// Delegate function that will be called when the table repositions its content.
+	/// </summary>
+
+	public OnReposition onReposition;
+
 	UIPanel mPanel;
-	UIScrollView mDrag;
 	bool mInitDone = false;
 	bool mReposition = false;
 	List<Transform> mChildren = new List<Transform>();
@@ -160,7 +193,7 @@ public class UITable : UIWidgetContainer
 	[ContextMenu("Execute")]
 	public void Reposition ()
 	{
-		if (Application.isPlaying && !mInitDone)
+		if (Application.isPlaying && !mInitDone && NGUITools.GetActive(this))
 		{
 			mReposition = true;
 			return;
@@ -174,15 +207,8 @@ public class UITable : UIWidgetContainer
 		List<Transform> ch = children;
 		if (ch.Count > 0) RepositionVariableSize(ch);
 
-		if (mDrag != null)
-		{
-			mDrag.UpdateScrollbars(true);
-			mDrag.RestrictWithinBounds(true);
-		}
-		else if (mPanel != null)
-		{
+		if (keepWithinPanel && mPanel != null)
 			mPanel.ConstrainTargetToBounds(myTrans, true);
-		}
 
 		if (onReposition != null)
 			onReposition();
@@ -206,12 +232,7 @@ public class UITable : UIWidgetContainer
 	void Init ()
 	{
 		mInitDone = true;
-
-		if (keepWithinPanel)
-		{
-			mPanel = NGUITools.FindInParents<UIPanel>(gameObject);
-			mDrag = NGUITools.FindInParents<UIScrollView>(gameObject);
-		}
+		mPanel = NGUITools.FindInParents<UIPanel>(gameObject);
 	}
 
 	/// <summary>

@@ -23,12 +23,21 @@ public abstract class Character : MonoBehaviour
         Physical,
         Magical,
     }
+
+    // The event delegate handler we will use to take in the character.
+    public delegate void CharacterEventHandler(Character charater);
+    public event CharacterEventHandler onDeath;
+
+    // The event delegate handler we will use for damage taken.
+    public delegate void Damage(float amount);
+    public event Damage onDamageTaken;
+    //public event Damage onDamageDealt;
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
 	protected GameObject 			weaponPrefab;
     protected bool 					isDead = false;
-    protected Color 				originalColour;
+    protected Color                 originalColour;
 
     protected float 				stunDuration;
 	protected float					stunTimeAccum;
@@ -43,17 +52,14 @@ public abstract class Character : MonoBehaviour
 	protected AnimatorController 	characterAnimator;
 	protected BaseStats 			baseStatistics;
 	protected DerivedStats			derivedStats;
-	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+    protected Character             lastDamagedBy;
 	protected BetterList<Buff>		buffList = new BetterList<Buff>();
+	protected CharacterMotor        motor;
 
-	protected CharacterMotor motor;
 	public CharacterMotor Motor
 	{
 		get { return motor;  }
 	}
-
-	public delegate void DamageTaken(float amount);
-	public event DamageTaken OnDamageTaken;
 
     public Transform WeaponSlot
     {
@@ -85,9 +91,10 @@ public abstract class Character : MonoBehaviour
 		get { return derivedStats; }
 	}
 
-    public List<Object> LastObjectsDamagedBy
+    public Character LastDamagedBy
     {
-        get { return lastObjectsDamagedBy; }
+        get { return lastDamagedBy; }
+        set { lastDamagedBy = value; }
     }
 
 	public BetterList<Buff> BuffList
@@ -153,7 +160,7 @@ public abstract class Character : MonoBehaviour
 
             if (invulnerableDuration < 0.0f)
             {
-                GetComponentInChildren<Renderer>().material.color = originalColour;
+                SetColor(originalColour);
             }
         }
 
@@ -165,12 +172,21 @@ public abstract class Character : MonoBehaviour
 
             if (stunDuration < 0.0f)
             {
-                GetComponentInChildren<Renderer>().material.color = originalColour;
+                SetColor(originalColour);
             }
         }
         else
         {
             SubUpdate();
+        }
+    }
+
+    public virtual void SetColor(Color color)
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer render in renderers)
+        {
+            render.material.color = color;
         }
     }
 
@@ -242,9 +258,9 @@ public abstract class Character : MonoBehaviour
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
-		if (OnDamageTaken != null)
+		if (onDamageTaken != null)
 		{
-			OnDamageTaken.Invoke(finalDamage);
+			onDamageTaken.Invoke(finalDamage);
 		}
 
         // If the character is dead
@@ -273,13 +289,13 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplyStunEffect(float duration)
     {
         stunDuration = duration;
-        GetComponentInChildren<Renderer>().material.color = Color.yellow;
+        SetColor(Color.yellow);
     }
 
     public virtual void ApplyInvulnerabilityEffect(float duration)
     {
         invulnerableDuration = duration;
-        GetComponentInChildren<Renderer>().material.color = Color.blue;
+        SetColor(Color.blue);
     }
 
     /// <summary>
@@ -301,24 +317,11 @@ public abstract class Character : MonoBehaviour
         // The reason we do this is when we pool objects we will re-use 
         // this character.
         isDead = true;
-        
-        // Obtain the last object that killed this character
-        if (lastObjectsDamagedBy.Count > 0)
-        {
-            Object obj = LastObjectsDamagedBy[lastObjectsDamagedBy.Count - 1];
-            System.Type type = obj.GetType();
 
-            // Check if the type of object is a weapon
-            // then we can get the owner character.
-            // TODO: Maybe the character should only know the object it was killed by and other characters will handle being killed by specific objects.
-            if (type == typeof(Weapon))
-            {
-                Weapon weapon = obj as Weapon;
-            }
-        }
-        else
+        // Notify subscribers of the death.
+        if (onDeath != null)
         {
-            //Debug.Log("Character somehow died by somethign and we do not know what caused it.");
+            onDeath(this);
         }
     }
 	

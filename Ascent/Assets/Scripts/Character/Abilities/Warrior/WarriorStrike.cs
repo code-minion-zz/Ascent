@@ -58,9 +58,10 @@ public class WarriorStrike : Action
 
 				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 				{
-
 					foreach(Enemy e in enemies)
 					{
+                        // Update the enemey to be damaged by.
+                        e.LastDamagedBy = owner;
                         // Apply damage and knockback to the enemey.
 						e.ApplyDamage(damage, Character.EDamageType.Physical);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);

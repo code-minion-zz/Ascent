@@ -190,41 +190,9 @@ public abstract class Enemy : Character
 
     #endregion
 
-    #region HitBox Collisions
-
-    void OnHitBoxCollideEnter(Collider other)
-    {
-        //// When monster hit box collides with player.
-        //if (other.transform.tag == "Player")
-        //{
-        //    Player player = other.transform.GetComponent<Player>();
-
-        //    if (player != null)
-        //    {
-        //        // Make the monster take damage.
-        //        player.TakeDamage(25);
-        //    }
-        //}
-    }
-
-    void OnHitBoxCollideStay(Collider other)
-    {
-
-    }
-
-    void OnHitBoxCollideExit(Collider other)
-    {
-
-    }
-
-    #endregion
 
     #region Collisions on Self
 
-    void OnCollisionEnter(Collision collision)
-	{
-
-    }
 	
 	void OnBecameVisible()
 	{
@@ -244,11 +212,26 @@ public abstract class Enemy : Character
 		}
 	}
 
+    public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type)
+    {
+        // Check to see if the enemy was last damaged by a hero,
+        // thus update the floor statistics of the hero. This function may want to pass in
+        // the owner that is applying this damage.
+        if (lastDamagedBy != null)
+        {
+            Hero hero = lastDamagedBy as Hero;
+            hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
+        }
+
+        base.ApplyDamage(unmitigatedDamage, type);
+    }
+
 	public override void OnDeath ()
 	{
 		base.OnDeath ();
 
 		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
+
     #endregion
 }

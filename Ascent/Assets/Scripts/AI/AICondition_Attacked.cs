@@ -7,7 +7,7 @@ public class AICondition_Attacked : AICondition
 
     public AICondition_Attacked(Character actor)
     {
-        actor.OnDamageTaken += OnHit;
+        actor.onDamageTaken += OnHit;
     }
 
     public override bool HasBeenMet()

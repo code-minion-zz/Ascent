@@ -7,14 +7,12 @@ using System.Collections.Generic;
 
 public class Rat : Enemy 
 {
-    private AIAgent agent;
-
     private float deathSequenceTime = 0.0f;
     private float deathSequenceEnd = 1.0f;
     private Vector3 deathRotation = Vector3.zero;
     private float deathSpeed = 5.0f;
 
-    private List<Character> collidedTargets = new List<Character>();
+    private AIAgent agent;
 
     public override void Update()
     {
@@ -53,20 +51,6 @@ public class Rat : Enemy
                 deathSequenceTime = deathSequenceEnd;
             }
         }
-        else
-        {
-            if (stunDuration > 0.0f)
-            {
-                stunDuration -= Time.deltaTime;
-
-                if (stunDuration < 0.0f)
-                {
-                    GetComponentInChildren<Renderer>().material.color = originalColour;
-                }
-            }
-	    }
-
-        RemoveCollisions();
     }
 
    public override void Initialise()
@@ -111,26 +95,19 @@ public class Rat : Enemy
 	   charge.Initialise(this);
 	   abilities.Add(charge);
 
+       originalColour = Color.white;
+
 	   base.Initialise();
    }
 
-
-   protected void OnTrigger()
+   public void OnTrigger()
    {
-
    }
 
    // We want to override the on death for this rat as we have some specific behaviour here.
    public override void OnDeath()
    {
 	   base.OnDeath();
-	   // Play some cool animation
-	   // Maybe even play a sound here
-	   // Maybe even drop some loot here
-
-	   // Rat is going to destroy itself now
-	   //DestroyObject(this.gameObject);
-	   //this.gameObject.SetActive(false);
    }
 
    public void OnCollisionEnter(Collision other)
@@ -158,8 +135,7 @@ public class Rat : Enemy
    /// <param name="hero"></param>
    private void CollideWithHero(Hero hero, Collision collision)
    {
-	   hero.LastObjectsDamagedBy.Add(this);
-
+       hero.LastDamagedBy = this;
 	   hero.ApplyDamage(3, EDamageType.Physical);
 
 	   //ContactPoint contact = collision.contacts[0];
@@ -172,26 +148,8 @@ public class Rat : Enemy
 
 	   // Heroes are going to take a hit and play the animation.
        // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
-	   hero.Animator.PlayAnimation("TakeHit");
-
-	   // Update our list of collided targets
-	   // If a weapon has special properties where it may only be able to hit a number of targets, 
-	   // we would check to see if the count is too high before adding to the targets list.
-	   collidedTargets.Add(hero);
-   }
-
-   private void RemoveCollisions()
-   {
-	   foreach (Character other in collidedTargets)
-	   {
-		   // Sanity check to make sure that the other character still exists
-		   if (other != null)
-		   {
-			   // We can remove this collision as it is no longer in effect.
-			   other.LastObjectsDamagedBy.Remove(this);
-		   }
-	   }
-
-	   collidedTargets.Clear();
+	   //hero.Animator.PlayAnimation("TakeHit");
+       HeroAnimator heroAnim = hero.Animator as HeroAnimator;
+       heroAnim.TakeHit = true;
    }
 }
