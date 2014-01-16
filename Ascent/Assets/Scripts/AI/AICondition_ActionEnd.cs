@@ -1,0 +1,32 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class AICondition_ActionEnd : AICondition 
+{
+    bool actionEnded;
+
+    public AICondition_ActionEnd(Action action)
+    {
+        actionEnded = false;
+        action.OnActionEnd += OnActionEnd;
+    }
+
+    public override void Reset()
+    {
+        actionEnded = false;
+    }
+
+    public override bool HasBeenMet()
+    {
+        bool hasBeenMet = actionEnded;
+
+        actionEnded = false;
+
+        return hasBeenMet;
+    }
+
+    public void OnActionEnd()
+    {
+        actionEnded = true;
+    }
+}

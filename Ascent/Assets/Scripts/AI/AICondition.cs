@@ -27,4 +27,11 @@ public class AICondition
     {
         return false;
     }
+
+#if UNITY_EDITOR
+    public virtual void DebugDraw()
+    {
+
+    }
+#endif
 }

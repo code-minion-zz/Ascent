@@ -20,6 +20,7 @@ public class AICondition_Timer : AICondition
     public override bool HasBeenMet()
     {
         timeElapsed += Time.deltaTime;
+
         if (timeElapsed > timeMax)
         {
             timeElapsed = timeMax;

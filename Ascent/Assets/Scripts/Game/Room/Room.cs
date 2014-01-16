@@ -70,7 +70,18 @@ public class Room : MonoBehaviour
     protected RoomFloorNav navMesh;
 	public RoomFloorNav NavMesh
 	{
-		get { return navMesh; }
+		get 
+        {
+            if (navMesh == null)
+            {
+                GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
+                go.transform.position = transform.position + go.transform.position;
+                go.transform.parent = transform;
+
+                navMesh = go.GetComponent<RoomFloorNav>();
+            }
+            return navMesh; 
+        }
 		set { navMesh = value; }
 	}
 
@@ -78,31 +89,27 @@ public class Room : MonoBehaviour
 
     /// <summary>
     /// Populates the class with data obtained from the room.
-    /// </summary>
+    /// </summary144>
     void Awake()
     {
         // Make sure all the nodes are found and references.
         FindAllNodes();
+
+        navMesh = NavMesh;
+
+        doors = GetComponentInChildren<Doors>();
     }
 
-    void Start()
-    {
-        // Setup the references to the root node of all
-        //FixTreeStructure();
+    //void Start()
+    //{
+    //    // Setup the references to the root node of all
+    //    //FixTreeStructure();
 
-        //Transform monsters = GetNodeByLayer("Monster").transform;
-        //Transform items = GetNodeByLayer("Items").transform;
-        //Transform floorTiles = GetNodeByLayer("Floor").transform;
-        //Transform wallObjects = GetNodeByLayer("Wall").transform;
-
-		GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
-		go.transform.position = transform.position + go.transform.position;
-		go.transform.parent = transform;
-
-		navMesh = go.GetComponent<RoomFloorNav>();
-
-		doors = GetComponentInChildren<Doors>();
-    }
+    //    //Transform monsters = GetNodeByLayer("Monster").transform;
+    //    //Transform items = GetNodeByLayer("Items").transform;
+    //    //Transform floorTiles = GetNodeByLayer("Floor").transform;
+    //    //Transform wallObjects = GetNodeByLayer("Wall").transform;
+    //}
 
     public void OnEnable()
     {

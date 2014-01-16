@@ -12,6 +12,9 @@ public abstract class Action
     protected string animationTrigger;
     protected int specialCost;
 
+    public delegate void ActionEnd();
+    public event ActionEnd OnActionEnd;
+
     protected Character owner;
     public Character Owner
     {
@@ -114,6 +117,11 @@ public abstract class Action
     {
         owner.Animator.StopAnimation(animationTrigger);
         currentTime = 0.0f;
+
+        if (OnActionEnd != null)
+        {
+            OnActionEnd.Invoke();
+        }
     }
 
     public void RefreshCooldown()

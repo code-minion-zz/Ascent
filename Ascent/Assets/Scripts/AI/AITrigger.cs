@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class AITrigger  
 {
@@ -25,9 +26,8 @@ public class AITrigger
         set { priority = value; }
     }
 
-
     protected List<KeyValuePair<AICondition, EConditional>> conditions = new List<KeyValuePair<AICondition, EConditional>>();
-    
+ 
     public delegate void ConditionTriggered();
     public event ConditionTriggered OnTriggered;
 
@@ -35,7 +35,6 @@ public class AITrigger
     {
         conditions.Add(new KeyValuePair<AICondition, EConditional>(c, EConditional.And));
     }
-
 
     public void AddCondition(AICondition c, EConditional condition)
     {
@@ -73,4 +72,22 @@ public class AITrigger
 
         return triggered;
     }
+
+    public void Reset()
+    {
+        foreach (KeyValuePair<AICondition, EConditional> c in conditions)
+        {
+            c.Key.Reset();
+        }
+    }
+
+#if UNITY_EDITOR
+    public void DebugDraw()
+    {
+        foreach (KeyValuePair<AICondition, EConditional> c in conditions)
+        {
+            c.Key.DebugDraw();
+        }
+    }
+#endif
 }

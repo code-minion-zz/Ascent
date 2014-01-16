@@ -32,4 +32,29 @@ public class AIBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+    public void OnGizmosDraw()
+    {
+        DebugDraw();
+    }
+#endif
+
+    public void Reset()
+    {
+        foreach (AITrigger t in triggers)
+        {
+            t.Reset();
+        }
+    }
+
+#if UNITY_EDITOR
+    public void DebugDraw()
+    {
+        foreach (AITrigger t in triggers)
+        {
+            t.DebugDraw();
+        }
+    }
+#endif
 }

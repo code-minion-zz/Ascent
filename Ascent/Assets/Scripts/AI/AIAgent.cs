@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AIAgent// : MonoBehaviour 
+public class AIAgent : MonoBehaviour 
 {
     protected Character actor;
 
@@ -18,4 +18,16 @@ public class AIAgent// : MonoBehaviour
         get { return mindAgent; }
     }
 
+    public List<Character> GetSensedCharacters()
+    {
+        return mindAgent.SensedCharacters;
+    }
+
+#if UNITY_EDITOR
+    public void OnDrawGizmos()
+    {
+        steeringAgent.DebugDraw();
+        mindAgent.DebugDraw();
+    }
+#endif
 }
