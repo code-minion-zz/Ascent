@@ -11,8 +11,8 @@ using System.Collections.Generic;
 
 public class UITown_Backpack_Window : UIPlayerMenuWindow
 {
-	UIPlayerMenuPanel inventoryPanel;
-	UIPlayerMenuPanel mainPanel;
+	public UIPlayerMenuPanel inventoryPanel;
+	public UIPlayerMenuPanel backpackPanel;
 
 	public enum EBackpackTab
 	{
@@ -48,7 +48,7 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public override void Initialise ()
 	{
-		parentScreen = transform.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
+		parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
 		base.Initialise ();
 	}
 
@@ -71,10 +71,8 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public override void AddAllMenuPanels()
 	{
-		UITown_Backpack_MainPanel mainpanel =  GetComponentInChildren<UITown_Backpack_MainPanel>();
-		UITown_Backpack_InventoryPanel inventory = GetComponentInChildren<UITown_Backpack_InventoryPanel>();
-		panels[(int)EBackpackPanels.Backpack_Main_Panel] = mainpanel;
-		panels[(int)EBackpackPanels.Backpack_Inventory_Panel] = inventory;
+		panels[(int)EBackpackPanels.Backpack_Main_Panel] = backpackPanel;
+		panels[(int)EBackpackPanels.Backpack_Inventory_Panel] = inventoryPanel;
 		
 		foreach (KeyValuePair<int, UIPlayerMenuPanel> p in panels)
 		{

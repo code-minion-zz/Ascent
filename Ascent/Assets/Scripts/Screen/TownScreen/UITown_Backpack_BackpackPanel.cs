@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class UITown_Backpack_MainPanel : UIPlayerMenuPanel 
+public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel 
 {
 	enum EButtons
 	{
@@ -27,8 +27,8 @@ public class UITown_Backpack_MainPanel : UIPlayerMenuPanel
 	{
 		buttons = new UIButton[(int)EButtons.MAX];
 		
-		tabs.Add(transform.FindChild("Accessory Tab").gameObject);
-		tabs.Add(transform.FindChild("Consumable Tab").gameObject); 
+		tabs.Add(transform.FindChild("Tabs/Accessory Tab").gameObject);
+		tabs.Add(transform.FindChild("Tabs/Consumable Tab").gameObject); 
 
 		Transform accessories = transform.Find ("Accessories");
 		Transform consumables = transform.Find ("Consumables");
@@ -139,8 +139,8 @@ public class UITown_Backpack_MainPanel : UIPlayerMenuPanel
 	
 	public void SetTab(UITown_Backpack_Window.EBackpackTab tab)
 	{
-		Transform accessoryTab = transform.FindChild("Accessory Tab");
-		Transform consumableTab = transform.FindChild("Consumable Tab");
+		Transform accessoryTab = transform.FindChild("Tabs/Accessory Tab");
+		Transform consumableTab = transform.FindChild("Tabs/Consumable Tab");
 
 		if (tab == UITown_Backpack_Window.EBackpackTab.Accessory)
 		{
