@@ -6,6 +6,21 @@ using System.Collections.Generic;
 public class AIBehaviour  
 {
     protected List<AITrigger> triggers = new List<AITrigger>();
+	public List<AITrigger> Triggers
+	{
+		get { return triggers; }
+	}
+
+	protected AIMindAgent.EBehaviour type;
+	public AIMindAgent.EBehaviour Type
+	{
+		get { return type; }
+	}
+
+	public AIBehaviour(AIMindAgent.EBehaviour e)
+	{
+		type = e;
+	}
 
     public void AddTrigger(AITrigger t)
     {

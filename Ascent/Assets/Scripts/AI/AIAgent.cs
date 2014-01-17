@@ -18,12 +18,30 @@ public class AIAgent : MonoBehaviour
         get { return mindAgent; }
     }
 
+	public void Initialise(Transform t)
+	{
+		steeringAgent.Initialise(t.GetComponent<CharacterMotor>());
+		mindAgent.Initialise(t);
+	}
+
     public List<Character> GetSensedCharacters()
     {
         return mindAgent.SensedCharacters;
     }
 
 #if UNITY_EDITOR
+	public void OnEnable()
+	{
+		steeringAgent.SetActive(true);
+		mindAgent.SetActive(true);
+	}
+
+	public void OnDisable()
+	{
+		steeringAgent.SetActive(false);
+		mindAgent.SetActive(false);
+	}
+
     public void OnDrawGizmos()
     {
         steeringAgent.DebugDraw();

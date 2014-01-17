@@ -27,6 +27,10 @@ public class AITrigger
     }
 
     protected List<KeyValuePair<AICondition, EConditional>> conditions = new List<KeyValuePair<AICondition, EConditional>>();
+	public List<KeyValuePair<AICondition, EConditional>> Conditions
+	{
+		get { return conditions; }
+	}
  
     public delegate void ConditionTriggered();
     public event ConditionTriggered OnTriggered;

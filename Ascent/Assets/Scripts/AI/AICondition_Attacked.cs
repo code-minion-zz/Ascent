@@ -22,4 +22,9 @@ public class AICondition_Attacked : AICondition
     {
         wasHit = true;
     }
+
+	public override string ToString()
+	{
+		return "Attacked: " + wasHit;
+	}
 }

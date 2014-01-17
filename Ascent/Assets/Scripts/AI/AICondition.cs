@@ -33,5 +33,10 @@ public class AICondition
     {
 
     }
+
+	public override string ToString()
+	{
+		return base.ToString();
+	}
 #endif
 }

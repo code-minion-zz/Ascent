@@ -111,12 +111,30 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void Move(Vector3 motion)
 	{
 		movementForce = motion;
+
+		FixRotationOrthogonally(motion);
 	}
 
     public virtual void SpecialMove(Vector3 motion)
     {
         specialMovementForce = motion;
+
+		FixRotationOrthogonally(motion);
     }
+
+	public virtual void FixRotationOrthogonally(Vector3 curDirection)
+	{
+		if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+		{
+			float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+			transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+		}
+		else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+		{
+			float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+			transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+		}
+	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)
 	{

@@ -7,6 +7,7 @@ public class AICondition_HP : AICondition
     private EType type;
     private ESign sign;
     private float value;
+	private bool hasMet = false;
 
     public AICondition_HP(DerivedStats stats, EType type, ESign sign, float value)
     {
@@ -27,9 +28,11 @@ public class AICondition_HP : AICondition
 
         if (Evaluate(curValue, value, sign))
         {
+			hasMet = true;
             return true;
         }
 
+		hasMet = false;
         return false;
     }
 
@@ -46,4 +49,35 @@ public class AICondition_HP : AICondition
 
         return false;
     }
+
+	protected string GetString(ESign sign)
+	{
+		string strSign = "";
+
+		switch (sign)
+		{
+			case ESign.Equal: return "==";
+			case ESign.GreaterThan: return ">";
+			case ESign.EqualOrGreater: return ">=";
+			case ESign.LessThan: return "<";
+			case ESign.EqualOrLess: return "";
+		}
+
+		return strSign;
+	}
+
+	public override string ToString()
+	{
+		string substr = "";
+		if(type == EType.Percentage)
+		{
+			substr = (value * 100.0f) + "%";
+		}
+		else
+		{
+			substr = value.ToString();
+		}
+
+		return "HP " + GetString(sign) + " " + substr + ": " + hasMet;
+	}
 }

@@ -4,11 +4,13 @@ using System.Collections;
 public class AICondition_ActionEnd : AICondition 
 {
     bool actionEnded;
+	string name;
 
     public AICondition_ActionEnd(Action action)
     {
         actionEnded = false;
         action.OnActionEnd += OnActionEnd;
+		name = action.Name;
     }
 
     public override void Reset()
@@ -29,4 +31,9 @@ public class AICondition_ActionEnd : AICondition
     {
         actionEnded = true;
     }
+
+	public override string ToString()
+	{
+		return "ActionEnded(" + name + "): "+ actionEnded;
+	}
 }

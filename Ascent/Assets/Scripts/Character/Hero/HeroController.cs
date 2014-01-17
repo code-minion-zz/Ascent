@@ -33,9 +33,6 @@ public class HeroController : MonoBehaviour
 	}
 	private bool vertGrab;
 
-	bool vert;
-	bool horiz;
-
     public InputDevice Input
     {
         get { return input; }
@@ -137,16 +134,6 @@ public class HeroController : MonoBehaviour
                     // L Stick
                     if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
                     {
-                        if (Mathf.Abs(device.LeftStickX.Value) > Mathf.Abs(device.LeftStickY.Value))
-                        {
-                            vert = false;
-
-                        }
-                        else
-                        {
-                            vert = true;
-                        }
-
                         Vector3 moveDirection = Vector3.zero;
 
                         if (grabbedObject != null)
@@ -180,19 +167,19 @@ public class HeroController : MonoBehaviour
                             }
 
                         }
-                        else if (!GetComponent<CharacterMotor>().moving)
-                        {
-                            moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
+						else if (!GetComponent<CharacterMotor>().moving)
+						{
+						    moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
 
-                            if (vert)
-                            {
-                                transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
-                            }
-                            else
-                            {
-                                transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
-                            }
-                        }
+						//    if (vert)
+						//    {
+						//        transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
+						//    }
+						//    else
+						//    {
+						//        transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
+						//    }
+						}
 
                         GetComponent<CharacterMotor>().Move(moveDirection);
 

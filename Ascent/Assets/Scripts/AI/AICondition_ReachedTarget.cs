@@ -26,4 +26,10 @@ public class AICondition_ReachedTarget : AICondition
         targetReached = true;
     }
 
+
+	public override string ToString()
+	{
+		return "TargetReached: " + targetReached;
+	}
+
 }

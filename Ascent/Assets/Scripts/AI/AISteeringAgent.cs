@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEditor;
 public class AISteeringAgent  
 {
     private Vector3 startPos;
@@ -28,8 +28,16 @@ public class AISteeringAgent
     public delegate void TargetReached();
     public event TargetReached OnTargetReached;
 
+	protected bool active;
+
+	public void SetActive(bool active)
+	{
+		this.active = active;
+	}
+
     public void Initialise(CharacterMotor motor)
     {
+		active = true;
         this.motor = motor;
     }
 
@@ -39,9 +47,9 @@ public class AISteeringAgent
         {
             if (targetCharacter != null)
             {
+				motor.transform.LookAt(targetCharacter.transform.position);
                 motor.Move(motor.transform.forward);
-                motor.transform.LookAt(targetCharacter.transform.position);
-
+    
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
                 {
                     if (OnTargetReached != null)
@@ -54,8 +62,8 @@ public class AISteeringAgent
             }
             else
             {
+				motor.transform.LookAt(targetPos);
                 motor.Move(motor.transform.forward);
-                motor.transform.LookAt(targetPos);
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
                 {
@@ -86,6 +94,10 @@ public class AISteeringAgent
 #if UNITY_EDITOR
     public void DebugDraw()
     {
+		if (!active)
+		{
+			return;
+		}
         if(motor != null)
         {
             if(hasTarget)
