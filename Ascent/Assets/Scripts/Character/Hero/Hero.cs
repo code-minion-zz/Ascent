@@ -82,6 +82,8 @@ public abstract class Hero : Character
     {
         base.Respawn(position);
 
+        Animator.PlayAnimation("Dying");
+
         // Reset the health
         derivedStats.ResetHealth();
     }

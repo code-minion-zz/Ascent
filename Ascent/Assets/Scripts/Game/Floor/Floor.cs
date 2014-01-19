@@ -165,13 +165,16 @@ public class Floor : MonoBehaviour
             // This may break if the enemy was killed by something else such as a trap with no owner maybe?
             Hero hero = character.LastDamagedBy as Hero;
             hero.FloorStatistics.NumberOfMonstersKilled++;
+        }
 
+        // Give all players in the room the bounty.
+        foreach (Player player in players)
+        {
+            Hero hero = player.Hero.GetComponent<Hero>();
             hero.FloorStatistics.ExperienceGained += character.CharacterStats.ExperienceBounty;
         }
 
-        // Deactivate dead enemies
         // Unsubscribe from listening to events from this enemy.
-        character.gameObject.SetActive(false);
         character.onDeath -= OnEnemyDeath;
     }
 

@@ -38,7 +38,6 @@ public class Rat : Enemy
                 deathSequenceTime = 0.0f;
 
                 this.gameObject.SetActive(false);
-			    DestroyObject(this.gameObject);
             }
 				
             // During death sequence we can do some thing in here

@@ -27,11 +27,12 @@ public abstract class Character : MonoBehaviour
     // The event delegate handler we will use to take in the character.
     public delegate void CharacterEventHandler(Character charater);
     public event CharacterEventHandler onDeath;
+    public event CharacterEventHandler onSpawn;
 
     // The event delegate handler we will use for damage taken.
     public delegate void Damage(float amount);
     public event Damage onDamageTaken;
-    //public event Damage onDamageDealt;
+    //public event Damage onDamageDealt; // Not handled by the character.
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
@@ -41,8 +42,6 @@ public abstract class Character : MonoBehaviour
 
     protected float 				stunDuration;
 	protected float					stunTimeAccum;
-	protected float					flickerDuration = 0.5f;
-	protected float					flickerTimeAccum;
     protected float                 invulnerableDuration;
     protected float                 invulnerableTimeAccum;
 
@@ -317,8 +316,8 @@ public abstract class Character : MonoBehaviour
         isDead = false;
 
         // Play this animation.
-        //Animator.PlayAnimation("Respawn");
         transform.position = position;
+        OnSpawn();
     }
 
     public virtual void OnDeath()
@@ -332,6 +331,14 @@ public abstract class Character : MonoBehaviour
         if (onDeath != null)
         {
             onDeath(this);
+        }
+    }
+
+    public virtual void OnSpawn()
+    {
+        if (onSpawn != null)
+        {
+            onSpawn(this);
         }
     }
 	
