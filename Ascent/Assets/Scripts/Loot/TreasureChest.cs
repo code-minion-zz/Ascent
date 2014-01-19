@@ -103,7 +103,7 @@ public class TreasureChest : Interactable
 						if (timeAccum >= stateTimes[(int)EChestState.DroppingLoot])
 						{
 							// TODO: Change this to be the correct representation for this item.
-							GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject(Room.ERoomObjects.Loot);
+							GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject(Room.ERoomObjects.Loot, "CoinSack");
 							go.transform.parent = this.transform;
 							Vector3 pos = this.transform.position;
 							pos.y = 5.0f;

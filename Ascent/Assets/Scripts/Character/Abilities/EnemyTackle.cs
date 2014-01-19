@@ -27,11 +27,10 @@ public class EnemyTackle : Action
 
 		owner.Motor.StopMotion();
 		owner.Motor.EnableMovementForce(false);
+        owner.SetColor(Color.red);
+
 		prevSpeed = owner.Motor.speed;
-
 		executedDamage = false;
-
-		owner.SetColor(Color.red);
 	}
 
     public override void UpdateAbility()
@@ -60,7 +59,7 @@ public class EnemyTackle : Action
 					// Update the enemey to be damaged by.
 					c.LastDamagedBy = owner;
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(1, Character.EDamageType.Physical);
+					c.ApplyDamage(1, Character.EDamageType.Physical, owner);
 					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
 					// Create a blood splatter effect on the enemy.
@@ -82,7 +81,8 @@ public class EnemyTackle : Action
 
     public override void EndAbility()
     {
-
+        base.EndAbility();
+		owner.SetColor(owner.OrigionalColor);
     }
 
 #if UNITY_EDITOR

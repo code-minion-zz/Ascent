@@ -130,12 +130,6 @@ public class Rat : Enemy
 	   //agent.enabled = false;
    }
 
-   // We want to override the on death for this rat as we have some specific behaviour here.
-   public override void OnDeath()
-   {
-	   base.OnDeath();
-   }
-
    public void OnCollisionEnter(Collision other)
    {
 	   string tag = other.transform.tag;
@@ -162,16 +156,13 @@ public class Rat : Enemy
    private void CollideWithHero(Hero hero, Collision collision)
    {
        hero.LastDamagedBy = this;
-	  // hero.ApplyDamage(3, EDamageType.Physical);
+	  
 
 	   //ContactPoint contact = collision.contacts[0];
 	   Vector3 direction = (collision.transform.position - transform.position).normalized;
 	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
 
 	   //hero.ApplyKnockback(direction, 1.0f);
-
-       //Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
-
 	   // Heroes are going to take a hit and play the animation.
        // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
 	   //hero.Animator.PlayAnimation("TakeHit");

@@ -85,6 +85,8 @@ public class Room : MonoBehaviour
 		set { navMesh = value; }
 	}
 
+    private Transform monstersHeader;
+
     #endregion
 
     /// <summary>
@@ -122,6 +124,12 @@ public class Room : MonoBehaviour
 
 	public void Initialise()
 	{
+        monstersHeader = transform.FindChild("Monsters");
+        if (monstersHeader == null)
+        {
+            Debug.LogError("Could not find Monsters GameObject in Room. Please create it.", gameObject);
+        }
+
 		// Make sure all the nodes are found and references.
 		FindAllNodes();
 
@@ -353,7 +361,7 @@ public class Room : MonoBehaviour
         }
     }
 
-	public GameObject InstantiateGameObject(ERoomObjects type)
+	public GameObject InstantiateGameObject(ERoomObjects type, string name)
 	{
 		GameObject newObject = null;
 
@@ -365,7 +373,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Loot:
 				{
-					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/CoinSack")) as GameObject;
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
 					if(lootDrops == null)
 					{
@@ -377,6 +385,18 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+
+                    if (enemies == null)
+                    {
+                        enemies = new List<Character>();
+                    }
+
+                    Enemy enemy = newObject.GetComponent<Enemy>();
+                    enemies.Add(enemy);
+                    enemy.transform.parent = monstersHeader;
+                    enemy.ContainedRoom = this;
+                    enemy.Initialise();
 				}
 				break;
 		}

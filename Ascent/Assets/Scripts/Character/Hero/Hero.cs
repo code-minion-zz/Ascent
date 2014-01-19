@@ -82,6 +82,8 @@ public abstract class Hero : Character
     {
         base.Respawn(position);
 
+        Animator.PlayAnimation("Dying");
+
         // Reset the health
         derivedStats.ResetHealth();
     }
@@ -106,7 +108,7 @@ public abstract class Hero : Character
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type)
+	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
 	{
 		if (heroController.GrabbingObject)
 		{
@@ -117,6 +119,10 @@ public abstract class Hero : Character
         // The hero has been damaged here.
         floorStatistics.DamageTaken += unmitigatedDamage;
 
-		base.ApplyDamage(unmitigatedDamage, type);
+        // Hero takes hit.
+        HeroAnimator heroAnim = Animator as HeroAnimator;
+        heroAnim.TakeHit = true;
+
+        base.ApplyDamage(unmitigatedDamage, type, owner);
 	}
 }

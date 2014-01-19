@@ -51,7 +51,7 @@ public class WarriorHeavyStrike : Action
                     {
                         // Update the enemey to be damaged by.
                         e.LastDamagedBy = owner;
-                        e.ApplyDamage(25, Character.EDamageType.Physical);
+                        e.ApplyDamage(25, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
                         // Create a blood splatter effect on the enemy.
