@@ -96,7 +96,7 @@ public class WarriorCharge : Action
                foreach (Enemy e in enemies)
                {
                    e.LastDamagedBy = owner;
-                   e.ApplyDamage(2, Character.EDamageType.Physical);
+                   e.ApplyDamage(2, Character.EDamageType.Physical, owner);
                    e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
                    e.ApplyStunEffect(2.0f);
 
@@ -177,7 +177,7 @@ public class WarriorCharge : Action
 	{
 		EndCharge();
         other.LastDamagedBy = owner;
-		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical);
+		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical, owner);
 		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
 	}
 	

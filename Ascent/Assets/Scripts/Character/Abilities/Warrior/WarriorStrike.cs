@@ -60,7 +60,7 @@ public class WarriorStrike : Action
                         // Update the enemey to be damaged by.
                         e.LastDamagedBy = owner;
                         // Apply damage and knockback to the enemey.
-						e.ApplyDamage(damage, Character.EDamageType.Physical);
+						e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
                         // Create a blood splatter effect on the enemy.

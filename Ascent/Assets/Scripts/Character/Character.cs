@@ -130,7 +130,6 @@ public abstract class Character : MonoBehaviour
         get { return isDead; }
     }
 
-
 	public virtual void Initialise()
 	{
 		Shadow shadow = GetComponentInChildren<Shadow>();
@@ -268,7 +267,7 @@ public abstract class Character : MonoBehaviour
 		}
 	}
 
-    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
+    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character owner)
     {
 		int finalDamage = unmitigatedDamage;
 
@@ -280,7 +279,7 @@ public abstract class Character : MonoBehaviour
 			onDamageTaken.Invoke(finalDamage);
 		}
 
-		if(this is Hero)
+		if (this is Hero)
 		{
 			HeroAnimator heroAnim = Animator as HeroAnimator;
 			heroAnim.TakeHit = true;

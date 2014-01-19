@@ -59,7 +59,7 @@ public class EnemyTackle : Action
 					// Update the enemey to be damaged by.
 					c.LastDamagedBy = owner;
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(1, Character.EDamageType.Physical);
+					c.ApplyDamage(1, Character.EDamageType.Physical, owner);
 					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
 					// Create a blood splatter effect on the enemy.

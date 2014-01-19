@@ -177,8 +177,6 @@ public class Rat : Enemy
 	   motor.speed = 5.0f;
    }
 
-	
-
    public void OnCanUseTackle()
    {
 	   
@@ -229,7 +227,7 @@ public class Rat : Enemy
 
 	   //hero.ApplyKnockback(direction, 1.0f);
 
-       //Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
+       Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
 
 	   // Heroes are going to take a hit and play the animation.
        // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.

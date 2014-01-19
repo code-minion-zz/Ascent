@@ -66,7 +66,7 @@ public class WarriorWarStomp : Action
                     {
                         // Update the enemey to be damaged by.
                         e.LastDamagedBy = owner;
-                        e.ApplyDamage(damage, Character.EDamageType.Physical);
+                        e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                         e.ApplyStunEffect(2.25f);
 
                         // Create a blood splatter effect on the enemy.

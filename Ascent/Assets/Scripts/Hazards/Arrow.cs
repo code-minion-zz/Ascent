@@ -70,7 +70,7 @@ public class Arrow : MonoBehaviour
 	private void CollideWithHero(Hero hero, Collision collision)
 	{
 		// Apply damage to the hero
-		hero.ApplyDamage(damage, Character.EDamageType.Physical);
+		hero.ApplyDamage(damage, Character.EDamageType.Physical, null);
 		hero.ApplyKnockback(-collision.contacts[0].normal, 1.0f);
 
 	}
