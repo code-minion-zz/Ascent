@@ -8,17 +8,8 @@ using System;
 
 public class Rat : Enemy 
 {
-    private float deathSequenceTime = 0.0f;
-    private float deathSequenceEnd = 1.0f;
-    private Vector3 deathRotation = Vector3.zero;
-    private float deathSpeed = 5.0f;
-
-    public AIAgent agent;
-
    public override void Initialise()
 	{
-		deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
 		// Populate with stats
 		baseStatistics = new BaseStats();
 		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
@@ -90,62 +81,11 @@ public class Rat : Enemy
 	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
    }
 
-   public override void OnEnable()
-   {
-       base.OnEnable();
-   }
-
    public override void Update()
    {
-	   if (!IsStunned)
-	   {
-		   if (activeAbility == null)
-		   {
-			   agent.MindAgent.Process();
-		   }
-		   
-		   agent.SteeringAgent.Process();
-	   }
-
-
         base.Update();
 
-        if (isDead)
-        {
-            deathSequenceTime += Time.deltaTime;
-
-            // When the rat dies we want to make him kinematic and disabled the collider
-            // this is so we can walk over the dead body.
-            if (this.transform.rigidbody.isKinematic == false)
-            {
-                this.transform.rigidbody.isKinematic = true;
-                this.transform.collider.enabled = false;
-            }
-
-            // Death sequence end
-            if (deathSequenceTime >= deathSequenceEnd)
-		    {
-                // When the death sequence has finished we want to make this object not active
-                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
-                deathSequenceTime = 0.0f;
-
-                this.gameObject.SetActive(false);
-			    DestroyObject(this.gameObject);
-            }
-				
-            // During death sequence we can do some thing in here
-            // For now we will rotate the rat on the z axis.
-            this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
-
-            // If the rotation is done early we can end the sequence.
-            if (this.transform.eulerAngles == deathRotation)
-            {
-                deathSequenceTime = deathSequenceEnd;
-            }
-        }
-
 		//transform.forward = new Vector3(Game.Singleton.Players[0].Input.LeftStickX, 0.0f, Game.Singleton.Players[0].Input.LeftStickY);
-
     }
 
    public void OnWanderEnd()
