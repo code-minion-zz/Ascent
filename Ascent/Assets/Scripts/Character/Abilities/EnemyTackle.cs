@@ -56,8 +56,6 @@ public class EnemyTackle : Action
 			{
 				foreach (Character c in characters)
 				{
-					// Update the enemey to be damaged by.
-					c.LastDamagedBy = owner;
 					// Apply damage and knockback to the enemey.
 					c.ApplyDamage(1, Character.EDamageType.Physical, owner);
 					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);

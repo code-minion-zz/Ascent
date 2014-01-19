@@ -57,8 +57,6 @@ public class WarriorStrike : Action
 				{
 					foreach(Enemy e in enemies)
 					{
-                        // Update the enemey to be damaged by.
-                        e.LastDamagedBy = owner;
                         // Apply damage and knockback to the enemey.
 						e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);

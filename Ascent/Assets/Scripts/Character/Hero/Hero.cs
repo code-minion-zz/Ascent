@@ -110,19 +110,31 @@ public abstract class Hero : Character
 
 	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
 	{
+        base.ApplyDamage(unmitigatedDamage, type, owner);
+
 		if (heroController.GrabbingObject)
 		{
 			heroController.ReleaseGrabbedObject();
 			GetComponent<CharacterMotor>().StopMovingAlongGrid();
 		}
+	}
 
-        // The hero has been damaged here.
-        floorStatistics.DamageTaken += unmitigatedDamage;
+    public override void OnDamageTaken(int damage)
+    {
+        base.OnDamageTaken(damage);
 
+        // Record damage taken.
+        floorStatistics.DamageTaken += damage;
         // Hero takes hit.
         HeroAnimator heroAnim = Animator as HeroAnimator;
         heroAnim.TakeHit = true;
+    }
 
-        base.ApplyDamage(unmitigatedDamage, type, owner);
-	}
+    public override void OnDamageDealt(int damage)
+    {
+        base.OnDamageDealt(damage);
+
+        // Record damage dealt.
+        FloorStatistics.TotalDamageDealt += damage;
+    }
 }

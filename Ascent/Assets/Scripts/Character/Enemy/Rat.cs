@@ -187,12 +187,6 @@ public class Rat : Enemy
 	   //agent.enabled = false;
    }
 
-   // We want to override the on death for this rat as we have some specific behaviour here.
-   public override void OnDeath()
-   {
-	   base.OnDeath();
-   }
-
    public void OnCollisionEnter(Collision other)
    {
 	   string tag = other.transform.tag;
