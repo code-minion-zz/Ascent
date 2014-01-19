@@ -149,8 +149,6 @@ public class Floor : MonoBehaviour
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
-
-
         currentRoom.gameObject.SetActive(true);
 
         // Create the floor record keeper.
@@ -164,7 +162,7 @@ public class Floor : MonoBehaviour
 
 	#region Update
 
-    public void OnEnemyDeath(Character character)
+    private void OnEnemyDeath(Character character)
     {
         if (character.LastDamagedBy != null)
         {

@@ -22,6 +22,7 @@ public abstract class Character : MonoBehaviour
     {
         Physical,
         Magical,
+        Trap
     }
 
     // The event delegate handler we will use to take in the character.

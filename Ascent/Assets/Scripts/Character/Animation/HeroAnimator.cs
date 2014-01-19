@@ -126,6 +126,18 @@ public class HeroAnimator : AnimatorController
                     //StopAnimation("TakeHit");
                 }
             }
+
+            if (state.IsName("Dying"))
+            {
+                if (animator.IsInTransition(layer))
+                {
+
+                }
+                else
+                {
+                    Dying = false;
+                }
+            }
         }
 	}
 

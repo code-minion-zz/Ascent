@@ -30,6 +30,7 @@ public abstract class Hero : Character
     protected HeroController heroController;
 	protected Backpack backpack;
     protected HeroInventory heroInventory;
+    protected HeroEquipment heroEquipment;
     protected FloorStats floorStatistics;
 
 	public HeroClassStatModifier ClassStatMod
@@ -59,9 +60,10 @@ public abstract class Hero : Character
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
-		heroInventory = new HeroInventory();
+        base.Initialise();
 
-		base.Initialise();
+		heroInventory = new HeroInventory();
+        heroEquipment = new HeroEquipment();
 	}
 
     public override void SetColor(Color color)
@@ -117,6 +119,11 @@ public abstract class Hero : Character
 			heroController.ReleaseGrabbedObject();
 			GetComponent<CharacterMotor>().StopMovingAlongGrid();
 		}
+
+        if (type == Character.EDamageType.Trap)
+        {
+            floorStatistics.NumberOfTrapsTripped++;
+        }
 	}
 
     protected override void OnDamageTaken(int damage)
