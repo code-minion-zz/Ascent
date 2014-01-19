@@ -52,6 +52,8 @@ public abstract class Enemy : Character
 
 		PositionHpBar();
 
+		NGUITools.SetActive (hpBar.gameObject, false);
+
 		base.Initialise();
 	}
 
@@ -68,15 +70,15 @@ public abstract class Enemy : Character
 	public override void Update () 
     {
         base.Update();
-
 		if (!IsDead)
 		{
 			if (hpBar != null)
 			{
-				if (updateHpBar)
+				if (enabled)
 				{
 					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
+						Debug.Log("CHP != MHP");
 						if (!hpBar.gameObject.activeInHierarchy)
 							NGUITools.SetActive (hpBar.gameObject, true);
 
@@ -112,6 +114,7 @@ public abstract class Enemy : Character
 
 	protected virtual void PositionHpBar()
 	{
+		Debug.Log ("moving statbar");
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
 		Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x,barPos.y);
@@ -194,36 +197,29 @@ public abstract class Enemy : Character
 		//    activeHitBoxes.Add(t);
 		//}
 	}
-	
-	public void KillBox(Transform box)
-	{
-		//activeHitBoxes.Remove(box);
-	}
 
     #endregion
 
 
-    #region Collisions on Self
-
-	
-	void OnBecameVisible()
+	protected void OnBecameVisible()
 	{
-		//Debug.Log ("Rat became visible", this);
+		Debug.Log ("Rat became visible", this);
 		if (hpBar != null)
 		{
-			//hpBar.gameObject.SetActive(true);
 			updateHpBar = true;
 		}
 	}
 
-	void OnBecameInvisible()
+	protected void OnBecameInvisible()
 	{
+		Debug.Log ("Rat became invisible", this);
 		if (hpBar != null)
 		{
 			updateHpBar = false;
 		}
 	}
-
+	
+	#region Collisions on Self
     public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
     {
         // Check to see if the enemy was last damaged by a hero,
