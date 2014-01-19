@@ -49,8 +49,6 @@ public class WarriorHeavyStrike : Action
                 {
                     foreach (Enemy e in enemies)
                     {
-                        // Update the enemey to be damaged by.
-                        e.LastDamagedBy = owner;
                         e.ApplyDamage(25, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 

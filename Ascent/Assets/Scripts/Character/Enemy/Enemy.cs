@@ -126,7 +126,7 @@ public abstract class Enemy : Character
 
             if (hpBar != null)
             {
-                if (updateHpBar)
+                //if (updateHpBar)
                 {
                     if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
                     {

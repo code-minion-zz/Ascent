@@ -18,7 +18,7 @@ public class AICondition_Attacked : AICondition
         return conditionMet;
     }
 
-    public void OnHit(float f)
+    public void OnHit(int f)
     {
         wasHit = true;
     }

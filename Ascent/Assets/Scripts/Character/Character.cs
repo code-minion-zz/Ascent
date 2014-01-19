@@ -30,9 +30,9 @@ public abstract class Character : MonoBehaviour
     public event CharacterEventHandler onSpawn;
 
     // The event delegate handler we will use for damage taken.
-    public delegate void Damage(float amount);
+    public delegate void Damage(int amount);
     public event Damage onDamageTaken;
-    //public event Damage onDamageDealt; // Not handled by the character.
+    public event Damage onDamageDealt; // Not handled by the character.
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
@@ -267,23 +267,26 @@ public abstract class Character : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Applys damage to this chracter.
+    /// </summary>
+    /// <param name="unmitigatedDamage">The amount of damage.</param>
+    /// <param name="type">The type of damage.</param>
+    /// <param name="owner">The character that has dealt the damage to this character.</param>
     public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character owner)
     {
 		int finalDamage = unmitigatedDamage;
+        lastDamagedBy = owner;
+
+        // Let the owner know of the amount of damage done.
+        if (owner != null)
+            owner.OnDamageDealt(finalDamage);
 
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
-		if (onDamageTaken != null)
-		{
-			onDamageTaken.Invoke(finalDamage);
-		}
-
-		if (this is Hero)
-		{
-			HeroAnimator heroAnim = Animator as HeroAnimator;
-			heroAnim.TakeHit = true;
-		}
+        // Tell this character how much damage it has done.
+        OnDamageTaken(finalDamage);
 
         // If the character is dead
 		if (derivedStats.CurrentHealth <= 0 && !isDead)
@@ -352,6 +355,30 @@ public abstract class Character : MonoBehaviour
         if (onSpawn != null)
         {
             onSpawn(this);
+        }
+    }
+
+    /// <summary>
+    /// The event called when this character deals damage.
+    /// </summary>
+    /// <param name="damage">The amount of damage dealt.</param>
+    public virtual void OnDamageDealt(int damage)
+    {
+        if (onDamageDealt != null)
+        {
+            onDamageDealt(damage);
+        }
+    }
+
+    /// <summary>
+    /// The event called when this character takes damage. 
+    /// </summary>
+    /// <param name="damage">The amount of damage taken.</param>
+    public virtual void OnDamageTaken(int damage)
+    {
+        if (onDamageTaken != null)
+        {
+            onDamageTaken(damage);
         }
     }
 	
