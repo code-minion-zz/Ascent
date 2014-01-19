@@ -52,6 +52,8 @@ public abstract class Enemy : Character
 
 		PositionHpBar();
 
+		NGUITools.SetActive (hpBar.gameObject, false);
+
 		base.Initialise();
 	}
 
@@ -68,12 +70,11 @@ public abstract class Enemy : Character
 	public override void Update () 
     {
         base.Update();
-
 		if (!IsDead)
 		{
 			if (hpBar != null)
 			{
-				if (updateHpBar)
+				if (enabled)
 				{
 					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
 					{
@@ -198,8 +199,21 @@ public abstract class Enemy : Character
     #endregion
 
 
-    #region Collisions on Self
+	#region Collisions on Self
+    public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
+    {
+        // Check to see if the enemy was last damaged by a hero,
+        // thus update the floor statistics of the hero. This function may want to pass in
+        // the owner that is applying this damage.
+        if (lastDamagedBy != null)
+        {
+            // TODO: This might need to move.
+            Hero hero = lastDamagedBy as Hero;
+            hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
+        }
 
+        base.ApplyDamage(unmitigatedDamage, type, owner);
+    }
 
 	public override void OnDeath ()
 	{
