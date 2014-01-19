@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour
     // The event delegate handler we will use for damage taken.
     public delegate void Damage(int amount);
     public event Damage onDamageTaken;
-    public event Damage onDamageDealt; // Not handled by the character.
+    public event Damage onDamageDealt;
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
@@ -350,7 +350,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public virtual void OnSpawn()
+    protected virtual void OnSpawn()
     {
         if (onSpawn != null)
         {
@@ -362,7 +362,7 @@ public abstract class Character : MonoBehaviour
     /// The event called when this character deals damage.
     /// </summary>
     /// <param name="damage">The amount of damage dealt.</param>
-    public virtual void OnDamageDealt(int damage)
+    protected virtual void OnDamageDealt(int damage)
     {
         if (onDamageDealt != null)
         {
@@ -374,7 +374,7 @@ public abstract class Character : MonoBehaviour
     /// The event called when this character takes damage. 
     /// </summary>
     /// <param name="damage">The amount of damage taken.</param>
-    public virtual void OnDamageTaken(int damage)
+    protected virtual void OnDamageTaken(int damage)
     {
         if (onDamageTaken != null)
         {

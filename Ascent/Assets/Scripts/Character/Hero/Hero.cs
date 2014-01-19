@@ -119,7 +119,7 @@ public abstract class Hero : Character
 		}
 	}
 
-    public override void OnDamageTaken(int damage)
+    protected override void OnDamageTaken(int damage)
     {
         base.OnDamageTaken(damage);
 
@@ -130,7 +130,7 @@ public abstract class Hero : Character
         heroAnim.TakeHit = true;
     }
 
-    public override void OnDamageDealt(int damage)
+    protected override void OnDamageDealt(int damage)
     {
         base.OnDamageDealt(damage);
 
