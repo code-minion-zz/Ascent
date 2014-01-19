@@ -194,35 +194,12 @@ public abstract class Enemy : Character
 		//    activeHitBoxes.Add(t);
 		//}
 	}
-	
-	public void KillBox(Transform box)
-	{
-		//activeHitBoxes.Remove(box);
-	}
 
     #endregion
 
 
     #region Collisions on Self
 
-	
-	void OnBecameVisible()
-	{
-		//Debug.Log ("Rat became visible", this);
-		if (hpBar != null)
-		{
-			//hpBar.gameObject.SetActive(true);
-			updateHpBar = true;
-		}
-	}
-
-	void OnBecameInvisible()
-	{
-		if (hpBar != null)
-		{
-			updateHpBar = false;
-		}
-	}
 
 	public override void OnDeath ()
 	{
