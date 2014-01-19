@@ -169,18 +169,10 @@ public class HeroController : MonoBehaviour
                         }
 						else if (!GetComponent<CharacterMotor>().moving)
 						{
-						    moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
-
-						//    if (vert)
-						//    {
-						//        transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, device.LeftStickY.Value));
-						//    }
-						//    else
-						//    {
-						//        transform.LookAt(transform.position + new Vector3(device.LeftStickX.Value, 0.0f, 0.0f));
-						//    }
+							moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
 						}
 
+						transform.LookAt(transform.position + moveDirection);
                         GetComponent<CharacterMotor>().Move(moveDirection);
 
                         float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
@@ -190,10 +182,6 @@ public class HeroController : MonoBehaviour
                         // Direction vector to hold the input key press.
                         Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
                         heroAnimator.AnimMove(direction, speed);
-
-                        transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
-
-                        //transform.Rotate(new Vector3(0.0f, device.LeftStickX.Value * 3.0f, 0.0f));
                     }
                 }
       

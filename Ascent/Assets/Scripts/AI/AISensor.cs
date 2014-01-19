@@ -9,6 +9,7 @@ public abstract class AISensor
         FirstFound,
         Closest,
         All,
+		Target,
     }
 
     public enum EScope
@@ -21,17 +22,18 @@ public abstract class AISensor
     protected EType type;
     protected EScope scope;
     protected Transform transform;
+	protected AIAgent agent;
 
     public AISensor(Transform transform, EType type, EScope scope)
     {
         this.transform = transform;
         this.type = type;
         this.scope = scope;
+		
+		agent = transform.GetComponentInChildren<AIAgent>();
     }
 
-    public abstract bool SenseFirstFound(ref List<Character> sensedCharacters);
-    public abstract bool SenseClosest(ref List<Character> sensedCharacters);
-    public abstract bool SenseAll(ref List<Character> sensedCharacters);
+	public abstract bool SenseCharacter(Character c);
 
     public bool Sense(Transform transform, ref List<Character> sensedCharacters)
     {
@@ -40,9 +42,95 @@ public abstract class AISensor
             case EType.FirstFound: return SenseFirstFound(ref sensedCharacters);
             case EType.Closest: return SenseClosest(ref sensedCharacters);
             case EType.All: return SenseAll(ref sensedCharacters);
+			case EType.Target: return SenseTarget(ref sensedCharacters);
+			default: Debug.LogError("Unhandled case"); break;
         }
         return false;
     }
+
+	public bool SenseTarget(ref List<Character> sensedCharacters)
+	{
+		Character c = agent.TargetCharacter; // Add target
+
+		bool foundTarget = c != null;
+
+		if (foundTarget)
+		{
+			foundTarget = SenseCharacter(c);
+			if (foundTarget)
+			{
+				AddCharacter(ref sensedCharacters, c);
+			}
+		}
+
+		return foundTarget;
+	}
+
+	public bool SenseFirstFound(ref List<Character> sensedCharacters)
+	{
+		List<Character> characters = new List<Character>();
+		GetCharacterList(ref characters);
+
+		// Check all characters to see if there is a collision
+		foreach (Character c in characters)
+		{
+			if (SenseCharacter(c))
+			{
+				AddCharacter(ref sensedCharacters, c);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public bool SenseClosest(ref List<Character> sensedCharacters)
+	{
+		List<Character> characters = new List<Character>();
+		GetCharacterList(ref characters);
+
+		List<Character> foundChars = new List<Character>();
+
+		// Check all characters to see if there is a collision
+		foreach (Character c in characters)
+		{
+			if (SenseCharacter(c))
+			{
+				AddCharacter(ref foundChars, c);
+			}
+		}
+
+		sensedCharacters.Add(GetClosestCharacter(transform, ref foundChars));
+
+		if (sensedCharacters.Count > 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public bool SenseAll(ref List<Character> sensedCharacters)
+	{
+		List<Character> characters = new List<Character>();
+		GetCharacterList(ref characters);
+
+		// Check all characters to see if there is a collision
+		foreach (Character c in characters)
+		{
+			if (SenseCharacter(c))
+			{
+				AddCharacter(ref sensedCharacters, c);
+			}
+		}
+
+		if (sensedCharacters.Count > 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
 
     public void AddCharacter(ref List<Character> sensedCharacters, Character c)
     {

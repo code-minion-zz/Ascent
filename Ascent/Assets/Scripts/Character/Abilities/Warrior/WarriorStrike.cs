@@ -21,10 +21,7 @@ public class WarriorStrike : Action
 		specialCost = 0;
 
         // Defines the collision shape and properties of this ability.
-		swingArc = new Arc();
-		swingArc.radius = radius;
-		swingArc.arcAngle = arcAngle;
-		swingArc.transform = owner.transform;
+		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.10f));
 
 		base.Initialise(owner);
     }

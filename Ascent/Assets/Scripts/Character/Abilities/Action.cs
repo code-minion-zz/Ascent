@@ -5,15 +5,23 @@ public abstract class Action
 {
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
+
     protected float coolDownTime = 0.0f;
     private float cooldownValue = 0.0f;
+
     protected float currentTime = 0.0f;
+
     private bool isOnCooldown = false;
+
     protected string animationTrigger;
+
     protected int specialCost;
 
     public delegate void ActionEnd();
     public event ActionEnd OnActionEnd;
+
+	public delegate void ActionCooled();
+	public event ActionCooled OnActionCooled;
 
     protected Character owner;
     public Character Owner
@@ -79,7 +87,11 @@ public abstract class Action
         currentTime = 0.0f;
         cooldownValue = CooldownTime;
         isOnCooldown = true;
-        owner.Animator.PlayAnimation(animationTrigger);
+		
+		if (owner.Animator != null)
+		{
+			owner.Animator.PlayAnimation(animationTrigger);
+		}
     }
 
     /// <summary>
@@ -102,20 +114,31 @@ public abstract class Action
     /// </summary>
     public virtual void UpdateCooldown()
     {
-        float timeVal = Time.deltaTime;
-        cooldownValue -= timeVal;
+		if (isOnCooldown)
+		{
+			float timeVal = Time.deltaTime;
+			cooldownValue -= timeVal;
 
-        if (cooldownValue <= 0.0f)
-        {
-            
-            cooldownValue = 0.0f;
-            isOnCooldown = false;
-        }
+			if (cooldownValue <= 0.0f)
+			{
+				cooldownValue = 0.0f;
+				isOnCooldown = false;
+
+				if (OnActionCooled != null)
+				{
+					OnActionCooled.Invoke();
+				}
+			}
+		}
     }
 
     public virtual void EndAbility()
     {
-        owner.Animator.StopAnimation(animationTrigger);
+		if (owner.Animator != null)
+		{
+			owner.Animator.StopAnimation(animationTrigger);
+		}
+
         currentTime = 0.0f;
 
         if (OnActionEnd != null)

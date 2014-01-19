@@ -72,7 +72,6 @@ public class FloorCamera : MonoBehaviour
 		else
 		{
 			UpdateCameraPosition();
-			transform.position = ClampPositionIntoBounds(transform.position);
 		}
 
 		if(Input.GetKeyUp(KeyCode.Keypad5))
@@ -130,7 +129,7 @@ public class FloorCamera : MonoBehaviour
         Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
 		
 		// Set the position of our camera.
-        _transform.position = lerpVector;
+		_transform.position = ClampPositionIntoBounds(lerpVector);
     }
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)

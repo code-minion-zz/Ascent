@@ -92,13 +92,62 @@ public class Room : MonoBehaviour
     /// </summary144>
     void Awake()
     {
-        // Make sure all the nodes are found and references.
-        FindAllNodes();
+		//Debug.Log("ROOM");
+		//// Make sure all the nodes are found and references.
+		//FindAllNodes();
 
-        navMesh = NavMesh;
+		//navMesh = NavMesh;
 
-        doors = GetComponentInChildren<Doors>();
+		//doors = GetComponentInChildren<Doors>();
+
+		//if (enemies == null)
+		//{
+		//    Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
+
+		//    if (roomEnemies.Length > 0)
+		//    {
+		//        enemies = new List<Character>();
+
+		//        foreach (Enemy e in roomEnemies)
+		//        {
+		//            if (!enemies.Contains(e))
+		//            {
+		//                e.ContainedRoom = this;
+		//                enemies.Add(e);
+		//            }
+		//        }
+		//    }
+		//}
     }
+
+	public void Initialise()
+	{
+		// Make sure all the nodes are found and references.
+		FindAllNodes();
+
+		navMesh = NavMesh;
+
+		doors = GetComponentInChildren<Doors>();
+
+		if (enemies == null)
+		{
+			Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
+
+			if (roomEnemies.Length > 0)
+			{
+				enemies = new List<Character>();
+
+				foreach (Enemy e in roomEnemies)
+				{
+					if (!enemies.Contains(e))
+					{
+						e.ContainedRoom = this;
+						enemies.Add(e);
+					}
+				}
+			}
+		}
+	}
 
     //void Start()
     //{
@@ -118,23 +167,7 @@ public class Room : MonoBehaviour
 		curMinCamera = minCamera;
 		curMaxCamera = maxCamera;
 
-        if (enemies == null)
-        {
-			Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
 
-			if (roomEnemies.Length > 0)
-			{
-				enemies = new List<Character>();
-
-				foreach (Enemy e in roomEnemies)
-				{
-					if (!enemies.Contains(e))
-					{
-						enemies.Add(e);
-					}
-				}
-			}
-        }
 
 		if(chests == null)
 		{
@@ -368,115 +401,50 @@ public class Room : MonoBehaviour
 	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
 	{
 		Shape2D.EType type = shape.type;
+
+		List<Character> characters = GetCharacterList(scope);
+		if (characters.Count == 0)
+		{
+			return false;
+		}
+
 		switch(type)
 		{
-			case Shape2D.EType.Rect:
-				{
-				}
-				break;
 			case Shape2D.EType.Circle:
 				{
-                    Circle circle = shape as Circle;
-
-                    if (scope == Character.EScope.Enemy)
+					foreach (Character c in characters)
                     {
-                        if (enemies == null)
+						if (c.IsDead)
                         {
-                            break;
+                            continue;
                         }
 
-                        foreach (Enemy e in enemies)
+						if (CheckCircle(shape as Circle, c))
                         {
-                            if (e.IsDead)
-                            {
-                                continue;
-                            }
-
-                            bool inside = false;
-
-                            // Check the radius of the circle shape against the extents of the enemy.
-                            Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
-                            Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
-
-                            inside = MathUtility.IsCircleCircle(circle.transform.position, circle.radius, pos, (extents.x + extents.z * 0.5f));
-
-                            if (inside)
-                            {
-                                charactersColliding.Add(e);
-                            }
+                            charactersColliding.Add(c);
                         }
                     }
 				}
 				break;
 			case Shape2D.EType.Arc:
 				{
-					Arc arc = shape as Arc;
-
-					if (scope == Character.EScope.Enemy)
+					foreach (Character c in characters)
 					{
-						if (enemies == null)
+						if(c.IsDead)
 						{
-							break;
-						}
+							continue;
+						}					
 
-						foreach(Enemy e in enemies)
+						if(CheckArc(shape as Arc, c))
 						{
-							if(e.IsDead)
-							{
-								continue;
-							}
-
-							bool inside = false;
-		
-							Vector3 extents = new Vector3(e.collider.bounds.extents.x, 0.5f, e.collider.bounds.extents.z);
-							Vector3 pos = new Vector3(e.transform.position.x, 0.5f, e.transform.position.z);
-
-                            // TL
-                            Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
-                            inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
-#if UNITY_EDITOR
-                            Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, extents.z));
-#endif
-
-                            // TR
-                            if (!inside)
-                            {
-                                point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
-                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-                                Debug.DrawLine(e.transform.position, e.transform.position + extents);
-#endif
-                            }
-
-                            // BL
-                            if (!inside)
-                            {
-                                point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
-                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-                                Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
-#endif
-                            }
-
-                            // BR
-                            if (!inside)
-                            {
-                                point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
-                                inside = MathUtility.IsWithinCircleArc(point, arc.transform.position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-                                Debug.DrawLine(e.transform.position, e.transform.position + new Vector3(extents.x, extents.y, -extents.z));
-#endif
-                            }
-
-							if(inside)
-							{
-								charactersColliding.Add(e);
-							}
+							charactersColliding.Add(c);
 						}
 					}
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled case");
 				}
 				break;
 		}
@@ -485,12 +453,114 @@ public class Room : MonoBehaviour
 		return charactersColliding.Count > 0;
 	}
 
-	public bool CheckCollisionAreas<T>(List<Shape2D> shapes, ref List<T> enemies)
+	public List<Character> GetCharacterList(Character.EScope scope)
 	{
-		//switch()
-		//{
-		//}
+		List<Character> characters = null;
 
-		return false;
+		switch(scope)
+		{
+			case Character.EScope.All:
+				{
+					List<Player> players = Game.Singleton.Players;
+
+					if (enemies != null)
+					{
+						characters = new List<Character>(enemies);
+					}
+
+					foreach (Player p in players)
+					{
+						characters.Add(p.Hero.GetComponent<Hero>());
+					}
+				}
+				break;
+			case Character.EScope.Enemy:
+				{
+					if (enemies != null)
+					{
+						characters = new List<Character>(enemies);
+					}
+				}
+				break;
+			case Character.EScope.Hero:
+				{
+					List<Player> players = Game.Singleton.Players;
+
+					characters  = new List<Character>();
+
+					foreach (Player p in players)
+					{
+						characters.Add(p.Hero.GetComponent<Hero>());
+					}
+
+					return characters;
+				}
+			default:
+				{
+					Debug.LogError("Invalid case");
+				}
+				break;
+		}
+
+		return characters;
+	}
+
+	public bool CheckCircle(Circle circle, Character c)
+	{
+		// Check the radius of the circle shape against the extents of the enemy.
+		Vector3 extents = new Vector3(c.collider.bounds.extents.x, 0.5f, c.collider.bounds.extents.z);
+		Vector3 pos = new Vector3(c.transform.position.x, 0.5f, c.transform.position.z);
+
+		return (MathUtility.IsCircleCircle(circle.Position, circle.radius, pos, (extents.x + extents.z * 0.5f)));
+	}
+
+	public bool CheckArc(Arc arc, Character c)
+	{
+		bool inside = false;
+
+		Vector3 extents = new Vector3(c.collider.bounds.extents.x, 0.5f, c.collider.bounds.extents.z);
+		Vector3 pos = new Vector3(c.transform.position.x, 0.5f, c.transform.position.z);
+
+		// TL
+		Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
+		inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+#if UNITY_EDITOR
+		Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(-extents.x, extents.y, extents.z));
+#endif
+
+		// TR
+		if (!inside)
+		{
+			point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+			Debug.DrawLine(c.transform.position, c.transform.position + extents);
+#endif
+		}
+
+		// BL
+		if (!inside)
+		{
+			point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
+			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+			Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
+#endif
+		}
+
+		// BR
+		if (!inside)
+		{
+			point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
+			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+			Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(extents.x, extents.y, -extents.z));
+#endif
+		}
+
+		return inside;
 	}
 }

@@ -29,7 +29,17 @@ public class AIAgent : MonoBehaviour
         return mindAgent.SensedCharacters;
     }
 
-#if UNITY_EDITOR
+	private Character targetCharacter;
+	public Character TargetCharacter
+	{
+		get { return targetCharacter; }
+		set 
+		{
+			targetCharacter = value;
+			steeringAgent.TargetCharacter = value;
+		}
+	}
+
 	public void OnEnable()
 	{
 		steeringAgent.SetActive(true);
@@ -42,6 +52,7 @@ public class AIAgent : MonoBehaviour
 		mindAgent.SetActive(false);
 	}
 
+#if UNITY_EDITOR
     public void OnDrawGizmos()
     {
         steeringAgent.DebugDraw();

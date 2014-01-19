@@ -34,6 +34,7 @@ public abstract class Enemy : Character
     public Room ContainedRoom
     {
         get { return containedRoom; }
+		 set { containedRoom = value; }
     }
 
 	protected bool updateHpBar = false;
@@ -56,7 +57,7 @@ public abstract class Enemy : Character
 
     public virtual void OnEnable()
     {
-        containedRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+        //containedRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
     }
 
     #endregion

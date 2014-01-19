@@ -44,9 +44,7 @@ public class WarriorCharge : Action
 
         charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
-        circle = new Circle();
-        circle.radius = 2.0f;
-        circle.transform = owner.transform;
+        circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
     }
 	
     public override void StartAbility()

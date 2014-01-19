@@ -28,9 +28,7 @@ public class WarriorWarStomp : Action
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
-        collisionShape = new Circle();
-        collisionShape.radius = radius;
-        collisionShape.transform = owner.transform;
+        collisionShape = new Circle(owner.transform, radius, new Vector3(0.0f,0.0f,0.0f));
     }
 
     public override void StartAbility()

@@ -70,7 +70,7 @@ public class MathUtility
 
 	public static float ConvertVectorToHeading(Vector3 vector)
 	{
-		return (Mathf.Atan2(vector.x, vector.y * -1.0f));
+		return (Mathf.Atan2(vector.x, vector.z));
 	}
 
 	public static Vector3 ConvertHeadingToVector(float heading)
@@ -85,7 +85,7 @@ public class MathUtility
 	}
 
 	// Checks X and Z
-	public static bool IsWithinBounds(Vector3 point, Vector3 rectPosition, Vector3 rectSize)
+	public static bool IsWithinRect(Vector3 point, Vector3 rectPosition, Vector3 rectSize)
 	{
 		return (point.x > rectPosition.x - rectSize.x * 0.5f &&
 				point.x < rectPosition.x + rectSize.x * 0.5f &&

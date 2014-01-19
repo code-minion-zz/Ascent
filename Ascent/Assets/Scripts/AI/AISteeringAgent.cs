@@ -1,12 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 public class AISteeringAgent  
 {
     private Vector3 startPos;
     private Vector3 targetPos;
-    private Character targetCharacter = null;
+
+	private Character targetCharacter;
+	public Character TargetCharacter
+	{
+		get { return targetCharacter; }
+		set
+		{
+			targetCharacter = value;
+			startPos = motor.transform.position;
+			hasTarget = true;
+		}
+	}
+
     private Room containedRoom;
 
     protected CharacterMotor motor;
@@ -77,17 +93,17 @@ public class AISteeringAgent
         }
     }
 
+	public void RemoveTarget()
+	{
+		targetCharacter = null;
+		targetPos = Vector3.zero;
+		hasTarget = false;
+	}
+
     public void SetTargetPosition(Vector3 targetPosition)
     {
         startPos = motor.transform.position;
         targetPos = targetPosition;
-        hasTarget = true;
-    }
-
-    public void SetTarget(Character character)
-    {
-        targetCharacter = character;
-        startPos = motor.transform.position;
         hasTarget = true;
     }
 

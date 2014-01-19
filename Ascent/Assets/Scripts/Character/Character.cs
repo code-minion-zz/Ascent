@@ -168,7 +168,7 @@ public abstract class Character : MonoBehaviour
         {
             stunDuration -= Time.deltaTime;
 
-            GetComponentInChildren<CharacterMotor>().StopMovement();
+            GetComponentInChildren<CharacterMotor>().StopMotion();
 
             if (stunDuration < 0.0f)
             {
@@ -190,6 +190,15 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+	public virtual void ResetColor()
+	{
+		Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		foreach (Renderer render in renderers)
+		{
+			render.material.color = originalColour;
+		}
+	}
+
     public virtual void SubUpdate()
     {
         // To be derived
@@ -208,18 +217,17 @@ public abstract class Character : MonoBehaviour
 		if (activeAbility == null)
 		{
             Action ability = abilities[abilityID];
-
             // Make sure the cooldown is off otherwise we cannot use the ability
-            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
+			
+            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) >= 0 )
             {
                 // TODO: Check if we are not in a state that denies abilities to perform.
-
                 ability.StartAbility();
                 activeAbility = ability;
 
                 derivedStats.CurrentSpecial -= ability.SpecialCost;
 
-                motor.StopMovement();
+                motor.StopMotion();
                 motor.canMove = false;
             }
 		}
@@ -261,6 +269,12 @@ public abstract class Character : MonoBehaviour
 		if (onDamageTaken != null)
 		{
 			onDamageTaken.Invoke(finalDamage);
+		}
+
+		if(this is Hero)
+		{
+			HeroAnimator heroAnim = Animator as HeroAnimator;
+			heroAnim.TakeHit = true;
 		}
 
         // If the character is dead

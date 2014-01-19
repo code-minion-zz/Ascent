@@ -13,6 +13,13 @@ public class AI_Agent : MonoBehaviour
 
     protected List<AI_Sensor> sensors = new List<AI_Sensor>();
 
+	private Character targetCharacter;
+	public Character TargetCharacter
+	{
+		set { targetCharacter = value; }
+		get { return targetCharacter; }
+	}
+
     protected enum AI_State
     {
         IDLE = 0,
