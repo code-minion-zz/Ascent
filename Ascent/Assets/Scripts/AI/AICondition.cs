@@ -27,4 +27,16 @@ public class AICondition
     {
         return false;
     }
+
+#if UNITY_EDITOR
+    public virtual void DebugDraw()
+    {
+
+    }
+
+	public override string ToString()
+	{
+		return base.ToString();
+	}
+#endif
 }

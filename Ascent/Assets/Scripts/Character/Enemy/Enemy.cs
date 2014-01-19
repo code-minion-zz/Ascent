@@ -30,6 +30,13 @@ public abstract class Enemy : Character
 		set { hpBar = value; }
 	}
 
+    protected Room containedRoom;
+    public Room ContainedRoom
+    {
+        get { return containedRoom; }
+		 set { containedRoom = value; }
+    }
+
 	protected bool updateHpBar = false;
 
     #endregion
@@ -47,6 +54,11 @@ public abstract class Enemy : Character
 
 		base.Initialise();
 	}
+
+    public virtual void OnEnable()
+    {
+        //containedRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+    }
 
     #endregion
 
@@ -88,12 +100,12 @@ public abstract class Enemy : Character
 
     public override void SubUpdate()
     {
-        AI_Agent ai = GetComponentInChildren<AI_Agent>();
+        //AI_Agent ai = GetComponentInChildren<AI_Agent>();
 
-        if (ai != null)
-        {
-            ai.Process();
-        }
+        //if (ai != null)
+        //{
+        //    ai.Process();
+        //}
 
         base.SubUpdate();
     }

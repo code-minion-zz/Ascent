@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Rat : Enemy 
 {
@@ -12,10 +13,101 @@ public class Rat : Enemy
     private Vector3 deathRotation = Vector3.zero;
     private float deathSpeed = 5.0f;
 
-    private AIAgent agent;
+    public AIAgent agent;
 
-    public override void Update()
-    {
+   public override void Initialise()
+	{
+		deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+		// Populate with stats
+		baseStatistics = new BaseStats();
+		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
+
+		baseStatistics.CurrencyBounty = 1;
+		baseStatistics.ExperienceBounty = 50;
+		derivedStats = new DerivedStats(baseStatistics);
+		derivedStats.Attack = 5;
+
+		// Add abilities
+		Action tackle = new EnemyTackle();
+		tackle.Initialise(this);
+		abilities.Add(tackle);
+
+		originalColour = Color.white;
+
+		base.Initialise();
+
+		InitialiseAI();
+	}
+
+   public void InitialiseAI()
+   {
+	   agent.Initialise(transform);
+
+	   AIBehaviour behaviour = null;
+	   AITrigger trigger = null;
+
+	   // Defensive behaviour
+	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += OnAttacked;
+
+		   // OnWanderEnd, Triggers if time exceeds 2s or target reached.
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f));
+		   trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+		   trigger.OnTriggered += OnWanderEnd;
+	   }
+
+	   // Aggressive
+	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += OnAttacked;
+
+		   // OnCanUseTackle, triggers if target in range and action off cooldown
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
+		   trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+		   trigger.OnTriggered += OnCanUseTackle;
+
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f));
+		   trigger.OnTriggered += OnAggressiveEnd;
+	   }
+
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+   }
+
+   public override void OnEnable()
+   {
+       base.OnEnable();
+   }
+
+   public override void Update()
+   {
+	   if (!IsStunned)
+	   {
+		   if (activeAbility == null)
+		   {
+			   agent.MindAgent.Process();
+		   }
+		   
+		   agent.SteeringAgent.Process();
+	   }
+
+
         base.Update();
 
         if (isDead)
@@ -50,57 +142,51 @@ public class Rat : Enemy
                 deathSequenceTime = deathSequenceEnd;
             }
         }
+
+		//transform.forward = new Vector3(Game.Singleton.Players[0].Input.LeftStickX, 0.0f, Game.Singleton.Players[0].Input.LeftStickY);
+
     }
 
-   public override void Initialise()
+   public void OnWanderEnd()
    {
-       agent = new AIAgent();
+	   // Choose a new target location
+	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
-       // Defensive behaviour
-       AIBehaviour behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-       AITrigger trigger = behaviour.AddTrigger();
-       trigger.Priority = AITrigger.EConditionalExit.Continue;
-       trigger.AddCondition(new AICondition_HP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.LessThan, 0.20f));
-       trigger.AddCondition(new AICondition_SP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.LessThan, 0.20f));
-       trigger.AddCondition(new AICondition_Attacked(this));
-       trigger.AddCondition(new AICondition_Timer(10.0f));
-       trigger.OnTriggered += OnTrigger;
-
-       // Aggressive
-       behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-       trigger = behaviour.AddTrigger();
-       trigger.Priority = AITrigger.EConditionalExit.Continue;
-       trigger.AddCondition(new AICondition_Sensor(new AISensor(AISensor.EType.FirstFound, AISensor.EScope.Enemies)));
-       trigger.OnTriggered += OnTrigger;
-
-	   deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-	   // Populate with stats
-	   baseStatistics = new BaseStats();
-	   baseStatistics.Vitality = (int) ( (((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
-	  
-	   baseStatistics.CurrencyBounty = 1;
-	   baseStatistics.ExperienceBounty = 50;
-	   derivedStats = new DerivedStats(baseStatistics);
-	   derivedStats.Attack = 5;
-
-	   // Add abilities
-	   Action tackle = new EnemyTackle();
-	   tackle.Initialise(this);
-	   abilities.Add(tackle);
-
-	   // Add abilities
-	   Action charge = new EnemyCharge();
-	   charge.Initialise(this);
-	   abilities.Add(charge);
-
-       originalColour = Color.white;
-
-	   base.Initialise();
+	   // Reset behaviour
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   
    }
 
-   public void OnTrigger()
+   public void OnAggressiveEnd()
    {
+	   agent.SteeringAgent.RemoveTarget();
+	   motor.StopMotion();
+
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   OnWanderEnd();
+
+	   motor.speed = 3.0f;
+   }
+
+   public void OnAttacked()
+   {
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   agent.TargetCharacter = lastDamagedBy;
+	   motor.speed = 5.0f;
+   }
+
+	
+
+   public void OnCanUseTackle()
+   {
+	   
+	   //agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   //agent.TargetCharacter = lastDamagedBy;
+	   UseAbility(0);
+	   
+	   //agent.enabled = false;
    }
 
    // We want to override the on death for this rat as we have some specific behaviour here.
@@ -135,20 +221,20 @@ public class Rat : Enemy
    private void CollideWithHero(Hero hero, Collision collision)
    {
        hero.LastDamagedBy = this;
-	   hero.ApplyDamage(3, EDamageType.Physical);
+	  // hero.ApplyDamage(3, EDamageType.Physical);
 
 	   //ContactPoint contact = collision.contacts[0];
 	   Vector3 direction = (collision.transform.position - transform.position).normalized;
 	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
 
-	   hero.ApplyKnockback(direction, 1.0f);
+	   //hero.ApplyKnockback(direction, 1.0f);
 
-       Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
+       //Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
 
 	   // Heroes are going to take a hit and play the animation.
        // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
 	   //hero.Animator.PlayAnimation("TakeHit");
-       HeroAnimator heroAnim = hero.Animator as HeroAnimator;
-       heroAnim.TakeHit = true;
+       //HeroAnimator heroAnim = hero.Animator as HeroAnimator;
+       //heroAnim.TakeHit = true;
    }
 }

@@ -117,11 +117,16 @@ public class Floor : MonoBehaviour
 
 		floorCamera.transform.parent = go.transform;
 
+		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
+
+		foreach (Room r in allRooms)
+		{
+			r.Initialise();
+		}
+
 		// Initialise all the enemies
 		enemies = new List<Enemy>();
-
 		GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-
 		for (int i = 0; i < monsters.Length; ++i)
 		{
 			Enemy thisEnemy = monsters[i].GetComponent<Enemy>();
@@ -134,16 +139,17 @@ public class Floor : MonoBehaviour
 			}
 		}
 
+		foreach (Room r in allRooms)
+		{
+			r.gameObject.SetActive(false);
+		}
+
+
 		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
-        allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 
-        foreach (Room r in allRooms)
-        {
-            r.gameObject.SetActive(false);
-        }
 
         currentRoom.gameObject.SetActive(true);
 
