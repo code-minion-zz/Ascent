@@ -34,6 +34,10 @@ public class SlimeReplicate : Action
         Enemy enemy = owner as Enemy;
         GameObject go = enemy.ContainedRoom.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
         go.transform.position = owner.transform.position;
+        go.transform.position += Vector3.left * 0.1f;
+        owner.transform.position += Vector3.right * 0.1f;
+
+        owner.DerivedStats.CurrentHealth = (int)((float)owner.DerivedStats.CurrentHealth * 0.5f);
 
         float scale = (float)owner.DerivedStats.CurrentHealth / (float)owner.DerivedStats.MaxHealth;
         if (scale > 0.15f)
@@ -49,10 +53,6 @@ public class SlimeReplicate : Action
         go.GetComponent<Enemy>().DerivedStats.MaxHealth = owner.DerivedStats.MaxHealth;
         go.GetComponent<Enemy>().DerivedStats.CurrentHealth = owner.DerivedStats.CurrentHealth;
 
-
-
-        Debug.Log(go.GetComponent<Enemy>().DerivedStats.CurrentHealth);
-
         //go.GetComponent<Enemy>().ApplyKnockback(Vector3.left, 100.0f);
         //enemy.ApplyKnockback(Vector3.right, 100.0f);
 
@@ -64,7 +64,7 @@ public class SlimeReplicate : Action
 #if UNITY_EDITOR
     public override void DebugDraw()
     {
-       
+
     }
 #endif
 

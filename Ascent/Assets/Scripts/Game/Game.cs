@@ -90,6 +90,7 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+        Random.seed = (int)Time.time;
 		running = true;
 
 		playerCharacterType = initValues.playerCharacterType;

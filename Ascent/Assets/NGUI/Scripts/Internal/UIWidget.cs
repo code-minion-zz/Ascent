@@ -162,6 +162,8 @@ public class UIWidget : UIRect
 
 				if (keepAspectRatio == AspectRatioSource.BasedOnWidth)
 					mHeight = Mathf.RoundToInt(mWidth / aspectRatio);
+				else if (keepAspectRatio == AspectRatioSource.Free)
+					aspectRatio = mWidth / (float)mHeight;
 
 				mMoved = true;
 				if (autoResizeBoxCollider) ResizeCollider();
@@ -191,6 +193,8 @@ public class UIWidget : UIRect
 
 				if (keepAspectRatio == AspectRatioSource.BasedOnHeight)
 					mWidth = Mathf.RoundToInt(mHeight * aspectRatio);
+				else if (keepAspectRatio == AspectRatioSource.Free)
+					aspectRatio = mWidth / (float)mHeight;
 
 				mMoved = true;
 				if (autoResizeBoxCollider) ResizeCollider();
@@ -881,6 +885,7 @@ public class UIWidget : UIRect
 	{
 		base.OnInit();
 		RemoveFromPanel();
+		mMoved = true;
 
 		// Prior to NGUI 2.7.0 width and height was specified as transform's local scale
 		if (mWidth == 100 && mHeight == 100 && cachedTransform.localScale.magnitude > 8f)
