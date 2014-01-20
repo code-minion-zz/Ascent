@@ -48,13 +48,18 @@ public class EnchantedStatue : Enemy
         base.Initialise();
 
         InitialiseAI();
+
+        canBeDebuffed = false;
+        canBeStunned = false;
+        canBeInterrupted = false;
+        canBeKnockedBack = false;
     }
 
     public void InitialiseAI()
     {
         motor.speed = 1.5f;
         agent.Initialise(transform);
-		agent.SteeringAgent.RotationSpeed = 2.5f;
+		agent.SteeringAgent.RotationSpeed = 1.5f;
 
         AIBehaviour behaviour = null;
 
@@ -77,7 +82,7 @@ public class EnchantedStatue : Enemy
 
 			OnAttackedTrigger = behaviour.AddTrigger();
             OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[slamActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 20.0f, 10.0f, Vector3.back * 3.0f)));
+            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
             OnAttackedTrigger.OnTriggered += OnTargetInSight;
         }
 
@@ -104,9 +109,12 @@ public class EnchantedStatue : Enemy
 		UseAbility(slamActionID);
     }
 
-    public override void OnEnable()
+    public override void OnDisable()
     {
-        //agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        //agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
+        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        agent.SteeringAgent.RemoveTarget();
+        motor.StopMotion();
     }
 }

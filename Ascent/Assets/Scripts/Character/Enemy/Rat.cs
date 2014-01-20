@@ -51,7 +51,7 @@ public class Rat : Enemy
 		   trigger = behaviour.AddTrigger();
 		   trigger.Priority = AITrigger.EConditionalExit.Stop;
 		   trigger.AddCondition(new AICondition_Timer(2.0f));
-		  // trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+		   trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
 		   trigger.OnTriggered += OnWanderEnd;
 	   }
 
@@ -80,6 +80,7 @@ public class Rat : Enemy
 	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
        agent.SteeringAgent.RotationSpeed = 15.0f;
+       motor.speed = 3.0f;
    }
 
    public override void Update()
@@ -124,43 +125,14 @@ public class Rat : Enemy
 	   UseAbility(0);
    }
 
-   public void OnCollisionEnter(Collision other)
+
+   public override void OnDisable()
    {
-	   string tag = other.transform.tag;
-
-	   switch (tag)
-	   {
-		   case "Hero":
-			   {
-				   Character otherCharacter = other.transform.GetComponent<Character>();
-
-                   if (!IsStunned && !otherCharacter.IsInvulnerable)
-                   {
-				        CollideWithHero(otherCharacter as Hero, other);
-                   }
-			   }
-			   break;
-	   }
-   }
-
-   /// <summary>
-   /// When the rat collides with a hero
-   /// </summary>
-   /// <param name="hero"></param>
-   private void CollideWithHero(Hero hero, Collision collision)
-   {
-       hero.LastDamagedBy = this;
-	  
-
-	   //ContactPoint contact = collision.contacts[0];
-	   Vector3 direction = (collision.transform.position - transform.position).normalized;
-	   Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
-
-	   //hero.ApplyKnockback(direction, 1.0f);
-	   // Heroes are going to take a hit and play the animation.
-       // TODO: Make this a chance based scenario. The hero should check also if he can take a hit as well.
-	   //hero.Animator.PlayAnimation("TakeHit");
-       //HeroAnimator heroAnim = hero.Animator as HeroAnimator;
-       //heroAnim.TakeHit = true;
+       motor.StopMotion();
+       agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+       agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+       agent.SteeringAgent.RemoveTarget();
+       OnWanderEnd();
+       motor.speed = 3.0f;
    }
 }

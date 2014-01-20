@@ -27,6 +27,12 @@ public class CharacterMotor : MonoBehaviour
 		get { return usingMovementForce; }
 	}
 
+    private Vector3 targetVelocity;
+    public Vector3 TargetVelocity
+    {
+        get { return targetVelocity; }
+    }
+
 	// Grid Movement
 	public bool moving;
 	float offset = 1.0f;
@@ -60,7 +66,7 @@ public class CharacterMotor : MonoBehaviour
 		}
 
 		// Calculate how fast we should be moving
-		Vector3 targetVelocity = Vector3.zero;
+		targetVelocity = Vector3.zero;
 		Vector3 knockbackVel = Vector3.zero;
         int forces = 0;
 

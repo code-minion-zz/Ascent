@@ -11,6 +11,8 @@ public class AISteeringAgent
     private Vector3 startPos;
     private Vector3 targetPos;
 
+    private Vector3 posLastFrame;
+
 	private Character targetCharacter;
 	public Character TargetCharacter
 	{
@@ -46,6 +48,13 @@ public class AISteeringAgent
         set { rotationSpeed = value; }
     }
 
+    protected bool isRunningAway;
+    public bool IsRunningAway
+    {
+        get { return isRunningAway; }
+        set { isRunningAway = value; }
+    }
+
     protected bool hasTarget = false;
 
     public delegate void TargetReached();
@@ -72,8 +81,15 @@ public class AISteeringAgent
             {
 				if (motor.UsingMovementForce)
 				{
-					//motor.transform.LookAt(targetCharacter.transform.position);
-					motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+                    if (IsRunningAway)
+                    {
+                        motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
+                    }
+                    else
+                    {
+                        //motor.transform.LookAt(targetCharacter.transform.position);
+                        motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+                    }
 				}
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
@@ -89,7 +105,7 @@ public class AISteeringAgent
 				if (motor.UsingMovementForce)
 				{
 					//motor.transform.LookAt(targetPos);
-					motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
+                    motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
 				}
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
@@ -117,6 +133,8 @@ public class AISteeringAgent
         startPos = motor.transform.position;
         targetPos = targetPosition;
         hasTarget = true;
+
+        posLastFrame = startPos;
     }
 
 #if UNITY_EDITOR
@@ -128,17 +146,34 @@ public class AISteeringAgent
 		}
         if(motor != null)
         {
+            Color red = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+            Color green = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+
+            Color blue = new Color(0.0f, 0.0f, 1.0f, 0.75f);
+            Color yellow = new Color(1.0f, 1.0f, 0.0f, 0.35f);
+
             if(hasTarget)
             {
                 Vector3 pos = targetPos;
-                if(targetCharacter != null)
+                if (targetCharacter != null)
                 {
                     pos = targetCharacter.transform.position;
+
+                    Debug.DrawLine(new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), new Vector3(pos.x, 0.2f, pos.z), red, 0.01f);
+                    Debug.DrawLine(new Vector3(posLastFrame.x, 0.2f, posLastFrame.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.5f);
+                }
+                else
+                {
+                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(pos.x, 0.2f, pos.z), red);
+                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.25f);
                 }
 
-                Debug.DrawLine(new Vector3(startPos.x, 1.0f, startPos.z), new Vector3(pos.x, 1.0f, pos.z), Color.red);
-                Debug.DrawLine(new Vector3(startPos.x, 1.0f, startPos.z), new Vector3(motor.transform.position.x, 1.0f, motor.transform.position.z), Color.green);
+                posLastFrame = motor.transform.position;
             }
+
+            Debug.DrawLine(motor.transform.position, motor.transform.position + motor.TargetVelocity * 1.5f, yellow);
+            Debug.DrawLine(motor.transform.position, motor.transform.position + motor.transform.forward * 1.5f, blue);
+
         }
     }
 #endif

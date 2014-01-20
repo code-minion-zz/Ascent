@@ -73,7 +73,7 @@ public class EnemyTackle : Action
 		else if (currentTime >= animationLength * 0.25f)
 		{
 			owner.Motor.EnableMovementForce(true);
-			owner.Motor.speed = 100.0f;
+			owner.Motor.speed = 10.0f;
 		}
     }
 
