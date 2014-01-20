@@ -37,6 +37,8 @@ public class SlimeReplicate : Action
         go.transform.position += Vector3.left * 0.1f;
         owner.transform.position += Vector3.right * 0.1f;
 
+        owner.DerivedStats.CurrentHealth = (int)((float)owner.DerivedStats.CurrentHealth * 0.5f);
+
         float scale = (float)owner.DerivedStats.CurrentHealth / (float)owner.DerivedStats.MaxHealth;
         if (scale > 0.15f)
         {
@@ -62,7 +64,7 @@ public class SlimeReplicate : Action
 #if UNITY_EDITOR
     public override void DebugDraw()
     {
-       
+
     }
 #endif
 
