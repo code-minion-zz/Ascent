@@ -8,6 +8,7 @@ public class FloorSummary : MonoBehaviour
 	//List<Player> players;
 	//List<SummaryWindow> summaryWindows;
 	//Floor floor;
+	Player myPlayer;
 	FloorStats fs;
 	int expReward = 0;
 	int goldReward = 0;
@@ -18,10 +19,10 @@ public class FloorSummary : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
-		//Game.Singleton.Players [0].Hero.GetComponent<Hero> ().ResetFloorStatistics ();
-		fs = Game.Singleton.Players[0].Hero.GetComponent<Hero>().FloorStatistics;
-		//expReward = fs.ExperienceGained;
-		//goldReward = fs.TotalCoinsLooted;
+		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
+		fs = myPlayer.Hero.GetComponent<Hero>().FloorStatistics;
+		expReward = fs.ExperienceGained;
+		goldReward = fs.TotalCoinsLooted;
 		string bonusNames = uiElements[0].GetComponent<UILabel>().text;
 		string rewardValues = uiElements [1].GetComponent<UILabel> ().text;
 		
@@ -70,6 +71,8 @@ public class FloorSummary : MonoBehaviour
 		
 		uiElements [0].GetComponent<UILabel> ().text = bonusNames;
 		uiElements [1].GetComponent<UILabel> ().text = rewardValues;
+
+		uiElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.Currency);
 	} 
 	//// Use this for initialization
 	//void Start () 
@@ -97,23 +100,27 @@ public class FloorSummary : MonoBehaviour
 	//}
 	
 	//// Update is called once per frame
-	//void Update () 
-	//{
-	//    //// Update for each player
-	//    //for (int i = 0; i < playerCount; ++i )
-	//    //{
-	//    //    // Query this player's input
-	//    //    InputDevice inputDevice = players[i].Input;
-	//    //    if (inputDevice.Action1.WasPressed) // TODO: Also check Start
-	//    //    {
-	//    //        // On A press go to the next screen
-	//    //        Application.LoadLevel(0);
-	//    //        return;
-	//    //    }
+	void Update () 
+	{
+        // Query this player's input
+        InputDevice inputDevice = myPlayer.Input;
+		
+		// vote for next Level
+		if (inputDevice.Action1.WasPressed)
+		{
+			uiElements[6].GetComponent<UILabel>().color = Color.green;
 
+			// inform scene controller of player's vote
+			return;
+		}
 
-	//    //    // Update this player's window
-	//    //    summaryWindows[i].Process();
-	//    //}
-	//}
+		// vote for town
+		if (inputDevice.Action2.WasPressed) 
+		{
+			uiElements[6].GetComponent<UILabel>().color = Color.red;
+
+			// inform scene controller of player's vote
+			return;
+		}		
+	}
 }
