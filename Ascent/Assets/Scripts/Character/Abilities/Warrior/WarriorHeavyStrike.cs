@@ -19,10 +19,8 @@ public class WarriorHeavyStrike : Action
         animationTrigger = "SwingAttack";
         specialCost = 0;
 
-        swingArc = new Arc();
-        swingArc.radius = radius;
-        swingArc.arcAngle = arcAngle;
-        swingArc.transform = owner.transform;
+		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);
+
 
         base.Initialise(owner);
     }
@@ -51,7 +49,7 @@ public class WarriorHeavyStrike : Action
                 {
                     foreach (Enemy e in enemies)
                     {
-                        e.ApplyDamage(25, Character.EDamageType.Physical);
+                        e.ApplyDamage(25, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
                         // Create a blood splatter effect on the enemy.

@@ -28,9 +28,7 @@ public class WarriorWarStomp : Action
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
-        collisionShape = new Circle();
-        collisionShape.radius = radius;
-        collisionShape.transform = owner.transform;
+        collisionShape = new Circle(owner.transform, radius, new Vector3(0.0f,0.0f,0.0f));
     }
 
     public override void StartAbility()
@@ -66,8 +64,7 @@ public class WarriorWarStomp : Action
                 {
                     foreach (Enemy e in enemies)
                     {
-                        e.ApplyDamage(damage, Character.EDamageType.Physical);
-                        //e.ApplyKnockback(e.transform.position - owner.transform.position, knockBack);
+                        e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                         e.ApplyStunEffect(2.25f);
 
                         // Create a blood splatter effect on the enemy.

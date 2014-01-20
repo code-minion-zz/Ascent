@@ -23,17 +23,25 @@ public abstract class Character : MonoBehaviour
         Physical,
         Magical,
     }
+
+    // The event delegate handler we will use to take in the character.
+    public delegate void CharacterEventHandler(Character charater);
+    public event CharacterEventHandler onDeath;
+    public event CharacterEventHandler onSpawn;
+
+    // The event delegate handler we will use for damage taken.
+    public delegate void Damage(int amount);
+    public event Damage onDamageTaken;
+    public event Damage onDamageDealt; // Not handled by the character.
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
 	protected GameObject 			weaponPrefab;
     protected bool 					isDead = false;
-    protected Color 				originalColour;
+    protected Color                 originalColour = Color.white;
 
     protected float 				stunDuration;
 	protected float					stunTimeAccum;
-	protected float					flickerDuration = 0.5f;
-	protected float					flickerTimeAccum;
     protected float                 invulnerableDuration;
     protected float                 invulnerableTimeAccum;
 
@@ -43,21 +51,24 @@ public abstract class Character : MonoBehaviour
 	protected AnimatorController 	characterAnimator;
 	protected BaseStats 			baseStatistics;
 	protected DerivedStats			derivedStats;
-	protected List<Object> 			lastObjectsDamagedBy = new List<Object>();
+    protected Character             lastDamagedBy;
 	protected BetterList<Buff>		buffList = new BetterList<Buff>();
+	protected CharacterMotor        motor;
 
-	protected CharacterMotor motor;
 	public CharacterMotor Motor
 	{
 		get { return motor;  }
 	}
 
-	public delegate void DamageTaken(float amount);
-	public event DamageTaken OnDamageTaken;
-
     public Transform WeaponSlot
     {
         get { return weaponSlot; }
+    }
+
+    public Color OrigionalColor
+    {
+        get { return originalColour; }
+        set { originalColour = value; }
     }
 
 	public Collidable ChargeBall
@@ -85,9 +96,10 @@ public abstract class Character : MonoBehaviour
 		get { return derivedStats; }
 	}
 
-    public List<Object> LastObjectsDamagedBy
+    public Character LastDamagedBy
     {
-        get { return lastObjectsDamagedBy; }
+        get { return lastDamagedBy; }
+        set { lastDamagedBy = value; }
     }
 
 	public BetterList<Buff> BuffList
@@ -118,7 +130,6 @@ public abstract class Character : MonoBehaviour
         get { return isDead; }
     }
 
-
 	public virtual void Initialise()
 	{
 		Shadow shadow = GetComponentInChildren<Shadow>();
@@ -126,6 +137,8 @@ public abstract class Character : MonoBehaviour
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		motor.Initialise();
+
+        SetColor(OrigionalColor);
 	}
 
     public virtual void Update()
@@ -153,7 +166,8 @@ public abstract class Character : MonoBehaviour
 
             if (invulnerableDuration < 0.0f)
             {
-                GetComponentInChildren<Renderer>().material.color = originalColour;
+                invulnerableDuration = 0.0f;
+                SetColor(originalColour);
             }
         }
 
@@ -161,11 +175,12 @@ public abstract class Character : MonoBehaviour
         {
             stunDuration -= Time.deltaTime;
 
-            GetComponentInChildren<CharacterMotor>().StopMovement();
+            GetComponentInChildren<CharacterMotor>().StopMotion();
 
             if (stunDuration < 0.0f)
             {
-                GetComponentInChildren<Renderer>().material.color = originalColour;
+                stunDuration = 0.0f;
+                SetColor(originalColour);
             }
         }
         else
@@ -173,6 +188,24 @@ public abstract class Character : MonoBehaviour
             SubUpdate();
         }
     }
+
+    public virtual void SetColor(Color color)
+    {
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer render in renderers)
+        {
+            render.material.color = color;
+        }
+    }
+
+	public virtual void ResetColor()
+	{
+		Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		foreach (Renderer render in renderers)
+		{
+			render.material.color = originalColour;
+		}
+	}
 
     public virtual void SubUpdate()
     {
@@ -192,18 +225,17 @@ public abstract class Character : MonoBehaviour
 		if (activeAbility == null)
 		{
             Action ability = abilities[abilityID];
-
             // Make sure the cooldown is off otherwise we cannot use the ability
-            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) > 0 )
+			
+            if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) >= 0 )
             {
                 // TODO: Check if we are not in a state that denies abilities to perform.
-
                 ability.StartAbility();
                 activeAbility = ability;
 
                 derivedStats.CurrentSpecial -= ability.SpecialCost;
 
-                motor.StopMovement();
+                motor.StopMotion();
                 motor.canMove = false;
             }
 		}
@@ -235,17 +267,26 @@ public abstract class Character : MonoBehaviour
 		}
 	}
 
-    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type)
+    /// <summary>
+    /// Applys damage to this chracter.
+    /// </summary>
+    /// <param name="unmitigatedDamage">The amount of damage.</param>
+    /// <param name="type">The type of damage.</param>
+    /// <param name="owner">The character that has dealt the damage to this character.</param>
+    public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character owner)
     {
 		int finalDamage = unmitigatedDamage;
+        lastDamagedBy = owner;
+
+        // Let the owner know of the amount of damage done.
+        if (owner != null)
+            owner.OnDamageDealt(finalDamage);
 
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
 
-		if (OnDamageTaken != null)
-		{
-			OnDamageTaken.Invoke(finalDamage);
-		}
+        // Tell this character how much damage it has done.
+        OnDamageTaken(finalDamage);
 
         // If the character is dead
 		if (derivedStats.CurrentHealth <= 0 && !isDead)
@@ -273,13 +314,13 @@ public abstract class Character : MonoBehaviour
     public virtual void ApplyStunEffect(float duration)
     {
         stunDuration = duration;
-        GetComponentInChildren<Renderer>().material.color = Color.yellow;
+        SetColor(Color.yellow);
     }
 
     public virtual void ApplyInvulnerabilityEffect(float duration)
     {
         invulnerableDuration = duration;
-        GetComponentInChildren<Renderer>().material.color = Color.blue;
+        SetColor(Color.blue);
     }
 
     /// <summary>
@@ -291,8 +332,8 @@ public abstract class Character : MonoBehaviour
         isDead = false;
 
         // Play this animation.
-        //Animator.PlayAnimation("Respawn");
         transform.position = position;
+        OnSpawn();
     }
 
     public virtual void OnDeath()
@@ -301,24 +342,43 @@ public abstract class Character : MonoBehaviour
         // The reason we do this is when we pool objects we will re-use 
         // this character.
         isDead = true;
-        
-        // Obtain the last object that killed this character
-        if (lastObjectsDamagedBy.Count > 0)
-        {
-            Object obj = LastObjectsDamagedBy[lastObjectsDamagedBy.Count - 1];
-            System.Type type = obj.GetType();
 
-            // Check if the type of object is a weapon
-            // then we can get the owner character.
-            // TODO: Maybe the character should only know the object it was killed by and other characters will handle being killed by specific objects.
-            if (type == typeof(Weapon))
-            {
-                Weapon weapon = obj as Weapon;
-            }
-        }
-        else
+        // Notify subscribers of the death.
+        if (onDeath != null)
         {
-            //Debug.Log("Character somehow died by somethign and we do not know what caused it.");
+            onDeath(this);
+        }
+    }
+
+    public virtual void OnSpawn()
+    {
+        if (onSpawn != null)
+        {
+            onSpawn(this);
+        }
+    }
+
+    /// <summary>
+    /// The event called when this character deals damage.
+    /// </summary>
+    /// <param name="damage">The amount of damage dealt.</param>
+    public virtual void OnDamageDealt(int damage)
+    {
+        if (onDamageDealt != null)
+        {
+            onDamageDealt(damage);
+        }
+    }
+
+    /// <summary>
+    /// The event called when this character takes damage. 
+    /// </summary>
+    /// <param name="damage">The amount of damage taken.</param>
+    public virtual void OnDamageTaken(int damage)
+    {
+        if (onDamageTaken != null)
+        {
+            onDamageTaken(damage);
         }
     }
 	

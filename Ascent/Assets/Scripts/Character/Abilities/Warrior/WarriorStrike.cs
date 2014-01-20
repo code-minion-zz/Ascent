@@ -21,10 +21,7 @@ public class WarriorStrike : Action
 		specialCost = 0;
 
         // Defines the collision shape and properties of this ability.
-		swingArc = new Arc();
-		swingArc.radius = radius;
-		swingArc.arcAngle = arcAngle;
-		swingArc.transform = owner.transform;
+		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.10f));
 
 		base.Initialise(owner);
     }
@@ -41,7 +38,7 @@ public class WarriorStrike : Action
         if (owner.Weapon != null)
         {
             // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-            damage = owner.Weapon.Damage + 0;
+            damage = owner.Weapon.Damage + 10;
             knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
         }
 	}
@@ -58,11 +55,10 @@ public class WarriorStrike : Action
 
 				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 				{
-
 					foreach(Enemy e in enemies)
 					{
                         // Apply damage and knockback to the enemey.
-						e.ApplyDamage(damage, Character.EDamageType.Physical);
+						e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                         e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
                         // Create a blood splatter effect on the enemy.

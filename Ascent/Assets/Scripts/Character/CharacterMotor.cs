@@ -14,14 +14,14 @@ public class CharacterMotor : MonoBehaviour
 	public bool canJump = true;
     public bool canMove = true;
 	public float jumpHeight = 2.0f;
-	private bool grounded = false;
-
 
     private Vector3 specialMovementForce;
 
 	private Vector3 knockbackDirection;
 	private float knockbackMag;
 	private float knockbackDecel = 0.65f;
+
+	private bool usingMovementForce = true;
 
 	// Grid Movement
 	public bool moving;
@@ -34,6 +34,7 @@ public class CharacterMotor : MonoBehaviour
 	
 	public virtual void Initialise()
 	{
+		rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
 		rigidbody.freezeRotation = true;
 		rigidbody.useGravity = false;
 	}
@@ -81,7 +82,7 @@ public class CharacterMotor : MonoBehaviour
                 }
             }
 
-            if (movementForce != Vector3.zero)
+			if (movementForce != Vector3.zero && usingMovementForce)
             {
                 targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
                 ++forces;
@@ -113,17 +114,36 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void Move(Vector3 motion)
 	{
 		movementForce = motion;
+
+		FixRotationOrthogonally(motion);
 	}
 
     public virtual void SpecialMove(Vector3 motion)
     {
         specialMovementForce = motion;
+
+		FixRotationOrthogonally(motion);
     }
+
+	public virtual void FixRotationOrthogonally(Vector3 curDirection)
+	{
+		movementForce.y = 0.0f;
+		//if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+		//{
+		//    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+		//    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+		//}
+		//else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+		//{
+		//    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+		//    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+		//}
+	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)
 	{
 		knockbackDirection = new Vector3(direction.x, 0.0f, direction.z);
-		knockbackMag = mag * 1000.0f;
+		knockbackMag = mag * 100.0f;
 	}
 
 	public void MoveAlongGrid(Vector3 direction)
@@ -143,10 +163,15 @@ public class CharacterMotor : MonoBehaviour
 		moving = false;
 	}
 
-    public void StopMovement()
+    public void StopMotion()
     {
         movementForce = Vector3.zero;
     }
+
+	public void EnableMovementForce(bool b)
+	{
+		usingMovementForce = b;
+	}
 
     public void StopSpecialMovement()
     {

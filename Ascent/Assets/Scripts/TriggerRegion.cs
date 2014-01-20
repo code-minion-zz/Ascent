@@ -16,7 +16,7 @@ public class TriggerRegion : MonoBehaviour
 	{
 		foreach (Vector2 v in regions)
 		{
-			IsHit = MathUtility.IsWithinBounds(pointToTest, this.transform.position, new Vector3(v.x, 1.0f, v.y));
+			IsHit = MathUtility.IsWithinRect(pointToTest, this.transform.position, new Vector3(v.x, 1.0f, v.y));
 			
 			if(IsHit)
 				return IsHit;

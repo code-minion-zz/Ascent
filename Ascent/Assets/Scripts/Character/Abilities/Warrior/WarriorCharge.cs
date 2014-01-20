@@ -11,20 +11,13 @@ using System.Collections.Generic;
 /// Deals damage and knockback based on distance traveled (in other words, momentum)
 /// </summary>
 public class WarriorCharge : Action 
-{
-	private float halfWayPoint = 0.2f;
-	//private float endChargeTime = 0.2f;
-	private float prevAnimatorSpeed = 0f;
-	private float actionSpeed = 15f;
-	
+{	
     private float distanceTraveled;
 	private float distanceMax = 7.5f;
 	
 	private Animator ownerAnimator;
     private HeroAnimator heroController;
 	
-	private bool endCharge = false;
-
     private float travelTime;
     private Vector3 startPos;
     private Vector3 targetPos;
@@ -51,30 +44,26 @@ public class WarriorCharge : Action
 
         charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
-        circle = new Circle();
-        circle.radius = 2.0f;
-        circle.transform = owner.transform;
+        circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
     }
 	
     public override void StartAbility()
 	{
         base.StartAbility();
 		Reset ();
-		//owner.ChargeBall.gameObject.SetActive(true);	
-		prevAnimatorSpeed = ownerAnimator.speed;
 
         startPos = owner.transform.position;
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(new Ray(startPos - owner.transform.forward, owner.transform.forward), out hitInfo, distanceMax))
+        if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
         {
-            targetPos = hitInfo.point - (owner.transform.forward * 0.25f);
+            targetPos = hitInfo.point - (owner.transform.forward );
 
             travelTime = (hitInfo.distance / distanceMax) * animationLength;
         }
         else
         {
-            targetPos = startPos + owner.transform.forward * (distanceMax - 0.5f);
+            targetPos = startPos + owner.transform.forward * (distanceMax);
             travelTime = animationLength;
         }
 
@@ -106,7 +95,9 @@ public class WarriorCharge : Action
            {
                foreach (Enemy e in enemies)
                {
-                   e.ApplyDamage(2, Character.EDamageType.Physical);
+                   int damage = 2;
+                   // Apply damage, knockback and stun to the enemy.
+                   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
                    e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
                    e.ApplyStunEffect(2.0f);
 
@@ -115,8 +106,7 @@ public class WarriorCharge : Action
                }
            }
 
-           owner.ApplyInvulnerabilityEffect(0.0f);
-            owner.StopAbility();
+           owner.StopAbility();
         }
         //motor.SpecialMove(motion);
        
@@ -157,7 +147,6 @@ public class WarriorCharge : Action
     public override void EndAbility()
 	{	
         owner.ChargeBall.gameObject.SetActive(false);
-		ownerAnimator.speed = prevAnimatorSpeed;
 		ownerAnimator.SetBool("SwingAttack",false);
 
         //charMotor.canMove = true;
@@ -167,7 +156,6 @@ public class WarriorCharge : Action
 	{	
 		//timeElapsed = 0.0f;
     	distanceTraveled = 0f;
-		endCharge = false;
 	}
 	
 	/// <summary>
@@ -189,7 +177,7 @@ public class WarriorCharge : Action
 	private void OnHitEnemy(Character other)
 	{
 		EndCharge();
-		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical);
+		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical, owner);
 		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
 	}
 	
@@ -198,8 +186,6 @@ public class WarriorCharge : Action
 	/// </summary>
 	private void EndCharge()
 	{
-		endCharge = true;
-		//timeElapsed = 0f;
 		ownerAnimator.speed = 0.8f;
 		owner.ChargeBall.gameObject.SetActive(false);
 	}
