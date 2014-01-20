@@ -8,6 +8,12 @@ using System;
 
 public class Slime : Enemy
 {
+    private AITrigger OnAttackedTrigger;
+    private AITrigger OnWanderEndTrigger;
+    private AITrigger OnReplicateTrigger;
+
+    private int replicateActionID;
+
     public override void Initialise()
     {
         // Populate with stats
@@ -23,6 +29,7 @@ public class Slime : Enemy
         Action replicate = new SlimeReplicate();
         replicate.Initialise(this);
         abilities.Add(replicate);
+        replicateActionID = 0;
 
         originalColour = Color.white;
 
@@ -36,24 +43,28 @@ public class Slime : Enemy
         agent.Initialise(transform);
 
         AIBehaviour behaviour = null;
-        AITrigger trigger = null;
 
         // Defensive behaviour
         behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             // OnAttacked, Triggers if attacked
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Attacked(this));
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
-            trigger.OnTriggered += OnAttacked;
+            OnAttackedTrigger = behaviour.AddTrigger();
+            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            OnAttackedTrigger.AddCondition(new AICondition_Attacked(this));
+            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[replicateActionID]), AITrigger.EConditional.And);
+            OnAttackedTrigger.OnTriggered += OnAttacked;
+
+            OnReplicateTrigger = behaviour.AddTrigger();
+            OnReplicateTrigger.AddCondition(new AICondition_Timer(5.5f, 2.0f, 10.0f));
+            OnReplicateTrigger.OnTriggered += OnAttacked;
 
             // OnWanderEnd, Triggers if time exceeds 2s or target reached.
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Timer(3.5f));
-            trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
-            trigger.OnTriggered += OnWanderEnd;
+            OnWanderEndTrigger = behaviour.AddTrigger();
+            OnWanderEndTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            OnWanderEndTrigger.AddCondition(new AICondition_Timer(1.5f, 2.0f, 4.0f));
+            OnWanderEndTrigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+            OnWanderEndTrigger.OnTriggered += OnWanderEnd;
+
         }
 
         agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
@@ -66,18 +77,15 @@ public class Slime : Enemy
         agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
         // Reset behaviour
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        OnWanderEndTrigger.Reset();
 
     }
 
     public void OnAttacked()
     {
-        UseAbility(0);
-    }
-
-    public void OnCanUseTackle()
-    {
-       
+        UseAbility(replicateActionID);
+        OnAttackedTrigger.Reset();
+        OnReplicateTrigger.Reset();
     }
 
     public void OnCollisionEnter(Collision other)

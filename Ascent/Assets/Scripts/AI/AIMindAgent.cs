@@ -94,10 +94,14 @@ public class AIMindAgent
     public void Process()
     {
 		#if UNITY_EDITOR
-		if (behaviours[curBehaviour] == null)
-		{
-			Debug.LogError("Trying to process a behaviour that has not been initialised.");
-		}
+        if (behaviours[curBehaviour] == null)
+        {
+            Debug.LogError("Trying to process a behaviour that has not been initialised.");
+        }
+        else
+        {
+            label.gameObject.SetActive(false);
+        }
 		#endif
 
 		behaviours[curBehaviour].Process();
