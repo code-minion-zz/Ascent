@@ -281,7 +281,9 @@ public abstract class Character : MonoBehaviour
 
         // Let the owner know of the amount of damage done.
         if (owner != null)
+        {
             owner.OnDamageDealt(finalDamage);
+        }
 
         // Obtain the health stat and subtract damage amount to the health.
         derivedStats.CurrentHealth -= finalDamage;
@@ -337,7 +339,7 @@ public abstract class Character : MonoBehaviour
         OnSpawn();
     }
 
-    public virtual void OnDeath()
+    protected virtual void OnDeath()
     {
         // We may internally tell this character that they are dead.
         // The reason we do this is when we pool objects we will re-use 
@@ -393,6 +395,11 @@ public abstract class Character : MonoBehaviour
     {
         derivedStats.CurrentHealth = derivedStats.MaxHealth;
         derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+
+        if (isDead)
+        {
+            Respawn(transform.position);
+        }
     }
 
     public virtual void AddBuff(Buff buff)

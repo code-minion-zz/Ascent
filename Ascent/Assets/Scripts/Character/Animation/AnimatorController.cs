@@ -13,6 +13,9 @@ public class AnimatorController : MonoBehaviour
     protected int layerCount;
     protected Dictionary<int, AnimatorStateInfo> activeState = new Dictionary<int, AnimatorStateInfo>();
 
+    protected bool takeHit = false;
+    protected bool dying = false;
+
     #endregion
 
     #region Properties
@@ -20,6 +23,46 @@ public class AnimatorController : MonoBehaviour
     public Animator Animator
     {
         get { return animator; }
+    }
+
+    /// <summary>
+    /// Returns if the animator is taking a hit. Sets the animator to take a hit.
+    /// </summary>
+    public bool TakeHit
+    {
+        get { return takeHit; }
+        set
+        {
+            takeHit = value;
+
+            if (value == true)
+            {
+                animator.SetTrigger("TakeHit");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns if the animator is dying. Sets the animator to the dying state.
+    /// </summary>
+    public bool Dying
+    {
+        get { return dying; }
+        set
+        {
+            dying = value;
+
+            if (value == true)
+            {
+                // If dying set trigger to die
+                animator.SetTrigger("Dying");
+            }
+            else
+            {
+                // If they are not dying set to idle.
+                animator.SetTrigger("Respawn");
+            }
+        }
     }
 
     #endregion

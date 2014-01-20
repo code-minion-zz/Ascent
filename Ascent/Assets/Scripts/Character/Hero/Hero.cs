@@ -82,19 +82,22 @@ public abstract class Hero : Character
 
     public override void Respawn(Vector3 position)
     {
-        base.Respawn(position);
-
-        Animator.PlayAnimation("Dying");
-
         // Reset the health
         derivedStats.ResetHealth();
+        motor.canMove = true;
+        Animator.Dying = false;
+        collider.enabled = true;
+
+        base.Respawn(position);
     }
 
-    /// <summary>
-    /// Specific on death event functionality for heroes
-    /// </summary>
-    public override void OnDeath()
+    protected override void OnDeath()
     {
+        motor.StopMotion();
+        motor.canMove = false;
+        collider.enabled = false;
+        Animator.Dying = true;
+
         base.OnDeath();
     }
 
@@ -132,9 +135,11 @@ public abstract class Hero : Character
 
         // Record damage taken.
         floorStatistics.DamageTaken += damage;
-        // Hero takes hit.
-        HeroAnimator heroAnim = Animator as HeroAnimator;
-        heroAnim.TakeHit = true;
+
+        if (Animator.Dying == false)
+        {
+            Animator.TakeHit = true;
+        }
     }
 
     protected override void OnDamageDealt(int damage)

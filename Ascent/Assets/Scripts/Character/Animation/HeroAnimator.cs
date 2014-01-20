@@ -34,36 +34,8 @@ public class HeroAnimator : AnimatorController
 
     private Vector3 direction;
     private Vector3 gravityVelocity = Vector3.zero;
-    private bool takeHit = false;
-    private bool dying = false;
 
     #endregion
-
-    /// <summary>
-    /// Returns if the animator is taking a hit. Sets the animator to take a hit.
-    /// </summary>
-    public bool TakeHit
-    {
-        get { return takeHit; }
-        set
-        {
-            takeHit = value;
-            animator.SetBool("TakeHit", value);
-        }
-    }
-
-    /// <summary>
-    /// Returns if the animator is dying. Sets the animator to the dying state.
-    /// </summary>
-    public bool Dying
-    {
-        get { return dying; }
-        set
-        {
-            dying = value;
-            animator.SetBool("Dying", value);
-        }
-    }
 
     public float MovementSpeed
     {
@@ -89,28 +61,10 @@ public class HeroAnimator : AnimatorController
 
         gravityVelocity += Physics.gravity * Time.deltaTime;
 
-        //takeHit = animator.GetBool("TakeHit");
-        dying = animator.GetBool("Dying");
-        bool whirlWind = animator.GetBool("Whirlwind");
-
         for (int layer = 0; layer < layerCount; ++layer)
         {
             AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(layer);
             // Check if we are in the movement or idle state.
-
-            if (state.IsName("WhirlWind"))
-            {
-                if (!animator.IsInTransition(layer))
-                {
-                    // While in transition
-                    // We don't want to take hit.
-                    StopAnimation("TakeHit");
-                }
-                else
-                {
-                    StopAnimation("Whirlwind");
-                }
-            }
 
             // We want the hero to take a hit and stop it
             // when the transition ends.
@@ -123,19 +77,6 @@ public class HeroAnimator : AnimatorController
                 else
                 {
                     TakeHit = false;
-                    //StopAnimation("TakeHit");
-                }
-            }
-
-            if (state.IsName("Dying"))
-            {
-                if (animator.IsInTransition(layer))
-                {
-
-                }
-                else
-                {
-                    Dying = false;
                 }
             }
         }

@@ -90,7 +90,10 @@ public class HeroController : MonoBehaviour
 
                 if (device.X.WasPressed)
                 {
-                    hero.UseAbility((int)HeroAction.Strike);
+                    if (heroAnimator.TakeHit == false && heroAnimator.Dying == false)
+                    {
+                        hero.UseAbility((int)HeroAction.Strike);
+                    }
                 }
 
                 if (device.LeftBumper.WasPressed)
@@ -129,7 +132,7 @@ public class HeroController : MonoBehaviour
                     ProcessInteractions();
                 }
 
-                if (GetComponent<CharacterMotor>().canMove)
+                if (GetComponent<CharacterMotor>().canMove && heroAnimator.Dying == false)
                    {
                     // L Stick
                     if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))

@@ -6,188 +6,127 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Rat : Enemy
+public class Rat : Enemy 
 {
-    private float deathSequenceTime = 0.0f;
-    private float deathSequenceEnd = 1.0f;
-    private Vector3 deathRotation = Vector3.zero;
-    private float deathSpeed = 5.0f;
+   public override void Initialise()
+	{
+		// Populate with stats
+		baseStatistics = new BaseStats();
+		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
 
-    public AIAgent agent;
+		baseStatistics.CurrencyBounty = 1;
+		baseStatistics.ExperienceBounty = 50;
+		derivedStats = new DerivedStats(baseStatistics);
+		derivedStats.Attack = 5;
 
-    public override void Initialise()
-    {
-        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+		// Add abilities
+		Action tackle = new EnemyTackle();
+		tackle.Initialise(this);
+		abilities.Add(tackle);
 
-        // Populate with stats
-        baseStatistics = new BaseStats();
-        baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
+		originalColour = Color.white;
 
-        baseStatistics.CurrencyBounty = 1;
-        baseStatistics.ExperienceBounty = 50;
-        derivedStats = new DerivedStats(baseStatistics);
-        derivedStats.Attack = 5;
+		base.Initialise();
 
-        // Add abilities
-        Action tackle = new EnemyTackle();
-        tackle.Initialise(this);
-        abilities.Add(tackle);
+		InitialiseAI();
+	}
 
-        originalColour = Color.white;
+   public void InitialiseAI()
+   {
+	   agent.Initialise(transform);
 
-        base.Initialise();
-        InitialiseAI();
-    }
+	   AIBehaviour behaviour = null;
+	   AITrigger trigger = null;
 
-    public void InitialiseAI()
-    {
-        agent.Initialise(transform);
+	   // Defensive behaviour
+	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += OnAttacked;
 
-        AIBehaviour behaviour = null;
-        AITrigger trigger = null;
+		   // OnWanderEnd, Triggers if time exceeds 2s or target reached.
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f));
+		   trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+		   trigger.OnTriggered += OnWanderEnd;
+	   }
 
-        // Defensive behaviour
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-        {
-            // OnAttacked, Triggers if attacked
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Attacked(this));
-            trigger.OnTriggered += OnAttacked;
+	   // Aggressive
+	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += OnAttacked;
 
-            // OnWanderEnd, Triggers if time exceeds 2s or target reached.
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Timer(2.0f));
-            trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
-            trigger.OnTriggered += OnWanderEnd;
-        }
+		   // OnCanUseTackle, triggers if target in range and action off cooldown
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
+		   trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+		   trigger.OnTriggered += OnCanUseTackle;
 
-        // Aggressive
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        {
-            // OnAttacked, Triggers if attacked
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Attacked(this));
-            trigger.OnTriggered += OnAttacked;
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f));
+		   trigger.OnTriggered += OnAggressiveEnd;
+	   }
 
-            // OnCanUseTackle, triggers if target in range and action off cooldown
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
-            trigger.OnTriggered += OnCanUseTackle;
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+   }
 
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Timer(2.0f));
-            trigger.OnTriggered += OnAggressiveEnd;
-        }
-
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
-    }
-
-    public override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    public override void Update()
-    {
+   public override void Update()
+   {
         base.Update();
 
-        if (!IsStunned)
-        {
-            if (activeAbility == null)
-            {
-                agent.MindAgent.Process();
-            }
-
-            agent.SteeringAgent.Process();
-        }
-
-        if (isDead)
-        {
-            deathSequenceTime += Time.deltaTime;
-
-            // When the rat dies we want to make him kinematic and disabled the collider
-            // this is so we can walk over the dead body.
-            if (this.transform.rigidbody.isKinematic == false)
-            {
-                this.transform.rigidbody.isKinematic = true;
-                this.transform.collider.enabled = false;
-            }
-
-            // Death sequence end
-            if (deathSequenceTime >= deathSequenceEnd)
-            {
-                // When the death sequence has finished we want to make this object not active
-                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
-                deathSequenceTime = 0.0f;
-                deathRotation = Vector3.zero;
-
-                this.gameObject.SetActive(false);
-            }
-
-            // During death sequence we can do some thing in here
-            // For now we will rotate the rat on the z axis.
-            this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
-
-            // If the rotation is done early we can end the sequence.
-            if (this.transform.eulerAngles == deathRotation)
-            {
-                deathSequenceTime = deathSequenceEnd;
-            }
-        }
-
-        //transform.forward = new Vector3(Game.Singleton.Players[0].Input.LeftStickX, 0.0f, Game.Singleton.Players[0].Input.LeftStickY);
-
+		//transform.forward = new Vector3(Game.Singleton.Players[0].Input.LeftStickX, 0.0f, Game.Singleton.Players[0].Input.LeftStickY);
     }
 
-    public void OnWanderEnd()
-    {
-        // Choose a new target location
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+   public void OnWanderEnd()
+   {
+	   // Choose a new target location
+	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
-        // Reset behaviour
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   // Reset behaviour
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   
+   }
 
-    }
+   public void OnAggressiveEnd()
+   {
+	   agent.SteeringAgent.RemoveTarget();
+	   motor.StopMotion();
 
-    public void OnAggressiveEnd()
-    {
-        agent.SteeringAgent.RemoveTarget();
-        motor.StopMotion();
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   OnWanderEnd();
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        OnWanderEnd();
+	   motor.speed = 3.0f;
+   }
 
-        motor.speed = 3.0f;
-    }
+   public void OnAttacked()
+   {
+	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   agent.TargetCharacter = lastDamagedBy;
+	   motor.speed = 5.0f;
+   }
 
-    public void OnAttacked()
-    {
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        agent.TargetCharacter = lastDamagedBy;
-        motor.speed = 5.0f;
-    }
+	
 
-    public void OnCanUseTackle()
-    {
-
-        //agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        //agent.TargetCharacter = lastDamagedBy;
-        UseAbility(0);
-
-        //agent.enabled = false;
-    }
-
-    public override void OnDeath()
-    {
-        base.OnDeath();
-    }
+   public void OnCanUseTackle()
+   {
+	   
+	   //agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   //agent.TargetCharacter = lastDamagedBy;
+	   UseAbility(0);
+	   
+	   //agent.enabled = false;
+   }
 }

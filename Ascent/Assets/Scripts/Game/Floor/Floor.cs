@@ -89,7 +89,8 @@ public class Floor : MonoBehaviour
 			players[i].Hero.transform.rotation = Quaternion.identity;
 			players[i].Hero.transform.localScale = Vector3.one;
 			players[i].Hero.SetActive(true);
-            
+
+            players[i].Hero.GetComponent<Hero>().onDeath += OnPlayerDeath;
             // Reset individual hero floor records.
             players[i].Hero.GetComponent<Hero>().ResetFloorStatistics();
 		}
@@ -162,6 +163,43 @@ public class Floor : MonoBehaviour
 
 	#region Update
 
+    /// <summary>
+    /// Event called when a player has died on this floor.
+    /// </summary>
+    /// <param name="character">The character / hero that has died.</param>
+    private void OnPlayerDeath(Character character)
+    {
+        Hero hero = character as Hero;
+
+        if (hero != null)
+        {
+            if (hero.DerivedStats.Lives > 0)
+            {
+                if (currentRoom.startRoom)
+                {
+                    //hero.Respawn(startPoints[0].transform.position);
+                }
+                else
+                {
+                    //hero.Respawn(currentRoom.EntryDoor.transform.position);
+                    //hero.Respawn(startPoints[0].transform.position);
+                }
+
+                //--hero.DerivedStats.Lives;
+                hero.FloorStatistics.NumberOfDeaths++;
+            }
+            else
+            {
+                hero.gameObject.SetActive(false);
+                hero.onDeath -= OnPlayerDeath;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Event called when an enemy has died on the floor.
+    /// </summary>
+    /// <param name="character">The enemy that has died.</param>
     private void OnEnemyDeath(Character character)
     {
         if (character.LastDamagedBy != null)
@@ -185,9 +223,6 @@ public class Floor : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		HandleDeadHeroes();
-        //HandleDeadMonsters();
-
 		if (Input.GetKeyUp(KeyCode.F1))
 		{
 			EndFloor();
@@ -241,37 +276,6 @@ public class Floor : MonoBehaviour
 				{
 					TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
 				}
-			}
-		}
-	}
-
-    // TODO: Make all the players start spawn at the point.
-	void HandleDeadHeroes()
-	{
-		foreach (Player player in players)
-		{
-			Hero hero = player.Hero.GetComponent<Hero>();
-
-			if (hero.IsDead)
-			{
-                if (hero.DerivedStats.Lives > 0)
-                {
-                    if (currentRoom.startRoom)
-                    {
-                        hero.Respawn(startPoints[0].transform.position);
-                    }
-                    else
-                    {
-                        hero.Respawn(currentRoom.EntryDoor.transform.position);
-                    }
-
-                    --hero.DerivedStats.Lives;
-                    hero.FloorStatistics.NumberOfDeaths++;
-                }
-                else
-                {
-                    hero.gameObject.SetActive(false);
-                }
 			}
 		}
 	}

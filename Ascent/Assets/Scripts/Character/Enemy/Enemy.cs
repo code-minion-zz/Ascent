@@ -20,6 +20,8 @@ public abstract class Enemy : Character
 
     #region Fields
 
+    public AIAgent agent;
+
     private Player targetPlayer;
     private Vector3 originalScale;
 
@@ -37,6 +39,11 @@ public abstract class Enemy : Character
 		 set { containedRoom = value; }
     }
 
+   protected float deathSequenceTime = 0.0f;
+   protected float deathSequenceEnd = 1.0f;
+   protected Vector3 deathRotation = Vector3.zero;
+   protected float deathSpeed = 5.0f;
+
 	protected bool updateHpBar = false;
 
     #endregion
@@ -47,12 +54,13 @@ public abstract class Enemy : Character
 
 	public override void Initialise()
 	{
+        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
 
 		PositionHpBar();
-
-		NGUITools.SetActive (hpBar.gameObject, false);
 
 		base.Initialise();
 	}
@@ -69,30 +77,73 @@ public abstract class Enemy : Character
     // Update is called once per frame
 	public override void Update () 
     {
-        base.Update();
-		if (!IsDead)
-		{
-			if (hpBar != null)
-			{
-				if (enabled)
-				{
-					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
-					{
-						if (!hpBar.gameObject.activeInHierarchy)
-							NGUITools.SetActive (hpBar.gameObject, true);
+        if (isDead)
+        {
+            deathSequenceTime += Time.deltaTime;
 
-						PositionHpBar();
-					}
-					else
-					{
-						if (hpBar.gameObject.activeInHierarchy)
-							NGUITools.SetActive (hpBar.gameObject, false);
-					}
-				}
-			}
-		}
+            // When the rat dies we want to make him kinematic and disabled the collider
+            // this is so we can walk over the dead body.
+            //if (this.transform.rigidbody.isKinematic == false)
+            //{
+            //    this.collider.enabled = false;
+            //    this.transform.rigidbody.isKinematic = true;
+            //    this.transform.collider.enabled = false;
+            //}
 
-		// TODO: if rat is frozen, tint hp bar blue and apply frozen texture
+            // Death sequence end
+            if (deathSequenceTime >= deathSequenceEnd)
+            {
+                // When the death sequence has finished we want to make this object not active
+                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
+                deathSequenceTime = 0.0f;
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                // During death sequence we can do some thing in here
+                // For now we will rotate the rat on the z axis.
+                this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+
+                // If the rotation is done early we can end the sequence.
+                if (this.transform.eulerAngles == deathRotation)
+                {
+                    deathSequenceTime = deathSequenceEnd;
+                }
+            }
+        }
+        else
+        {
+            base.Update();
+
+            if (!IsStunned)
+            {
+                if (activeAbility == null)
+                {
+                    agent.MindAgent.Process();
+                }
+
+                agent.SteeringAgent.Process();
+            }
+
+            if (hpBar != null)
+            {
+                //if (updateHpBar)
+                {
+                    if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
+                    {
+                        if (!hpBar.gameObject.activeInHierarchy)
+                            NGUITools.SetActive(hpBar.gameObject, true);
+
+                        PositionHpBar();
+                    }
+                    else
+                    {
+                        if (hpBar.gameObject.activeInHierarchy)
+                            NGUITools.SetActive(hpBar.gameObject, false);
+                    }
+                }
+            }
+        }
 	}
 
     #endregion
@@ -195,11 +246,36 @@ public abstract class Enemy : Character
 		//    activeHitBoxes.Add(t);
 		//}
 	}
+	
+	public void KillBox(Transform box)
+	{
+		//activeHitBoxes.Remove(box);
+	}
 
     #endregion
 
 
-	#region Collisions on Self
+    #region Collisions on Self
+
+	
+	void OnBecameVisible()
+	{
+		//Debug.Log ("Rat became visible", this);
+		if (hpBar != null)
+		{
+			//hpBar.gameObject.SetActive(true);
+			updateHpBar = true;
+		}
+	}
+
+	void OnBecameInvisible()
+	{
+		if (hpBar != null)
+		{
+			updateHpBar = false;
+		}
+	}
+
     public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
     {
         // Check to see if the enemy was last damaged by a hero,
@@ -215,9 +291,18 @@ public abstract class Enemy : Character
         base.ApplyDamage(unmitigatedDamage, type, owner);
     }
 
-	public override void OnDeath ()
+	protected override void OnDeath ()
 	{
 		base.OnDeath ();
+
+        // When the rat dies we want to make him kinematic and disabled the collider
+        // this is so we can walk over the dead body.
+        if (this.transform.rigidbody.isKinematic == false)
+        {
+            this.collider.enabled = false;
+            this.transform.rigidbody.isKinematic = true;
+            this.transform.collider.enabled = false;
+        }
 
 		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
