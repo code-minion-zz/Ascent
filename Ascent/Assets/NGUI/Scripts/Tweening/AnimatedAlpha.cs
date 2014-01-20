@@ -15,8 +15,8 @@ public class AnimatedAlpha : MonoBehaviour
 
 	UIWidget mWidget;
 	UIPanel mPanel;
-
-	void OnEnable ()
+	
+	void Awake ()
 	{
 		mWidget = GetComponent<UIWidget>();
 		mPanel = GetComponent<UIPanel>();

@@ -285,30 +285,30 @@ public class UIDrawCall : MonoBehaviour
 		}
 		else // No clipping
 		{
-			shader = Shader.Find(shaderName);
+			shader = (mShader != null) ? mShader : Shader.Find(shaderName);
 		}
 
 		if (mMaterial != null)
 		{
 			mDynamicMat = new Material(mMaterial);
-			mDynamicMat.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+			mDynamicMat.hideFlags = HideFlags.DontSave;
 			mDynamicMat.CopyPropertiesFromMaterial(mMaterial);
+
+			// If there is a valid shader, assign it to the custom material
+			if (shader != null)
+			{
+				mDynamicMat.shader = shader;
+			}
+			else if (mClipping != Clipping.None)
+			{
+				Debug.LogError(shaderName + " doesn't have a clipped shader version for " + mClipping);
+				mClipping = Clipping.None;
+			}
 		}
 		else
 		{
 			mDynamicMat = new Material(shader);
-			mDynamicMat.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-		}
-
-		// If there is a valid shader, assign it to the custom material
-		if (shader != null)
-		{
-			mDynamicMat.shader = shader;
-		}
-		else if (mClipping != Clipping.None)
-		{
-			Debug.LogError(shaderName + " doesn't have a clipped shader version for " + mClipping);
-			mClipping = Clipping.None;
+			mDynamicMat.hideFlags = HideFlags.DontSave;
 		}
 	}
 
@@ -360,12 +360,7 @@ public class UIDrawCall : MonoBehaviour
 	/// Set the draw call's geometry.
 	/// </summary>
 
-	public void Set (
-		BetterList<Vector3> verts,
-		BetterList<Vector3> norms,
-		BetterList<Vector4> tans,
-		BetterList<Vector2> uvs,
-		BetterList<Color32> cols)
+	public void Set (BetterList<Vector3> verts, BetterList<Vector3> norms, BetterList<Vector4> tans, BetterList<Vector2> uvs, BetterList<Color32> cols)
 	{
 		int count = verts.size;
 
@@ -396,13 +391,9 @@ public class UIDrawCall : MonoBehaviour
 #if !UNITY_FLASH
 				// If the buffer length doesn't match, we need to trim all buffers
 				bool trim = (uvs.buffer.Length != verts.buffer.Length) ||
-					(cols.buffer.Length != verts.buffer.Length) ||
-					(norms != null && norms.buffer.Length != verts.buffer.Length) ||
-					(tans != null && tans.buffer.Length != verts.buffer.Length);
-
-				// Non-automatic render queues rely on Z position, so it's a good idea to trim everything
-				if (!trim && panel.renderQueue != UIPanel.RenderQueue.Automatic)
-					trim = (mMesh == null || mMesh.vertexCount != verts.buffer.Length);
+				    (cols.buffer.Length != verts.buffer.Length) ||
+				    (norms != null && norms.buffer.Length != verts.buffer.Length) ||
+				    (tans != null && tans.buffer.Length != verts.buffer.Length);
 
 				mTriangles = (verts.size >> 1);
 
@@ -457,10 +448,7 @@ public class UIDrawCall : MonoBehaviour
 					mIndices = GenerateCachedIndexBuffer(count, indexCount);
 					mMesh.triangles = mIndices;
 				}
-
-				if (trim || !alwaysOnScreen)
-					mMesh.RecalculateBounds();
-
+				if (!alwaysOnScreen) mMesh.RecalculateBounds();
 				mFilter.mesh = mMesh;
 			}
 			else
@@ -566,7 +554,7 @@ public class UIDrawCall : MonoBehaviour
 		depthEnd = int.MinValue;
 		panel = null;
 		manager = null;
-
+		
 		NGUITools.DestroyImmediate(mDynamicMat);
 		mDynamicMat = null;
 	}
@@ -605,7 +593,6 @@ public class UIDrawCall : MonoBehaviour
 	{
 		UIDrawCall dc = Create(name);
 		dc.gameObject.layer = pan.cachedGameObject.layer;
-		dc.clipping = pan.clipping;
 		dc.baseMaterial = mat;
 		dc.mainTexture = tex;
 		dc.shader = shader;

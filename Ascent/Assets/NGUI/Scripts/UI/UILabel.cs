@@ -92,7 +92,7 @@ public class UILabel : UIWidget
 	/// Function used to determine if something has changed (and thus the geometry must be rebuilt)
 	/// </summary>
 
-	bool shouldBeProcessed
+	bool hasChanged
 	{
 		get
 		{
@@ -207,7 +207,7 @@ public class UILabel : UIWidget
 				SetActiveFont(null);
 				RemoveFromPanel();
 				mTrueTypeFont = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 				mFont = null;
 				SetActiveFont(value);
 				ProcessAndRequest();
@@ -255,14 +255,14 @@ public class UILabel : UIWidget
 				if (!string.IsNullOrEmpty(mText))
 				{
 					mText = "";
-					shouldBeProcessed = true;
+					hasChanged = true;
 					ProcessAndRequest();
 				}
 			}
 			else if (mText != value)
 			{
 				mText = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 				ProcessAndRequest();
 			}
 		}
@@ -286,7 +286,7 @@ public class UILabel : UIWidget
 			if (mFontSize != value)
 			{
 				mFontSize = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 				ProcessAndRequest();
 			}
 		}
@@ -307,7 +307,7 @@ public class UILabel : UIWidget
 			if (mFontStyle != value)
 			{
 				mFontStyle = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 				ProcessAndRequest();
 			}
 		}
@@ -451,7 +451,7 @@ public class UILabel : UIWidget
 			if (mEncoding != value)
 			{
 				mEncoding = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -471,7 +471,7 @@ public class UILabel : UIWidget
 			if (mSymbols != value)
 			{
 				mSymbols = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -491,7 +491,7 @@ public class UILabel : UIWidget
 			if (mOverflow != value)
 			{
 				mOverflow = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -533,7 +533,7 @@ public class UILabel : UIWidget
 			if ((mMaxLineCount != 1) != value)
 			{
 				mMaxLineCount = (value ? 0 : 1);
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -546,7 +546,7 @@ public class UILabel : UIWidget
 	{
 		get
 		{
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return base.localCorners;
 		}
 	}
@@ -559,7 +559,7 @@ public class UILabel : UIWidget
 	{
 		get
 		{
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return base.worldCorners;
 		}
 	}
@@ -572,7 +572,7 @@ public class UILabel : UIWidget
 	{
 		get
 		{
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return base.drawingDimensions;
 		}
 	}
@@ -592,7 +592,7 @@ public class UILabel : UIWidget
 			if (mMaxLineCount != value)
 			{
 				mMaxLineCount = Mathf.Max(value, 0);
-				shouldBeProcessed = true;
+				hasChanged = true;
 				if (overflowMethod == Overflow.ShrinkContent) MakePixelPerfect();
 			}
 		}
@@ -613,7 +613,7 @@ public class UILabel : UIWidget
 			if (mEffectStyle != value)
 			{
 				mEffectStyle = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -633,7 +633,7 @@ public class UILabel : UIWidget
 			if (mEffectColor != value)
 			{
 				mEffectColor = value;
-				if (mEffectStyle != Effect.None) shouldBeProcessed = true;
+				if (mEffectStyle != Effect.None) hasChanged = true;
 			}
 		}
 	}
@@ -653,7 +653,7 @@ public class UILabel : UIWidget
 			if (mEffectDistance != value)
 			{
 				mEffectDistance = value;
-				shouldBeProcessed = true;
+				hasChanged = true;
 			}
 		}
 	}
@@ -694,7 +694,7 @@ public class UILabel : UIWidget
 			}
 
 			// Process the text if necessary
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return mProcessedText;
 		}
 	}
@@ -707,7 +707,7 @@ public class UILabel : UIWidget
 	{
 		get
 		{
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return mCalculatedSize;
 		}
 	}
@@ -720,7 +720,7 @@ public class UILabel : UIWidget
 	{
 		get
 		{
-			if (shouldBeProcessed) ProcessText();
+			if (hasChanged) ProcessText();
 			return base.localSize;
 		}
 	}
@@ -797,7 +797,7 @@ public class UILabel : UIWidget
 
 	public override Vector3[] GetSides (Transform relativeTo)
 	{
-		if (shouldBeProcessed) ProcessText();
+		if (hasChanged) ProcessText();
 		return base.GetSides(relativeTo);
 	}
 
@@ -927,7 +927,7 @@ public class UILabel : UIWidget
 			mUseDynamicFont = true;
 		}
 
-		shouldBeProcessed = true;
+		hasChanged = true;
 		mAllowProcessing = true;
 		ProcessAndRequest();
 		if (autoResizeBoxCollider) ResizeCollider();
@@ -970,7 +970,7 @@ public class UILabel : UIWidget
 
 	public override void MarkAsChanged ()
 	{
-		shouldBeProcessed = true;
+		hasChanged = true;
 		base.MarkAsChanged();
 	}
 
@@ -989,7 +989,7 @@ public class UILabel : UIWidget
 		if (!isValid) return;
 
 		mChanged = true;
-		shouldBeProcessed = false;
+		hasChanged = false;
 
 		NGUIText.rectWidth  = legacyMode ? (mMaxLineWidth  != 0 ? mMaxLineWidth  : 1000000) : width;
 		NGUIText.rectHeight = legacyMode ? (mMaxLineHeight != 0 ? mMaxLineHeight : 1000000) : height;

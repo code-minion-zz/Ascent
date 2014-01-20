@@ -207,23 +207,20 @@ public abstract class UITweener : MonoBehaviour
 			mFactor = Mathf.Clamp01(mFactor);
 			Sample(mFactor, true);
 
-			// Disable this script unless the function calls above changed something
-			if (duration == 0f || (mFactor == 1f && mAmountPerDelta > 0f || mFactor == 0f && mAmountPerDelta < 0f))
-				enabled = false;
-
 			current = this;
 
-			List<EventDelegate> mTemp = onFinished;
-			onFinished = new List<EventDelegate>();
-
 			// Notify the listener delegates
-			EventDelegate.Execute(mTemp);
+			EventDelegate.Execute(onFinished);
 
 			// Deprecated legacy functionality support
 			if (eventReceiver != null && !string.IsNullOrEmpty(callWhenFinished))
 				eventReceiver.SendMessage(callWhenFinished, this, SendMessageOptions.DontRequireReceiver);
 
 			current = null;
+
+			// Disable this script unless the function calls above changed something
+			if (duration == 0f || (mFactor == 1f && mAmountPerDelta > 0f || mFactor == 0f && mAmountPerDelta < 0f))
+				enabled = false;
 		}
 		else Sample(mFactor, false);
 	}

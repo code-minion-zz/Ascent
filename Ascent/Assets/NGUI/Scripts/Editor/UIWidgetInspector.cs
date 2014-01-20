@@ -295,7 +295,7 @@ public class UIWidgetInspector : UIRectEditor
 	/// Draw the specified anchor point.
 	/// </summary>
 
-	static public void DrawAnchorHandle (UIRect.AnchorPoint anchor, Transform myTrans, Vector3[] myCorners, int side, int id)
+	static public void DrawAnchor (UIRect.AnchorPoint anchor, Transform myTrans, Vector3[] myCorners, int side, int id)
 	{
 		if (!anchor.target) return;
 
@@ -444,10 +444,10 @@ public class UIWidgetInspector : UIRectEditor
 		// If the widget is anchored, draw the anchors
 		if (mWidget.isAnchored)
 		{
-			DrawAnchorHandle(mWidget.leftAnchor, mWidget.cachedTransform, handles, 0, id);
-			DrawAnchorHandle(mWidget.topAnchor, mWidget.cachedTransform, handles, 1, id);
-			DrawAnchorHandle(mWidget.rightAnchor, mWidget.cachedTransform, handles, 2, id);
-			DrawAnchorHandle(mWidget.bottomAnchor, mWidget.cachedTransform, handles, 3, id);
+			DrawAnchor(mWidget.leftAnchor, mWidget.cachedTransform, handles, 0, id);
+			DrawAnchor(mWidget.topAnchor, mWidget.cachedTransform, handles, 1, id);
+			DrawAnchor(mWidget.rightAnchor, mWidget.cachedTransform, handles, 2, id);
+			DrawAnchor(mWidget.bottomAnchor, mWidget.cachedTransform, handles, 3, id);
 		}
 
 		if (type == EventType.Repaint)
@@ -462,28 +462,10 @@ public class UIWidgetInspector : UIRectEditor
 		bool canResize = (mWidget.GetComponent<UIStretch>() == null);
 		bool[] resizable = new bool[8];
 
-		resizable[4] = canResize;	// left
-		resizable[5] = canResize;	// top
-		resizable[6] = canResize;	// right
-		resizable[7] = canResize;	// bottom
-
-		UILabel lbl = mWidget as UILabel;
-		
-		if (lbl != null)
-		{
-			if (lbl.overflowMethod == UILabel.Overflow.ResizeFreely)
-			{
-				resizable[4] = false;	// left
-				resizable[5] = false;	// top
-				resizable[6] = false;	// right
-				resizable[7] = false;	// bottom
-			}
-			else if (lbl.overflowMethod == UILabel.Overflow.ResizeHeight)
-			{
-				resizable[5] = false;	// top
-				resizable[7] = false;	// bottom
-			}
-		}
+		resizable[4] = canResize && !mWidget.isAnchoredHorizontally;	// left
+		resizable[5] = canResize && !mWidget.isAnchoredVertically;		// top
+		resizable[6] = canResize && !mWidget.isAnchoredHorizontally;	// right
+		resizable[7] = canResize && !mWidget.isAnchoredVertically;		// bottom
 
 		if (mWidget.keepAspectRatio == UIWidget.AspectRatioSource.BasedOnHeight)
 		{
@@ -605,17 +587,21 @@ public class UIWidgetInspector : UIRectEditor
 									if (mActionUnderMouse == Action.Move)
 									{
 										NGUISnap.Recalculate(mWidget);
+										NGUIEditorTools.RegisterUndo("Move widget", t);
 									}
 									else if (mActionUnderMouse == Action.Rotate)
 									{
 										mStartRot = t.localRotation.eulerAngles;
 										mStartDir = mStartDrag - t.position;
+										NGUIEditorTools.RegisterUndo("Rotate widget", t);
 									}
 									else if (mActionUnderMouse == Action.Scale)
 									{
 										mStartWidth = mWidget.width;
 										mStartHeight = mWidget.height;
 										mDragPivot = pivotUnderMouse;
+										NGUIEditorTools.RegisterUndo("Scale widget", t);
+										NGUIEditorTools.RegisterUndo("Scale widget", mWidget);
 									}
 									mAction = actionUnderMouse;
 								}
@@ -623,9 +609,6 @@ public class UIWidgetInspector : UIRectEditor
 
 							if (mAction != Action.None)
 							{
-								NGUIEditorTools.RegisterUndo("Change Rect", t);
-								NGUIEditorTools.RegisterUndo("Change Rect", mWidget);
-
 								// Reset the widget before adjusting anything
 								t.position = mWorldPos;
 								mWidget.width = mStartWidth;
@@ -650,7 +633,7 @@ public class UIWidgetInspector : UIRectEditor
 									t.position = mWorldPos;
 
 									// Adjust the widget by the delta
-									NGUIMath.MoveRect(mWidget, localDelta.x, localDelta.y);
+									NGUIMath.MoveWidget(mWidget, localDelta.x, localDelta.y);
 								}
 								else if (mAction == Action.Rotate)
 								{
@@ -746,30 +729,30 @@ public class UIWidgetInspector : UIRectEditor
 			{
 				if (e.keyCode == KeyCode.UpArrow)
 				{
-					NGUIEditorTools.RegisterUndo("Nudge Rect", t);
-					NGUIEditorTools.RegisterUndo("Nudge Rect", mWidget);
-					NGUIMath.MoveRect(mWidget, 0f, 1f);
+					Vector3 pos = t.localPosition;
+					pos.y += 1f;
+					t.localPosition = pos;
 					e.Use();
 				}
 				else if (e.keyCode == KeyCode.DownArrow)
 				{
-					NGUIEditorTools.RegisterUndo("Nudge Rect", t);
-					NGUIEditorTools.RegisterUndo("Nudge Rect", mWidget);
-					NGUIMath.MoveRect(mWidget, 0f, -1f);
+					Vector3 pos = t.localPosition;
+					pos.y -= 1f;
+					t.localPosition = pos;
 					e.Use();
 				}
 				else if (e.keyCode == KeyCode.LeftArrow)
 				{
-					NGUIEditorTools.RegisterUndo("Nudge Rect", t);
-					NGUIEditorTools.RegisterUndo("Nudge Rect", mWidget);
-					NGUIMath.MoveRect(mWidget, -1f, 0f);
+					Vector3 pos = t.localPosition;
+					pos.x -= 1f;
+					t.localPosition = pos;
 					e.Use();
 				}
 				else if (e.keyCode == KeyCode.RightArrow)
 				{
-					NGUIEditorTools.RegisterUndo("Nudge Rect", t);
-					NGUIEditorTools.RegisterUndo("Nudge Rect", mWidget);
-					NGUIMath.MoveRect(mWidget, 1f, 0f);
+					Vector3 pos = t.localPosition;
+					pos.x += 1f;
+					t.localPosition = pos;
 					e.Use();
 				}
 				else if (e.keyCode == KeyCode.Escape)
@@ -777,7 +760,22 @@ public class UIWidgetInspector : UIRectEditor
 					if (GUIUtility.hotControl == id)
 					{
 						if (mAction != Action.None)
-							Undo.PerformUndo();
+						{
+							if (mAction == Action.Move)
+							{
+								t.position = mWorldPos;
+							}
+							else if (mAction == Action.Rotate)
+							{
+								t.localRotation = Quaternion.Euler(mStartRot);
+							}
+							else if (mAction == Action.Scale)
+							{
+								t.position = mWorldPos;
+								mWidget.width = mStartWidth;
+								mWidget.height = mStartHeight;
+							}
+						}
 
 						GUIUtility.hotControl = 0;
 						GUIUtility.keyboardControl = 0;
@@ -936,8 +934,8 @@ public class UIWidgetInspector : UIRectEditor
 
 						if (w != null)
 						{
-							NGUIEditorTools.RegisterUndo("Snap Dimensions", w);
-							NGUIEditorTools.RegisterUndo("Snap Dimensions", w.transform);
+							NGUIEditorTools.RegisterUndo("Widget Change", w);
+							NGUIEditorTools.RegisterUndo("Make Pixel-Perfect", w.transform);
 							w.MakePixelPerfect();
 						}
 					}
