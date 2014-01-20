@@ -119,16 +119,9 @@ public class Rat : Enemy
 	   motor.speed = 5.0f;
    }
 
-	
-
    public void OnCanUseTackle()
    {
-	   
-	   //agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   //agent.TargetCharacter = lastDamagedBy;
 	   UseAbility(0);
-	   
-	   //agent.enabled = false;
    }
 
    public void OnCollisionEnter(Collision other)

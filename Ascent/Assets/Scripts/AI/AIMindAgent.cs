@@ -12,6 +12,8 @@ public class AIMindAgent
         Defensive,
     }
 
+	private const bool drawLabels = true;
+
 	protected bool active;
 
     protected Dictionary<EBehaviour, AIBehaviour> behaviours = new Dictionary<EBehaviour, AIBehaviour>();
@@ -53,12 +55,15 @@ public class AIMindAgent
 		transform = t;
 
 #if UNITY_EDITOR
-		if (label == null)
+		if (drawLabels)
 		{
-			GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/AIDebugText")) as GameObject;
-			label = go.GetComponent<GUIText>();
-			go.SetActive(false);
-			go.transform.parent = transform;
+			if (label == null)
+			{
+				GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/AIDebugText")) as GameObject;
+				label = go.GetComponent<GUIText>();
+				go.SetActive(false);
+				go.transform.parent = transform;
+			}
 		}
 #endif
 	}
@@ -100,7 +105,10 @@ public class AIMindAgent
         }
         else
         {
-            label.gameObject.SetActive(false);
+			if (drawLabels)
+			{
+				label.gameObject.SetActive(false);
+			}
         }
 		#endif
 
@@ -128,38 +136,47 @@ public class AIMindAgent
 		Floor floor = Game.Singleton.Tower.CurrentFloor;
 		if (floor != null)
 		{
-			label.gameObject.SetActive(true);
+			if (drawLabels)
+			{
+				label.gameObject.SetActive(true);
 
-			Camera camera = Game.Singleton.Tower.CurrentFloor.MainCamera;
+				Camera camera = Game.Singleton.Tower.CurrentFloor.MainCamera;
 
-			Vector3 pos = transform.position;
-			pos.x += 0.5f;
-			pos = camera.WorldToViewportPoint(pos);
+				Vector3 pos = transform.position;
+				pos.x += 0.5f;
+				pos = camera.WorldToViewportPoint(pos);
 
-			label.transform.position = pos;
+				label.transform.position = pos;
 
 
-			label.text = "";
-			label.text = curBehaviour.ToString() + "\n";
+				label.text = "";
+				label.text = curBehaviour.ToString() + "\n";
+			}
 
 			int i = 0;
 			List<AITrigger> triggers = behaviours[curBehaviour].Triggers;
 			foreach (AITrigger t in triggers)
 			{
-				label.text += "	Trigger" + i + "\n";
+				if (drawLabels)
+				{
+					label.text += "	Trigger" + i + "\n";
+				}
 
 				List<KeyValuePair<AICondition, AITrigger.EConditional>> conditions = t.Conditions;
 
 				int j = 0;
 				foreach (KeyValuePair<AICondition, AITrigger.EConditional> c in conditions)
 				{
-					if (j == 0)
+					if (drawLabels)
 					{
-						label.text += "		" + c.Key.ToString() + "\n";
-					}	
-					else
-					{
-						label.text += "		" + c.Value + " " + c.Key.ToString() + "\n";
+						if (j == 0)
+						{
+							label.text += "		" + c.Key.ToString() + "\n";
+						}
+						else
+						{
+							label.text += "		" + c.Value + " " + c.Key.ToString() + "\n";
+						}
 					}
 
 					c.Key.DebugDraw();
