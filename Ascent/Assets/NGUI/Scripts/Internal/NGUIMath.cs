@@ -638,51 +638,45 @@ static public class NGUIMath
 	/// Adjust the widget's position using the specified local delta coordinates.
 	/// </summary>
 
-	static public void MoveWidget (UIRect w, float x, float y) { MoveRect(w, x, y); }
-
-	/// <summary>
-	/// Adjust the rectangle's position using the specified local delta coordinates.
-	/// </summary>
-
-	static public void MoveRect (UIRect rect, float x, float y)
+	static public void MoveWidget (UIWidget w, float x, float y)
 	{
 		int ix = Mathf.FloorToInt(x + 0.5f);
 		int iy = Mathf.FloorToInt(y + 0.5f);
 
-		Transform t = rect.cachedTransform;
+		Transform t = w.cachedTransform;
 		t.localPosition += new Vector3(ix, iy);
 		int anchorCount = 0;
 
-		if (rect.leftAnchor.target)
+		if (w.leftAnchor.target)
 		{
 			++anchorCount;
-			rect.leftAnchor.absolute += ix;
+			w.leftAnchor.absolute += ix;
 		}
 
-		if (rect.rightAnchor.target)
+		if (w.rightAnchor.target)
 		{
 			++anchorCount;
-			rect.rightAnchor.absolute += ix;
+			w.rightAnchor.absolute += ix;
 		}
 
-		if (rect.bottomAnchor.target)
+		if (w.bottomAnchor.target)
 		{
 			++anchorCount;
-			rect.bottomAnchor.absolute += iy;
+			w.bottomAnchor.absolute += iy;
 		}
 
-		if (rect.topAnchor.target)
+		if (w.topAnchor.target)
 		{
 			++anchorCount;
-			rect.topAnchor.absolute += iy;
+			w.topAnchor.absolute += iy;
 		}
 
 #if UNITY_EDITOR
-		UnityEditor.EditorUtility.SetDirty(rect);
+		UnityEditor.EditorUtility.SetDirty(w);
 #endif
 
 		// If all sides were anchored, we're done
-		if (anchorCount != 0) rect.UpdateAnchors();
+		if (anchorCount != 0) w.UpdateAnchors();
 	}
 
 	/// <summary>
@@ -693,7 +687,7 @@ static public class NGUIMath
 	{
 		if (pivot == UIWidget.Pivot.Center)
 		{
-			MoveRect(w, x, y);
+			MoveWidget(w, x, y);
 			return;
 		}
 
@@ -734,15 +728,6 @@ static public class NGUIMath
 			AdjustWidget(w, 0, v.y, 0, 0, minWidth, minHeight);
 			break;
 		}
-	}
-
-	/// <summary>
-	/// Adjust the widget's rectangle based on the specified modifier values.
-	/// </summary>
-
-	static public void AdjustWidget (UIWidget w, float left, float bottom, float right, float top)
-	{
-		AdjustWidget(w, left, bottom, right, top, 2, 2);
 	}
 
 	/// <summary>

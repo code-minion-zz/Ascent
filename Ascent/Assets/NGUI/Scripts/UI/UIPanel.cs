@@ -171,12 +171,6 @@ public class UIPanel : UIRect
 	}
 
 	/// <summary>
-	/// Whether the rectangle can be anchored.
-	/// </summary>
-
-	public override bool canBeAnchored { get { return mClipping != UIDrawCall.Clipping.None; } }
-
-	/// <summary>
 	/// Panel's alpha affects everything drawn by the panel.
 	/// </summary>
 
@@ -192,7 +186,6 @@ public class UIPanel : UIRect
 
 			if (mAlpha != val)
 			{
-				mResized = true;
 				mAlpha = val;
 				SetDirty();
 			}
@@ -716,10 +709,7 @@ public class UIPanel : UIRect
 	protected override void OnDisable ()
 	{
 		for (int i = 0; i < drawCalls.size; ++i)
-		{
-			UIDrawCall dc = drawCalls.buffer[i];
-			if (dc != null) UIDrawCall.Destroy(dc);
-		}
+			UIDrawCall.Destroy(drawCalls.buffer[i]);
 		drawCalls.Clear();
 		list.Remove(this);
 		

@@ -24,8 +24,6 @@ public class UIPlaySound : MonoBehaviour
 	public AudioClip audioClip;
 	public Trigger trigger = Trigger.OnClick;
 
-	bool mIsOver = false;
-
 #if UNITY_3_5
 	public float volume = 1f;
 	public float pitch = 1f;
@@ -36,31 +34,25 @@ public class UIPlaySound : MonoBehaviour
 
 	void OnHover (bool isOver)
 	{
-		if (trigger == Trigger.OnMouseOver)
-		{
-			if (mIsOver == isOver) return;
-			mIsOver = isOver;
-		}
-
 		if (enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
+		{
 			NGUITools.PlaySound(audioClip, volume, pitch);
+		}
 	}
 
 	void OnPress (bool isPressed)
 	{
-		if (trigger == Trigger.OnPress)
-		{
-			if (mIsOver == isPressed) return;
-			mIsOver = isPressed;
-		}
-
 		if (enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
+		{
 			NGUITools.PlaySound(audioClip, volume, pitch);
+		}
 	}
 
 	void OnClick ()
 	{
 		if (enabled && trigger == Trigger.OnClick)
+		{
 			NGUITools.PlaySound(audioClip, volume, pitch);
+		}
 	}
 }

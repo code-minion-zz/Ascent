@@ -21,7 +21,6 @@ public class ComponentSelector : ScriptableWizard
 	OnSelectionCallback mCallback;
 	Object[] mObjects;
 	bool mSearched = false;
-	Vector2 mScroll = Vector2.zero;
 
 	static string GetName (System.Type t)
 	{
@@ -131,7 +130,6 @@ public class ComponentSelector : ScriptableWizard
 
 	void OnGUI ()
 	{
-		if (mObjects == null) return;
 		NGUIEditorTools.SetLabelWidth(80f);
 		GUILayout.Label(mTitle, "LODLevelNotifyText");
 		GUILayout.Space(6f);
@@ -170,13 +168,14 @@ public class ComponentSelector : ScriptableWizard
 		else
 		{
 			Object sel = null;
-			mScroll = GUILayout.BeginScrollView(mScroll);
 
 			foreach (Object o in mObjects)
+			{
 				if (DrawObject(o))
+				{
 					sel = o;
-			
-			GUILayout.EndScrollView();
+				}
+			}
 
 			if (sel != null)
 			{
