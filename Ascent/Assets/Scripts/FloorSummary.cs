@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class FloorSummary : MonoBehaviour 
 {
-	enum summaryVote 
+	public enum summaryVote 
 	{
 		INVALID_VOTE = -1,
 		VOTELESS,
