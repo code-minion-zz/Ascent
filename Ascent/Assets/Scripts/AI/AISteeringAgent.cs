@@ -39,6 +39,13 @@ public class AISteeringAgent
         set { closeEnoughRange = value; }
     }
 
+    protected float rotationSpeed = 1.0f;
+    public float RotationSpeed
+    {
+        get { return rotationSpeed; }
+        set { rotationSpeed = value; }
+    }
+
     protected bool hasTarget = false;
 
     public delegate void TargetReached();
@@ -63,23 +70,21 @@ public class AISteeringAgent
         {
             if (targetCharacter != null)
             {
-				motor.transform.LookAt(targetCharacter.transform.position);
-                motor.Move(motor.transform.forward);
-    
+                //motor.transform.LookAt(targetCharacter.transform.position);
+                motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
                 {
                     if (OnTargetReached != null)
                     {
                         OnTargetReached.Invoke();
                     }
-                    hasTarget = false;
-                    targetCharacter = null;
                 }
             }
             else
             {
-				motor.transform.LookAt(targetPos);
-                motor.Move(motor.transform.forward);
+				//motor.transform.LookAt(targetPos);
+                motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
                 {
@@ -87,9 +92,10 @@ public class AISteeringAgent
                     {
                         OnTargetReached.Invoke();
                     }
-                    hasTarget = false;
                 }
             }
+
+            motor.Move(motor.transform.forward);
         }
     }
 

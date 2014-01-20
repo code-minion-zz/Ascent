@@ -18,16 +18,16 @@ public class AIAgent : MonoBehaviour
         get { return mindAgent; }
     }
 
+    public List<Character> SensedCharacters
+    {
+        get{ return mindAgent.SensedCharacters; }
+    }
+
 	public void Initialise(Transform t)
 	{
 		steeringAgent.Initialise(t.GetComponent<CharacterMotor>());
 		mindAgent.Initialise(t);
 	}
-
-    public List<Character> GetSensedCharacters()
-    {
-        return mindAgent.SensedCharacters;
-    }
 
 	private Character targetCharacter;
 	public Character TargetCharacter

@@ -41,44 +41,45 @@ public class Rat : Enemy
 	   // Defensive behaviour
 	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   {
-		   // OnAttacked, Triggers if attacked
-		   trigger = behaviour.AddTrigger();
-		   trigger.Priority = AITrigger.EConditionalExit.Stop;
-		   trigger.AddCondition(new AICondition_Attacked(this));
-		   trigger.OnTriggered += OnAttacked;
+           // OnAttacked, Triggers if attacked
+           trigger = behaviour.AddTrigger();
+           trigger.Priority = AITrigger.EConditionalExit.Stop;
+           trigger.AddCondition(new AICondition_Attacked(this));
+           trigger.OnTriggered += OnAttacked;
 
 		   // OnWanderEnd, Triggers if time exceeds 2s or target reached.
 		   trigger = behaviour.AddTrigger();
 		   trigger.Priority = AITrigger.EConditionalExit.Stop;
 		   trigger.AddCondition(new AICondition_Timer(2.0f));
-		   trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+		  // trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
 		   trigger.OnTriggered += OnWanderEnd;
 	   }
 
-	   // Aggressive
-	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   {
-		   // OnAttacked, Triggers if attacked
-		   trigger = behaviour.AddTrigger();
-		   trigger.Priority = AITrigger.EConditionalExit.Stop;
-		   trigger.AddCondition(new AICondition_Attacked(this));
-		   trigger.OnTriggered += OnAttacked;
+       // Aggressive
+       behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+       {
+           // OnAttacked, Triggers if attacked
+           trigger = behaviour.AddTrigger();
+           trigger.Priority = AITrigger.EConditionalExit.Stop;
+           trigger.AddCondition(new AICondition_Attacked(this));
+           trigger.OnTriggered += OnAttacked;
 
-		   // OnCanUseTackle, triggers if target in range and action off cooldown
-		   trigger = behaviour.AddTrigger();
-		   trigger.Priority = AITrigger.EConditionalExit.Stop;
-		   trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
-		   trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
-		   trigger.OnTriggered += OnCanUseTackle;
+           // OnCanUseTackle, triggers if target in range and action off cooldown
+           trigger = behaviour.AddTrigger();
+           trigger.Priority = AITrigger.EConditionalExit.Stop;
+           trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
+           trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+           trigger.OnTriggered += OnCanUseTackle;
 
-		   trigger = behaviour.AddTrigger();
-		   trigger.Priority = AITrigger.EConditionalExit.Stop;
-		   trigger.AddCondition(new AICondition_Timer(2.0f));
-		   trigger.OnTriggered += OnAggressiveEnd;
-	   }
+           trigger = behaviour.AddTrigger();
+           trigger.Priority = AITrigger.EConditionalExit.Stop;
+           trigger.AddCondition(new AICondition_Timer(7.0f));
+           trigger.OnTriggered += OnAggressiveEnd;
+       }
 
 	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+       agent.SteeringAgent.RotationSpeed = 15.0f;
    }
 
    public override void Update()

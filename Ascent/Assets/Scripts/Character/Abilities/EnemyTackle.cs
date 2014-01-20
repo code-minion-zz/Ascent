@@ -80,7 +80,8 @@ public class EnemyTackle : Action
     public override void EndAbility()
     {
         base.EndAbility();
-		owner.SetColor(owner.OrigionalColor);
+        owner.Motor.EnableMovementForce(true);
+        owner.ResetColor();
     }
 
 #if UNITY_EDITOR
