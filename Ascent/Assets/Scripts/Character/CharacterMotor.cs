@@ -22,6 +22,10 @@ public class CharacterMotor : MonoBehaviour
 	private float knockbackDecel = 0.65f;
 
 	private bool usingMovementForce = true;
+	public bool UsingMovementForce
+	{
+		get { return usingMovementForce; }
+	}
 
 	// Grid Movement
 	public bool moving;

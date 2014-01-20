@@ -70,8 +70,11 @@ public class AISteeringAgent
         {
             if (targetCharacter != null)
             {
-                //motor.transform.LookAt(targetCharacter.transform.position);
-                motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+				if (motor.UsingMovementForce)
+				{
+					//motor.transform.LookAt(targetCharacter.transform.position);
+					motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+				}
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
                 {
@@ -83,8 +86,11 @@ public class AISteeringAgent
             }
             else
             {
-				//motor.transform.LookAt(targetPos);
-                motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
+				if (motor.UsingMovementForce)
+				{
+					//motor.transform.LookAt(targetPos);
+					motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
+				}
 
                 if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
                 {
