@@ -4,14 +4,22 @@ using System.Collections.Generic;
 
 public class FloorSummary : MonoBehaviour 
 {
-	//int playerCount;
-	//List<Player> players;
-	//List<SummaryWindow> summaryWindows;
-	//Floor floor;
+	enum summaryVote 
+	{
+		INVALID_VOTE = -1,
+		VOTELESS,
+		TOWN,
+		NEXTLEVEL,
+		MAX_VOTE
+	}
+	
+	public summaryVote myVote = 0;
+
 	Player myPlayer;
 	FloorStats fs;
 	int expReward = 0;
 	int goldReward = 0;
+
 	public GameObject[] uiElements;
 
 	/// <summary>
@@ -108,7 +116,16 @@ public class FloorSummary : MonoBehaviour
 		// vote for next Level
 		if (inputDevice.Action1.WasPressed)
 		{
-			uiElements[6].GetComponent<UILabel>().color = Color.green;
+			if (myVote != summaryVote.NEXTLEVEL)
+			{
+				myVote = summaryVote.NEXTLEVEL;
+				uiElements[6].GetComponent<UILabel>().color = Color.green;
+			}
+			else
+			{
+				myVote = summaryVote.VOTELESS;
+				uiElements[6].GetComponent<UILabel>().color = Color.white;
+			}
 
 			// inform scene controller of player's vote
 			return;
@@ -117,7 +134,16 @@ public class FloorSummary : MonoBehaviour
 		// vote for town
 		if (inputDevice.Action2.WasPressed) 
 		{
-			uiElements[6].GetComponent<UILabel>().color = Color.red;
+			if (myVote != summaryVote.TOWN)
+			{
+				myVote = summaryVote.TOWN;
+				uiElements[6].GetComponent<UILabel>().color = Color.red;
+			}
+			else
+			{
+				myVote = summaryVote.VOTELESS;
+				uiElements[6].GetComponent<UILabel>().color = Color.white;
+			}
 
 			// inform scene controller of player's vote
 			return;
