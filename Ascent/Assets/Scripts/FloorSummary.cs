@@ -8,8 +8,69 @@ public class FloorSummary : MonoBehaviour
 	//List<Player> players;
 	//List<SummaryWindow> summaryWindows;
 	//Floor floor;
+	FloorStats fs;
+	int expReward = 0;
+	int goldReward = 0;
+	public GameObject[] uiElements;
 
- 
+	/// <summary>
+	/// Script assumes that uiElements is populated in the inspector
+	/// </summary>
+	void Start()
+	{
+		//Game.Singleton.Players [0].Hero.GetComponent<Hero> ().ResetFloorStatistics ();
+		fs = Game.Singleton.Players[0].Hero.GetComponent<Hero>().FloorStatistics;
+		//expReward = fs.ExperienceGained;
+		//goldReward = fs.TotalCoinsLooted;
+		string bonusNames = uiElements[0].GetComponent<UILabel>().text;
+		string rewardValues = uiElements [1].GetComponent<UILabel> ().text;
+		
+		if (fs.FloorCompletionTime > 0)
+		{
+			bonusNames += "Time Taken" + "\n";
+			//rewardValues += 561 + "s" + "\n";
+			rewardValues += fs.FloorCompletionTime + "\n";
+		}
+
+		if (fs.BossCompletionTime > 0) 
+		{
+			bonusNames += "Boss Kill Time" + "\n";
+			//rewardValues += 13 + "s" + '\n';
+			rewardValues += fs.BossCompletionTime + "\n";
+		}
+		
+		if (fs.TotalDamageDealt > 0)
+		{
+			bonusNames += "Damage Dealt" + "\n";
+			//rewardValues += 43561 + "\n";
+			rewardValues += fs.TotalDamageDealt + "\n";
+		}
+		
+		if (fs.DamageTaken > 0)
+		{
+			bonusNames += "Damage Taken" + "\n";
+			//rewardValues += 43561 + "\n";
+			rewardValues += fs.DamageTaken + "\n";
+		}
+
+		if (fs.NumberOfDeaths > 0)
+		{
+			bonusNames += "Lives Lost" + "\n";
+			//rewardValues += 2 + "\n";
+			rewardValues += fs.NumberOfDeaths + "\n";
+		}
+
+		if (fs.NumberOfMonstersKilled > 0)
+		{
+			bonusNames += "Monsters Killed" + "\n";
+			//rewardValues += 30 + "\n";
+			rewardValues += fs.NumberOfMonstersKilled + "\n";
+		}
+
+		
+		uiElements [0].GetComponent<UILabel> ().text = bonusNames;
+		uiElements [1].GetComponent<UILabel> ().text = rewardValues;
+	} 
 	//// Use this for initialization
 	//void Start () 
 	//{
