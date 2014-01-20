@@ -74,7 +74,7 @@ public class InputManager : MonoBehaviour
 		if (Input.GetKeyUp(KeyCode.BackQuote))
 		{
 			//Game.Singleton.transform.
-			Application.LoadLevel("FloorSummary");
+			Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.MainMenu);
 		}
 		#endregion
 

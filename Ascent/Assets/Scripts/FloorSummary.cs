@@ -27,44 +27,44 @@ public class FloorSummary : MonoBehaviour
 		
 		if (fs.FloorCompletionTime > 0)
 		{
-			bonusNames += "Time Taken" + '\n';
+			bonusNames += "Time Taken" + "\n";
 			//rewardValues += 561 + "s" + "\n";
-			rewardValues += fs.FloorCompletionTime + '\n';
+			rewardValues += fs.FloorCompletionTime + "\n";
 		}
 
 		if (fs.BossCompletionTime > 0) 
 		{
-			bonusNames += "Boss Kill Time" + '\n';
+			bonusNames += "Boss Kill Time" + "\n";
 			//rewardValues += 13 + "s" + '\n';
-			rewardValues += fs.BossCompletionTime + '\n';
+			rewardValues += fs.BossCompletionTime + "\n";
 		}
 		
 		if (fs.TotalDamageDealt > 0)
 		{
-			bonusNames += "Damage Dealt" + '\n';
+			bonusNames += "Damage Dealt" + "\n";
 			//rewardValues += 43561 + "\n";
-			rewardValues += fs.TotalDamageDealt + '\n';
+			rewardValues += fs.TotalDamageDealt + "\n";
 		}
 		
 		if (fs.DamageTaken > 0)
 		{
-			bonusNames += "Damage Taken" + '\n';
+			bonusNames += "Damage Taken" + "\n";
 			//rewardValues += 43561 + "\n";
-			rewardValues += fs.DamageTaken + '\n';
+			rewardValues += fs.DamageTaken + "\n";
 		}
 
 		if (fs.NumberOfDeaths > 0)
 		{
-			bonusNames += "Lives Lost" + '\n';
+			bonusNames += "Lives Lost" + "\n";
 			//rewardValues += 2 + "\n";
-			rewardValues += fs.NumberOfDeaths + '\n';
+			rewardValues += fs.NumberOfDeaths + "\n";
 		}
 
 		if (fs.NumberOfMonstersKilled > 0)
 		{
-			bonusNames += "Monsters Killed" + '\n';
+			bonusNames += "Monsters Killed" + "\n";
 			//rewardValues += 30 + "\n";
-			rewardValues += fs.NumberOfMonstersKilled + '\n';
+			rewardValues += fs.NumberOfMonstersKilled + "\n";
 		}
 
 		
