@@ -55,6 +55,11 @@ public abstract class Character : MonoBehaviour
 	protected BetterList<Buff>		buffList = new BetterList<Buff>();
 	protected CharacterMotor        motor;
 
+    protected bool canBeStunned = true;
+    protected bool canBeKnockedBack = true;
+    protected bool canBeDebuffed = true;
+    protected bool canBeInterrupted = true;
+
 	public CharacterMotor Motor
 	{
 		get { return motor;  }
@@ -299,22 +304,31 @@ public abstract class Character : MonoBehaviour
 
     public virtual void ApplyKnockback(Vector3 direction, float magnitude)
     {
-		// Taking damage may or may not interrupt the current ability
-		direction = new Vector3(direction.x, 0.0f, direction.z);
-		//transform.GetComponent<CharacterController>().Move(direction * magnitude);
-		motor.SetKnockback(direction, magnitude);
-		//transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
+        if (canBeKnockedBack)
+        {
+            // Taking damage may or may not interrupt the current ability
+            direction = new Vector3(direction.x, 0.0f, direction.z);
+            //transform.GetComponent<CharacterController>().Move(direction * magnitude);
+            motor.SetKnockback(direction, magnitude);
+            //transform.rigidbody.AddForce(direction * magnitude, ForceMode.Impulse);
+        }
     }
 
     public virtual void ApplySpellEffect()
     {
-		// Taking damage may or may not interrupt the current ability
+        if (canBeDebuffed)
+        {
+            // Taking damage may or may not interrupt the current ability
+        }
     }
 
     public virtual void ApplyStunEffect(float duration)
     {
-        stunDuration = duration;
-        SetColor(Color.yellow);
+        if (canBeStunned)
+        {
+            stunDuration = duration;
+            SetColor(Color.yellow);
+        }
     }
 
     public virtual void ApplyInvulnerabilityEffect(float duration)

@@ -12,7 +12,7 @@ public class EnemyTackle : Action
     {
         base.Initialise(owner);
 
-		animationLength = 1.0f;
+		animationLength = 0.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
 		coolDownTime = 2.0f;
@@ -73,7 +73,7 @@ public class EnemyTackle : Action
 		else if (currentTime >= animationLength * 0.25f)
 		{
 			owner.Motor.EnableMovementForce(true);
-			owner.Motor.speed = 100.0f;
+			owner.Motor.speed = 10.0f;
 		}
     }
 

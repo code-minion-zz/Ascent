@@ -27,6 +27,12 @@ public class CharacterMotor : MonoBehaviour
 		get { return usingMovementForce; }
 	}
 
+    private Vector3 targetVelocity;
+    public Vector3 TargetVelocity
+    {
+        get { return targetVelocity; }
+    }
+
 	// Grid Movement
 	public bool moving;
 	float offset = 1.0f;
@@ -60,7 +66,7 @@ public class CharacterMotor : MonoBehaviour
 		}
 
 		// Calculate how fast we should be moving
-		Vector3 targetVelocity = Vector3.zero;
+		targetVelocity = Vector3.zero;
 		Vector3 knockbackVel = Vector3.zero;
         int forces = 0;
 
@@ -132,16 +138,16 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void FixRotationOrthogonally(Vector3 curDirection)
 	{
 		movementForce.y = 0.0f;
-		//if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
-		//{
-		//    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
-		//    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
-		//}
-		//else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
-		//{
-		//    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
-		//    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
-		//}
+        //if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+        //{
+        //    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+        //    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+        //}
+        //else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+        //{
+        //    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+        //    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+        //}
 	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)
