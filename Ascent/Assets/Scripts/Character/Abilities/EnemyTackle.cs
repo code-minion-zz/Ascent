@@ -12,7 +12,7 @@ public class EnemyTackle : Action
     {
         base.Initialise(owner);
 
-		animationLength = 1.0f;
+		animationLength = 0.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
 		coolDownTime = 2.0f;

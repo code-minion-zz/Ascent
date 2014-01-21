@@ -138,16 +138,16 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void FixRotationOrthogonally(Vector3 curDirection)
 	{
 		movementForce.y = 0.0f;
-		//if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
-		//{
-		//    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
-		//    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
-		//}
-		//else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
-		//{
-		//    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
-		//    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
-		//}
+        //if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+        //{
+        //    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+        //    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+        //}
+        //else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+        //{
+        //    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+        //    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+        //}
 	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)

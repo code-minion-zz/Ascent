@@ -12,7 +12,7 @@ public class AIMindAgent
         Defensive,
     }
 
-	private const bool drawLabels = true;
+	private const bool drawLabels = false;
 
 	protected bool active;
 
@@ -76,7 +76,10 @@ public class AIMindAgent
 
     public void ResetBehaviour(EBehaviour e)
     {
-        behaviours[e].Reset();
+        if (behaviours.ContainsKey(e))
+        {
+            behaviours[e].Reset();
+        }
     }
 
     public void AddBehaviour(EBehaviour e, AIBehaviour b)
