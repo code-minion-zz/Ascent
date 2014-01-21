@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FloorSummary : MonoBehaviour
+public class FloorSummaryPanel : MonoBehaviour
 {
 	public enum SummaryVote
 	{
@@ -92,42 +92,47 @@ public class FloorSummary : MonoBehaviour
 
 		PanelElements [3].GetComponent<UILabel> ().text = "Exp: " + newExp;
 		PanelElements [4].GetComponent<UISlider> ().value = (float)newExp/1000;
+
+		NGUITools.SetActive(gameObject, true);
 	} 
 
 	//// Update is called once per frame
 	void Update ()
 	{
 			#region Voting Controls
-			// Query this player's input
-			InputDevice inputDevice = myPlayer.Input;
+		// Query this player's input
+		if (myPlayer == null || myPlayer.Input == null)
+			return;
+		
+		InputDevice inputDevice = myPlayer.Input;
 
-			// vote for next Level
-			if (inputDevice.Action1.WasPressed) {
-					if (myVote != SummaryVote.NEXTLEVEL) {
-							myVote = SummaryVote.NEXTLEVEL;
-							PanelElements [5].GetComponent<UILabel> ().color = Color.green;
-					} else {
-							myVote = SummaryVote.VOTELESS;
-							PanelElements [5].GetComponent<UILabel> ().color = Color.white;
-					}
+		// vote for next Level
+		if (inputDevice.Action1.WasPressed) {
+				if (myVote != SummaryVote.NEXTLEVEL) {
+						myVote = SummaryVote.NEXTLEVEL;
+						PanelElements [5].GetComponent<UILabel> ().color = Color.green;
+				} else {
+						myVote = SummaryVote.VOTELESS;
+						PanelElements [5].GetComponent<UILabel> ().color = Color.white;
+				}
 
-					// inform scene controller of player's vote
-					return;
-			}
+				// inform scene controller of player's vote
+				return;
+		}
 
-			// vote for town
-			if (inputDevice.Action2.WasPressed) {
-					if (myVote != SummaryVote.TOWN) {
-							myVote = SummaryVote.TOWN;
-							PanelElements [6].GetComponent<UILabel> ().color = Color.red;
-					} else {
-							myVote = SummaryVote.VOTELESS;
-							PanelElements [6].GetComponent<UILabel> ().color = Color.white;
-					}
+		// vote for town
+		if (inputDevice.Action2.WasPressed) {
+				if (myVote != SummaryVote.TOWN) {
+						myVote = SummaryVote.TOWN;
+						PanelElements [6].GetComponent<UILabel> ().color = Color.red;
+				} else {
+						myVote = SummaryVote.VOTELESS;
+						PanelElements [6].GetComponent<UILabel> ().color = Color.white;
+				}
 
-					// inform scene controller of player's vote
-					return;
-			}		
-			#endregion Voting Controls
+				// inform scene controller of player's vote
+				return;
+		}		
+		#endregion Voting Controls
 	}
 }
