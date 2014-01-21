@@ -2,151 +2,131 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FloorSummary : MonoBehaviour 
+public class FloorSummary : MonoBehaviour
 {
-	public enum summaryVote 
+	public enum SummaryVote
 	{
-		INVALID_VOTE = -1,
-		VOTELESS,
-		TOWN,
-		NEXTLEVEL,
-		MAX_VOTE
+			INVALID = -1,
+			VOTELESS,
+			TOWN,
+			NEXTLEVEL,
+			MAX
 	}
-	
-	public summaryVote myVote = 0;
+
+	private SummaryVote myVote = 0;
+	public SummaryVote MyVote
+	{
+		get {
+			return myVote;
+		}
+		set {
+			myVote = value;
+		}
+	}
 
 	Player myPlayer;
 	FloorStats fs;
 	int expReward = 0;
 	int goldReward = 0;
 
-	public GameObject[] uiElements;
+	public GameObject[] PanelElements;
 
 	/// <summary>
 	/// Script assumes that uiElements is populated in the inspector
 	/// </summary>
-	void Start()
+	void Start ()
 	{
-		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
-		fs = myPlayer.Hero.GetComponent<Hero>().FloorStatistics;
-		expReward = fs.ExperienceGained;
-		goldReward = fs.TotalCoinsLooted;
-		string bonusNames = uiElements[0].GetComponent<UILabel>().text;
-		string rewardValues = uiElements [1].GetComponent<UILabel> ().text;
-		
-		if (fs.FloorCompletionTime > 0)
-		{
-			bonusNames += "Time Taken" + "\n";
-			//rewardValues += 561 + "s" + "\n";
-			rewardValues += fs.FloorCompletionTime + "\n";
-		}
+			myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
+			fs = myPlayer.Hero.GetComponent<Hero> ().FloorStatistics;
+			expReward = fs.ExperienceGained;
+			goldReward = fs.TotalCoinsLooted;
+			string bonusNames = PanelElements [0].GetComponent<UILabel> ().text;
+			string rewardValues = PanelElements [1].GetComponent<UILabel> ().text;
 
-		if (fs.BossCompletionTime > 0) 
-		{
-			bonusNames += "Boss Kill Time" + "\n";
-			//rewardValues += 13 + "s" + '\n';
-			rewardValues += fs.BossCompletionTime + "\n";
-		}
-		
-		if (fs.TotalDamageDealt > 0)
-		{
-			bonusNames += "Damage Dealt" + "\n";
-			//rewardValues += 43561 + "\n";
-			rewardValues += fs.TotalDamageDealt + "\n";
-		}
-		
-		if (fs.DamageTaken > 0)
-		{
-			bonusNames += "Damage Taken" + "\n";
-			//rewardValues += 43561 + "\n";
-			rewardValues += fs.DamageTaken + "\n";
-		}
+			if (fs.FloorCompletionTime > 0) {
+					bonusNames += "Time Taken" + "\n";
+					//rewardValues += 561 + "s" + "\n";
+					rewardValues += fs.FloorCompletionTime + "s\n";
+			}
 
-		if (fs.NumberOfDeaths > 0)
-		{
-			bonusNames += "Lives Lost" + "\n";
-			//rewardValues += 2 + "\n";
-			rewardValues += fs.NumberOfDeaths + "\n";
-		}
+			if (fs.BossCompletionTime > 0) {
+					bonusNames += "Boss Kill Time" + "\n";
+					//rewardValues += 13 + "s" + '\n';
+					rewardValues += fs.BossCompletionTime + "s\n";
+			}
 
-		if (fs.NumberOfMonstersKilled > 0)
-		{
-			bonusNames += "Monsters Killed" + "\n";
-			//rewardValues += 30 + "\n";
-			rewardValues += fs.NumberOfMonstersKilled + "\n";
-		}
+			if (fs.TotalDamageDealt > 0) {
+					bonusNames += "Damage Dealt" + "\n";
+					//rewardValues += 43561 + "\n";
+					rewardValues += fs.TotalDamageDealt + "\n";
+			}
 
-		
-		uiElements [0].GetComponent<UILabel> ().text = bonusNames;
-		uiElements [1].GetComponent<UILabel> ().text = rewardValues;
+			if (fs.DamageTaken > 0) {
+					bonusNames += "Damage Taken" + "\n";
+					//rewardValues += 43561 + "\n";
+					rewardValues += fs.DamageTaken + "\n";
+			}
 
-		uiElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.Currency);
+			if (fs.NumberOfDeaths > 0) {
+					bonusNames += "Lives Lost" + "\n";
+					//rewardValues += 2 + "\n";
+					rewardValues += fs.NumberOfDeaths + "\n";
+			}
+
+			if (fs.NumberOfMonstersKilled > 0) {
+					bonusNames += "Monsters Killed" + "\n";
+					//rewardValues += 30 + "\n";
+					rewardValues += fs.NumberOfMonstersKilled + "\n";
+			}
+
+
+			PanelElements [0].GetComponent<UILabel> ().text = bonusNames;
+			PanelElements [1].GetComponent<UILabel> ().text = rewardValues;
+			PanelElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.Currency);
+
+			int newExp = expReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.CurrentExperience;
+			if (newExp > 999) {
+				newExp = newExp - 1000;
+			}
+
+			PanelElements [3].GetComponent<UILabel> ().text = "Exp: " + newExp;
+			PanelElements [4].GetComponent<UISlider> ().value = newExp/1000;
 	} 
-	//// Use this for initialization
-	//void Start () 
-	//{
-	//    // Grab reference to players
-	//    players = Game.Singleton.Players;
-	//    playerCount = players.Count;
 
-	//    Transform xform = transform.FindChild("UI Root (2D)");
-	//    xform = xform.FindChild("Camera");
-	//    xform = xform.FindChild("Anchor");
-	//    xform = xform.FindChild("Panel");
-	//    xform = xform.FindChild("Background");
-
-	//    summaryWindows = new List<SummaryWindow>();
-
-	//    for (int i = 0; i < playerCount; ++i)
-	//    {
-	//        SummaryWindow summaryWindow = new SummaryWindow();
-
-	//        summaryWindow.Initialise(xform.FindChild("Summary Window " + (i + 1)), players[i]);
-
-	//        summaryWindows.Add(summaryWindow);
-	//    }
-	//}
-	
 	//// Update is called once per frame
-	void Update () 
+	void Update ()
 	{
-        // Query this player's input
-        InputDevice inputDevice = myPlayer.Input;
-		
-		// vote for next Level
-		if (inputDevice.Action1.WasPressed)
-		{
-			if (myVote != summaryVote.NEXTLEVEL)
-			{
-				myVote = summaryVote.NEXTLEVEL;
-				uiElements[6].GetComponent<UILabel>().color = Color.green;
-			}
-			else
-			{
-				myVote = summaryVote.VOTELESS;
-				uiElements[6].GetComponent<UILabel>().color = Color.white;
+			#region Voting Controls
+			// Query this player's input
+			InputDevice inputDevice = myPlayer.Input;
+
+			// vote for next Level
+			if (inputDevice.Action1.WasPressed) {
+					if (myVote != SummaryVote.NEXTLEVEL) {
+							myVote = SummaryVote.NEXTLEVEL;
+							PanelElements [5].GetComponent<UILabel> ().color = Color.green;
+					} else {
+							myVote = SummaryVote.VOTELESS;
+							PanelElements [5].GetComponent<UILabel> ().color = Color.white;
+					}
+
+					// inform scene controller of player's vote
+					return;
 			}
 
-			// inform scene controller of player's vote
-			return;
-		}
+			// vote for town
+			if (inputDevice.Action2.WasPressed) {
+					if (myVote != SummaryVote.TOWN) {
+							myVote = SummaryVote.TOWN;
+							PanelElements [6].GetComponent<UILabel> ().color = Color.red;
+					} else {
+							myVote = SummaryVote.VOTELESS;
+							PanelElements [6].GetComponent<UILabel> ().color = Color.white;
+					}
 
-		// vote for town
-		if (inputDevice.Action2.WasPressed) 
-		{
-			if (myVote != summaryVote.TOWN)
-			{
-				myVote = summaryVote.TOWN;
-				uiElements[6].GetComponent<UILabel>().color = Color.red;
-			}
-			else
-			{
-				myVote = summaryVote.VOTELESS;
-				uiElements[6].GetComponent<UILabel>().color = Color.white;
-			}
-
-			// inform scene controller of player's vote
-			return;
-		}		
+					// inform scene controller of player's vote
+					return;
+			}		
+			#endregion Voting Controls
 	}
 }
