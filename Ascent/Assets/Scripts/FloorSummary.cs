@@ -90,7 +90,8 @@ public class FloorSummary : MonoBehaviour
 			}
 
 			PanelElements [3].GetComponent<UILabel> ().text = "Exp: " + newExp;
-			PanelElements [4].GetComponent<UISlider> ().value = newExp/1000;
+			PanelElements [4].GetComponent<UISlider> ().value = (float)newExp/1000;
+		Debug.Log (newExp/1000);
 	} 
 
 	//// Update is called once per frame

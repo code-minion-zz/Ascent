@@ -369,7 +369,7 @@ GameObject:
   - 4: {fileID: 400062}
   - 114: {fileID: 11400066}
   m_Layer: 14
-  m_Name: Label
+  m_Name: Instruction Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,7 +523,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400014}
-  m_Father: {fileID: 400060}
+  m_Father: {fileID: 400044}
 --- !u!4 &400044
 Transform:
   m_ObjectHideFlags: 1
@@ -534,6 +534,8 @@ Transform:
   m_LocalPosition: {x: 0, y: .5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 400042}
+  - {fileID: 400062}
   - {fileID: 400060}
   m_Father: {fileID: 400002}
 --- !u!4 &400046
@@ -623,8 +625,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 400042}
-  - {fileID: 400062}
   - {fileID: 400058}
   m_Father: {fileID: 400044}
 --- !u!4 &400062
@@ -634,10 +634,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -192.778381, z: 0}
+  m_LocalPosition: {x: 0, y: -192.778397, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 400060}
+  m_Father: {fileID: 400044}
 --- !u!20 &2000000
 Camera:
   m_ObjectHideFlags: 1
