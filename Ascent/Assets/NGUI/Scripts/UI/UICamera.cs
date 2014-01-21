@@ -603,6 +603,18 @@ public class UICamera : MonoBehaviour
 					for (int b = 0; b < hits.Length; ++b)
 					{
 						GameObject go = hits[b].collider.gameObject;
+						UIWidget w = go.GetComponent<UIWidget>();
+
+						if (w != null)
+						{
+							if (!w.isVisible) continue;
+						}
+						else
+						{
+							UIRect rect = NGUITools.FindInParents<UIRect>(go);
+							if (rect != null && rect.finalAlpha < 0.001f) continue;
+						}
+
 						mHit.depth = NGUITools.CalculateRaycastDepth(go);
 
 						if (mHit.depth != int.MaxValue)
@@ -630,11 +642,27 @@ public class UICamera : MonoBehaviour
 					}
 					mHits.Clear();
 				}
-				else if (hits.Length == 1 && IsVisible(ref hits[0]))
+				else if (hits.Length == 1)
 				{
-					hit = hits[0];
-					hoveredObject = hit.collider.gameObject;
-					return true;
+					Collider c = hits[0].collider;
+					UIWidget w = c.GetComponent<UIWidget>();
+
+					if (w != null)
+					{
+						if (!w.isVisible) continue;
+					}
+					else
+					{
+						UIRect rect = NGUITools.FindInParents<UIRect>(c.gameObject);
+						if (rect != null && rect.finalAlpha < 0.001f) continue;
+					}
+
+					if (IsVisible(ref hits[0]))
+					{
+						hit = hits[0];
+						hoveredObject = hit.collider.gameObject;
+						return true;
+					}
 				}
 				continue;
 			}
