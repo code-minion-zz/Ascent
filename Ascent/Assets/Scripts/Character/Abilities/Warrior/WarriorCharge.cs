@@ -108,40 +108,6 @@ public class WarriorCharge : Action
 
            owner.StopAbility();
         }
-        //motor.SpecialMove(motion);
-       
-
-
-       // Vector3 moveVec = owner.transform.forward * Time.deltaTime * actionSpeed;
-		//timeElapsed += Time.deltaTime;
-		
-        //if (endCharge)
-        //{			
-        //    owner.transform.position += moveVec * Time.deltaTime;
-        //    if (timeElapsed > 1-timeElapsed)
-        //    {
-        //        owner.StopAbility();
-        //        //Debug.Log ("Ended Charge");
-        //    }
-        //}
-        //else
-        //{			
-        //    //owner.transform.position += moveVec;
-
-        //    //heroController.Controller.Move(moveVec);
-
-        //    distanceTraveled += moveVec.magnitude;
-			
-        //    if (timeElapsed > halfWayPoint)
-        //    {
-        //        ownerAnimator.speed = 0.1f * timeElapsed; // freeze animation when swinging sword down
-        //    }
-	
-        //    if (distanceTraveled >= distanceMax)
-        //    {
-        //        EndCharge();
-        //    }
-        //}
 	}
 
     public override void EndAbility()
@@ -194,6 +160,9 @@ public class WarriorCharge : Action
     public override void DebugDraw()
     {
         circle.DebugDraw();
+
+        Debug.DrawLine(startPos, targetPos, Color.red);
+        Debug.DrawLine(startPos, owner.transform.position, Color.green);
     }
 #endif
 }

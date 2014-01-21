@@ -35,7 +35,8 @@ public class AISensor_Sphere : AISensor
 #if UNITY_EDITOR
 	public override void DebugDraw()
     {
-		Gizmos.DrawWireSphere(transform.position + Offset, radius);
+        Handles.CircleCap(0, transform.position + Offset, Quaternion.LookRotation(Vector3.down, Vector3.up), radius);
+		//Gizmos.DrawWireSphere(transform.position + Offset, radius);
     }
 #endif
 }

@@ -12,7 +12,7 @@ public class AIMindAgent
         Defensive,
     }
 
-	private const bool drawLabels = false;
+	private const bool drawLabels = true;
 
 	protected bool active;
 
@@ -130,17 +130,17 @@ public class AIMindAgent
 		{
 			return;
 		}
-
-		if (label == null)
-		{
-			return;
-		}
 		
 		Floor floor = Game.Singleton.Tower.CurrentFloor;
 		if (floor != null)
 		{
 			if (drawLabels)
 			{
+                if (label == null)
+                {
+                    return;
+                }
+
 				label.gameObject.SetActive(true);
 
 				Camera camera = Game.Singleton.Tower.CurrentFloor.MainCamera;
