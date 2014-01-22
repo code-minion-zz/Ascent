@@ -75,11 +75,22 @@ public class Floor : MonoBehaviour
 
 		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 
+        if (currentRoom == null)
+        {
+            Debug.Log("Could not find StartRoom please make sure there is an object called StartRoom with the Room script attached");
+        }
+
 		// Create HUD
 		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup"));
 
 		// Initialise the players onto the start points
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
+
+        if (startPoints == null)
+        {
+            Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
+        }
+
 		players = Game.Singleton.Players;
 
 		for (int i = 0; i < players.Count; ++i)
@@ -230,7 +241,12 @@ public class Floor : MonoBehaviour
 
 		//DEBUG
 
-		Door[] roomDoors = currentRoom.doors.doors;
+        if (currentRoom.Doors == null)
+        {
+            return;
+        }
+
+		Door[] roomDoors = currentRoom.Doors.doors;
 		
 		InputDevice input = Game.Singleton.Players[0].Input;
 
@@ -307,7 +323,7 @@ public class Floor : MonoBehaviour
 	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
 	{
 		// Set old remove inactive and new one active
-		fadePlane.StartFade(1.5f, currentRoom.transform.position);
+		fadePlane.StartFade(0.5f, currentRoom.transform.position);
 
 		StartCoroutine(CoTransitionToRoom());
 

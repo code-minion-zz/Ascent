@@ -32,8 +32,14 @@ public class Room : MonoBehaviour
 	private Vector3 curMaxCamera = new Vector3(2.0f, 24.0f, 2.0f);
 
 	private const int maxDoors = 4;
-	public Doors doors;
+	protected Doors doors;
     public bool startRoom = false;
+
+    public Doors Doors
+    {
+        get { return doors; }
+        set { doors = value; }
+    }
     
     private Door entryDoor;
     public Door EntryDoor
@@ -85,7 +91,7 @@ public class Room : MonoBehaviour
 		set { navMesh = value; }
 	}
 
-    private Transform monstersHeader;
+    private GameObject monstersNode;
 
     #endregion
 
@@ -124,18 +130,28 @@ public class Room : MonoBehaviour
 
 	public void Initialise()
 	{
-        monstersHeader = transform.FindChild("Monsters");
-        if (monstersHeader == null)
-        {
-            Debug.LogError("Could not find Monsters GameObject in Room. Please create it.", gameObject);
-        }
-
 		// Make sure all the nodes are found and references.
 		FindAllNodes();
 
+        monstersNode = GetNodeByLayer("Monster");
+
+        if (monstersNode == null)
+        {
+            // Obviously it does not exist so we can create one.
+            monstersNode = AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+            Debug.LogWarning("Could not find Monsters GameObject in Room. Creating one now.", gameObject);
+        }
+
 		navMesh = NavMesh;
 
-		doors = GetComponentInChildren<Doors>();
+		//doors = GetComponentInChildren<Doors>();
+
+        doors = GetNodeByLayer("Environment").GetComponentInChildren<Doors>();
+
+        if (doors == null)
+        {
+            Debug.LogWarning("Could not find any doors for this room");
+        }
 
 		if (enemies == null)
 		{
@@ -174,8 +190,6 @@ public class Room : MonoBehaviour
 		Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
 		curMinCamera = minCamera;
 		curMaxCamera = maxCamera;
-
-
 
 		if(chests == null)
 		{
@@ -255,6 +269,11 @@ public class Room : MonoBehaviour
 
 	void CheckDoors()
 	{
+        if (doors == null)
+        {
+            return;
+        }
+
 		Door[] roomDoors = doors.doors;
 		for (int i = 0; i < roomDoors.Length; ++i)
 		{
@@ -279,6 +298,21 @@ public class Room : MonoBehaviour
         go.layer = layer;
 
         parentRootNodes.Add(layer, go);
+
+        return go;
+    }
+
+    public GameObject AddSubParent(string name, GameObject parent, int layer)
+    {
+        GameObject go = null;
+
+        if (parent != null)
+        {
+            go = new GameObject(name);
+            go.transform.parent = parent.transform;
+            go.tag = "RoomNode";
+            go.layer = layer;
+        }
 
         return go;
     }
@@ -394,7 +428,7 @@ public class Room : MonoBehaviour
 
                     Enemy enemy = newObject.GetComponent<Enemy>();
                     enemies.Add(enemy);
-                    enemy.transform.parent = monstersHeader;
+                    enemy.transform.parent = monstersNode.transform;
                     enemy.ContainedRoom = this;
                     enemy.Initialise();
 				}
@@ -423,7 +457,8 @@ public class Room : MonoBehaviour
 		Shape2D.EType type = shape.type;
 
 		List<Character> characters = GetCharacterList(scope);
-		if (characters.Count == 0)
+
+		if (characters == null || characters.Count == 0)
 		{
 			return false;
 		}
@@ -506,7 +541,7 @@ public class Room : MonoBehaviour
 				{
 					List<Player> players = Game.Singleton.Players;
 
-					characters  = new List<Character>();
+					characters = new List<Character>();
 
 					foreach (Player p in players)
 					{

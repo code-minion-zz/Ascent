@@ -17,7 +17,7 @@ public class FloorCamera : MonoBehaviour
     private float time;
 
 	private float fadeToBlackTime = 0.75f;
-	private float transitionTime = 2.0f;
+	public float transitionTime = 1.0f;
 
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
 	private const float verticalIncrement = 25.0f;

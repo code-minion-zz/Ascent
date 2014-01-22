@@ -30,7 +30,7 @@ public class RoomPieceAnchor : MonoBehaviour
 			case EPieceType.Door:
 				{
 					go = Instantiate(Game.Singleton.Tower.CurrentFloor.doorPrefab) as GameObject;
-					Game.Singleton.Tower.CurrentFloor.CurrentRoom.doors.doors[(int)direction] = go.GetComponent<Door>();
+					Game.Singleton.Tower.CurrentFloor.CurrentRoom.Doors.doors[(int)direction] = go.GetComponent<Door>();
 				}
 				break;
 			case EPieceType.Window:
