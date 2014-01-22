@@ -47,7 +47,7 @@ public class PlayerHUD : MonoBehaviour {
 
 			if (abilities[abilityID] != null)
 			{
-				abilityLabels[i].text = abilities[abilityID].Name + ". CD: " + abilities[abilityID].RemainingCooldown;
+				abilityLabels[i].text = abilities[abilityID].AnimationTrigger + ". CD: " + abilities[abilityID].RemainingCooldown;
 
 				if (abilities[abilityID].RemainingCooldown <= 0.0f)
 				{

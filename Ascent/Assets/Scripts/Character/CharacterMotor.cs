@@ -3,25 +3,47 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CharacterAnimator))]
 public class CharacterMotor : MonoBehaviour
 {
 	public GameObject actor;
 
 	private Vector3 movementForce;
-	public float speed = 6.0f;
-	public float gravity = 10.0f;
-	public float maxVelocityChange = 5.0f;
-	public bool canJump = true;
-    public bool canMove = true;
-	public float jumpHeight = 2.0f;
-	private bool grounded = false;
 
+	protected float movementSpeed = 6.0f;
+	public float MovementSpeed
+	{
+		get { return movementSpeed; }
+		set { movementSpeed = value; }
+	}
+
+	protected float originalSpeed = 6.0f;
+	public float OriginalSpeed
+	{
+		get { return originalSpeed; }
+		set { originalSpeed = value; }
+	}
+
+	public float maxVelocityChange = 5.0f;
+    public bool canMove = true;
 
     private Vector3 specialMovementForce;
-
 	private Vector3 knockbackDirection;
+
 	private float knockbackMag;
 	private float knockbackDecel = 0.65f;
+
+	private bool usingMovementForce = true;
+	public bool UsingMovementForce
+	{
+		get { return usingMovementForce; }
+	}
+
+    private Vector3 targetVelocity;
+    public Vector3 TargetVelocity
+    {
+        get { return targetVelocity; }
+    }
 
 	// Grid Movement
 	public bool moving;
@@ -34,13 +56,13 @@ public class CharacterMotor : MonoBehaviour
 	
 	public virtual void Initialise()
 	{
+		rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
 		rigidbody.freezeRotation = true;
 		rigidbody.useGravity = false;
 	}
 
 	public virtual void FixedUpdate()
 	{
-	
 		if (moving)
 		{
 			timeAccum += Time.deltaTime;
@@ -55,7 +77,7 @@ public class CharacterMotor : MonoBehaviour
 		}
 
 		// Calculate how fast we should be moving
-		Vector3 targetVelocity = Vector3.zero;
+		targetVelocity = Vector3.zero;
 		Vector3 knockbackVel = Vector3.zero;
         int forces = 0;
 
@@ -81,10 +103,11 @@ public class CharacterMotor : MonoBehaviour
                 }
             }
 
-            if (movementForce != Vector3.zero)
+			if (movementForce != Vector3.zero && usingMovementForce)
             {
-                targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
-                ++forces;
+				// Add to forces
+				targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
+				++forces;
             }
 
 
@@ -95,7 +118,7 @@ public class CharacterMotor : MonoBehaviour
                 targetVelocity = new Vector3(targetVelocity.x, 0.0f, targetVelocity.z);
             }
 
-            targetVelocity = (targetVelocity.normalized * speed) + knockbackVel;
+            targetVelocity = (targetVelocity.normalized * movementSpeed) + knockbackVel;
         }
 
 		// Apply a force that attempts to reach our target velocity
@@ -113,17 +136,37 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void Move(Vector3 motion)
 	{
 		movementForce = motion;
+        movementForce.y = 0.0f;
+
+		//FixRotationOrthogonally(motion);
 	}
 
     public virtual void SpecialMove(Vector3 motion)
     {
         specialMovementForce = motion;
+        specialMovementForce.y = 0.0f;
+
+		//FixRotationOrthogonally(motion);
     }
+
+	public virtual void FixRotationOrthogonally(Vector3 curDirection)
+	{
+        if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+        {
+            float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+            transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+        }
+        else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+        {
+            float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+            transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+        }
+	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)
 	{
 		knockbackDirection = new Vector3(direction.x, 0.0f, direction.z);
-		knockbackMag = mag * 1000.0f;
+		knockbackMag = mag * 100.0f;
 	}
 
 	public void MoveAlongGrid(Vector3 direction)
@@ -143,10 +186,15 @@ public class CharacterMotor : MonoBehaviour
 		moving = false;
 	}
 
-    public void StopMovement()
+    public void StopMotion()
     {
         movementForce = Vector3.zero;
     }
+
+	public void EnableMovementForce(bool b)
+	{
+		usingMovementForce = b;
+	}
 
     public void StopSpecialMovement()
     {

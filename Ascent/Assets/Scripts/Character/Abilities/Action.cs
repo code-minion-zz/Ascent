@@ -5,23 +5,32 @@ public abstract class Action
 {
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
+
     protected float coolDownTime = 0.0f;
     private float cooldownValue = 0.0f;
+
     protected float currentTime = 0.0f;
+
     private bool isOnCooldown = false;
+
     protected string animationTrigger;
+	public string AnimationTrigger
+	{
+		get { return animationTrigger; }
+	}
+
     protected int specialCost;
+
+    public delegate void ActionEnd();
+    public event ActionEnd OnActionEnd;
+
+	public delegate void ActionCooled();
+	public event ActionCooled OnActionCooled;
 
     protected Character owner;
     public Character Owner
     {
         get { return owner; }
-    }
-
-    protected string name;
-    public string Name
-    {
-        get { return name; }
     }
 
     /// <summary>
@@ -63,8 +72,15 @@ public abstract class Action
     public virtual void Initialise(Character owner)
     {
        this.owner = owner;
-       this.name = this.GetType().ToString();
+       //this.name = this.GetType().ToString();
     }
+
+	public virtual void Validate()
+	{
+#if UNITY_EDITOR
+		owner.Animator.DoesStateExist(animationTrigger);
+#endif
+	}
 
     /// <summary>
     /// Handles resetting values for starting the ability. This includes cooldown times,
@@ -76,22 +92,42 @@ public abstract class Action
         currentTime = 0.0f;
         cooldownValue = CooldownTime;
         isOnCooldown = true;
-        owner.Animator.PlayAnimation(animationTrigger);
+		
+		if (owner.Animator != null)
+		{
+			owner.Animator.PlayAnimation(animationTrigger);
+		}
     }
 
+	/// <summary>
+	/// Updates time, updates action then checks for time expiration
+	/// 
+	/// </summary>
+	public virtual void Update()
+	{
+		float timeVal = Time.deltaTime * animationSpeed;
+		currentTime += timeVal;
+
+		if (currentTime > Length)
+		{
+			currentTime = Length; // Lerps and Slerps rely on values between normalised 0 and 1.
+		}
+
+		UpdateAbility();
+
+		if (currentTime >= Length)
+		{
+			owner.StopAbility();
+		}
+	}
+
     /// <summary>
-    /// Stops the ability after it has reached the total duration
+    /// Must be overridden else update action won't do anything.
     /// 
     /// </summary>
-    public virtual void UpdateAbility()
+	public virtual void UpdateAbility()
     {
-        float timeVal = Time.deltaTime * animationSpeed;
-        currentTime += timeVal;
-
-        if (currentTime >= Length)
-        {
-            owner.StopAbility();
-        }
+		// Override
     }
 
     /// <summary>
@@ -99,21 +135,37 @@ public abstract class Action
     /// </summary>
     public virtual void UpdateCooldown()
     {
-        float timeVal = Time.deltaTime;
-        cooldownValue -= timeVal;
+		if (isOnCooldown)
+		{
+			float timeVal = Time.deltaTime;
+			cooldownValue -= timeVal;
 
-        if (cooldownValue <= 0.0f)
-        {
-            
-            cooldownValue = 0.0f;
-            isOnCooldown = false;
-        }
+			if (cooldownValue <= 0.0f)
+			{
+				cooldownValue = 0.0f;
+				isOnCooldown = false;
+
+				if (OnActionCooled != null)
+				{
+					OnActionCooled.Invoke();
+				}
+			}
+		}
     }
 
     public virtual void EndAbility()
     {
-        owner.Animator.StopAnimation(animationTrigger);
+		if (owner.Animator != null)
+		{
+			owner.Animator.StopAnimation(animationTrigger);
+		}
+
         currentTime = 0.0f;
+
+        if (OnActionEnd != null)
+        {
+            OnActionEnd.Invoke();
+        }
     }
 
     public void RefreshCooldown()

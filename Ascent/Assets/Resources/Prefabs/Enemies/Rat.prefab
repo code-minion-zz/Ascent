@@ -30,6 +30,8 @@ GameObject:
   - 114: {fileID: 11400012}
   - 54: {fileID: 5400000}
   - 65: {fileID: 6500000}
+  - 95: {fileID: 9500000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Monster
@@ -46,8 +48,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400000}
-  - 114: {fileID: 11400008}
-  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -130,7 +130,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8e90fe3dc81b72c42a257cb5acd18bae, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -173,6 +173,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: .479999989, z: 0}
+--- !u!95 &9500000
+Animator:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_ApplyRootMotion: 1
+  m_AnimatePhysics: 0
+  m_HasTransformHierarchy: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -181,22 +195,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7a403753e125e743b49b50e31de2a43, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cb45894ff3b2e346a839abdd5b3573d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: {fileID: 11400004}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e914ad26be2993343b77de8f04b92602, type: 3}
+  m_Script: {fileID: 11500000, guid: 27d34129f3f97a6419f59807b7dc7425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1.25
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614572827f32d12479039f17f70316db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 11400000}
   health: 80
 --- !u!114 &11400006
 MonoBehaviour:
@@ -222,19 +235,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: .75
   offsetZ: 0
---- !u!114 &11400008
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8de060212e526cc4396ae59f015d625e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 10
-  arcAngle: 10
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -246,8 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardRotation: {x: 12.5, y: 0, z: 0}
-  rightRotation: {x: 0, y: 0, z: 12.5}
+  applyTilt: 0
+  tiltAmount: 12.5
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -261,10 +261,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 100002}
   speed: 3
-  gravity: 10
   maxVelocityChange: 1.5
-  canJump: 1
-  jumpHeight: 2
+  canMove: 1
   moving: 0
 --- !u!1001 &100100000
 Prefab:

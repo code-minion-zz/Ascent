@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HeroAnimator : AnimatorController  
+public class HeroAnimator : CharacterAnimator  
 {
     #region Enums
 
@@ -25,109 +25,75 @@ public class HeroAnimator : AnimatorController
     }
 
     #endregion
-
-    #region Fields
-
-    // Movement speed this can be ultered to change the movement speed of the hero. Changing this will make the hero 
-    // walk or run depending on the value. Lower value is closer to walk.
-    public float movementSpeed = 10.0f;
-
-    private Vector3 direction;
-    private Vector3 gravityVelocity = Vector3.zero;
-    private bool takeHit = false;
-    private bool dying = false;
-
-    #endregion
-
-    /// <summary>
-    /// Returns if the animator is taking a hit. Sets the animator to take a hit.
-    /// </summary>
-    public bool TakeHit
-    {
-        get { return takeHit; }
-        set
-        {
-            takeHit = value;
-            animator.SetBool("TakeHit", value);
-        }
-    }
-
-    /// <summary>
-    /// Returns if the animator is dying. Sets the animator to the dying state.
-    /// </summary>
-    public bool Dying
-    {
-        get { return dying; }
-        set
-        {
-            dying = value;
-            animator.SetBool("Dying", value);
-        }
-    }
-
-    public float MovementSpeed
-    {
-        get { return movementSpeed; }
-        set { movementSpeed = value; }
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-    }
-
-	// Use this for initialization
-    public override void Start() 
-    {
-        base.Start();
-	}
 	
 	// Update is called once per frame
-	public override void FixedUpdate () 
+	public override void Update() 
     {
-        base.FixedUpdate();
-
-        gravityVelocity += Physics.gravity * Time.deltaTime;
-
-        takeHit = animator.GetBool("TakeHit");
+        //takeHit = animator.GetBool("TakeHit");
         dying = animator.GetBool("Dying");
         bool whirlWind = animator.GetBool("Whirlwind");
 
-        for (int layer = 0; layer < layerCount; ++layer)
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        // Check if we are in the movement or idle state.
+
+        if (state.IsName("WhirlWind"))
         {
-            AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(layer);
-            // Check if we are in the movement or idle state.
-
-            if (state.IsName("WhirlWind"))
+            if (!animator.IsInTransition(0))
             {
-                if (!animator.IsInTransition(layer))
-                {
-                    // While in transition
-                    // We don't want to take hit.
-                    StopAnimation("TakeHit");
-                }
-                else
-                {
-                    StopAnimation("Whirlwind");
-                }
+                // While in transition
+                // We don't want to take hit.
+                StopAnimation("TakeHit");
             }
-
-            // We want the hero to take a hit and stop it
-            // when the transition ends.
-            if (state.IsName("TakingHit"))
+            else
             {
-                if (animator.IsInTransition(layer))
-                {
-
-                }
-                else
-                {
-                    TakeHit = false;
-                    //StopAnimation("TakeHit");
-                }
+                StopAnimation("Whirlwind");
             }
         }
+
+        // We want the hero to take a hit and stop it
+        // when the transition ends.
+        if (state.IsName("TakingHit"))
+        {
+            if (animator.IsInTransition(0))
+            {
+
+            }
+            else
+            {
+                TakeHit = false;
+                //StopAnimation("TakeHit");
+            }
+        }
+
+#if UNITY_EDITOR
+        DebugKeys();
+#endif
 	}
+
+#if UNITY_EDITOR
+    void DebugKeys()
+    {
+        //if(Input.GetKeyUp(KeyCode.Alpha1))
+        //{
+        //    animator.Play("");
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Alpha2))
+        //{
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Alpha3))
+        //{
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Alpha4))
+        //{
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Alpha5))
+        //{
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Alpha6))
+        //{
+        //}
+    }
+#endif
 
     #region animations
 

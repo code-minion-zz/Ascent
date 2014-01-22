@@ -5,7 +5,7 @@ public class Collidable : MonoBehaviour
 {
 #pragma warning disable 0414
 
-	#region Fields		
+	#region Fields
 
     uint        collisions = 0;
     //Character   owner;

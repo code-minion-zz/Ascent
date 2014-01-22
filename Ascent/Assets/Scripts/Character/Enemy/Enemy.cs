@@ -20,6 +20,8 @@ public abstract class Enemy : Character
 
     #region Fields
 
+    public AIAgent agent;
+
     private Player targetPlayer;
     private Vector3 originalScale;
 
@@ -29,6 +31,18 @@ public abstract class Enemy : Character
 		get { return hpBar; }
 		set { hpBar = value; }
 	}
+
+    protected Room containedRoom;
+    public Room ContainedRoom
+    {
+        get { return containedRoom; }
+		 set { containedRoom = value; }
+    }
+
+   protected float deathSequenceTime = 0.0f;
+   protected float deathSequenceEnd = 1.0f;
+   protected Vector3 deathRotation = Vector3.zero;
+   protected float deathSpeed = 5.0f;
 
 	protected bool updateHpBar = false;
 
@@ -40,13 +54,28 @@ public abstract class Enemy : Character
 
 	public override void Initialise()
 	{
+		base.Initialise();
+
+        deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+	}
+
+	public virtual void InitiliseHealthbar()
+	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
 
 		PositionHpBar();
-
-		base.Initialise();
 	}
+
+    public virtual void OnEnable()
+    {
+        // To be overridden
+    }
+
+    public virtual void OnDisable()
+    {
+        // To be overridden
+    }
 
     #endregion
 
@@ -55,48 +84,77 @@ public abstract class Enemy : Character
     // Update is called once per frame
 	public override void Update () 
     {
-        base.Update();
+        if (isDead)
+        {
+            deathSequenceTime += Time.deltaTime;
 
-		if (!IsDead)
-		{
-			if (hpBar != null)
-			{
-				if (updateHpBar)
-				{
-					if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
-					{
-						if (!hpBar.gameObject.activeInHierarchy)
-							NGUITools.SetActive (hpBar.gameObject, true);
+            // When the rat dies we want to make him kinematic and disabled the collider
+            // this is so we can walk over the dead body.
+            if (this.transform.rigidbody.isKinematic == false)
+            {
+                this.transform.rigidbody.isKinematic = true;
+                this.transform.collider.enabled = false;
+            }
 
-						PositionHpBar();
-					}
-					else
-					{
-						if (hpBar.gameObject.activeInHierarchy)
-							NGUITools.SetActive (hpBar.gameObject, false);
-					}
-				}
-			}
-		}
+            // Death sequence end
+            if (deathSequenceTime >= deathSequenceEnd)
+            {
+                // When the death sequence has finished we want to make this object not active
+                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
+                deathSequenceTime = 0.0f;
 
-		// TODO: if rat is frozen, tint hp bar blue and apply frozen texture
+                this.gameObject.SetActive(false);
+                DestroyObject(this.gameObject);
+            }
+
+            // During death sequence we can do some thing in here
+            // For now we will rotate the rat on the z axis.
+            this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+
+            // If the rotation is done early we can end the sequence.
+            if (this.transform.eulerAngles == deathRotation)
+            {
+                deathSequenceTime = deathSequenceEnd;
+            }
+        }
+        else
+        {
+            if (!IsStunned)
+            {
+                if (activeAbility == null)
+                {
+                    agent.MindAgent.Process();
+                }
+
+                agent.SteeringAgent.Process();
+            }
+
+            base.Update();
+
+            if (hpBar != null)
+            {
+                //if (updateHpBar)
+                {
+                    if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
+                    {
+                        if (!hpBar.gameObject.activeInHierarchy)
+                            NGUITools.SetActive(hpBar.gameObject, true);
+
+                        PositionHpBar();
+                    }
+                    else
+                    {
+                        if (hpBar.gameObject.activeInHierarchy)
+                            NGUITools.SetActive(hpBar.gameObject, false);
+                    }
+                }
+            }
+        }
 	}
 
     #endregion
 
     #region Operations
-
-    public override void SubUpdate()
-    {
-        AI_Agent ai = GetComponentInChildren<AI_Agent>();
-
-        if (ai != null)
-        {
-            ai.Process();
-        }
-
-        base.SubUpdate();
-    }
 
 	protected virtual void PositionHpBar()
 	{
@@ -106,125 +164,11 @@ public abstract class Enemy : Character
 		hpBar.transform.position = barPos;
 	}
 
-    protected Player GetClosestPlayer()
-    {
-        //// Find a close player
-        //List<Player> players = Game.Singleton.Players;
-
-        //Player closest = null;
-        //float distance = Mathf.Infinity;
-
-        //Vector3 position = transform.position;
-
-        //foreach (Player player in players)
-        //{
-        //    Vector3 diff = player.Transform.position - position;
-        //    float curDistance = diff.sqrMagnitude;
-        //    if (curDistance < distance)
-        //    {
-        //        closest = player;
-        //        distance = curDistance;
-        //    }
-        //}
-
-        //if (closest != null)
-        //{
-        //    if (distance > 75.0f)
-        //    {
-        //        closest = null;
-        //    }
-        //}
-
-        //return closest;
-        return null;
-    }
-
-    protected void MoveTowardPlayer(Player _player)
-    {
-        //if (_player != null)
-        //{
-        //    Vector3 direction = Vector3.Normalize((_player.Transform.position - transform.position));
-        //    transform.position += direction * Time.deltaTime * 2.5f;
-        //}
-    }
-
-    //public override void ApplyDamage(int unmitigatedDamage, EDamageType type)
-    //{
-    //    characterStatistics.CurrentHealth -= unmitigatedDamage;
-
-    //    if (characterStatistics.CurrentHealth <= 0)
-    //    {
-    //        originalScale = transform.localScale;
-    //        waiting = 0.5f;
-    //        state = STATE.DEAD;
-    //    }
-    //    else
-    //    {
-    //       waiting = 0.5f;
-    //       state = STATE.HIT;
-    //    }
-    //}
-	
-	void Attack()
-	{			
-		//if (activeHitBoxes.Count < 1)
-		//{
-		//    Transform t = (Transform)Instantiate(hitBoxPrefab);
-		//    Vector3 boxPos = new Vector3(transform.position.x - 0.05f,rigidbody.centerOfMass.y + 0.1f,transform.position.z + transform.forward.z);
-		//    t.GetComponent<HitBox>().Init(HitBox.EBoxAnimation.BA_HIT_THRUST, teamId,10.0f,0.6f);
-		//    t.renderer.material.color = Color.blue;
-		//    // Setup this hitbox with our collision event code.
-		//    t.GetComponent<HitBox>().OnTriggerEnterSteps += OnHitBoxCollideEnter;
-		//    t.GetComponent<HitBox>().OnTriggerStaySteps += OnHitBoxCollideStay;
-		//    t.GetComponent<HitBox>().OnTriggerExitSteps += OnHitBoxCollideExit;
-		//    t.position = boxPos;
-		//    t.parent = transform;
-		//    activeHitBoxes.Add(t);
-		//}
-	}
-	
-	public void KillBox(Transform box)
-	{
-		//activeHitBoxes.Remove(box);
-	}
-
     #endregion
 
-    #region HitBox Collisions
-
-    void OnHitBoxCollideEnter(Collider other)
-    {
-        //// When monster hit box collides with player.
-        //if (other.transform.tag == "Player")
-        //{
-        //    Player player = other.transform.GetComponent<Player>();
-
-        //    if (player != null)
-        //    {
-        //        // Make the monster take damage.
-        //        player.TakeDamage(25);
-        //    }
-        //}
-    }
-
-    void OnHitBoxCollideStay(Collider other)
-    {
-
-    }
-
-    void OnHitBoxCollideExit(Collider other)
-    {
-
-    }
-
-    #endregion
 
     #region Collisions on Self
 
-    void OnCollisionEnter(Collision collision)
-	{
-
-    }
 	
 	void OnBecameVisible()
 	{
@@ -244,11 +188,27 @@ public abstract class Enemy : Character
 		}
 	}
 
+    public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
+    {
+        // Check to see if the enemy was last damaged by a hero,
+        // thus update the floor statistics of the hero. This function may want to pass in
+        // the owner that is applying this damage.
+        if (lastDamagedBy != null)
+        {
+            // TODO: This might need to move.
+            Hero hero = lastDamagedBy as Hero;
+            hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
+        }
+
+        base.ApplyDamage(unmitigatedDamage, type, owner);
+    }
+
 	public override void OnDeath ()
 	{
 		base.OnDeath ();
 
 		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
+
     #endregion
 }

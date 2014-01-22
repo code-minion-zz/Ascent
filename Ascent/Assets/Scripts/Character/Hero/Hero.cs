@@ -16,7 +16,6 @@ public abstract class Hero : Character
 		public float VitalityHPRegen;
 		public float SpiritSP;
 		public float SpiritMagRes;
-
 //		HeroClassStatModifier(float _powerAttack, float _finesseCritChance, 
 //		                      float _finesseCritBonus, float _finesseDodge, 
 //		                      float _finesseBlock, float _vitalityHP, 
@@ -27,10 +26,12 @@ public abstract class Hero : Character
 //		}
 	}
 
+	protected HeroAnimator heroAnimator;
 	protected HeroClassStatModifier classStatMod;
-
     protected HeroController heroController;
 	protected Backpack backpack;
+    protected HeroInventory heroInventory;
+    protected FloorStats floorStatistics;
 
 	public HeroClassStatModifier ClassStatMod
 	{
@@ -42,7 +43,6 @@ public abstract class Hero : Character
 		get { return backpack; }
 	}
 
-	protected HeroInventory heroInventory;
 	public HeroInventory HeroInventory
 	{
 		get { return heroInventory; }
@@ -53,6 +53,11 @@ public abstract class Hero : Character
 		get { return heroController; }
 	}
 
+    public FloorStats FloorStatistics
+    {
+        get { return floorStatistics; }
+    }
+
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
 		heroInventory = new HeroInventory();
@@ -60,7 +65,7 @@ public abstract class Hero : Character
 		base.Initialise();
 	}
 
-    public void SetColor(Color color)
+    public override void SetColor(Color color)
     {
         SkinnedMeshRenderer[] renderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer render in renderers)
@@ -69,9 +74,16 @@ public abstract class Hero : Character
         }
     }
 
+    public void ResetFloorStatistics()
+    {
+        floorStatistics = new FloorStats();
+    }
+
     public override void Respawn(Vector3 position)
     {
         base.Respawn(position);
+
+        Animator.PlayAnimation("Dying");
 
         // Reset the health
         derivedStats.ResetHealth();
@@ -83,38 +95,6 @@ public abstract class Hero : Character
     public override void OnDeath()
     {
         base.OnDeath();
-    }
-
-    /// <summary>
-    /// Tells the hero to open the specified chest
-    /// </summary>
-    /// <param name="chest">The chest which needs to be opened</param>
-    public void OpenChest(TreasureChest chest)
-    {
-
-    }
-
-	//void OnTriggerEnter(Collider collision)
-	//{
-	//    if (collision.transform.tag == "Monster")
-	//    {
-
-	//    }
-	//}
-
-    void OnControllerColliderHit(ControllerColliderHit collision)
-    {
-		//if (collision.transform.tag == "Door")
-		//{
-		//    Debug.Log("Open Door");
-		//    Door door = collision.transform.GetComponent<Door>();
-		//    //door.IsOpen = true;
-		//}
-		//if (collision.transform.tag == "Loot")
-		//{
-		//    CoinSack coins = collision.transform.GetComponent<CoinSack>();
-		//    coins.transform.gameObject.SetActive(false);
-		//}
     }
 
     public override void RefreshEverything()
@@ -129,14 +109,32 @@ public abstract class Hero : Character
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type)
+	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
 	{
+        base.ApplyDamage(unmitigatedDamage, type, owner);
+
 		if (heroController.GrabbingObject)
 		{
 			heroController.ReleaseGrabbedObject();
 			GetComponent<CharacterMotor>().StopMovingAlongGrid();
 		}
-
-		base.ApplyDamage(unmitigatedDamage, type);
 	}
+
+    public override void OnDamageTaken(int damage)
+    {
+        base.OnDamageTaken(damage);
+
+        // Record damage taken.
+        floorStatistics.DamageTaken += damage;
+        // Hero takes hit.
+        animator.TakeHit = true;
+    }
+
+    public override void OnDamageDealt(int damage)
+    {
+        base.OnDamageDealt(damage);
+
+        // Record damage dealt.
+        FloorStatistics.TotalDamageDealt += damage;
+    }
 }
