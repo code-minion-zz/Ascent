@@ -4,17 +4,8 @@ using System.Collections.Generic;
 
 public class FloorSummaryPanel : MonoBehaviour
 {
-	public enum SummaryVote
-	{
-			INVALID = -1,
-			VOTELESS,
-			TOWN,
-			NEXTLEVEL,
-			MAX
-	}
-
-	private SummaryVote myVote = 0;
-	public SummaryVote MyVote
+	private FloorSummaryManager.SummaryVote myVote = 0;
+	public FloorSummaryManager.SummaryVote MyVote
 	{
 		get {
 			return myVote;
@@ -35,8 +26,9 @@ public class FloorSummaryPanel : MonoBehaviour
 	/// Script assumes that uiElements is populated in the inspector
 	/// </summary>
 	void Init (Player player)
+	//void Start ()
 	{
-		//myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
+//		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
 		myPlayer = player;
 		fs = myPlayer.Hero.GetComponent<Hero> ().FloorStatistics;
 		expReward = fs.ExperienceGained;
@@ -108,30 +100,34 @@ public class FloorSummaryPanel : MonoBehaviour
 
 		// vote for next Level
 		if (inputDevice.Action1.WasPressed) {
-				if (myVote != SummaryVote.NEXTLEVEL) {
-						myVote = SummaryVote.NEXTLEVEL;
-						PanelElements [5].GetComponent<UILabel> ().color = Color.green;
-				} else {
-						myVote = SummaryVote.VOTELESS;
-						PanelElements [5].GetComponent<UILabel> ().color = Color.white;
-				}
+			if (myVote != FloorSummaryManager.SummaryVote.NEXTLEVEL) {
+				myVote = FloorSummaryManager.SummaryVote.NEXTLEVEL;
+				//PanelElements [5].GetComponent<UILabel> ().color = Color.green;
+				GetComponent<UISprite>().color = Color.green;
+			} else {
+				myVote = FloorSummaryManager.SummaryVote.VOTELESS;
+				//PanelElements [5].GetComponent<UILabel> ().color = Color.white;
+				GetComponent<UISprite>().color = Color.white;
+			}
 
 				// inform scene controller of player's vote
-				return;
+			return;
 		}
 
 		// vote for town
 		if (inputDevice.Action2.WasPressed) {
-				if (myVote != SummaryVote.TOWN) {
-						myVote = SummaryVote.TOWN;
-						PanelElements [6].GetComponent<UILabel> ().color = Color.red;
-				} else {
-						myVote = SummaryVote.VOTELESS;
-						PanelElements [6].GetComponent<UILabel> ().color = Color.white;
-				}
+			if (myVote != FloorSummaryManager.SummaryVote.TOWN) {
+				myVote = FloorSummaryManager.SummaryVote.TOWN;
+				//PanelElements [6].GetComponent<UILabel> ().color = Color.red;
+				GetComponent<UISprite>().color = Color.red;
+			} else {
+				myVote = FloorSummaryManager.SummaryVote.VOTELESS;
+				//PanelElements [6].GetComponent<UILabel> ().color = Color.white;
+				GetComponent<UISprite>().color = Color.white;
+			}
 
-				// inform scene controller of player's vote
-				return;
+			// inform scene controller of player's vote
+			return;
 		}		
 		#endregion Voting Controls
 	}
