@@ -20,12 +20,14 @@ public class FloorSummaryPanel : MonoBehaviour
 	int expReward = 0;
 	int goldReward = 0;
 
+	public event FloorSummaryManager.VoteHandler VoteChanged;
+
 	public GameObject[] PanelElements;
 
 	/// <summary>
 	/// Script assumes that uiElements is populated in the inspector
 	/// </summary>
-	void Init (Player player)
+	public void Init (Player player)
 	//void Start ()
 	{
 //		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
@@ -98,6 +100,8 @@ public class FloorSummaryPanel : MonoBehaviour
 		
 		InputDevice inputDevice = myPlayer.Input;
 
+		FloorSummaryManager.SummaryVote oldVote = myVote;
+
 		// vote for next Level
 		if (inputDevice.Action1.WasPressed) {
 			if (myVote != FloorSummaryManager.SummaryVote.NEXTLEVEL) {
@@ -110,7 +114,8 @@ public class FloorSummaryPanel : MonoBehaviour
 				GetComponent<UISprite>().color = Color.white;
 			}
 
-				// inform scene controller of player's vote
+			// inform scene controller of player's vote
+			VoteChanged(oldVote, myVote);
 			return;
 		}
 
@@ -127,6 +132,7 @@ public class FloorSummaryPanel : MonoBehaviour
 			}
 
 			// inform scene controller of player's vote
+			VoteChanged(oldVote, myVote);
 			return;
 		}		
 		#endregion Voting Controls
