@@ -20,7 +20,7 @@ public class HeroController : MonoBehaviour
 
     }
 
-    private HeroAnimator heroAnimator;
+    private HeroAnimatorController heroAnimator;
     private Hero hero;
     private InputDevice input;
     private bool actionBindingsEnabled = false;
@@ -53,7 +53,7 @@ public class HeroController : MonoBehaviour
 	public void Initialise(Hero hero)
 	{
 		this.hero = hero;
-		heroAnimator = hero.Animator as HeroAnimator;
+		heroAnimator = hero.Animator as HeroAnimatorController;
 		//actor = GameObject.Find("Cube").GetComponent<C>;
 
 	}
@@ -129,7 +129,7 @@ public class HeroController : MonoBehaviour
                     ProcessInteractions();
                 }
 
-                if (GetComponent<CharacterMotor>().canMove)
+                if (GetComponent<CharacterMotor>().canMove && !hero.IsStunned)
                    {
                     // L Stick
                     if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))

@@ -1,94 +1,113 @@
-﻿using UnityEngine;
+﻿// Developed by Kit Chan 2013
+
+// Dependencies
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+/// <summary>
+/// Charging Action/Skill. 
+/// Deals damage and knockback based on distance traveled (in other words, momentum)
+/// </summary>
 public class AbominationCharge : Action
 {
-    private Circle damageArea;
-    private float prevSpeed;
-    private bool executedDamage;
+    private float distanceMax = 7.5f;
+
+    private float travelTime;
+    private Vector3 startPos;
+    private Vector3 targetPos;
+
+    private CharacterMotor charMotor;
+
+    private Circle circle;
 
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
 
-        animationLength = 0.5f;
-        animationSpeed = 1.0f;
-        animationTrigger = "Tackle";
-        coolDownTime = 2.0f;
+        coolDownTime = 5.0f;
+        animationTrigger = "Charge";
         specialCost = 0;
 
-        damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 0.25f));
+        animationLength = 1.5f;
+        travelTime = animationLength;
+
+        charMotor = owner.GetComponentInChildren<CharacterMotor>();
+
+        circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
 
-        owner.Motor.StopMotion();
-        owner.Motor.EnableMovementForce(false);
-        owner.SetColor(Color.red);
+        startPos = owner.transform.position;
 
-        prevSpeed = owner.Motor.speed;
-        executedDamage = false;
+        RaycastHit hitInfo;
+        if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
+        {
+            targetPos = hitInfo.point - (owner.transform.forward);
+
+            travelTime = (hitInfo.distance / distanceMax) * animationLength;
+        }
+        else
+        {
+            targetPos = startPos + owner.transform.forward * (distanceMax);
+            travelTime = animationLength;
+        }
+
+        owner.ApplyInvulnerabilityEffect(animationLength);
     }
 
     public override void UpdateAbility()
     {
         base.UpdateAbility();
 
-        if (currentTime >= animationLength * 1.0f)
+        if (currentTime > travelTime)
         {
-            owner.Motor.EnableMovementForce(true);
-            owner.ResetColor();
+            currentTime = travelTime;
         }
-        else if (currentTime >= animationLength * 0.8f)
-        {
-            owner.Motor.StopMotion();
-            owner.Motor.EnableMovementForce(false);
-            owner.Motor.speed = prevSpeed;
-        }
-        else if (currentTime >= animationLength * 0.40f && !executedDamage)
-        {
-            List<Character> characters = new List<Character>();
 
-            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref characters))
+        Vector3 motion = Vector3.Lerp(startPos, targetPos, currentTime / travelTime);
+
+        owner.transform.position = motion;
+
+        if (currentTime == travelTime)
+        {
+            List<Character> enemies = new List<Character>();
+
+            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
             {
-                foreach (Character c in characters)
+                foreach (Enemy e in enemies)
                 {
-                    // Apply damage and knockback to the enemey.
-                    c.ApplyDamage(1, Character.EDamageType.Physical, owner);
-                    c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
+                    int damage = 2;
+                    // Apply damage, knockback and stun to the enemy.
+                    e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                    e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
+                    e.ApplyStunEffect(2.0f);
 
                     // Create a blood splatter effect on the enemy.
-                    Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
-
-                    // Tell the hud manager to spawn text.
-                    HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5);
+                    Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
                 }
-
-                executedDamage = true;
             }
-        }
-        else if (currentTime >= animationLength * 0.25f)
-        {
-            owner.Motor.EnableMovementForce(true);
-            owner.Motor.speed = 10.0f;
+
+            owner.StopAbility();
         }
     }
 
     public override void EndAbility()
     {
         base.EndAbility();
-        owner.Motor.EnableMovementForce(true);
-        owner.ResetColor();
     }
 
 #if UNITY_EDITOR
     public override void DebugDraw()
     {
-        damageArea.DebugDraw();
+        circle.DebugDraw();
+
+        Debug.DrawLine(startPos, targetPos, Color.red);
+        Debug.DrawLine(startPos, owner.transform.position, Color.green);
     }
 #endif
-
 }

@@ -16,7 +16,7 @@ public class WarriorCharge : Action
 	private float distanceMax = 7.5f;
 	
 	private Animator ownerAnimator;
-    private HeroAnimator heroController;
+    private HeroAnimatorController heroController;
 	
     private float travelTime;
     private Vector3 startPos;
@@ -30,10 +30,7 @@ public class WarriorCharge : Action
     {
         base.Initialise(owner);
 		ownerAnimator = owner.Animator.Animator;
-        heroController = owner.Animator as HeroAnimator;
-
-		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
-		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
+        heroController = owner.Animator as HeroAnimatorController;
 
         coolDownTime = 5.0f;
         animationTrigger = "SwingAttack";
@@ -112,15 +109,11 @@ public class WarriorCharge : Action
 
     public override void EndAbility()
 	{	
-        owner.ChargeBall.gameObject.SetActive(false);
-		ownerAnimator.SetBool("SwingAttack",false);
-
-        //charMotor.canMove = true;
+        base.EndAbility();
 	}
 	
 	private void Reset()
 	{	
-		//timeElapsed = 0.0f;
     	distanceTraveled = 0f;
 	}
 	
@@ -144,7 +137,7 @@ public class WarriorCharge : Action
 	{
 		EndCharge();
 		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical, owner);
-		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
+		other.ApplyKnockback(Vector3.Normalize(other.transform.position - owner.transform.position),5f + distanceTraveled * 15f);
 	}
 	
 	/// <summary>
@@ -153,7 +146,6 @@ public class WarriorCharge : Action
 	private void EndCharge()
 	{
 		ownerAnimator.speed = 0.8f;
-		owner.ChargeBall.gameObject.SetActive(false);
 	}
 
 #if UNITY_EDITOR

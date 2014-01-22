@@ -126,7 +126,7 @@ public abstract class Hero : Character
         // Record damage taken.
         floorStatistics.DamageTaken += damage;
         // Hero takes hit.
-        HeroAnimator heroAnim = Animator as HeroAnimator;
+        HeroAnimatorController heroAnim = Animator as HeroAnimatorController;
         heroAnim.TakeHit = true;
     }
 

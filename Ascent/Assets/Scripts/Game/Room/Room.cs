@@ -423,6 +423,10 @@ public class Room : MonoBehaviour
 		Shape2D.EType type = shape.type;
 
 		List<Character> characters = GetCharacterList(scope);
+        if (characters == null)
+        {
+            return false;
+        }
 		if (characters.Count == 0)
 		{
 			return false;

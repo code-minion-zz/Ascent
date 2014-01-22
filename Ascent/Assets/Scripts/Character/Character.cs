@@ -36,7 +36,6 @@ public abstract class Character : MonoBehaviour
 	
 	protected List<Action> 			abilities = new List<Action>();
 	protected Action 				activeAbility;
-	protected GameObject 			weaponPrefab;
     protected bool 					isDead = false;
     protected Color                 originalColour = Color.white;
 
@@ -45,10 +44,7 @@ public abstract class Character : MonoBehaviour
     protected float                 invulnerableDuration;
     protected float                 invulnerableTimeAccum;
 
-	protected Transform 			weaponSlot;
-	protected Collidable 			chargeBall;
-	protected Weapon 				equipedWeapon;
-	protected AnimatorController 	characterAnimator;
+	protected CharacterAnimatorController 	characterAnimator;
 	protected BaseStats 			baseStatistics;
 	protected DerivedStats			derivedStats;
     protected Character             lastDamagedBy;
@@ -65,28 +61,13 @@ public abstract class Character : MonoBehaviour
 		get { return motor;  }
 	}
 
-    public Transform WeaponSlot
-    {
-        get { return weaponSlot; }
-    }
-
-    public Color OrigionalColor
+    public Color OriginalColor
     {
         get { return originalColour; }
         set { originalColour = value; }
     }
 
-	public Collidable ChargeBall
-	{
-		get { return chargeBall; }
-	}
-
-    public Weapon Weapon
-    {
-        get { return equipedWeapon; }
-    }
-
-    public AnimatorController Animator
+    public CharacterAnimatorController Animator
     {
         get { return characterAnimator; }
 	}
@@ -143,7 +124,7 @@ public abstract class Character : MonoBehaviour
 		motor = GetComponentInChildren<CharacterMotor>();
 		motor.Initialise();
 
-        SetColor(OrigionalColor);
+        SetColor(OriginalColor);
 	}
 
     public virtual void Update()

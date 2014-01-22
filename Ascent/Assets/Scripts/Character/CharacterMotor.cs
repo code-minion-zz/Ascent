@@ -9,11 +9,8 @@ public class CharacterMotor : MonoBehaviour
 
 	private Vector3 movementForce;
 	public float speed = 6.0f;
-	public float gravity = 10.0f;
 	public float maxVelocityChange = 5.0f;
-	public bool canJump = true;
     public bool canMove = true;
-	public float jumpHeight = 2.0f;
 
     private Vector3 specialMovementForce;
 
@@ -124,30 +121,31 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void Move(Vector3 motion)
 	{
 		movementForce = motion;
+        movementForce.y = 0.0f;
 
-		FixRotationOrthogonally(motion);
+		//FixRotationOrthogonally(motion);
 	}
 
     public virtual void SpecialMove(Vector3 motion)
     {
         specialMovementForce = motion;
+        specialMovementForce.y = 0.0f;
 
-		FixRotationOrthogonally(motion);
+		//FixRotationOrthogonally(motion);
     }
 
 	public virtual void FixRotationOrthogonally(Vector3 curDirection)
 	{
-		movementForce.y = 0.0f;
-        //if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
-        //{
-        //    float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
-        //    transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
-        //}
-        //else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
-        //{
-        //    float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
-        //    transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
-        //}
+        if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+        {
+            float sign = movementForce.x > 0.0f ? 1.0f : -1.0f;
+            transform.LookAt(transform.position + new Vector3(1.0f * sign, 0.0f, 0.0f));
+        }
+        else if (Mathf.Abs(movementForce.x) < Mathf.Abs(movementForce.z))
+        {
+            float sign = movementForce.z > 0.0f ? 1.0f : -1.0f;
+            transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f * sign));
+        }
 	}
 
 	public virtual void SetKnockback(Vector3 direction, float mag)

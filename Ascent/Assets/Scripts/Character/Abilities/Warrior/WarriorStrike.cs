@@ -35,12 +35,12 @@ public class WarriorStrike : Action
         coolDownTime = animationLength;
         owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
 
-        if (owner.Weapon != null)
-        {
-            // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-            damage = owner.Weapon.Damage + 10;
-            knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
-        }
+        //if (owner.Weapon != null)
+        //{
+        //    // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
+        //    damage = owner.Weapon.Damage + 10;
+        //    knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
+        //}
 	}
 
 	public override void UpdateAbility()

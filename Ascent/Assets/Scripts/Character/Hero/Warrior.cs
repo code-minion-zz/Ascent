@@ -31,42 +31,31 @@ public class Warrior : Hero
 
         // Load the prefab
         // TODO: Change this make it more easier to load
-        weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_02") as GameObject;
-        weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
+       // weaponPrefab = Resources.Load("Prefabs/Heroes/angelic_sword_02") as GameObject;
+        //weaponSlot = GetComponentInChildren<WeaponSlot>().Slot.transform;
 
-        if (weaponPrefab == null)
-            Debug.Log("Weapon prefab not found");
+       // if (weaponPrefab == null)
+        //    Debug.Log("Weapon prefab not found");
 
         // Create the weapon in the weapon slot
         // Assign its parent to this object, ideally we will equip it to the players
         // weapon bone.
-        weaponPrefab = Instantiate(weaponPrefab) as GameObject;
-        weaponPrefab.transform.parent = weaponSlot;
-        weaponPrefab.transform.localPosition = Vector3.zero;
-        weaponPrefab.transform.localRotation = Quaternion.identity;
-        weaponPrefab.transform.localScale = Vector3.one;
+       // weaponPrefab = Instantiate(weaponPrefab) as GameObject;
+       // weaponPrefab.transform.parent = weaponSlot;
+       // weaponPrefab.transform.localPosition = Vector3.zero;
+       // weaponPrefab.transform.localRotation = Quaternion.identity;
+       // weaponPrefab.transform.localScale = Vector3.one;
 
 
 		// Obtain the equiped weapon class from this weapon
-		equipedWeapon = weaponPrefab.GetComponent<Weapon>();
-		equipedWeapon.Initialise(this);
+		//equipedWeapon = weaponPrefab.GetComponent<Weapon>();
+		//equipedWeapon.Initialise(this);
 
         // Add the animator and controller
-        characterAnimator = gameObject.AddComponent<HeroAnimator>();
+        characterAnimator = gameObject.AddComponent<HeroAnimatorController>();
         heroController = gameObject.AddComponent<HeroController>();
 		heroController.Initialise(this);
         heroController.EnableInput(input);
-		
-		// Add charge collider
-		GameObject collisionBall = Resources.Load("Prefabs/CollisionBall") as GameObject;
-        if (collisionBall == null)
-            Debug.Log("CollisionBall prefab not found");
-        collisionBall = Instantiate(collisionBall) as GameObject;
-		collisionBall.transform.parent = transform;
-		collisionBall.transform.localPosition = transform.forward * 0.5f + Vector3.up;
-		collisionBall.transform.localScale = new Vector3(1f,1f,1f);
-		chargeBall = collisionBall.GetComponent<Collidable>();
-		chargeBall.Init(this);
 		
         // Add abilities
 		AddSkill(new WarriorStrike());

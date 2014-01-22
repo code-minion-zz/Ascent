@@ -9,6 +9,12 @@ using UnityEditor;
 public class AISteeringAgent  
 {
     private Vector3 startPos;
+    public Vector3 StartPosition
+    {
+        get { return startPos; }
+        set { startPos = value; }
+    }
+
     private Vector3 targetPos;
 
     private Vector3 posLastFrame;
@@ -69,6 +75,8 @@ public class AISteeringAgent
 
     public void Initialise(CharacterMotor motor)
     {
+        startPos = motor.transform.position;
+
 		active = true;
         this.motor = motor;
     }

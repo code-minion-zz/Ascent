@@ -8,9 +8,7 @@ using System;
 
 public class Abomination : Enemy
 {
-    private AITrigger OnAttackedTrigger;
-    private AITrigger OnWanderEndTrigger;
-    private AITrigger OnReplicateTrigger;
+    private AITrigger ChangeTargetTrigger;
 
     private int strikeActionID;
     private int stompActionID;
@@ -63,28 +61,64 @@ public class Abomination : Enemy
 
         AIBehaviour behaviour = null;
 
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
-            OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
-            OnAttackedTrigger.OnTriggered += OnTargetInSight;
+            AITrigger trigger = behaviour.AddTrigger();
+            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
+            trigger.OnTriggered += OnInitialCharge;
 
-            OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, agent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
-            OnAttackedTrigger.OnTriggered += OnSurrounded;
-
-            OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[strikeActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
-            OnAttackedTrigger.OnTriggered += OnCanUseStrike;
+            trigger = behaviour.AddTrigger();
+            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_ActionEnd(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 50.0f, Vector3.zero)));
+            trigger.OnTriggered += OnInitialChargeEnd;
         }
 
+        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        {
+            ChangeTargetTrigger = behaviour.AddTrigger();
+            ChangeTargetTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            ChangeTargetTrigger.AddCondition(new AICondition_Timer(6.0f, 0.0f, 5.0f, true));
+            ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
+            ChangeTargetTrigger.OnTriggered += OnCanChangeTarget;
+
+            AITrigger trigger = behaviour.AddTrigger();
+            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
+            trigger.OnTriggered += OnTargetInSight;
+
+            trigger = behaviour.AddTrigger();
+            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
+            trigger.AddCondition(new AICondition_SurroundedSensor(transform, agent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
+            trigger.OnTriggered += OnSurrounded;
+
+            trigger = behaviour.AddTrigger();
+            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_ActionCooldown(abilities[strikeActionID]));
+            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
+            trigger.OnTriggered += OnCanUseStrike;
+        }
+
+        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+    }
+
+    public void OnInitialCharge()
+    {
+        UseAbility(chargeActionID);
+    }
+
+    public void OnInitialChargeEnd()
+    {
+        agent.TargetCharacter = agent.SensedCharacters[0];
         agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+    }
+
+    public void OnCanChangeTarget()
+    {
+        agent.TargetCharacter = lastDamagedBy;
     }
 
     public void OnSurrounded()
