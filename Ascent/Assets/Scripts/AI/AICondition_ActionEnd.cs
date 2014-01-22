@@ -10,7 +10,7 @@ public class AICondition_ActionEnd : AICondition
     {
         actionEnded = false;
         action.OnActionEnd += OnActionEnd;
-		name = action.Name;
+		name = action.AnimationTrigger;
     }
 
     public override void Reset()

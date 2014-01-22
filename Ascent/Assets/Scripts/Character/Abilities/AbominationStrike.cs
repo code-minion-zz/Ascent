@@ -29,7 +29,7 @@ public class AbominationStrike : Action
         owner.Motor.EnableMovementForce(false);
         owner.SetColor(Color.red);
 
-        prevSpeed = owner.Motor.speed;
+        prevSpeed = owner.Motor.MovementSpeed;
         executedDamage = false;
     }
 
@@ -46,7 +46,7 @@ public class AbominationStrike : Action
         {
             owner.Motor.StopMotion();
             owner.Motor.EnableMovementForce(false);
-            owner.Motor.speed = prevSpeed;
+            owner.Motor.MovementSpeed = prevSpeed;
         }
         else if (currentTime >= animationLength * 0.40f && !executedDamage)
         {

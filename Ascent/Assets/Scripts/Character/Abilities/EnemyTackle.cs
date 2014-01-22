@@ -29,7 +29,7 @@ public class EnemyTackle : Action
 		owner.Motor.EnableMovementForce(false);
         owner.SetColor(Color.red);
 
-		prevSpeed = owner.Motor.speed;
+		prevSpeed = owner.Motor.MovementSpeed;
 		executedDamage = false;
 	}
 
@@ -46,7 +46,7 @@ public class EnemyTackle : Action
 		{
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
-			owner.Motor.speed = prevSpeed;
+			owner.Motor.MovementSpeed = prevSpeed;
 		}
 		else if (currentTime >= animationLength * 0.40f && !executedDamage)
 		{
@@ -73,7 +73,7 @@ public class EnemyTackle : Action
 		else if (currentTime >= animationLength * 0.25f)
 		{
 			owner.Motor.EnableMovementForce(true);
-			owner.Motor.speed = 10.0f;
+			owner.Motor.MovementSpeed = 10.0f;
 		}
     }
 

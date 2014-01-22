@@ -17,6 +17,6 @@ public class AICondition_ActionCooldown : AICondition
 
 	public override string ToString()
 	{
-		return "ActionCD(" + action.Name + "): " + action.RemainingCooldown;
+		return "ActionCD(" + action.AnimationTrigger + "): " + action.RemainingCooldown;
 	}
 }

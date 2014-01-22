@@ -54,15 +54,17 @@ public abstract class Enemy : Character
 
 	public override void Initialise()
 	{
+		base.Initialise();
+
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+	}
 
-
+	public virtual void InitiliseHealthbar()
+	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
 
 		PositionHpBar();
-
-		base.Initialise();
 	}
 
     public virtual void OnEnable()
@@ -153,18 +155,6 @@ public abstract class Enemy : Character
     #endregion
 
     #region Operations
-
-    public override void SubUpdate()
-    {
-        //AI_Agent ai = GetComponentInChildren<AI_Agent>();
-
-        //if (ai != null)
-        //{
-        //    ai.Process();
-        //}
-
-        base.SubUpdate();
-    }
 
 	protected virtual void PositionHpBar()
 	{

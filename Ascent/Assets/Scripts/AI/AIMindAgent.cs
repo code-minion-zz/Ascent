@@ -12,7 +12,7 @@ public class AIMindAgent
         Defensive,
     }
 
-	private const bool drawLabels = true;
+	private const bool drawLabels = false;
 
 	protected bool active;
 

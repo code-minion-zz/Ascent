@@ -397,6 +397,7 @@ public class Room : MonoBehaviour
                     enemy.transform.parent = monstersHeader;
                     enemy.ContainedRoom = this;
                     enemy.Initialise();
+					enemy.InitiliseHealthbar();
 				}
 				break;
 		}

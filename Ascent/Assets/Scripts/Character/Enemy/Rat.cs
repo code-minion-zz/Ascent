@@ -80,7 +80,7 @@ public class Rat : Enemy
 	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
        agent.SteeringAgent.RotationSpeed = 15.0f;
-       motor.speed = 3.0f;
+       motor.MovementSpeed = 3.0f;
    }
 
    public override void Update()
@@ -109,7 +109,7 @@ public class Rat : Enemy
 	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   OnWanderEnd();
 
-	   motor.speed = 3.0f;
+	   motor.MovementSpeed = 3.0f;
    }
 
    public void OnAttacked()
@@ -117,7 +117,7 @@ public class Rat : Enemy
 	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   agent.TargetCharacter = lastDamagedBy;
-	   motor.speed = 5.0f;
+	   motor.MovementSpeed = 5.0f;
    }
 
    public void OnCanUseTackle()
@@ -133,6 +133,6 @@ public class Rat : Enemy
        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
        agent.SteeringAgent.RemoveTarget();
        OnWanderEnd();
-       motor.speed = 3.0f;
+       motor.MovementSpeed = 3.0f;
    }
 }

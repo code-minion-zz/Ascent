@@ -13,6 +13,8 @@ GameObject:
   - 54: {fileID: 5400000}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400016}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 10
   m_Name: Warrior
   m_TagString: Hero
@@ -1302,6 +1304,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 1.5
   offsetZ: 0
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb8a7d7af90ad44ea73d7e91542d461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4138c00d002d5248b2798144ec718c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1314,7 +1338,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100010}
-  speed: 6
   maxVelocityChange: 5
   canMove: 1
   moving: 0
@@ -1329,7 +1352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applyTilt: 1
+  applyTilt: 0
   tiltAmount: 25
 --- !u!137 &13700002
 SkinnedMeshRenderer:

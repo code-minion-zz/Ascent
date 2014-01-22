@@ -31,7 +31,7 @@ public class WarriorHeavyStrike : Action
         performed = false;
 
         animationLength = 1.167f / animationSpeed;
-        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
+		owner.Animator.PlayAnimation(animationTrigger);
 
         base.StartAbility();
     }

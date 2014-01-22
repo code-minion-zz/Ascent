@@ -3,18 +3,33 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CharacterAnimator))]
 public class CharacterMotor : MonoBehaviour
 {
 	public GameObject actor;
 
 	private Vector3 movementForce;
-	public float speed = 6.0f;
+
+	protected float movementSpeed = 6.0f;
+	public float MovementSpeed
+	{
+		get { return movementSpeed; }
+		set { movementSpeed = value; }
+	}
+
+	protected float originalSpeed = 6.0f;
+	public float OriginalSpeed
+	{
+		get { return originalSpeed; }
+		set { originalSpeed = value; }
+	}
+
 	public float maxVelocityChange = 5.0f;
     public bool canMove = true;
 
     private Vector3 specialMovementForce;
-
 	private Vector3 knockbackDirection;
+
 	private float knockbackMag;
 	private float knockbackDecel = 0.65f;
 
@@ -48,7 +63,6 @@ public class CharacterMotor : MonoBehaviour
 
 	public virtual void FixedUpdate()
 	{
-	
 		if (moving)
 		{
 			timeAccum += Time.deltaTime;
@@ -91,8 +105,9 @@ public class CharacterMotor : MonoBehaviour
 
 			if (movementForce != Vector3.zero && usingMovementForce)
             {
-                targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
-                ++forces;
+				// Add to forces
+				targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
+				++forces;
             }
 
 
@@ -103,7 +118,7 @@ public class CharacterMotor : MonoBehaviour
                 targetVelocity = new Vector3(targetVelocity.x, 0.0f, targetVelocity.z);
             }
 
-            targetVelocity = (targetVelocity.normalized * speed) + knockbackVel;
+            targetVelocity = (targetVelocity.normalized * movementSpeed) + knockbackVel;
         }
 
 		// Apply a force that attempts to reach our target velocity

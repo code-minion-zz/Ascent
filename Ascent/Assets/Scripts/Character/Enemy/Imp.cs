@@ -12,6 +12,8 @@ public class Imp : Enemy
 
     public override void Initialise()
     {
+		base.Initialise();
+
         // Populate with stats
         baseStatistics = new BaseStats();
         baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
@@ -28,8 +30,6 @@ public class Imp : Enemy
         chargeActionID = 0;
 
         originalColour = Color.white;
-
-        base.Initialise();
 
         InitialiseAI();
     }
@@ -79,6 +79,7 @@ public class Imp : Enemy
             trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
             trigger.OnTriggered += OnCanUseCharge;
 
+			trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_HP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.EqualOrLess, 0.25f));
             trigger.OnTriggered += OnLowHP;
@@ -95,7 +96,7 @@ public class Imp : Enemy
         agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
         agent.SteeringAgent.RotationSpeed = 5.0f;
         agent.SteeringAgent.CloseEnoughRange = .5f;
-        motor.speed = 2.0f;
+        motor.MovementSpeed = 2.0f;
     }
 
     public void OnWanderEnd()

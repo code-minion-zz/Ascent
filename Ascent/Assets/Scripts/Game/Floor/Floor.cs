@@ -134,6 +134,7 @@ public class Floor : MonoBehaviour
 			if (thisEnemy != null)
 			{
 				thisEnemy.Initialise();
+				thisEnemy.InitiliseHealthbar();
                 thisEnemy.onDeath += OnEnemyDeath;
 				enemies.Add(thisEnemy);
 			}

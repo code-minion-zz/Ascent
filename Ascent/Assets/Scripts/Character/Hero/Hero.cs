@@ -26,6 +26,7 @@ public abstract class Hero : Character
 //		}
 	}
 
+	protected HeroAnimator heroAnimator;
 	protected HeroClassStatModifier classStatMod;
     protected HeroController heroController;
 	protected Backpack backpack;
@@ -126,8 +127,7 @@ public abstract class Hero : Character
         // Record damage taken.
         floorStatistics.DamageTaken += damage;
         // Hero takes hit.
-        HeroAnimatorController heroAnim = Animator as HeroAnimatorController;
-        heroAnim.TakeHit = true;
+        animator.TakeHit = true;
     }
 
     public override void OnDamageDealt(int damage)

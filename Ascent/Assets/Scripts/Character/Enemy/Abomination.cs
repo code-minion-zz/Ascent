@@ -55,7 +55,7 @@ public class Abomination : Enemy
 
     public void InitialiseAI()
     {
-        motor.speed = 1.5f;
+        motor.MovementSpeed = 1.5f;
         agent.Initialise(transform);
         agent.SteeringAgent.RotationSpeed = 1.5f;
 
