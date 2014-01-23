@@ -208,7 +208,6 @@ public class FloorGeneration : MonoBehaviour
         {
             // North
             case 0:
-                Debug.Log("North");
 
                 // Vector to test new location.
                 locationVector = new Vector3(from.position.x, 0.0f, (from.position.z + (height * roomOffsetMultiplier)));
@@ -268,7 +267,6 @@ public class FloorGeneration : MonoBehaviour
 
             // East
             case 1:
-                Debug.Log("East");
 
                 locationVector = new Vector3((from.position.x + (width * roomOffsetMultiplier)), 0.0f, from.position.z);
 
@@ -324,8 +322,6 @@ public class FloorGeneration : MonoBehaviour
 
             // South
             case 2:
-                Debug.Log("South");
-
                 locationVector = new Vector3(from.position.x, 0.0f, (from.position.z - (height * roomOffsetMultiplier)));
 
                 for (int a = 0; a < rooms.Count; a++)
@@ -384,8 +380,6 @@ public class FloorGeneration : MonoBehaviour
 
             // West
             case 3:
-                Debug.Log("West");
-
                 locationVector = new Vector3((from.position.x - (width * roomOffsetMultiplier)), 0.0f, from.position.z);
 
                 for (int a = 0; a < rooms.Count; a++)
