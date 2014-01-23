@@ -37,6 +37,8 @@ public class SlimeReplicate : Action
         go.transform.position += Vector3.left * 0.1f;
         owner.transform.position += Vector3.right * 0.1f;
 
+        go.GetComponent<Enemy>().agent.SteeringAgent.StartPosition = go.transform.position;
+
         owner.DerivedStats.CurrentHealth = (int)((float)owner.DerivedStats.CurrentHealth * 0.5f);
 
         float scale = (float)owner.DerivedStats.CurrentHealth / (float)owner.DerivedStats.MaxHealth;
@@ -57,7 +59,7 @@ public class SlimeReplicate : Action
         //enemy.ApplyKnockback(Vector3.right, 100.0f);
 
         base.EndAbility();
-        owner.SetColor(owner.OrigionalColor);
+        owner.SetColor(owner.OriginalColor);
         owner.Motor.EnableMovementForce(true);
     }
 

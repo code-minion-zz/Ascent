@@ -26,6 +26,8 @@ public class AICondition_Sensor : AICondition
             if (s.Sense(transform, ref sensed))
             {
 				iSensed = sensed.Count;
+                agent.SensedCharacters = sensed;
+
                 return true;
             }
         }

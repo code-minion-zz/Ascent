@@ -28,6 +28,7 @@ public class Floor : MonoBehaviour
 	private FadePlane fadePlane;
     private Room[] allRooms;
     private FloorInstanceReward floorInstanceReward;
+    private FloorGeneration floorGenerator;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -68,18 +69,43 @@ public class Floor : MonoBehaviour
         get { return players; }
     }
 
-	public void Initialise()
-	{
-        //// TODO: Load the prefab for this level
-        ////Resources.Load("Prefabs/Level" + Game.Singleton.GetChosenLevel);
+    public void Initialise(FloorGeneration floorGen)
+    {
+        floorGenerator = floorGen;
+        InitialiseCamera();
+        floorGenerator.GenerateFloor();
+        Initialise();
+    }
 
-		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
+    // Initialize the camera first.
+    private void InitialiseCamera()
+    {
+        // Create the floor's camera
+        GameObject go = null;
 
-        if (currentRoom == null)
+        if (orthographicCamera)
         {
-            Debug.Log("Could not find StartRoom please make sure there is an object called StartRoom with the Room script attached");
+            go = Resources.Load("Prefabs/Floors/floorCameraOrtho") as GameObject;
+        }
+        else
+        {
+            go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
         }
 
+        floorCamera = Instantiate(go) as GameObject;
+        floorCamera.name = "floorCamera";
+
+        floorCamera.GetComponent<FloorCamera>().Initialise();
+
+        go = new GameObject();
+        go.name = "Cameras";
+        go.tag = "Cameras";
+
+        floorCamera.transform.parent = go.transform;
+    }
+
+	private void Initialise()
+	{
 		// Create HUD
 		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup"));
 
@@ -106,35 +132,9 @@ public class Floor : MonoBehaviour
             players[i].Hero.GetComponent<Hero>().ResetFloorStatistics();
 		}
 
-		// Create the floor's camera
-		GameObject go = null;
-
-		if (orthographicCamera)
-		{
-			go = Resources.Load("Prefabs/Floors/floorCameraOrtho") as GameObject;
-		}
-		else
-		{
-            go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
-		}
-
-		floorCamera = Instantiate(go) as GameObject;
-		floorCamera.name = "floorCamera";
-
-		floorCamera.GetComponent<FloorCamera>().Initialise();
-
-		go = new GameObject();
-		go.name = "Cameras";
-		go.tag = "Cameras";
-
-		floorCamera.transform.parent = go.transform;
-
+        // Finds all the rooms
 		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
-
-		foreach (Room r in allRooms)
-		{
-			r.Initialise();
-		}
+        currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 
 		// Initialise all the enemies
 		enemies = new List<Enemy>();
@@ -146,18 +146,13 @@ public class Floor : MonoBehaviour
 			if (thisEnemy != null)
 			{
 				thisEnemy.Initialise();
+				thisEnemy.InitiliseHealthbar();
                 thisEnemy.onDeath += OnEnemyDeath;
 				enemies.Add(thisEnemy);
 			}
 		}
 
-		foreach (Room r in allRooms)
-		{
-			r.gameObject.SetActive(false);
-		}
-
-
-		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+		GameObject go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
@@ -329,6 +324,7 @@ public class Floor : MonoBehaviour
 
 		targetRoom = targetDoor.transform.parent.parent.parent.GetComponent<Room>();
 
+
 		Room prevRoom = currentRoom;
 		currentRoom = targetRoom;
 		targetRoom = prevRoom;
@@ -372,7 +368,7 @@ public class Floor : MonoBehaviour
 		}
 
 		// Move camera over
-		FloorCamera.TransitionToRoom(direction);
+        FloorCamera.TransitionToRoom(direction);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();

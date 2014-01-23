@@ -7,12 +7,14 @@ public struct RoomInfo
     public Vector3 position;
     public int numberOfDoors;
     public bool[] directionsFilled;
+    public Room room;
 
-    public RoomInfo(int doorCount)
+    public RoomInfo(int doorCount, Room room)
     {
         position = Vector3.zero;
         numberOfDoors = doorCount;
         directionsFilled = new bool[4];
+        this.room = room;
 
         for (int i = 0; i < 4; ++i)
         {
@@ -44,7 +46,7 @@ public class FloorGeneration : MonoBehaviour
     private float roomOffsetMultiplier = 1.5f;
 
     // Number of rooms to place.
-    private int roomsToPlace = 10;
+    private int roomsToPlace = 50;
     private int roomsPlaced = 0;
     private List<RoomInfo> rooms = new List<RoomInfo>();
 
@@ -52,10 +54,9 @@ public class FloorGeneration : MonoBehaviour
     private float previousZ = 0.0f;
     private Vector3 locationVector;
     private bool positionFilled;
-    private int randDir = 0;
     private int randDoorCount = 0;
 
-    void Awake()
+    public void GenerateFloor()
     {
         floorObject = Resources.Load("Prefabs/RoomWalls/Ground") as GameObject;
         wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
@@ -63,54 +64,55 @@ public class FloorGeneration : MonoBehaviour
         wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
         doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
 
-        GenerateFloors();
+        //Random.seed = System.DateTime.Today.Millisecond;
+        Random.seed = (int)Time.time;
+        CreateRooms();
     }
 
-    void Start()
-    {
-        Random.seed = System.DateTime.Today.Millisecond;
-    }
-
-    public void GenerateFloors()
+    public void CreateRooms()
     {
         rooms.Clear();
         rooms = new List<RoomInfo>();
         positionFilled = false;
-        randDir = 0;
         previousX = 0.0f;
         previousZ = 0.0f;
         locationVector = Vector3.zero;
 
         // We have to add the first room, for now we add at pos zero
-        RoomInfo firstRoom = new RoomInfo(3);
-        firstRoom.position = Vector3.zero;
+        Room startRoom = GameObject.Find("StartRoom").GetComponent<Room>();
+        startRoom.Initialise();
+        RoomInfo firstRoom = new RoomInfo(3, startRoom);
+        firstRoom.position = startRoom.transform.position;
         rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
         for (roomsPlaced = 0; roomsPlaced < roomsToPlace; roomsPlaced++)
         {
-            //// Work out a random door count for the next room.
-            //// If the door count is 1 then it only has an entrance.
-            //int randDoorCount = Random.Range(1, 5);
-
-            //// Work out if the room can support this number of rooms to place
-            //if (randDoorCount > 1 && randDoorCount <= (roomsToPlace - roomsPlaced))
-            //{
-
-            //}
-
-            // Pick a wall from any room
+            // Pick a random room from the pool of rooms that currently exist
             int randomRoom = Random.Range(0, rooms.Count);
             RoomInfo fromRoom = rooms[randomRoom];
 
-            int randRoomDir = Random.Range(0, fromRoom.numberOfDoors);
+            // Choose a random direction to place the room
+            int randRoomDir = Random.Range(0, 4);
 
+            // Checks if we can make a room in this direction
             if (fromRoom.directionsFilled[randRoomDir] == false)
             {
                 // See if we can add a new room through the chosen direction.
                 GenerateNewRoom(18, 14, "Room " + roomsPlaced, fromRoom, randRoomDir);
             }
+            else
+            {
+                roomsPlaced--;
+            }
         }
+
+        GenerateWalls();
+    }
+
+    private void GenerateWalls()
+    {
+
     }
 
     private GameObject CreateRoom(float width, float height, string name)
@@ -135,50 +137,63 @@ public class FloorGeneration : MonoBehaviour
         floorGo.transform.parent = room.GetNodeByLayer("Environment").transform;
         floorGo.name = "Ground";
 
+        room.Initialise();
+        room.gameObject.SetActive(false);
         return roomGo;
     }
 
-    private GameObject CreateDoor(GameObject doors, float roomWidth, float roomHeight, int direction)
+    private Door CreateDoor(GameObject doors, float roomWidth, float roomHeight, int direction)
     {
         GameObject doorGo = Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
         doorGo.transform.parent = doors.transform;
+
+        // Attach the doors to their rightful component.
+        Doors doorsScript = doors.GetComponent<Doors>();
+        Door returnDoor = null;
+
+        Debug.Log(doorsScript);
+
+        if (doorsScript.doors[direction] == null)
+        {
+            doorsScript.doors[direction] = doorGo.GetComponent<Door>();
+            returnDoor = doorsScript.doors[direction];
+        }
+        else
+        {
+            doorsScript.doors[direction] = doorGo.GetComponent<Door>();
+            returnDoor = doorsScript.doors[direction];
+        }
 
         switch (direction)
         {
             case 0:
                 doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + 8.0f);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
+                doorGo.name = "North Door";
                 break;
 
             case 1:
                 doorGo.transform.position = new Vector3(doors.transform.position.x + 10, doorGo.transform.position.y, doors.transform.position.z);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
+                doorGo.name = "East Door";
                 break;
 
             case 2:
                 doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - 8.0f);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
+                doorGo.name = "South Door";
                 break;
 
             case 3:
                 doorGo.transform.position = new Vector3(doors.transform.position.x - 10, doorGo.transform.position.y, doors.transform.position.z);
-                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
+                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
+                doorGo.name = "West Door";
                 break;
 
         }
 
-        return (doorGo);
+        return (returnDoor);
     }
-
-    //public void GenerateDoors()
-    //{
-    //    foreach (RoomInfo room in rooms)
-    //    {
-    //        for (int i = 0; i < room.numberOfDoors; ++i)
-    //        {
-    //        }
-    //    }
-    //}
 
     public void GenerateNewRoom(float width, float height, string name, RoomInfo from, int dir)
     {
@@ -224,19 +239,28 @@ public class FloorGeneration : MonoBehaviour
                     // Do rotation soon
                     //roomGo.transform.Rotate(Vector3.up, rotation);
 
-                    // Tell the previous room they have now filled up this one.
+                    // This door came from the north direction, we need to make a door here if it does not exist for the coming from
+                    // room
                     from.directionsFilled[0] = true;
+                    Transform doors = from.room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door entryDoor = CreateDoor(doors.gameObject, width, height, 0);
+                    entryDoor.direction = Floor.TransitionDirection.North;
 
                     // Create the new room with number of doors.
-                    RoomInfo newRoom = new RoomInfo(randDoorCount);
-                    newRoom.directionsFilled[0] = true;
+                    // we also need to create the door that connects the previous room.
+                    RoomInfo newRoom = new RoomInfo(randDoorCount, roomGo.GetComponent<Room>());
+                    newRoom.directionsFilled[2] = true; // We set this position to filled because its where the other door came from
                     newRoom.position = locationVector;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    CreateDoor(roomGo, width, height, 0);
+                    Transform newDoor = roomGo.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = CreateDoor(newDoor.gameObject, width, height, 2);
+                    exitDoor.direction = Floor.TransitionDirection.South;
 
-                    previousZ = previousZ + (height * roomOffsetMultiplier);
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
                 }
 
                 positionFilled = false;
@@ -271,16 +295,28 @@ public class FloorGeneration : MonoBehaviour
                     // Do rotation soon
                     //roomGo.transform.Rotate(Vector3.up, rotation);
 
+                    // This door came from the east direction, we need to make a door here if it does not exist for the coming from
+                    // room
                     from.directionsFilled[1] = true;
+                    Transform doors = from.room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door entryDoor = CreateDoor(doors.gameObject, width, height, 1);
+                    entryDoor.direction = Floor.TransitionDirection.East;
 
                     // Create the new room with number of doors.
-                    RoomInfo newRoom = new RoomInfo(randDoorCount);
-                    newRoom.directionsFilled[1] = true;
+                    // we also need to create the door that connects the previous room.
+                    RoomInfo newRoom = new RoomInfo(randDoorCount, roomGo.GetComponent<Room>());
+                    newRoom.directionsFilled[3] = true; // We set this position to filled because its where the other door came from
                     newRoom.position = locationVector;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    CreateDoor(roomGo, width, height, 1);
+                    Transform newDoor = roomGo.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = CreateDoor(newDoor.gameObject, width, height, 3);
+                    exitDoor.direction = Floor.TransitionDirection.West;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
                 }
 
                 positionFilled = false;
@@ -315,16 +351,32 @@ public class FloorGeneration : MonoBehaviour
                     // Do rotation soon
                     //roomGo.transform.Rotate(Vector3.up, rotation);
 
+                    // This door came from the south direction, we need to make a door here if it does not exist for the coming from
+                    // room
                     from.directionsFilled[2] = true;
+                    Debug.Log(from);
+                    Debug.Log(from.room);
+                    Debug.Log(from.room.GetNodeByLayer("Environment"));
+                    Debug.Log(from.room.GetNodeByLayer("Environment").transform.FindChild("Doors"));
+                    Transform doors = from.room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door entryDoor = CreateDoor(doors.gameObject, width, height, 2);
+                    entryDoor.direction = Floor.TransitionDirection.South;
 
                     // Create the new room with number of doors.
-                    RoomInfo newRoom = new RoomInfo(randDoorCount);
-                    newRoom.directionsFilled[2] = true;
+                    // we also need to create the door that connects the previous room.
+                    RoomInfo newRoom = new RoomInfo(randDoorCount, roomGo.GetComponent<Room>());
+                    newRoom.directionsFilled[0] = true; // We set this position to filled because its where the other door came from
                     newRoom.position = locationVector;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    CreateDoor(roomGo, width, height, 2);
+                    Transform newDoor = roomGo.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = CreateDoor(newDoor.gameObject, width, height, 0);
+                    exitDoor.direction = Floor.TransitionDirection.North;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
                 }
 
                 positionFilled = false;
@@ -360,384 +412,31 @@ public class FloorGeneration : MonoBehaviour
                     //roomGo.transform.Rotate(Vector3.up, rotation);
 
                     from.directionsFilled[3] = true;
+                    Transform doors = from.room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door entryDoor = CreateDoor(doors.gameObject, width, height, 3);
+                    entryDoor.direction = Floor.TransitionDirection.West;
 
                     // Create the new room with number of doors.
-                    RoomInfo newRoom = new RoomInfo(randDoorCount);
-                    newRoom.directionsFilled[3] = true;
+                    // we also need to create the door that connects the previous room.
+                    RoomInfo newRoom = new RoomInfo(randDoorCount, roomGo.GetComponent<Room>());
+                    newRoom.directionsFilled[1] = true; // We set this position to filled because its where the other door came from
                     newRoom.position = locationVector;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    CreateDoor(roomGo, width, height, 3);
+                    Transform newDoor = roomGo.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = CreateDoor(newDoor.gameObject, width, height, 1);
+                    exitDoor.direction = Floor.TransitionDirection.East;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
                 }
 
                 positionFilled = false;
                 break;
         }
 
-    //public void GenerateNewRoom(float width, float height, string name, RoomInfo from)
-    //{
-    //    GameObject roomGo = null;
-
-    //    // Random direction to choose from when going from the selected room
-    //    randDir = Random.Range(1, 5);
-    //    // Random door count for the new door.
-    //    randDoorCount = Random.Range(1, 5);
-
-    //    // Place a room in a random direction, if room cannot be placed in the location it will decrease the number of rooms placed
-    //    // and the loop which called this function will repeat itself;
-    //    switch (randDir)
-    //    {
-    //        // North
-    //        case 1:
-    //            Debug.Log("North");
-
-    //            // Vector to test new location.
-    //            locationVector = new Vector3(from.position.x, 0.0f, (from.position.z + (height * roomOffsetMultiplier)));
-
-    //            // Check to see if the position is filled by another room.
-    //            for (int a = 0; a < rooms.Count; a++)
-    //            {
-    //                if (locationVector == rooms[a].position)
-    //                {
-    //                    positionFilled = true;
-    //                    break;
-    //                }
-    //            }
-
-    //            // If the position is filled
-    //            if (positionFilled == true)
-    //            {
-    //                // Decrease the counter so we can go through and try and place again.
-    //                roomsPlaced--;
-    //                previousZ += (height * roomOffsetMultiplier);
-    //            }
-    //            else
-    //            {
-    //                // Create the room at this position
-    //                roomGo = CreateRoom(width, height, name);
-    //                roomGo.transform.position = locationVector;
-
-    //                // Do rotation soon
-    //                //roomGo.transform.Rotate(Vector3.up, rotation);
-
-    //                // Tell the previous room they have now filled up this one.
-    //                from.directionsFilled[1] = true;
-
-    //                // Create the new room with number of doors.
-    //                RoomInfo newRoom = new RoomInfo(randDoorCount);
-    //                newRoom.directionsFilled[1] = true;
-    //                newRoom.position = locationVector;
-    //                rooms.Add(newRoom);
-
-    //                // Generate the door for this new room and link it to the previous room.
-    //                CreateDoor(roomGo, width, height, 1);
-
-    //                previousZ = previousZ + (height * roomOffsetMultiplier);
-    //            }
-
-    //            positionFilled = false;
-    //            break;
-
-    //        // East
-    //        case 2:
-    //            Debug.Log("East");
-
-    //            locationVector = new Vector3((from.position.x + (width * roomOffsetMultiplier)), 0.0f, from.position.z);
-
-    //            for (int a = 0; a < rooms.Count; a++)
-    //            {
-    //                if (locationVector == rooms[a].position)
-    //                {
-    //                    positionFilled = true;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (positionFilled == true)
-    //            {
-    //                roomsPlaced--;
-    //                previousX += (width * roomOffsetMultiplier);
-    //            }
-    //            else
-    //            {
-    //                // Create the room at this position
-    //                roomGo = CreateRoom(width, height, name);
-    //                roomGo.transform.position = locationVector;
-
-    //                // Do rotation soon
-    //                //roomGo.transform.Rotate(Vector3.up, rotation);
-
-    //                from.directionsFilled[2] = true;
-
-    //                // Create the new room with number of doors.
-    //                RoomInfo newRoom = new RoomInfo(randDoorCount);
-    //                newRoom.directionsFilled[2] = true;
-    //                newRoom.position = locationVector;
-    //                rooms.Add(newRoom);
-
-    //                // Generate the door for this new room and link it to the previous room.
-    //                CreateDoor(roomGo, width, height, 2);
-    //            }
-
-    //            positionFilled = false;
-    //            break;
-
-    //        // South
-    //        case 3:
-    //            Debug.Log("South");
-
-    //            locationVector = new Vector3(from.position.x, 0.0f, (from.position.z - (height * roomOffsetMultiplier)));
-
-    //            for (int a = 0; a < rooms.Count; a++)
-    //            {
-    //                if (locationVector == rooms[a].position)
-    //                {
-    //                    positionFilled = true;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (positionFilled == true)
-    //            {
-    //                roomsPlaced--;
-    //                previousZ -= (height * roomOffsetMultiplier);
-    //            }
-    //            else
-    //            {
-    //                // Create the room at this position
-    //                roomGo = CreateRoom(width, height, name);
-    //                roomGo.transform.position = locationVector;
-
-    //                // Do rotation soon
-    //                //roomGo.transform.Rotate(Vector3.up, rotation);
-
-    //                from.directionsFilled[3] = true;
-
-    //                // Create the new room with number of doors.
-    //                RoomInfo newRoom = new RoomInfo(randDoorCount);
-    //                newRoom.directionsFilled[3] = true;
-    //                newRoom.position = locationVector;
-    //                rooms.Add(newRoom);
-
-    //                // Generate the door for this new room and link it to the previous room.
-    //                CreateDoor(roomGo, width, height, 3);
-    //            }
-
-    //            positionFilled = false;
-    //            break;
-
-    //        // West
-    //        case 4:
-    //            Debug.Log("West");
-
-    //            locationVector = new Vector3((from.position.x - (width * roomOffsetMultiplier)), 0.0f, from.position.z);
-
-    //            for (int a = 0; a < rooms.Count; a++)
-    //            {
-    //                if (locationVector == rooms[a].position)
-    //                {
-    //                    positionFilled = true;
-    //                    break;
-    //                }
-    //            }
-
-    //            if (positionFilled == true)
-    //            {
-    //                roomsPlaced--;
-    //                previousX -= (width * roomOffsetMultiplier);
-    //            }
-    //            else
-    //            {
-    //                // Create the room at this position
-    //                roomGo = CreateRoom(width, height, name);
-    //                roomGo.transform.position = locationVector;
-
-    //                // Do rotation soon
-    //                //roomGo.transform.Rotate(Vector3.up, rotation);
-
-    //                from.directionsFilled[4] = true;
-
-    //                // Create the new room with number of doors.
-    //                RoomInfo newRoom = new RoomInfo(randDoorCount);
-    //                newRoom.directionsFilled[4] = true;
-    //                newRoom.position = locationVector;
-    //                rooms.Add(newRoom);
-
-    //                // Generate the door for this new room and link it to the previous room.
-    //                CreateDoor(roomGo, width, height, 4);
-    //            }
-
-    //            positionFilled = false;
-    //            break;
-    //    }
-
-        //switch (randDir)
-        //{
-        //        // North
-        //    case 1:
-        //        Debug.Log("North");
-
-        //        // Vector to test new location.
-        //        locationVector = new Vector3(previousX, 0.0f, (previousZ + (height * roomOffsetMultiplier)));
-
-        //        // Check to see if the position is filled by another room.
-        //        for (int a = 0; a < rooms.Count; a++)
-        //        {
-        //            if (locationVector == rooms[a].position)
-        //            {
-        //                positionFilled = true;
-        //                break;
-        //            }
-        //        }
-
-        //        // If the position is filled
-        //        if (positionFilled == true)
-        //        {
-        //            // Decrease the counter so we can go through and try and place again.
-        //            roomsPlaced--;
-        //            previousZ = previousZ + (height * roomOffsetMultiplier);
-        //        }
-        //        else
-        //        {
-        //            // Create the room at this position
-        //            roomGo = CreateRoom(width, height, name);
-        //            roomGo.transform.position = locationVector;
-
-        //            // Do rotation soon
-        //            //roomGo.transform.Rotate(Vector3.up, rotation);
-        //            RoomInfo newRoom = new RoomInfo();
-        //            newRoom.position = locationVector;
-        //            newRoom.numberOfDoors++;
-        //            rooms.Add(newRoom);
-        //            previousZ = previousZ + (height * roomOffsetMultiplier);
-        //        }
-
-        //        positionFilled = false;
-        //        break;
-
-        //        // East
-        //    case 2:
-        //        Debug.Log("East");
-
-        //        locationVector = new Vector3((previousX + (width * roomOffsetMultiplier)), 0.0f, previousZ);
-
-        //        for (int a = 0; a < rooms.Count; a++)
-        //        {
-        //            if (locationVector == rooms[a].position)
-        //            {
-        //                positionFilled = true;
-        //                break;
-        //            }
-        //        }
-
-        //        if (positionFilled == true)
-        //        {
-        //            roomsPlaced--;
-        //            previousX = previousX + (width * roomOffsetMultiplier);
-        //        }
-        //        else
-        //        {
-        //            // Create the room at this position
-        //            roomGo = CreateRoom(width, height, name);
-        //            roomGo.transform.position = locationVector;
-
-        //            // Do rotation soon
-        //            //roomGo.transform.Rotate(Vector3.up, rotation);
-
-        //            RoomInfo newRoom = new RoomInfo();
-        //            newRoom.position = locationVector;
-        //            newRoom.numberOfDoors++;
-        //            rooms.Add(newRoom);
-        //            previousX = previousX + (width * roomOffsetMultiplier);
-        //        }
-
-        //        positionFilled = false;
-        //        break;
-
-        //        // South
-        //    case 3:
-        //        Debug.Log("South");
-
-        //        locationVector = new Vector3(previousX, 0.0f, (previousZ - (height * roomOffsetMultiplier)));
-
-        //        for (int a = 0; a < rooms.Count; a++)
-        //        {
-        //            if (locationVector == rooms[a].position)
-        //            {
-        //                positionFilled = true;
-        //                break;
-        //            }
-        //        }
-
-        //        if (positionFilled == true)
-        //        {
-        //            roomsPlaced--;
-        //            previousZ = previousZ - (height * roomOffsetMultiplier);
-        //        }
-        //        else
-        //        {
-        //            // Create the room at this position
-        //            roomGo = CreateRoom(width, height, name);
-        //            roomGo.transform.position = locationVector;
-
-        //            // Do rotation soon
-        //            //roomGo.transform.Rotate(Vector3.up, rotation);
-
-        //            RoomInfo newRoom = new RoomInfo();
-        //            newRoom.position = locationVector;
-        //            newRoom.numberOfDoors++;
-        //            rooms.Add(newRoom);
-        //            previousZ = previousZ - (height * roomOffsetMultiplier);
-        //        }
-
-        //        positionFilled = false;
-        //        break;
-
-        //        // West
-        //    case 4:
-        //        Debug.Log("West");
-
-        //        locationVector = new Vector3((previousX - (width * roomOffsetMultiplier)), 0.0f, previousZ);
-
-        //        for (int a = 0; a < rooms.Count; a++)
-        //        {
-        //            if (locationVector == rooms[a].position)
-        //            {
-        //                positionFilled = true;
-        //                break;
-        //            }
-        //        }
-
-        //        if (positionFilled == true)
-        //        {
-        //            roomsPlaced--;
-        //            previousX = previousX - (width * roomOffsetMultiplier);
-        //        }
-        //        else
-        //        {
-        //            // Create the room at this position
-        //            roomGo = CreateRoom(width, height, name);
-        //            roomGo.transform.position = locationVector;
-
-        //            // Do rotation soon
-        //            //roomGo.transform.Rotate(Vector3.up, rotation);
-
-        //            RoomInfo newRoom = new RoomInfo();
-        //            newRoom.position = locationVector;
-        //            newRoom.numberOfDoors++;
-        //            rooms.Add(newRoom);
-        //            previousX = previousX - (width * roomOffsetMultiplier);
-        //        }
-
-        //        positionFilled = false;
-        //        break;
-        //}
-
-        // Create the walls
-
-        // Create the doors
-
-        // Add to the list.
+        
     }
 }

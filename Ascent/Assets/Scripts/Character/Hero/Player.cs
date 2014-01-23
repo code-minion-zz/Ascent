@@ -110,19 +110,19 @@ public class Player : MonoBehaviour
         {
             case 0:
                 {
-                    heroScript.OrigionalColor = Color.red;
+                    heroScript.OriginalColor = Color.red;
                     heroScript.SetColor(Color.red);
                 }
                 break;
             case 1:
                 {
-                    heroScript.OrigionalColor = Color.green;
+                    heroScript.OriginalColor = Color.green;
                     heroScript.SetColor(Color.green);
                 }
                 break;
             case 2:
                 {
-                    heroScript.OrigionalColor = Color.blue;
+                    heroScript.OriginalColor = Color.blue;
                     heroScript.SetColor(Color.blue);
                 }
                 break;

@@ -14,16 +14,16 @@ public class WarriorStrike : Action
 
 	public override void Initialise(Character owner)
     {
+		base.Initialise(owner);
+
         animationSpeed = 2.0f;
         animationLength = 1.167f / animationSpeed;
 		coolDownTime = animationLength;
-		animationTrigger = "SwingAttack";
+		animationTrigger = "Strike";
 		specialCost = 0;
 
         // Defines the collision shape and properties of this ability.
 		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.10f));
-
-		base.Initialise(owner);
     }
 
 	public override void StartAbility()
@@ -33,14 +33,14 @@ public class WarriorStrike : Action
 		performed = false;
         animationLength = 1.167f / animationSpeed;
         coolDownTime = animationLength;
-        owner.Animator.Animator.SetFloat("SwordAttackSpeed", animationSpeed);
+		owner.Animator.PlayAnimation(animationTrigger);
 
-        if (owner.Weapon != null)
-        {
-            // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-            damage = owner.Weapon.Damage + 10;
-            knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
-        }
+        //if (owner.Weapon != null)
+        //{
+        //    // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
+        //    damage = owner.Weapon.Damage + 10;
+        //    knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
+        //}
 	}
 
 	public override void UpdateAbility()

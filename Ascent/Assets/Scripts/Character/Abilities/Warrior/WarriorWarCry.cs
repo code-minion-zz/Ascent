@@ -12,6 +12,8 @@ public class WarriorWarCry : Action
         animationTrigger = "WarCry";
         coolDownTime = 5.0f;
         specialCost = 5;
+
+		Validate();
 	}
 
 	public override void StartAbility()

@@ -317,6 +317,11 @@ static public class NGUIText
 				underline = true;
 				index += 3;
 				return true;
+
+				case "[s]":
+				strike = true;
+				index += 3;
+				return true;
 			}
 		}
 
@@ -343,8 +348,8 @@ static public class NGUIText
 				index += 4;
 				return true;
 
-				case "[st]":
-				strike = true;
+				case "[/s]":
+				strike = false;
 				index += 4;
 				return true;
 			}
@@ -365,11 +370,6 @@ static public class NGUIText
 
 				case "[sup]":
 				sub = 2;
-				index += 5;
-				return true;
-
-				case "[/st]":
-				strike = false;
 				index += 5;
 				return true;
 			}
@@ -1062,8 +1062,9 @@ static public class NGUIText
 							case 8: col.a += 0.51f; break;
 						}
 
+						Color32 c = col;
 						for (int j = 0, jmax = (bold ? 16 : 4); j < jmax; ++j)
-							cols.Add(uc);
+							cols.Add(c);
 					}
 				}
 

@@ -20,7 +20,7 @@ public class AISensor_Arc : AISensor
 
 	public override bool SenseCharacter(Character c)
 	{
-		return (MathUtility.IsWithinCircleArc(c.transform.position, transform.position, arc.Line1, arc.Line2, arc.radius));
+        return (MathUtility.IsWithinCircleArc(c.transform.position, arc.Position, arc.Line1, arc.Line2, arc.radius));
 	}
 
 

@@ -95,44 +95,12 @@ public class Room : MonoBehaviour
 
     #endregion
 
-    /// <summary>
-    /// Populates the class with data obtained from the room.
-    /// </summary144>
-    void Awake()
-    {
-		//Debug.Log("ROOM");
-		//// Make sure all the nodes are found and references.
-		//FindAllNodes();
-
-		//navMesh = NavMesh;
-
-		//doors = GetComponentInChildren<Doors>();
-
-		//if (enemies == null)
-		//{
-		//    Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
-
-		//    if (roomEnemies.Length > 0)
-		//    {
-		//        enemies = new List<Character>();
-
-		//        foreach (Enemy e in roomEnemies)
-		//        {
-		//            if (!enemies.Contains(e))
-		//            {
-		//                e.ContainedRoom = this;
-		//                enemies.Add(e);
-		//            }
-		//        }
-		//    }
-		//}
-    }
-
 	public void Initialise()
 	{
 		// Make sure all the nodes are found and references.
 		FindAllNodes();
 
+        // Find the monsters for this room
         monstersNode = GetNodeByLayer("Monster");
 
         if (monstersNode == null)
@@ -144,8 +112,7 @@ public class Room : MonoBehaviour
 
 		navMesh = NavMesh;
 
-		//doors = GetComponentInChildren<Doors>();
-
+        // Find the doors for this room
         doors = GetNodeByLayer("Environment").GetComponentInChildren<Doors>();
 
         if (doors == null)
@@ -277,6 +244,7 @@ public class Room : MonoBehaviour
 		Door[] roomDoors = doors.doors;
 		for (int i = 0; i < roomDoors.Length; ++i)
 		{
+            Debug.Log(roomDoors.Length);
 			if (roomDoors[i] != null)
 			{
 				roomDoors[i].Process();
@@ -431,6 +399,7 @@ public class Room : MonoBehaviour
                     enemy.transform.parent = monstersNode.transform;
                     enemy.ContainedRoom = this;
                     enemy.Initialise();
+					enemy.InitiliseHealthbar();
 				}
 				break;
 		}
@@ -571,51 +540,115 @@ public class Room : MonoBehaviour
 
 	public bool CheckArc(Arc arc, Character c)
 	{
-		bool inside = false;
+        Transform xform = c.transform.FindChild("Colliders");
+        if (xform != null)
+        {
+            Collider[] colliders = xform.gameObject.GetComponentsInChildren<Collider>();
 
-		Vector3 extents = new Vector3(c.collider.bounds.extents.x, 0.5f, c.collider.bounds.extents.z);
-		Vector3 pos = new Vector3(c.transform.position.x, 0.5f, c.transform.position.z);
+            foreach (Collider col in colliders)
+            {
+                if ((CheckArc(arc, c, col)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-		// TL
-		Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
-		inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
-#if UNITY_EDITOR
-		Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(-extents.x, extents.y, extents.z));
-#endif
-
-		// TR
-		if (!inside)
-		{
-			point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
-			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-			Debug.DrawLine(c.transform.position, c.transform.position + extents);
-#endif
-		}
-
-		// BL
-		if (!inside)
-		{
-			point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
-			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-			Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(-extents.x, extents.y, -extents.z));
-#endif
-		}
-
-		// BR
-		if (!inside)
-		{
-			point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
-			inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
-
-#if UNITY_EDITOR
-			Debug.DrawLine(c.transform.position, c.transform.position + new Vector3(extents.x, extents.y, -extents.z));
-#endif
-		}
-
-		return inside;
+        return CheckArc(arc, c, c.collider);
 	}
+
+    public bool CheckArc(Arc arc, Character character, Collider col)
+    {
+        Vector3 extents = new Vector3(col.bounds.extents.x, 0.1f, col.bounds.extents.z);
+        Vector3 pos = col.transform.position;
+
+        bool inside = false;
+
+        // TL
+        Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
+        inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+#if UNITY_EDITOR
+        Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, extents.z), Color.white, 0.2f);
+#endif
+
+        // T
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, extents.z), Color.white, 0.2f);
+#endif
+        }
+
+        // TR
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + extents, Color.white, 0.2f);
+#endif
+        }
+
+        // BL
+        if (!inside)
+        {
+            point = new Vector3(pos.x - extents.x, pos.y, pos.z - extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, -extents.z), Color.white, 0.2f);
+#endif
+        }
+
+        // B
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, -extents.z), Color.white, 0.2f);
+#endif
+        }
+
+        // BR
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z - extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, -extents.z), Color.white, 0.2f);
+#endif
+        }
+
+        // L
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, 0.0f), Color.white, 0.2f);
+#endif
+        }
+
+        // R
+        if (!inside)
+        {
+            point = new Vector3(pos.x + extents.x, pos.y, pos.z + extents.z);
+            inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
+
+#if UNITY_EDITOR
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, 0.0f), Color.white, 0.2f);
+#endif
+        }
+
+        return inside;
+    }
 }

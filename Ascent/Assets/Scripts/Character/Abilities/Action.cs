@@ -14,6 +14,10 @@ public abstract class Action
     private bool isOnCooldown = false;
 
     protected string animationTrigger;
+	public string AnimationTrigger
+	{
+		get { return animationTrigger; }
+	}
 
     protected int specialCost;
 
@@ -27,12 +31,6 @@ public abstract class Action
     public Character Owner
     {
         get { return owner; }
-    }
-
-    protected string name;
-    public string Name
-    {
-        get { return name; }
     }
 
     /// <summary>
@@ -74,8 +72,15 @@ public abstract class Action
     public virtual void Initialise(Character owner)
     {
        this.owner = owner;
-       this.name = this.GetType().ToString();
+       //this.name = this.GetType().ToString();
     }
+
+	public virtual void Validate()
+	{
+#if UNITY_EDITOR
+		owner.Animator.DoesStateExist(animationTrigger);
+#endif
+	}
 
     /// <summary>
     /// Handles resetting values for starting the ability. This includes cooldown times,
@@ -94,19 +99,35 @@ public abstract class Action
 		}
     }
 
+	/// <summary>
+	/// Updates time, updates action then checks for time expiration
+	/// 
+	/// </summary>
+	public virtual void Update()
+	{
+		float timeVal = Time.deltaTime * animationSpeed;
+		currentTime += timeVal;
+
+		if (currentTime > Length)
+		{
+			currentTime = Length; // Lerps and Slerps rely on values between normalised 0 and 1.
+		}
+
+		UpdateAbility();
+
+		if (currentTime >= Length)
+		{
+			owner.StopAbility();
+		}
+	}
+
     /// <summary>
-    /// Stops the ability after it has reached the total duration
+    /// Must be overridden else update action won't do anything.
     /// 
     /// </summary>
-    public virtual void UpdateAbility()
+	public virtual void UpdateAbility()
     {
-        float timeVal = Time.deltaTime * animationSpeed;
-        currentTime += timeVal;
-
-        if (currentTime >= Length)
-        {
-            owner.StopAbility();
-        }
+		// Override
     }
 
     /// <summary>

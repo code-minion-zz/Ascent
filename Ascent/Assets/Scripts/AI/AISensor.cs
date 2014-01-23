@@ -100,12 +100,15 @@ public abstract class AISensor
 			}
 		}
 
-		sensedCharacters.Add(GetClosestCharacter(transform, ref foundChars));
+        if (foundChars.Count > 0)
+        {
+            sensedCharacters.Add(GetClosestCharacter(transform, ref foundChars));
 
-		if (sensedCharacters.Count > 0)
-		{
-			return true;
-		}
+            if (sensedCharacters.Count > 0)
+            {
+                return true;
+            }
+        }
 
 		return false;
 	}

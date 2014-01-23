@@ -30,7 +30,7 @@ public class RoomFloorNav : MonoBehaviour
 
 		for (; ; )
 		{
-			Vector2 rand = Random.insideUnitCircle * Random.Range(radius, radius * 2.0f);
+            Vector2 rand = Random.insideUnitCircle * Random.Range(radius * 0.2f, radius * 1.5f);
 			randomPos.x = start.x + (rand.x);
 			randomPos.z = start.z + (rand.y);
 
@@ -56,7 +56,7 @@ public class RoomFloorNav : MonoBehaviour
 
 		for (; ; )
 		{
-			Vector2 rand = Random.insideUnitCircle * Random.Range(radius, radius * 2.0f);
+            Vector2 rand = Random.insideUnitCircle * Random.Range(radius * 0.2f, radius * 1.5f);
 
 			if(Random.Range(0, 201) < 100)
 			{

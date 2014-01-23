@@ -12,7 +12,7 @@ public class EnemyTackle : Action
     {
         base.Initialise(owner);
 
-		animationLength = 1.0f;
+		animationLength = 0.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
 		coolDownTime = 2.0f;
@@ -29,7 +29,7 @@ public class EnemyTackle : Action
 		owner.Motor.EnableMovementForce(false);
         owner.SetColor(Color.red);
 
-		prevSpeed = owner.Motor.speed;
+		prevSpeed = owner.Motor.MovementSpeed;
 		executedDamage = false;
 	}
 
@@ -46,7 +46,7 @@ public class EnemyTackle : Action
 		{
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
-			owner.Motor.speed = prevSpeed;
+			owner.Motor.MovementSpeed = prevSpeed;
 		}
 		else if (currentTime >= animationLength * 0.40f && !executedDamage)
 		{
@@ -73,14 +73,15 @@ public class EnemyTackle : Action
 		else if (currentTime >= animationLength * 0.25f)
 		{
 			owner.Motor.EnableMovementForce(true);
-			owner.Motor.speed = 100.0f;
+			owner.Motor.MovementSpeed = 10.0f;
 		}
     }
 
     public override void EndAbility()
     {
         base.EndAbility();
-		owner.SetColor(owner.OrigionalColor);
+        owner.Motor.EnableMovementForce(true);
+        owner.ResetColor();
     }
 
 #if UNITY_EDITOR

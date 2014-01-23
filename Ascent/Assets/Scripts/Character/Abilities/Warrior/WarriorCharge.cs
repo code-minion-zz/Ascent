@@ -12,13 +12,14 @@ using System.Collections.Generic;
 /// </summary>
 public class WarriorCharge : Action 
 {	
-    private float distanceTraveled;
 	private float distanceMax = 7.5f;
 	
-	private Animator ownerAnimator;
-    private HeroAnimator heroController;
+	private CharacterAnimator ownerAnimator;
+    //private HeroAnimatorController heroController;
 	
     private float travelTime;
+	private float originalAnimationTime;
+
     private Vector3 startPos;
     private Vector3 targetPos;
 
@@ -29,17 +30,16 @@ public class WarriorCharge : Action
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
-		ownerAnimator = owner.Animator.Animator;
-        heroController = owner.Animator as HeroAnimator;
-
-		owner.ChargeBall.onCollisionEnterWall += OnHitWall;
-		owner.ChargeBall.onCollisionEnterEnemy += OnHitEnemy;
+		ownerAnimator = owner.Animator;
+        //heroController = owner.Animator as HeroAnimatorController;
 
         coolDownTime = 5.0f;
         animationTrigger = "SwingAttack";
         specialCost = 5;
 
-        animationLength = 0.35f;
+		animationLength = 0.35f;
+		originalAnimationTime = animationLength;
+
         travelTime = animationLength;
 
         charMotor = owner.GetComponentInChildren<CharacterMotor>();
@@ -50,7 +50,6 @@ public class WarriorCharge : Action
     public override void StartAbility()
 	{
         base.StartAbility();
-		Reset ();
 
         startPos = owner.transform.position;
 
@@ -59,35 +58,29 @@ public class WarriorCharge : Action
         {
             targetPos = hitInfo.point - (owner.transform.forward );
 
-            travelTime = (hitInfo.distance / distanceMax) * animationLength;
+			travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
+			animationLength = travelTime;
         }
         else
         {
             targetPos = startPos + owner.transform.forward * (distanceMax);
-            travelTime = animationLength;
+
+			travelTime = originalAnimationTime;
+			animationLength = travelTime;
         }
 
         owner.ApplyInvulnerabilityEffect(animationLength);
-        //charMotor.canMove = false;
 	}
 
     public override void UpdateAbility()
 	{
         base.UpdateAbility();
 
-        
-        //motor.SpecialMove((targetPos - owner.transform.position) * 2.0f);
-
-        if (currentTime > travelTime)
-        {
-            currentTime = travelTime;
-        }
 
         Vector3 motion = Vector3.Lerp(startPos, targetPos, currentTime / travelTime);
-
         owner.transform.position = motion;
 
-        if (currentTime == travelTime)
+        if (currentTime == animationLength)
         {
            List<Character> enemies = new List<Character>();
 
@@ -108,92 +101,20 @@ public class WarriorCharge : Action
 
            owner.StopAbility();
         }
-        //motor.SpecialMove(motion);
-       
-
-
-       // Vector3 moveVec = owner.transform.forward * Time.deltaTime * actionSpeed;
-		//timeElapsed += Time.deltaTime;
-		
-        //if (endCharge)
-        //{			
-        //    owner.transform.position += moveVec * Time.deltaTime;
-        //    if (timeElapsed > 1-timeElapsed)
-        //    {
-        //        owner.StopAbility();
-        //        //Debug.Log ("Ended Charge");
-        //    }
-        //}
-        //else
-        //{			
-        //    //owner.transform.position += moveVec;
-
-        //    //heroController.Controller.Move(moveVec);
-
-        //    distanceTraveled += moveVec.magnitude;
-			
-        //    if (timeElapsed > halfWayPoint)
-        //    {
-        //        ownerAnimator.speed = 0.1f * timeElapsed; // freeze animation when swinging sword down
-        //    }
-	
-        //    if (distanceTraveled >= distanceMax)
-        //    {
-        //        EndCharge();
-        //    }
-        //}
 	}
 
     public override void EndAbility()
-	{	
-        owner.ChargeBall.gameObject.SetActive(false);
-		ownerAnimator.SetBool("SwingAttack",false);
-
-        //charMotor.canMove = true;
-	}
-	
-	private void Reset()
-	{	
-		//timeElapsed = 0.0f;
-    	distanceTraveled = 0f;
-	}
-	
-	/// <summary>
-	/// Handles event where the Charge collider touches a wall or heavy object.
-	/// Ends the Charge.
-	/// </summary>
-	/// <param name='other'>
-	/// Other.
-	/// </param>
-	private void OnHitWall(Character other)
 	{
-		EndCharge();
-	}
-	
-	/// <summary>
-	/// Handles the Event where the Charge collider touches an enemy.
-	/// Applies damage and knockback equal to distance traveled.
-	/// </summary>
-	private void OnHitEnemy(Character other)
-	{
-		EndCharge();
-		other.ApplyDamage((int)(10 * distanceTraveled),Character.EDamageType.Physical, owner);
-		other.ApplyKnockback(Vector3.Normalize(other.transform.position-owner.ChargeBall.transform.position),5f + distanceTraveled * 15f);
-	}
-	
-	/// <summary>
-	/// Disables collider, starts playing the swing-down animation that occurs at the end of Charge
-	/// </summary>
-	private void EndCharge()
-	{
-		ownerAnimator.speed = 0.8f;
-		owner.ChargeBall.gameObject.SetActive(false);
+        base.EndAbility();
 	}
 
 #if UNITY_EDITOR
     public override void DebugDraw()
     {
         circle.DebugDraw();
+
+        Debug.DrawLine(startPos, targetPos, Color.red);
+        Debug.DrawLine(startPos, owner.transform.position, Color.green);
     }
 #endif
 }

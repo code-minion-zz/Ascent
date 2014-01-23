@@ -134,12 +134,12 @@ public class FloorCamera : MonoBehaviour
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)
 	{
-		return new Vector3(
-		Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
+        return new Vector3(
+        Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
 
-		Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
+        Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
 
-		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+        Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
 	void UpdateCameraRotation()
@@ -219,6 +219,9 @@ public class FloorCamera : MonoBehaviour
 	{
 		startPos = transform.position;
 		targetPos = ClampPositionIntoBounds(CalculateAveragePlayerPosition());
+
+        Debug.Log(startPos);
+        Debug.Log(targetPos);
 
 		waitTranisition = 0.0f;
 		time = 0.0f;

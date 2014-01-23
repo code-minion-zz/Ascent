@@ -20,7 +20,8 @@ public class Tower : MonoBehaviour
     {
 		currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.Initialise();
+        FloorGeneration floorGen = gameObject.GetComponent<FloorGeneration>();
+        currentFloor.Initialise(floorGen);
     }
 
 }

@@ -18,12 +18,19 @@ public class AICondition_Timer : AICondition
 
     public AICondition_Timer(float time, float randMin, float randMax)
     {
-        timeMax = time;
-
         this.randMin = randMin;
         this.randMax = randMax;
 
         Reset();
+    }
+
+    public AICondition_Timer(float time, float randMin, float randMax, bool finish)
+        : this(time, randMin, randMax)
+    {
+        if (finish)
+        {
+            timeElapsed = timeMax;
+        }
     }
 
     public override void Reset()

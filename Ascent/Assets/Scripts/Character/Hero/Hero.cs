@@ -26,6 +26,7 @@ public abstract class Hero : Character
 //		}
 	}
 
+	protected HeroAnimator heroAnimator;
 	protected HeroClassStatModifier classStatMod;
     protected HeroController heroController;
 	protected Backpack backpack;
@@ -80,7 +81,7 @@ public abstract class Hero : Character
         floorStatistics = new FloorStats();
     }
 
-    public override void Respawn(Vector3 position)
+    protected override void Respawn(Vector3 position)
     {
         // Reset the health
         derivedStats.ResetHealth();
@@ -135,11 +136,8 @@ public abstract class Hero : Character
 
         // Record damage taken.
         floorStatistics.DamageTaken += damage;
-
-        if (Animator.Dying == false)
-        {
-            Animator.TakeHit = true;
-        }
+        // Hero takes hit.
+        animator.TakeHit = true;
     }
 
     protected override void OnDamageDealt(int damage)
