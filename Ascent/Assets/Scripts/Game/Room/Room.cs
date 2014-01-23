@@ -113,7 +113,8 @@ public class Room : MonoBehaviour
 		navMesh = NavMesh;
 
         // Find the doors for this room
-        doors = GetNodeByLayer("Environment").GetComponentInChildren<Doors>();
+        doors = GetComponentInChildren<Doors>();
+        //doors = GetNodeByLayer("Environment").GetComponentInChildren<Doors>();
 
         if (doors == null)
         {

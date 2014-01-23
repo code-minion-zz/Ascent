@@ -81,6 +81,7 @@ public class FloorGeneration : MonoBehaviour
         // We have to add the first room, for now we add at pos zero
         Room startRoom = GameObject.Find("StartRoom").GetComponent<Room>();
         startRoom.Initialise();
+
         RoomInfo firstRoom = new RoomInfo(3, startRoom);
         firstRoom.position = startRoom.transform.position;
         rooms.Add(firstRoom);

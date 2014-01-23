@@ -135,6 +135,10 @@ public class Floor : MonoBehaviour
         // Finds all the rooms
 		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
         currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
+        //foreach(Room r in allRooms)
+        //{
+        //    r.Initialise();
+        //}
 
 		// Initialise all the enemies
 		enemies = new List<Enemy>();
@@ -160,6 +164,12 @@ public class Floor : MonoBehaviour
 
         // Create the floor record keeper.
         floorInstanceReward = new FloorInstanceReward(this);
+
+        //foreach (Room r in allRooms)
+        //{
+        //    r.gameObject.SetActive(false);
+        //}
+        //currentRoom.gameObject.SetActive(true);
 	}
 
 	public void AddEnemy(Enemy _enemy)

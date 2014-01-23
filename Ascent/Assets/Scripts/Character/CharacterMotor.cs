@@ -17,7 +17,7 @@ public class CharacterMotor : MonoBehaviour
 		set { movementSpeed = value; }
 	}
 
-	protected float originalSpeed = 6.0f;
+    protected float originalSpeed = 6.0f;
 	public float OriginalSpeed
 	{
 		get { return originalSpeed; }
@@ -44,6 +44,10 @@ public class CharacterMotor : MonoBehaviour
     {
         get { return targetVelocity; }
     }
+
+    public float currentSpeed = 5.0f;
+    public float acceleration = 10.0f;
+    public float speedMax = 6.0f;
 
 	// Grid Movement
 	public bool moving;
@@ -108,6 +112,25 @@ public class CharacterMotor : MonoBehaviour
 				// Add to forces
 				targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
 				++forces;
+
+                float speed = Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z) ? Mathf.Abs(movementForce.x) : Mathf.Abs(movementForce.z);
+                float maxAccel = speed;
+                float minSpeed = 5.5f;
+
+                if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
+                {
+                    currentSpeed += (Mathf.Abs(movementForce.x) * movementSpeed) * 5.0f * Time.deltaTime;
+                }
+                else
+                {
+                    currentSpeed += (Mathf.Abs(movementForce.z) * movementSpeed) * 5.0f * Time.deltaTime;
+                }
+              
+                currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxAccel * movementSpeed);
+            }
+            else if (movementForce == Vector3.zero)
+            {
+                currentSpeed = 0.0f;
             }
 
 
@@ -118,7 +141,7 @@ public class CharacterMotor : MonoBehaviour
                 targetVelocity = new Vector3(targetVelocity.x, 0.0f, targetVelocity.z);
             }
 
-            targetVelocity = (targetVelocity.normalized * movementSpeed) + knockbackVel;
+            targetVelocity = (targetVelocity * currentSpeed) + knockbackVel;
         }
 
 		// Apply a force that attempts to reach our target velocity
@@ -129,6 +152,8 @@ public class CharacterMotor : MonoBehaviour
 		velocityChange.y = 0;
       
 		rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+
+        //Debug.Log(velocityChange);
 
 		//rigidbody.AddForce(new Vector3(0, -gravity * rigidbody.mass, 0));
 	}
@@ -199,5 +224,16 @@ public class CharacterMotor : MonoBehaviour
     public void StopSpecialMovement()
     {
         specialMovementForce = Vector3.zero;
+    }
+
+    void OnAnimatorMove()
+    {
+        Animator animator = GetComponent<Animator>();
+        if (animator)
+        {
+            Vector3 newPosition = transform.position;
+            //newPosition.z += animator.GetFloat("Runspeed") * Time.deltaTime;
+            //transform.position = newPosition;
+        }
     }
 }
