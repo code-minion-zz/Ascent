@@ -99,8 +99,6 @@ public class Door : MonoBehaviour
 			{
 				done = false;
 				startDoor = false;
-
-                Debug.Log("Players are out");
 			}
 		}
 
