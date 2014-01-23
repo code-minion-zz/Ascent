@@ -23,7 +23,7 @@ public struct RoomInfo
     }
 }
 
-public class FloorGeneration : MonoBehaviour 
+public class FloorGeneration 
 {
     public enum Directions
     {
@@ -81,6 +81,7 @@ public class FloorGeneration : MonoBehaviour
         // We have to add the first room, for now we add at pos zero
         Room startRoom = GameObject.Find("StartRoom").GetComponent<Room>();
         startRoom.Initialise();
+
         RoomInfo firstRoom = new RoomInfo(3, startRoom);
         firstRoom.position = startRoom.transform.position;
         rooms.Add(firstRoom);
@@ -132,26 +133,24 @@ public class FloorGeneration : MonoBehaviour
         room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
 
         // Create the floor.
-        GameObject floorGo = Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
+        GameObject floorGo = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
         floorGo.transform.localScale = new Vector3(width, height, 1.0f);
         floorGo.transform.parent = room.GetNodeByLayer("Environment").transform;
         floorGo.name = "Ground";
 
         room.Initialise();
-        room.gameObject.SetActive(false);
+        //room.gameObject.SetActive(false);
         return roomGo;
     }
 
     private Door CreateDoor(GameObject doors, float roomWidth, float roomHeight, int direction)
     {
-        GameObject doorGo = Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
+		GameObject doorGo = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
         doorGo.transform.parent = doors.transform;
 
         // Attach the doors to their rightful component.
         Doors doorsScript = doors.GetComponent<Doors>();
         Door returnDoor = null;
-
-        Debug.Log(doorsScript);
 
         if (doorsScript.doors[direction] == null)
         {
@@ -350,10 +349,6 @@ public class FloorGeneration : MonoBehaviour
                     // This door came from the south direction, we need to make a door here if it does not exist for the coming from
                     // room
                     from.directionsFilled[2] = true;
-                    Debug.Log(from);
-                    Debug.Log(from.room);
-                    Debug.Log(from.room.GetNodeByLayer("Environment"));
-                    Debug.Log(from.room.GetNodeByLayer("Environment").transform.FindChild("Doors"));
                     Transform doors = from.room.GetNodeByLayer("Environment").transform.FindChild("Doors");
                     Door entryDoor = CreateDoor(doors.gameObject, width, height, 2);
                     entryDoor.direction = Floor.TransitionDirection.South;

@@ -206,7 +206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27d34129f3f97a6419f59807b7dc7425, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b67de6a393238c4ea1c0fda3fa3b617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11400004
@@ -260,9 +260,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100002}
-  speed: 3
   maxVelocityChange: 1.5
   canMove: 1
+  currentSpeed: 5
+  acceleration: 10
+  speedMax: 6
   moving: 0
 --- !u!1001 &100100000
 Prefab:

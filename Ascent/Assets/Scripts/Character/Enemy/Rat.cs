@@ -9,7 +9,7 @@ using System;
 public class Rat : Enemy 
 {
    public override void Initialise()
-	{
+    {
 		// Populate with stats
 		baseStatistics = new BaseStats();
 		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);

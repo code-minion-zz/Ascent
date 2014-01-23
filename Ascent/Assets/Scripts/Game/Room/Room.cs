@@ -140,17 +140,6 @@ public class Room : MonoBehaviour
 		}
 	}
 
-    //void Start()
-    //{
-    //    // Setup the references to the root node of all
-    //    //FixTreeStructure();
-
-    //    //Transform monsters = GetNodeByLayer("Monster").transform;
-    //    //Transform items = GetNodeByLayer("Items").transform;
-    //    //Transform floorTiles = GetNodeByLayer("Floor").transform;
-    //    //Transform wallObjects = GetNodeByLayer("Wall").transform;
-    //}
-
     public void OnEnable()
     {
 		Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
@@ -244,7 +233,6 @@ public class Room : MonoBehaviour
 		Door[] roomDoors = doors.doors;
 		for (int i = 0; i < roomDoors.Length; ++i)
 		{
-            Debug.Log(roomDoors.Length);
 			if (roomDoors[i] != null)
 			{
 				roomDoors[i].Process();

@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCharacterType: 00000000
   targetFrameRate: 60
-  state: 2
+  state: 4
 --- !u!4 &790235508
 Transform:
   m_ObjectHideFlags: 0
@@ -1796,6 +1796,10 @@ Prefab:
     - target: {fileID: 400000, guid: d56a8611e95abf24a9ded4cea24220c5, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: d56a8611e95abf24a9ded4cea24220c5, type: 2}
+      propertyPath: state
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d56a8611e95abf24a9ded4cea24220c5, type: 2}
@@ -2731,6 +2735,7 @@ MonoBehaviour:
   doors:
   - {fileID: 1614482776}
   - {fileID: 458599557}
+  - {fileID: 441234746}
   - {fileID: 441234746}
 --- !u!4 &1276176119
 Transform:
