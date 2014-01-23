@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+#pragma warning disable 0162 // hides unreachable code warning
+
 public class AIMindAgent 
 {
     public enum EBehaviour

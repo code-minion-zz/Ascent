@@ -16,7 +16,7 @@ public class WarriorHeavyStrike : Action
         animationLength = 1.167f / animationSpeed;
         coolDownTime = 5.0f;
         currentTime = 0.0f;
-        animationTrigger = "SwingAttack";
+        animationTrigger = "HeavyStrike";
         specialCost = 0;
 
 		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);

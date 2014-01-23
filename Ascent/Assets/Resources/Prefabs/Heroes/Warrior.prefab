@@ -1242,7 +1242,7 @@ Transform:
   m_GameObject: {fileID: 100160}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: .100000001, z: 0}
-  m_LocalScale: {x: 7.5, y: 7.5, z: 7.5}
+  m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children:
   - {fileID: 400158}
   - {fileID: 400156}
@@ -1288,7 +1288,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: c5aa4fe55b0d00541819092b43347f5d, type: 3}
   m_Controller: {fileID: 9100000, guid: 7129df1181582a8458ae644f397cc6aa, type: 2}
   m_CullingMode: 1
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 1
 --- !u!114 &11400000
@@ -1340,6 +1340,9 @@ MonoBehaviour:
   actor: {fileID: 100010}
   maxVelocityChange: 5
   canMove: 1
+  currentSpeed: 5
+  acceleration: 10
+  speedMax: 6
   moving: 0
 --- !u!114 &11400018
 MonoBehaviour:

@@ -28,7 +28,8 @@ public class Floor : MonoBehaviour
 	private FadePlane fadePlane;
     private Room[] allRooms;
     private FloorInstanceReward floorInstanceReward;
-    private FloorGeneration floorGenerator;
+	private bool randomFloor;
+    //private FloorGeneration floorGenerator;
 
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
@@ -69,13 +70,23 @@ public class Floor : MonoBehaviour
         get { return players; }
     }
 
-    public void Initialise(FloorGeneration floorGen)
+	public void InitialiseFloor()
     {
-        floorGenerator = floorGen;
         InitialiseCamera();
-        floorGenerator.GenerateFloor();
         Initialise();
     }
+
+	public void InitialiseRandomFloor()
+	{
+		InitialiseCamera();
+
+		FloorGeneration floorGenerator = new FloorGeneration();
+		floorGenerator.GenerateFloor();
+
+		randomFloor = true;
+
+		Initialise();
+	}
 
     // Initialize the camera first.
     private void InitialiseCamera()
@@ -128,19 +139,35 @@ public class Floor : MonoBehaviour
 			players[i].Hero.SetActive(true);
 
             players[i].Hero.GetComponent<Hero>().onDeath += OnPlayerDeath;
+
             // Reset individual hero floor records.
             players[i].Hero.GetComponent<Hero>().ResetFloorStatistics();
 		}
 
         // Finds all the rooms
 		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
-        currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
-        //foreach(Room r in allRooms)
-        //{
-        //    r.Initialise();
-        //}
+		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 
-		// Initialise all the enemies
+		if (!randomFloor)
+		{
+			currentRoom.Initialise();
+		}
+
+		// The floor generator will initilise the rooms. 
+		// If the generator was not used then we must do it here.
+		if (!randomFloor)
+		{
+			foreach (Room r in allRooms)
+			{
+				if(currentRoom == r)
+				{
+					continue;
+				}
+				r.Initialise();
+			}
+		}
+
+		// Initialise all the enemies (Must occur after rooms are initialised)
 		enemies = new List<Enemy>();
 		GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
 		for (int i = 0; i < monsters.Length; ++i)
@@ -156,20 +183,22 @@ public class Floor : MonoBehaviour
 			}
 		}
 
+		// Init the fade plane
 		GameObject go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
-        currentRoom.gameObject.SetActive(true);
-
         // Create the floor record keeper.
         floorInstanceReward = new FloorInstanceReward(this);
 
-        //foreach (Room r in allRooms)
-        //{
-        //    r.gameObject.SetActive(false);
-        //}
-        //currentRoom.gameObject.SetActive(true);
+		// Disable all the rooms.
+		foreach (Room r in allRooms)
+		{
+			r.gameObject.SetActive(false);
+		}
+
+		// Activate the start room
+		currentRoom.gameObject.SetActive(true);
 	}
 
 	public void AddEnemy(Enemy _enemy)
@@ -239,12 +268,12 @@ public class Floor : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		//DEBUG
 		if (Input.GetKeyUp(KeyCode.F1))
 		{
 			EndFloor();
 		}
 
-		//DEBUG
 
         if (currentRoom.Doors == null)
         {
