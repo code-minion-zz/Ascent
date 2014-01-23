@@ -23,7 +23,7 @@ public class WarriorCharge : Action
     private Vector3 startPos;
     private Vector3 targetPos;
 
-    private CharacterMotor charMotor;
+   // private CharacterMotor charMotor;
 
     private Circle circle;
 	private Arc arc;
@@ -43,7 +43,7 @@ public class WarriorCharge : Action
 
         travelTime = animationLength;
 
-        charMotor = owner.GetComponentInChildren<CharacterMotor>();
+        //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
         circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
 		arc = new Arc(owner.transform, 10.0f, 25.0f, Vector3.back * 1.5f);
