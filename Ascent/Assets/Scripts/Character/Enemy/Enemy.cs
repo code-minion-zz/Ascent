@@ -20,7 +20,12 @@ public abstract class Enemy : Character
 
     #region Fields
 
-    public AIAgent agent;
+    protected AIAgent agent;
+    public AIAgent AIAgent
+    {
+        get { return agent; }
+        protected set { agent = value; }
+    }
 
     private Player targetPlayer;
     private Vector3 originalScale;
@@ -55,6 +60,18 @@ public abstract class Enemy : Character
 	public override void Initialise()
 	{
 		base.Initialise();
+
+        Transform AI = transform.FindChild("AI");
+        if(AI == null)
+        {
+            Debug.LogError("Could not find AI. Attach a new AI GameObject as a child of this Enemy. Attach AIAgent component to AI.", this);
+        }
+        
+        agent = AI.GetComponent<AIAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("Could not find AIAgent component. Attach one to AI.", this);
+        }
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 	}
@@ -126,10 +143,10 @@ public abstract class Enemy : Character
             {
                 if (activeAbility == null)
                 {
-                    agent.MindAgent.Process();
+                    AIAgent.MindAgent.Process();
                 }
 
-                agent.SteeringAgent.Process();
+                AIAgent.SteeringAgent.Process();
             }
 
             if (hpBar != null)
@@ -198,6 +215,7 @@ public abstract class Enemy : Character
         {
             // TODO: This might need to move.
             Hero hero = lastDamagedBy as Hero;
+            Debug.Log(hero);
             hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
         }
 

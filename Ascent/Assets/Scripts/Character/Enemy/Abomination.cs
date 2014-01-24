@@ -16,6 +16,8 @@ public class Abomination : Enemy
 
     public override void Initialise()
     {
+        base.Initialise();
+
         // Populate with stats
         baseStatistics = new BaseStats();
         baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
@@ -43,8 +45,6 @@ public class Abomination : Enemy
 
         originalColour = Color.white;
 
-        base.Initialise();
-
         InitialiseAI();
 
         canBeDebuffed = false;
@@ -56,53 +56,55 @@ public class Abomination : Enemy
     public void InitialiseAI()
     {
         motor.MovementSpeed = 1.5f;
-        agent.Initialise(transform);
-        agent.SteeringAgent.RotationSpeed = 1.5f;
+        AIAgent.Initialise(transform);
+        AIAgent.SteeringAgent.RotationSpeed = 2.5f;
 
         AIBehaviour behaviour = null;
 
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             AITrigger trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.Priority = AITrigger.EConditionalExit.Continue;
             trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
             trigger.OnTriggered += OnInitialCharge;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionEnd(abilities[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 50.0f, Vector3.zero)));
+            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
             trigger.OnTriggered += OnInitialChargeEnd;
         }
 
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
             ChangeTargetTrigger = behaviour.AddTrigger();
             ChangeTargetTrigger.Priority = AITrigger.EConditionalExit.Stop;
             ChangeTargetTrigger.AddCondition(new AICondition_Timer(6.0f, 0.0f, 5.0f, true));
+            ChangeTargetTrigger.AddCondition(new AICondition_ActionEnd(abilities[chargeActionID]), AITrigger.EConditional.Or);
+            //ChangeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
             ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
             ChangeTargetTrigger.OnTriggered += OnCanChangeTarget;
 
             AITrigger trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
+            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
             trigger.OnTriggered += OnTargetInSight;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
-            trigger.AddCondition(new AICondition_SurroundedSensor(transform, agent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
+            trigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
             trigger.OnTriggered += OnSurrounded;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[strikeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
+            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
             trigger.OnTriggered += OnCanUseStrike;
         }
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
     }
 
     public void OnInitialCharge()
@@ -112,13 +114,14 @@ public class Abomination : Enemy
 
     public void OnInitialChargeEnd()
     {
-        agent.TargetCharacter = agent.SensedCharacters[0];
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
     }
 
     public void OnCanChangeTarget()
     {
-        agent.TargetCharacter = lastDamagedBy;
+        AIAgent.TargetCharacter = lastDamagedBy;
+        //agent.TargetCharacter = agent.SensedCharacters[0];
     }
 
     public void OnSurrounded()
@@ -138,10 +141,10 @@ public class Abomination : Enemy
 
     public override void OnDisable()
     {
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
-        agent.SteeringAgent.RemoveTarget();
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
     }
 }

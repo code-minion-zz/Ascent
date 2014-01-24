@@ -12,49 +12,51 @@ using System.Collections.Generic;
 /// </summary>
 public class AbominationCharge : Action
 {
-    private float distanceMax = 7.5f;
+    private float distanceMax = 20.0f;
 
     private float travelTime;
     private Vector3 startPos;
     private Vector3 targetPos;
 
-    private CharacterMotor charMotor;
+    //private CharacterMotor charMotor;
 
     private Circle circle;
+
+    private AISteeringAgent steering;
 
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
 
-        coolDownTime = 5.0f;
+        coolDownTime = 1.0f;
         animationTrigger = "Charge";
         specialCost = 0;
 
         animationLength = 1.5f;
         travelTime = animationLength;
 
-        charMotor = owner.GetComponentInChildren<CharacterMotor>();
+        //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
         circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
+        
+        Enemy enemy = owner as Enemy;
+        steering = enemy.AIAgent.SteeringAgent;
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
 
+        steering.CanRotate = false;
+
         startPos = owner.transform.position;
 
         RaycastHit hitInfo;
         if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
         {
-            targetPos = hitInfo.point - (owner.transform.forward);
+            targetPos = hitInfo.point - (owner.transform.forward * 2.0f);
 
             travelTime = (hitInfo.distance / distanceMax) * animationLength;
-        }
-        else
-        {
-            targetPos = startPos + owner.transform.forward * (distanceMax);
-            travelTime = animationLength;
         }
 
         owner.ApplyInvulnerabilityEffect(animationLength);
@@ -77,9 +79,9 @@ public class AbominationCharge : Action
         {
             List<Character> enemies = new List<Character>();
 
-            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Hero, ref enemies))
             {
-                foreach (Enemy e in enemies)
+                foreach (Hero e in enemies)
                 {
                     int damage = 2;
                     // Apply damage, knockback and stun to the enemy.
@@ -98,6 +100,8 @@ public class AbominationCharge : Action
 
     public override void EndAbility()
     {
+        steering.CanRotate = true;
+
         base.EndAbility();
     }
 

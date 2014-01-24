@@ -325,7 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38675e1d1925f24f826b88973433b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 11400004}
   health: 80
 --- !u!114 &11400004
 MonoBehaviour:
@@ -350,7 +349,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100000}
-  speed: 3
+  currentSpeed: 5
+  acceleration: 10
+  minSpeed: 5.5
   maxVelocityChange: 1.5
   canMove: 1
   moving: 0
@@ -375,7 +376,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27d34129f3f97a6419f59807b7dc7425, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b67de6a393238c4ea1c0fda3fa3b617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &100100000

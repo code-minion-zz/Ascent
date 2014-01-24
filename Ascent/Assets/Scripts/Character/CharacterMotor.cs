@@ -17,6 +17,10 @@ public class CharacterMotor : MonoBehaviour
 		set { movementSpeed = value; }
 	}
 
+    public float currentSpeed = 0.0f;
+    public float acceleration = 1.0f;
+    public float minSpeed = 5.5f;
+
     protected float originalSpeed = 6.0f;
 	public float OriginalSpeed
 	{
@@ -45,9 +49,7 @@ public class CharacterMotor : MonoBehaviour
         get { return targetVelocity; }
     }
 
-    public float currentSpeed = 5.0f;
-    public float acceleration = 10.0f;
-    public float speedMax = 6.0f;
+
 
 	// Grid Movement
 	public bool moving;
@@ -115,24 +117,14 @@ public class CharacterMotor : MonoBehaviour
 
                 float speed = Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z) ? Mathf.Abs(movementForce.x) : Mathf.Abs(movementForce.z);
                 float maxAccel = speed;
-                float minSpeed = 5.5f;
 
-                if (Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z))
-                {
-                    currentSpeed += (Mathf.Abs(movementForce.x) * movementSpeed) * 5.0f * Time.deltaTime;
-                }
-                else
-                {
-                    currentSpeed += (Mathf.Abs(movementForce.z) * movementSpeed) * 5.0f * Time.deltaTime;
-                }
-              
+                currentSpeed += (speed * movementSpeed) * acceleration * Time.deltaTime;
                 currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxAccel * movementSpeed);
             }
             else if (movementForce == Vector3.zero)
             {
                 currentSpeed = 0.0f;
             }
-
 
             if (forces > 0)
             {
@@ -152,10 +144,6 @@ public class CharacterMotor : MonoBehaviour
 		velocityChange.y = 0;
       
 		rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
-
-        //Debug.Log(velocityChange);
-
-		//rigidbody.AddForce(new Vector3(0, -gravity * rigidbody.mass, 0));
 	}
 
 	public virtual void Move(Vector3 motion)
@@ -214,6 +202,7 @@ public class CharacterMotor : MonoBehaviour
     public void StopMotion()
     {
         movementForce = Vector3.zero;
+        currentSpeed = 0.0f;
     }
 
 	public void EnableMovementForce(bool b)

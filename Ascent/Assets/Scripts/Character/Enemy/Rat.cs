@@ -10,6 +10,8 @@ public class Rat : Enemy
 {
    public override void Initialise()
     {
+        base.Initialise();
+
 		// Populate with stats
 		baseStatistics = new BaseStats();
 		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
@@ -26,20 +28,23 @@ public class Rat : Enemy
 
 		originalColour = Color.white;
 
-		base.Initialise();
-
 		InitialiseAI();
 	}
 
    public void InitialiseAI()
    {
-	   agent.Initialise(transform);
+	   AIAgent.Initialise(transform);
+
+       AIAgent.SteeringAgent.RotationSpeed = 15.0f;
+       motor.MovementSpeed = 3.0f;
+       motor.minSpeed = 0.5f;
+       motor.acceleration = 1.0f;
 
 	   AIBehaviour behaviour = null;
 	   AITrigger trigger = null;
 
 	   // Defensive behaviour
-	   behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   {
            // OnAttacked, Triggers if attacked
            trigger = behaviour.AddTrigger();
@@ -51,12 +56,12 @@ public class Rat : Enemy
 		   trigger = behaviour.AddTrigger();
 		   trigger.Priority = AITrigger.EConditionalExit.Stop;
 		   trigger.AddCondition(new AICondition_Timer(2.0f));
-		   trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+		   trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
 		   trigger.OnTriggered += OnWanderEnd;
 	   }
 
        // Aggressive
-       behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+       behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
        {
            // OnAttacked, Triggers if attacked
            trigger = behaviour.AddTrigger();
@@ -68,7 +73,7 @@ public class Rat : Enemy
            trigger = behaviour.AddTrigger();
            trigger.Priority = AITrigger.EConditionalExit.Stop;
            trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
-           trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+           trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
            trigger.OnTriggered += OnCanUseTackle;
 
            trigger = behaviour.AddTrigger();
@@ -77,10 +82,8 @@ public class Rat : Enemy
            trigger.OnTriggered += OnAggressiveEnd;
        }
 
-	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
-       agent.SteeringAgent.RotationSpeed = 15.0f;
-       motor.MovementSpeed = 3.0f;
+	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
    }
 
    public override void Update()
@@ -93,20 +96,20 @@ public class Rat : Enemy
    public void OnWanderEnd()
    {
 	   // Choose a new target location
-	   agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+	   AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
 	   // Reset behaviour
-	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   
    }
 
    public void OnAggressiveEnd()
    {
-	   agent.SteeringAgent.RemoveTarget();
+	   AIAgent.SteeringAgent.RemoveTarget();
 	   motor.StopMotion();
 
-	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   OnWanderEnd();
 
 	   motor.MovementSpeed = 3.0f;
@@ -114,9 +117,9 @@ public class Rat : Enemy
 
    public void OnAttacked()
    {
-	   agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   agent.TargetCharacter = lastDamagedBy;
+	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   AIAgent.TargetCharacter = lastDamagedBy;
 	   motor.MovementSpeed = 5.0f;
    }
 
@@ -129,9 +132,9 @@ public class Rat : Enemy
    public override void OnDisable()
    {
        motor.StopMotion();
-       agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-       agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-       agent.SteeringAgent.RemoveTarget();
+       AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+       AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+       AIAgent.SteeringAgent.RemoveTarget();
        OnWanderEnd();
        motor.MovementSpeed = 3.0f;
    }

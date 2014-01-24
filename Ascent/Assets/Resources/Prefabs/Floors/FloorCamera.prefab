@@ -13,6 +13,7 @@ GameObject:
   - 124: {fileID: 12400000}
   - 81: {fileID: 8100000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: FloorCamera
   m_TagString: MainCamera
@@ -148,8 +149,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf24b0e1d86e554ea54b2a7ed2364e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transitionTime: 1
   minCamera: {x: -2, y: 24, z: -2}
   maxCamera: {x: 2, y: 24, z: 2}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ab2b84d9227424fbf469bf91091082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shaking: 0
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1
