@@ -29,10 +29,6 @@ public class HeroAnimator : CharacterAnimator
 	// Update is called once per frame
 	public override void Update() 
     {
-        //takeHit = animator.GetBool("TakeHit");
-        dying = animator.GetBool("Dying");
-        bool whirlWind = animator.GetBool("Whirlwind");
-
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
         // Check if we are in the movement or idle state.
 

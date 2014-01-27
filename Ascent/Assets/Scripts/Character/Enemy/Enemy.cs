@@ -20,7 +20,12 @@ public abstract class Enemy : Character
 
     #region Fields
 
-    public AIAgent agent;
+    protected AIAgent agent;
+    public AIAgent AIAgent
+    {
+        get { return agent; }
+        protected set { agent = value; }
+    }
 
     private Player targetPlayer;
     private Vector3 originalScale;
@@ -56,6 +61,18 @@ public abstract class Enemy : Character
 	{
 		base.Initialise();
 
+        Transform AI = transform.FindChild("AI");
+        if(AI == null)
+        {
+            Debug.LogError("Could not find AI. Attach a new AI GameObject as a child of this Enemy. Attach AIAgent component to AI.", this);
+        }
+        
+        agent = AI.GetComponent<AIAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("Could not find AIAgent component. Attach one to AI.", this);
+        }
+
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 	}
 
@@ -90,11 +107,12 @@ public abstract class Enemy : Character
 
             // When the rat dies we want to make him kinematic and disabled the collider
             // this is so we can walk over the dead body.
-            if (this.transform.rigidbody.isKinematic == false)
-            {
-                this.transform.rigidbody.isKinematic = true;
-                this.transform.collider.enabled = false;
-            }
+            //if (this.transform.rigidbody.isKinematic == false)
+            //{
+            //    this.collider.enabled = false;
+            //    this.transform.rigidbody.isKinematic = true;
+            //    this.transform.collider.enabled = false;
+            //}
 
             // Death sequence end
             if (deathSequenceTime >= deathSequenceEnd)
@@ -102,34 +120,34 @@ public abstract class Enemy : Character
                 // When the death sequence has finished we want to make this object not active
                 // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
                 deathSequenceTime = 0.0f;
-
                 this.gameObject.SetActive(false);
-                DestroyObject(this.gameObject);
             }
-
-            // During death sequence we can do some thing in here
-            // For now we will rotate the rat on the z axis.
-            this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
-
-            // If the rotation is done early we can end the sequence.
-            if (this.transform.eulerAngles == deathRotation)
+            else
             {
-                deathSequenceTime = deathSequenceEnd;
+                // During death sequence we can do some thing in here
+                // For now we will rotate the rat on the z axis.
+                this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+
+                // If the rotation is done early we can end the sequence.
+                if (this.transform.eulerAngles == deathRotation)
+                {
+                    deathSequenceTime = deathSequenceEnd;
+                }
             }
         }
         else
         {
+            base.Update();
+
             if (!IsStunned)
             {
                 if (activeAbility == null)
                 {
-                    agent.MindAgent.Process();
+                    AIAgent.MindAgent.Process();
                 }
 
-                agent.SteeringAgent.Process();
+                AIAgent.SteeringAgent.Process();
             }
-
-            base.Update();
 
             if (hpBar != null)
             {
@@ -197,15 +215,25 @@ public abstract class Enemy : Character
         {
             // TODO: This might need to move.
             Hero hero = lastDamagedBy as Hero;
+            Debug.Log(hero);
             hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
         }
 
         base.ApplyDamage(unmitigatedDamage, type, owner);
     }
 
-	public override void OnDeath ()
+	protected override void OnDeath ()
 	{
 		base.OnDeath ();
+
+        // When the rat dies we want to make him kinematic and disabled the collider
+        // this is so we can walk over the dead body.
+        if (this.transform.rigidbody.isKinematic == false)
+        {
+            this.collider.enabled = false;
+            this.transform.rigidbody.isKinematic = true;
+            this.transform.collider.enabled = false;
+        }
 
 		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+#pragma warning disable 0162 // hides unreachable code warning
+
 public class AIMindAgent 
 {
     public enum EBehaviour
@@ -12,7 +14,7 @@ public class AIMindAgent
         Defensive,
     }
 
-	private const bool drawLabels = false;
+	private const bool drawLabels = true;
 
 	protected bool active;
 

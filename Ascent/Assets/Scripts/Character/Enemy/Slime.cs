@@ -40,12 +40,17 @@ public class Slime : Enemy
 
     public void InitialiseAI()
     {
-        agent.Initialise(transform);
+        AIAgent.Initialise(transform);
+
+        AIAgent.SteeringAgent.RotationSpeed = 50.0f;
+        motor.MovementSpeed = 2.0f;
+        motor.minSpeed = 0.3f;
+        motor.acceleration = 0.3f;
 
         AIBehaviour behaviour = null;
 
         // Defensive behaviour
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             // OnAttacked, Triggers if attacked
             OnAttackedTrigger = behaviour.AddTrigger();
@@ -62,19 +67,19 @@ public class Slime : Enemy
             OnWanderEndTrigger = behaviour.AddTrigger();
             OnWanderEndTrigger.Priority = AITrigger.EConditionalExit.Stop;
             OnWanderEndTrigger.AddCondition(new AICondition_Timer(1.5f, 2.0f, 4.0f));
-            OnWanderEndTrigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+            OnWanderEndTrigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
             OnWanderEndTrigger.OnTriggered += OnWanderEnd;
 
         }
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
     }
 
     public void OnWanderEnd()
     {
         // Choose a new target location
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
         // Reset behaviour
         OnWanderEndTrigger.Reset();

@@ -12,15 +12,20 @@ using System.Collections.Generic;
 /// </summary>
 public class AbominationCharge : Action
 {
-    private float distanceMax = 7.5f;
+    private float distanceMax = 20.0f;
 
     private float travelTime;
     private Vector3 startPos;
     private Vector3 targetPos;
 
-    private CharacterMotor charMotor;
+    //private CharacterMotor charMotor;
 
     private Circle circle;
+
+    private AISteeringAgent steering;
+
+    private bool hitSomething;
+    private bool hitWall;
 
     public override void Initialise(Character owner)
     {
@@ -33,28 +38,34 @@ public class AbominationCharge : Action
         animationLength = 1.5f;
         travelTime = animationLength;
 
-        charMotor = owner.GetComponentInChildren<CharacterMotor>();
+        //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
         circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
+        
+        Enemy enemy = owner as Enemy;
+        steering = enemy.AIAgent.SteeringAgent;
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
 
+        steering.CanRotate = false;
+
         startPos = owner.transform.position;
+
+        hitSomething = false;
+        hitWall = false;
 
         RaycastHit hitInfo;
         if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
         {
-            targetPos = hitInfo.point - (owner.transform.forward);
+            targetPos = hitInfo.point - (owner.transform.forward * 2.0f);
 
             travelTime = (hitInfo.distance / distanceMax) * animationLength;
-        }
-        else
-        {
-            targetPos = startPos + owner.transform.forward * (distanceMax);
-            travelTime = animationLength;
+
+            hitSomething = true;
+            hitWall = true;
         }
 
         owner.ApplyInvulnerabilityEffect(animationLength);
@@ -77,9 +88,9 @@ public class AbominationCharge : Action
         {
             List<Character> enemies = new List<Character>();
 
-            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+            if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Hero, ref enemies))
             {
-                foreach (Enemy e in enemies)
+                foreach (Hero e in enemies)
                 {
                     int damage = 2;
                     // Apply damage, knockback and stun to the enemy.
@@ -90,6 +101,20 @@ public class AbominationCharge : Action
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
                 }
+
+                hitSomething = true;
+                hitWall = false;
+            }
+
+            if (hitSomething)
+            {
+                Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(0.05f, 0.02f);
+            }
+            if (hitWall)
+            {
+                owner.CanBeStunned = true;
+                owner.ApplyStunEffect(2.5f);
+                owner.CanBeStunned = false;
             }
 
             owner.StopAbility();
@@ -98,6 +123,8 @@ public class AbominationCharge : Action
 
     public override void EndAbility()
     {
+        steering.CanRotate = true;
+
         base.EndAbility();
     }
 

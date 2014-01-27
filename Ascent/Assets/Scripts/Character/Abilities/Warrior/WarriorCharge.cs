@@ -23,9 +23,10 @@ public class WarriorCharge : Action
     private Vector3 startPos;
     private Vector3 targetPos;
 
-    private CharacterMotor charMotor;
+   // private CharacterMotor charMotor;
 
     private Circle circle;
+	private Arc arc;
 	
     public override void Initialise(Character owner)
     {
@@ -34,7 +35,7 @@ public class WarriorCharge : Action
         //heroController = owner.Animator as HeroAnimatorController;
 
         coolDownTime = 5.0f;
-        animationTrigger = "SwingAttack";
+        animationTrigger = "Charge";
         specialCost = 5;
 
 		animationLength = 0.35f;
@@ -42,9 +43,10 @@ public class WarriorCharge : Action
 
         travelTime = animationLength;
 
-        charMotor = owner.GetComponentInChildren<CharacterMotor>();
+        //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
-        circle = new Circle(owner.transform, 2.0f, new Vector3(0.0f, 0.0f, 0.0f));
+        circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
+		arc = new Arc(owner.transform, 10.0f, 25.0f, Vector3.back * 1.5f);
     }
 	
     public override void StartAbility()
@@ -52,22 +54,55 @@ public class WarriorCharge : Action
         base.StartAbility();
 
         startPos = owner.transform.position;
+		startPos.y = 1.0f;
 
-        RaycastHit hitInfo;
-        if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
-        {
-            targetPos = hitInfo.point - (owner.transform.forward );
+		Character closestCharacter = null;
+		List<Character> enemies = new List<Character>();
+		if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
+		{
+			float closestDistance = 1000000.0f;
 
-			travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
-			animationLength = travelTime;
-        }
-        else
-        {
-            targetPos = startPos + owner.transform.forward * (distanceMax);
+			foreach (Character e in enemies)
+			{
+				float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
 
-			travelTime = originalAnimationTime;
-			animationLength = travelTime;
-        }
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestCharacter = e;
+				}
+			}
+		}
+
+		if (closestCharacter != null)
+		{
+			RaycastHit hitInfo;
+			if (Physics.Raycast(new Ray(startPos, closestCharacter.transform.position - startPos), out hitInfo, distanceMax))
+			{
+				targetPos = hitInfo.point - (owner.transform.forward);
+
+				travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
+				animationLength = travelTime;
+			}
+		}
+		else
+		{
+			RaycastHit hitInfo;
+			if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
+			{
+				targetPos = hitInfo.point - (owner.transform.forward);
+
+				travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
+				animationLength = travelTime;
+			}
+			else
+			{
+				targetPos = startPos + owner.transform.forward * (distanceMax);
+
+				travelTime = originalAnimationTime;
+				animationLength = travelTime;
+			}
+		}
 
         owner.ApplyInvulnerabilityEffect(animationLength);
 	}
@@ -112,6 +147,10 @@ public class WarriorCharge : Action
     public override void DebugDraw()
     {
         circle.DebugDraw();
+		if (currentTime < travelTime * 0.25f)
+		{
+			arc.DebugDraw();
+		}
 
         Debug.DrawLine(startPos, targetPos, Color.red);
         Debug.DrawLine(startPos, owner.transform.position, Color.green);

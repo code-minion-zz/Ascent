@@ -31,6 +31,7 @@ public abstract class Hero : Character
     protected HeroController heroController;
 	protected Backpack backpack;
     protected HeroInventory heroInventory;
+    protected HeroEquipment heroEquipment;
     protected FloorStats floorStatistics;
 
 	public HeroClassStatModifier ClassStatMod
@@ -60,9 +61,10 @@ public abstract class Hero : Character
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
-		heroInventory = new HeroInventory();
+        base.Initialise();
 
-		base.Initialise();
+		heroInventory = new HeroInventory();
+        heroEquipment = new HeroEquipment();
 	}
 
     public override void SetColor(Color color)
@@ -79,21 +81,24 @@ public abstract class Hero : Character
         floorStatistics = new FloorStats();
     }
 
-    public override void Respawn(Vector3 position)
+    protected override void Respawn(Vector3 position)
     {
-        base.Respawn(position);
-
-        Animator.PlayAnimation("Dying");
-
         // Reset the health
         derivedStats.ResetHealth();
+        motor.canMove = true;
+        Animator.Dying = false;
+        collider.enabled = true;
+
+        base.Respawn(position);
     }
 
-    /// <summary>
-    /// Specific on death event functionality for heroes
-    /// </summary>
-    public override void OnDeath()
+    protected override void OnDeath()
     {
+        motor.StopMotion();
+        motor.canMove = false;
+        collider.enabled = false;
+        Animator.Dying = true;
+
         base.OnDeath();
     }
 
@@ -118,9 +123,14 @@ public abstract class Hero : Character
 			heroController.ReleaseGrabbedObject();
 			GetComponent<CharacterMotor>().StopMovingAlongGrid();
 		}
+
+        if (type == Character.EDamageType.Trap)
+        {
+            floorStatistics.NumberOfTrapsTripped++;
+        }
 	}
 
-    public override void OnDamageTaken(int damage)
+    protected override void OnDamageTaken(int damage)
     {
         base.OnDamageTaken(damage);
 
@@ -130,7 +140,7 @@ public abstract class Hero : Character
         animator.TakeHit = true;
     }
 
-    public override void OnDamageDealt(int damage)
+    protected override void OnDamageDealt(int damage)
     {
         base.OnDamageDealt(damage);
 

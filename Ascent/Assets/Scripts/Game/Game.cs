@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
         Town,
         Tower,
 		Loading,
+		TowerRandom
     }
 
 	#region Fields
@@ -85,7 +86,9 @@ public class Game : MonoBehaviour
 	public void OnEnable()
 	{
 		if (Singleton == null)
+		{
 			Singleton = this;
+		}
 	}
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
@@ -199,6 +202,16 @@ public class Game : MonoBehaviour
 			case EGameState.Loading:
 				{
 					gameState = gameStateToLoad;
+				}
+				break;
+			case EGameState.TowerRandom:
+				{
+					tower.InitialiseRandomFloor();
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled case");
 				}
 				break;
 		}

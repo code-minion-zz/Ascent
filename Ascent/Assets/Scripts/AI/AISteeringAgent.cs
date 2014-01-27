@@ -61,6 +61,13 @@ public class AISteeringAgent
         set { isRunningAway = value; }
     }
 
+    protected bool canRotate = true;
+    public bool CanRotate
+    {
+        get { return canRotate; }
+        set { canRotate = value; }
+    }
+
     protected bool hasTarget = false;
 
     public delegate void TargetReached();
@@ -89,14 +96,17 @@ public class AISteeringAgent
             {
 				if (motor.UsingMovementForce)
 				{
-                    if (IsRunningAway)
+                    if (canRotate)
                     {
-                        motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
-                    }
-                    else
-                    {
-                        //motor.transform.LookAt(targetCharacter.transform.position);
-                        motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+                        if (IsRunningAway)
+                        {
+                            motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
+                        }
+                        else
+                        {
+                            //motor.transform.LookAt(targetCharacter.transform.position);
+                            motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+                        }
                     }
 				}
 
@@ -167,13 +177,16 @@ public class AISteeringAgent
                 {
                     pos = targetCharacter.transform.position;
 
-                    Debug.DrawLine(new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), new Vector3(pos.x, 0.2f, pos.z), red, 0.01f);
-                    Debug.DrawLine(new Vector3(posLastFrame.x, 0.2f, posLastFrame.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.5f);
+                    // From actor to direction of target
+                    Debug.DrawLine(new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), 
+                        new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z) + (new Vector3(pos.x, 0.2f, pos.z) - new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z)).normalized * 1.5f, 
+                        red, 0.01f, false);
+                    Debug.DrawLine(new Vector3(posLastFrame.x, 0.2f, posLastFrame.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.5f, false);
                 }
                 else
                 {
                     Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(pos.x, 0.2f, pos.z), red);
-                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.25f);
+                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.25f, false);
                 }
 
                 posLastFrame = motor.transform.position;

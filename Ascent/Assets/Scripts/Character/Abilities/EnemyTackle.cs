@@ -6,6 +6,7 @@ public class EnemyTackle : Action
 {
 	private Circle damageArea;
 	private float prevSpeed;
+    private float prevAccel;
 	private bool executedDamage;
 
     public override void Initialise(Character owner)
@@ -25,11 +26,13 @@ public class EnemyTackle : Action
     {
 		base.StartAbility();
 
-		owner.Motor.StopMotion();
+		//owner.Motor.StopMotion();
 		owner.Motor.EnableMovementForce(false);
         owner.SetColor(Color.red);
 
 		prevSpeed = owner.Motor.MovementSpeed;
+        prevAccel = owner.Motor.acceleration;
+
 		executedDamage = false;
 	}
 
@@ -47,6 +50,7 @@ public class EnemyTackle : Action
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
 			owner.Motor.MovementSpeed = prevSpeed;
+            owner.Motor.acceleration = prevAccel;
 		}
 		else if (currentTime >= animationLength * 0.40f && !executedDamage)
 		{
@@ -74,6 +78,7 @@ public class EnemyTackle : Action
 		{
 			owner.Motor.EnableMovementForce(true);
 			owner.Motor.MovementSpeed = 10.0f;
+            owner.Motor.acceleration = 10.0f;
 		}
     }
 

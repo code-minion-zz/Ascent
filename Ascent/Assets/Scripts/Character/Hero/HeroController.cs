@@ -175,14 +175,6 @@ public class HeroController : MonoBehaviour
 				transform.LookAt(transform.position + moveDirection);
 				GetComponent<CharacterMotor>().Move(moveDirection);
 
-				//float speed = (device.LeftStickX.Value * device.LeftStickX.Value) + (device.LeftStickY.Value * device.LeftStickY.Value);
-				//speed *= heroAnimator.MovementSpeed * Time.deltaTime;
-				//speed *= 10000.0f;
-
-				// Direction vector to hold the input key press.
-				//Vector3 direction = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value).normalized;
-				//heroAnimator.AnimMove(direction, speed);
-
 				float animMoveSpeed = 0.0f;
 				float moveX = Mathf.Abs(moveDirection.x);
 				float moveY = Mathf.Abs(moveDirection.z);

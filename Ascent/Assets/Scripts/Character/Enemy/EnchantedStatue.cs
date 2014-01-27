@@ -58,43 +58,43 @@ public class EnchantedStatue : Enemy
     public void InitialiseAI()
     {
         motor.MovementSpeed = 1.5f;
-        agent.Initialise(transform);
-		agent.SteeringAgent.RotationSpeed = 1.5f;
+        AIAgent.Initialise(transform);
+		AIAgent.SteeringAgent.RotationSpeed = 1.5f;
 
         AIBehaviour behaviour = null;
 
         // Passive behaviour
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
         {
             OnAttackedTrigger = behaviour.AddTrigger();
             OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 4.0f, Vector3.zero)));
+            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 4.0f, Vector3.zero)));
             OnAttackedTrigger.OnTriggered += OnAwaken;
         }
 
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
             OnAttackedTrigger = behaviour.AddTrigger();
 			OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
 			OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
-			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, agent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
+			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
 			OnAttackedTrigger.OnTriggered += OnSurrounded;
 
 			OnAttackedTrigger = behaviour.AddTrigger();
             OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[slamActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
+            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
             OnAttackedTrigger.OnTriggered += OnTargetInSight;
         }
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
     }
 
     public void OnAwaken()
     {
-        List<Character> characters = agent.SensedCharacters;
-        agent.TargetCharacter = characters[0];
+        List<Character> characters = AIAgent.SensedCharacters;
+        AIAgent.TargetCharacter = characters[0];
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 
        UseAbility(awakenActionID);
     }
@@ -111,10 +111,10 @@ public class EnchantedStatue : Enemy
 
     public override void OnDisable()
     {
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
-        agent.SteeringAgent.RemoveTarget();
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
     }
 }

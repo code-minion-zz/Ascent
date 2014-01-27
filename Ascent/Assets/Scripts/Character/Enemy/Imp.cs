@@ -36,13 +36,13 @@ public class Imp : Enemy
 
     public void InitialiseAI()
     {
-        agent.Initialise(transform);
+        AIAgent.Initialise(transform);
 
         AIBehaviour behaviour = null;
         AITrigger trigger = null;
 
         // Defensive behaviour
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             // OnAttacked, Triggers if attacked
             trigger = behaviour.AddTrigger();
@@ -54,18 +54,18 @@ public class Imp : Enemy
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_Timer(4.0f));
-            trigger.AddCondition(new AICondition_ReachedTarget(agent.SteeringAgent), AITrigger.EConditional.Or);
+            trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
             trigger.OnTriggered += OnWanderEnd;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
             trigger.OnTriggered += OnCanUseCharge;
         }
 
         // Aggressive
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
             // OnAttacked, Triggers if attacked
             trigger = behaviour.AddTrigger();
@@ -76,7 +76,7 @@ public class Imp : Enemy
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
             trigger.OnTriggered += OnCanUseCharge;
 
 			trigger = behaviour.AddTrigger();
@@ -85,56 +85,56 @@ public class Imp : Enemy
             trigger.OnTriggered += OnLowHP;
         }
 
-        behaviour = agent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Evasive);
+        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Evasive);
         {
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_Attacked(this));
         }
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
-        agent.SteeringAgent.RotationSpeed = 5.0f;
-        agent.SteeringAgent.CloseEnoughRange = .5f;
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
+        AIAgent.SteeringAgent.RotationSpeed = 5.0f;
+        AIAgent.SteeringAgent.CloseEnoughRange = .5f;
         motor.MovementSpeed = 2.0f;
     }
 
     public void OnWanderEnd()
     {
         // Choose a new target location
-        agent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
+        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
 
         // Reset behaviour
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 
     }
 
     public void OnAttacked()
     {
-        agent.TargetCharacter = lastDamagedBy;
+        AIAgent.TargetCharacter = lastDamagedBy;
     }
 
     public void OnCanUseCharge()
     {
         UseAbility(chargeActionID);
-        agent.TargetCharacter = agent.SensedCharacters[0];
+        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
 
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
     }
 
     public void OnLowHP()
     {
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Evasive);
-        agent.SteeringAgent.IsRunningAway = true;
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Evasive);
+        AIAgent.SteeringAgent.IsRunningAway = true;
     }
 
     public override void OnDisable()
     {
         motor.StopMotion();
-        agent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        agent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        agent.SteeringAgent.IsRunningAway = false;
-        agent.SteeringAgent.RemoveTarget();
+        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+        AIAgent.SteeringAgent.IsRunningAway = false;
+        AIAgent.SteeringAgent.RemoveTarget();
         OnWanderEnd();
     }
 }

@@ -17,11 +17,13 @@ public class FloorCamera : MonoBehaviour
     private float time;
 
 	private float fadeToBlackTime = 0.75f;
-	private float transitionTime = 2.0f;
+	public float transitionTime = 1.0f;
 
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
 	private const float verticalIncrement = 25.0f;
 	private const float horizontalIncrement = 25.0f;
+
+    private CameraShake cameraShake;
 
 	public Vector3 minCamera;
 	public Vector3 maxCamera;
@@ -37,6 +39,7 @@ public class FloorCamera : MonoBehaviour
 		players = Game.Singleton.Players;
 		_transform = transform;
 		floorCamera = GetComponent<Camera>();
+        cameraShake = GetComponent<CameraShake>();
 	}
 
     public void Update()
@@ -134,12 +137,12 @@ public class FloorCamera : MonoBehaviour
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)
 	{
-		return new Vector3(
-		Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
+        return new Vector3(
+        Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
 
-		Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
+        Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
 
-		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+        Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
 	void UpdateCameraRotation()
@@ -255,4 +258,9 @@ public class FloorCamera : MonoBehaviour
 
 		return vec;
 	}
+
+    public void ShakeCamera(float intensity, float decay)
+    {
+        cameraShake.DoShake(intensity, decay);
+    }
 }

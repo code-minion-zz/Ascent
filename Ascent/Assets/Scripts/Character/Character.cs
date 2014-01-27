@@ -20,11 +20,12 @@ public abstract class Character : BaseCharacter
 		Mage
 	}
 
-	public enum EDamageType
-	{
-		Physical,
-		Magical,
-	}
+    public enum EDamageType
+    {
+        Physical,
+        Magical,
+        Trap
+    }
 
 	#endregion
 
@@ -53,9 +54,33 @@ public abstract class Character : BaseCharacter
 	protected float invulnerableTimeAccum;
 
 	protected bool canBeStunned = true;
+    public bool CanBeStunned
+    {
+        get { return canBeStunned; }
+        set { canBeStunned = value; }
+    }
+
 	protected bool canBeKnockedBack = true;
+    public bool CanBeKnockedBack
+    {
+        get { return canBeKnockedBack; }
+        set { canBeKnockedBack = value; }
+    }
+
 	protected bool canBeDebuffed = true;
+    public bool CanBeDebuffed
+    {
+        get { return CanBeDebuffed; }
+        set { CanBeDebuffed = value; }
+    }
+
 	protected bool canBeInterrupted = true;
+    public bool CanBeInterrupted
+    {
+        get { return CanBeInterrupted; }
+        set { CanBeInterrupted = value; }
+    }
+
 
 	protected bool isDead = false;
 
@@ -223,7 +248,9 @@ public abstract class Character : BaseCharacter
 
 		// Let the owner know of the amount of damage done.
 		if (owner != null)
+        {
 			owner.OnDamageDealt(finalDamage);
+        }
 
 		// Obtain the health stat and subtract damage amount to the health.
 		derivedStats.CurrentHealth -= finalDamage;
@@ -279,7 +306,7 @@ public abstract class Character : BaseCharacter
 	/// When the character needs to respawn into the game.
 	/// </summary>
 	/// <param name="position">The position to spawn the character.</param>
-	public virtual void Respawn(Vector3 position)
+	protected virtual void Respawn(Vector3 position)
 	{
 		isDead = false;
 
@@ -288,7 +315,7 @@ public abstract class Character : BaseCharacter
 		OnSpawn();
 	}
 
-	public virtual void OnDeath()
+    protected virtual void OnDeath()
 	{
 		// We may internally tell this character that they are dead.
 		// The reason we do this is when we pool objects we will re-use 
@@ -302,49 +329,54 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
-	public virtual void OnSpawn()
-	{
-		if (onSpawn != null)
-		{
-			onSpawn(this);
-		}
-	}
+    protected virtual void OnSpawn()
+    {
+        if (onSpawn != null)
+        {
+            onSpawn(this);
+        }
+    }
 
-	/// <summary>
-	/// The event called when this character deals damage.
-	/// </summary>
-	/// <param name="damage">The amount of damage dealt.</param>
-	public virtual void OnDamageDealt(int damage)
-	{
-		if (onDamageDealt != null)
-		{
-			onDamageDealt(damage);
-		}
-	}
+    /// <summary>
+    /// The event called when this character deals damage.
+    /// </summary>
+    /// <param name="damage">The amount of damage dealt.</param>
+    protected virtual void OnDamageDealt(int damage)
+    {
+        if (onDamageDealt != null)
+        {
+            onDamageDealt(damage);
+        }
+    }
 
-	/// <summary>
-	/// The event called when this character takes damage. 
-	/// </summary>
-	/// <param name="damage">The amount of damage taken.</param>
-	public virtual void OnDamageTaken(int damage)
-	{
-		if (onDamageTaken != null)
-		{
-			onDamageTaken(damage);
-		}
-	}
-
+    /// <summary>
+    /// The event called when this character takes damage. 
+    /// </summary>
+    /// <param name="damage">The amount of damage taken.</param>
+    protected virtual void OnDamageTaken(int damage)
+    {
+        if (onDamageTaken != null)
+        {
+            onDamageTaken(damage);
+        }
+    }
+	
 	protected void AddSkill(Action skill)
 	{
 		skill.Initialise(this);
 		abilities.Add(skill);
 	}
 
-	public virtual void RefreshEverything()
-	{
-		derivedStats.CurrentHealth = derivedStats.MaxHealth;
-		derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
-	}
+    public virtual void RefreshEverything()
+    {
+        derivedStats.CurrentHealth = derivedStats.MaxHealth;
+        derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+
+        if (isDead)
+        {
+            Respawn(transform.position);
+        }
+    }
 
 	public virtual void AddBuff(Buff buff)
 	{
