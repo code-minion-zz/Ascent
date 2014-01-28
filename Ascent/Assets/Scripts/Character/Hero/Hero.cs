@@ -31,7 +31,6 @@ public abstract class Hero : Character
     protected HeroController heroController;
 	protected Backpack backpack;
     protected HeroInventory heroInventory;
-    protected HeroEquipment heroEquipment;
     protected FloorStats floorStatistics;
 
 	public HeroClassStatModifier ClassStatMod
@@ -63,8 +62,6 @@ public abstract class Hero : Character
 	{
         base.Initialise();
 
-		heroInventory = new HeroInventory();
-        heroEquipment = new HeroEquipment();
 	}
 
     public override void SetColor(Color color)
@@ -147,4 +144,28 @@ public abstract class Hero : Character
         // Record damage dealt.
         FloorStatistics.TotalDamageDealt += damage;
     }
+
+	// moved to Backpack Window script
+//	public bool EquipItem(int backpackSlot, int inventorySlot)
+//	{
+//		if (backpackSlot > 0 && backpackSlot < 8)
+//		{
+//			if (backpackSlot < 4) // this is an accessory
+//			{
+//				if (HeroBackpack.AllItems.Count < backpackSlot)
+//				{
+//					return false;
+//				}
+//				if (HeroBackpack.AllItems[backpackSlot] == null)
+//				{
+//				//	HeroBackpack.ReplaceItem
+//				}
+//			}
+//			else // this is a consumable
+//			{
+//
+//			}
+//			return true;
+//		}
+//	}
 }

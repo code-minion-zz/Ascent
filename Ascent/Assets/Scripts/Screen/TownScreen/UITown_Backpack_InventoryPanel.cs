@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
@@ -27,12 +27,12 @@ public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
 	{
 		// TODO: Change character's equipment
 
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.Backpack_Main_Panel);
+		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.BACKPACK);
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.Backpack_Main_Panel);
+		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.BACKPACK);
 	}
 
 	protected void ShowMenu()

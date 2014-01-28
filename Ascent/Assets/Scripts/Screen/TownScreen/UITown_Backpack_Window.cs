@@ -40,10 +40,10 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public enum EBackpackPanels
 	{
-		Invalid_Backpack_Panel = -1,
-		Backpack_Main_Panel,
-		Backpack_Inventory_Panel,
-		Max_Backpack_Panel
+		INVALID = -1,
+		BACKPACK,
+		INVENTORY,
+		MAX
 	}
 
 	public override void Initialise ()
@@ -52,18 +52,33 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 		base.Initialise ();
 	}
 
-	public void Equip(Item item, int slot)
+	public void Equip(int destinationSlot, int originSlot)
 	{
-		if (slot <= 3)
+		if (ValidSlot(destinationSlot))
 		{
-			// TODO: put selected item in specified slot, replacing if slot is already occupied
-			//player.Hero.GetComponent<Hero>().HeroBackpack.AddItem;
+			if (player.GetComponent<Hero>().HeroInventory.Items.Count >= originSlot)
+			{
+				Item insertingItem = player.GetComponent<Hero>().HeroInventory.Items[originSlot];
+				if (insertingItem != null)
+				{
+					Item returnItem = player.Hero.GetComponent<Hero>().HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
+					player.GetComponent<Hero>().HeroInventory.Items.Insert(originSlot,returnItem);
+				}
+			}	
 		}
 	}
 
-	public override void TransitionToPanel(int index)
-	{		
+	/// <summary>
+	/// Return item to inventory if space permits.
+	/// </summary>
+	/// <param name="slot">Slot.</param>
+	public bool Unequip(int slot)
+	{
+		return true;
+	}
 
+	public override void TransitionToPanel(int index)
+	{	
 		activePanel.gameObject.SetActive(false);
 		activePanel = panels[index];
 		activePanel.gameObject.SetActive(true);
@@ -71,15 +86,24 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public override void AddAllMenuPanels()
 	{
-		panels[(int)EBackpackPanels.Backpack_Main_Panel] = backpackPanel;
-		panels[(int)EBackpackPanels.Backpack_Inventory_Panel] = inventoryPanel;
-		
-		foreach (KeyValuePair<int, UIPlayerMenuPanel> p in panels)
+		panels[(int)EBackpackPanels.BACKPACK] = backpackPanel;
+		panels[(int)EBackpackPanels.INVENTORY] = inventoryPanel;
+
+		for (int i = 0; i < panels.Count; ++i)
 		{
-			p.Value.gameObject.SetActive(false);
+			panels[i].gameObject.SetActive(false);
 		}
 		
-		activePanel = panels[(int)EBackpackPanels.Backpack_Main_Panel];
+		activePanel = panels[(int)EBackpackPanels.BACKPACK];
+	}
+
+	bool ValidSlot(int slot)
+	{
+		if (slot > 3)
+		{
+			return false;
+		}
+		return true;
 	}
 }
 

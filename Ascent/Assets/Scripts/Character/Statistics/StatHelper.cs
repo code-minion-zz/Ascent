@@ -19,7 +19,7 @@ public static class StatHelper
 				int i;
 				for (i = 0; i < itemCount; ++i)
 				{
-					Item item = backPack.AllItems[i];
+					Item item = backPack.AllItems[(Backpack.BackpackSlot)i];
 					if (item is ConsumableItem)
 					{
 						continue;
@@ -72,7 +72,7 @@ public static class StatHelper
 				int i;
 				for (i = 0; i < itemCount; ++i)
 				{
-					Item item = backPack.AllItems[i];
+					Item item = backPack.AllItems[(Backpack.BackpackSlot)i];
 					if (item is ConsumableItem)
 					{
 						continue;
@@ -125,7 +125,8 @@ public static class StatHelper
 				int i;
 				for (i = 0; i < itemCount; ++i)
 				{
-					Item item = backPack.AllItems[i];
+					//Backpack.BackpackSlot bs = (Backpack.BackpackSlot)i;
+					Item item = backPack.AllItems[(Backpack.BackpackSlot)i];
 					if (item is ConsumableItem)
 					{
 						continue;
@@ -178,7 +179,7 @@ public static class StatHelper
 				int i;
 				for (i = 0; i < itemCount; ++i)
 				{
-					Item item = backPack.AllItems[i];
+					Item item = backPack.AllItems[(Backpack.BackpackSlot)i];
 					if (item is ConsumableItem)
 					{
 						continue;

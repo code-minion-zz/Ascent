@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -126,7 +126,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		EButtons current = (EButtons)currentButton;
 
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.Backpack_Inventory_Panel);
+		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.INVENTORY);
 	}
 
 
