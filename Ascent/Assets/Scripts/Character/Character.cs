@@ -54,9 +54,33 @@ public abstract class Character : BaseCharacter
 	protected float invulnerableTimeAccum;
 
 	protected bool canBeStunned = true;
+    public bool CanBeStunned
+    {
+        get { return canBeStunned; }
+        set { canBeStunned = value; }
+    }
+
 	protected bool canBeKnockedBack = true;
+    public bool CanBeKnockedBack
+    {
+        get { return canBeKnockedBack; }
+        set { canBeKnockedBack = value; }
+    }
+
 	protected bool canBeDebuffed = true;
+    public bool CanBeDebuffed
+    {
+        get { return CanBeDebuffed; }
+        set { CanBeDebuffed = value; }
+    }
+
 	protected bool canBeInterrupted = true;
+    public bool CanBeInterrupted
+    {
+        get { return CanBeInterrupted; }
+        set { CanBeInterrupted = value; }
+    }
+
 
 	protected bool isDead = false;
 

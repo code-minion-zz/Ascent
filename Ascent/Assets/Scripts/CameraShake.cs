@@ -35,24 +35,24 @@ public class CameraShake : MonoBehaviour
     }
 
 
-    void OnGUI()
-    {
+    //void OnGUI()
+    //{
 
-        if (GUI.Button(new Rect(10, 200, 50, 30), "Shake"))
-        {
-            DoShake();
-        }
-    }
+    //    if (GUI.Button(new Rect(10, 200, 50, 30), "Shake"))
+    //    {
+    //        DoShake();
+    //    }
+    //}
 
-    public void DoShake()
+    public void DoShake(float intensity, float decay)
     {
         if (!Shaking)
         {
             OriginalPos = transform.position;
             OriginalRot = transform.rotation;
 
-            ShakeIntensity = 0.05f;
-            ShakeDecay = 0.02f;
+            ShakeIntensity = intensity;//0.05f;
+            ShakeDecay = decay;//0.02f;
             Shaking = true;
         }
     }

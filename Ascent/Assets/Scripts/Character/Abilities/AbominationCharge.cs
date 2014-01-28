@@ -24,11 +24,14 @@ public class AbominationCharge : Action
 
     private AISteeringAgent steering;
 
+    private bool hitSomething;
+    private bool hitWall;
+
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
 
-        coolDownTime = 1.0f;
+        coolDownTime = 5.0f;
         animationTrigger = "Charge";
         specialCost = 0;
 
@@ -51,12 +54,18 @@ public class AbominationCharge : Action
 
         startPos = owner.transform.position;
 
+        hitSomething = false;
+        hitWall = false;
+
         RaycastHit hitInfo;
         if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
         {
             targetPos = hitInfo.point - (owner.transform.forward * 2.0f);
 
             travelTime = (hitInfo.distance / distanceMax) * animationLength;
+
+            hitSomething = true;
+            hitWall = true;
         }
 
         owner.ApplyInvulnerabilityEffect(animationLength);
@@ -92,6 +101,20 @@ public class AbominationCharge : Action
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
                 }
+
+                hitSomething = true;
+                hitWall = false;
+            }
+
+            if (hitSomething)
+            {
+                Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(0.05f, 0.02f);
+            }
+            if (hitWall)
+            {
+                owner.CanBeStunned = true;
+                owner.ApplyStunEffect(2.5f);
+                owner.CanBeStunned = false;
             }
 
             owner.StopAbility();

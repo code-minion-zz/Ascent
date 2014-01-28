@@ -23,6 +23,8 @@ public class FloorCamera : MonoBehaviour
 	private const float verticalIncrement = 25.0f;
 	private const float horizontalIncrement = 25.0f;
 
+    private CameraShake cameraShake;
+
 	public Vector3 minCamera;
 	public Vector3 maxCamera;
 
@@ -37,6 +39,7 @@ public class FloorCamera : MonoBehaviour
 		players = Game.Singleton.Players;
 		_transform = transform;
 		floorCamera = GetComponent<Camera>();
+        cameraShake = GetComponent<CameraShake>();
 	}
 
     public void Update()
@@ -255,4 +258,9 @@ public class FloorCamera : MonoBehaviour
 
 		return vec;
 	}
+
+    public void ShakeCamera(float intensity, float decay)
+    {
+        cameraShake.DoShake(intensity, decay);
+    }
 }

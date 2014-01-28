@@ -78,6 +78,8 @@ public class EnchantedStatueStomp : Action
 				}
 
 				performed = true;
+
+                Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(0.05f, 0.02f);
 			}
 		}
 	}

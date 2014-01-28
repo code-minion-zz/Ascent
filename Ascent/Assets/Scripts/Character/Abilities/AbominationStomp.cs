@@ -77,6 +77,8 @@ public class AbominationStomp : Action
                     }
                 }
 
+                Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(0.05f, 0.02f);
+
                 performed = true;
             }
         }
