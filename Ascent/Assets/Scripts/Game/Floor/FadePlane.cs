@@ -26,6 +26,7 @@ public class FadePlane : MonoBehaviour
 			fadeTime -= Time.deltaTime;
 			if(fadeTime < 0.0f)
 			{
+                //gameObject.SetActive(false);
 				fadeTime = 0.0f;
 			}
 
