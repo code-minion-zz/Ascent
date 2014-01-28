@@ -6,6 +6,9 @@ using System.IO;
 
 public static class AscentGameSaver
 {
+	private const string fileName = "ascent_save.xml";
+	private static string saveFilePath = Application.persistentDataPath + "\\" + fileName;
+
 	public delegate void OnHeroSaveListChanged();
 	public static event OnHeroSaveListChanged OnHeroSaveListChangedEvent;
 
@@ -15,8 +18,6 @@ public static class AscentGameSaver
 		get { return gameSave; }
 	}
 
-	private static string saveFilePath = Application.persistentDataPath + "\\ascent_save.xml";
-
 
 	/// <summary>
 	/// Saves serialised GameSave
@@ -24,7 +25,13 @@ public static class AscentGameSaver
 	public static void SaveGame()
 	{
 		string saveString = XMLSerialiser.SerializeObject(gameSave);
+		
+#if UNITY_WEBPLAYER
+		PlayerPrefs.SetString(fileName, saveString);
+		PlayerPrefs.Save();
+#else
 		XMLSerialiser.CreateXML(saveFilePath, saveString);
+#endif
 	}
 
 	/// <summary>
@@ -32,12 +39,16 @@ public static class AscentGameSaver
 	/// Creates a GameSave if it fails.
 	/// </summary>
 	/// <returns> True if a GameSave was successfully loaded. </returns>
-	public static bool LoadGameDataSave()
-	{
+	public static bool LoadGame()
+	{		
 		if (DoesFilePathExist(saveFilePath))
 		{
+#if UNITY_WEBPLAYER
+			gameSave = XMLSerialiser.DeserializeObject(PlayerPrefs.GetString(fileName), "GameSaveData") as GameSaveData;
+#else
 			// An existing save exists to load it in.
 			gameSave = XMLSerialiser.DeserializeObject(XMLSerialiser.LoadXML(saveFilePath), "GameSaveData") as GameSaveData;
+#endif
 
 			return true;
 		}
@@ -120,22 +131,7 @@ public static class AscentGameSaver
 	/// <returns> The loaded Hero. </returns>
 	public static Hero LoadHero(HeroSaveData data)
 	{
-		Hero loadedHero = HeroFactory.CreateNewHero(data.classType);
-		GameObject loadedHeroObject = loadedHero.gameObject;
-
-		// Load base stats
-		BaseStats baseStats = loadedHero.CharacterStats;
-
-		// Load Inventory
-		HeroInventory invetory = loadedHero.HeroInventory;
-
-		// Load backback
-		Backpack backpack = loadedHero.HeroBackpack;
-
-		// Load Abilities
-		List<Action> actions = loadedHero.Abilities;
-
-		return loadedHero;
+		return HeroFactory.CreateNewHero(data.classType);
 	}
 
 	/// <summary>
@@ -169,8 +165,13 @@ public static class AscentGameSaver
 
 	public static bool DoesFilePathExist(string path)
 	{
+#if UNITY_WEBPLAYER
+		return (PlayerPrefs.HasKey(fileName));
+#else
 		FileInfo t = new FileInfo(path);
+
 		return t.Exists;
+#endif
 	}
 
 	public static ulong GetUniqueID()

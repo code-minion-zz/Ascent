@@ -11,12 +11,13 @@ public class HeroSaveData
     public ulong uid;
 
 	// Hero info
+	public uint highestFloor;
 	public Character.EHeroClass classType;
 	public BaseStats baseStats;
 	public Backpack backpack;
 	public HeroInventory inventory;
 	public List<Action> abilities;
-	public uint highestFloor;
+
 
 	public HeroSaveData()
 	{
@@ -43,7 +44,8 @@ public class HeroSaveData
 	public override string ToString()
 	{
 		string toString = "Lv" + baseStats.Level + " " + classType + "\n" +
-							 saveTime;
+							 saveTime + "\n" +
+							 "uid " + uid;
 
 
 		return toString;

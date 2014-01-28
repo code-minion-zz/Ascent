@@ -5,18 +5,9 @@ using System.Xml;
 
 public class AscentGameSaverTest : MonoBehaviour
 {
-	HeroSaveDataList loadedHeroSaveDatas;
-	HeroSaveData loadedSave;
-
 	GUIText textControls;
 	GUIText textSaves;
 	GUIText textSave;
-
-	const KeyCode saveKey = KeyCode.F5;
-	const KeyCode saveAllKey = KeyCode.F5;
-	const KeyCode loadAllKey = KeyCode.F1;
-	const KeyCode loadKey = KeyCode.F2;
-	const KeyCode createSavesKey = KeyCode.F10;
 
 	int selectedSave = -1;
 
@@ -24,14 +15,14 @@ public class AscentGameSaverTest : MonoBehaviour
 
 	void Start()
 	{
-		AscentGameSaver.LoadGameDataSave();
+		AscentGameSaver.LoadGame();
 		AscentGameSaver.OnHeroSaveListChangedEvent += OnListUpdate;
 
 		textControls = GameObject.Find("Controls").guiText;
-		textControls.text += "\n\nSave: " + saveKey + "\n" +
-							"LoadAll :" + loadAllKey + "\n" +
-							"CreateTestSaves :" + createSavesKey + "\n" +
-							"ChooseSave: Up and Down";
+		textControls.text += "\nF1: " + "Create Save" + "\n" +
+							"Del :" + "Delete" + "\n" +
+							"Ret :" + "Load" + "\n" +
+							"Up and Down";
 		textControls.richText = true;
 
 		OnListUpdate();
@@ -46,11 +37,47 @@ public class AscentGameSaverTest : MonoBehaviour
 	void Update()
 	{
 		// Create hero
+		// This can be used in CharSelectScreen when a new character is made.
+		// i.e. Save when all players enter the game.
 		if(Input.GetKeyUp(KeyCode.F1))
 		{
 			Warrior war = HeroFactory.CreateNewHero(Hero.EHeroClass.Warrior) as Warrior;
 			war.Initialise(null, null);
 			AscentGameSaver.CreateNewHeroSave(war);
+			Destroy(war.gameObject);
+		}
+
+		// Delete highlighted hero
+		// This can be used in CharSelectScreen to delete a save from the list of saves.
+		if (Input.GetKeyUp(KeyCode.Delete))
+		{
+			if (selectedSave != -1)
+			{
+				AscentGameSaver.DeleteHeroSave(heroSaves[selectedSave]);
+				selectedSave = -1;
+			}
+		}
+
+		// Load highlighted hero
+		// This can be used in CharSelectScreen to load a save from the list of saves.
+		// The input device just needs to be given with the initialisation function.
+		if (Input.GetKeyUp(KeyCode.KeypadEnter))
+		{
+			if (selectedSave != -1)
+			{
+				// Try get the Xbox controller
+				InputDevice device = InputManager.GetDevice(1);
+				if(device == null)
+				{
+					// else get the keyboard
+					device = InputManager.GetDevice(0);
+				}
+
+				Hero LoadedHero = AscentGameSaver.LoadHero(heroSaves[selectedSave]);
+				LoadedHero.Initialise(device, heroSaves[selectedSave]);
+				LoadedHero.HeroController.CanUseInput = true;
+				selectedSave = -1;
+			}
 		}
 
 
@@ -73,14 +100,6 @@ public class AscentGameSaverTest : MonoBehaviour
 				selectedSave = 0;
 			}
 		}
-		else if(Input.GetKeyUp(KeyCode.Delete))
-		{
-			if (selectedSave != -1)
-			{
-				AscentGameSaver.DeleteHeroSave(heroSaves[selectedSave]);
-				selectedSave = -1;
-			}
-		}
 	}
 
 	void OnGUI()
@@ -90,7 +109,6 @@ public class AscentGameSaverTest : MonoBehaviour
 
 	public void OnListUpdate()
 	{
-		Debug.Log("UPDATED");
 		heroSaves = AscentGameSaver.SaveData.heroSaves;
 
 		heroSaves.Sort(SortListByDateAscending);

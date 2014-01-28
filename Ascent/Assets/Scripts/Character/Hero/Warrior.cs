@@ -13,9 +13,10 @@ public class Warrior : Hero
 
 		if (saveData != null)
 		{
-			// Populate with the savedata
-			//characterStatistics = new CharacterStatistics();
-			//characterStatistics.MaxHealth = saveData.health;
+			baseStatistics = saveData.baseStats;
+			derivedStats = new DerivedStats(baseStatistics);
+			derivedStats.MaxSpecial = 25;
+			derivedStats.CurrentSpecial = 25;
 		}
 		else
 		{

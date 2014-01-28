@@ -5,8 +5,8 @@ using System.Xml.Serialization;
 
 public class GameSaveData  
 {
-	public float timePlayed;
-	public int towerProgression;
+	public System.DateTime totalTimePlayed;
+	public int highestTowerProgression;
 
 	[XmlArray("HeroSaves")]
 	[XmlArrayItem("HeroSaveData")]

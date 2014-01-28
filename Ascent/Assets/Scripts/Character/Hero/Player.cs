@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         // TODO: Put this function into a object creation class of some sort.
 
 		heroScript = HeroFactory.CreateNewHero(heroType);
-		heroObject = heroObject.gameObject;
+		heroObject = heroScript.gameObject;
 
 		// This is test code to assign players colours
 		switch (playerId)
