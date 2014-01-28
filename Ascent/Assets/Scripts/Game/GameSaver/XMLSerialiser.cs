@@ -76,7 +76,7 @@ public class XMLSerialiser
 				break;
 			case DirectoryTarget.APPLICATION:
 				{
-					path = Application.dataPath;
+					path = Application.persistentDataPath;
 				}
 				break;
 			case DirectoryTarget.USER:
@@ -119,11 +119,42 @@ public class XMLSerialiser
 		writer.Close();
 	}
 
+	public static void CreateXML(string filePath, string data)
+	{
+		StreamWriter writer;
+
+		FileInfo t = new FileInfo(filePath);
+
+		// Check if XML file exists
+		if (!t.Exists)
+		{
+			// It doesn't so make it
+			writer = t.CreateText();
+		}
+		else
+		{
+			t.Delete();
+			writer = t.CreateText();
+		}
+		writer.Write(data);
+		writer.Close();
+	}
+
+
 	public static string LoadXML(DirectoryTarget target, string path, string _FileName)
 	{
 		string _FileLocation = GetTargetDirectory(target) + "\\" + path;
 		StreamReader r;
 		r = File.OpenText(_FileLocation + "\\" + _FileName);
+		string _info = r.ReadToEnd();
+		r.Close();
+		return _info;
+	}
+
+	public static string LoadXML(string filePath)
+	{
+		StreamReader r;
+		r = File.OpenText(filePath);
 		string _info = r.ReadToEnd();
 		r.Close();
 		return _info;

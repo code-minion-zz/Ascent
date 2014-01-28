@@ -16,16 +16,35 @@ public abstract class Hero : Character
 		public float VitalityHPRegen;
 		public float SpiritSP;
 		public float SpiritMagRes;
-//		HeroClassStatModifier(float _powerAttack, float _finesseCritChance, 
-//		                      float _finesseCritBonus, float _finesseDodge, 
-//		                      float _finesseBlock, float _vitalityHP, 
-//		                      float _vitalityPhysRes, float _vitalityHpRegen, 
-//		                      float _spiritSP, float _spiritMagRes)
-//		{
-//
-//		}
+
+
+		HeroClassStatModifier(float _powerAttack, float _finesseCritChance,
+							  float _finesseCritBonus, float _finesseDodge,
+							  float _finesseBlock, float _vitalityHP,
+							  float _vitalityPhysRes, float _vitalityHpRegen,
+							  float _spiritSP, float _spiritMagRes)
+		{
+			PowerAttack = _powerAttack;
+			FinesseCritChance = _finesseCritChance;
+			FinesseCritBonus = _finesseCritBonus;
+			FinesseDodge = _finesseDodge;
+			FinesseBlock = _finesseBlock;
+			VitalityHP = _vitalityHP;
+			VitalityPhysRes = _vitalityPhysRes;
+			VitalityHPRegen = _vitalityHpRegen;
+			SpiritSP = _spiritSP;
+			SpiritMagRes = _spiritMagRes;
+		}
 	}
 
+	protected ulong saveUID;
+	public ulong SaveUID
+	{
+		get { return saveUID;  }
+		set { saveUID = value;}
+	}
+
+	protected EHeroClass classType;
 	protected HeroAnimator heroAnimator;
 	protected HeroClassStatModifier classStatMod;
     protected HeroController heroController;
@@ -33,6 +52,18 @@ public abstract class Hero : Character
     protected HeroInventory heroInventory;
     protected HeroEquipment heroEquipment;
     protected FloorStats floorStatistics;
+	protected uint highestFloorReached;
+
+	public uint HighestFloorReached
+	{
+		get { return highestFloorReached; }
+		set { highestFloorReached = value; }
+	}
+
+	public EHeroClass ClassType
+	{
+		get { return classType; }
+	}
 
 	public HeroClassStatModifier ClassStatMod
 	{

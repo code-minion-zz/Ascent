@@ -5,6 +5,8 @@ public class Warrior : Hero
 {
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
+		classType = EHeroClass.Warrior;
+
 		base.Initialise(input, saveData);
 
         baseStatistics = null;

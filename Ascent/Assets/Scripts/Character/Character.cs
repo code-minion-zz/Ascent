@@ -43,6 +43,7 @@ public abstract class Character : BaseCharacter
 	protected BetterList<Buff> buffList = new BetterList<Buff>();
 
 	protected List<Action> abilities = new List<Action>();
+
 	protected Action activeAbility;
 
 	protected BaseStats baseStatistics;

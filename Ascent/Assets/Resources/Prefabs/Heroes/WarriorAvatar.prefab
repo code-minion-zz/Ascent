@@ -16,7 +16,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
   m_Layer: 10
-  m_Name: Warrior
+  m_Name: WarriorAvatar
   m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1338,11 +1338,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100010}
-  maxVelocityChange: 5
-  canMove: 1
   currentSpeed: 5
   acceleration: 10
-  speedMax: 6
+  minSpeed: 5.5
+  maxVelocityChange: 5
+  canMove: 1
   moving: 0
 --- !u!114 &11400018
 MonoBehaviour:
