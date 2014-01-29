@@ -375,7 +375,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name), Vector3.zero, Quaternion.identity) as GameObject;
 
                     if (enemies == null)
                     {
