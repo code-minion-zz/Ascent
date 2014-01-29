@@ -64,7 +64,6 @@ public class GameInitialiser : MonoBehaviour
             initialGameState = state,
             targetFrameRate = this.targetFrameRate,
             playerCharacterType = this.playerCharacterType,
-
         });
 
         // Get rid of the game initialiser

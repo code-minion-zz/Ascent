@@ -201,7 +201,10 @@ public class Game : MonoBehaviour
 				break;
 			case EGameState.Town:
 				{
-
+					for (int i = 0; i < players.Count; ++i)
+					{
+						players[i].gameObject.SetActive(false);
+					}
 				}
 				break;
 			case EGameState.Loading:
