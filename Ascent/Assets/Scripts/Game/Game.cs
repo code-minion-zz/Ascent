@@ -40,6 +40,11 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
+	public bool InTower
+	{
+		get { return gameState == EGameState.Tower || gameState == EGameState.TowerRandom; }
+	}
+
 	public static bool running = false;
 
 	private EGameState gameStateToLoad;

@@ -45,20 +45,24 @@ public class WarriorHeavyStrike : Action
             if (currentTime >= animationLength * 0.5f)
             {
                 List<Character> enemies = new List<Character>();
-                if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
-                {
-                    foreach (Enemy e in enemies)
-                    {
-                        e.ApplyDamage(25, Character.EDamageType.Physical, owner);
-                        e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
-                        // Create a blood splatter effect on the enemy.
-                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
+				if (Game.Singleton.InTower)
+				{
+					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
+					{
+						foreach (Enemy e in enemies)
+						{
+							e.ApplyDamage(25, Character.EDamageType.Physical, owner);
+							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
-                        // Tell the hud manager to spawn text.
-                        HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25);
-                    }
-                }
+							// Create a blood splatter effect on the enemy.
+							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
+
+							// Tell the hud manager to spawn text.
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25);
+						}
+					}
+				}
 
                 performed = true;
             }

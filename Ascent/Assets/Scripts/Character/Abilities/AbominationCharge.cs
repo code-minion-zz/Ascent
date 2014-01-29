@@ -68,6 +68,8 @@ public class AbominationCharge : Action
             hitWall = true;
         }
 
+		targetPos.y = startPos.y;
+
         owner.ApplyInvulnerabilityEffect(animationLength);
     }
 

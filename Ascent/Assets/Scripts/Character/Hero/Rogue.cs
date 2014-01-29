@@ -11,6 +11,7 @@ public class Rogue : Hero
 
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
+		classType = EHeroClass.Rogue;
 
     }
 }

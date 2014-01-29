@@ -5,15 +5,18 @@ public class Warrior : Hero
 {
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
+		classType = EHeroClass.Warrior;
+
 		base.Initialise(input, saveData);
 
         baseStatistics = null;
 
 		if (saveData != null)
 		{
-			// Populate with the savedata
-			//characterStatistics = new CharacterStatistics();
-			//characterStatistics.MaxHealth = saveData.health;
+			baseStatistics = saveData.baseStats;
+			derivedStats = new DerivedStats(baseStatistics);
+			derivedStats.MaxSpecial = 25;
+			derivedStats.CurrentSpecial = 25;
 		}
 		else
 		{

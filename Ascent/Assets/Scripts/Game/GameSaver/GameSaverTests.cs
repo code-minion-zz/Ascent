@@ -22,6 +22,8 @@ public class GameSaverTests : MonoBehaviour
 
     void Start()
     {
+
+
         textControls = GameObject.Find("Controls").guiText;
         textControls.text += "\n\nSave: " + saveKey + "\n" + 
                             "LoadAll :" + loadAllKey + "\n" +
