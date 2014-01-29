@@ -29,11 +29,12 @@ public class Player : MonoBehaviour
         get { return input; }
     }
 
-    public GameObject Hero
+    public Hero Hero
     {
-        get { return heroObject; }
-        set { heroObject = value; }
+        get { return heroScript; }
+        set { heroScript = value; }
     }
+
 
     #endregion
 
@@ -62,18 +63,6 @@ public class Player : MonoBehaviour
     // To create a brand new Hero
     public void CreateHero(Character.EHeroClass heroType)
     {
-        //heroScript = HeroFactory.CreateNewHero(heroType);
-
-        //if (heroScript == null)
-        //    Debug.LogError("Hero Script not found");
-
-        //heroObject = heroScript.gameObject;
-
-        //if (heroObject == null)
-        //    Debug.LogError("Hero is null");
-
-        // TODO: Put this function into a object creation class of some sort.
-
 		heroScript = HeroFactory.CreateNewHero(heroType);
 		heroObject = heroScript.gameObject;
 

@@ -49,12 +49,20 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	public virtual void OnMenuUp(InputDevice device)
 	{
-		
+        UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+
+        currentSelection = PrevButton();
+
+        UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 
 	public virtual void OnMenuDown(InputDevice device)
 	{
-		
+        UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+
+        currentSelection = NextButton();
+
+        UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 
 	public virtual void OnMenuOK(InputDevice device)

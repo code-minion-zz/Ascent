@@ -83,7 +83,7 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
                 break;
         }
 
-		parent.Player.Hero.SetActive(false);
+		parent.Player.Hero.gameObject.SetActive(false);
 		parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);
     }
 

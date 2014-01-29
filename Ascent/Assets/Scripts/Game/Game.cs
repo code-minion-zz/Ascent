@@ -98,6 +98,8 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+        AscentGameSaver.LoadGame();
+
         Random.seed = (int)Time.time;
 		running = true;
 

@@ -92,7 +92,7 @@ public static class AscentGameSaver
 	/// Finds the Hero in the HeroSave list and writes over it.
 	/// </summary>
 	/// <param name="data"> Hero to save. </param>
-	public static void SaveHero(Hero hero)
+	public static void SaveHero(Hero hero, bool saveImmediately)
 	{
 		// Find the  heroes data
 		HeroSaveData saveData = null;
@@ -117,11 +117,14 @@ public static class AscentGameSaver
 			gameSave.heroSaves[saveIndex] = new HeroSaveData(hero);
 		}
 
-		// Immediately save change to file
-		SaveGame();
+        if (saveImmediately)
+        {
+            // Immediately save change to file
+            SaveGame();
 
-		// Notify delegates so all UI can be updated.
-		NotifyHeroSaveListChanged();
+            // Notify delegates so all UI can be updated.
+            NotifyHeroSaveListChanged();
+        }
 	}
 
 	/// <summary>
@@ -190,4 +193,20 @@ public static class AscentGameSaver
 
 		return (ulong)uniqueID.GetHashCode();
 	}
+
+    public static int SortListByDateAscending(HeroSaveData a, HeroSaveData b)
+    {
+
+        if (a.saveTime > b.saveTime) return -1;
+        if (a.saveTime < b.saveTime) return 1;
+        return 0;
+    }
+
+    public static int SortListByDateDescending(HeroSaveData a, HeroSaveData b)
+    {
+
+        if (a.saveTime > b.saveTime) return 1;
+        if (a.saveTime < b.saveTime) return -1;
+        return 0;
+    }
 }
