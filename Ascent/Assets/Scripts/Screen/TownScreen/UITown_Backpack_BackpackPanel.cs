@@ -20,38 +20,35 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	int		 lastActiveButton = 0;
 
-	BetterList<GameObject> tabs = new BetterList<GameObject>();
 
 
 	public virtual void Start()
 	{
 		buttons = new UIButton[(int)EButtons.MAX];
 		
-		tabs.Add(transform.FindChild("Tabs/Accessory Tab").gameObject);
-		tabs.Add(transform.FindChild("Tabs/Consumable Tab").gameObject); 
 
-		Transform accessories = transform.Find ("Accessories");
-		Transform consumables = transform.Find ("Consumables");
-//
-//		buttons[(int)EButtons.ACC1] = accessories.transform.FindChild("Accessory1").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ACC2] = accessories.transform.FindChild("Accessory2").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ACC3] = accessories.transform.FindChild("Accessory3").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ACC4] = accessories.transform.FindChild("Accessory4").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ITM1] = consumables.transform.FindChild("Consumable1").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ITM2] = consumables.transform.FindChild("Consumable2").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ITM3] = consumables.transform.FindChild("Consumable3").GetComponent<UIButton>();
-//		buttons[(int)EButtons.ITM4] = consumables.transform.FindChild("Consumable4").GetComponent<UIButton>();
+		Transform acc = transform.Find ("BackpackTab/Accessories");
+		Transform con = transform.Find ("BackpackTab/Consumables");
+
+		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM4] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
 
 		currentButton = (int)EButtons.ACC1;
 		currentSelection = buttons[(int)EButtons.ACC1];
 
 		lastActiveButton = currentButton;
 
-		//UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 
 		buttonMax = (int)EButtons.MAX;
 
-		//tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
+		tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
 
 		initialised = true;
 	}

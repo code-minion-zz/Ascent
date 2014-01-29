@@ -96,7 +96,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 		
 		activePanel = panels[(int)EBackpackPanels.BACKPACK];
-		player.activePlayerPanel = activePanel;
+		//player.activePlayerPanel = activePanel;
 	}
 
 //	bool ValidSlot(int slot)
