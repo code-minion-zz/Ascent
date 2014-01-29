@@ -181,27 +181,28 @@ public abstract class Hero : Character
         FloorStatistics.TotalDamageDealt += damage;
     }
 
-	// moved to Backpack Window script
-//	public bool EquipItem(int backpackSlot, int inventorySlot)
-//	{
-//		if (backpackSlot > 0 && backpackSlot < 8)
-//		{
-//			if (backpackSlot < 4) // this is an accessory
-//			{
-//				if (HeroBackpack.AllItems.Count < backpackSlot)
-//				{
-//					return false;
-//				}
-//				if (HeroBackpack.AllItems[backpackSlot] == null)
-//				{
-//				//	HeroBackpack.ReplaceItem
-//				}
-//			}
-//			else // this is a consumable
-//			{
-//
-//			}
-//			return true;
-//		}
-//	}
+	public void Equip(int destinationSlot, int originSlot)
+	{
+		if (ValidSlot(destinationSlot))
+		{
+			if (HeroInventory.Items.Count >= originSlot)
+			{
+				Item insertingItem = HeroInventory.Items[originSlot];
+				if (insertingItem != null)
+				{
+					Item returnItem = HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
+					HeroInventory.Items.Insert(originSlot,returnItem);
+				}
+			}	
+		}
+	}
+
+	bool ValidSlot(int slot)
+	{
+		if (slot > 3)
+		{
+			return false;
+		}
+		return true;
+	}
 }

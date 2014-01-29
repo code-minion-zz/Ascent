@@ -53,21 +53,21 @@ public class UITownWindow : UIPlayerMenuWindow
 		base.Initialise ();
 	}
 
-	public void Equip(int destinationSlot, int originSlot)
-	{
-		if (ValidSlot(destinationSlot))
-		{
-			if (player.GetComponent<Hero>().HeroInventory.Items.Count >= originSlot)
-			{
-				Item insertingItem = player.GetComponent<Hero>().HeroInventory.Items[originSlot];
-				if (insertingItem != null)
-				{
-					Item returnItem = player.Hero.GetComponent<Hero>().HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
-					player.GetComponent<Hero>().HeroInventory.Items.Insert(originSlot,returnItem);
-				}
-			}	
-		}
-	}
+//	public void Equip(int destinationSlot, int originSlot)
+//	{
+//		if (ValidSlot(destinationSlot))
+//		{
+//			if (player.GetComponent<Hero>().HeroInventory.Items.Count >= originSlot)
+//			{
+//				Item insertingItem = player.GetComponent<Hero>().HeroInventory.Items[originSlot];
+//				if (insertingItem != null)
+//				{
+//					Item returnItem = player.Hero.GetComponent<Hero>().HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
+//					player.GetComponent<Hero>().HeroInventory.Items.Insert(originSlot,returnItem);
+//				}
+//			}	
+//		}
+//	}
 
 	/// <summary>
 	/// Return item to inventory if space permits.
@@ -98,13 +98,13 @@ public class UITownWindow : UIPlayerMenuWindow
 		activePanel = panels[(int)EBackpackPanels.BACKPACK];
 	}
 
-	bool ValidSlot(int slot)
-	{
-		if (slot > 3)
-		{
-			return false;
-		}
-		return true;
-	}
+//	bool ValidSlot(int slot)
+//	{
+//		if (slot > 3)
+//		{
+//			return false;
+//		}
+//		return true;
+//	}
 }
 
