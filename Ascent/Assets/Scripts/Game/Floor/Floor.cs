@@ -91,6 +91,7 @@ public class Floor : MonoBehaviour
     // Initialize the camera first.
     private void InitialiseCamera()
     {
+       
         // Create the floor's camera
         GameObject go = null;
 
@@ -136,7 +137,7 @@ public class Floor : MonoBehaviour
 			players[i].Hero.transform.position = pos;
 			players[i].Hero.transform.rotation = Quaternion.identity;
 			players[i].Hero.transform.localScale = Vector3.one;
-			players[i].Hero.SetActive(true);
+			players[i].Hero.gameObject.SetActive(true);
 
             players[i].Hero.GetComponent<Hero>().onDeath += OnPlayerDeath;
 
@@ -340,7 +341,7 @@ public class Floor : MonoBehaviour
 		foreach (Player player in players)
 		{
 			//player.Hero.GetComponent<Hero>().HeroController.DisableInput();
-			player.Hero.SetActive(false);
+			player.Hero.gameObject.SetActive(false);
 		}
 
 		// Show summary screen

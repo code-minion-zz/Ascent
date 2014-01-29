@@ -6,7 +6,16 @@ public class Tower : MonoBehaviour
 	private Floor currentFloor;
 	public Floor CurrentFloor
 	{
-		get { return currentFloor; }
+		get 
+        {
+            // This is temp code.
+            if (currentFloorNumber == 0)
+            {	
+                InitialiseFloor();
+            }
+
+            return currentFloor;
+        }
 		set { currentFloor = value; }
 	}
 
@@ -18,16 +27,22 @@ public class Tower : MonoBehaviour
 
     public void InitialiseFloor()
     {
-		currentFloorNumber = 1;
-        currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.InitialiseFloor();
+        if (currentFloorNumber == 0)
+        {
+            currentFloorNumber = 1;
+            currentFloor = gameObject.AddComponent<Floor>();
+            currentFloor.InitialiseFloor();
+        }
     }
 
 	public void InitialiseRandomFloor()
 	{
-		currentFloorNumber = 1;
-		currentFloor = gameObject.AddComponent<Floor>();
-		currentFloor.InitialiseRandomFloor();
+        if (currentFloorNumber == 0)
+        {
+            currentFloorNumber = 1;
+            currentFloor = gameObject.AddComponent<Floor>();
+            currentFloor.InitialiseRandomFloor();
+        }
 	}
 
 }

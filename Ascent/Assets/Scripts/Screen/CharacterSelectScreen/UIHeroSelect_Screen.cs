@@ -32,8 +32,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		InputManager.OnDeviceDetached += OnDeviceDetached;
 
 		devices = InputManager.Devices;
-
-		GameSaver.LoadAllHeroSaves();
 	}
 
 	public void Update () 
@@ -83,7 +81,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
 		// Check if any players want to enter the game
 		AddNewPlayers();
-
 	}
 
 	public void AddNewPlayers()
@@ -171,8 +168,17 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 
     public void StartGame()
     {
+        // Save all the new characters
+        foreach(Player p in players)
+        {
+            AscentGameSaver.SaveHero(p.Hero, false);
+        }
+        AscentGameSaver.SaveGame();
+
+        // Give the players to the Game
 		Game.Singleton.SetPlayers(players);
 
-        Game.Singleton.LoadLevel("Level", Game.EGameState.Tower);
+        // Load the Tower Scene
+        Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
     }
 }

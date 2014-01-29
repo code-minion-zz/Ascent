@@ -17,7 +17,7 @@ public class WarriorStrike : Action
 		base.Initialise(owner);
 
         animationSpeed = 2.0f;
-        animationLength = 1.167f / animationSpeed;
+        animationLength = 1.067f;
 		coolDownTime = animationLength;
 		animationTrigger = "Strike";
 		specialCost = 0;
@@ -31,16 +31,8 @@ public class WarriorStrike : Action
         base.StartAbility();
 
 		performed = false;
-        animationLength = 1.167f / animationSpeed;
         coolDownTime = animationLength;
 		owner.Animator.PlayAnimation(animationTrigger);
-
-        //if (owner.Weapon != null)
-        //{
-        //    // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-        //    damage = owner.Weapon.Damage + 10;
-        //    knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
-        //}
 	}
 
 	public override void UpdateAbility()
@@ -53,19 +45,22 @@ public class WarriorStrike : Action
 			{
 				List<Character> enemies = new List<Character>();
 
-				if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
+				if (Game.Singleton.InTower)
 				{
-					foreach(Enemy e in enemies)
+					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 					{
-                        // Apply damage and knockback to the enemey.
-						e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
-                        e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
+						foreach (Enemy e in enemies)
+						{
+							// Apply damage and knockback to the enemey.
+							e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+							e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
-                        // Create a blood splatter effect on the enemy.
-                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
+							// Create a blood splatter effect on the enemy.
+							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
-                        // Tell the hud manager to spawn text.
-                        HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
+							// Tell the hud manager to spawn text.
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
+						}
 					}
 				}
 

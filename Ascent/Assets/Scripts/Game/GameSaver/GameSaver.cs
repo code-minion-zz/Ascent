@@ -5,13 +5,13 @@ using System.Xml;
 
 public static class GameSaver
 {
+	public static XMLSerialiser.DirectoryTarget targetDirection = XMLSerialiser.DirectoryTarget.APPLICATION;
     public const int maxSlots = 10;
-
 	public static HeroSaveDataList heroSaves;
 
 	public static HeroSaveDataList LoadAllHeroSaves()
     {
-		heroSaves = XMLSerialiser.DeserializeObject(XMLSerialiser.LoadXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml"), "HeroSaveDataList") as HeroSaveDataList;
+		heroSaves = XMLSerialiser.DeserializeObject(XMLSerialiser.LoadXML(targetDirection, "", "HeroSaveDataList.xml"), "HeroSaveDataList") as HeroSaveDataList;
 
 		return heroSaves;
     }
@@ -31,7 +31,7 @@ public static class GameSaver
 
     public static void SaveGame(HeroSaveDataList saves)
     {
-		XMLSerialiser.CreateXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(heroSaves));
+		XMLSerialiser.CreateXML(targetDirection, "", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(heroSaves));
 
 	   // // Save the heros
 	   // List<Player> players = Game.Singleton.Players;
@@ -53,14 +53,14 @@ public static class GameSaver
     {
 		HeroSaveDataList saves = new HeroSaveDataList();
 
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(1) });
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(2) });
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(3) });
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(1) });
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(2) });
-		saves.heroSaves.Add(new HeroSaveData() { id = GetUniqueID(3) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(1) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(2) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(3) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(4) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(5) });
+		//saves.heroSaves.Add(new HeroSaveData() { uid = GetUniqueID(6) });
 
-		XMLSerialiser.CreateXML(XMLSerialiser.DirectoryTarget.DESKTOP, "Ascent_SaveData", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(saves));
+		XMLSerialiser.CreateXML(targetDirection, "", "HeroSaveDataList.xml", XMLSerialiser.SerializeObject(saves));
     }
 
 	public static ulong GetUniqueID(int iAddionalSeed)

@@ -25,6 +25,9 @@ public class GameInitialiser : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
     {
+
+        AscentGameSaver.LoadGame();
+
         // Check if the game already exists.
 
         GameObject theGameObject = GameObject.Find("Game");

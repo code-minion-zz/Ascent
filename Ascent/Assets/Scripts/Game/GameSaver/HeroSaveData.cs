@@ -1,36 +1,52 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 public class HeroSaveData 
 {
-    // Save specific
-    public float saveTime;
-    public ulong id;
+    // System info
+	public string name;
+    public System.DateTime saveTime;
+    public ulong uid;
 
-    // Hero Statistics
-    public int level;
-	public Character.EHeroClass type;
-	
-	// Hero Backpack 
-    public Backpack backpack;
-    
-    // Hero Inventory
-    public HeroInventory inventory;
+	// Hero info
+	public uint highestFloor;
+	public Character.EHeroClass classType;
+	public BaseStats baseStats;
+	public Backpack backpack;
+	public HeroInventory inventory;
+	public List<Action> abilities;
 
-	// Abilities
-    public Action actions;
 
 	public HeroSaveData()
 	{
-		saveTime = Time.time;
-		level = 1;
+	}
+
+	public HeroSaveData(Hero hero)
+	{
+		// System info
+		name = "DefaultName";
+		saveTime = System.DateTime.Now;
+		uid = AscentGameSaver.GetUniqueID();
+
+		// Hero info
+		classType = hero.ClassType;
+		baseStats = hero.CharacterStats;
+		backpack = hero.HeroBackpack;
+		inventory = hero.HeroInventory;
+		highestFloor = hero.HighestFloorReached;
+
+		// Also store the uid into the hero so it knows where to save itself later
+		hero.SaveUID = uid;
 	}
 
 	public override string ToString()
 	{
-		string toString = "HeroSave\nTime: " + saveTime + "\n" +
-							"ID: " + id;
+		string toString = "Lv" + baseStats.Level + " " + classType + "\n" +
+							 saveTime + "\n" +
+							 "uid " + uid;
+
 
 		return toString;
 	}

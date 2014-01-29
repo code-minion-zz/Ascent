@@ -60,17 +60,20 @@ public class WarriorWarStomp : Action
             {
                 List<Character> enemies = new List<Character>();
 
-                if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(collisionShape, Character.EScope.Enemy, ref enemies))
-                {
-                    foreach (Enemy e in enemies)
-                    {
-                        e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
-                        e.ApplyStunEffect(2.25f);
+				if (Game.Singleton.InTower)
+				{
+					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(collisionShape, Character.EScope.Enemy, ref enemies))
+					{
+						foreach (Enemy e in enemies)
+						{
+							e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+							e.ApplyStunEffect(2.25f);
 
-                        // Create a blood splatter effect on the enemy.
-                        Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
-                    }
-                }
+							// Create a blood splatter effect on the enemy.
+							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
+						}
+					}
+				}
 
                 performed = true;
             }

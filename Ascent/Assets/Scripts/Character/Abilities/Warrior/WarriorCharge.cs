@@ -54,22 +54,26 @@ public class WarriorCharge : Action
         base.StartAbility();
 
         startPos = owner.transform.position;
-		startPos.y = 1.0f;
+		Vector3 rayStart = startPos;
+		rayStart.y = 1.0f;
 
 		Character closestCharacter = null;
 		List<Character> enemies = new List<Character>();
-		if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
+		if (Game.Singleton.InTower)
 		{
-			float closestDistance = 1000000.0f;
-
-			foreach (Character e in enemies)
+			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
 			{
-				float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
+				float closestDistance = 1000000.0f;
 
-				if (distance < closestDistance)
+				foreach (Character e in enemies)
 				{
-					closestDistance = distance;
-					closestCharacter = e;
+					float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
+
+					if (distance < closestDistance)
+					{
+						closestDistance = distance;
+						closestCharacter = e;
+					}
 				}
 			}
 		}
@@ -77,7 +81,7 @@ public class WarriorCharge : Action
 		if (closestCharacter != null)
 		{
 			RaycastHit hitInfo;
-			if (Physics.Raycast(new Ray(startPos, closestCharacter.transform.position - startPos), out hitInfo, distanceMax))
+			if (Physics.Raycast(new Ray(rayStart, closestCharacter.transform.position - rayStart), out hitInfo, distanceMax))
 			{
 				targetPos = hitInfo.point - (owner.transform.forward);
 
@@ -88,7 +92,7 @@ public class WarriorCharge : Action
 		else
 		{
 			RaycastHit hitInfo;
-			if (Physics.Raycast(new Ray(startPos, owner.transform.forward), out hitInfo, distanceMax))
+			if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
 			{
 				targetPos = hitInfo.point - (owner.transform.forward);
 
@@ -103,6 +107,8 @@ public class WarriorCharge : Action
 				animationLength = travelTime;
 			}
 		}
+
+		targetPos.y = owner.transform.position.y;
 
         owner.ApplyInvulnerabilityEffect(animationLength);
 	}
@@ -119,20 +125,23 @@ public class WarriorCharge : Action
         {
            List<Character> enemies = new List<Character>();
 
-           if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
-           {
-               foreach (Enemy e in enemies)
-               {
-                   int damage = 2;
-                   // Apply damage, knockback and stun to the enemy.
-                   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
-                   e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
-                   e.ApplyStunEffect(2.0f);
+		   if (Game.Singleton.InTower)
+		   {
+			   if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+			   {
+				   foreach (Enemy e in enemies)
+				   {
+					   int damage = 2;
+					   // Apply damage, knockback and stun to the enemy.
+					   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+					   e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
+					   e.ApplyStunEffect(2.0f);
 
-                   // Create a blood splatter effect on the enemy.
-                   Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
-               }
-           }
+					   // Create a blood splatter effect on the enemy.
+					   Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
+				   }
+			   }
+		   }
 
            owner.StopAbility();
         }

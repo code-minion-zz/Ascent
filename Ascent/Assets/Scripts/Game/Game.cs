@@ -40,6 +40,11 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
+	public bool InTower
+	{
+		get { return gameState == EGameState.Tower || gameState == EGameState.TowerRandom; }
+	}
+
 	public static bool running = false;
 
 	private EGameState gameStateToLoad;
@@ -93,6 +98,8 @@ public class Game : MonoBehaviour
 
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
+        AscentGameSaver.LoadGame();
+
         Random.seed = (int)Time.time;
 		running = true;
 
