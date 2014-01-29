@@ -31,6 +31,11 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuB -= OnMenuCancel;
 	}
 
+	public virtual void Initialise()
+	{
+
+	}
+
 	public virtual void OnEnable()
 	{
 		if (parent == null)
@@ -49,20 +54,26 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	public virtual void OnMenuUp(InputDevice device)
 	{
-        UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+		if (currentSelection != null)
+		{
+			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
-        currentSelection = PrevButton();
+			currentSelection = PrevButton();
 
-        UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		}
 	}
 
 	public virtual void OnMenuDown(InputDevice device)
 	{
-        UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+		if (currentSelection != null)
+		{
+			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
-        currentSelection = NextButton();
+			currentSelection = NextButton();
 
-        UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		}
 	}
 
 	public virtual void OnMenuOK(InputDevice device)
