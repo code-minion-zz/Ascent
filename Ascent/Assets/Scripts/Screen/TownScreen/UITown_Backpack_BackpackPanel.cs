@@ -61,7 +61,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		if (initialised)
 		{
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-			SetTab(((UITown_Backpack_Window)parent).CurrentTab);
+			SetTab(((UITownWindow)parent).CurrentTab);
 		}
 
 		base.OnEnable();
@@ -109,14 +109,14 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	void ToggleTab()
 	{
-		UITown_Backpack_Window.EBackpackTab tab = ((UITown_Backpack_Window)parent).CurrentTab;
-		if (tab == UITown_Backpack_Window.EBackpackTab.Accessory) 
+		UITownWindow.EBackpackTab tab = ((UITownWindow)parent).CurrentTab;
+		if (tab == UITownWindow.EBackpackTab.Accessory) 
 		{
-			tab = UITown_Backpack_Window.EBackpackTab.Consumable;
+			tab = UITownWindow.EBackpackTab.Consumable;
 		}
 		else
 		{
-			tab = UITown_Backpack_Window.EBackpackTab.Accessory;
+			tab = UITownWindow.EBackpackTab.Accessory;
 		}
 	}
 
@@ -126,7 +126,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		EButtons current = (EButtons)currentButton;
 
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.INVENTORY);
+		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.INVENTORY);
 	}
 
 
@@ -137,12 +137,12 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		//parent.CloseWindow();
 	}
 	
-	public void SetTab(UITown_Backpack_Window.EBackpackTab tab)
+	public void SetTab(UITownWindow.EBackpackTab tab)
 	{
 		Transform accessoryTab = transform.FindChild("Tabs/Accessory Tab");
 		Transform consumableTab = transform.FindChild("Tabs/Consumable Tab");
 
-		if (tab == UITown_Backpack_Window.EBackpackTab.Accessory)
+		if (tab == UITownWindow.EBackpackTab.Accessory)
 		{
 			UICamera.Notify(accessoryTab.gameObject, "OnPress", true);
 			UICamera.Notify(consumableTab.gameObject, "OnPress", false);

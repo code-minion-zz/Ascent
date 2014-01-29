@@ -27,27 +27,27 @@ public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
 	{
 		// TODO: Change character's equipment
 
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.BACKPACK);
+		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.BACKPACK);
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
-		parent.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.BACKPACK);
+		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.BACKPACK);
 	}
 
 	protected void ShowMenu()
 	{
 		// TODO: Disable current inventory tab
 
-		UITown_Backpack_Window.EBackpackTab tab = ((UITown_Backpack_Window)parent).CurrentTab;
+		UITownWindow.EBackpackTab tab = ((UITownWindow)parent).CurrentTab;
 		switch (tab)
 		{
-		case UITown_Backpack_Window.EBackpackTab.Accessory:
+		case UITownWindow.EBackpackTab.Accessory:
 		{
 			// TODO: enable accessories tab
 			break;
 		}
-		case UITown_Backpack_Window.EBackpackTab.Consumable:
+		case UITownWindow.EBackpackTab.Consumable:
 		{
 			// TODO: enable consumables tab
 

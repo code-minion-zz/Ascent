@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class UITown_Screen : UIPlayerMenuScreen 
+public class UITownScreen : UIPlayerMenuScreen 
 {
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
@@ -36,23 +36,23 @@ public class UITown_Screen : UIPlayerMenuScreen
 		//TODO: put this back where it belongs
 		//players = Game.Singleton.Players;
 
-		GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-		//go.transform.parent = Game.Singleton.transform;
-		Player newPlayer = go.GetComponent<Player>() as Player;
-
-		newPlayer.PlayerID = 0;
-		newPlayer.name = newPlayer.name + 0;
-
-		windows[0].gameObject.SetActive(true);
-
-		// TODO: Rig up to input device properly
-		newPlayer.BindInputDevice(InputManager.Devices[0]);
-
-		windows[0].SetPlayer(newPlayer);
-
-		players.Add(newPlayer);
-
-		windows[0].SetPlayer(players[0]);
+//		GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+//		//go.transform.parent = Game.Singleton.transform;
+//		Player newPlayer = go.GetComponent<Player>() as Player;
+//
+//		newPlayer.PlayerID = 0;
+//		newPlayer.name = newPlayer.name + 0;
+//
+//		windows[0].gameObject.SetActive(true);
+//
+//		// TODO: Rig up to input device properly
+//		newPlayer.BindInputDevice(InputManager.Devices[0]);
+//
+//		windows[0].SetPlayer(newPlayer);
+//
+//		players.Add(newPlayer);
+//
+//		windows[0].SetPlayer(players[0]);
 
 		// TODO: Retrieve any player data into containers for this screen, if necessary.
 	}

@@ -9,10 +9,11 @@
 //------------------------------------------------------------------------------
 using System.Collections.Generic;
 
-public class UITown_Backpack_Window : UIPlayerMenuWindow
+public class UITownWindow : UIPlayerMenuWindow
 {
-	public UIPlayerMenuPanel inventoryPanel;
-	public UIPlayerMenuPanel backpackPanel;
+//	public UIPlayerMenuPanel inventoryPanel;
+//	public UIPlayerMenuPanel backpackPanel;
+	public List<UIPlayerMenuPanel> TownPanels;
 
 	public enum EBackpackTab
 	{
@@ -86,8 +87,8 @@ public class UITown_Backpack_Window : UIPlayerMenuWindow
 
 	public override void AddAllMenuPanels()
 	{
-		panels[(int)EBackpackPanels.BACKPACK] = backpackPanel;
-		panels[(int)EBackpackPanels.INVENTORY] = inventoryPanel;
+		panels[(int)EBackpackPanels.BACKPACK] = TownPanels[0];
+		panels[(int)EBackpackPanels.INVENTORY] = TownPanels[1];
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
