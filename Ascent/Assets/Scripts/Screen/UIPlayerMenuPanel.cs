@@ -17,9 +17,12 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 	{
 		parent.OnMenuUp += OnMenuUp;
 		parent.OnMenuDown += OnMenuDown;
+		parent.OnMenuLeft += OnMenuLeft;
+		parent.OnMenuRight += OnMenuRight;
 		parent.OnMenuStart += OnMenuOK;
 		parent.OnMenuA += OnMenuOK;
 		parent.OnMenuB += OnMenuCancel;
+		parent.OnMenuY += OnMenuHax;
 	}
 
 	public void DeregisterToInputEvents()
@@ -29,6 +32,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuStart -= OnMenuOK;
 		parent.OnMenuA -= OnMenuOK;
 		parent.OnMenuB -= OnMenuCancel;
+		parent.OnMenuY -= OnMenuHax;
 	}
 
 	public virtual void Initialise()
@@ -51,7 +55,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		DeregisterToInputEvents();
 	}
 
-
+	
 	public virtual void OnMenuUp(InputDevice device)
 	{
 		if (currentSelection != null)
@@ -63,7 +67,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 		}
 	}
-
+	
 	public virtual void OnMenuDown(InputDevice device)
 	{
 		if (currentSelection != null)
@@ -76,18 +80,33 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		}
 	}
 
+	public virtual void OnMenuLeft(InputDevice device)
+	{
+		
+	}
+	
+	public virtual void OnMenuRight(InputDevice device)
+	{
+		
+	}
+
 	public virtual void OnMenuOK(InputDevice device)
 	{
 
 	}
 
-
+	
 	public virtual void OnMenuCancel(InputDevice device)
 	{
-
+		
 	}
 
-	protected UIButton NextButton()
+	public virtual void OnMenuHax(InputDevice device)
+	{
+		
+	}
+
+	protected virtual UIButton NextButton()
 	{
 		currentButton = ++currentButton;
 
@@ -99,7 +118,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		return (buttons[currentButton]);
 	}
 
-	protected UIButton PrevButton()
+	protected virtual UIButton PrevButton()
 	{
 		currentButton = --currentButton;
 

@@ -22,14 +22,13 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		windows = new List<UIPlayerMenuWindow>();
 		windows.Add(prefabWindow);
 
+		GameObject grid = transform.FindChild("Grid").gameObject;
+
 		// Instantiate P2 and P3
 		for (int i = 0; i < 2; ++i) // 2 for player two and three
 		{
-			GameObject windowGO = Instantiate(prefabWindow.gameObject) as GameObject;
+			GameObject windowGO =  NGUITools.AddChild(grid, prefabWindow.gameObject);
 			windowGO.name = "P" + (i + 2);
-			windowGO.transform.parent = mainPanel.transform;
-			windowGO.transform.position = prefabWindow.transform.position;
-			windowGO.transform.localScale = prefabWindow.transform.localScale;
 
 			UIPlayerMenuWindow window = windowGO.GetComponent<UIPlayerMenuWindow>();
 			windows.Add(window);
@@ -45,5 +44,11 @@ public class UIPlayerMenuScreen : MonoBehaviour
 			windows[i].Initialise();
 			windows[i].gameObject.SetActive(false);
 		}
+	}
+
+	[ContextMenu("Execute")]
+	public void OnMenuHax()
+	{
+		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
 	}
 }

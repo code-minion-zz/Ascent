@@ -119,7 +119,7 @@ public class InputManager : MonoBehaviour
 		{
 			PlayerIndex playerIndex = (PlayerIndex)i;
 
-			GamePadState state = GamePad.GetState(playerIndex);
+			XInputDotNetPure.GamePadState state = GamePad.GetState(playerIndex);
 
 			if (state.IsConnected)
 			{

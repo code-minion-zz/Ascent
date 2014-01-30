@@ -50,9 +50,9 @@ public abstract class Hero : Character
     protected HeroController heroController;
 	protected Backpack backpack;
     protected HeroInventory heroInventory;
-    protected HeroEquipment heroEquipment;
     protected FloorStats floorStatistics;
 	protected uint highestFloorReached;
+    public int unasignedAbilityPoints;
 
 	public uint HighestFloorReached
 	{
@@ -94,9 +94,34 @@ public abstract class Hero : Character
 	{
         base.Initialise();
 
-		heroInventory = new HeroInventory();
-        heroEquipment = new HeroEquipment();
 	}
+
+    public void AddExperience(int experience)
+    {
+        // Add experience
+        int curExp = baseStatistics.CurrentExperience + experience;
+        int maxExp = baseStatistics.MaxExperience;
+
+        // Keep leveling while experience is above required.
+        while (curExp >= maxExp)
+        {
+            curExp -= maxExp;
+
+            LevelUp();
+
+            // Recalculate required experience
+            maxExp = baseStatistics.MaxExperience;
+        }
+
+        // Set the new experience value
+        baseStatistics.CurrentExperience = curExp;
+    }
+
+    public void LevelUp()
+    {
+        baseStatistics.Level += 1;
+        unasignedAbilityPoints += 1;
+    }
 
     public override void SetColor(Color color)
     {
@@ -183,4 +208,29 @@ public abstract class Hero : Character
         // Record damage dealt.
         FloorStatistics.TotalDamageDealt += damage;
     }
+
+	public void Equip(int destinationSlot, int originSlot)
+	{
+		if (ValidSlot(destinationSlot))
+		{
+			if (HeroInventory.Items.Count >= originSlot)
+			{
+				Item insertingItem = HeroInventory.Items[originSlot];
+				if (insertingItem != null)
+				{
+					Item returnItem = HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
+					HeroInventory.Items.Insert(originSlot,returnItem);
+				}
+			}	
+		}
+	}
+
+	bool ValidSlot(int slot)
+	{
+		if (slot > 3)
+		{
+			return false;
+		}
+		return true;
+	}
 }

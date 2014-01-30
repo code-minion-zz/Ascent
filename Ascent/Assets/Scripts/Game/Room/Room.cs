@@ -203,10 +203,13 @@ public class Room : MonoBehaviour
 
     public void OnEnable()
     {
-		Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
-		Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
-		curMinCamera = minCamera;
-		curMaxCamera = maxCamera;
+		if (Game.Singleton.Tower.CurrentFloor)
+		{
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+			curMinCamera = minCamera;
+			curMaxCamera = maxCamera;
+		}
 
 		if(chests == null)
 		{

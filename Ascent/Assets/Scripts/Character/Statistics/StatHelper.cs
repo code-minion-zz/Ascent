@@ -125,6 +125,7 @@ public static class StatHelper
 				int i;
 				for (i = 0; i < itemCount; ++i)
 				{
+					//Backpack.BackpackSlot bs = (Backpack.BackpackSlot)i;
 					Item item = backPack.AllItems[i];
 					if (item is ConsumableItem)
 					{

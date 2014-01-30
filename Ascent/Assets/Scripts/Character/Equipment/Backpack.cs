@@ -1,9 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
 
 public class Backpack 
 {
+	public enum BackpackSlot
+	{
+		INVALID = -1,
+		ACC1,
+		ACC2,
+		ACC3,
+		ACC4,
+		ITM1,
+		ITM2,
+		ITM3,
+		MAX
+	}
+
     public const int kMaxItems = 7;
     public const int kMaxAccessories = 4;
     public const int kMaxConsumables = 3;
@@ -16,7 +31,7 @@ public class Backpack
 
             for (int i = 0; i < kMaxItems; ++i)
             {
-                if (allItems[i] != null)
+				if (AllItems[i] != null)
                 {
                     ++count;
                 }
@@ -61,15 +76,9 @@ public class Backpack
             return count;
         }
     }
+	
+	public Item[] AllItems = new Item[kMaxItems];
 
-    public List<Item> allItemsa = new List<Item>();
-
-    protected Item[] allItems = new Item[kMaxItems];
-    public Item[] AllItems
-    {
-        get { return allItems; }
-        set { allItems = value; }
-    }
 
     protected AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
     public AccessoryItem[] AccessoryItems
@@ -85,32 +94,39 @@ public class Backpack
         protected set { consumableItems = value; }
     }
 
-    public void AddItem(int slot, Item item)
+	public void AddItem(BackpackSlot slot, Item item)
     {
         // TODO: Make sure there is room for the item
-        allItems[slot] = item;
+		AllItems[(int)slot] = item;
     }
 
-    public void ReplaceItem(int slot, Item item)
+    public Item ReplaceItem(int slot, Item item)
     {
         // TODO: Make sure there is something to replace.
         // TODO: Make sure that there aren't too many accessories or consumables
-        allItems[slot] = item;
+		Item retval = AllItems[slot];
+        AllItems[slot] = item;
+		return retval;
     }
 
     public void RemoveItem(Item item)
     {
         for (int i = 0; i < kMaxItems; ++i)
         {
-            if (allItems[i] != null)
+            if (AllItems[i] != null)
             {
-                if (allItems[i] == item)
+                if (AllItems[i] == item)
                 {
-                    allItems[i] = null;
+                    AllItems[i] = null;
                 }
             }
         }
     }
+
+	void GetAllOf(System.Type t)
+	{
+		//AllItems.SelectMany()
+	}
 
     public void UpdateSubItemLists()
     {

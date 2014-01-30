@@ -34,7 +34,13 @@ public class FloorSummaryManager : MonoBehaviour {
 			FloorSummaryPanel fsp = myPanel.GetComponent<FloorSummaryPanel>();
 			fsp.Init(Game.Singleton.Players[i]);
 			fsp.VoteChanged += TrackVote;
+
+            AscentGameSaver.SaveHero(Game.Singleton.Players[i].Hero, false);
 		}
+
+		Destroy( Game.Singleton.Tower.CurrentFloor);
+        
+        AscentGameSaver.SaveGame();
 	}
 	
 	// Update is called once per frame
@@ -58,7 +64,7 @@ public class FloorSummaryManager : MonoBehaviour {
 	}
 
 	private void TrackVote(SummaryVote from, SummaryVote to)
-	{
+    {
 		switch (from)
 		{
 		case SummaryVote.NEXTLEVEL:

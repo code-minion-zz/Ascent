@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private Hero heroScript;
     private InputDevice input;
 
-    public UIPlayerPanel activePlayerPanel;
+    public UIPlayerMenuPanel activePlayerPanel;
 
 	#endregion
 	
@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     // To create a brand new Hero
     public void CreateHero(Character.EHeroClass heroType)
     {
+		Debug.Log("A");
 		heroScript = HeroFactory.CreateNewHero(heroType);
 		heroObject = heroScript.gameObject;
 

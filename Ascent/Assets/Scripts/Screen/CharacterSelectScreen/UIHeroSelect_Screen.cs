@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,12 +17,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
     {
         get { return allReady; }
     }
-
-	void OnDestroy()
-	{
-		InputManager.OnDeviceAttached -= OnDeviceAttached;
-		InputManager.OnDeviceDetached -= OnDeviceDetached;
-	}
 
 	public override void Start()
 	{
@@ -179,6 +173,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		Game.Singleton.SetPlayers(players);
 
         // Load the Tower Scene
-        Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
+        Game.Singleton.LoadLevel("Town", Game.EGameState.Town);
     }
 }

@@ -121,12 +121,12 @@ public class StatBar : MonoBehaviour {
 	
 	void AdjustBar()
 	{
-		int result =(int)(defaultWidth / (maxVal/curVal));
-		barFront.width = result;
-		if (result <= 0)
-		{
-			barFront.gameObject.SetActive(false);
-		}
+        int result = (int)(defaultWidth / (maxVal / curVal));
+        barFront.width = result;
+        if (result <= 0)
+        {
+            barFront.gameObject.SetActive(false);
+        }
         else
         {
             barFront.gameObject.SetActive(true);
