@@ -60,10 +60,13 @@ public class FloorGeneration
 
         //Random.seed = (int)System.DateTime.Today.Millisecond;
         Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
         CreateRooms();
+        // Populate the rooms with random decor.
+        PopulateRoomsMisc();
     }
 
-    public void CreateRooms()
+    private void CreateRooms()
     {
         rooms.Clear();
         rooms = new List<RoomProperties>();
@@ -116,7 +119,17 @@ public class FloorGeneration
         }
 
         GenerateWalls();
-        //PopulateRooms();
+    }
+
+    /// <summary>
+    /// Populates the room with random decoration.
+    /// </summary>
+    private void PopulateRoomsMisc()
+    {
+        foreach (RoomProperties room in rooms)
+        {
+
+        }
     }
 
     /// <summary>
