@@ -45,4 +45,10 @@ public class UIPlayerMenuScreen : MonoBehaviour
 			windows[i].gameObject.SetActive(false);
 		}
 	}
+
+	[ContextMenu("Execute")]
+	public void OnMenuHax()
+	{
+		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
+	}
 }

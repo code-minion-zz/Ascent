@@ -55,10 +55,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	public override void OnEnable()
 	{
-		if (initialised)
-		{
-			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-		}
+//		if (initialised)
+//		{
+//			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+//		}
 
 		base.OnEnable();
 	}
@@ -117,9 +117,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		//parent.CloseWindow();
 	}
-
+	
 	public override void OnMenuHax(InputDevice device)
 	{
+		//((UITownScreen)parent.ParentScreen).StartGame();
 		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
 	}
 }

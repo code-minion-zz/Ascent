@@ -32,6 +32,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuStart -= OnMenuOK;
 		parent.OnMenuA -= OnMenuOK;
 		parent.OnMenuB -= OnMenuCancel;
+		parent.OnMenuY -= OnMenuHax;
 	}
 
 	public virtual void Initialise()

@@ -8,6 +8,7 @@ public class UIHeroSelect_HeroSelectedPanel : UIPlayerMenuPanel
         if (((UIHeroSelect_Screen)parent.ParentScreen).AllReady)
         {
             ((UIHeroSelect_Screen)parent.ParentScreen).StartGame();
+			return;
         }
 
         if (!parent.Ready)

@@ -142,6 +142,7 @@ public class Game : MonoBehaviour
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
 			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+			player.transform.parent = transform;
             player.transform.localPosition = Vector3.zero;
             player.transform.localRotation = Quaternion.identity;
             player.transform.localScale = Vector3.one;
@@ -205,7 +206,7 @@ public class Game : MonoBehaviour
 				{
 					for (int i = 0; i < players.Count; ++i)
 					{
-						players[i].gameObject.SetActive(false);
+						players[i].Hero.gameObject.SetActive(false);
 					}
 				}
 				break;

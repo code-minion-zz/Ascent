@@ -38,7 +38,18 @@ public class UITownScreen : UIPlayerMenuScreen
 
 		players = Game.Singleton.Players;
 
+
+		// Activate windows for number of players
+		for (int i = 0; i < players.Count; ++i)
+		{
+			windows[i].gameObject.SetActive(true);
+			windows[i].SetPlayer(players[i]);
+		}
+
+
 		// Spawn a panel for each player
+
+
 
 //		for (int i = 0; i < players.Count; ++i)
 //		{
@@ -156,8 +167,6 @@ public class UITownScreen : UIPlayerMenuScreen
 
     public void StartGame()
     {
-		Game.Singleton.SetPlayers(players);
-
         Game.Singleton.LoadLevel("Level", Game.EGameState.Tower);
     }
 }
