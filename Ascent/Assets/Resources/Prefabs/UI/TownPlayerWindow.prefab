@@ -1222,9 +1222,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400200}
-  - 111: {fileID: 11100002}
   - 114: {fileID: 11400252}
-  - 114: {fileID: 11400250}
   - 54: {fileID: 5400006}
   - 114: {fileID: 11400248}
   m_Layer: 14
@@ -1473,7 +1471,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 7.62939453e-06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400020}
@@ -2508,22 +2506,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!111 &11100002
-Animation:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100200}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 21e432435c13c134384f3c0c36045919, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 5eabd000b213209499a98e6757fcdcc8, type: 2}
-  - {fileID: 7400000, guid: 21e432435c13c134384f3c0c36045919, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2715,7 +2697,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: .13333334
+  aspectRatio: 1
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
   mSpriteName: Glow
   mType: 1
@@ -2955,7 +2937,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: .13333334
+  aspectRatio: 1
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
   mSpriteName: Glow
   mType: 1
@@ -2982,28 +2964,28 @@ MonoBehaviour:
   leftAnchor:
     target: {fileID: 400020}
     relative: 0
-    absolute: 0
+    absolute: 1
   rightAnchor:
     target: {fileID: 400020}
     relative: 1
-    absolute: 0
+    absolute: -1
   bottomAnchor:
     target: {fileID: 400020}
     relative: 0
-    absolute: 0
+    absolute: 1
   topAnchor:
     target: {fileID: 400020}
     relative: 1
-    absolute: 0
+    absolute: -1
   mColor: {r: .137254909, g: .290196091, b: .0196078438, a: 1}
   mPivot: 4
-  mWidth: 60
-  mHeight: 60
+  mWidth: 58
+  mHeight: 58
   mDepth: 5
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1
+  aspectRatio: .983050823
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
   mSpriteName: NGUI
   mType: 1
@@ -4661,7 +4643,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: .13333334
+  aspectRatio: 1
   mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 2}
   mSpriteName: Glow
   mType: 1
@@ -4708,7 +4690,7 @@ MonoBehaviour:
   alwaysOnScreen: 0
   anchorOffset: 0
   renderQueue: 0
-  startingRenderQueue: 3004
+  startingRenderQueue: 3006
   mAlpha: 1
   mClipping: 3
   mClipRange: {x: 0, y: 1, z: 356, w: 176}
@@ -5851,19 +5833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec6d73c1ab731540a1aabc6a5af2ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11400250
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f25ebcc4cb996b419c14e2e9f6c51f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelName: CharSelect
-  defaultSelection: {fileID: 0}
 --- !u!114 &11400252
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -48,7 +48,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		buttonMax = (int)EButtons.MAX;
 
-		tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
+		//tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
 
 		initialised = true;
 	}
@@ -58,7 +58,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		if (initialised)
 		{
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-			SetTab(((UITownWindow)parent).CurrentTab);
 		}
 
 		base.OnEnable();
@@ -96,25 +95,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	
 	public override void OnMenuLeft(InputDevice device)
 	{
-		ToggleTab ();
 	}
 
 	public override void OnMenuRight(InputDevice device)
 	{		
-		ToggleTab ();
-	}
-
-	void ToggleTab()
-	{
-		UITownWindow.EBackpackTab tab = ((UITownWindow)parent).CurrentTab;
-		if (tab == UITownWindow.EBackpackTab.Accessory) 
-		{
-			tab = UITownWindow.EBackpackTab.Consumable;
-		}
-		else
-		{
-			tab = UITownWindow.EBackpackTab.Accessory;
-		}
 	}
 
 	public override void OnMenuOK(InputDevice device)
@@ -132,22 +116,5 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		// TODO: Link back to the main town screen
 
 		//parent.CloseWindow();
-	}
-	
-	public void SetTab(UITownWindow.EBackpackTab tab)
-	{
-		Transform accessoryTab = transform.FindChild("Tabs/Accessory Tab");
-		Transform consumableTab = transform.FindChild("Tabs/Consumable Tab");
-
-		if (tab == UITownWindow.EBackpackTab.Accessory)
-		{
-			UICamera.Notify(accessoryTab.gameObject, "OnPress", true);
-			UICamera.Notify(consumableTab.gameObject, "OnPress", false);
-		}
-		else
-		{
-			UICamera.Notify(accessoryTab.gameObject, "OnPress", false);
-			UICamera.Notify(consumableTab.gameObject, "OnPress", true);
-		}
 	}
 }

@@ -10,11 +10,11 @@ public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
 
     public override void OnEnable()
     {
-        // TODO : populate item list based on Backpack state
-		if (initialised)
-		{
-			ShowMenu();
-		}
+		// TODO : populate item list based on Backpack state
+		if (!initialised) return;
+
+		ShowMenu();
+		
         base.OnEnable();
     }
 
