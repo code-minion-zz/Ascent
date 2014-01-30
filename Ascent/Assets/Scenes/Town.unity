@@ -1207,7 +1207,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 240330705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.541473389, y: 0, z: 69.1600037}
+  m_LocalPosition: {x: 0, y: 0, z: 69.1600037}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1408396749}
@@ -1241,13 +1241,13 @@ MonoBehaviour:
     absolute: 0
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 1919
+  mWidth: 1440
   mHeight: 1080
   mDepth: -10
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.77685189
+  aspectRatio: 1.33333337
   mRect:
     serializedVersion: 2
     x: 0
@@ -2704,6 +2704,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 678838579}
   - 114: {fileID: 678838580}
+  - 114: {fileID: 678838582}
+  - 65: {fileID: 678838581}
   m_Layer: 14
   m_Name: Accessory Slot
   m_TagString: Untagged
@@ -2772,6 +2774,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &678838581
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 678838578}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &678838582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 678838578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 678838578}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &699018555
 GameObject:
   m_ObjectHideFlags: 0
@@ -3020,6 +3052,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 764206067}
   - 114: {fileID: 764206068}
+  - 114: {fileID: 764206070}
+  - 65: {fileID: 764206069}
   m_Layer: 14
   m_Name: Accessory Slot
   m_TagString: Untagged
@@ -3088,6 +3122,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &764206069
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 764206066}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &764206070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 764206066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 764206066}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &798278538
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,6 +3906,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1059776946}
   - 114: {fileID: 1059776947}
+  - 114: {fileID: 1059776949}
+  - 65: {fileID: 1059776948}
   m_Layer: 14
   m_Name: Consumable Slot
   m_TagString: Untagged
@@ -3910,6 +3976,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &1059776948
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1059776945}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1059776949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1059776945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1059776945}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &1064376666
 GameObject:
   m_ObjectHideFlags: 0
@@ -5442,6 +5538,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1695086427}
   - 114: {fileID: 1695086428}
+  - 114: {fileID: 1695086430}
+  - 65: {fileID: 1695086429}
   m_Layer: 14
   m_Name: Consumable Slot
   m_TagString: Untagged
@@ -5510,6 +5608,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &1695086429
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1695086426}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1695086430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1695086426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1695086426}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &1769793878
 GameObject:
   m_ObjectHideFlags: 0
@@ -5769,6 +5897,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1889569537}
   - 114: {fileID: 1889569538}
+  - 114: {fileID: 1889569540}
+  - 65: {fileID: 1889569539}
   m_Layer: 14
   m_Name: Consumable Slot
   m_TagString: Untagged
@@ -5837,6 +5967,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &1889569539
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1889569536}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1889569540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1889569536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1889569536}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &1897587867
 GameObject:
   m_ObjectHideFlags: 0
@@ -5922,6 +6082,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1913807902}
   - 114: {fileID: 1913807903}
+  - 114: {fileID: 1913807905}
+  - 65: {fileID: 1913807904}
   m_Layer: 14
   m_Name: Accessory Slot
   m_TagString: Untagged
@@ -5990,6 +6152,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &1913807904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1913807901}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1913807905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1913807901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1913807901}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &1920233914
 GameObject:
   m_ObjectHideFlags: 0
@@ -6141,6 +6333,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1961691353}
   - 114: {fileID: 1961691354}
+  - 114: {fileID: 1961691356}
+  - 65: {fileID: 1961691355}
   m_Layer: 14
   m_Name: Accessory Slot
   m_TagString: Untagged
@@ -6209,6 +6403,36 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!65 &1961691355
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1961691352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1961691356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1961691352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdca5042b1d12a4890ec1bd4f04290d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenTarget: {fileID: 1961691352}
+  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
+  duration: .200000003
+  disabledColor: {r: .5, g: .5, b: .5, a: 1}
+  dragHighlight: 0
+  onClick: []
 --- !u!1 &1974695380
 GameObject:
   m_ObjectHideFlags: 0

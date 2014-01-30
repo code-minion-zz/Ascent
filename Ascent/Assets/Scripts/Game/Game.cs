@@ -96,6 +96,15 @@ public class Game : MonoBehaviour
 		}
 	}
 
+	static bool initialised = false;
+	public void Start()
+	{
+		if (!initialised)
+		{
+			Initialise();
+		}
+	}
+
 	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
 	{
         AscentGameSaver.LoadGame();
@@ -108,10 +117,13 @@ public class Game : MonoBehaviour
 		Application.targetFrameRate = initValues.targetFrameRate;
 
         gameState = initValues.initialGameState;
+		gameStateToLoad = initValues.initialGameState;
 
         Initialise();
+		
+		InitialiseState();
 
-		OnLevelWasLoaded(0);
+		initialised = true;
 	}
 
 	public void Initialise()
@@ -179,18 +191,24 @@ public class Game : MonoBehaviour
 	{
 		// This state will be used to handle the initialisation of the new scene
 		gameStateToLoad = state;
-		gameState = EGameState.Loading;
+		//gameState = EGameState.Loading;
 		
-		// The Loading screen will grab this string and then load the correct scene
-		levelName = level;
+		//// The Loading screen will grab this string and then load the correct scene
+		//levelName = level;
 
-		Application.LoadLevel("LoadingScreen");
+		//Application.LoadLevel("LoadingScreen");
+
+		Application.LoadLevel(level);
 	}
 
     public void OnLevelWasLoaded(int iLevelID)
     {
-        // Only when coming from the loading screen.
-		switch (gameState)
+		InitialiseState();
+    }
+
+	public void InitialiseState()
+	{
+		switch (gameStateToLoad)
 		{
 			case EGameState.MainMenu:
 				{
@@ -226,7 +244,9 @@ public class Game : MonoBehaviour
 				}
 				break;
 		}
-    }
+
+		gameState = gameStateToLoad;
+	}
 	
 	#endregion
 

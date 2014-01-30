@@ -37,6 +37,8 @@ public class FloorSummaryManager : MonoBehaviour {
 
             AscentGameSaver.SaveHero(Game.Singleton.Players[i].Hero, false);
 		}
+
+		Destroy( Game.Singleton.Tower.CurrentFloor);
         
         AscentGameSaver.SaveGame();
 	}

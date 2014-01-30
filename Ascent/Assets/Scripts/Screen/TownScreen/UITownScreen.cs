@@ -164,9 +164,4 @@ public class UITownScreen : UIPlayerMenuScreen
 //		window.Player.UnbindInputDevice();
 //		playersToRemove.Add(window.Player);
 //	}
-
-    public void StartGame()
-    {
-        Game.Singleton.LoadLevel("Level", Game.EGameState.Tower);
-    }
 }

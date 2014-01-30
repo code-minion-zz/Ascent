@@ -92,6 +92,7 @@ public class UITownWindow : UIPlayerMenuWindow
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
+			panels[i].Initialise();
 			panels[i].gameObject.SetActive(false);
 		}
 		

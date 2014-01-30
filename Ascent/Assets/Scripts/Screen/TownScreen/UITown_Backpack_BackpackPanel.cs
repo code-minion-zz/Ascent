@@ -22,11 +22,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 
 
-	public virtual void Start()
+	public override void Initialise()
 	{
 		buttons = new UIButton[(int)EButtons.MAX];
-		
-
+	
 		Transform acc = transform.FindChild ("BackpackTab");
 		Transform con = transform.FindChild ("BackpackTab");
 
@@ -121,6 +120,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	public override void OnMenuHax(InputDevice device)
 	{
 		//((UITownScreen)parent.ParentScreen).StartGame();
-		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
+		Game.Singleton.LoadLevel("overhaul", Game.EGameState.TowerRandom);
 	}
 }
