@@ -7,8 +7,8 @@ using System.Collections;
 /// </summary>
 public class DerivedStats
 {
-	protected int curHealth =1;
-	protected int maxHealth =1;
+	protected int curHealth = 1;
+	protected int maxHealth = 1;
 	
 	protected int curSpecial;
 	protected int maxSpecial;

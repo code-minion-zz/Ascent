@@ -61,7 +61,7 @@ public class AscentGameSaverTest : MonoBehaviour
 		// Load highlighted hero
 		// This can be used in CharSelectScreen to load a save from the list of saves.
 		// The input device just needs to be given with the initialisation function.
-		if (Input.GetKeyUp(KeyCode.KeypadEnter))
+		if (Input.GetKeyUp(KeyCode.Return))
 		{
 			if (selectedSave != -1)
 			{
@@ -76,6 +76,8 @@ public class AscentGameSaverTest : MonoBehaviour
 				Hero LoadedHero = AscentGameSaver.LoadHero(heroSaves[selectedSave]);
 				LoadedHero.Initialise(device, heroSaves[selectedSave]);
 				LoadedHero.HeroController.CanUseInput = true;
+
+                Debug.Log(LoadedHero);
 				selectedSave = -1;
 			}
 		}

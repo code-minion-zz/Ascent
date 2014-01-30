@@ -10,7 +10,6 @@ using UnityEditor;
 /// </summary>
 public class Room : MonoBehaviour
 {
-	
 	public enum ERoomObjects
 	{
 		INVALID = -1,
@@ -21,6 +20,18 @@ public class Room : MonoBehaviour
 
 		MAX,
 	}
+
+    public enum EMonsterTypes
+    {
+        Rat,
+        Slime,
+        Imp,
+        EnchantedStatue,
+        Abomination,
+        Boss,
+
+        MAX
+    }
 
     #region Fields
 
@@ -359,11 +370,22 @@ public class Room : MonoBehaviour
 		{
 			case ERoomObjects.Chest:
 				{
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+
+                    if (chests == null)
+                    {
+                        chests = new List<TreasureChest>();
+                    }
+
+                    TreasureChest chest = newObject.GetComponent<TreasureChest>();
+                    chest.transform.parent = this.transform;
+                    chest.transform.localPosition = Vector3.zero;
+                    chests.Add(chest);
 				}
 				break;
 			case ERoomObjects.Loot:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
 
 					if(lootDrops == null)
 					{
@@ -375,7 +397,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name), Vector3.zero, Quaternion.identity) as GameObject;
 
                     if (enemies == null)
                     {
@@ -385,9 +407,10 @@ public class Room : MonoBehaviour
                     Enemy enemy = newObject.GetComponent<Enemy>();
                     enemies.Add(enemy);
                     enemy.transform.parent = monstersNode.transform;
+                    enemy.transform.localPosition = Vector3.zero;
                     enemy.ContainedRoom = this;
                     enemy.Initialise();
-					enemy.InitiliseHealthbar();
+					//enemy.InitiliseHealthbar();
 				}
 				break;
 		}
@@ -395,7 +418,102 @@ public class Room : MonoBehaviour
 		return newObject;
 	}
 
-	public void RemoveObject(ERoomObjects type, GameObject go)
+    // TODO: Make some monster generation script and offload logic there.
+    public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
+    {
+        // Generate number of monsters.
+        // TODO: make this better haha.
+        int numberOfMonsters = (int)rarity * Random.Range(1, 5);
+
+        int monstersPlaced = 0;
+
+        for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
+        {
+            // Choose type of monster
+            EMonsterTypes mobType = (EMonsterTypes)(Random.Range(0, (int)EMonsterTypes.MAX));
+
+            GameObject go = null;
+
+            switch (mobType)
+            {
+                case EMonsterTypes.Rat:
+                    go = InstantiateGameObject(ERoomObjects.Enemy, "Rat");
+                    break;
+
+                case EMonsterTypes.Imp:
+                    go = InstantiateGameObject(ERoomObjects.Enemy, "Imp");
+                    break;
+
+                case EMonsterTypes.Slime:
+                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Slime");
+                    break;
+
+                case EMonsterTypes.EnchantedStatue:
+                    go = InstantiateGameObject(ERoomObjects.Enemy, "EnchantedStatue");
+                    break;
+
+                    // Abominations are crashing
+                case EMonsterTypes.Abomination:
+                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Abomination");
+                    break;
+
+                case EMonsterTypes.Boss:
+                    break;
+            }
+
+            if (go == null)
+            {
+                // We may not have created a monster.
+                continue;
+            }
+
+            Debug.Log(go.GetComponentInChildren<Enemy>());
+            Bounds enemyBound = go.GetComponentInChildren<Enemy>().collider.bounds;
+            bool isPlaced = false;
+
+            float timeToPlace = 0.0f;
+
+            while (isPlaced == false)
+            {
+                timeToPlace += Time.deltaTime;
+
+                // If it takes to long we are going to skip.
+                if (timeToPlace >= 6.0f)
+                {
+                    isPlaced = true;
+                    timeToPlace = 0.0f;
+                    Debug.Log("Took way too long to place monster");
+                }
+
+                // Give the monster a random position.
+                go.transform.position = new Vector3(Random.Range(room.Bounds.min.x, room.Bounds.max.x), 0.0f, Random.Range(room.Bounds.min.z, room.Bounds.max.z));
+
+                // Check to see if the position is filled by another monster
+                for (int a = 0; a < enemies.Count; a++)
+                {
+                    if (enemyBound.Intersects(enemies[a].collider.bounds))
+                    {
+                        break;
+                    }
+
+                    // Yay didn't collide.
+                    if (a == enemies.Count - 1)
+                    {
+                        isPlaced = true;
+                    }
+                }
+            }
+
+
+            // Spawn monster check for safe region.
+
+            // Place monster.
+
+            // Repeat steps.
+        }
+    }
+
+    public void RemoveObject(ERoomObjects type, GameObject go)
 	{
 		switch(type)
 		{

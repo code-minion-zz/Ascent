@@ -40,20 +40,20 @@ public class UITownScreen : UIPlayerMenuScreen
 
 		// Spawn a panel for each player
 
-		for (int i = 0; i < players.Count; ++i)
-		{
-			GameObject go = NGUITools.AddChild(PlayerGrid, WindowPrefab);
-			UIPlayerMenuWindow uipmw =  go.GetComponent<UIPlayerMenuWindow>();
-			windows.Add(uipmw);
-			//uipmw.Initialise();
-			uipmw.SetPlayer(players[i]);
-		}
-		PlayerGrid.GetComponent<UIGrid>().repositionNow = true;
-
-		for (int i = 0; i < windows.Count; ++i)
-		{
-			windows[i].Initialise();
-		}
+//		for (int i = 0; i < players.Count; ++i)
+//		{
+//			GameObject go = NGUITools.AddChild(PlayerGrid, WindowPrefab);
+//			UIPlayerMenuWindow uipmw =  go.GetComponent<UIPlayerMenuWindow>();
+//			windows.Add(uipmw);
+//			//uipmw.Initialise();
+//			uipmw.SetPlayer(players[i]);
+//		}
+//		PlayerGrid.GetComponent<UIGrid>().repositionNow = true;
+//
+//		for (int i = 0; i < windows.Count; ++i)
+//		{
+//			windows[i].Initialise();
+//		}
 	}
 
 	public void Update () 

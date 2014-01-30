@@ -44,6 +44,14 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 
 	public abstract void AddAllMenuPanels();
 	public abstract void TransitionToPanel(int panel);
+
+	public virtual void OnEnable()
+	{
+		if(activePanel != null)
+		{
+			activePanel.gameObject.SetActive(true);
+		}
+	}
 	
 	public virtual void CloseWindow()
 	{
@@ -59,11 +67,10 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
     {
         panels = new Dictionary<int, UIPlayerMenuPanel>();
 
-        //parentScreen = transform.parent.parent.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
+        parentScreen = transform.parent.parent.GetComponent<UIPlayerMenuScreen>();
 
         AddAllMenuPanels();
 
-		NGUITools.SetActive(activePanel.gameObject, true);
     }
 
 	public virtual void SetPlayer(Player player)

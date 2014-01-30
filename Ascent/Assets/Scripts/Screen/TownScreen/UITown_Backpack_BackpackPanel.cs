@@ -44,7 +44,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		lastActiveButton = currentButton;
 
-		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		//UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 
 		buttonMax = (int)EButtons.MAX;
 

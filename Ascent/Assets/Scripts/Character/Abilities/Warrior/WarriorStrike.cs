@@ -17,7 +17,7 @@ public class WarriorStrike : Action
 		base.Initialise(owner);
 
         animationSpeed = 2.0f;
-        animationLength = 1.167f / animationSpeed;
+        animationLength = 1.067f;
 		coolDownTime = animationLength;
 		animationTrigger = "Strike";
 		specialCost = 0;
@@ -31,16 +31,8 @@ public class WarriorStrike : Action
         base.StartAbility();
 
 		performed = false;
-        animationLength = 1.167f / animationSpeed;
         coolDownTime = animationLength;
 		owner.Animator.PlayAnimation(animationTrigger);
-
-        //if (owner.Weapon != null)
-        //{
-        //    // Could work out a formula here, maybe the warrior strike takes weapon damage into account.
-        //    damage = owner.Weapon.Damage + 10;
-        //    knockBackValue = owner.Weapon.KnockBackValue + 1.0f;
-        //}
 	}
 
 	public override void UpdateAbility()

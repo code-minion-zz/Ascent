@@ -33,7 +33,7 @@ public class FloorSummaryPanel : MonoBehaviour
 //		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
 		myPlayer = player;
 		fs = myPlayer.Hero.GetComponent<Hero> ().FloorStatistics;
-		expReward = fs.ExperienceGained;
+		expReward = fs.ExperienceGained + 100;
 		goldReward = fs.TotalCoinsLooted;
 		string bonusNames = PanelElements [0].GetComponent<UILabel> ().text;
 		string rewardValues = PanelElements [1].GetComponent<UILabel> ().text;
@@ -79,13 +79,14 @@ public class FloorSummaryPanel : MonoBehaviour
 		PanelElements [1].GetComponent<UILabel> ().text = rewardValues;
 		PanelElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.Currency);
 
-		int newExp = expReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.CurrentExperience;
-		if (newExp > 999) {
-			newExp = newExp - 1000;
-		}
+        BaseStats stats = myPlayer.Hero.GetComponent<Hero>().CharacterStats;
+
+		int newExp = expReward + myPlayer.Hero.GetComponent<Hero>().CharacterStats.CurrentExperience;
+
+        myPlayer.Hero.GetComponent<Hero>().AddExperience(newExp);
 
 		PanelElements [3].GetComponent<UILabel> ().text = "Exp: " + newExp;
-		PanelElements [4].GetComponent<UISlider> ().value = (float)newExp/1000;
+        PanelElements[4].GetComponent<UISlider>().value = (float)newExp / stats.MaxExperience;
 
 		NGUITools.SetActive(gameObject, true);
 	} 

@@ -7,7 +7,7 @@ public class WarriorWarCry : Action
 	{
 		base.Initialise(owner);
 
-        animationLength = 1.66f;
+        animationLength = 1.167f;
         animationSpeed = 2.0f;
         animationTrigger = "WarCry";
         coolDownTime = 5.0f;

@@ -22,7 +22,7 @@ public class Warrior : Hero
 		{
 			// Populate the hero with Inventory, stats, basic abilities (if any)
 
-			baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior);
+			baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior, 1);
 			derivedStats = new DerivedStats(baseStatistics);
 			derivedStats.MaxSpecial = 25;
 			derivedStats.CurrentSpecial = 25;

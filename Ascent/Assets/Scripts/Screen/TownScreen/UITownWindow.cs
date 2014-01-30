@@ -49,7 +49,7 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public override void Initialise ()
 	{
-		parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
+		//parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
 		base.Initialise ();
 	}
 

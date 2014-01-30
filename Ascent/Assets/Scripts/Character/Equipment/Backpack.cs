@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 public class Backpack 
 {
@@ -30,7 +31,7 @@ public class Backpack
 
             for (int i = 0; i < kMaxItems; ++i)
             {
-				if (AllItems[(BackpackSlot)i] != null)
+				if (AllItems[i] != null)
                 {
                     ++count;
                 }
@@ -75,15 +76,9 @@ public class Backpack
             return count;
         }
     }
+	
+	public Item[] AllItems = new Item[kMaxItems];
 
-    public Dictionary<BackpackSlot, Item> AllItems = new Dictionary<BackpackSlot, Item>();
-
-//    protected Item[] allItems = new Item[kMaxItems];
-//    public Item[] AllItems
-//    {
-//        get { return allItems; }
-//        set { allItems = value; }
-//    }
 
     protected AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
     public AccessoryItem[] AccessoryItems
@@ -102,15 +97,15 @@ public class Backpack
 	public void AddItem(BackpackSlot slot, Item item)
     {
         // TODO: Make sure there is room for the item
-		AllItems[slot] = item;
+		AllItems[(int)slot] = item;
     }
 
     public Item ReplaceItem(int slot, Item item)
     {
         // TODO: Make sure there is something to replace.
         // TODO: Make sure that there aren't too many accessories or consumables
-		Item retval = AllItems[(BackpackSlot)slot];
-        AllItems[(BackpackSlot)slot] = item;
+		Item retval = AllItems[slot];
+        AllItems[slot] = item;
 		return retval;
     }
 
@@ -118,12 +113,11 @@ public class Backpack
     {
         for (int i = 0; i < kMaxItems; ++i)
         {
-			BackpackSlot bs = (BackpackSlot)i;
-            if (AllItems[bs] != null)
+            if (AllItems[i] != null)
             {
-                if (AllItems[bs] == item)
+                if (AllItems[i] == item)
                 {
-                    AllItems[bs] = null;
+                    AllItems[i] = null;
                 }
             }
         }

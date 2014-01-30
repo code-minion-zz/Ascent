@@ -21,6 +21,7 @@ public class UIHeroSelect_Window : UIPlayerMenuWindow
 
 		foreach (KeyValuePair<int, UIPlayerMenuPanel> p in panels)
 		{
+			p.Value.Initialise();
 			p.Value.gameObject.SetActive(false);
 		}
 
