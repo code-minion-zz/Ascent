@@ -22,6 +22,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuStart += OnMenuOK;
 		parent.OnMenuA += OnMenuOK;
 		parent.OnMenuB += OnMenuCancel;
+		parent.OnMenuY += OnMenuHax;
 	}
 
 	public void DeregisterToInputEvents()
@@ -74,10 +75,15 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	}
 
-
+	
 	public virtual void OnMenuCancel(InputDevice device)
 	{
+		
+	}
 
+	public virtual void OnMenuHax(InputDevice device)
+	{
+		
 	}
 
 	protected virtual UIButton NextButton()

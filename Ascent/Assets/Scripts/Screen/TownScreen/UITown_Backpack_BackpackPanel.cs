@@ -27,8 +27,8 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		buttons = new UIButton[(int)EButtons.MAX];
 		
 
-		Transform acc = transform.Find ("BackpackTab/Accessories");
-		Transform con = transform.Find ("BackpackTab/Consumables");
+		Transform acc = transform.FindChild ("BackpackTab");
+		Transform con = transform.FindChild ("BackpackTab");
 
 		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
 		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
@@ -116,5 +116,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		// TODO: Link back to the main town screen
 
 		//parent.CloseWindow();
+	}
+
+	public override void OnMenuHax(InputDevice device)
+	{
+		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
 	}
 }
