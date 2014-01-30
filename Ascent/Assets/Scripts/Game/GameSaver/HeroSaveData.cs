@@ -13,6 +13,7 @@ public class HeroSaveData
 	// Hero info
 	public uint highestFloor;
 	public Character.EHeroClass classType;
+    public int unasignedAbilityPoints;
 	public BaseStats baseStats;
 	public Backpack backpack;
 	public HeroInventory inventory;
@@ -31,6 +32,7 @@ public class HeroSaveData
 		uid = AscentGameSaver.GetUniqueID();
 
 		// Hero info
+        unasignedAbilityPoints = hero.unasignedAbilityPoints;
 		classType = hero.ClassType;
 		baseStats = hero.CharacterStats;
 		backpack = hero.HeroBackpack;
