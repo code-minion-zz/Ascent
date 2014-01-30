@@ -28,9 +28,9 @@ public class FloorGeneration
     public float roomOffsetValue = 25.0f;
 
     // Rarity controls
+    public Rarity monsterRarity;
     public Rarity treasureChestSpawn;
     public Rarity trapRoom;
-    public Rarity monsterRoom;
     public Rarity specialRoom;
 
     private List<RoomProperties> rooms = new List<RoomProperties>();
@@ -78,6 +78,7 @@ public class FloorGeneration
         firstRoom.Width = 18;
         firstRoom.Height = 14;
         firstRoom.WallsPlaced = true;
+        firstRoom.RoomType = FeatureType.monster;
         rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
@@ -105,7 +106,7 @@ public class FloorGeneration
                     int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
 
                     // See if we can add a new room through the chosen direction.
-                    GenerateNewRoom(width, height, "Room " + roomsPlaced, fromRoom, (Floor.TransitionDirection)randRoomDir);
+                    GenerateNewRoom(width, height, fromRoom, (Floor.TransitionDirection)randRoomDir);
                 }
             }
             else
@@ -115,6 +116,7 @@ public class FloorGeneration
         }
 
         GenerateWalls();
+        //PopulateRooms();
     }
 
     /// <summary>
@@ -128,10 +130,15 @@ public class FloorGeneration
 
         int randomChance = Random.Range(0, 101);
 
-        // Less than 5 percent chance
-        if (randomChance <= 5)
+        // 75% Percent chance region
+        if (randomChance >= 25 && randomChance <= 100)
         {
-
+            type = FeatureType.monster;
+        }
+        // 25% chance region
+        else if (randomChance <= 25)
+        {
+            type = FeatureType.treasure;
         }
 
         return type;
@@ -144,6 +151,31 @@ public class FloorGeneration
             if (room.WallsPlaced == false)
             {
                 PlaceWalls(room);
+            }
+        }
+    }
+
+    public void PopulateRooms()
+    {
+        foreach (RoomProperties room in rooms)
+        {
+            FeatureType type = room.RoomType;
+
+            switch (type)
+            {
+                case FeatureType.monster:
+                    // Populate room with monsters!
+                    room.Room.GenerateMonsterSpawnLoc(dungeonLevel, room, monsterRarity);
+                    break;
+
+                case FeatureType.treasure:
+                    room.Room.InstantiateGameObject(Room.ERoomObjects.Chest, "Chest");
+                    // Place treasure in this room.
+                    break;
+
+                case FeatureType.trap:
+                    // Place a trap here.
+                    break;
             }
         }
     }
@@ -238,12 +270,51 @@ public class FloorGeneration
         return (returnDoor);
     }
 
+    /// <summary>
+    /// Generates a boss room that is the furtherest away from the start room.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="from"></param>
+    /// <param name="dir"></param>
     private void GenerateBossRoom(float width, float height, RoomProperties from, Floor.TransitionDirection dir)
     {
-        RoomProperties bossRoom = GenerateNewRoom(width, height, "BoosRoom", from, dir);
+        RoomProperties furtherestRoom = null;
+        RoomProperties startRoom = rooms[0];
+        float distance = 0.0f;
+
+        // Place this room furtherest away from the start room.
+        foreach (RoomProperties room in rooms)
+        {
+            float tempDist = Vector3.Distance(startRoom.Position, room.Position);
+
+            if (tempDist >= distance)
+            {
+                distance = tempDist;
+                furtherestRoom = room;
+            }
+        }
+
+        if (furtherestRoom != null)
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                if (furtherestRoom.directionsFilled[i] != true)
+                {
+                    GenerateNewRoom(width, height, furtherestRoom, (Floor.TransitionDirection)i);
+                    return;
+                }
+            }
+
+            Debug.Log("Could not place the boss room off this room");
+        }
+        else
+        {
+            Debug.Log("Could not find furtherest room");
+        }
     }
 
-    public RoomProperties GenerateNewRoom(float width, float height, string name, RoomProperties from, Floor.TransitionDirection dir)
+    public RoomProperties GenerateNewRoom(float width, float height, RoomProperties from, Floor.TransitionDirection dir)
     {
         RoomProperties room = null;
 
@@ -266,14 +337,38 @@ public class FloorGeneration
 
     private void BuildFeatureRoom(Floor.TransitionDirection dir, float width, float height, FeatureType roomType, RoomProperties fromRoom)
     {
+        string name = "room";
+        switch (roomType)
+        {
+            case FeatureType.monster:
+                name = "Room " + roomsPlaced + ": " + "Monster";
+                break;
+
+            case FeatureType.boss:
+                name = "Room " + roomsPlaced + ": " + "Boss";
+                break;
+
+            case FeatureType.trap:
+                name = "Room " + roomsPlaced + ": " + "Trap";
+                break;
+
+            case FeatureType.treasure:
+                name = "Room " + roomsPlaced + ": " + "Treasure";
+                break;
+
+        }
+
         // TODO: If we know the feature to create we can choose the right one to create here.
-        GameObject roomGO = CreateRoom(width, height, "Room " + roomsPlaced);
+        GameObject roomGO = CreateRoom(width, height, name);
         roomGO.transform.position = locationVector;
 
         fromRoom.FillDirection(dir);
         Transform doors = fromRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
         Door entryDoor = CreateDoor(doors.gameObject, fromRoom, dir);
         entryDoor.direction = dir;
+
+        RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
+        newRoom.RoomType = roomType;
 
         // TODO: Find a way to get rid of this switch its too big.
         switch (dir)
@@ -282,7 +377,6 @@ public class FloorGeneration
                 {
                     // Create the new room with number of doors.
                     // we also need to create the door that connects the previous room.
-                    RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
                     newRoom.FillDirection(Floor.TransitionDirection.South); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
                     newRoom.Width = width;
@@ -304,7 +398,6 @@ public class FloorGeneration
                 {
                     // Create the new room with number of doors.
                     // we also need to create the door that connects the previous room.
-                    RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
                     newRoom.FillDirection(Floor.TransitionDirection.West); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
                     newRoom.Width = width;
@@ -326,7 +419,6 @@ public class FloorGeneration
                 {
                     // Create the new room with number of doors.
                     // we also need to create the door that connects the previous room.
-                    RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
                     newRoom.FillDirection(Floor.TransitionDirection.North); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
                     newRoom.Width = width;
@@ -348,7 +440,6 @@ public class FloorGeneration
                 {
                     // Create the new room with number of doors.
                     // we also need to create the door that connects the previous room.
-                    RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
                     newRoom.FillDirection(Floor.TransitionDirection.East); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
                     newRoom.Width = width;

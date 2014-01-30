@@ -81,7 +81,11 @@ public class Floor : MonoBehaviour
 		InitialiseCamera();
 
 		FloorGeneration floorGenerator = new FloorGeneration();
+        floorGenerator.dungeonLevel = 1;
+        floorGenerator.monsterRarity = Rarity.many;
+
 		floorGenerator.GenerateFloor();
+        floorGenerator.PopulateRooms();
 
 		randomFloor = true;
 
