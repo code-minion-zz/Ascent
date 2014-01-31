@@ -88,6 +88,11 @@ public class StatBar : MonoBehaviour {
 		AdjustBar();
 	}
 
+    public void OnDestroy()
+    {
+        Shutdown();
+    }
+
 	public void Shutdown()
 	{
 		switch (TrackStat)

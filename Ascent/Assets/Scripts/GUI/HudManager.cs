@@ -83,7 +83,7 @@ public class HudManager : MonoBehaviour {
 	
 	public void RemoveEnemyLifeBar(StatBar bar)
 	{
-		enemyBars.Remove(bar);
-		bar.Shutdown();
+        bar.Shutdown();
+        enemyBars.Remove(bar);
 	}
 }
