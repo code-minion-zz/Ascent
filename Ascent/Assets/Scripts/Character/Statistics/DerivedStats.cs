@@ -52,8 +52,10 @@ public class DerivedStats
 		_base.onSpiritChanged += HandleSpiritChanged;
 		_base.onVitalityChanged += HandleVitalityChanged;
 
-		MaxHealth = _base.Vitality * 10;
-		//CurrentHealth = MaxHealth;
+		MaxHealth = (_base.Vitality * _base.healthPerVit) + _base.health;
+		CurrentHealth = MaxHealth;
+
+        attack = _base.Power;
 	}
 
 	public  int CurrentHealth

@@ -53,7 +53,7 @@ public class WarriorStrike : Action
 						{
 							// Apply damage and knockback to the enemey.
 							damage = owner.DerivedStats.Attack;
-							Debug.Log(damage);
+					
 							e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
