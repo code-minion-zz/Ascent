@@ -28,7 +28,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	
 		Transform acc = transform.FindChild ("BackpackTab");
 		Transform con = transform.FindChild ("BackpackTab");
-
 		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
 		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
 		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
@@ -40,14 +39,20 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 		currentButton = (int)EButtons.ACC1;
 		currentSelection = buttons[(int)EButtons.ACC1];
-
 		lastActiveButton = currentButton;
-
-		//UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-
 		buttonMax = (int)EButtons.MAX;
 
-		//tabs[0].SendMessage("OnHover", false,SendMessageOptions.DontRequireReceiver);
+		// Change Button Icons in accordance to backpack data
+		Backpack bp = parent.Player.Hero.HeroBackpack;
+		
+		Item[] arrayItems = bp.AllItems;
+		for (int i = 0; i < 7; ++i)
+		{
+			if (arrayItems[i] != null)
+			{
+				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
+			}
+		}
 
 		initialised = true;
 	}
@@ -72,6 +77,11 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		}
 
 		base.OnDisable();
+	}
+
+	UIButton GetButton(EButtons button)
+	{
+		return buttons[(int)button];
 	}
 
 	public override void OnMenuUp(InputDevice device)
@@ -102,11 +112,11 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		UICamera.Notify(currentSelection.gameObject, "OnPress", true);
-
-		EButtons current = (EButtons)currentButton;
-
-		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.INVENTORY);
+//		UICamera.Notify(currentSelection.gameObject, "OnPress", true);
+//
+//		EButtons current = (EButtons)currentButton;
+//
+//		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.INVENTORY);
 	}
 
 
