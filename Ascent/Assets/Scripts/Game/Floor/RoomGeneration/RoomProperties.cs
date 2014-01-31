@@ -21,6 +21,7 @@ public class RoomProperties
     private Room room;
     private FeatureType roomType;
     private int weight;
+    private int[,] tiles;
 
     /// <summary>
     /// Gets the bounds of the room.
@@ -30,6 +31,25 @@ public class RoomProperties
         get
         {
             return new Bounds(position, new Vector3(width, 1.0f, height));
+        }
+    }
+
+    /// <summary>
+    /// Gets the tiles of the room. Each tile represents 1x1 world space units.
+    /// </summary>
+    public int[,] RoomTiles
+    {
+        get
+        {
+            if (tiles == null)
+            {
+                tiles = new int[(int)width, (int)height];
+                return tiles;
+            }
+            else
+            {
+                return tiles;
+            }
         }
     }
     
@@ -86,6 +106,19 @@ public class RoomProperties
         {
             directionsFilled[i] = false;
         }
+    }
+
+    public void SetRoomTiles(int width, int height)
+    {
+        tiles = new int[width, height];
+    }
+
+    /// <summary>
+    /// Eventually this function will allow for loading a custom room from a file.
+    /// </summary>
+    public void LoadFromFile(string filename)
+    {
+        string filePath = "Resources/Level/Rooms/" + filename;
     }
 
     public void FillDirection(Floor.TransitionDirection direction)

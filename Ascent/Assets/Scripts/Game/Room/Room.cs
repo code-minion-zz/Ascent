@@ -537,8 +537,9 @@ public class Room : MonoBehaviour
                 continue;
             }
 
-            Debug.Log(go.GetComponentInChildren<Enemy>());
-            Bounds enemyBound = go.GetComponentInChildren<Enemy>().collider.bounds;
+            Enemy enemy = go.GetComponentInChildren<Enemy>();
+            Debug.Log(enemy);
+            Bounds enemyBound = enemy.collider.bounds;
             bool isPlaced = false;
 
             float timeToPlace = 0.0f;

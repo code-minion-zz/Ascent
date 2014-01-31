@@ -92,6 +92,7 @@ public class FloorGeneration
             RoomProperties fromRoom = rooms[randomRoom];
 
             // Choose a random direction to place the room
+            // TODO: Eventually choose a random wall off a room.
             int randRoomDir = Random.Range(0, 4);
 
             // Checks if we can make a room in this direction
@@ -104,12 +105,15 @@ public class FloorGeneration
                 }
                 else
                 {
-                    // TODO: Generate room size variations
+                    // Choose a width and height
                     int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
                     int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
 
+                    // Choose a random feature
+                    FeatureType roomToMake = ChooseFeatureRoom();
+
                     // See if we can add a new room through the chosen direction.
-                    GenerateNewRoom(width, height, fromRoom, (Floor.TransitionDirection)randRoomDir);
+                    GenerateNewRoom(width, height, roomToMake, fromRoom, (Floor.TransitionDirection)randRoomDir);
                 }
             }
             else
@@ -200,7 +204,7 @@ public class FloorGeneration
     /// <param name="height">Height of the room.</param>
     /// <param name="name">"Name of the room.</param>
     /// <returns>The newly created room Game Object</returns>
-    private GameObject CreateRoom(float width, float height, string name)
+    private RoomProperties CreateRoom(float width, float height, string name)
     {
         GameObject roomGo = new GameObject(name);
         Room room = roomGo.AddComponent<Room>();
@@ -224,13 +228,17 @@ public class FloorGeneration
 
         room.Initialise();
 
+        RoomProperties newRoom = new RoomProperties(room);
+        newRoom.SetRoomTiles((int)width, (int)height);
+
         // Apply the new dimensions to the navMesh.
         room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
         room.minCamera.x = -width * 0.15f;
         room.minCamera.z = -height * 0.15f;
         room.maxCamera.z = height * 0.15f;
         room.maxCamera.x = width * 0.15f;
-        return roomGo;
+
+        return newRoom;
     }
 
     private Door CreateDoor(GameObject doors, RoomProperties fromRoom, Floor.TransitionDirection direction)
@@ -241,7 +249,7 @@ public class FloorGeneration
         // Attach the doors to their rightful component.
         Doors doorsScript = doors.GetComponent<Doors>();
         Door returnDoor = null;
-
+         
         doorsScript.doors[(int)direction] = doorGo.GetComponent<Door>();
         returnDoor = doorsScript.doors[(int)direction];
 
@@ -251,28 +259,24 @@ public class FloorGeneration
         switch (direction)
         {
             case Floor.TransitionDirection.North:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + 8.0f);
                 doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + heightOffset);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
                 doorGo.name = "North Door";
                 break;
 
             case Floor.TransitionDirection.East:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x + 8.0f, doorGo.transform.position.y, doors.transform.position.z);
                 doorGo.transform.position = new Vector3(doors.transform.position.x + widthOffset, doorGo.transform.position.y, doors.transform.position.z);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
                 doorGo.name = "East Door";
                 break;
 
             case Floor.TransitionDirection.South:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - 8.0f);
                 doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - heightOffset);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
                 doorGo.name = "South Door";
                 break;
 
             case Floor.TransitionDirection.West:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x - 8, doorGo.transform.position.y, doors.transform.position.z);
                 doorGo.transform.position = new Vector3(doors.transform.position.x - widthOffset, doorGo.transform.position.y, doors.transform.position.z);
                 doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
                 doorGo.name = "West Door";
@@ -314,7 +318,8 @@ public class FloorGeneration
             {
                 if (furtherestRoom.directionsFilled[i] != true)
                 {
-                    GenerateNewRoom(width, height, furtherestRoom, (Floor.TransitionDirection)i);
+                    // Choose a feature to build based on weights.
+                    GenerateNewRoom(width, height, FeatureType.boss, furtherestRoom, (Floor.TransitionDirection)i);
                     return;
                 }
             }
@@ -327,18 +332,15 @@ public class FloorGeneration
         }
     }
 
-    public RoomProperties GenerateNewRoom(float width, float height, RoomProperties from, Floor.TransitionDirection dir)
+    public RoomProperties GenerateNewRoom(float width, float height, FeatureType feature, RoomProperties from, Floor.TransitionDirection dir)
     {
         RoomProperties room = null;
 
         // Test placing the new room.
         if (TestRoomPlacement(dir, from, width, height) == true)
         {
-            // Choose a feature to build based on weights.
-            FeatureType roomToMake = ChooseFeatureRoom();
-
             // Build the new room.
-            BuildFeatureRoom(dir, width, height, roomToMake, from);
+            BuildFeatureRoom(dir, width, height, feature, from);
         }
         else
         {
@@ -346,6 +348,20 @@ public class FloorGeneration
         }
 
         return room;
+    }
+
+    public void GenerateNewRoom(RoomProperties roomToMake, RoomProperties from, Floor.TransitionDirection dir)
+    {
+        // Test placing the new room.
+        if (TestRoomPlacement(dir, from, roomToMake.Width, roomToMake.Height) == true)
+        {
+            // Build the new room.
+            BuildFeatureRoom(dir, roomToMake.Width, roomToMake.Height, roomToMake.RoomType, from);
+        }
+        else
+        {
+            roomsPlaced--;
+        }
     }
 
     private void BuildFeatureRoom(Floor.TransitionDirection dir, float width, float height, FeatureType roomType, RoomProperties fromRoom)
@@ -372,16 +388,14 @@ public class FloorGeneration
         }
 
         // TODO: If we know the feature to create we can choose the right one to create here.
-        GameObject roomGO = CreateRoom(width, height, name);
-        roomGO.transform.position = locationVector;
+        RoomProperties newRoom = CreateRoom(width, height, name);
+        newRoom.Room.transform.position = locationVector;
+        newRoom.RoomType = roomType;
 
         fromRoom.FillDirection(dir);
         Transform doors = fromRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
         Door entryDoor = CreateDoor(doors.gameObject, fromRoom, dir);
         entryDoor.direction = dir;
-
-        RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
-        newRoom.RoomType = roomType;
 
         // TODO: Find a way to get rid of this switch its too big.
         switch (dir)
@@ -397,7 +411,7 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
                     Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.South);
                     exitDoor.direction = Floor.TransitionDirection.South;
 
@@ -418,7 +432,7 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
                     Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.West);
                     exitDoor.direction = Floor.TransitionDirection.West;
 
@@ -439,7 +453,7 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
                     Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.North);
                     exitDoor.direction = Floor.TransitionDirection.North;
 
@@ -460,7 +474,7 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
                     Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.East);
                     exitDoor.direction = Floor.TransitionDirection.East;
 
