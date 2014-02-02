@@ -47,70 +47,10 @@ public class UITownScreen : UIPlayerMenuScreen
 			windows[i].Initialise();
 		}
 
-		// Spawn a panel for each player
-
-//		for (int i = 0; i < players.Count; ++i)
-//		{
-//			GameObject go = NGUITools.AddChild(PlayerGrid, WindowPrefab);
-//			UIPlayerMenuWindow uipmw =  go.GetComponent<UIPlayerMenuWindow>();
-//			windows.Add(uipmw);
-//			//uipmw.Initialise();
-//			uipmw.SetPlayer(players[i]);
-//		}
-//		PlayerGrid.GetComponent<UIGrid>().repositionNow = true;
-//
-//		for (int i = 0; i < windows.Count; ++i)
-//		{
-//			windows[i].Initialise();
-//		}
 	}
 
 	public void Update () 
 	{
-//		// Remove players that wish to leave
-//		if (playersToRemove.Count > 0)
-//		{
-//			foreach (Player p in playersToRemove)
-//			{
-//				RemovePlayer(p);
-//			}
-//
-//			playersToRemove.Clear();
-//		}
-
-        // Check if all players are ready
-//        int activePlayers = 0;
-//        int readiedPlayers = 0;
-//        foreach (UIPlayerMenuWindow win in windows)
-//        {
-//            if (win.gameObject.activeSelf)
-//            {
-//                ++activePlayers;
-//                if (win.Ready)
-//                {
-//                    ++readiedPlayers;
-//                }
-//            }
-//        }
-//        if (activePlayers > 0)
-//        {
-//            if (activePlayers == readiedPlayers)
-//            {
-//                allReady = true;
-//            }
-//            else
-//            {
-//                allReady = false;
-//            }
-//        }
-//        else
-//        {
-//            allReady = false;
-//        }
-
-		// Check if any players want to enter the game
-//		AddNewPlayers();
-		//Debug.Log(devices[0].OnLSti);
 	}
 
 
@@ -153,13 +93,4 @@ public class UITownScreen : UIPlayerMenuScreen
 		Destroy(p.gameObject);
 	}
 
-//	public void CloseWindow(UITown_Backpack_Window window)
-//	{
-//		//if (window.ActivePanel is UITown_Backpack_InventoryPanel)
-//        window.TransitionToPanel((int)UITown_Backpack_Window.EBackpackPanels.);
-//        window.ReadyWindow(false);
-//		window.Player.Input.InUse = false;
-//		window.Player.UnbindInputDevice();
-//		playersToRemove.Add(window.Player);
-//	}
 }

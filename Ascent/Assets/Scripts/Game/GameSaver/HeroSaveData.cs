@@ -12,9 +12,12 @@ public class HeroSaveData
 
 	// Hero info
 	public uint highestFloor;
-	public Character.EHeroClass classType;
-    public int unasignedAbilityPoints;
-	public BaseStats baseStats;
+	public int unasignedAbilityPoints;
+	public int experience;
+	public int gold;
+	public int level;
+	public Character.EHeroClass heroClass;
+	public HeroStatGrowth growth;
 	public Backpack backpack;
 	public HeroInventory inventory;
 	public List<Action> abilities;
@@ -33,10 +36,12 @@ public class HeroSaveData
 
 		// Hero info
         unasignedAbilityPoints = hero.unasignedAbilityPoints;
-		classType = hero.ClassType;
-		baseStats = hero.CharacterStats;
+		level = hero.HeroStats.Level;
+		heroClass = hero.HeroClass;
+		growth = hero.HeroStats.Growth;
 		backpack = hero.HeroBackpack;
 		inventory = hero.HeroInventory;
+		//abilities = hero.Abilities;
 		highestFloor = hero.HighestFloorReached;
 
 		// Also store the uid into the hero so it knows where to save itself later
@@ -45,7 +50,7 @@ public class HeroSaveData
 
 	public override string ToString()
 	{
-		string toString = "Lv" + baseStats.Level + " " + classType + "\n" +
+		string toString = "Lv" + level + " " + heroClass + "\n" +
 							 saveTime + "\n" +
 							 "uid " + uid;
 

@@ -16,6 +16,12 @@ public abstract class Enemy : Character
         HIT,
     }
 
+	public enum EEnemy
+	{
+		None,
+		Rat,
+	}
+
     #endregion
 
     #region Fields
@@ -26,6 +32,17 @@ public abstract class Enemy : Character
         get { return agent; }
         protected set { agent = value; }
     }
+
+	protected EnemyStats enemyStats;
+	public EnemyStats EnemyStats
+	{
+		get { return enemyStats; }
+		set 
+		{ 
+			enemyStats = value;
+			stats = value;
+		}
+	}
 
     private Player targetPlayer;
     private Vector3 originalScale;
@@ -155,7 +172,7 @@ public abstract class Enemy : Character
             {
                 //if (updateHpBar)
                 {
-                    if (derivedStats.CurrentHealth != derivedStats.MaxHealth)
+                    if (stats.CurrentHealth != stats.MaxHealth)
                     {
                         if (!hpBar.gameObject.activeInHierarchy)
                             NGUITools.SetActive(hpBar.gameObject, true);

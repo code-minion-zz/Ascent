@@ -17,9 +17,16 @@ public abstract class Item
 	protected string name;
 	protected string description;
 	protected int level;
-//	protected ItemGrade grade;
+	protected ItemGrade grade;
+	protected ItemStats stats;
 	protected int baseValue;
-	protected BetterList<ItemProperty> itemProperties;
+
+
+	public ItemStats ItemStats
+	{
+		get { return stats; }
+	}
+
 
     public string Name
     {
@@ -50,11 +57,6 @@ public abstract class Item
         get { return baseValue; }
         set { baseValue = value; }
     }
-
-	public BetterList<ItemProperty> ItemProperties
-	{
-		get { return itemProperties; }
-	}
 
     protected virtual int CalculateSellValue()
     {

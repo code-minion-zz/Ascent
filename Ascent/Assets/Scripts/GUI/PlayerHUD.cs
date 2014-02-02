@@ -80,7 +80,7 @@ public class PlayerHUD : MonoBehaviour {
 		}
 
 		// Do lives
-		livesLabel.text = "Lives: " + owner.DerivedStats.Lives;
+		livesLabel.text = "Lives: " + owner.Lives;
 
 
 		// Do Buffs

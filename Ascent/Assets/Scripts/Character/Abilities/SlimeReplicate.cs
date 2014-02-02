@@ -39,9 +39,9 @@ public class SlimeReplicate : Action
 
         go.GetComponent<Enemy>().AIAgent.SteeringAgent.StartPosition = go.transform.position;
 
-        owner.DerivedStats.CurrentHealth = (int)((float)owner.DerivedStats.CurrentHealth * 0.5f);
+		owner.Stats.CurrentHealth = (int)((float)owner.Stats.CurrentHealth * 0.5f);
 
-        float scale = (float)owner.DerivedStats.CurrentHealth / (float)owner.DerivedStats.MaxHealth;
+		float scale = (float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth;
         if (scale > 0.15f)
         {
             if (scale < 0.15f)
@@ -52,8 +52,8 @@ public class SlimeReplicate : Action
         }
         go.transform.localScale = owner.transform.localScale;
 
-        go.GetComponent<Enemy>().DerivedStats.MaxHealth = owner.DerivedStats.MaxHealth;
-        go.GetComponent<Enemy>().DerivedStats.CurrentHealth = owner.DerivedStats.CurrentHealth;
+		//go.GetComponent<Enemy>().Stats.MaxHealth = owner.Stats.MaxHealth;
+		go.GetComponent<Enemy>().Stats.CurrentHealth = owner.Stats.CurrentHealth;
 
         //go.GetComponent<Enemy>().ApplyKnockback(Vector3.left, 100.0f);
         //enemy.ApplyKnockback(Vector3.right, 100.0f);
