@@ -57,7 +57,7 @@ public class FloorSummaryManager : MonoBehaviour {
 				}
 				else
 				{
-					//Game.Singleton.LoadLevel("NAMEOFNEXTLEVEL", Game.EGameState.Tower);
+					Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 				}
 			}
 		}
@@ -95,6 +95,11 @@ public class FloorSummaryManager : MonoBehaviour {
 			// skip timer and just transition
 			Game.Singleton.LoadLevel("Town", Game.EGameState.Town);
 		}
+		else if (levelVotes == Game.Singleton.NumberOfPlayers)
+		{
+			// skip timer and just transition
+			Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
+		}
 		else // in all other cases
 		{
 			// Start countdown timer
@@ -103,8 +108,9 @@ public class FloorSummaryManager : MonoBehaviour {
 				voteTimer = true;
 				counter = 10f;
 			}
-			else
+			else 
 			{
+				// already started? this new vote will deduct from the timer
 				counter -= 5f;
 			}
 		}

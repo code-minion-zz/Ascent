@@ -1121,7 +1121,7 @@ GameObject:
   - 114: {fileID: 261}
   m_Layer: 15
   m_Name: Button - Play
-  m_TagString: Untagged
+  m_TagString: Default
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1880,7 +1880,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 59}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 680}
+  m_LocalPosition: {x: 0, y: -.288675725, z: 680}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 128}
@@ -5861,6 +5861,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 163069711}
   - 114: {fileID: 163069712}
+  - 114: {fileID: 163069713}
   m_Layer: 15
   m_Name: Scene
   m_TagString: Untagged
@@ -5891,6 +5892,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90b2b27c885e1544598b824822e98119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &163069713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 163069710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51806b914b6bb6d4db3213159deb374d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultButton: {fileID: 68}
 --- !u!1 &348017627
 GameObject:
   m_ObjectHideFlags: 0
@@ -6768,7 +6781,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 2127344599}
   - 114: {fileID: 2127344598}
-  - 114: {fileID: 2127344597}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -6776,18 +6788,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2127344597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: e6161f7ad1452e541a55e00d52d4a67d,
-    type: 2}
-  m_PrefabInternal: {fileID: 2140014771}
-  m_GameObject: {fileID: 2127344596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5fb8e9c0bdbbd47a463333775b505f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2127344598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6849,7 +6849,8 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11400002, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e6161f7ad1452e541a55e00d52d4a67d, type: 2}
   m_RootGameObject: {fileID: 2127344596}
   m_IsPrefabParent: 0
