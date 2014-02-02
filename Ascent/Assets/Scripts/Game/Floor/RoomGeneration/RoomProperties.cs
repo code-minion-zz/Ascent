@@ -21,7 +21,7 @@ public class RoomProperties
     private Room room;
     private FeatureType roomType;
     private int weight;
-    private int[,] tiles;
+    private TileProperties[,] tiles;
 
     /// <summary>
     /// Gets the bounds of the room.
@@ -35,15 +35,15 @@ public class RoomProperties
     }
 
     /// <summary>
-    /// Gets the tiles of the room. Each tile represents 1x1 world space units.
+    /// Gets the tiles of the room. Each tile represents 2x2 world space units.
     /// </summary>
-    public int[,] RoomTiles
+    public TileProperties[,] RoomTiles
     {
         get
         {
             if (tiles == null)
             {
-                tiles = new int[(int)width, (int)height];
+                tiles = new TileProperties[(int)width, (int)height];
                 return tiles;
             }
             else
@@ -108,9 +108,28 @@ public class RoomProperties
         }
     }
 
+	/// <summary>
+	/// Sets and initializes the room tiles.
+	/// </summary>
+	/// <param name="width">Width.</param>
+	/// <param name="height">Height.</param>
+	/// 
     public void SetRoomTiles(int width, int height)
-    {
-        tiles = new int[width, height];
+	{
+		this.width = width;
+		this.height = height;
+
+		tiles = new TileProperties[width, height];
+
+		for (int i = 0; i < width; ++i)
+		{
+			for (int j = 0; j < height; ++j)
+			{
+				tiles[i,j] = new TileProperties();
+				tiles[i,j].Position = Vector3.zero;
+				tiles[i,j].TileType = TilePropertyType.none;
+			}
+		}
     }
 
     /// <summary>

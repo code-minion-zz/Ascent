@@ -33,6 +33,7 @@ public class FloorGeneration
     public Rarity trapRoom;
     public Rarity specialRoom;
 
+	private RoomGeneration roomGeneration = new RoomGeneration();
     private List<RoomProperties> rooms = new List<RoomProperties>();
     private List<int> roomDimensions = new List<int>();
     private Vector3 locationVector;
@@ -47,7 +48,7 @@ public class FloorGeneration
 
     public void GenerateFloor()
     {
-        floorObject = Resources.Load("Prefabs/RoomWalls/Ground") as GameObject;
+		floorObject = Resources.Load("Prefabs/RoomWalls/GroundTile_2x2") as GameObject;
         wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
         wallCorner = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
         wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
@@ -78,10 +79,9 @@ public class FloorGeneration
 
         RoomProperties firstRoom = new RoomProperties(startRoom);
         firstRoom.Position = startRoom.transform.position;
-        firstRoom.Width = 18;
-        firstRoom.Height = 14;
         firstRoom.WallsPlaced = true;
         firstRoom.RoomType = FeatureType.monster;
+		firstRoom.SetRoomTiles(18, 14);
         rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
@@ -220,18 +220,36 @@ public class FloorGeneration
         room.AddNewParentCategory("Items", LayerMask.NameToLayer("Items"));
         room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
 
-        // Create the floor.
-        GameObject floorGo = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-        floorGo.transform.localScale = new Vector3(width, height, 1.0f);
-        floorGo.transform.parent = room.GetNodeByLayer("Environment").transform;
-        floorGo.name = "Ground";
-
         room.Initialise();
 
+		// Handle creation of the ground tiles.
         RoomProperties newRoom = new RoomProperties(room);
         newRoom.SetRoomTiles((int)width, (int)height);
 
-        // Apply the new dimensions to the navMesh.
+		int numberOfTilesX = (int)(width * 0.5f);
+		int numberOfTilesY = (int)(height * 0.5f);
+
+		// Create the floor tiles and positions.
+		for (int i = 0; i < numberOfTilesX; ++i)
+		{
+			for (int j = 0; j < numberOfTilesY; ++j)
+			{
+				// Create the floor.
+				GameObject floorGo = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
+				float tileSizeX = floorObject.transform.localScale.x;
+				float tileSizeY = floorObject.transform.localScale.y;
+				float halfTileX = tileSizeX * 0.5f;
+				float halfTileY = tileSizeY * 0.5f;
+				floorGo.transform.parent = room.GetNodeByLayer("Environment").transform;
+				Vector3 tilePosition = new Vector3(-(width * 0.5f) + halfTileX + (i * tileSizeX), 0.0f, -(height * 0.5f) + halfTileY + (j * tileSizeY));
+				floorGo.transform.position = tilePosition;
+				floorGo.name = "GroundTile[" + i + ", " + j + "]";
+
+				newRoom.RoomTiles[i,j].Position = tilePosition;
+			}
+		}
+		
+		// Apply the new dimensions to the navMesh.
         room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
         room.minCamera.x = -width * 0.15f;
         room.minCamera.z = -height * 0.15f;
@@ -388,7 +406,7 @@ public class FloorGeneration
         }
 
         // TODO: If we know the feature to create we can choose the right one to create here.
-        RoomProperties newRoom = CreateRoom(width, height, name);
+        RoomProperties newRoom = roomGeneration.CreateNewRoom((int)width, (int)height, name);
         newRoom.Room.transform.position = locationVector;
         newRoom.RoomType = roomType;
 

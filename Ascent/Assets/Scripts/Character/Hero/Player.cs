@@ -97,8 +97,5 @@ public class Player : MonoBehaviour
         heroObject.transform.parent = this.transform;
         heroObject.transform.localPosition = Vector3.zero;
         heroObject.transform.localRotation = Quaternion.identity;
-
-
     }
-
 }
