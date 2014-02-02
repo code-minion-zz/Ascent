@@ -72,8 +72,8 @@ public class FloorInstanceReward
             int goldBonus = (int)((float)hero.FloorStatistics.TotalCoinsLooted * goldBonusPercentage / 100.0f);
             int expBonus = (int)((float)hero.FloorStatistics.ExperienceGained * expBonusPercentage / 100.0f);
 
-            hero.CharacterStats.Currency += goldBonus;
-            hero.CharacterStats.CurrentExperience += expBonus;
+            hero.HeroStats.Gold += goldBonus;
+            hero.HeroStats.Experience += expBonus;
 
             Debug.Log("Hero: " + hero + " Rewards: Gold +" + goldBonus + ", EXP +" + expBonus);
             Debug.Log("Total monsters killed: " + hero.FloorStatistics.NumberOfMonstersKilled);

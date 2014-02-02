@@ -14,22 +14,13 @@ public class Imp : Enemy
     {
 		base.Initialise();
 
-        // Populate with stats
-        baseStatistics = new BaseStats();
-        baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
-
-        baseStatistics.CurrencyBounty = 1;
-        baseStatistics.ExperienceBounty = 50;
-        derivedStats = new DerivedStats(baseStatistics);
-        derivedStats.Attack = 5;
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
 
         // Add abilities
         Action charge = new ImpStrike();
         charge.Initialise(this);
         abilities.Add(charge);
         chargeActionID = 0;
-
-        originalColour = Color.white;
 
         InitialiseAI();
     }
@@ -81,7 +72,7 @@ public class Imp : Enemy
 
 			trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_HP(DerivedStats, AICondition.EType.Percentage, AICondition.ESign.EqualOrLess, 0.25f));
+            trigger.AddCondition(new AICondition_HP(enemyStats, AICondition.EType.Percentage, AICondition.ESign.EqualOrLess, 0.25f));
             trigger.OnTriggered += OnLowHP;
         }
 

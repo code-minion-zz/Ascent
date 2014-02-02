@@ -53,22 +53,6 @@ public class UITownWindow : UIPlayerMenuWindow
 		base.Initialise ();
 	}
 
-//	public void Equip(int destinationSlot, int originSlot)
-//	{
-//		if (ValidSlot(destinationSlot))
-//		{
-//			if (player.GetComponent<Hero>().HeroInventory.Items.Count >= originSlot)
-//			{
-//				Item insertingItem = player.GetComponent<Hero>().HeroInventory.Items[originSlot];
-//				if (insertingItem != null)
-//				{
-//					Item returnItem = player.Hero.GetComponent<Hero>().HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
-//					player.GetComponent<Hero>().HeroInventory.Items.Insert(originSlot,returnItem);
-//				}
-//			}	
-//		}
-//	}
-
 	/// <summary>
 	/// Return item to inventory if space permits.
 	/// </summary>
@@ -92,21 +76,15 @@ public class UITownWindow : UIPlayerMenuWindow
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
+			panels[i].SetParent(this);
 			panels[i].Initialise();
 			panels[i].gameObject.SetActive(false);
 		}
 		
 		activePanel = panels[(int)EBackpackPanels.BACKPACK];
-		//player.activePlayerPanel = activePanel;
+		player.activePlayerPanel = activePanel;
+		NGUITools.SetActive(activePanel.gameObject,true);
 	}
 
-//	bool ValidSlot(int slot)
-//	{
-//		if (slot > 3)
-//		{
-//			return false;
-//		}
-//		return true;
-//	}
 }
 

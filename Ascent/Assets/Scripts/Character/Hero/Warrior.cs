@@ -5,56 +5,20 @@ public class Warrior : Hero
 {
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
-		classType = EHeroClass.Warrior;
+		heroClass = EHeroClass.Warrior;
 
-		base.Initialise(input, saveData);
-
-        baseStatistics = null;
-
-		if (saveData != null)
-		{
-			baseStatistics = saveData.baseStats;
-			derivedStats = new DerivedStats(baseStatistics);
-			derivedStats.MaxSpecial = 25;
-			derivedStats.CurrentSpecial = 25;
-		}
-		else
-		{
-			// Populate the hero with Inventory, stats, basic abilities (if any)
-
-			baseStatistics = HeroBaseStats.GetNewBaseStatistics(Character.EHeroClass.Warrior, 1);
-			derivedStats = new DerivedStats(baseStatistics);
-			derivedStats.MaxSpecial = 25;
-			derivedStats.CurrentSpecial = 25;
-		}
-
-		// Initialise hero Specific animator
+		// Initialise Warrior Specific animator
 		heroAnimator = GetComponent<HeroAnimator>();
 		heroAnimator.Initialise();
+
+		// Create or Load character and init other essential things
+		base.Initialise(input, saveData);
 		
-		// Initialise Controller
-        heroController = gameObject.GetComponent<HeroController>();
-		heroController.Initialise(this, animator, motor);
-        heroController.SetInputDevice(input);
-		
-        // Add abilities
+        // Add abilities (TODO: Save/Load/Create this.)
 		AddSkill(new WarriorStrike());
 		AddSkill(new WarriorHeavyStrike());
 		AddSkill(new WarriorCharge());
 		AddSkill(new WarriorWarStomp());
         AddSkill(new WarriorWarCry());
-
-		// Set Stat Mods
-		classStatMod = new Hero.HeroClassStatModifier();
-		classStatMod.PowerAttack = 1f;
-		classStatMod.FinesseCritChance = 1f;
-		classStatMod.FinesseCritBonus = 1f;
-		classStatMod.FinesseDodge = 1f;
-		classStatMod.FinesseBlock = 1f;
-		classStatMod.VitalityHP = 1f;
-		classStatMod.VitalityPhysRes = 1f;
-		classStatMod.VitalityHPRegen = 1f;
-		classStatMod.SpiritSP = 1f;
-		classStatMod.SpiritMagRes = 1f;
     }
 }

@@ -46,9 +46,8 @@ public abstract class Character : BaseCharacter
 
 	protected Action activeAbility;
 
-	protected BaseStats baseStatistics;
-	protected DerivedStats derivedStats;
-
+	protected CharacterStats stats;
+	
 	protected float stunDuration;
 	protected float stunTimeAccum;
 	protected float invulnerableDuration;
@@ -87,15 +86,9 @@ public abstract class Character : BaseCharacter
 
 	protected Character lastDamagedBy;
 
-
-	public BaseStats CharacterStats
+	public CharacterStats Stats
 	{
-		get { return baseStatistics; }
-	}
-
-	public DerivedStats DerivedStats
-	{
-		get { return derivedStats; }
+		get { return stats; }
 	}
 
 	public Character LastDamagedBy
@@ -196,13 +189,13 @@ public abstract class Character : BaseCharacter
 			Action ability = abilities[abilityID];
 			// Make sure the cooldown is off otherwise we cannot use the ability
 
-			if (ability != null && ability.IsOnCooldown == false && (derivedStats.CurrentSpecial - ability.SpecialCost) >= 0)
+			if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
 			{
 				// TODO: Check if we are not in a state that denies abilities to perform.
 				ability.StartAbility();
 				activeAbility = ability;
 
-				derivedStats.CurrentSpecial -= ability.SpecialCost;
+				stats.CurrentSpecial -= ability.SpecialCost;
 
 				motor.StopMotion();
 				motor.canMove = false;
@@ -242,25 +235,30 @@ public abstract class Character : BaseCharacter
 	/// <param name="unmitigatedDamage">The amount of damage.</param>
 	/// <param name="type">The type of damage.</param>
 	/// <param name="owner">The character that has dealt the damage to this character.</param>
-	public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character owner)
+	public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character damageDealer)
 	{
-		int finalDamage = unmitigatedDamage;
-		lastDamagedBy = owner;
+		int damageDealerLevel = damageDealer.Stats.Level;
+
+		int finalDamage = Mathf.Max( Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense)), 1);
+		//int finalDamage = unmitigatedDamage;
+		lastDamagedBy = damageDealer;
+
+		//Debug.Log("UN-MITIGATED DMG: " + unmitigatedDamage +  ", FINAL DMG: " + finalDamage);
 
 		// Let the owner know of the amount of damage done.
-		if (owner != null)
+		if (damageDealer != null)
         {
-			owner.OnDamageDealt(finalDamage);
+			damageDealer.OnDamageDealt(finalDamage);
         }
 
 		// Obtain the health stat and subtract damage amount to the health.
-		derivedStats.CurrentHealth -= finalDamage;
+		stats.CurrentHealth -= finalDamage;
 
 		// Tell this character how much damage it has done.
 		OnDamageTaken(finalDamage);
 
 		// If the character is dead
-		if (derivedStats.CurrentHealth <= 0 && !isDead)
+		if (stats.CurrentHealth <= 0 && !isDead)
 		{
 			// On Death settings
 			// Update states to kill character
@@ -370,8 +368,8 @@ public abstract class Character : BaseCharacter
 
     public virtual void RefreshEverything()
     {
-        derivedStats.CurrentHealth = derivedStats.MaxHealth;
-        derivedStats.CurrentSpecial = derivedStats.MaxSpecial;
+        stats.CurrentHealth = stats.MaxHealth;
+        stats.CurrentSpecial = stats.MaxSpecial;
 
         if (isDead)
         {

@@ -134,7 +134,7 @@ public static class AscentGameSaver
 	/// <returns> The loaded Hero. </returns>
 	public static Hero LoadHero(HeroSaveData data)
 	{
-        Hero hero = HeroFactory.CreateNewHero(data.classType);
+        Hero hero = HeroFactory.CreateNewHero(data.heroClass);
         hero.SaveUID = data.uid;
         return hero;
 	}

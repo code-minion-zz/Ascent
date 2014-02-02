@@ -544,6 +544,9 @@ public class Room : MonoBehaviour
 
             float timeToPlace = 0.0f;
 
+			int maxTries = 50;
+			int tries = 0;
+
             while (isPlaced == false)
             {
                 timeToPlace += Time.deltaTime;
@@ -573,6 +576,14 @@ public class Room : MonoBehaviour
                         isPlaced = true;
                     }
                 }
+
+				++tries;
+				if (tries == maxTries)
+				{
+					Debug.Log("Tried 50 times to place monster.");
+					tries = 0;
+					isPlaced = true;
+				}
             }
 
 

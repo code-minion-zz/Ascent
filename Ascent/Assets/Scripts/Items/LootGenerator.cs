@@ -13,6 +13,22 @@ public static class LootGenerator
 		Any,
 	}
 
+	public enum EAccessoryTemplate
+	{
+		Power = 0,
+		Finesse,
+		Vitaliy,
+		Spirit,
+		PowerFinesse,
+		PowerVitality,
+		PowerSpirit,
+		FinesseVitality,
+		FinesseSpirit,
+		VitalitySpirit,
+		All,
+		Max
+	}
+
 	public static Item RandomlyGenerateItem(int floorNum, ELootType type)
 	{
 		// Randomly select the type of item
@@ -45,16 +61,15 @@ public static class LootGenerator
 	{
 		Item.ItemGrade grade = RandomGrade();
 
-		Item newItem = new AccessoryItem()
-		{
-			Level = floorNum,
-			Name = RandomAccessoryName(),
-			Description = RandomAccessoryDescription(),
-			GradeEnum = grade,
-		};
+		Item newItem = new AccessoryItem();
+		AccessoryItem newAccItem = newItem as AccessoryItem;
+		newAccItem.AcessoryStats = RandomAccessoryStats(floorNum);
+		newAccItem.AcessoryStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
+		newAccItem.AcessoryStats.Name = RandomAccessoryName();
+		newAccItem.ItemStats.Description = RandomAccessoryDescription();
+		newAccItem.ItemStats.Grade = (int)grade;
 
-		RandomAccessorySpecialProperties((AccessoryItem)newItem);
-		RandomAccessoryBaseStats((AccessoryItem)newItem);
+		RandomAccessoryProperties((AccessoryItem)newItem);
 
 		return newItem;
 	}
@@ -62,33 +77,61 @@ public static class LootGenerator
 	public static Item RandomlyGenerateConsumable(int floorNum)
 	{
 		Item.ItemGrade grade = RandomGrade();
-		grade++;
 
-		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX + 1));
+		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
 
 		Item newItem = null;
 
 		// Create the consumable item
+		// TODO: Randomly generate quanity and power of the consumable (Not all consumables benefit from power)
+
 		switch (consumableType)
 		{
 			case ConsumableItem.EConsumableType.Health:
 				{
-					newItem = new ConsumableItem();
+					newItem = new HealthPotion();
 				} 
+				break;
+			case ConsumableItem.EConsumableType.Special:
+				{
+					newItem = new SpecialPotion();
+				}
+				break;
+			case ConsumableItem.EConsumableType.Bomb:
+				{
+					newItem = new Bomb();
+				}
+				break;
+			case ConsumableItem.EConsumableType.Key:
+				{
+					newItem = new Key();
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled Case");
+				}
 				break;
 		}
 
-		// TODO: Randomly generate quanity and power of the consumable (Not all consumables benefit from power)
+		if (newItem != null)
+		{
+			newItem.ItemStats = new ItemStats();
+			newItem.ItemStats.Level = floorNum;
+			newItem.ItemStats.Grade = (int)grade;
+			newItem.ItemStats.Name = RandomAccessoryName();
+			newItem.ItemStats.Description = RandomAccessoryDescription();
+		}
 
 		return newItem;
 	}
 
-	public static Item.ItemGrade RandomGrade()
+	private static Item.ItemGrade RandomGrade()
 	{
 		return (Item.ItemGrade)Random.Range((int)Item.ItemGrade.E, (int)Item.ItemGrade.S);
 	}
 
-	public static void RandomAccessorySpecialProperties(AccessoryItem accessoryItem)
+	private static void RandomAccessoryProperties(AccessoryItem accessoryItem)
 	{
 		// Randomly choose properties based on level and grade.
 		// Property quantity is affected by grade.
@@ -99,22 +142,114 @@ public static class LootGenerator
 		//accessoryItem.ItemProperties.Add(prop);
 	}
 
-	public static void RandomAccessoryBaseStats(AccessoryItem accessoryItem)
-	{
-		// Randomly choose stat distribution based on level and grade
-		accessoryItem.Stats.Power = 1;
-		accessoryItem.Stats.Finesse = 1;
-		accessoryItem.Stats.Spirit = 1;
-		accessoryItem.Stats.Vitality = 1;
-	}
-
-	public static string RandomAccessoryName()
+	private static string RandomAccessoryName()
 	{
 		return "RandomName";
 	}
 
-	public static string RandomAccessoryDescription()
+	private static string RandomAccessoryDescription()
 	{
 		return "RandomDescription";
 	}
+
+	private static AccessoryStats RandomAccessoryStats(int level)
+	{
+		// Random between different templates
+		// The level impacts number of stats that can be allocated
+
+		int points = RandomAcessoryStatPoints(level);
+
+		AccessoryStats stats = new AccessoryStats();
+
+		EAccessoryTemplate template = (EAccessoryTemplate)Random.Range(0, (int)EAccessoryTemplate.Max);
+
+		switch (template)
+		{
+			case EAccessoryTemplate.Power:
+				{
+					stats.Power = points;
+				}
+				break;
+			case EAccessoryTemplate.Finesse:
+				{
+					stats.Finesse = points;
+				}
+				break;
+			case EAccessoryTemplate.Vitaliy:
+				{
+					stats.Vitality = points;
+				}
+				break;
+			case EAccessoryTemplate.Spirit:
+				{
+					stats.Spirit = points;
+				}
+				break;
+			case EAccessoryTemplate.PowerFinesse:
+				{
+					stats.Power = points / 2;
+					stats.Finesse = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.PowerVitality:
+				{
+					stats.Power = points / 2;
+					stats.Vitality = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.PowerSpirit:
+				{
+					stats.Power = points / 2;
+					stats.Spirit = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.FinesseVitality:
+				{
+					stats.Finesse = points / 2;
+					stats.Vitality = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.FinesseSpirit:
+				{
+					stats.Finesse = points / 2;
+					stats.Spirit = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.VitalitySpirit:
+				{
+					stats.Vitality = points / 2;
+					stats.Spirit = points / 2;
+				}
+				break;
+			case EAccessoryTemplate.All:
+				{
+					stats.Power = points / 4;
+					stats.Finesse = points / 4;
+					stats.Vitality = points / 4;
+					stats.Spirit = points / 4;
+				}
+				break;
+			case EAccessoryTemplate.Max: // Fall
+			default:
+				{
+					Debug.LogError("Unhandled case.");
+				}
+				break;
+		}
+
+		return stats;
+	}
+
+	private static int RandomAcessoryStatPoints(int level)
+	{
+		int minPoints = 1;
+		int maxPoints = 30;
+
+		int points = (int)(minPoints + ((float)maxPoints - (float)minPoints) * (float)(((float)level / (float)StatGrowth.KMaxLevel)));
+		int variance = (int)Mathf.Max(((float)points * 0.15f), 1.0f);
+		points +=  (int)Mathf.Max(Random.Range(-variance, variance), 2.0f);
+
+		return points;
+	}
+
 }

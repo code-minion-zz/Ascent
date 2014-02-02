@@ -26,6 +26,12 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		InputManager.OnDeviceDetached += OnDeviceDetached;
 
 		devices = InputManager.Devices;
+				
+		for (int i = 0; i < maxPlayers; ++i) // 3 players
+		{
+			windows[i].Initialise();
+			windows[i].gameObject.SetActive(false);
+		}
 	}
 
 	public void Update () 

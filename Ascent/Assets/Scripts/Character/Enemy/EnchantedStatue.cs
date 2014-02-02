@@ -18,14 +18,9 @@ public class EnchantedStatue : Enemy
 
     public override void Initialise()
     {
-        // Populate with stats
-        baseStatistics = new BaseStats();
-        baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
+		base.Initialise();
 
-        baseStatistics.CurrencyBounty = 1;
-        baseStatistics.ExperienceBounty = 50;
-        derivedStats = new DerivedStats(baseStatistics);
-        derivedStats.Attack = 5;
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
 
         // Add abilities
         Action slam = new EnchantedStatueSlam();
@@ -42,10 +37,6 @@ public class EnchantedStatue : Enemy
         awaken.Initialise(this);
         abilities.Add(awaken);
         awakenActionID = 2;
-
-        originalColour = Color.white;
-
-        base.Initialise();
 
         InitialiseAI();
 

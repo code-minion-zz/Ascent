@@ -6,7 +6,7 @@ public class HeroInventory
 {
     private const int MAX_INVENTORY_SLOTS = 15;
 
-	private List<Item> items;
+	public List<Item> items;
 
 	public List<Item> Items
 	{

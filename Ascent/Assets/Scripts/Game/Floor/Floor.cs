@@ -225,7 +225,7 @@ public class Floor : MonoBehaviour
 
         if (hero != null)
         {
-            if (hero.DerivedStats.Lives > 0)
+            if (hero.Lives > 0)
             {
                 if (currentRoom.startRoom)
                 {
@@ -237,7 +237,7 @@ public class Floor : MonoBehaviour
                     //hero.Respawn(startPoints[0].transform.position);
                 }
 
-                //--hero.DerivedStats.Lives;
+                //--hero.stats.Lives;
                 hero.FloorStatistics.NumberOfDeaths++;
             }
             else
@@ -254,7 +254,9 @@ public class Floor : MonoBehaviour
     /// <param name="character">The enemy that has died.</param>
     private void OnEnemyDeath(Character character)
     {
-        if (character.LastDamagedBy != null)
+		Enemy enemy = character as Enemy;
+
+		if (enemy.LastDamagedBy != null)
         {
             // This may break if the enemy was killed by something else such as a trap with no owner maybe?
             Hero hero = character.LastDamagedBy as Hero;
@@ -265,11 +267,11 @@ public class Floor : MonoBehaviour
         foreach (Player player in players)
         {
             Hero hero = player.Hero.GetComponent<Hero>();
-            hero.FloorStatistics.ExperienceGained += character.CharacterStats.ExperienceBounty;
+			hero.FloorStatistics.ExperienceGained += (int)enemy.EnemyStats.ExperienceBounty;
         }
 
         // Unsubscribe from listening to events from this enemy.
-        character.onDeath -= OnEnemyDeath;
+        enemy.onDeath -= OnEnemyDeath;
     }
 
 	// Update is called once per frame

@@ -151,7 +151,7 @@ public class Boss : Enemy
     //    // Populate with stats
     //    baseStatistics = new BaseStats();
     //    baseStatistics.Vitality = 25;
-    //    derivedStats = new DerivedStats(baseStatistics);
+    //    stats = new stats(baseStatistics);
 
     //    // Add abilities
     //    Action tackle = new EnemyTackle();

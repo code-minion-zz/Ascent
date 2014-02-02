@@ -54,22 +54,15 @@ public class HeroController : MonoBehaviour
         set { actionBindingsEnabled = value; }
     }
 
-    #region Intialization
-
-	public void Initialise(Hero hero, CharacterAnimator animator, CharacterMotor motor)
+	public void Initialise(Hero hero, InputDevice inputDevice, CharacterAnimator animator, CharacterMotor motor)
 	{
-		CanUseInput = true;
 		this.hero = hero;
+		this.inputDevice = inputDevice;
 		this.animator = animator;
 		this.motor = motor;
-	}
 
-	public void SetInputDevice(InputDevice inputDevice)
-	{
-		this.inputDevice = inputDevice;
+				CanUseInput = true;
 	}
-
-    #endregion
 
 
     void Update()

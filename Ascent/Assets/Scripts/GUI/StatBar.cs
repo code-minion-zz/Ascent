@@ -56,27 +56,37 @@ public class StatBar : MonoBehaviour {
 		{
 			case eStat.HP:
 			{
-				maxVal = owner.DerivedStats.MaxHealth;
-				curVal = owner.DerivedStats.CurrentHealth;
-				owner.DerivedStats.onMaxHealthChanged += OnMaxValueChanged;
-				owner.DerivedStats.onCurHealthChanged += OnCurValueChanged;
+				//maxVal = owner.stats.MaxHealth;
+				//curVal = owner.stats.CurrentHealth;
+				//owner.stats.onMaxHealthChanged += OnMaxValueChanged;
+				//owner.stats.onCurHealthChanged += OnCurValueChanged;
 				barFront.color = Color.red;
+
+				maxVal = owner.Stats.MaxHealth;
+				curVal = owner.Stats.CurrentHealth;
+				owner.Stats.onMaxHealthChanged += OnMaxValueChanged;
+				owner.Stats.onCurHealthChanged += OnCurValueChanged;
 			}
 			break;
 			case eStat.SP:
 			{
-				maxVal = owner.DerivedStats.MaxSpecial;
-				curVal = owner.DerivedStats.CurrentSpecial;
-				owner.DerivedStats.onMaxSpecialChanged += OnMaxValueChanged;
-				owner.DerivedStats.onCurSpecialChanged += OnCurValueChanged;
+				//maxVal = owner.stats.MaxSpecial;
+				//curVal = owner.stats.CurrentSpecial;
+				//owner.stats.onMaxSpecialChanged += OnMaxValueChanged;
+				//owner.stats.onCurSpecialChanged += OnCurValueChanged;
 				barFront.color = Color.blue;
+
+				maxVal = owner.Stats.MaxSpecial;
+				curVal = owner.Stats.CurrentSpecial;
+				owner.Stats.onMaxSpecialChanged += OnMaxValueChanged;
+				owner.Stats.onCurSpecialChanged += OnCurValueChanged;
 			}
 			break;
 			case eStat.EXP:
 			{
 				maxVal = 100f;	// we assume that EXP caps at 100
-				curVal = owner.CharacterStats.CurrentExperience;
-				owner.CharacterStats.onExpChanged += OnCurValueChanged;
+				curVal = ((Hero)owner).HeroStats.Experience;
+				owner.Stats.onExpChanged += OnCurValueChanged;
 				barFront.color = Color.yellow;
 			}
 			break;
@@ -98,15 +108,15 @@ public class StatBar : MonoBehaviour {
 		switch (TrackStat)
 		{
 		case eStat.HP:
-			owner.DerivedStats.onMaxHealthChanged -= OnMaxValueChanged;
-			owner.DerivedStats.onCurHealthChanged -= OnCurValueChanged;
+			owner.Stats.onMaxHealthChanged -= OnMaxValueChanged;
+			owner.Stats.onCurHealthChanged -= OnCurValueChanged;
 			break;
 		case eStat.SP:
-			owner.DerivedStats.onMaxSpecialChanged -= OnMaxValueChanged;
-			owner.DerivedStats.onCurSpecialChanged -= OnCurValueChanged;
+			owner.Stats.onMaxSpecialChanged -= OnMaxValueChanged;
+			owner.Stats.onCurSpecialChanged -= OnCurValueChanged;
 			break;
 		case eStat.EXP:
-			owner.CharacterStats.onExpChanged -= OnCurValueChanged;
+			owner.Stats.onExpChanged -= OnCurValueChanged;
 			break;
 		}
 		gameObject.SetActive(false);
