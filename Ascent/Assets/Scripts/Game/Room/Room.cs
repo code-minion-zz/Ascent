@@ -470,7 +470,6 @@ public class Room : MonoBehaviour
                 continue;
             }
 
-            Debug.Log(go.GetComponentInChildren<Enemy>());
             Bounds enemyBound = go.GetComponentInChildren<Enemy>().collider.bounds;
             bool isPlaced = false;
 

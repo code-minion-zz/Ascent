@@ -27,7 +27,7 @@ public class BaseStats
     public int physicalDefense;
     public int magicalDefense;
 
-    public int healthPerVit;
+    public int healthPerVit = 10;
     public int specialPerSpirit;
     public float critPerFinesse;
     public float critMultPerFinesse;

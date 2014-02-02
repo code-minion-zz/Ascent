@@ -12,6 +12,7 @@ public class CharacterAnimator : MonoBehaviour
 	protected bool dying = false;
 
 	protected bool initialised = false;
+    public bool hasAnimations = true;
 
 	//Dictionary<string, bool> states = new Dictionary<string, bool>();
 
@@ -79,7 +80,10 @@ public class CharacterAnimator : MonoBehaviour
     public virtual void PlayAnimation(string anim)
     {
 		currentAnim = anim;
-		animator.SetBool(anim, true);
+        if (hasAnimations)
+        {
+            animator.SetBool(anim, true);
+        }
     }
 
 	public virtual void PlayAnimation(int animHash)
@@ -107,7 +111,10 @@ public class CharacterAnimator : MonoBehaviour
 
 	public virtual void StopAnimation(string anim)
 	{
-		animator.SetBool(anim, false);
+        if (hasAnimations)
+        {
+            animator.SetBool(anim, false);
+        }
 	}
 
 	public virtual void StopAnimation(int animHash)

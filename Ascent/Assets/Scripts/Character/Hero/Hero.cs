@@ -94,6 +94,9 @@ public abstract class Hero : Character
 	{
         base.Initialise();
 
+
+        backpack = new Backpack();
+        heroInventory = new HeroInventory();
 	}
 
     public void AddExperience(int experience)
