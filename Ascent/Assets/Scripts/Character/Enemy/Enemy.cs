@@ -74,6 +74,8 @@ public abstract class Enemy : Character
         }
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
+
+        animator.hasAnimations = false;
 	}
 
 	public virtual void InitiliseHealthbar()
@@ -215,7 +217,7 @@ public abstract class Enemy : Character
         {
             // TODO: This might need to move.
             Hero hero = lastDamagedBy as Hero;
-            Debug.Log(hero);
+
             hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
         }
 

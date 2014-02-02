@@ -15,7 +15,7 @@ public class Rat : Enemy
 		// Populate with stats
 		baseStatistics = new BaseStats();
 		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
-
+        
 		baseStatistics.CurrencyBounty = 1;
 		baseStatistics.ExperienceBounty = 50;
 		derivedStats = new DerivedStats(baseStatistics);
