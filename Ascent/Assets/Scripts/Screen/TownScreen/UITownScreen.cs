@@ -44,12 +44,10 @@ public class UITownScreen : UIPlayerMenuScreen
 		{
 			windows[i].gameObject.SetActive(true);
 			windows[i].SetPlayer(players[i]);
+			windows[i].Initialise();
 		}
 
-
 		// Spawn a panel for each player
-
-
 
 //		for (int i = 0; i < players.Count; ++i)
 //		{

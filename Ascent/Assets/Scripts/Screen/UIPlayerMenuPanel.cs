@@ -40,6 +40,11 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	}
 
+	public void SetParent(UIPlayerMenuWindow myParent)
+	{
+		parent = myParent;
+	}
+
 	public virtual void OnEnable()
 	{
 		if (parent == null)

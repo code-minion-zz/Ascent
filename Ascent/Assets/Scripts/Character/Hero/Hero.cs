@@ -94,8 +94,8 @@ public abstract class Hero : Character
 	{
         base.Initialise();
 
-
-        backpack = new Backpack();
+		backpack = new Backpack();
+		Debug.Log("made backpack");
         heroInventory = new HeroInventory();
 	}
 

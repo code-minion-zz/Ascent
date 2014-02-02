@@ -42,19 +42,9 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		lastActiveButton = currentButton;
 		buttonMax = (int)EButtons.MAX;
 
-		// Change Button Icons in accordance to backpack data
-		Backpack bp = parent.Player.Hero.HeroBackpack;
-		
-		Item[] arrayItems = bp.AllItems;
-		for (int i = 0; i < 7; ++i)
-		{
-			if (arrayItems[i] != null)
-			{
-				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
-			}
-		}
-
 		initialised = true;
+
+		UpdateItems();
 	}
 
 	public override void OnEnable()
@@ -77,6 +67,22 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		}
 
 		base.OnDisable();
+	}
+
+	public void UpdateItems()
+	{
+		Debug.Log(parent);
+		// Change Button Icons in accordance to backpack data
+		Backpack bp = parent.Player.Hero.HeroBackpack;
+		
+		Item[] arrayItems = bp.AllItems;
+		for (int i = 0; i < 7; ++i)
+		{
+			if (arrayItems[i] != null)
+			{
+				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
+			}
+		}
 	}
 
 	UIButton GetButton(EButtons button)
@@ -112,11 +118,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	public override void OnMenuOK(InputDevice device)
 	{
-//		UICamera.Notify(currentSelection.gameObject, "OnPress", true);
-//
-//		EButtons current = (EButtons)currentButton;
-//
-//		parent.TransitionToPanel((int)UITownWindow.EBackpackPanels.INVENTORY);
 	}
 
 
