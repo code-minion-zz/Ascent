@@ -77,16 +77,16 @@ public class FloorSummaryPanel : MonoBehaviour
 
 		PanelElements [0].GetComponent<UILabel> ().text = bonusNames;
 		PanelElements [1].GetComponent<UILabel> ().text = rewardValues;
-		PanelElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero> ().CharacterStats.Currency);
+		PanelElements [2].GetComponent<UILabel> ().text = "Gold: " + (goldReward + myPlayer.Hero.GetComponent<Hero>().HeroStats.Gold);
 
-        BaseStats stats = myPlayer.Hero.GetComponent<Hero>().CharacterStats;
+        HeroStats stats = myPlayer.Hero.GetComponent<Hero>().HeroStats;
 
-		int newExp = expReward + myPlayer.Hero.GetComponent<Hero>().CharacterStats.CurrentExperience;
+		int newExp = expReward + myPlayer.Hero.GetComponent<Hero>().HeroStats.Experience;
 
         myPlayer.Hero.GetComponent<Hero>().AddExperience(newExp);
 
 		PanelElements [3].GetComponent<UILabel> ().text = "Exp: " + newExp;
-        PanelElements[4].GetComponent<UISlider>().value = (float)newExp / stats.MaxExperience;
+        PanelElements[4].GetComponent<UISlider>().value = (float)newExp / stats.RequiredExperience;
 
 		NGUITools.SetActive(gameObject, true);
 	} 

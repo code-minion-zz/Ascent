@@ -12,21 +12,12 @@ public class Rat : Enemy
     {
         base.Initialise();
 
-		// Populate with stats
-		baseStatistics = new BaseStats();
-		baseStatistics.Vitality = (int)((((float)health * (float)Game.Singleton.NumberOfPlayers) * 0.80f) / 10.0f);
-        
-		baseStatistics.CurrencyBounty = 1;
-		baseStatistics.ExperienceBounty = 50;
-		derivedStats = new DerivedStats(baseStatistics);
-		derivedStats.Attack = 5;
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
 
 		// Add abilities
 		Action tackle = new EnemyTackle();
 		tackle.Initialise(this);
 		abilities.Add(tackle);
-
-		originalColour = Color.white;
 
 		InitialiseAI();
 	}
@@ -86,13 +77,6 @@ public class Rat : Enemy
 	   AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
    }
 
-   public override void Update()
-   {
-        base.Update();
-
-		//transform.forward = new Vector3(Game.Singleton.Players[0].Input.LeftStickX, 0.0f, Game.Singleton.Players[0].Input.LeftStickY);
-    }
-
    public void OnWanderEnd()
    {
 	   // Choose a new target location
@@ -127,7 +111,6 @@ public class Rat : Enemy
    {
 	   UseAbility(0);
    }
-
 
    public override void OnDisable()
    {

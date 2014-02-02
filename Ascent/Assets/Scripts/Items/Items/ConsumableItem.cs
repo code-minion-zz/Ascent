@@ -22,11 +22,5 @@ public class ConsumableItem : Item
 
     public virtual void Consume()
     {
-		int i;
-		for (i = 0; i < itemProperties.size; ++i)
-		{
-			//itemProperties[i];
-		}
-        // To be derived.
     }
 }

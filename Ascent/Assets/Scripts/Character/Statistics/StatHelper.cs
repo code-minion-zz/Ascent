@@ -6,14 +6,14 @@ public static class StatHelper
 	public static int Power(Character character)
 	{
 		// Get character base statistics
-		int power = character.CharacterStats.Power;
-		
+		int power = character.Stats.Power;
+
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
 			Backpack backPack = ((Hero)character).HeroBackpack;
 			int itemCount = backPack.AccessoryCount;
-			
+
 			if (itemCount > 0)
 			{
 				int i;
@@ -24,23 +24,18 @@ public static class StatHelper
 					{
 						continue;
 					}
-					
-					BaseStats baseStats = ((AccessoryItem)item).Stats;//.Power;
-					
-					if (baseStats != null)
-					{
-						power += baseStats.Power;
-					}
+
+					power += (int)((AccessoryItem)item).AcessoryStats.Power;
 				}
 			}
 		}
-		
+
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList =  character.BuffList;
-		
-		int buffCount =	buffList.size;
-		
+		BetterList<Buff> buffList = character.BuffList;
+
+		int buffCount = buffList.size;
+
 		if (buffCount > 0)
 		{
 			int i;
@@ -48,25 +43,25 @@ public static class StatHelper
 			{
 				if (buffList[i] is BaseStatBuff)
 				{
-					power += ((BaseStatBuff)buffList[i]).Stats.Power;
+					power += (int)((BaseStatBuff)buffList[i]).Power;
 				}
 			}
 		}
-		
+
 		return power;
 	}
 
 	public static int Finesse(Character character)
 	{
 		// Get character base statistics
-		int finesse = character.CharacterStats.Finesse;
-		
+		int finesse = character.Stats.Finesse;
+
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
 			Backpack backPack = ((Hero)character).HeroBackpack;
 			int itemCount = backPack.AccessoryCount;
-			
+
 			if (itemCount > 0)
 			{
 				int i;
@@ -77,23 +72,18 @@ public static class StatHelper
 					{
 						continue;
 					}
-					
-					BaseStats baseStats = ((AccessoryItem)item).Stats;//.Power;
-					
-					if (baseStats != null)
-					{
-						finesse += baseStats.Finesse;
-					}
+
+					finesse += (int)((AccessoryItem)item).AcessoryStats.Finesse;
 				}
 			}
 		}
-		
+
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList =  character.BuffList;
-		
-		int buffCount =	buffList.size;
-		
+		BetterList<Buff> buffList = character.BuffList;
+
+		int buffCount = buffList.size;
+
 		if (buffCount > 0)
 		{
 			int i;
@@ -101,25 +91,25 @@ public static class StatHelper
 			{
 				if (buffList[i] is BaseStatBuff)
 				{
-					finesse += ((BaseStatBuff)buffList[i]).Stats.Finesse;
+					finesse += (int)((BaseStatBuff)buffList[i]).Finesse;
 				}
 			}
 		}
-		
+
 		return finesse;
 	}
 
 	public static int Vitality(Character character)
 	{
 		// Get character base statistics
-		int vitality = character.CharacterStats.Vitality;
-		
+		int vitality = character.Stats.Vitality;
+
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
 			Backpack backPack = ((Hero)character).HeroBackpack;
 			int itemCount = backPack.AccessoryCount;
-			
+
 			if (itemCount > 0)
 			{
 				int i;
@@ -131,23 +121,18 @@ public static class StatHelper
 					{
 						continue;
 					}
-					
-					BaseStats baseStats = ((AccessoryItem)item).Stats;//.Power;
-					
-					if (baseStats != null)
-					{
-						vitality += baseStats.Vitality;
-					}
+
+					vitality += (int)((AccessoryItem)item).AcessoryStats.Vitality;
 				}
 			}
 		}
-		
+
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList =  character.BuffList;
-		
-		int buffCount =	buffList.size;
-		
+		BetterList<Buff> buffList = character.BuffList;
+
+		int buffCount = buffList.size;
+
 		if (buffCount > 0)
 		{
 			int i;
@@ -155,25 +140,25 @@ public static class StatHelper
 			{
 				if (buffList[i] is BaseStatBuff)
 				{
-					vitality += ((BaseStatBuff)buffList[i]).Stats.Vitality;
+					vitality += (int)((BaseStatBuff)buffList[i]).Vitality;
 				}
 			}
 		}
-		
+
 		return vitality;
 	}
 
 	public static int Spirit(Character character)
 	{
 		// Get character base statistics
-		int spirit = character.CharacterStats.Spirit;
-		
+		int spirit = character.Stats.Spirit;
+
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
 			Backpack backPack = ((Hero)character).HeroBackpack;
 			int itemCount = backPack.AccessoryCount;
-			
+
 			if (itemCount > 0)
 			{
 				int i;
@@ -184,23 +169,18 @@ public static class StatHelper
 					{
 						continue;
 					}
-					
-					BaseStats baseStats = ((AccessoryItem)item).Stats;//.Power;
-					
-					if (baseStats != null)
-					{
-						spirit += baseStats.Spirit;
-					}
+
+					spirit += (int)((AccessoryItem)item).AcessoryStats.Spirit;
 				}
 			}
 		}
-		
+
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList =  character.BuffList;
-		
-		int buffCount =	buffList.size;
-		
+		BetterList<Buff> buffList = character.BuffList;
+
+		int buffCount = buffList.size;
+
 		if (buffCount > 0)
 		{
 			int i;
@@ -208,27 +188,11 @@ public static class StatHelper
 			{
 				if (buffList[i] is BaseStatBuff)
 				{
-					spirit += ((BaseStatBuff)buffList[i]).Stats.Spirit;
+					spirit += (int)((BaseStatBuff)buffList[i]).Spirit;
 				}
 			}
 		}
-		
+
 		return spirit;
 	}
-
-//    public static int Attack(Character character, HeroEquipment equipment)
-//    {
-//        // Get character base statistics
-//        int power = character.CharacterStats.Power;
-//
-//        if (equipment != null)
-//        {
-//            // Go through the list of items and add power
-//
-//        }
-//
-//        // Add status buff modifiers
-//
-//        return power;
-//    }
 }

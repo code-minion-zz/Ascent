@@ -3,13 +3,13 @@ using System.Collections;
 
 public class AICondition_SP : AICondition
 {
-	private DerivedStats stats;
+	private EnemyStats stats;
 	private EType type;
 	private ESign sign;
 	private float value;
 	private bool hasMet = false;
 
-	public AICondition_SP(DerivedStats stats, EType type, ESign sign, float value)
+	public AICondition_SP(EnemyStats stats, EType type, ESign sign, float value)
 	{
 		this.stats = stats;
 		this.type = type;

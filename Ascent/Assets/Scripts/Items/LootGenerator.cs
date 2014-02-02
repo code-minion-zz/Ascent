@@ -47,10 +47,11 @@ public static class LootGenerator
 
 		Item newItem = new AccessoryItem()
 		{
-			Level = floorNum,
+			Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1)),
 			Name = RandomAccessoryName(),
 			Description = RandomAccessoryDescription(),
 			GradeEnum = grade,
+			AcessoryStats = RandomAccessoryStats(floorNum)
 		};
 
 		RandomAccessorySpecialProperties((AccessoryItem)newItem);
@@ -64,7 +65,7 @@ public static class LootGenerator
 		Item.ItemGrade grade = RandomGrade();
 		grade++;
 
-		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX + 1));
+		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
 
 		Item newItem = null;
 
@@ -83,12 +84,12 @@ public static class LootGenerator
 		return newItem;
 	}
 
-	public static Item.ItemGrade RandomGrade()
+	private static Item.ItemGrade RandomGrade()
 	{
 		return (Item.ItemGrade)Random.Range((int)Item.ItemGrade.E, (int)Item.ItemGrade.S);
 	}
 
-	public static void RandomAccessorySpecialProperties(AccessoryItem accessoryItem)
+	private static void RandomAccessorySpecialProperties(AccessoryItem accessoryItem)
 	{
 		// Randomly choose properties based on level and grade.
 		// Property quantity is affected by grade.
@@ -99,22 +100,41 @@ public static class LootGenerator
 		//accessoryItem.ItemProperties.Add(prop);
 	}
 
-	public static void RandomAccessoryBaseStats(AccessoryItem accessoryItem)
+	private static void RandomAccessoryBaseStats(AccessoryItem accessoryItem)
 	{
 		// Randomly choose stat distribution based on level and grade
-		accessoryItem.Stats.Power = 1;
-		accessoryItem.Stats.Finesse = 1;
-		accessoryItem.Stats.Spirit = 1;
-		accessoryItem.Stats.Vitality = 1;
+		//accessoryItem.Stats.Power = 1;
+		//accessoryItem.Stats.Finesse = 1;
+		//accessoryItem.Stats.Spirit = 1;
+		//accessoryItem.Stats.Vitality = 1;
 	}
 
-	public static string RandomAccessoryName()
+	private static string RandomAccessoryName()
 	{
 		return "RandomName";
 	}
 
-	public static string RandomAccessoryDescription()
+	private static string RandomAccessoryDescription()
 	{
 		return "RandomDescription";
+	}
+
+	private static AccessoryStats RandomAccessoryStats(int level)
+	{
+		// Random between different templates
+		// The level impacts number of stats that can be allocated
+
+		int noTemplates = 9;
+		int template = Random.Range(0, 9);
+
+		//switch (noTemplates)
+		//{
+		//    case :
+		//        {
+		//        }
+		//        break;
+		//}
+
+		 return new AccessoryStats();
 	}
 }

@@ -44,12 +44,19 @@ public abstract class Hero : Character
 		set { saveUID = value;}
 	}
 
-	protected EHeroClass classType;
+	protected int lives;
+	public int Lives
+	{
+		get {return lives; }
+		set { lives = value; }
+	}
+
+	protected EHeroClass heroClass;
 	protected HeroAnimator heroAnimator;
 	protected HeroClassStatModifier classStatMod;
     protected HeroController heroController;
 	protected Backpack backpack;
-    protected HeroInventory heroInventory;
+    protected HeroInventory inventory;
     protected FloorStats floorStatistics;
 	protected uint highestFloorReached;
     public int unasignedAbilityPoints;
@@ -60,9 +67,20 @@ public abstract class Hero : Character
 		set { highestFloorReached = value; }
 	}
 
-	public EHeroClass ClassType
+	protected HeroStats heroStats;
+	public HeroStats HeroStats
 	{
-		get { return classType; }
+		get { return heroStats; }
+		set
+		{
+			heroStats = value;
+			stats = value;
+		}
+	}
+
+	public EHeroClass HeroClass
+	{
+		get { return heroClass; }
 	}
 
 	public HeroClassStatModifier ClassStatMod
@@ -77,7 +95,7 @@ public abstract class Hero : Character
 
 	public HeroInventory HeroInventory
 	{
-		get { return heroInventory; }
+		get { return inventory; }
 	}
 
 	public HeroController HeroController
@@ -92,18 +110,85 @@ public abstract class Hero : Character
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
+		// Init base with things like shadow, tilt and motor
         base.Initialise();
 
+		// Attempt to load character else create a new one.
+		if(saveData != null)
+		{
+			Load(this, saveData);
+		}
+		else
+		{
+			Create(this);
+		}
 
-        backpack = new Backpack();
-        heroInventory = new HeroInventory();
+		// Initialise Controller, hook it up with the hero, hero animator and motor
+		heroController = gameObject.GetComponent<HeroController>();
+		heroController.Initialise(this, input, animator, motor);
+	}
+
+	public static void Create(Hero hero)
+	{
+		// Create items
+		hero.backpack = new Backpack();
+		hero.inventory = new HeroInventory();
+
+		Test_PopulateInventoryAndBackpack(hero);
+
+		// Create abilities
+		hero.abilities = new List<Action>();
+
+		// Create stats
+		hero.HeroStats = new HeroStats(hero);
+		hero.HeroStats.Reset();
+	}
+
+	public static void Test_PopulateInventoryAndBackpack(Hero hero)
+	{
+		Backpack backpack = hero.backpack;
+		backpack.AddItem(Backpack.BackpackSlot.ACC1, LootGenerator.RandomlyGenerateAccessory(1));
+		backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2));
+		backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3));
+		backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4));
+		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
+		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
+		backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
+
+
+		foreach(Item i in backpack.AllItems)
+		{
+			Debug.Log( i.ToString());
+		}
+
+		HeroInventory inventory = hero.inventory;
+		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5));
+		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6));
+		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7));
+		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
+		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
+		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
+	}
+
+	public static void Load(Hero hero, HeroSaveData data)
+	{
+		// Load in Items
+		hero.inventory = data.inventory;
+		hero.backpack = data.backpack;
+
+		// Load in abilities
+		hero.abilities = data.abilities;
+
+		// Load in stats
+		hero.HeroStats = new HeroStats(hero, data);
+		hero.HeroStats.Reset();
 	}
 
     public void AddExperience(int experience)
     {
         // Add experience
-        int curExp = baseStatistics.CurrentExperience + experience;
-        int maxExp = baseStatistics.MaxExperience;
+        int curExp = heroStats.CurrentExperience + experience;
+		int maxExp = heroStats.RequiredExperience;
 
         // Keep leveling while experience is above required.
         while (curExp >= maxExp)
@@ -113,16 +198,16 @@ public abstract class Hero : Character
             LevelUp();
 
             // Recalculate required experience
-            maxExp = baseStatistics.MaxExperience;
+			maxExp = heroStats.RequiredExperience;
         }
 
         // Set the new experience value
-        baseStatistics.CurrentExperience = curExp;
+		heroStats.CurrentExperience = curExp;
     }
 
     public void LevelUp()
     {
-        baseStatistics.Level += 1;
+		stats.Level += 1;
         unasignedAbilityPoints += 1;
     }
 
@@ -143,7 +228,7 @@ public abstract class Hero : Character
     protected override void Respawn(Vector3 position)
     {
         // Reset the health
-        derivedStats.ResetHealth();
+		RefreshEverything();
         motor.canMove = true;
         Animator.Dying = false;
         collider.enabled = true;
