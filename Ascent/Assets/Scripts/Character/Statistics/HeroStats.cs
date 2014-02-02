@@ -149,14 +149,19 @@ public class HeroStats : CharacterStats
 					// Accessories usually have primary stats.
 
 					Backpack backPack = hero.HeroBackpack;
-					int itemCount = backPack.AccessoryCount;
 
+					int itemCount = backPack.AllItems.Length;
+					
 					if (itemCount > 0)
 					{
 						int i;
 						for (i = 0; i < itemCount; ++i)
 						{
 							Item item = backPack.AllItems[i];
+							if (item == null)
+							{
+								continue;
+							}
 							if (item is ConsumableItem)
 							{
 								continue;

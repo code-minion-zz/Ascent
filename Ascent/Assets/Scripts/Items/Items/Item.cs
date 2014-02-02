@@ -14,49 +14,12 @@ public abstract class Item
 		MAX_GRADE
     }
 
-	protected string name;
-	protected string description;
-	protected int level;
-	protected ItemGrade grade;
 	protected ItemStats stats;
-	protected int baseValue;
-
-
 	public ItemStats ItemStats
 	{
 		get { return stats; }
+		set { stats = value; }
 	}
-
-
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
-
-    public string Description
-    {
-        get { return description; }
-        set { description = value; }
-    }
-
-    public int Level
-    {
-        get { return level; }
-        set { level = value; }
-    }
-
-//    public ItemGrade Grade
-//    {
-//        get { return grade; }
-//        set { grade = value; }
-//    }
-
-    public int BaseValue
-    {
-        get { return baseValue; }
-        set { baseValue = value; }
-    }
 
     protected virtual int CalculateSellValue()
     {
@@ -65,6 +28,6 @@ public abstract class Item
 		// 50% of base value + modifiers?
 		float modifier = 1f;
 
-		return (int)(baseValue * 0.5f * modifier);
+		return (int)(0 * 0.5f * modifier);
     }
 }

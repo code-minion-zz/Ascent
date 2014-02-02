@@ -26,6 +26,7 @@ public class Tower : MonoBehaviour
 
 	public void InitialiseRandomFloor()
 	{
+		Debug.Log("A");
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
         currentFloor.InitialiseRandomFloor();

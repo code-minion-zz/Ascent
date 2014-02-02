@@ -239,12 +239,11 @@ public abstract class Character : BaseCharacter
 	{
 		int damageDealerLevel = damageDealer.Stats.Level;
 
-		int finalDamage = Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense));
+		int finalDamage = Mathf.Max( Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense)), 1);
 		//int finalDamage = unmitigatedDamage;
 		lastDamagedBy = damageDealer;
 
-		Debug.Log(finalDamage);
-
+		//Debug.Log("UN-MITIGATED DMG: " + unmitigatedDamage +  ", FINAL DMG: " + finalDamage);
 
 		// Let the owner know of the amount of damage done.
 		if (damageDealer != null)

@@ -25,25 +25,36 @@ public class AccessoryItem : Item
 	public AccessoryStats AcessoryStats
 	{
 		get { return accessoryStats; }
-		set { accessoryStats = value; }
+		set 
+		{
+			ItemStats = value;
+			accessoryStats = value;
+		}
 	}
 
 	public int Grade
 	{
-		get { return (int)grade; }
-		set { grade = (ItemGrade)value; }
+		get { return stats.Grade; }
+		set { stats.Grade = value; }
 	}
 
 	public ItemGrade GradeEnum
 	{
-		get { return grade; }
-		set { grade = value; }
+		get { return (ItemGrade)stats.Grade; }
+		set { stats.Grade = (int)value; }
 	}
 
 	public int Durability
 	{
 		get { return durability; }
-		set { durability = value; }
+		set 
+		{
+			if (value < 0)
+			{
+				value = 0;
+			}
+			durability = value; 
+		}
 	}
 
 	public int DurabilityMax
@@ -54,10 +65,11 @@ public class AccessoryItem : Item
 
 	public override string ToString()
 	{
-		return GradeEnum.ToString() + " Lv" + level + ", Name: " + name + "\n" +
-				"Desc: " + description + "\n" +
+		return GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
+				"Desc: " + stats.Description + "\n" +
 				"Dura: " + durability + "\\" + durabilityMax + "\n" +
 				"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
+				"Stats: POW-" + accessoryStats.Power + ", FIN-" + accessoryStats.Finesse + ", VIT-" +  accessoryStats.Vitality + ", SPR-" + accessoryStats.Spirit + "\n" + 
 				"Prop count: " + itemProperties.size + "\n";
 				
 	}

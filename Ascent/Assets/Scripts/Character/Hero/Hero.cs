@@ -134,14 +134,15 @@ public abstract class Hero : Character
 		hero.backpack = new Backpack();
 		hero.inventory = new HeroInventory();
 
-		Test_PopulateInventoryAndBackpack(hero);
-
 		// Create abilities
 		hero.abilities = new List<Action>();
 
 		// Create stats
 		hero.HeroStats = new HeroStats(hero);
 		hero.HeroStats.Reset();
+
+		Test_PopulateInventoryAndBackpack(hero);
+		//Test_DrawHeroStats(hero);
 	}
 
 	public static void Test_PopulateInventoryAndBackpack(Hero hero)
@@ -151,23 +152,46 @@ public abstract class Hero : Character
 		backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2));
 		backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3));
 		backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4));
-		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
-		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
-		backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
-
-
-		foreach(Item i in backpack.AllItems)
-		{
-			Debug.Log( i.ToString());
-		}
+		//backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
+		//backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
+		//backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
 
 		HeroInventory inventory = hero.inventory;
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5));
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6));
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
+		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
+		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
+		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
+	}
+
+	public static void Test_DrawHeroStats(Hero hero)
+	{
+		Debug.Log("POW: " + hero.HeroStats.Power +
+			" FIN: " + hero.HeroStats.Finesse +
+			" VIT: " + hero.HeroStats.Vitality +
+			" SPR: " + hero.HeroStats.Spirit +
+
+			" ATK: " + hero.HeroStats.Attack +
+			" PDEF: " + hero.HeroStats.PhysicalDefense +
+			" MDEF: " + hero.HeroStats.MagicalDefense +
+			" CRIT: " + hero.HeroStats.CriticalHitChance +
+			" MULT: " + hero.HeroStats.CritalHitMultiplier +
+			" DODGE: " + hero.HeroStats.DodgeChance
+			);
+
+		Debug.Log("POW: " + hero.Stats.Power +
+			" FIN: " + hero.Stats.Finesse +
+			" VIT: " + hero.Stats.Vitality +
+			" SPR: " + hero.Stats.Spirit +
+
+			" ATK: " + hero.Stats.Attack +
+			" PDEF: " + hero.Stats.PhysicalDefense +
+			" MDEF: " + hero.Stats.MagicalDefense +
+			" CRIT: " + hero.Stats.CriticalHitChance +
+			" MULT: " + hero.Stats.CritalHitMultiplier +
+			" DODGE: " + hero.Stats.DodgeChance
+			);
 	}
 
 	public static void Load(Hero hero, HeroSaveData data)

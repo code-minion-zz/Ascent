@@ -38,9 +38,6 @@ public class EnchantedStatue : Enemy
         abilities.Add(awaken);
         awakenActionID = 2;
 
-
-        base.Initialise();
-
         InitialiseAI();
 
         canBeDebuffed = false;

@@ -8,19 +8,65 @@ public class ConsumableItem : Item
 		INVALID = -1,
 
 		Health,
+		Special,
+
+		Key,
+		Bomb,
 
 		MAX
 	}
 
-	int charges;
 
+	protected int charges;
 	public int Charges
 	{
 		get{ return charges; }
 		set { charges = value; }
 	}
 
-    public virtual void Consume()
+	protected float cooldown;
+	protected float cooldownMax = 2.0f;
+	public float CooldownMax
+	{
+		set { cooldownMax = value; }
+	}
+
+	public bool perishable = true;
+
+	protected bool CanUse
+	{
+		get { return charges > 0 && cooldown == 0.0f; }
+	}
+
+	public void Process()
+	{
+		if (cooldown > 0.0f)
+		{
+			cooldown -= Time.deltaTime;
+
+			if (cooldown < 0.0f)
+			{
+				cooldown = 0.0f;
+			}
+		}
+	}
+
+	public void UseItem(Hero user)
     {
+		if (charges > 0)
+		{
+			Consume(user);
+			cooldown = cooldownMax;
+
+			if (perishable)
+			{
+				charges -= 1;
+			}
+		}
     }
+
+	protected virtual void Consume(Hero user)
+	{
+		// To be derived
+	}
 }
