@@ -14,13 +14,10 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		ITM2,
 		ITM3,
 		ITM4,
-
 		MAX,
 	}
 
 	int		 lastActiveButton = 0;
-
-
 
 	public override void Initialise()
 	{
@@ -62,7 +59,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		if (initialised)
 		{
 			lastActiveButton = currentButton;
-			//currentButton = (int)EButtons.ACC1;
 			currentSelection = buttons[lastActiveButton];
 		}
 
@@ -131,6 +127,6 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	public override void OnMenuHax(InputDevice device)
 	{
 		//((UITownScreen)parent.ParentScreen).StartGame();
-		Game.Singleton.LoadLevel("overhaul", Game.EGameState.TowerRandom);
+		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 	}
 }
