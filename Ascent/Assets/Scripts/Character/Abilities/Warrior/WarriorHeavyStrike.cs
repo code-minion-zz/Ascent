@@ -31,7 +31,8 @@ public class WarriorHeavyStrike : Action
         performed = false;
 
         animationLength = 1.167f / animationSpeed;
-		owner.Animator.PlayAnimation(animationTrigger);
+		//owner.Animator.PlayAnimation(animationTrigger);
+		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.HeavyStrike);
 
         base.StartAbility();
     }

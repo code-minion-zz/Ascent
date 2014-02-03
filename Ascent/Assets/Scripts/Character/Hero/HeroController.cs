@@ -27,10 +27,11 @@ public class HeroController : MonoBehaviour
     }
 
 	private Hero hero;
-	private CharacterAnimator animator;
+	private HeroAnimator animator;
 	private CharacterMotor motor;
     private InputDevice inputDevice;
     private bool actionBindingsEnabled = false;
+	private float animMoveSpeed = 0.0f;
 
 	private MoveableBlock grabbedObject;
 	public bool GrabbingObject
@@ -60,14 +61,14 @@ public class HeroController : MonoBehaviour
         set { actionBindingsEnabled = value; }
     }
 
-	public void Initialise(Hero hero, InputDevice inputDevice, CharacterAnimator animator, CharacterMotor motor)
+	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor)
 	{
 		this.hero = hero;
 		this.inputDevice = inputDevice;
 		this.animator = animator;
 		this.motor = motor;
 
-				CanUseInput = true;
+		CanUseInput = true;
 	}
 
 
@@ -77,17 +78,17 @@ public class HeroController : MonoBehaviour
 		{
 			InputDevice device = inputDevice;
 
-            if (motor.canMove)
-            {
-                if (!hero.IsStunned)
-                {
-                    ProcessFaceButtons(device);
-                    ProcessTriggersAndBumpers(device);
-				    ProcessMovement(device);
-                }
+			if (motor.canMove)
+			{
+				if (!hero.IsStunned)
+				{
+					ProcessFaceButtons(device);
+					ProcessTriggersAndBumpers(device);
+					ProcessMovement(device);
+				}
 
-                ProcessDPad(device);
-            }
+				ProcessDPad(device);
+			}
 
 #if UNITY_EDITOR
             if (device.Back.WasPressed)
@@ -162,6 +163,8 @@ public class HeroController : MonoBehaviour
 
 	public void ProcessMovement(InputDevice device)
 	{
+		animMoveSpeed = 0.0f;
+		bool moved = false;
 		if (GetComponent<CharacterMotor>().canMove && !hero.IsStunned)
 		{
 			// L Stick
@@ -205,24 +208,66 @@ public class HeroController : MonoBehaviour
 					moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
 				}
 
+				
+				if (moveDirection != Vector3.zero)
+				{
+					if(moveDirection.sqrMagnitude > 0.001f)
+					{
+						moved = true;
+					}
+				}
+
 				transform.LookAt(transform.position + moveDirection);
 				GetComponent<CharacterMotor>().Move(moveDirection);
 
-				float animMoveSpeed = 0.0f;
-				float moveX = Mathf.Abs(moveDirection.x);
-				float moveY = Mathf.Abs(moveDirection.z);
+				if (moved)
+				{
+					float moveX = Mathf.Abs(moveDirection.x);
+					float moveY = Mathf.Abs(moveDirection.z);
 
-				if (moveX >= 1.0f || moveY >= 1.0f)
-				{
-					animMoveSpeed = 1.0f;
+					if (moveX >= 1.0f || moveY >= 1.0f)
+					{
+						animMoveSpeed = 1.0f;
+					}
+					else
+					{
+						animMoveSpeed = moveX > moveY ? moveX : moveY;
+						moved = true;
+					}
+
+					animator.PlayMovement(HeroAnimator.EMoveAnimation.Moving);
+					animator.Move(animMoveSpeed);
 				}
-				else
-				{
-					animMoveSpeed = moveX > moveY ? moveX : moveY;
-				}
-				animator.PlayAnimation("Speed", animMoveSpeed);
 			}
 		}
+
+		if (hero.IsStunned)
+		{
+			animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
+		}
+		else if(!moved)
+		{
+			animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
+		}
+
+		//if(!GetComponent<CharacterMotor>().canMove && hero.IsStunned)
+		//{
+		//    animMoveSpeed = 0.0f;
+		//}
+
+		//if (animMoveSpeed > 0.0f && !moved)
+		//{
+		//    float moveSpeedDecel = 2.5f;
+		//    animMoveSpeed -= moveSpeedDecel * Time.deltaTime;
+
+		//    if (animMoveSpeed < 0.0f)
+		//    {
+		//        animMoveSpeed = 0.0f;
+		//    }
+		//}
+		
+		//animator.PlayAnimation("Moving", animMoveSpeed);
+
 	}
 
 	public void ProcessFaceButtons(InputDevice device)

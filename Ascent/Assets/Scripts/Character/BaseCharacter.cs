@@ -46,13 +46,6 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 		motor.Initialise();
 
-		animator = GetComponentInChildren<CharacterAnimator>();
-		if (animator == null)
-		{
-			Debug.LogError("No animator attached to " + name, this);
-		}
-		animator.Initialise();
-
 		SetColor(OriginalColor);
 	}
 

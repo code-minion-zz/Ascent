@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400004}
+  - 111: {fileID: 11100000}
   m_Layer: 10
   m_Name: WarriorAvatar
   m_TagString: Hero
@@ -1286,11 +1287,25 @@ Animator:
   m_GameObject: {fileID: 100010}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c5aa4fe55b0d00541819092b43347f5d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 7129df1181582a8458ae644f397cc6aa, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6d8756a2a0ee46e489f1f93a9b1549c3, type: 2}
   m_CullingMode: 1
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
   m_HasTransformHierarchy: 1
+--- !u!111 &11100000
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1326,6 +1341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4138c00d002d5248b2798144ec718c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimations: 1
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1

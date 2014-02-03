@@ -76,6 +76,13 @@ public abstract class Enemy : Character
 
 	public override void Initialise()
 	{
+		animator = GetComponentInChildren<CharacterAnimator>();
+		if (animator == null)
+		{
+			Debug.LogError("No animator attached to " + name, this);
+		}
+		animator.Initialise();
+
 		base.Initialise();
 
         Transform AI = transform.FindChild("AI");

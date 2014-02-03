@@ -110,6 +110,13 @@ public abstract class Hero : Character
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
+		animator = GetComponentInChildren<HeroAnimator>();
+		if (animator == null)
+		{
+			Debug.LogError("No animator attached to " + name, this);
+		}
+		animator.Initialise();
+
 		// Init base with things like shadow, tilt and motor
         base.Initialise();
 
@@ -125,7 +132,7 @@ public abstract class Hero : Character
 
 		// Initialise Controller, hook it up with the hero, hero animator and motor
 		heroController = gameObject.GetComponent<HeroController>();
-		heroController.Initialise(this, input, animator, motor);
+		heroController.Initialise(this, input, (HeroAnimator)animator, motor);
 	}
 
 	public static void Create(Hero hero)

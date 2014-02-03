@@ -4,63 +4,173 @@ using System.Collections.Generic;
 
 public class HeroAnimator : CharacterAnimator  
 {
-    #region Enums
+	/// <summary>
+	///  These mimics layers in AnimatorController
+	/// </summary>
+	public enum ELayer
+	{
+		None = -1,
 
-    // TODO: Use these states somewhere.
-    public enum EHeroState // State defines what actions are allowed, and what animations to play
-    {
-        PS_INVALID_STATE = -1,
-        PS_STATE_IDLE,
-        PS_STATE_MOVE,
-        PS_STATE_SPRINT,
-        PS_STATE_ATTACK,
-        PS_STATE_JUMP,
-        PS_STATE_FALLING,
-        PS_STATE_CAST,
-        PS_STATE_PUSH,
-        PS_STATE_PULL,
-        PS_STATE_DEATH,
-        PS_STATE_FREEZE,
-        PS_MAX_STATE
-    }
+		Base = 0,
+		Movement = 1,		// EMoveAnimation
+		Interactions = 2,	// EInteractionAnimation
+		Combat = 3,			// A custom enum should be used by each hero class.
+		Reactions = 4,		// EReactionAnimation
+	}
 
-    #endregion
-	
-	// Update is called once per frame
+	/// <summary>
+	///  These mimic states in the Movement layer in the AnimatorController
+	/// </summary>
+	public enum EMoveAnimation
+	{
+		None = -1,
+
+		Idle = 0,
+		IdleLook = 1,
+		CombatIdling = 2,
+		StunnedIdling = 3,
+		BatterdIdling = 4,
+		Moving = 5,
+		BatteredMoving = 6,
+		GrabbingBlock = 7,
+	}
+
+	/// <summary>
+	///  These mimic states in the Interaction layer in the AnimatorController
+	/// </summary>
+	public enum EInteractionAnimation
+	{
+		None = -1,
+
+		UsingItem = 0,
+		UsingPotion = 1,
+		ThrowingItem = 2,
+		PickingUpItem = 3,
+	}
+
+	/// <summary>
+	///  These mimic states in the Reactions layer in the AnimatorController
+	/// </summary>
+	public enum EReactionAnimation
+	{
+		None = -1,
+
+		TakingHit = 0,
+		TakingCriticalHit = 1,
+		Dying = 2,
+	}
+
+
+	private EMoveAnimation moveAnim = EMoveAnimation.None;
+	private EInteractionAnimation interactionAnim = EInteractionAnimation.None;
+	private EReactionAnimation reactionAnim = EReactionAnimation.None;
+	private int combatAnim = -1;
+	private ELayer layer = ELayer.None;
+
+	public override void Initialise()
+	{
+		base.Initialise();
+
+		animator.SetLayerWeight(1, 1.0f);
+		animator.SetLayerWeight(2, 0.0f);
+		animator.SetLayerWeight(3, 0.0f);
+		animator.SetLayerWeight(3, 0.0f);
+
+		layer = ELayer.Movement;
+	}
+
+	/// <summary>
+	/// Plays a movement or idle animation.
+	/// </summary>
+	/// <param name="moveAnim"></param>
+	/// <param name="movement"> movement param only affects Moving and GrabbingBlock. </param>
+	public void PlayMovement(EMoveAnimation moveAnim)
+	{
+		if(layer == ELayer.Movement)
+		{
+			if(this.moveAnim != moveAnim)
+			{
+				SetActiveLayer(ELayer.Movement);
+
+				// Reset float values for states that have blend trees
+				if (this.moveAnim == EMoveAnimation.Moving)
+				{
+					animator.SetFloat("Movement", 0.0f);
+				}
+				else if (this.moveAnim == EMoveAnimation.GrabbingBlock)
+				{
+					animator.SetFloat("GrabMovement", 0.0f);
+				}
+
+				// Stop other layers.
+				this.moveAnim = moveAnim;
+
+				animator.SetInteger("MoveAnimation", (int)moveAnim);
+				animator.SetTrigger("NewAnimation");
+			}
+		}
+	}
+
+	/// <summary>
+	/// Sets movement float on the current animation state
+	/// </summary>
+	/// <param name="movement"></param>
+	public void Move(float movement)
+	{
+		if (layer == ELayer.Movement)
+		{
+			// Set float values for states that have blend trees
+			if (moveAnim == EMoveAnimation.Moving)
+			{
+				animator.SetFloat("Movement", movement);
+			}
+			else if (moveAnim == EMoveAnimation.GrabbingBlock)
+			{
+				animator.SetFloat("GrabMovement", movement);
+			}
+			else
+			{
+				Debug.LogError(moveAnim + " does not accept movement but you are trying to set it anyway.", this);
+			}
+		}
+	}
+
+	public void PlayCombatAction(int action)
+	{
+		SetActiveLayer(ELayer.Combat);
+		animator.SetInteger("CombatAnimation", action);
+		animator.SetTrigger("NewAnimation");
+	}
+
+	public void EndCombatAction()
+	{
+		//if (layer == ELayer.Combat)
+		{
+			SetActiveLayer(ELayer.Movement);
+		}
+	}
+
+	public void SetActiveLayer(ELayer layer)
+	{
+		if (this.layer != layer)
+		{
+			animator.SetLayerWeight((int)this.layer, 0.0f);
+			animator.SetLayerWeight((int)layer, 1.0f);
+
+			this.layer = layer;
+		}
+	}
+
 	public override void Update() 
     {
-        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
-        // Check if we are in the movement or idle state.
-
-        if (state.IsName("WhirlWind"))
-        {
-            if (!animator.IsInTransition(0))
-            {
-                // While in transition
-                // We don't want to take hit.
-                StopAnimation("TakeHit");
-            }
-            else
-            {
-                StopAnimation("Whirlwind");
-            }
-        }
-
-        // We want the hero to take a hit and stop it
-        // when the transition ends.
-        if (state.IsName("TakingHit"))
-        {
-            if (animator.IsInTransition(0))
-            {
-
-            }
-            else
-            {
-                TakeHit = false;
-                //StopAnimation("TakeHit");
-            }
-        }
-
+		if (layer == ELayer.Movement)
+		{
+			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(this.moveAnim.ToString()))
+			{
+				animator.SetInteger("MoveAnimation", (int)moveAnim);
+				animator.SetTrigger("New Trigger");
+			}
+		}
 #if UNITY_EDITOR
         DebugKeys();
 #endif
@@ -69,48 +179,59 @@ public class HeroAnimator : CharacterAnimator
 #if UNITY_EDITOR
     void DebugKeys()
     {
-        //if(Input.GetKeyUp(KeyCode.Alpha1))
-        //{
-        //    animator.Play("");
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Alpha2))
-        //{
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Alpha3))
-        //{
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Alpha4))
-        //{
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Alpha5))
-        //{
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Alpha6))
-        //{
-        //}
+		if (Input.GetKeyUp(KeyCode.Alpha1))
+		{
+			PlayMovement(EMoveAnimation.Idle);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha2))
+		{
+			PlayMovement(EMoveAnimation.IdleLook);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha3))
+		{
+			PlayMovement(EMoveAnimation.Moving);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha4))
+		{
+			PlayMovement(EMoveAnimation.StunnedIdling);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha5))
+		{
+			PlayMovement(EMoveAnimation.BatterdIdling);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha6))
+		{
+			PlayMovement(EMoveAnimation.BatteredMoving);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha7))
+		{
+			PlayMovement(EMoveAnimation.CombatIdling);
+		}
+		else if (Input.GetKeyUp(KeyCode.Alpha8))
+		{
+			PlayMovement(EMoveAnimation.GrabbingBlock);
+		}
     }
 #endif
 
-    #region animations
 
-    //void OnAnimatorMove()
-    //{
-    //    //Vector3 deltaPos = animator.deltaPosition;
-    //    //deltaPos += gravityVelocity * Time.deltaTime;
+	public void AnimEnd()
+	{
+		SetActiveLayer(ELayer.Movement);
+	}
 
-    //    //if ((controller.Move(deltaPos) & CollisionFlags.Below) != 0)
-    //    //{
-    //    //    gravityVelocity = Vector3.zero;
-    //    //}
+	public void OnCombatAnimationEnd()
+	{
+		SetActiveLayer(ELayer.Movement);
+	}
 
-    //    //transform.Rotate(animator.deltaRotation.eulerAngles);
-    //}
+	public void OnInteractionAnimationEnd()
+	{
+		SetActiveLayer(ELayer.Movement);
+	}
 
-    public void AnimMove(Vector3 direction, float speed)
-    {
-        //this.direction = direction;
-        animator.SetFloat("Speed", speed);
-    }
-
-    #endregion
+	public void OnReactionAnimationEnd()
+	{
+		SetActiveLayer(ELayer.Movement);
+	}
 }

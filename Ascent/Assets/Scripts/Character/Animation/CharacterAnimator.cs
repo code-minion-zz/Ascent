@@ -59,17 +59,14 @@ public class CharacterAnimator : MonoBehaviour
 
     public virtual void Initialise()
     {
-		if (!initialised)
-		{
-			#if UNITY_EDITOR
-			InitialiseValidation();
-			#endif
+		#if UNITY_EDITOR
+		InitialiseValidation();
+		#endif
 
-			// Gather the components that we require.
-			animator = GetComponent<Animator>();
+		// Gather the components that we require.
+		animator = GetComponent<Animator>();
 
-			initialised = true;
-		}
+		initialised = true;
     }
 
 	public virtual void Update()
@@ -192,12 +189,12 @@ public class CharacterAnimator : MonoBehaviour
 
 	public bool DoesStateExist(string anim)
 	{
-		string str = stateNames.Find(x => x == anim);
-		if (str == null)
-		{
-			Debug.LogError(string.Format("Animation state does not exist: {0}", anim));
-			return false;
-		}
+		//string str = stateNames.Find(x => x == anim);
+		//if (str == null)
+		//{
+		//    Debug.LogError(string.Format("Animation state does not exist: {0}", anim));
+		//    return false;
+		//}
 		return true;
 	}
 #endif 
