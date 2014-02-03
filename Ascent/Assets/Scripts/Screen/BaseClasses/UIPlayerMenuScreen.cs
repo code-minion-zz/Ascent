@@ -49,6 +49,6 @@ public class UIPlayerMenuScreen : MonoBehaviour
 	[ContextMenu("Execute")]
 	public void OnMenuHax()
 	{
-		Game.Singleton.LoadLevel("overhaul", Game.EGameState.Tower);
+		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.Tower);
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class HealthPotionItem : ConsumableItem 
 {
     protected override bool CanUse(Hero user)

@@ -68,6 +68,7 @@ public static class LootGenerator
 		newAccItem.AcessoryStats.Name = RandomAccessoryName();
 		newAccItem.ItemStats.Description = RandomAccessoryDescription();
 		newAccItem.ItemStats.Grade = (int)grade;
+        newAccItem.ItemProperties.Add(new AttackItemProperty());
 
 		RandomAccessoryProperties((AccessoryItem)newItem);
 
@@ -79,7 +80,6 @@ public static class LootGenerator
 		Item.ItemGrade grade = RandomGrade();
 
 		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
-
 		ConsumableItem newItem = null;
         ItemStats stats = new ItemStats();
         stats.Level = floorNum;

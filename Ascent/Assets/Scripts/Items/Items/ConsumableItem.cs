@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class ConsumableItem : Item
+[System.Xml.Serialization.XmlInclude(typeof(HealthPotionItem))]
+[System.Xml.Serialization.XmlInclude(typeof(BombItem))]
+[System.Xml.Serialization.XmlInclude(typeof(KeyItem))]
+[System.Xml.Serialization.XmlInclude(typeof(SpecialPotionItem))]
+public class ConsumableItem : Item
 {
 	public enum EConsumableType
 	{
@@ -16,7 +20,6 @@ public abstract class ConsumableItem : Item
 		MAX
 	}
 
-
 	protected int charges;
 	public int Charges
 	{
@@ -24,20 +27,28 @@ public abstract class ConsumableItem : Item
 		set { charges = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
     protected float cooldown = 0.0f;
+
+    [System.Xml.Serialization.XmlIgnore()]
     public float Cooldown
     {
         get { return cooldown; }
     }
 
+    [System.Xml.Serialization.XmlIgnore()]
 	protected float cooldownMax = 2.0f;
+
+    [System.Xml.Serialization.XmlIgnore()]
 	public float CooldownMax
 	{
 		set { cooldownMax = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public bool perishable = true;
 
+    [System.Xml.Serialization.XmlIgnore()]
 	protected bool HasCooldownAndCharges
 	{
 		get { return charges > 0 && cooldown == 0.0f; }
@@ -70,6 +81,6 @@ public abstract class ConsumableItem : Item
 		}
     }
 
-    protected abstract bool CanUse(Hero user);
-    protected abstract void Consume(Hero user);
+    protected virtual bool CanUse(Hero user) { return false; }
+    protected virtual void Consume(Hero user) { }
 }

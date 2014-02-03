@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Xml.Serialization.XmlInclude(typeof(AccessoryStats))]
 public class ItemStats 
 {
 	protected int level;
@@ -33,12 +34,14 @@ public class ItemStats
 		set { grade = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public int PurchaseValue
 	{
 		get { return 0; }
 		set {  }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public int SellValue
 	{
 		get { return 0; }
