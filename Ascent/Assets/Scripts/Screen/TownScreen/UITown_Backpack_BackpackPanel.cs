@@ -25,14 +25,14 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	
 		Transform acc = transform.FindChild ("BackpackTab");
 		Transform con = transform.FindChild ("BackpackTab");
-		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM4] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory 1").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory 2").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory 3").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory 4").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable 1").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable 2").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable 3").GetComponent<UIButton>();
+		//buttons[(int)EButtons.ITM4] = con.FindChild("Consumable 4").GetComponent<UIButton>();
 
 		currentButton = (int)EButtons.ACC1;
 		currentSelection = buttons[(int)EButtons.ACC1];
@@ -76,7 +76,36 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		{
 			if (arrayItems[i] != null)
 			{
+				Debug.Log("UpdateItems:"+i+" "+arrayItems[i]);
+				Color temp = new Color();
+				switch ((Item.ItemGrade)bp.AllItems[i].ItemStats.Grade)
+				{
+				case Item.ItemGrade.E:
+					temp = Color.red;
+					break;
+				case Item.ItemGrade.D:
+					temp = Color.magenta;
+					break;
+				case Item.ItemGrade.C:
+					temp = Color.blue;
+					break;
+				case Item.ItemGrade.B:
+					temp = Color.yellow;
+					break;
+				case Item.ItemGrade.A:
+					temp = Color.cyan;
+					break;
+				case Item.ItemGrade.S:
+					temp = Color.green;
+					break;
+				}
+				buttons[i].transform.FindChild("Item").GetComponent<UISprite>().color = temp;
 				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
+			}
+			else
+			{
+				
+				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, false);
 			}
 		}
 	}
