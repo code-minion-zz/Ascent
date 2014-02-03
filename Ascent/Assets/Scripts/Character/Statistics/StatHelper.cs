@@ -11,7 +11,7 @@ public static class StatHelper
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
-			Backpack backPack = ((Hero)character).HeroBackpack;
+			Backpack backPack = ((Hero)character).Backpack;
 			int itemCount = backPack.AccessoryCount;
 
 			if (itemCount > 0)
@@ -59,7 +59,7 @@ public static class StatHelper
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
-			Backpack backPack = ((Hero)character).HeroBackpack;
+			Backpack backPack = ((Hero)character).Backpack;
 			int itemCount = backPack.AccessoryCount;
 
 			if (itemCount > 0)
@@ -107,7 +107,7 @@ public static class StatHelper
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
-			Backpack backPack = ((Hero)character).HeroBackpack;
+			Backpack backPack = ((Hero)character).Backpack;
 			int itemCount = backPack.AccessoryCount;
 
 			if (itemCount > 0)
@@ -156,7 +156,7 @@ public static class StatHelper
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
-			Backpack backPack = ((Hero)character).HeroBackpack;
+			Backpack backPack = ((Hero)character).Backpack;
 			int itemCount = backPack.AccessoryCount;
 
 			if (itemCount > 0)

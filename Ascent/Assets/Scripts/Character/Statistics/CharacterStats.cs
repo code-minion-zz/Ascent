@@ -80,6 +80,12 @@ public abstract class CharacterStats
 		get { return currentHealth; }
 		set 
 		{
+            int maxHealth = MaxHealth;
+            if (value > maxHealth)
+            {
+                value = maxHealth;
+            }
+
 			if (currentHealth != value)
 			{
 				if (onCurHealthChanged != null)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConsumableItem : Item
+public abstract class ConsumableItem : Item
 {
 	public enum EConsumableType
 	{
@@ -24,7 +24,12 @@ public class ConsumableItem : Item
 		set { charges = value; }
 	}
 
-	protected float cooldown;
+    protected float cooldown = 0.0f;
+    public float Cooldown
+    {
+        get { return cooldown; }
+    }
+
 	protected float cooldownMax = 2.0f;
 	public float CooldownMax
 	{
@@ -33,7 +38,7 @@ public class ConsumableItem : Item
 
 	public bool perishable = true;
 
-	protected bool CanUse
+	protected bool HasCooldownAndCharges
 	{
 		get { return charges > 0 && cooldown == 0.0f; }
 	}
@@ -53,7 +58,7 @@ public class ConsumableItem : Item
 
 	public void UseItem(Hero user)
     {
-		if (charges > 0)
+        if (HasCooldownAndCharges && CanUse(user))
 		{
 			Consume(user);
 			cooldown = cooldownMax;
@@ -65,8 +70,6 @@ public class ConsumableItem : Item
 		}
     }
 
-	protected virtual void Consume(Hero user)
-	{
-		// To be derived
-	}
+    protected abstract bool CanUse(Hero user);
+    protected abstract void Consume(Hero user);
 }

@@ -109,7 +109,7 @@ public class Game : MonoBehaviour
 	{
         AscentGameSaver.LoadGame();
 
-        Random.seed = (int)Time.time;
+        Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 		running = true;
 
 		playerCharacterType = initValues.playerCharacterType;

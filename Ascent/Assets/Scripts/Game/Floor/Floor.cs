@@ -291,9 +291,7 @@ public class Floor : MonoBehaviour
 
 		Door[] roomDoors = currentRoom.Doors.doors;
 		
-		InputDevice input = Game.Singleton.Players[0].Input;
-
-		if (Input.GetKeyUp(KeyCode.Keypad8) || input.DPadUp.WasReleased) // UP
+		if (Input.GetKeyUp(KeyCode.Keypad8)) // UP
 		{
 			foreach (Door d in roomDoors)
 			{
@@ -304,7 +302,7 @@ public class Floor : MonoBehaviour
 				}
 			}
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad2) || input.DPadDown.WasReleased)
+		else if (Input.GetKeyUp(KeyCode.Keypad2))
 		{
 			foreach (Door d in roomDoors)
 			{
@@ -315,7 +313,7 @@ public class Floor : MonoBehaviour
 				}
 			};
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad4) || input.DPadLeft.WasReleased)
+		else if (Input.GetKeyUp(KeyCode.Keypad4))
 		{
 			foreach (Door d in roomDoors)
 			{
@@ -326,7 +324,7 @@ public class Floor : MonoBehaviour
 				}
 			}
 		}
-		else if (Input.GetKeyUp(KeyCode.Keypad6) || input.DPadRight.WasReleased)
+		else if (Input.GetKeyUp(KeyCode.Keypad6))
 		{
 			foreach (Door d in roomDoors)
 			{
