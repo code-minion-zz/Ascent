@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class AccessoryStats  : ItemStats
 {
+    [System.Xml.Serialization.XmlIgnore()]
 	protected PrimaryStats stats = new PrimaryStats();
+
+    [System.Xml.Serialization.XmlIgnore]
 	protected List<ItemProperty> properties = new List<ItemProperty>();
 
 	public float Power
@@ -31,11 +34,13 @@ public class AccessoryStats  : ItemStats
 		set { stats.spirit = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore]
 	public PrimaryStats PrimaryStats
 	{
 		get { return stats; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore]
 	public List<ItemProperty> Properties
 	{
 		get { return properties; }

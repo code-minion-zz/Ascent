@@ -4,24 +4,28 @@ using System.Collections.Generic;
 
 public class AccessoryItem : Item
 {
-	protected BetterList<ItemProperty> itemProperties = new BetterList<ItemProperty>();
+    [System.Xml.Serialization.XmlIgnore()]
+    protected List<ItemProperty> itemProperties = new List<ItemProperty>();
 	protected AccessoryStats accessoryStats;
 
     protected int durability;
     protected int durabilityMax;
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public bool IsBroken
     {
         get { return Durability <= 0; }
         private set { }
     }
-	
-	public BetterList<ItemProperty> ItemProperties
+
+
+	public List<ItemProperty> ItemProperties
 	{
 		get { return itemProperties; }
 		protected set { itemProperties = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public AccessoryStats AcessoryStats
 	{
 		get { return accessoryStats; }
@@ -32,12 +36,14 @@ public class AccessoryItem : Item
 		}
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public int Grade
 	{
 		get { return stats.Grade; }
 		set { stats.Grade = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public ItemGrade GradeEnum
 	{
 		get { return (ItemGrade)stats.Grade; }
@@ -70,7 +76,7 @@ public class AccessoryItem : Item
 				"Dura: " + durability + "\\" + durabilityMax + "\n" +
 				"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
 				"Stats: POW-" + accessoryStats.Power + ", FIN-" + accessoryStats.Finesse + ", VIT-" +  accessoryStats.Vitality + ", SPR-" + accessoryStats.Spirit + "\n" + 
-				"Prop count: " + itemProperties.size + "\n";
+				"Prop count: " + itemProperties.Count + "\n";
 				
 	}
 }

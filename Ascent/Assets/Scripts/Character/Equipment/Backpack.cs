@@ -4,43 +4,61 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-public class Backpack 
+public class Backpack
 {
-	public enum BackpackSlot
-	{
-		INVALID = -1,
-		ACC1,
-		ACC2,
-		ACC3,
-		ACC4,
-		ITM1,
-		ITM2,
-		ITM3,
-		MAX
-	}
+    public enum BackpackSlot
+    {
+        INVALID = -1,
+        ACC1,
+        ACC2,
+        ACC3,
+        ACC4,
+        ITM1,
+        ITM2,
+        ITM3,
+        MAX
+    }
 
     public const int kMaxItems = 7;
     public const int kMaxAccessories = 4;
     public const int kMaxConsumables = 3;
 
-    public int ItemCount
+    [System.Xml.Serialization.XmlIgnoreAttribute]
+    public Item[] AllItems
     {
-        get 
+        get
         {
-            int count = 0;
-
-            for (int i = 0; i < kMaxItems; ++i)
+            Item[] allItems = new Item[kMaxItems];
+            for (BackpackSlot slot = BackpackSlot.ACC1; slot < BackpackSlot.MAX; ++slot)
             {
-				if (AllItems[i] != null)
-                {
-                    ++count;
-                }
+                allItems[(int)slot] = GetItem(slot);
             }
-
-            return count;
+            return allItems;
         }
     }
-    
+
+    protected AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
+    public AccessoryItem[] AccessoryItems
+    {
+        get { return accessoryItems; }
+        protected set { accessoryItems = value; }
+    }
+
+    protected ConsumableItem[] consumableItems = new ConsumableItem[kMaxConsumables];
+    public ConsumableItem[] ConsumableItems
+    {
+        get { return consumableItems; }
+        protected set { consumableItems = value; }
+    }
+
+    public int ItemCount
+    {
+        get
+        {
+            return AccessoryCount + ConsumableCount;
+        }
+    }
+
     public int AccessoryCount
     {
         get
@@ -49,12 +67,9 @@ public class Backpack
 
             for (int i = 0; i < kMaxConsumables; ++i)
             {
-                if (AllItems[i] != null)
+                if (accessoryItems[i] != null)
                 {
-                    if (AllItems[i] is AccessoryItem)
-                    {
-                        ++count;
-                    }
+                    ++count;
                 }
             }
 
@@ -70,66 +85,40 @@ public class Backpack
 
             for (int i = 0; i < kMaxConsumables; ++i)
             {
-                if (AllItems[i] != null)
+                if (consumableItems[i] != null)
                 {
-                    if (AllItems[i] is ConsumableItem)
-                    {
-                        ++count;
-                    }
+                    ++count;
                 }
             }
 
             return count;
         }
     }
-	
-	public Item[] AllItems = new Item[kMaxItems];
 
-    public AccessoryItem[] AccessoryItems
-    {
-        get 
-        {
-            AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
-            for (BackpackSlot slot = BackpackSlot.ACC1; slot < BackpackSlot.ACC4; ++slot)
-            {
-                if (AllItems[(int)slot] != null)
-                {
-                    accessoryItems[(int)slot] = (AccessoryItem)AllItems[(int)slot];
-                }
-            }
-            return accessoryItems; 
-        }
-    }
 
-    public ConsumableItem[] ConsumableItems
-    {
-        get 
-        {
-            ConsumableItem[] consumableItems = new ConsumableItem[kMaxConsumables];
-            for (BackpackSlot slot = BackpackSlot.ITM1; slot < BackpackSlot.ITM3 + 1; ++slot)
-            {
-                if (AllItems[(int)slot] != null)
-                {
-                    consumableItems[(int)(slot - BackpackSlot.ACC4 - 1)] = (ConsumableItem)AllItems[(int)slot];
-                }
-            }
-            return consumableItems;
-        }
-    }
-
-	public void AddItem(BackpackSlot slot, Item item)
+    public void AddItem(BackpackSlot slot, Item item)
     {
         // TODO: Make sure there is room for the item
-		AllItems[(int)slot] = item;
+
+        if (slot < BackpackSlot.ACC4 + 1)
+        {
+            accessoryItems[(int)slot] = (AccessoryItem)item;
+        }
+        else
+        {
+            consumableItems[(int)slot - (int)BackpackSlot.ACC4 - 1] = (ConsumableItem)item;
+        }
     }
 
     public Item ReplaceItem(int slot, Item item)
     {
         // TODO: Make sure there is something to replace.
         // TODO: Make sure that there aren't too many accessories or consumables
-		Item retval = AllItems[slot];
-        AllItems[slot] = item;
-		return retval;
+        Item retval = AllItems[slot];
+
+        AddItem((BackpackSlot)slot, item);
+        //AllItems[slot] = item;
+        return retval;
     }
 
     public void RemoveItem(Item item)
@@ -146,12 +135,26 @@ public class Backpack
         }
     }
 
+    public Item GetItem(BackpackSlot slot)
+    {
+        Item getItem = null;
+        if (slot < BackpackSlot.ACC4 + 1)
+        {
+            getItem = accessoryItems[(int)slot];
+        }
+        else
+        {
+            getItem = consumableItems[(int)slot - (int)BackpackSlot.ACC4 - 1];
+        }
+        return getItem;
+    }
+
     /// <summary>
     /// Update cooldowns on items
     /// </summary>
     public void Process()
     {
-        foreach(Item item in AllItems)
+        foreach (Item item in AllItems)
         {
             if (item is ConsumableItem)
             {
