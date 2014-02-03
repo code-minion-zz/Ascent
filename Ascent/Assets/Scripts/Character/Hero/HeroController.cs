@@ -269,6 +269,7 @@ public class HeroController : MonoBehaviour
 					if (c.IsClosed)
 					{
 						c.OpenChest(); // I open the chest. No one else can.
+                        hero.FloorStatistics.NumberOfChestsOpened++;
 						
 						return; // An interaction has occured. Exit function now.
 					}
@@ -305,6 +306,7 @@ public class HeroController : MonoBehaviour
 				if (closestDrop.TriggerRegion.IsInside(position))
 				{
 					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+                    hero.FloorStatistics.NumberOfItemsPickedUp++;
 
 					return; // An interaction has occured. Exit function now.
 				}

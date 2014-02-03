@@ -7,6 +7,11 @@ public abstract class CharacterStats
 	protected int currentHealth;
 	protected int currentSpecial;
 
+	#region DONOTTOUCH
+	/// <summary>
+	/// Seriously, don't touch these.
+	/// These stats should not be modified, they are calculated according to level.
+	/// </summary>
 	protected PrimaryStats primaryStats;
 	protected PrimaryStatsGrowthRates primaryStatsGrowth;
 
@@ -14,6 +19,7 @@ public abstract class CharacterStats
 	protected SecondaryStatsGrowthRates secondaryStatsGrowth;
 
 	public delegate void CharacterStatisticEventHandler(float newMin);
+	#endregion DONOTTOUCH
 
 #pragma warning disable 0067
 	public event CharacterStatisticEventHandler onMaxHealthChanged;

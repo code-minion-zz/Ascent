@@ -17,7 +17,7 @@ public class Room : MonoBehaviour
 		Enemy,
 		Chest,
 		Loot,
-
+        Barrel,
 		MAX,
 	}
 
@@ -42,7 +42,6 @@ public class Room : MonoBehaviour
 	private Vector3 curMinCamera = new Vector3(-2.0f, 24.0f, -2.0f);
 	private Vector3 curMaxCamera = new Vector3(2.0f, 24.0f, 2.0f);
 
-	private const int maxDoors = 4;
 	protected Doors doors;
     public bool startRoom = false;
 
@@ -102,7 +101,58 @@ public class Room : MonoBehaviour
 		set { navMesh = value; }
 	}
 
+    private Transform environmentNode;
     private GameObject monstersNode;
+
+    public Transform MonsterParent
+    {
+        get
+        {
+            if (monstersNode == null)
+            {
+                monstersNode = GetNodeByLayer("Monster");
+
+                if (monstersNode != null)
+                {
+                    return monstersNode.transform;
+                }
+                else
+                {
+                    monstersNode = AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+                    return monstersNode.transform;
+                }
+            }
+            else
+            {
+                return monstersNode.transform;
+            }
+        }
+    }
+
+    public Transform EnvironmentParent
+    {
+        get
+        {
+            if (environmentNode == null)
+            {
+                environmentNode = GetNodeByLayer("Environment").transform;
+
+                if (environmentNode != null)
+                {
+                    return environmentNode;
+                }
+                else
+                {
+                    environmentNode = AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment")).transform;
+                    return environmentNode;
+                }
+            }
+            else
+            {
+                return environmentNode;
+            }
+        }
+    }
 
     #endregion
 
@@ -124,7 +174,7 @@ public class Room : MonoBehaviour
 		navMesh = NavMesh;
 
         // Find the doors for this room
-        doors = GetNodeByLayer("Environment").GetComponentInChildren<Doors>();
+        doors = EnvironmentParent.GetComponentInChildren<Doors>();
 
         if (doors == null)
         {
@@ -416,10 +466,27 @@ public class Room : MonoBehaviour
 					//enemy.InitiliseHealthbar();
 				}
 				break;
+
+            case ERoomObjects.Barrel:
+                {
+                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+                    newObject.transform.parent = EnvironmentParent;
+                }
+                break;
 		}
 
 		return newObject;
 	}
+
+    public void GenerateRandomBarrels(RoomProperties room)
+    {
+        int randomBarrelCount = Random.Range(0, 5);
+
+        for (int i = 0; i < randomBarrelCount; ++i)
+        {
+
+        }
+    }
 
     // TODO: Make some monster generation script and offload logic there.
     public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
@@ -470,7 +537,9 @@ public class Room : MonoBehaviour
                 continue;
             }
 
-            Bounds enemyBound = go.GetComponentInChildren<Enemy>().collider.bounds;
+            Enemy enemy = go.GetComponentInChildren<Enemy>();
+            Debug.Log(enemy);
+            Bounds enemyBound = enemy.collider.bounds;
             bool isPlaced = false;
 
             float timeToPlace = 0.0f;
