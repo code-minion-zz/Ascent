@@ -60,17 +60,10 @@ public class FloorGeneration
         rooms = new List<RoomProperties>();
         locationVector = Vector3.zero;
 
-        // We have to add the first room, for now we add at pos zero
-        Room startRoom = GameObject.Find("StartRoom").GetComponent<Room>();
-        startRoom.Initialise();
-
-        RoomProperties firstRoom = new RoomProperties(startRoom);
-        firstRoom.Position = startRoom.transform.position;
-        firstRoom.WallsPlaced = true;
-        firstRoom.RoomType = FeatureType.monster;
-		firstRoom.SetRoomTiles(18, 14);
-		roomGeneration.PlaceGroundTiles(firstRoom);
-        rooms.Add(firstRoom);
+		// Generate the first room in the game.
+		RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "StartRoom");
+		firstRoom.Position = Vector3.zero;
+		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
         for (roomsPlaced = 0; roomsPlaced < roomsToPlace; roomsPlaced++)
@@ -86,17 +79,17 @@ public class FloorGeneration
             // Checks if we can make a room in this direction
             if (fromRoom.directionsFilled[randRoomDir] == false)
             {
-                // If we are ready to place the boss room.
-                if (roomsPlaced == roomsToPlace - 2)
+				// Choose a width and height
+				int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
+				int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
+
+				// If we are ready to place the boss room.
+				if (roomsPlaced == roomsToPlace - 2)
                 {
                     GenerateBossRoom(22, 22, fromRoom, (Floor.TransitionDirection)randRoomDir);
                 }
                 else
                 {
-                    // Choose a width and height
-                    int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
-                    int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
-
                     // Choose a random feature
                     FeatureType roomToMake = ChooseFeatureRoom();
 
