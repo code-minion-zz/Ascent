@@ -33,26 +33,14 @@ public class FloorGeneration
     public Rarity trapRoom;
     public Rarity specialRoom;
 
+	private RoomGeneration roomGeneration = new RoomGeneration();
     private List<RoomProperties> rooms = new List<RoomProperties>();
     private List<int> roomDimensions = new List<int>();
     private Vector3 locationVector;
     private int roomsPlaced = 0;
 
-    // Objects used for room creation
-    private GameObject floorObject;
-    private GameObject wallObject;
-    private GameObject wallCorner;
-    private GameObject wallWindow;
-    private GameObject doorObject;
-
     public void GenerateFloor()
     {
-        floorObject = Resources.Load("Prefabs/RoomWalls/Ground") as GameObject;
-        wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
-        wallCorner = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
-        wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
-        doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
-
         roomDimensions.Add(18);
         roomDimensions.Add(14);
         roomDimensions.Add(10);
@@ -60,26 +48,22 @@ public class FloorGeneration
 
         //Random.seed = (int)System.DateTime.Today.Millisecond;
         Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
         CreateRooms();
+        // Populate the rooms with random decor.
+        PopulateRoomsMisc();
     }
 
-    public void CreateRooms()
+    private void CreateRooms()
     {
         rooms.Clear();
         rooms = new List<RoomProperties>();
         locationVector = Vector3.zero;
 
-        // We have to add the first room, for now we add at pos zero
-        Room startRoom = GameObject.Find("StartRoom").GetComponent<Room>();
-        startRoom.Initialise();
-
-        RoomProperties firstRoom = new RoomProperties(startRoom);
-        firstRoom.Position = startRoom.transform.position;
-        firstRoom.Width = 18;
-        firstRoom.Height = 14;
-        firstRoom.WallsPlaced = true;
-        firstRoom.RoomType = FeatureType.monster;
-        rooms.Add(firstRoom);
+		// Generate the first room in the game.
+		RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "StartRoom");
+		firstRoom.Position = Vector3.zero;
+		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
         for (roomsPlaced = 0; roomsPlaced < roomsToPlace; roomsPlaced++)
@@ -89,24 +73,28 @@ public class FloorGeneration
             RoomProperties fromRoom = rooms[randomRoom];
 
             // Choose a random direction to place the room
+            // TODO: Eventually choose a random wall off a room.
             int randRoomDir = Random.Range(0, 4);
 
             // Checks if we can make a room in this direction
             if (fromRoom.directionsFilled[randRoomDir] == false)
             {
-                // If we are ready to place the boss room.
-                if (roomsPlaced == roomsToPlace - 2)
+				// Choose a width and height
+				int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
+				int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
+
+				// If we are ready to place the boss room.
+				if (roomsPlaced == roomsToPlace - 2)
                 {
                     GenerateBossRoom(22, 22, fromRoom, (Floor.TransitionDirection)randRoomDir);
                 }
                 else
                 {
-                    // TODO: Generate room size variations
-                    int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
-                    int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
+                    // Choose a random feature
+                    FeatureType roomToMake = ChooseFeatureRoom();
 
                     // See if we can add a new room through the chosen direction.
-                    GenerateNewRoom(width, height, fromRoom, (Floor.TransitionDirection)randRoomDir);
+                    GenerateNewRoom(width, height, roomToMake, fromRoom, (Floor.TransitionDirection)randRoomDir);
                 }
             }
             else
@@ -116,7 +104,17 @@ public class FloorGeneration
         }
 
         GenerateWalls();
-        //PopulateRooms();
+    }
+
+    /// <summary>
+    /// Populates the room with random decoration.
+    /// </summary>
+    private void PopulateRoomsMisc()
+    {
+        foreach (RoomProperties room in rooms)
+        {
+
+        }
     }
 
     /// <summary>
@@ -150,7 +148,7 @@ public class FloorGeneration
         {
             if (room.WallsPlaced == false)
             {
-                PlaceWalls(room);
+				roomGeneration.PlaceWalls(room);
             }
         }
     }
@@ -178,96 +176,6 @@ public class FloorGeneration
                     break;
             }
         }
-    }
-
-    /// <summary>
-    /// Creates a standard room with nothing in it.
-    /// </summary>
-    /// <param name="width">Width of the room.</param>
-    /// <param name="height">Height of the room.</param>
-    /// <param name="name">"Name of the room.</param>
-    /// <returns>The newly created room Game Object</returns>
-    private GameObject CreateRoom(float width, float height, string name)
-    {
-        GameObject roomGo = new GameObject(name);
-        Room room = roomGo.AddComponent<Room>();
-
-        // Add necessary nodes.
-        room.tag = "RoomRoot";
-        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
-        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
-        doorGo.AddComponent<Doors>();
-        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
-
-        room.AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
-        room.AddNewParentCategory("Items", LayerMask.NameToLayer("Items"));
-        room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
-
-        // Create the floor.
-        GameObject floorGo = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-        floorGo.transform.localScale = new Vector3(width, height, 1.0f);
-        floorGo.transform.parent = room.GetNodeByLayer("Environment").transform;
-        floorGo.name = "Ground";
-
-        room.Initialise();
-
-        // Apply the new dimensions to the navMesh.
-        room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
-        room.minCamera.x = -width * 0.15f;
-        room.minCamera.z = -height * 0.15f;
-        room.maxCamera.z = height * 0.15f;
-        room.maxCamera.x = width * 0.15f;
-        return roomGo;
-    }
-
-    private Door CreateDoor(GameObject doors, RoomProperties fromRoom, Floor.TransitionDirection direction)
-    {
-		GameObject doorGo = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
-        doorGo.transform.parent = doors.transform;
-
-        // Attach the doors to their rightful component.
-        Doors doorsScript = doors.GetComponent<Doors>();
-        Door returnDoor = null;
-
-        doorsScript.doors[(int)direction] = doorGo.GetComponent<Door>();
-        returnDoor = doorsScript.doors[(int)direction];
-
-        float widthOffset = (fromRoom.Width * 0.5f) + 1.0f;
-        float heightOffset = (fromRoom.Height * 0.5f) + 1.0f;
-
-        switch (direction)
-        {
-            case Floor.TransitionDirection.North:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + 8.0f);
-                doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + heightOffset);
-                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
-                doorGo.name = "North Door";
-                break;
-
-            case Floor.TransitionDirection.East:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x + 8.0f, doorGo.transform.position.y, doors.transform.position.z);
-                doorGo.transform.position = new Vector3(doors.transform.position.x + widthOffset, doorGo.transform.position.y, doors.transform.position.z);
-                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-                doorGo.name = "East Door";
-                break;
-
-            case Floor.TransitionDirection.South:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - 8.0f);
-                doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - heightOffset);
-                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
-                doorGo.name = "South Door";
-                break;
-
-            case Floor.TransitionDirection.West:
-                //doorGo.transform.position = new Vector3(doors.transform.position.x - 8, doorGo.transform.position.y, doors.transform.position.z);
-                doorGo.transform.position = new Vector3(doors.transform.position.x - widthOffset, doorGo.transform.position.y, doors.transform.position.z);
-                doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
-                doorGo.name = "West Door";
-                break;
-
-        }
-
-        return (returnDoor);
     }
 
     /// <summary>
@@ -301,7 +209,8 @@ public class FloorGeneration
             {
                 if (furtherestRoom.directionsFilled[i] != true)
                 {
-                    GenerateNewRoom(width, height, furtherestRoom, (Floor.TransitionDirection)i);
+                    // Choose a feature to build based on weights.
+                    GenerateNewRoom(width, height, FeatureType.boss, furtherestRoom, (Floor.TransitionDirection)i);
                     return;
                 }
             }
@@ -314,18 +223,15 @@ public class FloorGeneration
         }
     }
 
-    public RoomProperties GenerateNewRoom(float width, float height, RoomProperties from, Floor.TransitionDirection dir)
+    public RoomProperties GenerateNewRoom(float width, float height, FeatureType feature, RoomProperties from, Floor.TransitionDirection dir)
     {
         RoomProperties room = null;
 
         // Test placing the new room.
         if (TestRoomPlacement(dir, from, width, height) == true)
         {
-            // Choose a feature to build based on weights.
-            FeatureType roomToMake = ChooseFeatureRoom();
-
             // Build the new room.
-            BuildFeatureRoom(dir, width, height, roomToMake, from);
+            BuildFeatureRoom(dir, width, height, feature, from);
         }
         else
         {
@@ -333,6 +239,20 @@ public class FloorGeneration
         }
 
         return room;
+    }
+
+    public void GenerateNewRoom(RoomProperties roomToMake, RoomProperties from, Floor.TransitionDirection dir)
+    {
+        // Test placing the new room.
+        if (TestRoomPlacement(dir, from, roomToMake.Width, roomToMake.Height) == true)
+        {
+            // Build the new room.
+            BuildFeatureRoom(dir, roomToMake.Width, roomToMake.Height, roomToMake.RoomType, from);
+        }
+        else
+        {
+            roomsPlaced--;
+        }
     }
 
     private void BuildFeatureRoom(Floor.TransitionDirection dir, float width, float height, FeatureType roomType, RoomProperties fromRoom)
@@ -359,16 +279,14 @@ public class FloorGeneration
         }
 
         // TODO: If we know the feature to create we can choose the right one to create here.
-        GameObject roomGO = CreateRoom(width, height, name);
-        roomGO.transform.position = locationVector;
+        RoomProperties newRoom = roomGeneration.CreateNewRoom((int)width, (int)height, name);
+        newRoom.Room.transform.position = locationVector;
+        newRoom.RoomType = roomType;
 
         fromRoom.FillDirection(dir);
         Transform doors = fromRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
-        Door entryDoor = CreateDoor(doors.gameObject, fromRoom, dir);
+        Door entryDoor = roomGeneration.CreateDoor(doors.gameObject, fromRoom, dir);
         entryDoor.direction = dir;
-
-        RoomProperties newRoom = new RoomProperties(roomGO.GetComponent<Room>());
-        newRoom.RoomType = roomType;
 
         // TODO: Find a way to get rid of this switch its too big.
         switch (dir)
@@ -384,8 +302,8 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
-                    Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.South);
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+					Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.South);
                     exitDoor.direction = Floor.TransitionDirection.South;
 
                     // Link the doors
@@ -405,8 +323,8 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
-                    Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.West);
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+					Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.West);
                     exitDoor.direction = Floor.TransitionDirection.West;
 
                     // Link the doors
@@ -426,8 +344,8 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
-                    Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.North);
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+					Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.North);
                     exitDoor.direction = Floor.TransitionDirection.North;
 
                     // Link the doors
@@ -447,8 +365,8 @@ public class FloorGeneration
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
-                    Transform newDoor = roomGO.GetComponent<Room>().GetNodeByLayer("Environment").transform.FindChild("Doors");
-                    Door exitDoor = CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.East);
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+					Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.East);
                     exitDoor.direction = Floor.TransitionDirection.East;
 
                     // Link the doors
@@ -514,147 +432,5 @@ public class FloorGeneration
         }
 
         return (true);
-    }
-
-    private void PlaceWalls(RoomProperties room)
-    {
-        // Place wall corners
-        GameObject walls = room.Room.GetNodeByLayer("Environment").transform.Find("Walls").gameObject;
-
-        GameObject wallCornerGo = null;
-
-        // North east corner
-        wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
-        wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
-        wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
-        wallCornerGo.name = "CornerNE";
-        wallCornerGo.transform.parent = walls.transform;
-
-        // South east corner
-        wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
-        wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
-        wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
-        wallCornerGo.name = "CornerSE";
-        wallCornerGo.transform.parent = walls.transform;
-
-        // North west corner
-        wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
-        wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
-        wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-        wallCornerGo.name = "CornerNW";
-        wallCornerGo.transform.parent = walls.transform;
-
-        // North east corner
-        wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
-        wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
-        wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
-        wallCornerGo.name = "CornerSW";
-        wallCornerGo.transform.parent = walls.transform;
-
-        // Place north walls
-        int numberOfWalls = (int)(room.Width * 0.5f) - 2;
-
-        bool[] horizontalWalls = new bool[numberOfWalls];
-
-        if (room.directionsFilled[0] == true)
-        {
-            int doorPos = (int)(numberOfWalls * 0.5f);
-            horizontalWalls[doorPos] = true;
-        }
-
-        for (int i = 0; i < numberOfWalls; ++i)
-        {
-            if (horizontalWalls[i] == false)
-            {
-                float xPos = (room.Position.x - (room.Width * 0.5f)) + 3.0f + (i * 2.0f);
-                GameObject wallGo = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
-                wallGo.transform.position = new Vector3(xPos, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) + 1.0f);
-                wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
-                wallGo.name = "Wall";
-                wallGo.transform.parent = walls.transform;
-
-                horizontalWalls[i] = true;
-            }
-        }
-
-        // Place south walls
-        numberOfWalls = (int)(room.Width * 0.5f) - 2;
-
-        horizontalWalls = new bool[numberOfWalls];
-
-        if (room.directionsFilled[2] == true)
-        {
-            int doorPos = (int)(numberOfWalls * 0.5f);
-            horizontalWalls[doorPos] = true;
-        }
-
-        for (int i = 0; i < numberOfWalls; ++i)
-        {
-            if (horizontalWalls[i] == false)
-            {
-                float xPos = (room.Position.x - (room.Width * 0.5f)) + 3.0f + (i * 2.0f);
-                GameObject wallGo = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
-                wallGo.transform.position = new Vector3(xPos, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) - 1.0f);
-                wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
-                wallGo.name = "Wall";
-                wallGo.transform.parent = walls.transform;
-
-                horizontalWalls[i] = true;
-            }
-        }
-
-        // Place east walls
-        numberOfWalls = (int)(room.Height * 0.5f) - 2;
-
-        horizontalWalls = new bool[numberOfWalls];
-
-        if (room.directionsFilled[1] == true)
-        {
-            int doorPos = (int)(numberOfWalls * 0.5f);
-            horizontalWalls[doorPos] = true;
-        }
-
-        for (int i = 0; i < numberOfWalls; ++i)
-        {
-            if (horizontalWalls[i] == false)
-            {
-                float zPos = (room.Position.z - (room.Height * 0.5f)) + 3.0f + (i * 2.0f);
-                GameObject wallGo = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
-                wallGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, zPos);
-                wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-                wallGo.name = "Wall";
-                wallGo.transform.parent = walls.transform;
-
-                horizontalWalls[i] = true;
-            }
-        }
-
-        // Place west walls
-        numberOfWalls = (int)(room.Height * 0.5f) - 2;
-
-        horizontalWalls = new bool[numberOfWalls];
-
-        if (room.directionsFilled[3] == true)
-        {
-            int doorPos = (int)(numberOfWalls * 0.5f);
-            horizontalWalls[doorPos] = true;
-        }
-
-        for (int i = 0; i < numberOfWalls; ++i)
-        {
-            if (horizontalWalls[i] == false)
-            {
-                float zPos = (room.Position.z - (room.Height * 0.5f)) + 3.0f + (i * 2.0f);
-                GameObject wallGo = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
-                wallGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, zPos);
-                wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
-                wallGo.name = "Wall";
-                wallGo.transform.parent = walls.transform;
-
-                horizontalWalls[i] = true;
-            }
-        }
-
-        room.WallsPlaced = true;
     }
 }

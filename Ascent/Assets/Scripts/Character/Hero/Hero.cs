@@ -88,7 +88,7 @@ public abstract class Hero : Character
 		get { return classStatMod; }
 	}
 
-	public Backpack HeroBackpack
+	public Backpack Backpack
 	{
 		get { return backpack; }
 	}
@@ -152,17 +152,17 @@ public abstract class Hero : Character
 		backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2));
 		backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3));
 		backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4));
-		//backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
-		//backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
-		//backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
+        //backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
+        //backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
+        //backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
 
 		HeroInventory inventory = hero.inventory;
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5));
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6));
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7));
-		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
-		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
-		//inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
 	}
 
 	public static void Test_DrawHeroStats(Hero hero)
@@ -207,6 +207,14 @@ public abstract class Hero : Character
 		hero.HeroStats = new HeroStats(hero, data);
 		hero.HeroStats.Reset();
 	}
+
+    public override void Update()
+    {
+        base.Update();
+
+        // Update cooldown on items
+        backpack.Process();
+    }
 
     public void AddExperience(int experience)
     {
@@ -330,7 +338,7 @@ public abstract class Hero : Character
 				Item insertingItem = HeroInventory.Items[originSlot];
 				if (insertingItem != null)
 				{
-					Item returnItem = HeroBackpack.ReplaceItem(destinationSlot, insertingItem);
+					Item returnItem = Backpack.ReplaceItem(destinationSlot, insertingItem);
 					HeroInventory.Items.Insert(originSlot,returnItem);
 				}
 			}	

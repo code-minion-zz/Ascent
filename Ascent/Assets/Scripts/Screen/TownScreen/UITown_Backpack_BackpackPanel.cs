@@ -69,7 +69,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	{
 		Debug.Log(parent);
 		// Change Button Icons in accordance to backpack data
-		Backpack bp = parent.Player.Hero.HeroBackpack;
+		Backpack bp = parent.Player.Hero.Backpack;
 		
 		Item[] arrayItems = bp.AllItems;
 		for (int i = 0; i < 7; ++i)

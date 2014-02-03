@@ -49,9 +49,12 @@ public class Backpack
 
             for (int i = 0; i < kMaxConsumables; ++i)
             {
-                if (accessoryItems[i] != null)
+                if (AllItems[i] != null)
                 {
-                    ++count;
+                    if (AllItems[i] is AccessoryItem)
+                    {
+                        ++count;
+                    }
                 }
             }
 
@@ -67,9 +70,12 @@ public class Backpack
 
             for (int i = 0; i < kMaxConsumables; ++i)
             {
-                if (consumableItems[i] != null)
+                if (AllItems[i] != null)
                 {
-                    ++count;
+                    if (AllItems[i] is ConsumableItem)
+                    {
+                        ++count;
+                    }
                 }
             }
 
@@ -79,19 +85,36 @@ public class Backpack
 	
 	public Item[] AllItems = new Item[kMaxItems];
 
-
-    protected AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
     public AccessoryItem[] AccessoryItems
     {
-        get { return accessoryItems; }
-        protected set { accessoryItems = value; }
+        get 
+        {
+            AccessoryItem[] accessoryItems = new AccessoryItem[kMaxAccessories];
+            for (BackpackSlot slot = BackpackSlot.ACC1; slot < BackpackSlot.ACC4; ++slot)
+            {
+                if (AllItems[(int)slot] != null)
+                {
+                    accessoryItems[(int)slot] = (AccessoryItem)AllItems[(int)slot];
+                }
+            }
+            return accessoryItems; 
+        }
     }
 
-    protected ConsumableItem[] consumableItems = new ConsumableItem[kMaxConsumables];
     public ConsumableItem[] ConsumableItems
     {
-        get { return consumableItems; }
-        protected set { consumableItems = value; }
+        get 
+        {
+            ConsumableItem[] consumableItems = new ConsumableItem[kMaxConsumables];
+            for (BackpackSlot slot = BackpackSlot.ITM1; slot < BackpackSlot.ITM3 + 1; ++slot)
+            {
+                if (AllItems[(int)slot] != null)
+                {
+                    consumableItems[(int)(slot - BackpackSlot.ACC4 - 1)] = (ConsumableItem)AllItems[(int)slot];
+                }
+            }
+            return consumableItems;
+        }
     }
 
 	public void AddItem(BackpackSlot slot, Item item)
@@ -123,13 +146,17 @@ public class Backpack
         }
     }
 
-	void GetAllOf(System.Type t)
-	{
-		//AllItems.SelectMany()
-	}
-
-    public void UpdateSubItemLists()
+    /// <summary>
+    /// Update cooldowns on items
+    /// </summary>
+    public void Process()
     {
-
+        foreach(Item item in AllItems)
+        {
+            if (item is ConsumableItem)
+            {
+                ((ConsumableItem)item).Process();
+            }
+        }
     }
 }

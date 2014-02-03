@@ -39,7 +39,7 @@ public class HeroSaveData
 		level = hero.HeroStats.Level;
 		heroClass = hero.HeroClass;
 		growth = hero.HeroStats.Growth;
-		backpack = hero.HeroBackpack;
+		backpack = hero.Backpack;
 		inventory = hero.HeroInventory;
 		//abilities = hero.Abilities;
 		highestFloor = hero.HighestFloorReached;

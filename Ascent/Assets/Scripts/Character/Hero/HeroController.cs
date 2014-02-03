@@ -16,7 +16,13 @@ public class HeroController : MonoBehaviour
         Action1 = 1,
         Action2 = 2,
         Action3 = 3,
-        Action4 = 4
+        Action4 = 4,
+
+        Consumable1 = 0,
+        Consumable2 = 1,
+        Consumable3 = 2,
+        Consumable4 = 3,
+
 
     }
 
@@ -73,9 +79,14 @@ public class HeroController : MonoBehaviour
 
             if (motor.canMove)
             {
-				ProcessFaceButtons(device);
-				ProcessTriggersAndBumpers(device);
-				ProcessMovement(device);
+                if (!hero.IsStunned)
+                {
+                    ProcessFaceButtons(device);
+                    ProcessTriggersAndBumpers(device);
+				    ProcessMovement(device);
+                }
+
+                ProcessDPad(device);
             }
 
 #if UNITY_EDITOR
@@ -119,6 +130,35 @@ public class HeroController : MonoBehaviour
 			}
 		}
 	}
+
+    public void ProcessDPad(InputDevice device)
+    {
+        int itemToUse = -1;
+        if (device.DPadUp.WasPressed)
+        {
+            itemToUse = (int)HeroAction.Consumable1;
+        }
+        else if (device.DPadLeft.WasPressed)
+        {
+            itemToUse = (int)HeroAction.Consumable2;
+        }
+        else if (device.DPadRight.WasPressed)
+        {
+            itemToUse = (int)HeroAction.Consumable3;
+        }
+        //else if (device.DPadDown.WasPressed)
+        //{
+        //    itemToUse = (int)HeroAction.Consumable4;
+        //}
+
+        if (itemToUse != -1)
+        {
+            if (hero.Backpack.ConsumableItems[itemToUse] != null)
+            {
+                hero.Backpack.ConsumableItems[itemToUse].UseItem(hero);
+            }
+        }
+    }
 
 	public void ProcessMovement(InputDevice device)
 	{
@@ -229,6 +269,7 @@ public class HeroController : MonoBehaviour
 					if (c.IsClosed)
 					{
 						c.OpenChest(); // I open the chest. No one else can.
+                        hero.FloorStatistics.NumberOfChestsOpened++;
 						
 						return; // An interaction has occured. Exit function now.
 					}
@@ -265,6 +306,7 @@ public class HeroController : MonoBehaviour
 				if (closestDrop.TriggerRegion.IsInside(position))
 				{
 					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+                    hero.FloorStatistics.NumberOfItemsPickedUp++;
 
 					return; // An interaction has occured. Exit function now.
 				}

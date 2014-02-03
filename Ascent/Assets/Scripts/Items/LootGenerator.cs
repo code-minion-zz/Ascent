@@ -80,7 +80,12 @@ public static class LootGenerator
 
 		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
 
-		Item newItem = null;
+		ConsumableItem newItem = null;
+        ItemStats stats = new ItemStats();
+        stats.Level = floorNum;
+        stats.Grade = (int)grade;
+        stats.Name = RandomAccessoryName();
+        stats.Description = RandomAccessoryDescription();
 
 		// Create the consumable item
 		// TODO: Randomly generate quanity and power of the consumable (Not all consumables benefit from power)
@@ -89,22 +94,33 @@ public static class LootGenerator
 		{
 			case ConsumableItem.EConsumableType.Health:
 				{
-					newItem = new HealthPotion();
+					newItem = new HealthPotionItem();
+                    stats.Name = "HPPot";
+                    newItem.Charges = 5;
+                    newItem.CooldownMax = 1.0f;
 				} 
 				break;
 			case ConsumableItem.EConsumableType.Special:
 				{
-					newItem = new SpecialPotion();
+					newItem = new SpecialPotionItem();
+                    stats.Name = "SPPot";
+                    newItem.Charges = 5;
+                    newItem.CooldownMax = 1.0f;
 				}
 				break;
 			case ConsumableItem.EConsumableType.Bomb:
 				{
-					newItem = new Bomb();
+					newItem = new BombItem();
+                    stats.Name = "Bomb";
+                    newItem.Charges = 5;
+                    newItem.CooldownMax = 1.0f;
 				}
 				break;
 			case ConsumableItem.EConsumableType.Key:
 				{
-					newItem = new Key();
+					newItem = new KeyItem();
+                    stats.Name = "Key";
+                    newItem.Charges = 5;
 				}
 				break;
 			default:
@@ -114,16 +130,12 @@ public static class LootGenerator
 				break;
 		}
 
-		if (newItem != null)
-		{
-			newItem.ItemStats = new ItemStats();
-			newItem.ItemStats.Level = floorNum;
-			newItem.ItemStats.Grade = (int)grade;
-			newItem.ItemStats.Name = RandomAccessoryName();
-			newItem.ItemStats.Description = RandomAccessoryDescription();
-		}
+        if (newItem != null)
+        {
+            newItem.ItemStats = stats;
+        }
 
-		return newItem;
+		return (Item)newItem;
 	}
 
 	private static Item.ItemGrade RandomGrade()
@@ -144,12 +156,12 @@ public static class LootGenerator
 
 	private static string RandomAccessoryName()
 	{
-		return "RandomName";
+		return "RndName";
 	}
 
 	private static string RandomAccessoryDescription()
 	{
-		return "RandomDescription";
+		return "RndDesc";
 	}
 
 	private static AccessoryStats RandomAccessoryStats(int level)
