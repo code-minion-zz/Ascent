@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UITown_Backpack_InventoryPanel : UIPlayerMenuPanel
+public class UITown_MainPanel : UIPlayerMenuPanel
 {
 	protected virtual void Start()
 	{

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel 
+public class UITown_BackpackPanel : UIPlayerMenuPanel 
 {
 	enum EButtons
 	{
@@ -17,7 +17,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		MAX,
 	}
 
-	int		 lastActiveButton = 0;
+	int lastActiveButton = 0;
 
 	public override void Initialise()
 	{
@@ -67,16 +67,16 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	public void UpdateItems()
 	{
-		Debug.Log(parent);
+		//Debug.Log(parent);
 		// Change Button Icons in accordance to backpack data
 		Backpack bp = parent.Player.Hero.Backpack;
 		
 		Item[] arrayItems = bp.AllItems;
 		for (int i = 0; i < 7; ++i)
 		{
+			//Debug.Log("UpdateItems:"+i+" "+arrayItems[i]);
 			if (arrayItems[i] != null)
 			{
-				Debug.Log("UpdateItems:"+i+" "+arrayItems[i]);
 				Color temp = new Color();
 				switch ((Item.ItemGrade)bp.AllItems[i].ItemStats.Grade)
 				{
