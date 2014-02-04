@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,7 +19,7 @@ public class UIHeroSelect_MainPanel : UIPlayerMenuPanel
 		buttons[(int)EButtons.Load] = transform.FindChild("Load Button").GetComponent<UIButton>();
 		buttons[(int)EButtons.New] = transform.FindChild("New Button").GetComponent<UIButton>();
 
-		currentButton = (int)EButtons.Load;
+		currentHighlightedButton = (int)EButtons.Load;
 		currentSelection = buttons[(int)EButtons.Load];
 
 		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
@@ -43,7 +43,7 @@ public class UIHeroSelect_MainPanel : UIPlayerMenuPanel
 	{
 		if (initialised)
 		{
-			currentButton = (int)EButtons.Load;
+			currentHighlightedButton = (int)EButtons.Load;
 			currentSelection = buttons[(int)EButtons.Load];
 		}
 
@@ -72,7 +72,7 @@ public class UIHeroSelect_MainPanel : UIPlayerMenuPanel
 	{
 		UICamera.Notify(currentSelection.gameObject, "OnPress", true);
 
-		EButtons current = (EButtons)currentButton;
+		EButtons current = (EButtons)currentHighlightedButton;
 
 		switch (current)
 		{

@@ -21,22 +21,30 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void Initialise()
 	{
+		base.Initialise();
+
 		buttons = new UIButton[(int)EButtons.MAX];
 	
 		Transform acc = transform.FindChild ("BackpackTab");
 		Transform con = transform.FindChild ("BackpackTab");
 		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory 1").GetComponent<UIButton>();
+		AngleIndex.Add(-225f, 0);
 		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory 2").GetComponent<UIButton>();
+		AngleIndex.Add(90f, 1);
 		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory 3").GetComponent<UIButton>();
+		AngleIndex.Add(45f, 2);
 		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory 4").GetComponent<UIButton>();
+		AngleIndex.Add(0f, 3);
 		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable 1").GetComponent<UIButton>();
+		AngleIndex.Add(-45f, 4);
 		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable 2").GetComponent<UIButton>();
+		AngleIndex.Add(-90f, 5);
 		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable 3").GetComponent<UIButton>();
-		//buttons[(int)EButtons.ITM4] = con.FindChild("Consumable 4").GetComponent<UIButton>();
+		AngleIndex.Add(-135f, 6);
 
-		currentButton = (int)EButtons.ACC1;
+		currentHighlightedButton = (int)EButtons.ACC1;
 		currentSelection = buttons[(int)EButtons.ACC1];
-		lastActiveButton = currentButton;
+		lastActiveButton = currentHighlightedButton;
 		buttonMax = (int)EButtons.MAX;
 
 		initialised = true;
@@ -58,7 +66,7 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		if (initialised)
 		{
-			lastActiveButton = currentButton;
+			lastActiveButton = currentHighlightedButton;
 			currentSelection = buttons[lastActiveButton];
 		}
 
@@ -115,22 +123,27 @@ public class UITown_BackpackPanel : UITown_Panel
 		return buttons[(int)button];
 	}
 
+	public override void OnMenuLeftStickMove(InputDevice device)
+	{
+		HighlightButton();
+	}
+
 	public override void OnMenuUp(InputDevice device)
 	{
-		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-
-		currentSelection = PrevButton();
-
-		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+//		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+//
+//		currentSelection = PrevButton();
+//
+//		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 
 	public override void OnMenuDown(InputDevice device)
 	{
-		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-
-		currentSelection = NextButton();
-
-		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+//		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+//
+//		currentSelection = NextButton();
+//
+//		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 	
 	public override void OnMenuLeft(InputDevice device)
