@@ -478,16 +478,6 @@ public class Room : MonoBehaviour
 		return newObject;
 	}
 
-    public void GenerateRandomBarrels(RoomProperties room)
-    {
-        int randomBarrelCount = Random.Range(0, 5);
-
-        for (int i = 0; i < randomBarrelCount; ++i)
-        {
-
-        }
-    }
-
     // TODO: Make some monster generation script and offload logic there.
     public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
     {

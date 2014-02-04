@@ -73,6 +73,91 @@ public class RoomGeneration
 		return newRoom;
 	}
 
+    public void PopulateMonsters(int dungeonLevel, RoomProperties room, Rarity rarity)
+    {
+        int numberOfTilesX = (int)(room.Width * 0.5f);
+        int numberOfTilesY = (int)(room.Height * 0.5f);
+
+        List<TileProperties> tempAvailablePosition = new List<TileProperties>();
+
+        // Find all the available positions that a misc object can be placed.
+        for (int i = 0; i < numberOfTilesX; ++i)
+        {
+            for (int j = 0; j < numberOfTilesY; ++j)
+            {
+                // Search for tiles that are available.
+                if (room.RoomTiles[i, j].TileType == TilePropertyType.monster || room.RoomTiles[i, j].TileType == TilePropertyType.none)
+                {
+                    tempAvailablePosition.Add(room.RoomTiles[i, j]);
+                }
+            }
+        }
+
+        Debug.Log(tempAvailablePosition.Count);
+
+        // Generate number of monsters.
+        // TODO: make this better haha.
+        int numberOfMonsters = (int)rarity * Random.Range(1, 5);
+        int monstersPlaced = 0;
+
+        for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
+        {
+            // If we have exausted all of our available positions we can finish.
+            if (tempAvailablePosition.Count == 0)
+                return;
+
+            // Choose type of monster
+            Room.EMonsterTypes mobType = (Room.EMonsterTypes)(Random.Range(0, (int)Room.EMonsterTypes.MAX));
+
+            GameObject go = null;
+
+            switch (mobType)
+            {
+                case Room.EMonsterTypes.Rat:
+                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Rat");
+                    break;
+
+                case Room.EMonsterTypes.Imp:
+                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Imp");
+                    break;
+
+                case Room.EMonsterTypes.Slime:
+                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Slime");
+                    break;
+
+                case Room.EMonsterTypes.EnchantedStatue:
+                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "EnchantedStatue");
+                    break;
+
+                // Abominations are crashing
+                case Room.EMonsterTypes.Abomination:
+                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Abomination");
+                    break;
+
+                case Room.EMonsterTypes.Boss:
+                    break;
+            }
+
+            if (go == null)
+            {
+                // We may not have created a monster.
+                monstersPlaced--;
+                continue;
+            }
+
+            // Give the monster a random position.
+            // Choose a random tile.
+            int randomTile = Random.Range(0, tempAvailablePosition.Count);
+            go.transform.localPosition = tempAvailablePosition[randomTile].Position;
+            go.transform.parent = room.Room.MonsterParent;
+
+            // Apply configurations to the tile of this room and remove
+            // the tile from our temp list so that a monster is not placed here again.
+            tempAvailablePosition[randomTile].TileType = TilePropertyType.monster;
+            tempAvailablePosition.Remove(tempAvailablePosition[randomTile]);
+        }
+    }
+
 	/// <summary>
 	/// Populates the the room with misc objects.
 	/// </summary>
@@ -82,7 +167,7 @@ public class RoomGeneration
 		int numberOfTilesX = (int)(room.Width * 0.5f);
 		int numberOfTilesY = (int)(room.Height * 0.5f);
 
-        List<Vector3> tempAvailablePosition = new List<Vector3>();
+        List<TileProperties> tempAvailablePosition = new List<TileProperties>();
 
         // Find all the available positions that a misc object can be placed.
 		for (int i = 0; i < numberOfTilesX; ++i)
@@ -92,13 +177,13 @@ public class RoomGeneration
                 // Populate random misc objects.
                 if (room.RoomTiles[i, j].TileType == TilePropertyType.miscObj || room.RoomTiles[i, j].TileType == TilePropertyType.none)
                 {
-                    tempAvailablePosition.Add(room.RoomTiles[i, j].Position);
+                    tempAvailablePosition.Add(room.RoomTiles[i, j]);
                 }
 			}
 		}
 
         // Determine how many objects we will try to place.
-        int numberOfMisc = (int)miscObjects * Random.Range(0, 2);
+        int numberOfMisc = (int)miscObjects * Random.Range(1, 3);
         int miscPlaced = 0;
 
         for (miscPlaced = 0; miscPlaced < numberOfMisc; ++miscPlaced)
@@ -116,14 +201,18 @@ public class RoomGeneration
                 case 0:
                     GameObject barrelGo = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
                     barrelGo.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
-                    barrelGo.transform.localPosition = tempAvailablePosition[randomTile];
+                    barrelGo.transform.localPosition = tempAvailablePosition[randomTile].Position;
+
+                    tempAvailablePosition[randomTile].TileType = TilePropertyType.miscObj;
                     tempAvailablePosition.Remove(tempAvailablePosition[randomTile]);
                     break;
 
                 case 1:
                     GameObject brazierGo = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
                     brazierGo.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
-                    brazierGo.transform.localPosition = tempAvailablePosition[randomTile];
+                    brazierGo.transform.localPosition = tempAvailablePosition[randomTile].Position;
+
+                    tempAvailablePosition[randomTile].TileType = TilePropertyType.miscObj;
                     tempAvailablePosition.Remove(tempAvailablePosition[randomTile]);
                     break;
             }

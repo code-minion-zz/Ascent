@@ -50,8 +50,6 @@ public class FloorGeneration
         Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 
         CreateRooms();
-        // Populate the rooms with random decor.
-        PopulateRoomsMisc();
     }
 
     private void CreateRooms()
@@ -107,17 +105,6 @@ public class FloorGeneration
     }
 
     /// <summary>
-    /// Populates the room with random decoration.
-    /// </summary>
-    private void PopulateRoomsMisc()
-    {
-        foreach (RoomProperties room in rooms)
-        {
-			roomGeneration.PopulateMiscObjects(room);
-        }
-    }
-
-    /// <summary>
     /// Calculate the type of room to produce based on rarity. With the number of rooms
     /// placed so far we can use that as a factor.
     /// </summary>
@@ -155,6 +142,10 @@ public class FloorGeneration
 
     public void PopulateRooms()
     {
+        // Add barrels and misc objects.
+        PopulateRoomsMisc();
+
+        // Add monsters / treasure chests.
         foreach (RoomProperties room in rooms)
         {
             FeatureType type = room.RoomType;
@@ -163,7 +154,8 @@ public class FloorGeneration
             {
                 case FeatureType.monster:
                     // Populate room with monsters!
-                    room.Room.GenerateMonsterSpawnLoc(dungeonLevel, room, monsterRarity);
+                    //room.Room.GenerateMonsterSpawnLoc(dungeonLevel, room, monsterRarity);
+                    roomGeneration.PopulateMonsters(dungeonLevel, room, monsterRarity);
                     break;
 
                 case FeatureType.treasure:
@@ -175,6 +167,18 @@ public class FloorGeneration
                     // Place a trap here.
                     break;
             }
+        }
+    }
+
+
+    /// <summary>
+    /// Populates the room with random decoration.
+    /// </summary>
+    private void PopulateRoomsMisc()
+    {
+        foreach (RoomProperties room in rooms)
+        {
+            roomGeneration.PopulateMiscObjects(room);
         }
     }
 
