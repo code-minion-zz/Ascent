@@ -1,20 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
 public class UITown_MainPanel : UITown_Panel
 {
 	static float TOWER = 0f;
 	static float BACKPACK = 270f;
 	static float QUIT = 90f;
 
-	Dictionary<float, int> AngleIndex;
 
 	bool justInitialized = false;
 
 	public override void Initialise()
 	{
-		AngleIndex = new Dictionary<float, int>();
+		base.Initialise();
+
 		buttons = new UIButton[3];
 		
 		buttons[0] = transform.Find("Button Tower").GetComponent<UIButton>();
@@ -27,7 +26,7 @@ public class UITown_MainPanel : UITown_Panel
 		AngleIndex.Add(-90f, 2);
 
 		currentSelection = buttons[0];
-		currentButton = 0;
+		currentHighlightedButton = 0;
 
 		justInitialized = true;
 	}
@@ -37,8 +36,6 @@ public class UITown_MainPanel : UITown_Panel
 	{
 		base.OnEnable();
 
-		// TODO : populate item list based on Backpack state
-		//if (!initialised) return;
     }
 
     public void Update()
@@ -46,43 +43,58 @@ public class UITown_MainPanel : UITown_Panel
 		if (justInitialized)
 		{
 			HighlightButton();
+			SetInfoLabel();
 			justInitialized = false;
 		}
 
 
 	}
 	
-	void HighlightButton ()//InputDevice device)
-	{
-		float angle = (parent as UITownWindow).PointerAngle - 90f;
+//	void HighlightButton ()
+//	{
+//		float angle = (parent as UITownWindow).PointerAngle - 90f;
+//
+//		foreach (KeyValuePair<float,int> p in AngleIndex)
+//		{
+//			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
+//			if (CloseTo(angle,p.Key))
+//			{
+//				//Debug.Log("WIN!! Angle:" + angle + " against:" + p.Key);
+//				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+//				currentSelection = buttons[p.Value];
+//				currentHighlightedButton = p.Value;
+//				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+//				SetInfoLabel();
+//			}
+//			else
+//			{
+//				//Debug.Log("FAIL!! Angle:" + angle + " against:" + p.Key);
+//			}
+//		}
+//	}
 
-		foreach (KeyValuePair<float,int> p in AngleIndex)
-		{
-			Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
-			if (CloseTo(angle,p.Key))
-			{
-				Debug.Log("WIN!! Angle:" + angle + " against:" + p.Key);
-				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-				currentSelection = buttons[p.Value];
-				currentButton = p.Value;
-				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-			}
-			else
-			{
-				Debug.Log("FAIL!! Angle:" + angle + " against:" + p.Key);
-			}
-		}
-	}
-
+	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
-		HighlightButton();//device);
+		HighlightButton();
+		SetInfoLabel();
 	}
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		// TODO: Change character's equipment
-
+		int i = -1;
+		switch (currentHighlightedButton)
+		{
+		case 0 : // tower
+			//transition
+			break;
+		case 1 : // quit
+			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
+			break;
+		case 2 : // backpack
+			parent.TransitionToPanel(1);
+			break;
+		}
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
@@ -114,5 +126,34 @@ public class UITown_MainPanel : UITown_Panel
 	{
 		// TODO: Change character's equipment
 		
+	}
+	#endregion 
+
+	public void SetInfoLabel()
+	{
+		UILabel InfoLabel = (parent as UITownWindow).InfoLabel;
+		if (InfoLabel != null)
+		{
+			Debug.Log("InfoLabel not null");
+
+			if (currentHighlightedButton == -1)
+			{
+				Debug.LogError("UITownWindow: Uninitialized Panel Error");
+			}
+
+			switch (currentHighlightedButton)
+			{
+			case 0: // tower
+				InfoLabel.text = "Enter the Tower";
+				break;
+			case 1: // quit
+				InfoLabel.text = "Quit to Main Menu";
+				break;
+			case 2: // backpack
+				InfoLabel.text = "Manage your Equipment";
+				break;
+			}
+
+		}
 	}
 }

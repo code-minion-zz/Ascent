@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -103,7 +103,7 @@ public class UIHeroSelect_LoadHeroPanel : UIPlayerMenuPanel
 			}
 
 
-			currentButton = 0;
+			currentHighlightedButton = 0;
 			currentSelection = buttons[0];
 
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
