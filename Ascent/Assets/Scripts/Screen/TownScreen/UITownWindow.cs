@@ -14,7 +14,7 @@ public class UITownWindow : UIPlayerMenuWindow
 {
 	public Transform pointerTransform;
 	public List<UIPlayerMenuPanel> TownPanels;
-	protected float pointerAngle = 0f;
+	protected float pointerAngle = 90f;
 	public float PointerAngle
 	{
 		get 
@@ -58,8 +58,8 @@ public class UITownWindow : UIPlayerMenuWindow
 	public override void Initialise ()
 	{
 		//parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
-		base.Initialise ();
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
+		base.Initialise ();
 	}
 
 	void HandleOnMenuLeftStickMove (InputDevice device)

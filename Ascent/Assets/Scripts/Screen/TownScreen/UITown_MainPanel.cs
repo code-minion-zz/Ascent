@@ -10,6 +10,8 @@ public class UITown_MainPanel : UITown_Panel
 
 	Dictionary<float, int> AngleIndex;
 
+	bool justInitialized = false;
+
 	public override void Initialise()
 	{
 		AngleIndex = new Dictionary<float, int>();
@@ -26,8 +28,10 @@ public class UITown_MainPanel : UITown_Panel
 
 		currentSelection = buttons[0];
 		currentButton = 0;
-		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+
+		justInitialized = true;
 	}
+
 
     public override void OnEnable()
 	{
@@ -39,6 +43,12 @@ public class UITown_MainPanel : UITown_Panel
 
     public void Update()
     {
+		if (justInitialized)
+		{
+			HighlightButton();
+			justInitialized = false;
+		}
+
 
 	}
 	
