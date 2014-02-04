@@ -113,7 +113,7 @@ public class FloorGeneration
     {
         foreach (RoomProperties room in rooms)
         {
-
+			roomGeneration.PopulateMiscObjects(room);
         }
     }
 
