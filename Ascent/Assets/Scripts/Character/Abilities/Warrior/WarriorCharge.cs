@@ -46,7 +46,7 @@ public class WarriorCharge : Action
         //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
         circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
-		arc = new Arc(owner.transform, 10.0f, 25.0f, Vector3.back * 1.5f);
+		arc = new Arc(owner.transform, 5.0f, 7.5f, Vector3.zero);
 
         isInstantCast = false;
     }
@@ -139,7 +139,9 @@ public class WarriorCharge : Action
 			   {
 				   foreach (Enemy e in enemies)
 				   {
-					   int damage = 2;
+                       int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.0f);
+                       Debug.Log(this.ToString() + ": " + damage + " dmg");
+
 					   // Apply damage, knockback and stun to the enemy.
 					   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 					   e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);

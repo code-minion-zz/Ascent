@@ -84,9 +84,34 @@ public class HeroStats : CharacterStats
 
 #endregion
 
-#region SecondaryStats
+    #region BasePrimary
 
-	public override int MaxHealth
+    public int BasePower
+    {
+        get { return base.Power; }
+    }
+
+    public int BaseFinesse
+    {
+        get { return base.Finesse; }
+    }
+
+    public int BaseVitality
+    {
+        get { return base.Vitality; }
+    }
+
+    public int BaseSpirit
+    {
+        get { return base.Spirit; }
+    }
+
+    #endregion
+
+
+    #region SecondaryStats
+
+    public override int MaxHealth
 	{
 		get { return (int)GetDerivedValue(base.MaxHealth, EStats.Health); }
 	}
@@ -114,27 +139,71 @@ public class HeroStats : CharacterStats
 
 	public override float CriticalHitChance
 	{
-		get { return (int)GetDerivedValue(base.CriticalHitChance, EStats.CriticalHitChance); }
+		get { return GetDerivedValue(base.CriticalHitChance, EStats.CriticalHitChance); }
 	}
 
 	public override float CritalHitMultiplier
 	{
-		get { return (int)GetDerivedValue(base.CritalHitMultiplier, EStats.CriticalHitMutliplier); }
+		get { return GetDerivedValue(base.CritalHitMultiplier, EStats.CriticalHitMutliplier); }
 	}
 
 	public override float DodgeChance
 	{
-		get { return (int)GetDerivedValue(base.DodgeChance, EStats.DodgeChance); }
+		get { return GetDerivedValue(base.DodgeChance, EStats.DodgeChance); }
 	}
 
 #endregion
 
-	public float GetDerivedValue(float baseValue, EStats statType)
+#region BaseSecondary
+
+    public int BaseMaxHealth
+    {
+        get { return base.MaxHealth; }
+    }
+
+    public int BaseMaxSpecial
+    {
+        get { return base.MaxSpecial; }
+    }
+
+    public int BaseAttack
+    {
+        get { return base.Attack; }
+    }
+
+    public int BasePhysicalDefense
+    {
+        get { return base.PhysicalDefense; }
+    }
+
+    public int BaseMagicalDefense
+    {
+        get { return base.MagicalDefense; }
+    }
+
+    public float BaseCriticalHitChance
+    {
+        get { return base.CriticalHitChance; }
+    }
+
+    public float BaseCritalHitMultiplier
+    {
+        get { return base.CritalHitMultiplier; }
+    }
+
+    public float BaseDodgeChance
+    {
+        get { return base.DodgeChance; }
+    }
+
+#endregion
+
+    public float GetDerivedValue(float baseValue, EStats statType)
 	{
 		float withAccPrimary = AddAccessoriesPrimaryStats(baseValue, statType);
 		float withAccProps = AddAccessoriesProperties(withAccPrimary, statType);
         float withBuffs = AddBuffs(withAccProps, statType);
-		return (int)withBuffs;
+		return withBuffs;
 	}
 
 	public float AddAccessoriesPrimaryStats(float statValue, EStats statType)

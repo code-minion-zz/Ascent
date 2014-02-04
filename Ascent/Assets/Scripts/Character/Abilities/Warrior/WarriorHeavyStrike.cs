@@ -53,7 +53,9 @@ public class WarriorHeavyStrike : Action
 					{
 						foreach (Enemy e in enemies)
 						{
-							e.ApplyDamage(25, Character.EDamageType.Physical, owner);
+                            int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.5f);
+                            Debug.Log(this.ToString() + ": " + damage + " dmg");
+                            e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
 							// Create a blood splatter effect on the enemy.
