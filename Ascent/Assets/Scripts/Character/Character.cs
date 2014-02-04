@@ -82,6 +82,26 @@ public abstract class Character : BaseCharacter
     }
 
 
+    protected bool hitTaken = false;
+    public bool HitTaken
+    {
+        get { return hitTaken; }
+        set 
+        {
+            if (value && hitTaken != value)
+            {              
+                StartCoroutine("SetHitTaken");
+            }
+            
+        }
+    }
+    public IEnumerator SetHitTaken()
+    {
+        hitTaken = true;
+        yield return new WaitForSeconds(0.1f);
+        hitTaken = false;
+    } 
+
 	protected bool isDead = false;
 
 	protected Character lastDamagedBy;
@@ -240,6 +260,8 @@ public abstract class Character : BaseCharacter
 		int damageDealerLevel = damageDealer.Stats.Level;
 
 		int finalDamage = Mathf.Max( Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense)), 1);
+
+        HitTaken = true;
 		//int finalDamage = unmitigatedDamage;
 		lastDamagedBy = damageDealer;
 

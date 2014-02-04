@@ -16,9 +16,9 @@ public class WarriorStrike : Action
     {
 		base.Initialise(owner);
 
-        animationSpeed = 1.2f;
+        animationSpeed = 1.5f;
         animationLength = 1.067f;
-		coolDownTime = animationLength;
+        coolDownTime = animationLength / 1.5f;
 		animationTrigger = "Strike";
 		specialCost = 0;
 
@@ -33,7 +33,9 @@ public class WarriorStrike : Action
 		performed = false;
         coolDownTime = animationLength;
 		//owner.Animator.PlayAnimation(animationTrigger);
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike);
+        //int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
+        //((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
 	}
 
 	public override void UpdateAbility()
@@ -77,7 +79,7 @@ public class WarriorStrike : Action
 
 	public override void EndAbility()
 	{
-		//((HeroAnimator)Owner.Animator).EndCombatAction();
+		((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
 	}
 

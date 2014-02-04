@@ -25,24 +25,23 @@ public class CharacterAnimator : MonoBehaviour
 	/// <summary>
 	/// Returns if the animator is taking a hit. Sets the animator to take a hit.
 	/// </summary>
-	public bool TakeHit
-	{
-		get { return takeHit; }
-		set
-		{
-			takeHit = value;
+    //public bool TakeHit
+    //{
+    //    get { return takeHit; }
+    //    set
+    //    {
+    //        //takeHit = value;
 			
-			//animator.SetBool("TakeHit", value);
+    //        //animator.SetBool("TakeHit", value);
 
-			// Comment out this block and uncomment the above to go back to the old method 
-			if (value)
-			{
-				StartCoroutine("PlayOneShot", "TakeHit");
-			}
-			takeHit = false;
-			
-		}
-	}
+    //        // Comment out this block and uncomment the above to go back to the old method 
+    //        //if (value)
+    //        //{
+    //        //    StartCoroutine("PlayOneShot", "TakeHit");
+    //        //}
+    //        takeHit = false;
+    //    }
+    //}
 
 	/// <summary>
 	/// Returns if the animator is dying. Sets the animator to the dying state.

@@ -61,11 +61,20 @@ public class HeroAnimator : CharacterAnimator
 	}
 
 
-	private EMoveAnimation moveAnim = EMoveAnimation.None;
-	private EInteractionAnimation interactionAnim = EInteractionAnimation.None;
-	private EReactionAnimation reactionAnim = EReactionAnimation.None;
-	private int combatAnim = -1;
+    private bool newMoveAnim = false;
+
+	private EMoveAnimation moveAnim = EMoveAnimation.CombatIdling;
+    //private EInteractionAnimation interactionAnim = EInteractionAnimation.None;
+    //private EReactionAnimation reactionAnim = EReactionAnimation.None;
+
 	private ELayer layer = ELayer.None;
+    private ELayer prevLayer = ELayer.None;
+
+    private float blendTimeElapsed = 0.0f;
+    private float blendTimeMax = 0.0f;
+
+    private float reactionTimeElapsed = 0.0f;
+    private float reactionTimeMax = 0.0f;
 
 	public override void Initialise()
 	{
@@ -88,26 +97,26 @@ public class HeroAnimator : CharacterAnimator
 	{
 		if(layer == ELayer.Movement)
 		{
-			if(this.moveAnim != moveAnim)
-			{
-				SetActiveLayer(ELayer.Movement);
+            if (this.moveAnim != moveAnim)
+            {
+                // Reset float values for states that have blend trees
+                if (this.moveAnim == EMoveAnimation.Moving)
+                {
+                    animator.SetFloat("Movement", 0.0f);
+                }
+                else if (this.moveAnim == EMoveAnimation.GrabbingBlock)
+                {
+                    animator.SetFloat("GrabMovement", 0.0f);
+                }
 
-				// Reset float values for states that have blend trees
-				if (this.moveAnim == EMoveAnimation.Moving)
-				{
-					animator.SetFloat("Movement", 0.0f);
-				}
-				else if (this.moveAnim == EMoveAnimation.GrabbingBlock)
-				{
-					animator.SetFloat("GrabMovement", 0.0f);
-				}
+                // Stop other layers.
+                this.moveAnim = moveAnim;
 
-				// Stop other layers.
-				this.moveAnim = moveAnim;
+                animator.SetInteger("MoveAnimation", (int)moveAnim);
+                animator.SetBool("NewAnimation", true);
 
-				animator.SetInteger("MoveAnimation", (int)moveAnim);
-				animator.SetTrigger("NewAnimation");
-			}
+                newMoveAnim = true;
+            }
 		}
 	}
 
@@ -135,42 +144,116 @@ public class HeroAnimator : CharacterAnimator
 		}
 	}
 
-	public void PlayCombatAction(int action)
+	public void PlayCombatAction(int action, string animName)
 	{
-		SetActiveLayer(ELayer.Combat);
-		animator.SetInteger("CombatAnimation", action);
-		animator.SetTrigger("NewAnimation");
+        animator.SetInteger("MoveAnimation", -1);
+
+        SetActiveLayerBlend(ELayer.Combat, 0.2f);
+
+        animator.SetInteger("CombatAnimation", action);
+        animator.SetBool("NewAnimation", true);
+
+        newMoveAnim = true;
 	}
 
-	public void EndCombatAction()
-	{
-		//if (layer == ELayer.Combat)
-		{
-			SetActiveLayer(ELayer.Movement);
-		}
-	}
+    public void PlayReactionAction(EReactionAnimation anim, float time)
+    {
+        reactionTimeMax = time;
+        reactionTimeElapsed = 0.0f;
 
-	public void SetActiveLayer(ELayer layer)
+        animator.SetLayerWeight((int)layer, 1.0f);
+        animator.SetLayerWeight((int)ELayer.Reactions, 1.0f);
+
+        animator.SetInteger("ReactionAnimation", (int)anim);
+        animator.SetBool("NewAnimation", true);
+
+        newMoveAnim = true;
+    }
+
+    public void PlayInteractionAction(EInteractionAnimation anim)
+    {
+        SetActiveLayer(ELayer.Interactions);
+
+        animator.SetInteger("InteractionAnimation", (int)anim);
+        animator.SetBool("NewAnimation", true);
+
+        newMoveAnim = true;
+    }
+
+    public void SetActiveLayer(ELayer layer)
+    {
+        if (this.layer != layer)
+        {
+            animator.SetLayerWeight((int)this.layer, 0.0f);
+            animator.SetLayerWeight((int)layer, 1.0f);
+
+            this.layer = layer;
+        }
+    }
+
+	public void SetActiveLayer(ELayer layer, float newLayerWeight)
 	{
 		if (this.layer != layer)
 		{
-			animator.SetLayerWeight((int)this.layer, 0.0f);
-			animator.SetLayerWeight((int)layer, 1.0f);
+            newLayerWeight = Mathf.Min(Mathf.Abs(newLayerWeight), 0.0f);
+            newLayerWeight = Mathf.Max(newLayerWeight, 1.0f);
+
+            animator.SetLayerWeight((int)this.layer, 1.0f - newLayerWeight);
+            animator.SetLayerWeight((int)layer, newLayerWeight);
 
 			this.layer = layer;
 		}
 	}
 
+    public void SetActiveLayerBlend(ELayer layer, float time)
+    {
+        if (this.layer != layer)
+        {
+            blendTimeMax = time;
+            blendTimeElapsed = 0.0f;
+
+            prevLayer = this.layer;
+            this.layer = layer;
+        }
+    }
+
+
 	public override void Update() 
     {
-		if (layer == ELayer.Movement)
-		{
-			if (!animator.GetCurrentAnimatorStateInfo(0).IsName(this.moveAnim.ToString()))
-			{
-				animator.SetInteger("MoveAnimation", (int)moveAnim);
-				animator.SetTrigger("New Trigger");
-			}
-		}
+        int iLayer = (int)layer;
+        if(iLayer >= 1 && iLayer < animator.layerCount)
+        {
+            if (newMoveAnim && animator.IsInTransition(iLayer))
+            {
+                newMoveAnim = false;
+                animator.SetBool("NewAnimation", false);
+            }
+        }
+
+        if(blendTimeElapsed < blendTimeMax)
+        {
+            blendTimeElapsed += Time.deltaTime;
+            if(blendTimeElapsed > blendTimeMax)
+            {
+                blendTimeElapsed = blendTimeMax;
+            }
+
+            animator.SetLayerWeight((int)prevLayer, (blendTimeMax - blendTimeElapsed )/ blendTimeMax);
+            animator.SetLayerWeight((int)layer, blendTimeElapsed / blendTimeMax);
+        }
+
+        if (reactionTimeElapsed < reactionTimeMax)
+        {
+            reactionTimeElapsed += Time.deltaTime;
+            if (reactionTimeElapsed > reactionTimeMax)
+            {
+                reactionTimeElapsed = reactionTimeMax;
+                animator.SetLayerWeight((int)layer, 1.0f);
+                animator.SetLayerWeight((int)ELayer.Reactions, 0.0f);
+                animator.SetInteger("ReactionAnimation", (int)EReactionAnimation.None);
+            }
+        }
+
 #if UNITY_EDITOR
         DebugKeys();
 #endif
@@ -179,38 +262,15 @@ public class HeroAnimator : CharacterAnimator
 #if UNITY_EDITOR
     void DebugKeys()
     {
-		if (Input.GetKeyUp(KeyCode.Alpha1))
-		{
-			PlayMovement(EMoveAnimation.Idle);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha2))
-		{
-			PlayMovement(EMoveAnimation.IdleLook);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha3))
-		{
-			PlayMovement(EMoveAnimation.Moving);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha4))
-		{
-			PlayMovement(EMoveAnimation.StunnedIdling);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha5))
-		{
-			PlayMovement(EMoveAnimation.BatterdIdling);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha6))
-		{
-			PlayMovement(EMoveAnimation.BatteredMoving);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha7))
-		{
-			PlayMovement(EMoveAnimation.CombatIdling);
-		}
-		else if (Input.GetKeyUp(KeyCode.Alpha8))
-		{
-			PlayMovement(EMoveAnimation.GrabbingBlock);
-		}
+        // Move layer tests
+		if (Input.GetKeyUp(KeyCode.Alpha1)) PlayMovement((EMoveAnimation)0);
+		else if (Input.GetKeyUp(KeyCode.Alpha2)) PlayMovement((EMoveAnimation)1);
+		else if (Input.GetKeyUp(KeyCode.Alpha3)) PlayMovement((EMoveAnimation)2);
+		else if (Input.GetKeyUp(KeyCode.Alpha4)) PlayMovement((EMoveAnimation)3);
+		else if (Input.GetKeyUp(KeyCode.Alpha5)) PlayMovement((EMoveAnimation)4);	
+		else if (Input.GetKeyUp(KeyCode.Alpha6)) PlayMovement((EMoveAnimation)5);
+		else if (Input.GetKeyUp(KeyCode.Alpha7)) PlayMovement((EMoveAnimation)6);
+		else if (Input.GetKeyUp(KeyCode.Alpha8)) PlayMovement((EMoveAnimation)7);
     }
 #endif
 
@@ -220,9 +280,26 @@ public class HeroAnimator : CharacterAnimator
 		SetActiveLayer(ELayer.Movement);
 	}
 
+    public void CombatAnimationEnd()
+    {
+        animator.SetInteger("CombatAnimation", -1);
+        SetActiveLayer(ELayer.Movement);
+        //SetActiveLayerBlend(ELayer.Movement, 0.1f);
+
+        EMoveAnimation curMove = moveAnim;
+        moveAnim = EMoveAnimation.None;
+        PlayMovement(curMove);
+    }
+
 	public void OnCombatAnimationEnd()
 	{
-		SetActiveLayer(ELayer.Movement);
+        //animator.SetInteger("CombatAnimation", -1);
+        //SetActiveLayer(ELayer.Movement);
+        ////SetActiveLayerBlend(ELayer.Movement, 0.1f);
+
+        //EMoveAnimation curMove = moveAnim;
+        //moveAnim = EMoveAnimation.None;
+        //PlayMovement(curMove);
 	}
 
 	public void OnInteractionAnimationEnd()

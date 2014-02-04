@@ -55,7 +55,7 @@ public class WarriorCharge : Action
 	{
         base.StartAbility();
 
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge);
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge, Warrior.ECombatAnimations.Charge.ToString());
 
         startPos = owner.transform.position;
 		Vector3 rayStart = startPos;

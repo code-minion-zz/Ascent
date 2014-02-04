@@ -324,8 +324,6 @@ public abstract class Hero : Character
 
         // Record damage taken.
         floorStatistics.DamageTaken += damage;
-        // Hero takes hit.
-        animator.TakeHit = true;
     }
 
     protected override void OnDamageDealt(int damage)

@@ -6,11 +6,13 @@ public class Warrior : Hero
 	public enum ECombatAnimations
 	{
 		None = -1,
-		Strike = 0,
-		HeavyStrike = 1,
-		WarStromp = 2,
-		Charge = 3,
-		Warcry = 4
+		Strike1 = 0,
+        Strike2 = 1,
+        Strike3 = 2,
+		HeavyStrike = 3,
+		WarStromp = 4,
+		Charge = 5,
+		Warcry = 6
 	}
 
     public override void Initialise(InputDevice input, HeroSaveData saveData)

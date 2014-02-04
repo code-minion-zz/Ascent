@@ -90,6 +90,11 @@ public class HeroController : MonoBehaviour
 				ProcessDPad(device);
 			}
 
+            if (hero.HitTaken)
+            {
+                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
+            }
+
 #if UNITY_EDITOR
             if (device.Back.WasPressed)
             {
@@ -103,21 +108,21 @@ public class HeroController : MonoBehaviour
 	{
 		if (device.LeftBumper.WasPressed)
 		{
-			if (animator.TakeHit == false && animator.Dying == false)
+			if (hero.HitTaken == false && animator.Dying == false)
 			{
 				hero.UseAbility((int)HeroAction.Action1);
 			}
 		}
 		else if (device.LeftTrigger.WasPressed)
 		{
-			if (animator.TakeHit == false && animator.Dying == false)
+            if (hero.HitTaken == false && animator.Dying == false)
 			{
 				hero.UseAbility((int)HeroAction.Action4);
 			}
 		}
 		else if (device.RightBumper.WasPressed)
 		{
-			if (animator.TakeHit == false && animator.Dying == false)
+            if (hero.HitTaken == false && animator.Dying == false)
 			{
 				hero.UseAbility((int)HeroAction.Action2); // pass in the ability binded to this key
 			}
@@ -125,7 +130,7 @@ public class HeroController : MonoBehaviour
 		}
 		else if (device.RightTrigger.WasPressed)
 		{
-			if (animator.TakeHit == false && animator.Dying == false)
+            if (hero.HitTaken == false && animator.Dying == false)
 			{
 				hero.UseAbility((int)HeroAction.Action3);
 			}
@@ -241,14 +246,14 @@ public class HeroController : MonoBehaviour
 			}
 		}
 
-		if (hero.IsStunned)
-		{
-			animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
-		}
-		else if(!moved)
-		{
-			animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
-		}
+        if (hero.IsStunned)
+        {
+            animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
+        }
+        else if (!moved)
+        {
+            animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
+        }
 
 		//if(!GetComponent<CharacterMotor>().canMove && hero.IsStunned)
 		//{
