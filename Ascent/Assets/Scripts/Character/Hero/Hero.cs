@@ -149,7 +149,7 @@ public abstract class Hero : Character
 		hero.HeroStats.Reset();
 
 		Test_PopulateInventoryAndBackpack(hero);
-		//Test_DrawHeroStats(hero);
+		Test_DrawHeroStats(hero);
 	}
 
 	public static void Test_PopulateInventoryAndBackpack(Hero hero)
@@ -213,6 +213,8 @@ public abstract class Hero : Character
 		// Load in stats
 		hero.HeroStats = new HeroStats(hero, data);
 		hero.HeroStats.Reset();
+
+		Test_DrawHeroStats(hero);
 	}
 
     public override void Update()

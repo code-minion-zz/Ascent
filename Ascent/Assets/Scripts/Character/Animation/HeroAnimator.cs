@@ -161,8 +161,8 @@ public class HeroAnimator : CharacterAnimator
         reactionTimeMax = time;
         reactionTimeElapsed = 0.0f;
 
-        animator.SetLayerWeight((int)layer, 1.0f);
-        animator.SetLayerWeight((int)ELayer.Reactions, 1.0f);
+        //animator.SetLayerWeight((int)layer, 1.0f);
+        animator.SetLayerWeight((int)ELayer.Reactions, 0.5f);
 
         animator.SetInteger("ReactionAnimation", (int)anim);
         animator.SetBool("NewAnimation", true);
@@ -248,7 +248,7 @@ public class HeroAnimator : CharacterAnimator
             if (reactionTimeElapsed > reactionTimeMax)
             {
                 reactionTimeElapsed = reactionTimeMax;
-                animator.SetLayerWeight((int)layer, 1.0f);
+                //animator.SetLayerWeight((int)layer, 1.0f);
                 animator.SetLayerWeight((int)ELayer.Reactions, 0.0f);
                 animator.SetInteger("ReactionAnimation", (int)EReactionAnimation.None);
             }

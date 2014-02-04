@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 public class AccessoryItem : Item
 {
+	[System.Xml.Serialization.XmlIgnore]
+	protected PrimaryStats primaryStats = new PrimaryStats();
+
     [System.Xml.Serialization.XmlIgnore()]
     protected List<ItemProperty> itemProperties = new List<ItemProperty>();
-	protected AccessoryStats accessoryStats;
 
     protected int durability;
     protected int durabilityMax;
@@ -18,22 +20,45 @@ public class AccessoryItem : Item
         private set { }
     }
 
+		[System.Xml.Serialization.XmlIgnore]
+	public float Power
+	{
+		get { return primaryStats.power; }
+		set { primaryStats.power = value; }
+	}
+
+		[System.Xml.Serialization.XmlIgnore]
+	public float Finesse
+	{
+		get { return primaryStats.finesse; }
+		set { primaryStats.finesse = value; }
+	}
+
+		[System.Xml.Serialization.XmlIgnore]
+	public float Vitality
+	{
+		get { return primaryStats.vitality; }
+		set { primaryStats.vitality = value; }
+	}
+
+		[System.Xml.Serialization.XmlIgnore]
+	public float Spirit
+	{
+		get { return primaryStats.spirit; }
+		set { primaryStats.spirit = value; }
+	}
+
+
+	public PrimaryStats PrimaryStats
+	{
+		get { return primaryStats; }
+		set {  primaryStats = value; }
+	}
 
 	public List<ItemProperty> ItemProperties
 	{
 		get { return itemProperties; }
 		protected set { itemProperties = value; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore()]
-	public AccessoryStats AcessoryStats
-	{
-		get { return accessoryStats; }
-		set 
-		{
-			ItemStats = value;
-			accessoryStats = value;
-		}
 	}
 
     [System.Xml.Serialization.XmlIgnore()]
@@ -75,8 +100,8 @@ public class AccessoryItem : Item
 				"Desc: " + stats.Description + "\n" +
 				"Dura: " + durability + "\\" + durabilityMax + "\n" +
 				"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
-				"Stats: POW-" + accessoryStats.Power + ", FIN-" + accessoryStats.Finesse + ", VIT-" +  accessoryStats.Vitality + ", SPR-" + accessoryStats.Spirit + "\n" + 
+				"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n" +
 				"Prop count: " + itemProperties.Count + "\n";
-				
+
 	}
 }
