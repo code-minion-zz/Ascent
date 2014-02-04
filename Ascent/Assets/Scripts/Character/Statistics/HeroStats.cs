@@ -167,8 +167,7 @@ public class HeroStats : CharacterStats
 							{
 								continue;
 							}
-
-							statValue += (int)((AccessoryItem)item).AcessoryStats.PrimaryStats.GetStat(statType);
+							statValue += (int)((AccessoryItem)item).PrimaryStats.GetStat(statType);
 						}
 					}
 				}

@@ -19,7 +19,7 @@ public class LoadingScreen : MonoBehaviour
 
 		loadingText = xform.GetComponent<UILabel>();
 
-		levelToLoad = Game.Singleton.levelName;
+		levelToLoad = Game.Singleton.LevelName;
 	}
 	
 	// Update is called once per frame

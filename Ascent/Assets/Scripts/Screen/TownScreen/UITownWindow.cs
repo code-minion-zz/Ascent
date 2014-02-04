@@ -112,7 +112,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 		
 		activePanel = panels[(int)EBackpackPanels.BACKPACK];
-		player.activePlayerPanel = activePanel;
+		player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
 	}
 

@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
+	// GameTest Values
+	public Game.EGameState testState = Game.EGameState.Tower;
+	public Character.EHeroClass[] testCharacters;
+	public int targetFrameRate = 60;
+
     public enum EGameState
     {
         MainMenu,
@@ -26,9 +31,13 @@ public class Game : MonoBehaviour
 	}
 
 	// Number of players
-    public Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
-    public string levelName;
-    public GameObject Cameras;
+    private Character.EHeroClass[] playerCharacterType = new Character.EHeroClass[3];
+    private string levelName;
+	public string LevelName
+	{
+		get { return levelName; }
+		set { levelName = value; }
+	}
 
 	private List<Player> players;
     private Tower tower;
@@ -40,12 +49,12 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
+	private bool firstState = true;
+
 	public bool InTower
 	{
 		get { return gameState == EGameState.Tower || gameState == EGameState.TowerRandom; }
 	}
-
-	public static bool running = false;
 
 	private EGameState gameStateToLoad;
 
@@ -88,57 +97,87 @@ public class Game : MonoBehaviour
 	
 	#region Initialization
 
+
+    static bool initialised = false;
 	public void OnEnable()
 	{
 		if (Singleton == null)
 		{
 			Singleton = this;
 		}
+
+        if (!initialised)
+        {
+            Initialise();
+        }
+        else
+        {
+            GameObject theGameObject = GameObject.Find("Game");
+            if (theGameObject != null)
+            {
+                Debug.Log("Game already exists no need to initialise a new one.");
+                // Get rid of the game initialiser
+                Destroy(this.gameObject);
+                return;
+            }
+
+            if (theGameObject == null)
+            {
+                theGameObject = GameObject.Find("Game(Clone)");
+                if (theGameObject != null)
+                {
+                    Debug.Log("Game already exists no need to initialise a new one.");
+                    // Get rid of the game initialiser
+                    Destroy(this.gameObject);
+                    return;
+                }
+            }
+        }
 	}
 
-	static bool initialised = false;
 	public void Start()
 	{
-		if (!initialised)
-		{
-			Initialise();
-		}
-	}
-
-	public void Initialise(GameInitialiser.GameInitialisationValues initValues)
-	{
-        AscentGameSaver.LoadGame();
-
-        Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
-		running = true;
-
-		playerCharacterType = initValues.playerCharacterType;
-
-		Application.targetFrameRate = initValues.targetFrameRate;
-
-        gameState = initValues.initialGameState;
-		gameStateToLoad = initValues.initialGameState;
-
-        Initialise();
 		
-		InitialiseState();
-
-		initialised = true;
 	}
 
-	public void Initialise()
+	private void Initialise()
 	{
-		OnEnable();
-
+		// Never destroy this object unless the game closes itself.
 		DontDestroyOnLoad(gameObject);
 
+		// Load all save games. (Make a save file if none exists).
+		AscentGameSaver.LoadGame();
+
+		// Seed for the entire game. This script is executed first, no need to seed again.
+		Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
+		// Set target frame rate
+		Application.targetFrameRate = targetFrameRate;
+
+		// Init the InputManager for the rest of the game
 		InputManager.Initialise();
 
-		CreatePlayers();
+		// Set test characters
+		if(testCharacters != null)
+		{
+			playerCharacterType = testCharacters;
+			if (playerCharacterType.Length > 0)
+			{
+				CreateTestPlayers();
+			}
+		}
 
+		// Add some necessary components
 		tower = GetComponent<Tower>();
+		gameObject.AddComponent<EffectFactory>();
 
-        this.gameObject.AddComponent<EffectFactory>();
+		// Set the game state as the test state specified
+		gameState = testState;
+		gameStateToLoad = testState;
+		InitialiseState();
+
+		// Set this so it does not get initialised again
+		initialised = true;
 	}
 
     void Update()
@@ -147,24 +186,30 @@ public class Game : MonoBehaviour
     }
 
 	// This is a helper function to create players with heroes at any stage of the game
-    private void CreatePlayers()
+    private void CreateTestPlayers()
 	{
 		players = new List<Player>();
 
+		int[] usedSaves = new int[2] {-1,-1};
+
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
+			// Create the test player object
 			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
 			player.transform.parent = transform;
-            player.transform.localPosition = Vector3.zero;
-            player.transform.localRotation = Quaternion.identity;
-            player.transform.localScale = Vector3.one;
+			player.transform.localPosition = Vector3.zero;
+			player.transform.localRotation = Quaternion.identity;
+			player.transform.localScale = Vector3.one;
 
+			// Add the player component to it
 			Player newPlayer = player.GetComponent<Player>();
 			newPlayer.PlayerID = i;
+
+			// Add player to list
 			players.Add(newPlayer);
 
+			// Assign it a device (devices can be doubled up if there arent enough)
 			int iDevice = i;
-
 			if (InputManager.Devices.Count > 1)
 			{
 				iDevice += 1;
@@ -178,7 +223,36 @@ public class Game : MonoBehaviour
 
 			newPlayer.BindInputDevice(device);
 
-			newPlayer.CreateHero(playerCharacterType[i]);
+			// Attempt to load an existing save to set for the player
+			Hero hero = null;
+
+			var heroSaves = AscentGameSaver.SaveData.heroSaves;
+			if(heroSaves.Count > 0)
+			{
+				foreach(HeroSaveData save in heroSaves)
+				{
+					if(save.heroClass == playerCharacterType[i] &&
+						i != usedSaves[0] &&
+						i != usedSaves[1])
+					{
+						hero = AscentGameSaver.LoadHero(heroSaves[i]);
+						hero.Initialise(device, heroSaves[i]);
+						hero.transform.parent = newPlayer.transform;
+						usedSaves[i] = i;
+					}
+				}
+			}
+
+			// Assign the loaded hero else create a new one.
+			if (hero == null)
+			{
+				// Create the hero for the player
+				newPlayer.CreateHero(playerCharacterType[i]);
+			}
+			else
+			{
+				newPlayer.Hero = hero;
+			}
 		}
     }
 
@@ -201,10 +275,16 @@ public class Game : MonoBehaviour
 		Application.LoadLevel(level);
 	}
 
-    public void OnLevelWasLoaded(int iLevelID)
-    {
+	public void OnLevelWasLoaded(int iLevelID)
+	{
+		if (firstState)
+		{
+			firstState = false;
+			return;
+		}
+
 		InitialiseState();
-    }
+	}
 
 	public void InitialiseState()
 	{
@@ -217,7 +297,21 @@ public class Game : MonoBehaviour
 				break;
 			case EGameState.Tower:
 				{
+					for (int i = 0; i < players.Count; ++i)
+					{
+						players[i].Hero.gameObject.SetActive(true);
+					}
 					tower.InitialiseFloor();
+				}
+				break;
+			case EGameState.TowerRandom:
+				{
+					for (int i = 0; i < players.Count; ++i)
+					{
+						players[i].Hero.gameObject.SetActive(true);
+					}
+					tower.InitialiseRandomFloor();
+
 				}
 				break;
 			case EGameState.Town:
@@ -231,11 +325,6 @@ public class Game : MonoBehaviour
 			case EGameState.Loading:
 				{
 					gameState = gameStateToLoad;
-				}
-				break;
-			case EGameState.TowerRandom:
-				{
-					tower.InitialiseRandomFloor();
 				}
 				break;
 			default:

@@ -134,7 +134,7 @@ public class UITown_MainPanel : UITown_Panel
 		UILabel InfoLabel = (parent as UITownWindow).InfoLabel;
 		if (InfoLabel != null)
 		{
-			Debug.Log("InfoLabel not null");
+			//Debug.Log("InfoLabel not null");
 
 			if (currentHighlightedButton == -1)
 			{

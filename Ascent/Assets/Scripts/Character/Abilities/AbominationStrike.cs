@@ -15,7 +15,7 @@ public class AbominationStrike : Action
         animationLength = 1.0f;
         animationSpeed = 1.0f;
         animationTrigger = "Strike";
-        coolDownTime = 2.0f;
+        cooldownDurationMax = 2.0f;
         specialCost = 0;
 
         damageArea = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.5f));
@@ -37,18 +37,18 @@ public class AbominationStrike : Action
     {
         base.UpdateAbility();
 
-        if (currentTime >= animationLength * 1.0f)
+        if (timeElapsedSinceStarting >= animationLength * 1.0f)
         {
             owner.Motor.EnableMovementForce(true);
             owner.ResetColor();
         }
-        else if (currentTime >= animationLength * 0.8f)
+        else if (timeElapsedSinceStarting >= animationLength * 0.8f)
         {
             owner.Motor.StopMotion();
             owner.Motor.EnableMovementForce(false);
             owner.Motor.MovementSpeed = prevSpeed;
         }
-        else if (currentTime >= animationLength * 0.40f && !executedDamage)
+        else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
         {
             List<Character> characters = new List<Character>();
 
@@ -69,7 +69,7 @@ public class AbominationStrike : Action
                 executedDamage = true;
             }
         }
-        else if (currentTime >= animationLength * 0.25f)
+        else if (timeElapsedSinceStarting >= animationLength * 0.25f)
         {
             owner.Motor.EnableMovementForce(true);
         }

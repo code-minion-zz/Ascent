@@ -33,18 +33,18 @@ public class UITown_Panel : UIPlayerMenuPanel
 		
 		foreach (KeyValuePair<float,int> p in AngleIndex)
 		{
-			Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
+			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
 			if (CloseTo(angle,p.Key))
 			{
-				Debug.Log("WIN!! Angle:" + angle + " against:" + p.Key);
 				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 				currentSelection = buttons[p.Value];
 				currentHighlightedButton = p.Value;
 				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+				Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 			}
 			else
 			{
-				Debug.Log("FAIL!! Angle:" + angle + " against:" + p.Key);
+				//Debug.Log("No Button Highlighted. Angle:" + angle + " against:" + p.Key);
 			}
 		}
 	}

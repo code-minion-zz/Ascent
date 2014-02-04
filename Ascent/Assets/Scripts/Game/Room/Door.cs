@@ -68,9 +68,12 @@ public class Door : MonoBehaviour
 
 	public void OnEnable()
 	{
-		//direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
-		done = false;
-		playersLeftDoor = new bool[Game.Singleton.Players.Count];
+        if (Game.Singleton.Tower.CurrentFloor != null)
+        {
+            //direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
+            done = false;
+            playersLeftDoor = new bool[Game.Singleton.Players.Count];
+        }
 	}
 
 	public void Process()

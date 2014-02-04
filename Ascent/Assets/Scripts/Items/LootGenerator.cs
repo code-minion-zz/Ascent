@@ -63,9 +63,10 @@ public static class LootGenerator
 
 		Item newItem = new AccessoryItem();
 		AccessoryItem newAccItem = newItem as AccessoryItem;
-		newAccItem.AcessoryStats = RandomAccessoryStats(floorNum);
-		newAccItem.AcessoryStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
-		newAccItem.AcessoryStats.Name = RandomAccessoryName();
+		newAccItem.PrimaryStats = RandomAccessoryStats(floorNum);
+		newAccItem.ItemStats = new ItemStats();
+		newAccItem.ItemStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
+		newAccItem.ItemStats.Name = RandomAccessoryName();
 		newAccItem.ItemStats.Description = RandomAccessoryDescription();
 		newAccItem.ItemStats.Grade = (int)grade;
         newAccItem.ItemProperties.Add(new AttackItemProperty());
@@ -164,14 +165,14 @@ public static class LootGenerator
 		return "RndDesc";
 	}
 
-	private static AccessoryStats RandomAccessoryStats(int level)
+	private static PrimaryStats RandomAccessoryStats(int level)
 	{
 		// Random between different templates
 		// The level impacts number of stats that can be allocated
 
 		int points = RandomAcessoryStatPoints(level);
 
-		AccessoryStats stats = new AccessoryStats();
+		PrimaryStats stats = new PrimaryStats();
 
 		EAccessoryTemplate template = (EAccessoryTemplate)Random.Range(0, (int)EAccessoryTemplate.Max);
 
@@ -179,66 +180,66 @@ public static class LootGenerator
 		{
 			case EAccessoryTemplate.Power:
 				{
-					stats.Power = points;
+					stats.power = points;
 				}
 				break;
 			case EAccessoryTemplate.Finesse:
 				{
-					stats.Finesse = points;
+					stats.finesse = points;
 				}
 				break;
 			case EAccessoryTemplate.Vitaliy:
 				{
-					stats.Vitality = points;
+					stats.vitality = points;
 				}
 				break;
 			case EAccessoryTemplate.Spirit:
 				{
-					stats.Spirit = points;
+					stats.spirit = points;
 				}
 				break;
 			case EAccessoryTemplate.PowerFinesse:
 				{
-					stats.Power = points / 2;
-					stats.Finesse = points / 2;
+					stats.power = points / 2;
+					stats.finesse = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.PowerVitality:
 				{
-					stats.Power = points / 2;
-					stats.Vitality = points / 2;
+					stats.power = points / 2;
+					stats.vitality = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.PowerSpirit:
 				{
-					stats.Power = points / 2;
-					stats.Spirit = points / 2;
+					stats.power = points / 2;
+					stats.spirit = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.FinesseVitality:
 				{
-					stats.Finesse = points / 2;
-					stats.Vitality = points / 2;
+					stats.finesse = points / 2;
+					stats.vitality = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.FinesseSpirit:
 				{
-					stats.Finesse = points / 2;
-					stats.Spirit = points / 2;
+					stats.finesse = points / 2;
+					stats.spirit = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.VitalitySpirit:
 				{
-					stats.Vitality = points / 2;
-					stats.Spirit = points / 2;
+					stats.vitality = points / 2;
+					stats.spirit = points / 2;
 				}
 				break;
 			case EAccessoryTemplate.All:
 				{
-					stats.Power = points / 4;
-					stats.Finesse = points / 4;
-					stats.Vitality = points / 4;
-					stats.Spirit = points / 4;
+					stats.power = points / 4;
+					stats.finesse = points / 4;
+					stats.vitality = points / 4;
+					stats.spirit = points / 4;
 				}
 				break;
 			case EAccessoryTemplate.Max: // Fall

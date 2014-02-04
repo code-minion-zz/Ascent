@@ -16,7 +16,7 @@ public class EnemyTackle : Action
 		animationLength = 0.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
-		coolDownTime = 2.0f;
+		cooldownDurationMax = 2.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 0.25f));
@@ -40,19 +40,19 @@ public class EnemyTackle : Action
     {
 		base.UpdateAbility();
 
-		if (currentTime >= animationLength * 1.0f)
+		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
 			owner.Motor.EnableMovementForce(true);
 			owner.ResetColor();
 		}
-		else if (currentTime >= animationLength * 0.8f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
 		{
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
 			owner.Motor.MovementSpeed = prevSpeed;
             owner.Motor.acceleration = prevAccel;
 		}
-		else if (currentTime >= animationLength * 0.40f && !executedDamage)
+		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		{
 			List<Character> characters = new List<Character>();
 
@@ -74,7 +74,7 @@ public class EnemyTackle : Action
 				executedDamage = true;
 			}
 		}
-		else if (currentTime >= animationLength * 0.25f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.25f)
 		{
 			owner.Motor.EnableMovementForce(true);
 			owner.Motor.MovementSpeed = 10.0f;

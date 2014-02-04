@@ -32,7 +32,7 @@ public class FloorSummaryPanel : MonoBehaviour
 	{
 //		myPlayer = Game.Singleton.Players [0]; // TODO : comment this line out - testing only!
 		myPlayer = player;
-		fs = myPlayer.Hero.GetComponent<Hero> ().FloorStatistics;
+		fs = myPlayer.Hero.GetComponent<Hero>().FloorStatistics;
 		expReward = fs.ExperienceGained + 100;
 		goldReward = fs.TotalCoinsLooted;
 		string bonusNames = PanelElements [0].GetComponent<UILabel> ().text;

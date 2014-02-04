@@ -16,14 +16,14 @@ public class WarriorStrike : Action
     {
 		base.Initialise(owner);
 
-        animationSpeed = 1.2f;
+        animationSpeed = 2.0f;
         animationLength = 1.067f;
-		coolDownTime = animationLength;
+        cooldownDurationMax = 0.0f;
 		animationTrigger = "Strike";
 		specialCost = 0;
 
         // Defines the collision shape and properties of this ability.
-		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.10f));
+		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.0f));
     }
 
 	public override void StartAbility()
@@ -31,9 +31,13 @@ public class WarriorStrike : Action
         base.StartAbility();
 
 		performed = false;
-        coolDownTime = animationLength;
+
 		//owner.Animator.PlayAnimation(animationTrigger);
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike);
+        int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
+        ((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
+        //((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
+
+        CanBeInterrupted = false;
 	}
 
 	public override void UpdateAbility()
@@ -42,7 +46,7 @@ public class WarriorStrike : Action
 
 		if (!performed)
 		{
-			if (currentTime >= animationLength * 0.7f)
+			if (timeElapsedSinceStarting >= animationLength * 0.7f)
 			{
 				List<Character> enemies = new List<Character>();
 
@@ -73,11 +77,15 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
+        else if (timeElapsedSinceStarting >= animationLength * 0.9f)
+        {
+            CanBeInterrupted = true;
+        }
 	}
 
 	public override void EndAbility()
 	{
-		//((HeroAnimator)Owner.Animator).EndCombatAction();
+		((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
 	}
 

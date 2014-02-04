@@ -17,7 +17,7 @@ public class WarriorWhirlwind : Action
 
         animationLength = 2.333f;
         animationSpeed = 2.0f;
-        coolDownTime = 5.0f;
+        cooldownDurationMax = 5.0f;
         animationTrigger = "Whirlwind";
         specialCost = 5;
 	}
