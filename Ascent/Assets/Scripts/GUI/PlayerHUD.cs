@@ -65,13 +65,17 @@ public class PlayerHUD : MonoBehaviour {
 		}
 
 		// Do Items
-		//ConsumableItem[] consumables = owner.HeroBackpack.ConsumableItems;
+		ConsumableItem[] consumables = owner.Backpack.ConsumableItems;
 
 		for (int i = 0; i < itemLabels.Length; ++i )
 		{
+
 			if (itemLabels[i] != null)
 			{
-				itemLabels[i].text = "NoItem" + ". Qty: " + "0" + ". CD: " + "0";
+                if (consumables[i] != null)
+                {
+                    itemLabels[i].text = consumables[i].ItemStats.Name + " Qty: " + consumables[i].Charges + " CD: " +  consumables[i].Cooldown;
+                }
 			}
 			else
 			{

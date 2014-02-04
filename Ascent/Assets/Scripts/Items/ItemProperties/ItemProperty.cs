@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Xml.Serialization.XmlInclude(typeof(AttackItemProperty))]
 public abstract class ItemProperty 
 {
-	float timeAccumulator;
-	public abstract void Initialize();
+	public float timeAccumulator;
+	public abstract void Initialise();
 	public abstract void CheckCondition();
 	public abstract void DoAction ();	// condition is met, do action
-	public abstract void OnEquip();
-	public abstract void OnUnequip();
 }
 
 ///// <summary>

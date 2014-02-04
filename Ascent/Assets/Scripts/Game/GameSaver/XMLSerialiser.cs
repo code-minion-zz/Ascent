@@ -34,13 +34,16 @@ public class XMLSerialiser
 	// Sserialize our data object 
 	public static string SerializeObject(object pObject)
 	{
+
 		System.Type type = pObject.GetType();
 		string XmlizedString = null;
 		MemoryStream memoryStream = new MemoryStream();
 		XmlSerializer xs = new XmlSerializer(type);
 
-		XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-		xs.Serialize(xmlTextWriter, pObject);
+
+        XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+        xs.Serialize(xmlTextWriter, pObject);
+
 		memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
 		XmlizedString = UTF8ByteArrayToString(memoryStream.ToArray());
 

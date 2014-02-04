@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Xml.Serialization.XmlInclude(typeof(HealthPotionItem))]
+[System.Xml.Serialization.XmlInclude(typeof(BombItem))]
+[System.Xml.Serialization.XmlInclude(typeof(KeyItem))]
+[System.Xml.Serialization.XmlInclude(typeof(SpecialPotionItem))]
 public class ConsumableItem : Item
 {
 	public enum EConsumableType
@@ -16,7 +20,6 @@ public class ConsumableItem : Item
 		MAX
 	}
 
-
 	protected int charges;
 	public int Charges
 	{
@@ -24,16 +27,29 @@ public class ConsumableItem : Item
 		set { charges = value; }
 	}
 
-	protected float cooldown;
+    [System.Xml.Serialization.XmlIgnore()]
+    protected float cooldown = 0.0f;
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public float Cooldown
+    {
+        get { return cooldown; }
+    }
+
+    [System.Xml.Serialization.XmlIgnore()]
 	protected float cooldownMax = 2.0f;
+
+    [System.Xml.Serialization.XmlIgnore()]
 	public float CooldownMax
 	{
 		set { cooldownMax = value; }
 	}
 
+    [System.Xml.Serialization.XmlIgnore()]
 	public bool perishable = true;
 
-	protected bool CanUse
+    [System.Xml.Serialization.XmlIgnore()]
+	protected bool HasCooldownAndCharges
 	{
 		get { return charges > 0 && cooldown == 0.0f; }
 	}
@@ -53,7 +69,7 @@ public class ConsumableItem : Item
 
 	public void UseItem(Hero user)
     {
-		if (charges > 0)
+        if (HasCooldownAndCharges && CanUse(user))
 		{
 			Consume(user);
 			cooldown = cooldownMax;
@@ -65,8 +81,6 @@ public class ConsumableItem : Item
 		}
     }
 
-	protected virtual void Consume(Hero user)
-	{
-		// To be derived
-	}
+    protected virtual bool CanUse(Hero user) { return false; }
+    protected virtual void Consume(Hero user) { }
 }

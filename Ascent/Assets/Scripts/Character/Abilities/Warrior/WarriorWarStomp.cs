@@ -29,6 +29,8 @@ public class WarriorWarStomp : Action
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
         collisionShape = new Circle(owner.transform, radius, new Vector3(0.0f,0.0f,0.0f));
+
+		
     }
 
     public override void StartAbility()
@@ -42,6 +44,8 @@ public class WarriorWarStomp : Action
         GameObject.Destroy(stompObject, animationLength / animationSpeed);
 
         performed = false;
+
+		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.WarStromp);
     }
 
     public override void UpdateAbility()

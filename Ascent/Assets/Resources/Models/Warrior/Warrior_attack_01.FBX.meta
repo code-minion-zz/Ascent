@@ -89,7 +89,7 @@ ModelImporter:
     400080: Base HumanSpine3
     400082: Base HumanSpine4
     400084: //RootNode
-    7400000: WarriorStrike
+    7400000: WarriorStrike1
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -107,7 +107,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: WarriorStrike
+      name: WarriorStrike1
       takeName: Take 001
       firstFrame: 0
       lastFrame: 32
@@ -128,7 +128,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 1
+        functionName: OnCombatAnimationEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

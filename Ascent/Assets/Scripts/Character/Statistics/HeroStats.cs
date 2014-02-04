@@ -98,6 +98,7 @@ public class HeroStats : CharacterStats
 
 	public override int Attack
 	{
+
 		get { return (int)GetDerivedValue(base.Attack, EStats.Attack); }
 	}
 
@@ -131,8 +132,8 @@ public class HeroStats : CharacterStats
 	public float GetDerivedValue(float baseValue, EStats statType)
 	{
 		float withAccPrimary = AddAccessoriesPrimaryStats(baseValue, statType);
-		float wWithAcceProps = AddAccessoriesProperties(withAccPrimary, statType);
-		float withBuffs = AddBuffs(wWithAcceProps, statType);
+		float withAccProps = AddAccessoriesProperties(withAccPrimary, statType);
+        float withBuffs = AddBuffs(withAccProps, statType);
 		return (int)withBuffs;
 	}
 
@@ -148,7 +149,7 @@ public class HeroStats : CharacterStats
 				{
 					// Accessories usually have primary stats.
 
-					Backpack backPack = hero.HeroBackpack;
+					Backpack backPack = hero.Backpack;
 
 					int itemCount = backPack.AllItems.Length;
 					

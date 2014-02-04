@@ -21,8 +21,9 @@ public class UISlider : UIProgressBar
 		Upgraded,
 	}
 
-	// Deprecated functionality. Use 'foregroundWidget' instead.
-	[HideInInspector][SerializeField] Transform foreground;
+    // Deprecated functionality. Use 'foregroundWidget' instead.
+#pragma warning disable 0649
+    [HideInInspector][SerializeField] Transform foreground;
 
 	// Deprecated functionality
 	[HideInInspector][SerializeField] float rawValue = 1f; // Use 'value'

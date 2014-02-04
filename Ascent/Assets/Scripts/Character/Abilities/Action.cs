@@ -93,10 +93,10 @@ public abstract class Action
         cooldownValue = CooldownTime;
         isOnCooldown = true;
 		
-		if (owner.Animator != null)
-		{
-			owner.Animator.PlayAnimation(animationTrigger);
-		}
+		//if (owner.Animator != null)
+		//{
+		//    owner.Animator.PlayAnimation(animationTrigger);
+		//}
     }
 
 	/// <summary>
@@ -155,10 +155,10 @@ public abstract class Action
 
     public virtual void EndAbility()
     {
-		if (owner.Animator != null)
-		{
-			owner.Animator.StopAnimation(animationTrigger);
-		}
+		//if (owner.Animator != null)
+		//{
+		//    owner.Animator.StopAnimation(animationTrigger);
+		//}
 
         currentTime = 0.0f;
 
