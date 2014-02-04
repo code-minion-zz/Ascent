@@ -64,9 +64,9 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	void HandleOnMenuLeftStickMove (InputDevice device)
 	{		
-		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value) - 90f;
+		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value);
 		//Debug.Log ("AnalogX:" + device.LeftStickX.Value + " AnalogY:" + device.LeftStickY.Value + " Angle:" + angle);
-		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle);
+		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
 	}
 
 //	protected override void HandleInputEvents()
