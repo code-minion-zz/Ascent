@@ -47,11 +47,15 @@ public class WarriorCharge : Action
 
         circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
 		arc = new Arc(owner.transform, 10.0f, 25.0f, Vector3.back * 1.5f);
+
+
     }
 	
     public override void StartAbility()
 	{
         base.StartAbility();
+
+		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge);
 
         startPos = owner.transform.position;
 		Vector3 rayStart = startPos;

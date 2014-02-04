@@ -7,6 +7,9 @@ public enum TilePropertyType
 	none,
 	wallTile,
 	doorTile,
+	miscObj,
+	trap,
+	monster,
 	invisibleWall
 }
 

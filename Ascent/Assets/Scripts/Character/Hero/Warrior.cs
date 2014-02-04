@@ -3,6 +3,16 @@ using System.Collections;
 
 public class Warrior : Hero 
 {
+	public enum ECombatAnimations
+	{
+		None = -1,
+		Strike = 0,
+		HeavyStrike = 1,
+		WarStromp = 2,
+		Charge = 3,
+		Warcry = 4
+	}
+
     public override void Initialise(InputDevice input, HeroSaveData saveData)
     {
 		heroClass = EHeroClass.Warrior;
