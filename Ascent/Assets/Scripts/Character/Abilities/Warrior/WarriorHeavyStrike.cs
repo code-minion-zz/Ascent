@@ -13,9 +13,9 @@ public class WarriorHeavyStrike : Action
     public override void Initialise(Character owner)
     {
         animationSpeed = 1.5f;
-        animationLength = 1.167f / animationSpeed;
-        coolDownTime = 5.0f;
-        currentTime = 0.0f;
+        animationLength = 1.233f;
+        cooldownDurationMax = 5.0f;
+        timeElapsedSinceStarting = 0.0f;
         animationTrigger = "HeavyStrike";
         specialCost = 0;
 
@@ -27,7 +27,7 @@ public class WarriorHeavyStrike : Action
 
     public override void StartAbility()
     {
-        currentTime = 0.0f;
+        timeElapsedSinceStarting = 0.0f;
         performed = false;
 
         animationLength = 1.167f / animationSpeed;
@@ -43,7 +43,7 @@ public class WarriorHeavyStrike : Action
 
         if (!performed)
         {
-            if (currentTime >= animationLength * 0.5f)
+            if (timeElapsedSinceStarting >= animationLength * 0.5f)
             {
                 List<Character> enemies = new List<Character>();
 
@@ -72,6 +72,7 @@ public class WarriorHeavyStrike : Action
 
     public override void EndAbility()
     {
+        ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }
 

@@ -7,10 +7,10 @@ public class WarriorWarCry : Action
 	{
 		base.Initialise(owner);
 
-        animationLength = 1.167f;
-        animationSpeed = 2.0f;
+        animationLength = 1.333f;
+        animationSpeed = 1.5f;
         animationTrigger = "WarCry";
-        coolDownTime = 5.0f;
+        cooldownDurationMax = 5.0f;
         specialCost = 5;
 
 		Validate();
@@ -33,6 +33,7 @@ public class WarriorWarCry : Action
 
     public override void EndAbility()
     {
+        ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }
 }

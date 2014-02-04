@@ -6,12 +6,18 @@ public abstract class Action
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
 
-    protected float coolDownTime = 0.0f;
-    private float cooldownValue = 0.0f;
+    protected float cooldownDurationMax = 0.0f;
+    private float coolingDownTimeElapsed = 0.0f;
 
-    protected float currentTime = 0.0f;
+    protected float timeElapsedSinceStarting = 0.0f;
 
-    private bool isOnCooldown = false;
+    protected bool canBeInterrupted = false;
+
+    protected bool isInstantCast = true;
+    public bool IsInstanctCast
+    {
+        get { return isInstantCast; }
+    }
 
     protected string animationTrigger;
 	public string AnimationTrigger
@@ -43,30 +49,28 @@ public abstract class Action
     }
 
     /// <summary>
-    /// The cooldown period before this ability can be used again.
-    /// </summary>
-    public float CooldownTime
-    {
-        get { return coolDownTime; }
-    }
-
-    /// <summary>
     /// The remaining countdown until the ability can be used again.
     /// </summary>
     public float RemainingCooldown
     {
-        get { return cooldownValue; }
-        set { cooldownValue = value; }
+        get { return coolingDownTimeElapsed; }
+        set { coolingDownTimeElapsed = value; }
     }
 
     public bool IsOnCooldown
     {
-        get { return isOnCooldown; }
+        get { return coolingDownTimeElapsed > 0.0f; }
     }
 
     public int SpecialCost
     {
         get { return specialCost; }
+    }
+
+    public bool CanBeInterrupted
+    {
+        get { return canBeInterrupted; }
+        set { canBeInterrupted = value; }
     }
 
     public virtual void Initialise(Character owner)
@@ -89,14 +93,13 @@ public abstract class Action
     /// </summary>
     public virtual void StartAbility()
     {
-        currentTime = 0.0f;
-        cooldownValue = CooldownTime;
-        isOnCooldown = true;
-		
-		//if (owner.Animator != null)
-		//{
-		//    owner.Animator.PlayAnimation(animationTrigger);
-		//}
+        timeElapsedSinceStarting = 0.0f;
+        coolingDownTimeElapsed = cooldownDurationMax;
+    }
+
+    public virtual void StartCast()
+    {
+        // To be derived
     }
 
 	/// <summary>
@@ -105,17 +108,15 @@ public abstract class Action
 	/// </summary>
 	public virtual void Update()
 	{
-		float timeVal = Time.deltaTime * animationSpeed;
-		currentTime += timeVal;
-
-		if (currentTime > Length)
+		timeElapsedSinceStarting += Time.deltaTime * animationSpeed;
+        if (timeElapsedSinceStarting > animationLength)
 		{
-			currentTime = Length; // Lerps and Slerps rely on values between normalised 0 and 1.
+            timeElapsedSinceStarting = animationLength;
 		}
 
 		UpdateAbility();
 
-		if (currentTime >= Length)
+        if (timeElapsedSinceStarting >= animationLength)
 		{
 			owner.StopAbility();
 		}
@@ -135,32 +136,28 @@ public abstract class Action
     /// </summary>
     public virtual void UpdateCooldown()
     {
-		if (isOnCooldown)
-		{
-			float timeVal = Time.deltaTime;
-			cooldownValue -= timeVal;
+        if (coolingDownTimeElapsed > 0.0f)
+        {
+            float timeVal = Time.deltaTime;
+            coolingDownTimeElapsed -= timeVal;
 
-			if (cooldownValue <= 0.0f)
-			{
-				cooldownValue = 0.0f;
-				isOnCooldown = false;
+            if (coolingDownTimeElapsed <= 0.0f)
+            {
+                coolingDownTimeElapsed = 0.0f;
 
-				if (OnActionCooled != null)
-				{
-					OnActionCooled.Invoke();
-				}
-			}
-		}
+                if (OnActionCooled != null)
+                {
+                    OnActionCooled.Invoke();
+                }
+
+                
+            }
+        }
     }
 
     public virtual void EndAbility()
     {
-		//if (owner.Animator != null)
-		//{
-		//    owner.Animator.StopAnimation(animationTrigger);
-		//}
-
-        currentTime = 0.0f;
+        timeElapsedSinceStarting = 0.0f;
 
         if (OnActionEnd != null)
         {
@@ -170,7 +167,7 @@ public abstract class Action
 
     public void RefreshCooldown()
     {
-        cooldownValue = 0.0f;
+        coolingDownTimeElapsed = 0.0f;
     }
 
 	public virtual void DebugDraw()

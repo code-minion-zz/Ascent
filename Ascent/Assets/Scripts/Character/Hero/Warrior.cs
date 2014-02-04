@@ -12,7 +12,9 @@ public class Warrior : Hero
 		HeavyStrike = 3,
 		WarStromp = 4,
 		Charge = 5,
-		Warcry = 6
+		Warcry = 6,
+        ChargeCrouch = 7,
+        
 	}
 
     public override void Initialise(InputDevice input, HeroSaveData saveData)

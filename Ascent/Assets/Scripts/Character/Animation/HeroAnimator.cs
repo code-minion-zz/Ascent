@@ -95,7 +95,7 @@ public class HeroAnimator : CharacterAnimator
 	/// <param name="movement"> movement param only affects Moving and GrabbingBlock. </param>
 	public void PlayMovement(EMoveAnimation moveAnim)
 	{
-		if(layer == ELayer.Movement)
+		//if(layer == ELayer.Movement)
 		{
             if (this.moveAnim != moveAnim)
             {
@@ -146,7 +146,7 @@ public class HeroAnimator : CharacterAnimator
 
 	public void PlayCombatAction(int action, string animName)
 	{
-        animator.SetInteger("MoveAnimation", -1);
+        //animator.SetInteger("MoveAnimation", -1);
 
         SetActiveLayerBlend(ELayer.Combat, 0.2f);
 
@@ -282,13 +282,13 @@ public class HeroAnimator : CharacterAnimator
 
     public void CombatAnimationEnd()
     {
-        animator.SetInteger("CombatAnimation", -1);
         SetActiveLayer(ELayer.Movement);
-        //SetActiveLayerBlend(ELayer.Movement, 0.1f);
+        //SetActiveLayerBlend(ELayer.Movement, 0.35f);
+       // animator.SetInteger("CombatAnimation", -1);
 
-        EMoveAnimation curMove = moveAnim;
-        moveAnim = EMoveAnimation.None;
-        PlayMovement(curMove);
+        //EMoveAnimation curMove = moveAnim;
+        //moveAnim = EMoveAnimation.None;
+        //PlayMovement(curMove);
     }
 
 	public void OnCombatAnimationEnd()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class HeroController : MonoBehaviour
 {
-    public enum HeroAction
+    public enum EHeroAction
     {
         None = -1,
 
@@ -22,8 +22,12 @@ public class HeroController : MonoBehaviour
         Consumable2 = 1,
         Consumable3 = 2,
         Consumable4 = 3,
+    }
 
-
+    private struct THeroActionButtonPair
+    {
+        public Action action;
+        public InputControl control;
     }
 
 	private Hero hero;
@@ -32,6 +36,8 @@ public class HeroController : MonoBehaviour
     private InputDevice inputDevice;
     private bool actionBindingsEnabled = false;
 	private float animMoveSpeed = 0.0f;
+
+    private THeroActionButtonPair actionButtonPair = new THeroActionButtonPair();
 
 	private MoveableBlock grabbedObject;
 	public bool GrabbingObject
@@ -63,6 +69,7 @@ public class HeroController : MonoBehaviour
 
 	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor)
 	{
+
 		this.hero = hero;
 		this.inputDevice = inputDevice;
 		this.animator = animator;
@@ -78,12 +85,26 @@ public class HeroController : MonoBehaviour
 		{
 			InputDevice device = inputDevice;
 
+            //if (!hero.IsStunned)
+            if (actionButtonPair.action == null)
+            {
+                ProcessFaceButtons(device);
+                ProcessTriggersAndBumpers(device);
+            }
+            else
+            {
+                if (actionButtonPair.control.WasReleased)
+                {
+                    hero.UseAbility(actionButtonPair.action);
+                    actionButtonPair.action = null;
+                }
+            }
+
 			if (motor.canMove)
 			{
 				if (!hero.IsStunned)
 				{
-					ProcessFaceButtons(device);
-					ProcessTriggersAndBumpers(device);
+					//ProcessFaceButtons(device);
 					ProcessMovement(device);
 				}
 
@@ -110,21 +131,44 @@ public class HeroController : MonoBehaviour
 		{
 			if (hero.HitTaken == false && animator.Dying == false)
 			{
-				hero.UseAbility((int)HeroAction.Action1);
+                Action action = hero.Abilities[(int)EHeroAction.Action1];
+                if (action.IsInstanctCast)
+                {
+                    hero.UseAbility((int)EHeroAction.Action1);
+                }
+                else
+                {
+                    hero.UseCastAbility((int)EHeroAction.Action1);
+                    actionButtonPair.action = action;
+                    actionButtonPair.control = device.LeftBumper;
+                }
 			}
 		}
 		else if (device.LeftTrigger.WasPressed)
 		{
             if (hero.HitTaken == false && animator.Dying == false)
 			{
-				hero.UseAbility((int)HeroAction.Action4);
+				hero.UseAbility((int)EHeroAction.Action4);
 			}
 		}
-		else if (device.RightBumper.WasPressed)
+		else if (device.RightBumper.IsPressed)
 		{
             if (hero.HitTaken == false && animator.Dying == false)
 			{
-				hero.UseAbility((int)HeroAction.Action2); // pass in the ability binded to this key
+                Action action = hero.Abilities[(int)EHeroAction.Action2];
+                if (action.IsInstanctCast)
+                {
+                    hero.UseAbility((int)EHeroAction.Action2);
+                }
+                else
+                {
+                    if (hero.CanCastAbility((int)EHeroAction.Action2))
+                    {
+                        hero.UseCastAbility((int)EHeroAction.Action2);
+                        actionButtonPair.action = action;
+                        actionButtonPair.control = device.RightBumper;
+                    }
+                }
 			}
 
 		}
@@ -132,7 +176,7 @@ public class HeroController : MonoBehaviour
 		{
             if (hero.HitTaken == false && animator.Dying == false)
 			{
-				hero.UseAbility((int)HeroAction.Action3);
+				hero.UseAbility((int)EHeroAction.Action3);
 			}
 		}
 	}
@@ -142,15 +186,15 @@ public class HeroController : MonoBehaviour
         int itemToUse = -1;
         if (device.DPadUp.WasPressed)
         {
-            itemToUse = (int)HeroAction.Consumable1;
+            itemToUse = (int)EHeroAction.Consumable1;
         }
         else if (device.DPadLeft.WasPressed)
         {
-            itemToUse = (int)HeroAction.Consumable2;
+            itemToUse = (int)EHeroAction.Consumable2;
         }
         else if (device.DPadRight.WasPressed)
         {
-            itemToUse = (int)HeroAction.Consumable3;
+            itemToUse = (int)EHeroAction.Consumable3;
         }
         //else if (device.DPadDown.WasPressed)
         //{
@@ -287,7 +331,7 @@ public class HeroController : MonoBehaviour
 
 		if (device.X.WasPressed)
 		{
-			hero.UseAbility((int)HeroAction.Strike);
+			hero.UseAbility((int)EHeroAction.Strike);
 		}
 
 		// We can bind something to this key.

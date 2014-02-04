@@ -16,9 +16,9 @@ public class WarriorStrike : Action
     {
 		base.Initialise(owner);
 
-        animationSpeed = 1.5f;
+        animationSpeed = 2.0f;
         animationLength = 1.067f;
-        coolDownTime = animationLength / 1.5f;
+        cooldownDurationMax = 0.0f;
 		animationTrigger = "Strike";
 		specialCost = 0;
 
@@ -31,11 +31,13 @@ public class WarriorStrike : Action
         base.StartAbility();
 
 		performed = false;
-        coolDownTime = animationLength;
+
 		//owner.Animator.PlayAnimation(animationTrigger);
-        //int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
-        //((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
+        int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
+        ((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
+        //((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
+
+        CanBeInterrupted = false;
 	}
 
 	public override void UpdateAbility()
@@ -44,7 +46,7 @@ public class WarriorStrike : Action
 
 		if (!performed)
 		{
-			if (currentTime >= animationLength * 0.7f)
+			if (timeElapsedSinceStarting >= animationLength * 0.7f)
 			{
 				List<Character> enemies = new List<Character>();
 
@@ -75,6 +77,10 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
+        else if (timeElapsedSinceStarting >= animationLength * 0.9f)
+        {
+            CanBeInterrupted = true;
+        }
 	}
 
 	public override void EndAbility()
