@@ -18,8 +18,24 @@ public class PrimaryStats
 			case EStats.Spirit: return spirit;
 			default: { Debug.LogError("Unhandled case"); } break;
 		}
-
 		return 0.0f;
 	}
+
+    public float GetRootStat(EStats stat)
+    {
+        switch (stat)
+        {
+            case EStats.Health: return vitality;
+            case EStats.Special: return spirit;
+            case EStats.Attack: return power;
+            case EStats.PhysicalDefence: return vitality;
+            case EStats.MagicalDefence: return spirit;
+            case EStats.DodgeChance: return finesse;
+            case EStats.CriticalHitChance: return finesse;
+            case EStats.CriticalHitMutliplier: return finesse;
+            default: { Debug.LogError("Unhandled case"); } break;
+        }
+        return 0.0f;
+    }
 
 }
