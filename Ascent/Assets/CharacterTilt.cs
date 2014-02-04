@@ -5,10 +5,10 @@ public class CharacterTilt : MonoBehaviour
 {
 	Transform parentTrans;
 
-    public bool applyTilt = false;
+    private bool applyTilt = true;
     public float tiltAmount = 12.5f;
 
-	private int frame = 0;
+	private int lastFrame = 0;
 
 	void Start()
 	{
@@ -26,33 +26,36 @@ public class CharacterTilt : MonoBehaviour
 
         if (applyTilt)
         {
-            Vector3 forwardRotation = new Vector3(tiltAmount, 0.0f, 0.0f);
-            Vector3 rightRotation = new Vector3(0.0f, 0.0f, tiltAmount);
+			Vector3 forwardRotation = new Vector3(tiltAmount, 0.0f, 0.0f);
+			Vector3 rightRotation = new Vector3(0.0f, 0.0f, tiltAmount);
 
             int curFrame = Time.frameCount;
 
-            if (frame != curFrame)
+            if (lastFrame != curFrame)
             {
-                parentTrans = transform.parent.transform;
+				Vector3 combinedRot = Vector3.zero;
 
-                if (Mathf.Approximately(parentTrans.forward.x, 1.0f))
-                {
-                    transform.localRotation = Quaternion.Euler(rightRotation);
-                }
-                else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
-                {
-                    transform.localRotation = Quaternion.Euler(-rightRotation);
-                }
-                else if (Mathf.Approximately(parentTrans.forward.z, 1.0f))
-                {
-                    transform.localRotation = Quaternion.Euler(forwardRotation);
-                }
-                else if (Mathf.Approximately(parentTrans.forward.z, -1.0f))
-                {
-                    transform.localRotation = Quaternion.Euler(-forwardRotation);
-                }
+				if (parentTrans.forward.x > 1.0f)
+				{
+					combinedRot.z = parentTrans.forward.x / rightRotation.z;
+				}
+				else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
+				{
+					combinedRot.z = -(parentTrans.forward.x / rightRotation.z);
+				}
 
-                frame = curFrame;
+				if (parentTrans.forward.z > 1.0f)
+				{
+					combinedRot.x = parentTrans.forward.z / forwardRotation.x;
+				}
+				else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
+				{
+					combinedRot.x = -(parentTrans.forward.z / forwardRotation.x);
+				}
+
+				transform.localRotation = Quaternion.Euler(combinedRot);
+
+                lastFrame = curFrame;
             }
         }
 	}

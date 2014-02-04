@@ -31,7 +31,7 @@ public class AbominationCharge : Action
     {
         base.Initialise(owner);
 
-        coolDownTime = 5.0f;
+        cooldownDurationMax = 5.0f;
         animationTrigger = "Charge";
         specialCost = 0;
 
@@ -77,16 +77,16 @@ public class AbominationCharge : Action
     {
         base.UpdateAbility();
 
-        if (currentTime > travelTime)
+        if (timeElapsedSinceStarting > travelTime)
         {
-            currentTime = travelTime;
+            timeElapsedSinceStarting = travelTime;
         }
 
-        Vector3 motion = Vector3.Lerp(startPos, targetPos, currentTime / travelTime);
+        Vector3 motion = Vector3.Lerp(startPos, targetPos, timeElapsedSinceStarting / travelTime);
 
         owner.transform.position = motion;
 
-        if (currentTime == travelTime)
+        if (timeElapsedSinceStarting == travelTime)
         {
             List<Character> enemies = new List<Character>();
 

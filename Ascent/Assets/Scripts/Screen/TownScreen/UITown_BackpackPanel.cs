@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel 
+public class UITown_BackpackPanel : UITown_Panel 
 {
 	enum EButtons
 	{
@@ -17,7 +17,7 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 		MAX,
 	}
 
-	int		 lastActiveButton = 0;
+	int lastActiveButton = 0;
 
 	public override void Initialise()
 	{
@@ -25,14 +25,14 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 	
 		Transform acc = transform.FindChild ("BackpackTab");
 		Transform con = transform.FindChild ("BackpackTab");
-		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
-		buttons[(int)EButtons.ITM4] = con.FindChild("Consumable Slot").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory 1").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory 2").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory 3").GetComponent<UIButton>();
+		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory 4").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable 1").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable 2").GetComponent<UIButton>();
+		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable 3").GetComponent<UIButton>();
+		//buttons[(int)EButtons.ITM4] = con.FindChild("Consumable 4").GetComponent<UIButton>();
 
 		currentButton = (int)EButtons.ACC1;
 		currentSelection = buttons[(int)EButtons.ACC1];
@@ -67,16 +67,45 @@ public class UITown_Backpack_BackpackPanel : UIPlayerMenuPanel
 
 	public void UpdateItems()
 	{
-		Debug.Log(parent);
+		//Debug.Log(parent);
 		// Change Button Icons in accordance to backpack data
 		Backpack bp = parent.Player.Hero.Backpack;
 		
 		Item[] arrayItems = bp.AllItems;
 		for (int i = 0; i < 7; ++i)
 		{
+			//Debug.Log("UpdateItems:"+i+" "+arrayItems[i]);
 			if (arrayItems[i] != null)
 			{
+				Color temp = new Color();
+				switch ((Item.ItemGrade)bp.AllItems[i].ItemStats.Grade)
+				{
+				case Item.ItemGrade.E:
+					temp = Color.red;
+					break;
+				case Item.ItemGrade.D:
+					temp = Color.magenta;
+					break;
+				case Item.ItemGrade.C:
+					temp = Color.blue;
+					break;
+				case Item.ItemGrade.B:
+					temp = Color.yellow;
+					break;
+				case Item.ItemGrade.A:
+					temp = Color.cyan;
+					break;
+				case Item.ItemGrade.S:
+					temp = Color.green;
+					break;
+				}
+				buttons[i].transform.FindChild("Item").GetComponent<UISprite>().color = temp;
 				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
+			}
+			else
+			{
+				
+				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, false);
 			}
 		}
 	}

@@ -40,7 +40,9 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
     {
         get { return ready; }
         protected set { ready = value; }
-    }
+	}
+
+	protected bool leftStickSignificantMovement = false;
 
 	public abstract void AddAllMenuPanels();
 	public abstract void TransitionToPanel(int panel);
@@ -105,8 +107,11 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	public event PlayerWindowEventHandler OnMenuRightTrigger;
 	public event PlayerWindowEventHandler OnMenuRightBumper;
 
+	public event PlayerWindowEventHandler OnMenuLeftStickMove;
+
 	protected virtual void HandleInputEvents()
 	{
+		leftStickSignificantMovement = false;
 		if (player != null)
 		{
 			if (InputManager.IsPolling)
@@ -149,21 +154,24 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 				}
 
 				// DPad
-                if (device.LeftStickX.WasPressed)
-                {
+                if (device.LeftStickX)
+				{
+					leftStickSignificantMovement = true;
                     if (device.LeftStickX.Value > 0.1f)
                     {
                         if (OnMenuRight != null)
                         {
                             OnMenuRight.Invoke(player.Input);
                         }
+//						leftStickSignificantMovement = true;
                     }
                     else if (device.LeftStickX.Value < -0.1f)
                     {
                         if (OnMenuLeft != null)
                         {
                             OnMenuLeft.Invoke(player.Input);
-                        }
+						}
+//						leftStickSignificantMovement = true;
                     }
                 }
                 else
@@ -173,33 +181,38 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 					    if (OnMenuLeft != null)
 					    {
 						    OnMenuLeft.Invoke(player.Input);
-					    }
+						}
+//						leftStickSignificantMovement = true;
 				    }
 				    else if (device.DPadRight.WasPressed || device.LeftStickX.WasPressed)
 				    {
 					    if (OnMenuRight != null)
 					    {
 						    OnMenuRight.Invoke(player.Input);
-					    }
+						}
+//						leftStickSignificantMovement = true;
 				    }
                 }
 
 
-                if (device.LeftStickY.WasPressed)
-                {
+                if (device.LeftStickY)
+				{
+					leftStickSignificantMovement = true;
                     if (device.LeftStickY.Value > 0.1f)
                     {
                         if (OnMenuUp != null)
                         {
                             OnMenuUp.Invoke(player.Input);
-                        }
+						}
+//						leftStickSignificantMovement = true;
                     }
                     else if (device.LeftStickY.Value < -0.1f)
                     {
                         if (OnMenuDown != null)
                         {
                             OnMenuDown.Invoke(player.Input);
-                        }
+						}
+//						leftStickSignificantMovement = true;
                     }
                 }
                 else
@@ -209,14 +222,16 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
                         if (OnMenuUp != null)
                         {
                             OnMenuUp.Invoke(player.Input);
-                        }
+						}
+						leftStickSignificantMovement = true;
                     }
                     else if (device.DPadDown.WasPressed)
                     {
                         if (OnMenuDown != null)
                         {
                             OnMenuDown.Invoke(player.Input);
-                        }
+						}
+						leftStickSignificantMovement = true;
                     }
                 }
 
@@ -269,6 +284,14 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 					if (OnMenuRightBumper != null)
 					{
 						OnMenuRightBumper.Invoke(player.Input);
+					}
+				}
+
+				if (leftStickSignificantMovement)
+				{
+					if (OnMenuLeftStickMove != null)
+					{
+						OnMenuLeftStickMove.Invoke(player.Input);
 					}
 				}
 			}

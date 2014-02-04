@@ -23,7 +23,7 @@ public class AbominationStomp : Action
         animationLength = 1.2f;
         animationSpeed = 2.0f;
         animationTrigger = "Stomp";
-        coolDownTime = 3.0f;
+        cooldownDurationMax = 3.0f;
         specialCost = 0;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
@@ -60,7 +60,7 @@ public class AbominationStomp : Action
 
         if (!performed)
         {
-            if (currentTime >= animationLength * 0.5f)
+            if (timeElapsedSinceStarting >= animationLength * 0.5f)
             {
                 List<Character> characters = new List<Character>();
 

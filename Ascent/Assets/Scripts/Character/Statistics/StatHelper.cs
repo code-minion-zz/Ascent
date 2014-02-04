@@ -25,7 +25,7 @@ public static class StatHelper
 						continue;
 					}
 
-					power += (int)((AccessoryItem)item).AcessoryStats.Power;
+					power += (int)((AccessoryItem)item).Power;
 				}
 			}
 		}
@@ -73,7 +73,7 @@ public static class StatHelper
 						continue;
 					}
 
-					finesse += (int)((AccessoryItem)item).AcessoryStats.Finesse;
+					finesse += (int)((AccessoryItem)item).Finesse;
 				}
 			}
 		}
@@ -122,7 +122,7 @@ public static class StatHelper
 						continue;
 					}
 
-					vitality += (int)((AccessoryItem)item).AcessoryStats.Vitality;
+					vitality += (int)((AccessoryItem)item).Vitality;
 				}
 			}
 		}
@@ -170,7 +170,7 @@ public static class StatHelper
 						continue;
 					}
 
-					spirit += (int)((AccessoryItem)item).AcessoryStats.Spirit;
+					spirit += (int)((AccessoryItem)item).Spirit;
 				}
 			}
 		}

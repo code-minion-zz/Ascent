@@ -4,45 +4,39 @@ using System.Collections.Generic;
 
 public class AccessoryStats  : ItemStats
 {
-    [System.Xml.Serialization.XmlIgnore()]
-	protected PrimaryStats stats = new PrimaryStats();
+	//public float Power
+	//{
+	//    get { return stats.power; }
+	//    set { stats.power = value; }
+	//}
 
-    [System.Xml.Serialization.XmlIgnore]
-	protected List<ItemProperty> properties = new List<ItemProperty>();
+	//public float Finesse
+	//{
+	//    get { return stats.finesse; }
+	//    set { stats.finesse = value; }
+	//}
 
-	public float Power
-	{
-		get { return stats.power; }
-		set { stats.power = value; }
-	}
+	//public float Vitality
+	//{
+	//    get { return stats.vitality; }
+	//    set { stats.vitality = value; }
+	//}
 
-	public float Finesse
-	{
-		get { return stats.finesse; }
-		set { stats.finesse = value; }
-	}
+	//public float Spirit
+	//{
+	//    get { return stats.spirit; }
+	//    set { stats.spirit = value; }
+	//}
 
-	public float Vitality
-	{
-		get { return stats.vitality; }
-		set { stats.vitality = value; }
-	}
+	//[System.Xml.Serialization.XmlIgnore]
+	//public PrimaryStats PrimaryStats
+	//{
+	//    get { return stats; }
+	//}
 
-	public float Spirit
-	{
-		get { return stats.spirit; }
-		set { stats.spirit = value; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore]
-	public PrimaryStats PrimaryStats
-	{
-		get { return stats; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore]
-	public List<ItemProperty> Properties
-	{
-		get { return properties; }
-	}
+	//[System.Xml.Serialization.XmlIgnore]
+	//public List<ItemProperty> Properties
+	//{
+	//    get { return properties; }
+	//}
 }

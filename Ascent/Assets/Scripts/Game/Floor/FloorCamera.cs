@@ -25,8 +25,12 @@ public class FloorCamera : MonoBehaviour
 
     private CameraShake cameraShake;
 
+	public bool clampToRoom = true;
+
 	public Vector3 minCamera;
 	public Vector3 maxCamera;
+
+	public float cameraHeight = 24.0f;
 
 
     public Camera Camera
@@ -132,16 +136,22 @@ public class FloorCamera : MonoBehaviour
         Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
 		
 		// Set the position of our camera.
-		_transform.position = ClampPositionIntoBounds(lerpVector);
+		if (clampToRoom)
+		{
+			_transform.position = ClampPositionIntoBounds(lerpVector);
+		}
+		else
+		{
+			_transform.position = lerpVector;
+		}
     }
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)
 	{
         return new Vector3(
         Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
-
-        Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
-
+       // Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
+	   cameraHeight,
         Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 

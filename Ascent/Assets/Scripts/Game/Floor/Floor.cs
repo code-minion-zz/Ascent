@@ -109,15 +109,15 @@ public class Floor : MonoBehaviour
         }
 
         floorCamera = Instantiate(go) as GameObject;
-        floorCamera.name = "floorCamera";
+        floorCamera.name = "FloorCamera";
 
         floorCamera.GetComponent<FloorCamera>().Initialise();
 
-        go = new GameObject();
-        go.name = "Cameras";
-        go.tag = "Cameras";
+		//go = new GameObject();
+		//go.name = "Cameras";
+		//go.tag = "Cameras";
 
-        floorCamera.transform.parent = go.transform;
+		//floorCamera.transform.parent = go.transform;
     }
 
 	private void Initialise()

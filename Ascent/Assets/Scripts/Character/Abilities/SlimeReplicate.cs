@@ -11,7 +11,7 @@ public class SlimeReplicate : Action
         animationLength = 0.2f;
         animationSpeed = 1.0f;
         animationTrigger = "Replicate";
-        coolDownTime = 2.0f;
+        cooldownDurationMax = 2.0f;
         specialCost = 0;
     }
 

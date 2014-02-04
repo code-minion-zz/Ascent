@@ -20,10 +20,10 @@ public class WarriorWarStomp : Action
         base.Initialise(owner);
 
         // TODO: remove this from hardcoded animation data.
-        animationLength = 1.2f;
-        animationSpeed = 2.0f;
+        animationLength = 1.667f;
+        animationSpeed = 1.5f;
         animationTrigger = "WarStomp";
-        coolDownTime = 3.0f;
+        cooldownDurationMax = 3.0f;
         specialCost = 5;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
@@ -45,7 +45,7 @@ public class WarriorWarStomp : Action
 
         performed = false;
 
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.WarStromp);
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.WarStromp, Warrior.ECombatAnimations.WarStromp.ToString());
     }
 
     public override void UpdateAbility()
@@ -60,7 +60,7 @@ public class WarriorWarStomp : Action
 
         if (!performed)
         {
-            if (currentTime >= animationLength * 0.5f)
+            if (timeElapsedSinceStarting >= animationLength * 0.5f)
             {
                 List<Character> enemies = new List<Character>();
 
@@ -86,6 +86,7 @@ public class WarriorWarStomp : Action
 
     public override void EndAbility()
     {
+        ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }
 

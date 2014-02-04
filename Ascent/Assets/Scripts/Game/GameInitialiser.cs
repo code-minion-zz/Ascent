@@ -62,12 +62,12 @@ public class GameInitialiser : MonoBehaviour
         // Set the game with the right values.
 		Game game = theGameObject.GetComponent<Game>();
 
-        game.Initialise(new GameInitialisationValues()
-        {
-            initialGameState = state,
-            targetFrameRate = this.targetFrameRate,
-            playerCharacterType = this.playerCharacterType,
-        });
+		//game.Initialise(new GameInitialisationValues()
+		//{
+		//    initialGameState = state,
+		//    targetFrameRate = this.targetFrameRate,
+		//    playerCharacterType = this.playerCharacterType,
+		//});
 
         // Get rid of the game initialiser
         Destroy(this.gameObject);

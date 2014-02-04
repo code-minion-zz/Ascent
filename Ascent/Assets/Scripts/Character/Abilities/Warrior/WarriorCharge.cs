@@ -34,7 +34,7 @@ public class WarriorCharge : Action
 		ownerAnimator = owner.Animator;
         //heroController = owner.Animator as HeroAnimatorController;
 
-        coolDownTime = 5.0f;
+        cooldownDurationMax = 5.0f;
         animationTrigger = "Charge";
         specialCost = 5;
 
@@ -48,14 +48,14 @@ public class WarriorCharge : Action
         circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
 		arc = new Arc(owner.transform, 10.0f, 25.0f, Vector3.back * 1.5f);
 
-
+        isInstantCast = false;
     }
 	
     public override void StartAbility()
 	{
         base.StartAbility();
 
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge);
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge, Warrior.ECombatAnimations.Charge.ToString());
 
         startPos = owner.transform.position;
 		Vector3 rayStart = startPos;
@@ -117,15 +117,19 @@ public class WarriorCharge : Action
         owner.ApplyInvulnerabilityEffect(animationLength);
 	}
 
+    public override void StartCast()
+    {
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.ChargeCrouch, Warrior.ECombatAnimations.Charge.ToString());
+    }
+
     public override void UpdateAbility()
 	{
         base.UpdateAbility();
 
-
-        Vector3 motion = Vector3.Lerp(startPos, targetPos, currentTime / travelTime);
+        Vector3 motion = Vector3.Lerp(startPos, targetPos, timeElapsedSinceStarting / travelTime);
         owner.transform.position = motion;
 
-        if (currentTime == animationLength)
+        if (timeElapsedSinceStarting == animationLength)
         {
            List<Character> enemies = new List<Character>();
 
@@ -153,6 +157,7 @@ public class WarriorCharge : Action
 
     public override void EndAbility()
 	{
+        ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
 	}
 
@@ -160,7 +165,7 @@ public class WarriorCharge : Action
     public override void DebugDraw()
     {
         circle.DebugDraw();
-		if (currentTime < travelTime * 0.25f)
+		if (timeElapsedSinceStarting < travelTime * 0.25f)
 		{
 			arc.DebugDraw();
 		}

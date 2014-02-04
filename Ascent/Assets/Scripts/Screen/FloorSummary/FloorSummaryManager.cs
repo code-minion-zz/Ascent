@@ -24,7 +24,7 @@ public class FloorSummaryManager : MonoBehaviour {
 	public delegate void VoteHandler (SummaryVote from, SummaryVote to);
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		// blah blah spawn panels
 		int numPlayers = Game.Singleton.NumberOfPlayers;
 		int i;

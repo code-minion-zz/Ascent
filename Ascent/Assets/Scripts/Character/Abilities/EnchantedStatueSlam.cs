@@ -15,7 +15,7 @@ public class EnchantedStatueSlam : Action
 		animationLength = 1.0f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Slam";
-		coolDownTime = 3.0f;
+		cooldownDurationMax = 3.0f;
 		specialCost = 0;
 
 		damageArea = new Arc(owner.transform, 20.0f, 10.0f, Vector3.back * 3.0f);
@@ -36,17 +36,17 @@ public class EnchantedStatueSlam : Action
 	{
 		base.UpdateAbility();
 
-		if (currentTime >= animationLength * 1.0f)
+		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
 			owner.Motor.EnableMovementForce(true);
 			owner.ResetColor();
 		}
-		else if (currentTime >= animationLength * 0.8f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
 		{
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
 		}
-		else if (currentTime >= animationLength * 0.40f && !executedDamage)
+		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		{
 			List<Character> characters = new List<Character>();
 
