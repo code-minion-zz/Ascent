@@ -8,12 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UITownWindow : UIPlayerMenuWindow
 {
-//	public UIPlayerMenuPanel inventoryPanel;
-//	public UIPlayerMenuPanel backpackPanel;
+	public Transform pointerTransform;
 	public List<UIPlayerMenuPanel> TownPanels;
+	protected float pointerAngle = 0f;
+	public float PointerAngle
+	{
+		get 
+		{
+			return pointerAngle;
+		}
+	}
 
 	public enum EBackpackTab
 	{
@@ -51,7 +59,24 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		//parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
 		base.Initialise ();
+		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
 	}
+
+	void HandleOnMenuLeftStickMove (InputDevice device)
+	{		
+		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value);
+		//Debug.Log ("AnalogX:" + device.LeftStickX.Value + " AnalogY:" + device.LeftStickY.Value + " Angle:" + angle);
+		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
+	}
+
+//	protected override void HandleInputEvents()
+//	{
+//		base.HandleInputEvents();
+//
+//		if (leftStickSignificantMovement)
+//		{
+//		}
+//	}
 
 	/// <summary>
 	/// Return item to inventory if space permits.
