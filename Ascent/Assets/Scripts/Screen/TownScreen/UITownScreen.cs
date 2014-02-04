@@ -46,7 +46,6 @@ public class UITownScreen : UIPlayerMenuScreen
 			windows[i].SetPlayer(players[i]);
 			windows[i].Initialise();
 		}
-
 	}
 
 	public void Update () 

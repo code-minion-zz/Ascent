@@ -550,7 +550,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &100066
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -1065,7 +1065,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &100136
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -1352,7 +1352,6 @@ GameObject:
   - 114: {fileID: 11400242}
   - 114: {fileID: 11400240}
   - 54: {fileID: 5400004}
-  - 114: {fileID: 11400238}
   m_Layer: 14
   m_Name: InventoryTab
   m_TagString: Untagged
@@ -1934,10 +1933,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -310, z: 0}
+  m_LocalPosition: {x: 6.10351562e-05, y: -310, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 400200}
+  m_Father: {fileID: 400138}
 --- !u!4 &400068
 Transform:
   m_ObjectHideFlags: 1
@@ -2296,11 +2295,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -171, z: 0}
+  m_LocalPosition: {x: 6.10351562e-05, y: -171, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400106}
-  m_Father: {fileID: 400200}
+  m_Father: {fileID: 400138}
 --- !u!4 &400138
 Transform:
   m_ObjectHideFlags: 1
@@ -2312,6 +2311,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400200}
+  - {fileID: 400136}
+  - {fileID: 400066}
   - {fileID: 400094}
   - {fileID: 400070}
   - {fileID: 400026}
@@ -2535,9 +2536,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400234}
-  - {fileID: 400136}
   - {fileID: 400194}
-  - {fileID: 400066}
   m_Father: {fileID: 400138}
 --- !u!4 &400210
 Transform:
@@ -4283,7 +4282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 100042}
-  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  hover: {r: 1, g: 0, b: .310344696, a: 1}
   pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
@@ -5101,7 +5100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 100028}
-  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  hover: {r: 1, g: 0, b: .310344696, a: 1}
   pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
@@ -5327,7 +5326,7 @@ MonoBehaviour:
   alwaysOnScreen: 0
   anchorOffset: 0
   renderQueue: 0
-  startingRenderQueue: 3004
+  startingRenderQueue: 3006
   mAlpha: 1
   mClipping: 3
   mClipRange: {x: 0, y: 1, z: 356, w: 176}
@@ -5412,7 +5411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tweenTarget: {fileID: 100050}
-  hover: {r: .882352948, g: .784313738, b: .588235319, a: 1}
+  hover: {r: 1, g: 0, b: .310344696, a: 1}
   pressed: {r: .717647076, g: .639215708, b: .482352942, a: 1}
   duration: .200000003
   disabledColor: {r: .5, g: .5, b: .5, a: 1}
@@ -5947,9 +5946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e91018be1ccd145b93745d432a573c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointerTransform: {fileID: 400070}
   TownPanels:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400032}
+  - {fileID: 11400248}
 --- !u!114 &11400164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6826,24 +6826,6 @@ MonoBehaviour:
   errorSound: {fileID: 0}
   storage: {fileID: 0}
   slot: 0
---- !u!114 &11400238
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f6e207766b5e9a41a20e504a0e556ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 0}
-  currentSelection: {fileID: 0}
-  nextSelection: {fileID: 0}
-  buttons: []
-  currentButton: 0
-  buttonMax: 0
-  initialised: 0
 --- !u!114 &11400240
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UITown_BackpackPanel : UIPlayerMenuPanel 
+public class UITown_BackpackPanel : UITown_Panel 
 {
 	enum EButtons
 	{
