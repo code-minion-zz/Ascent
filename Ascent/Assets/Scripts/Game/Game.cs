@@ -97,44 +97,47 @@ public class Game : MonoBehaviour
 	
 	#region Initialization
 
+
+    static bool initialised = false;
 	public void OnEnable()
 	{
 		if (Singleton == null)
 		{
 			Singleton = this;
 		}
+
+        if (!initialised)
+        {
+            Initialise();
+        }
+        else
+        {
+            GameObject theGameObject = GameObject.Find("Game");
+            if (theGameObject != null)
+            {
+                Debug.Log("Game already exists no need to initialise a new one.");
+                // Get rid of the game initialiser
+                Destroy(this.gameObject);
+                return;
+            }
+
+            if (theGameObject == null)
+            {
+                theGameObject = GameObject.Find("Game(Clone)");
+                if (theGameObject != null)
+                {
+                    Debug.Log("Game already exists no need to initialise a new one.");
+                    // Get rid of the game initialiser
+                    Destroy(this.gameObject);
+                    return;
+                }
+            }
+        }
 	}
 
-	static bool initialised = false;
 	public void Start()
 	{
-		if (!initialised)
-		{
-			Initialise();
-		}
-		else
-		{
-			GameObject theGameObject = GameObject.Find("Game");
-			if (theGameObject != null)
-			{
-				Debug.Log("Game already exists no need to initialise a new one.");
-				// Get rid of the game initialiser
-				Destroy(this.gameObject);
-				return;
-			}
-
-			if (theGameObject == null)
-			{
-				theGameObject = GameObject.Find("Game(Clone)");
-				if (theGameObject != null)
-				{
-					Debug.Log("Game already exists no need to initialise a new one.");
-					// Get rid of the game initialiser
-					Destroy(this.gameObject);
-					return;
-				}
-			}
-		}
+		
 	}
 
 	private void Initialise()

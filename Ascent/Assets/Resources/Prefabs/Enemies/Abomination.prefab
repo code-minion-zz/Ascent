@@ -13,6 +13,8 @@ GameObject:
   - 114: {fileID: 11400000}
   - 54: {fileID: 5400000}
   - 65: {fileID: 6500000}
+  - 95: {fileID: 9500000}
+  - 114: {fileID: 11400010}
   m_Layer: 11
   m_Name: Abomination
   m_TagString: Monster
@@ -398,6 +400,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: .5, z: 0}
+--- !u!95 &9500000
+Animator:
+  serializedVersion: 2
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_ApplyRootMotion: 1
+  m_AnimatePhysics: 0
+  m_HasTransformHierarchy: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -410,12 +426,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100000}
-  speed: 3
-  gravity: 10
+  currentSpeed: 0
+  acceleration: 1
+  minSpeed: 5.5
   maxVelocityChange: 1.5
-  canJump: 1
   canMove: 1
-  jumpHeight: 2
   moving: 0
 --- !u!114 &11400002
 MonoBehaviour:
@@ -439,7 +454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc70b3a54ea56342b17c0961b46a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 11400002}
   health: 800
 --- !u!114 &11400006
 MonoBehaviour:
@@ -452,7 +466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applyTilt: 0
   tiltAmount: 12.5
 --- !u!114 &11400008
 MonoBehaviour:
@@ -467,6 +480,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: .75
   offsetZ: 0
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b67de6a393238c4ea1c0fda3fa3b617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasAnimations: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

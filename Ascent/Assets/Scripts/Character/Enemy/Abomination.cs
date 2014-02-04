@@ -133,8 +133,8 @@ public class Abomination : Enemy
     public override void OnDisable()
     {
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
-        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+        //AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
+        //AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
         AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
     }
