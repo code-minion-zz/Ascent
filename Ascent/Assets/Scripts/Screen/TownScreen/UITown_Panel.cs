@@ -36,6 +36,7 @@ public class UITown_Panel : UIPlayerMenuPanel
 			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
 			if (CloseTo(angle,p.Key))
 			{
+				if (buttons[p.Value] == currentSelection) return;
 				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 				currentSelection = buttons[p.Value];
 				currentHighlightedButton = p.Value;
