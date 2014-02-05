@@ -17,7 +17,7 @@ public class AccessoryItem : Item
 	public bool IsBroken
     {
         get { return Durability <= 0; }
-        private set { }
+        //private set { }
     }
 
 		[System.Xml.Serialization.XmlIgnore]

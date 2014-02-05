@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+[System.Xml.Serialization.XmlInclude(typeof(WarriorStrike))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorHeavyStrike))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorCharge))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorWarCry))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorWarStomp))]
 public abstract class Action
 {
     protected float animationLength = 0.0f;
