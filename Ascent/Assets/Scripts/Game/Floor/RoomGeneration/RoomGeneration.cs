@@ -8,6 +8,8 @@ using System.Collections.Generic;
 /// 
 public class RoomGeneration 
 {
+#pragma warning disable 0414 // Room.Generation.wallWindow is assigned but never used
+
 	private GameObject floorObject;
 	private GameObject wallObject;
 	private GameObject wallCorner;

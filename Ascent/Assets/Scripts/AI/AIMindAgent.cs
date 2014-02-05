@@ -48,6 +48,7 @@ public class AIMindAgent
     }
 
 #if UNITY_EDITOR
+#pragma warning disable 0414 // unused var 
 	private GUIText label;
 #endif
 

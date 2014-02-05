@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+#pragma warning disable 0219
+
 /// <summary>
 /// Maintains floor instance stats and rewards.
 /// </summary>

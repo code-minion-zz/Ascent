@@ -152,6 +152,7 @@ public class RoomProperties
     /// </summary>
     public void LoadFromFile(string filename)
     {
+#pragma warning disable 0219 // Disable unassigned field warning. Remove once filePath is used.
         string filePath = "Resources/Level/Rooms/" + filename;
     }
 

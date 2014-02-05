@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class UITown_MainPanel : UITown_Panel
 {
-	static float TOWER = 0f;
-	static float BACKPACK = 270f;
-	static float QUIT = 90f;
+	const float TOWER = 0f;
+    const float BACKPACK = 270f;
+    const float QUIT = 90f;
 
 
 	bool justInitialized = false;
@@ -82,7 +82,6 @@ public class UITown_MainPanel : UITown_Panel
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		int i = -1;
 		switch (currentHighlightedButton)
 		{
 		case 0 : // tower

@@ -22,8 +22,8 @@ public class Warrior : Hero
 		heroClass = EHeroClass.Warrior;
 
 		// Initialise Warrior Specific animator
-		heroAnimator = GetComponent<HeroAnimator>();
-		heroAnimator.Initialise();
+        //heroAnimator = GetComponent<HeroAnimator>();
+        //heroAnimator.Initialise();
 
 		// Create or Load character and init other essential things
 		base.Initialise(input, saveData);

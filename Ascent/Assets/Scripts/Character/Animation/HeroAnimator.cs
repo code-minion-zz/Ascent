@@ -88,6 +88,14 @@ public class HeroAnimator : CharacterAnimator
 		layer = ELayer.Movement;
 	}
 
+    public void OnEnable()
+    {
+        if (animator != null)
+        {
+            animator.SetLayerWeight(1, 1.0f);
+        }
+    }
+
 	/// <summary>
 	/// Plays a movement or idle animation.
 	/// </summary>

@@ -14,9 +14,6 @@ public class WarriorCharge : Action
 {	
 	private float distanceMax = 7.5f;
 	
-	private CharacterAnimator ownerAnimator;
-    //private HeroAnimatorController heroController;
-	
     private float travelTime;
 	private float originalAnimationTime;
 
@@ -31,8 +28,6 @@ public class WarriorCharge : Action
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
-		ownerAnimator = owner.Animator;
-        //heroController = owner.Animator as HeroAnimatorController;
 
         cooldownDurationMax = 5.0f;
         animationTrigger = "Charge";

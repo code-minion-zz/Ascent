@@ -94,9 +94,12 @@ public class Slime : Enemy
                 {
                     Character otherCharacter = other.transform.GetComponent<Character>();
 
-                    if (!IsStunned && !otherCharacter.IsInvulnerable)
+                    if (otherCharacter != null)
                     {
-                        CollideWithHero(otherCharacter as Hero, other);
+                        if (!IsStunned && !otherCharacter.IsInvulnerable)
+                        {
+                            CollideWithHero(otherCharacter as Hero, other);
+                        }
                     }
                 }
                 break;
