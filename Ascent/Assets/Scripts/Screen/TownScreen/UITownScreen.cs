@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 public class UITownScreen : UIPlayerMenuScreen 
 {
-	private const int maxPlayers = 3;
-	private List<Player> players = new List<Player>();
-	//List<Player> playersToRemove = new List<Player>();
-
 	public GameObject WindowPrefab;
 	public GameObject PlayerGrid;
+	public delegate void ReadyHandler();
 
+	private const int maxPlayers = 3;
+	private List<Player> players = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
+	private	uint towerVotes;
 
 #pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
-
-//    bool allReady = false;
-//    public bool AllReady
-//    {
-//        get { return allReady; }
-//    }
 
 	void OnDestroy()
 	{
@@ -93,4 +87,36 @@ public class UITownScreen : UIPlayerMenuScreen
 		Destroy(p.gameObject);
 	}
 
+	void ReadyTracker()
+	{
+//		switch (oldChoice)
+//		{
+//		case PlayerChoice.NONE:
+//			break;
+//		case PlayerChoice.TOWER:
+//			--towerVotes;
+//			break;
+//		case PlayerChoice.QUIT:
+//			--quitVotes;
+//			break;
+//		}
+//
+//		switch (choice)
+//		{
+//		case PlayerChoice.NONE:
+//			break;
+//		case PlayerChoice.TOWER:
+//			++towerVotes;
+//			break;
+//		case PlayerChoice.QUIT:
+//			++quitVotes;
+//			break;
+//		}
+
+		if (towerVotes == Game.Singleton.NumberOfPlayers)
+		{
+			// load next level
+			Game.Singleton.LoadLevel("Sewer_level", Game.EGameState.TowerRandom);
+		}
+	}
 }

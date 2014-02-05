@@ -28,17 +28,10 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 	}
 
-	public enum EBackpackTab
-	{
-		Accessory = 0,
-		Consumable
-	}
-
 	bool updateTitle;
 
 	public enum EBackpackPanels
 	{
-		INVALID = -1,
 		BACKPACK,
 		INVENTORY,
 		MAX
@@ -73,19 +66,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
 	}
 
-//	protected override void HandleInputEvents()
-//	{
-//		base.HandleInputEvents();
-//
-//		if (leftStickSignificantMovement)
-//		{
-//		}
-//	}
-
-	/// <summary>
-	/// Return item to inventory if space permits.
-	/// </summary>
-	/// <param name="slot">Slot.</param>
+	/// <summary> Return item to inventory if space permits. </summary>
 	public bool Unequip(int slot)
 	{
 		return true;
@@ -130,38 +111,5 @@ public class UITownWindow : UIPlayerMenuWindow
 			}
 		}
 	}
-
-//	public void SetInfo()
-//	{
-//		if (InfoLabel != null)
-//		{
-//			Debug.Log("InfoLabel not null");
-//			int currentButton = activePanel.GetCurrentHighlightedButton();
-//			if (currentButton == -1)
-//			{
-//				Debug.LogError("UITownWindow: Uninitialized Panel Error");
-//			}
-//			if (activePanel is UITown_MainPanel)
-//			{
-//				Debug.Log ("Is a MainPanel");
-//				switch (currentButton)
-//				{
-//				case 0: // tower
-//					InfoLabel.text = "Enter the Tower";
-//					break;
-//				case 1: // quit
-//					InfoLabel.text = "Quit to Main Menu";
-//					break;
-//				case 2: // backpack
-//					InfoLabel.text = "Manage your Equipment";
-//					break;
-//				}
-//			}
-//			else if (activePanel is UITown_BackpackPanel)
-//			{
-//				InfoLabel.text = "Backpack";
-//			}
-//		}
-//	}
 }
 

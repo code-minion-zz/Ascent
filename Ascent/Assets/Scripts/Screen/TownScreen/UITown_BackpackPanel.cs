@@ -169,6 +169,6 @@ public class UITown_BackpackPanel : UITown_Panel
 	public override void OnMenuHax(InputDevice device)
 	{
 		//((UITownScreen)parent.ParentScreen).StartGame();
-		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
+//		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 	}
 }

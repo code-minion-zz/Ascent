@@ -43,13 +43,13 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		{
 			windows[i].transform.position = new Vector3(offsetX + (offsetX * -i), prefabWindow.transform.position.y, prefabWindow.transform.position.z);
 			//windows[i].Initialise();
-//			windows[i].gameObject.SetActive(false);
+			windows[i].gameObject.SetActive(false);
 		}
 	}
 
-	[ContextMenu("Execute")]
-	public void OnMenuHax()
-	{
-		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.Tower);
-	}
+//	[ContextMenu("Execute")]
+//	public void OnMenuHax()
+//	{
+//		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.Tower);
+//	}
 }
