@@ -16,6 +16,8 @@ public class RoomProperties
     private Vector3 position;
     private float width;
     private float height;
+    private int numberOfTilesX;
+    private int numberOfTilesY;
     private bool wallsPlaced;
 
     private Room room;
@@ -77,6 +79,16 @@ public class RoomProperties
         set { height = value; }
     }
 
+    public int NumberOfTilesX
+    {
+        get { return numberOfTilesX; }
+    }
+
+    public int NumberOfTilesY
+    {
+        get { return numberOfTilesY; }
+    }
+
     public bool WallsPlaced
     {
         get { return wallsPlaced; }
@@ -118,12 +130,15 @@ public class RoomProperties
 	{
 		this.width = width;
 		this.height = height;
+        // Tiles are 2x2 units so we will cut the width and height in half.
+        numberOfTilesX = (int)(width * 0.5f);
+        numberOfTilesY = (int)(height * 0.5f);
 
-		tiles = new TileProperties[width, height];
+        tiles = new TileProperties[numberOfTilesX, numberOfTilesY];
 
-		for (int i = 0; i < width; ++i)
+        for (int i = 0; i < numberOfTilesX; ++i)
 		{
-			for (int j = 0; j < height; ++j)
+            for (int j = 0; j < numberOfTilesY; ++j)
 			{
 				tiles[i,j] = new TileProperties();
 				tiles[i,j].Position = Vector3.zero;

@@ -479,111 +479,111 @@ public class Room : MonoBehaviour
 	}
 
     // TODO: Make some monster generation script and offload logic there.
-    public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
-    {
-        // Generate number of monsters.
-        // TODO: make this better haha.
-        int numberOfMonsters = (int)rarity * Random.Range(1, 5);
+    //public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
+    //{
+    //    // Generate number of monsters.
+    //    // TODO: make this better haha.
+    //    int numberOfMonsters = (int)rarity * Random.Range(1, 5);
 
-        int monstersPlaced = 0;
+    //    int monstersPlaced = 0;
 
-        for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
-        {
-            // Choose type of monster
-            EMonsterTypes mobType = (EMonsterTypes)(Random.Range(0, (int)EMonsterTypes.MAX));
+    //    for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
+    //    {
+    //        // Choose type of monster
+    //        EMonsterTypes mobType = (EMonsterTypes)(Random.Range(0, (int)EMonsterTypes.MAX));
 
-            GameObject go = null;
+    //        GameObject go = null;
 
-            switch (mobType)
-            {
-                case EMonsterTypes.Rat:
-                    go = InstantiateGameObject(ERoomObjects.Enemy, "Rat");
-                    break;
+    //        switch (mobType)
+    //        {
+    //            case EMonsterTypes.Rat:
+    //                go = InstantiateGameObject(ERoomObjects.Enemy, "Rat");
+    //                break;
 
-                case EMonsterTypes.Imp:
-                    go = InstantiateGameObject(ERoomObjects.Enemy, "Imp");
-                    break;
+    //            case EMonsterTypes.Imp:
+    //                go = InstantiateGameObject(ERoomObjects.Enemy, "Imp");
+    //                break;
 
-                case EMonsterTypes.Slime:
-                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Slime");
-                    break;
+    //            case EMonsterTypes.Slime:
+    //                //go = InstantiateGameObject(ERoomObjects.Enemy, "Slime");
+    //                break;
 
-                case EMonsterTypes.EnchantedStatue:
-                    go = InstantiateGameObject(ERoomObjects.Enemy, "EnchantedStatue");
-                    break;
+    //            case EMonsterTypes.EnchantedStatue:
+    //                go = InstantiateGameObject(ERoomObjects.Enemy, "EnchantedStatue");
+    //                break;
 
-                    // Abominations are crashing
-                case EMonsterTypes.Abomination:
-                    //go = InstantiateGameObject(ERoomObjects.Enemy, "Abomination");
-                    break;
+    //                // Abominations are crashing
+    //            case EMonsterTypes.Abomination:
+    //                //go = InstantiateGameObject(ERoomObjects.Enemy, "Abomination");
+    //                break;
 
-                case EMonsterTypes.Boss:
-                    break;
-            }
+    //            case EMonsterTypes.Boss:
+    //                break;
+    //        }
 
-            if (go == null)
-            {
-                // We may not have created a monster.
-                continue;
-            }
+    //        if (go == null)
+    //        {
+    //            // We may not have created a monster.
+    //            continue;
+    //        }
 
-            Enemy enemy = go.GetComponentInChildren<Enemy>();
-            Debug.Log(enemy);
-            Bounds enemyBound = enemy.collider.bounds;
-            bool isPlaced = false;
+    //        Enemy enemy = go.GetComponentInChildren<Enemy>();
+    //        Debug.Log(enemy);
+    //        Bounds enemyBound = enemy.collider.bounds;
+    //        bool isPlaced = false;
 
-            float timeToPlace = 0.0f;
+    //        float timeToPlace = 0.0f;
 
-			int maxTries = 50;
-			int tries = 0;
+    //        int maxTries = 50;
+    //        int tries = 0;
 
-            while (isPlaced == false)
-            {
-                timeToPlace += Time.deltaTime;
+    //        while (isPlaced == false)
+    //        {
+    //            timeToPlace += Time.deltaTime;
 
-                // If it takes to long we are going to skip.
-                if (timeToPlace >= 6.0f)
-                {
-                    isPlaced = true;
-                    timeToPlace = 0.0f;
-                    Debug.Log("Took way too long to place monster");
-                }
+    //            // If it takes to long we are going to skip.
+    //            if (timeToPlace >= 6.0f)
+    //            {
+    //                isPlaced = true;
+    //                timeToPlace = 0.0f;
+    //                Debug.Log("Took way too long to place monster");
+    //            }
 
-                // Give the monster a random position.
-                go.transform.position = new Vector3(Random.Range(room.Bounds.min.x, room.Bounds.max.x), 0.0f, Random.Range(room.Bounds.min.z, room.Bounds.max.z));
+    //            // Give the monster a random position.
+    //            go.transform.position = new Vector3(Random.Range(room.Bounds.min.x, room.Bounds.max.x), 0.0f, Random.Range(room.Bounds.min.z, room.Bounds.max.z));
 
-                // Check to see if the position is filled by another monster
-                for (int a = 0; a < enemies.Count; a++)
-                {
-                    if (enemyBound.Intersects(enemies[a].collider.bounds))
-                    {
-                        break;
-                    }
+    //            // Check to see if the position is filled by another monster
+    //            for (int a = 0; a < enemies.Count; a++)
+    //            {
+    //                if (enemyBound.Intersects(enemies[a].collider.bounds))
+    //                {
+    //                    break;
+    //                }
 
-                    // Yay didn't collide.
-                    if (a == enemies.Count - 1)
-                    {
-                        isPlaced = true;
-                    }
-                }
+    //                // Yay didn't collide.
+    //                if (a == enemies.Count - 1)
+    //                {
+    //                    isPlaced = true;
+    //                }
+    //            }
 
-				++tries;
-				if (tries == maxTries)
-				{
-					Debug.Log("Tried 50 times to place monster.");
-					tries = 0;
-					isPlaced = true;
-				}
-            }
+    //            ++tries;
+    //            if (tries == maxTries)
+    //            {
+    //                Debug.Log("Tried 50 times to place monster.");
+    //                tries = 0;
+    //                isPlaced = true;
+    //            }
+    //        }
 
 
-            // Spawn monster check for safe region.
+    //        // Spawn monster check for safe region.
 
-            // Place monster.
+    //        // Place monster.
 
-            // Repeat steps.
-        }
-    }
+    //        // Repeat steps.
+    //    }
+    //}
 
     public void RemoveObject(ERoomObjects type, GameObject go)
 	{

@@ -163,6 +163,11 @@ public class FloorGeneration
                     // Place treasure in this room.
                     break;
 
+                case FeatureType.boss:
+                    roomGeneration.PopulateMonsters(dungeonLevel, room, monsterRarity);
+                    roomGeneration.PopulateBossRoom(dungeonLevel, room);
+                    break;
+
                 case FeatureType.trap:
                     // Place a trap here.
                     break;

@@ -6,6 +6,7 @@ public enum TilePropertyType
 {
 	none,
 	wallTile,
+    cornerWallTile,
 	doorTile,
 	miscObj,
 	trap,
@@ -17,6 +18,7 @@ public class TileProperties
 {
 	private TilePropertyType tileType;
 	private Vector3 position;
+    private bool isOccupied = false;
 
 	public TilePropertyType TileType
 	{
@@ -29,6 +31,12 @@ public class TileProperties
 		get { return position; }
 		set { position = value; }
 	}
+
+    public bool IsOccupied
+    {
+        get { return isOccupied; }
+        set { isOccupied = value; }
+    }
 
 	public TileProperties()
 	{
