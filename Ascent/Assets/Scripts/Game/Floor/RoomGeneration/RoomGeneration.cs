@@ -121,7 +121,7 @@ public class RoomGeneration
                     break;
 
                 case Room.EMonsterTypes.Slime:
-                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
+                    //go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
                     break;
 
                 case Room.EMonsterTypes.EnchantedStatue:

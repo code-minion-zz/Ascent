@@ -164,8 +164,8 @@ public class FloorGeneration
                     break;
 
                 case FeatureType.boss:
-                    roomGeneration.PopulateMonsters(dungeonLevel, room, monsterRarity);
                     roomGeneration.PopulateBossRoom(dungeonLevel, room);
+                    //roomGeneration.PopulateMonsters(dungeonLevel, room, monsterRarity);
                     break;
 
                 case FeatureType.trap:
