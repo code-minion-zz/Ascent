@@ -78,6 +78,10 @@ public class WarriorWarStomp : Action
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
+
+
+                            // Tell the hud manager to spawn text.
+                            HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
 						}
 					}
 				}

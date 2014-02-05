@@ -68,7 +68,7 @@ public class WarriorStrike : Action
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
 							// Tell the hud manager to spawn text.
-							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
 
                             owner.Stats.CurrentSpecial += 1;
 						}

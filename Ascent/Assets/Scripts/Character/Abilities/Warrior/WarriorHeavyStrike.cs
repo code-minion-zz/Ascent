@@ -54,7 +54,6 @@ public class WarriorHeavyStrike : Action
 						foreach (Enemy e in enemies)
 						{
                             int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.5f);
-                            Debug.Log(this.ToString() + ": " + damage + " dmg");
                             e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
@@ -62,7 +61,7 @@ public class WarriorHeavyStrike : Action
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
 							// Tell the hud manager to spawn text.
-							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25);
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25, Color.cyan);
 						}
 					}
 				}
