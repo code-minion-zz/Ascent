@@ -7,11 +7,15 @@ public class CameraShake : MonoBehaviour
     private float ShakeDecay;
     private float ShakeIntensity;
     private Vector3 OriginalPos;
+    private Vector3 defaultPos;
     private Quaternion OriginalRot;
+    private Quaternion defaultRot;
 
     void Start()
     {
         Shaking = false;
+        defaultPos = transform.position;
+        defaultRot = transform.rotation;
     }
 
 
@@ -49,7 +53,7 @@ public class CameraShake : MonoBehaviour
         if (!Shaking)
         {
             OriginalPos = transform.position;
-            OriginalRot = transform.rotation;
+            OriginalRot = defaultRot;
 
             ShakeIntensity = intensity;//0.05f;
             ShakeDecay = decay;//0.02f;

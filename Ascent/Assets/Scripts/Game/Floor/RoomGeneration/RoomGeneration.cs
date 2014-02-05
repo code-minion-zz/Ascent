@@ -17,6 +17,7 @@ public class RoomGeneration
 	private GameObject doorObject;
 
 	private GameObject barrelObject;
+    private GameObject barrelCluster;
     private GameObject brazierObject;
 
     private Rarity miscObjects = Rarity.few;
@@ -30,6 +31,7 @@ public class RoomGeneration
 		doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
 
 		barrelObject = Resources.Load("Prefabs/RoomPieces/Barrel") as GameObject;
+        barrelCluster = Resources.Load("Prefabs/RoomPieces/BarrelCluster") as GameObject;
         brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
 	}
 
@@ -119,7 +121,7 @@ public class RoomGeneration
                     break;
 
                 case Room.EMonsterTypes.Slime:
-                    //go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
+                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
                     break;
 
                 case Room.EMonsterTypes.EnchantedStatue:
@@ -227,7 +229,20 @@ public class RoomGeneration
             // Check to see if the tile type is a wall tile to be sure.
             if (tempAvailableTiles[randomTile].TileType == TilePropertyType.wallTile)
             {
-                go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                int random = Random.Range(0, 2);
+
+                switch (random)
+                {
+                    case 0:
+                        go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                        break;
+
+                    case 1:
+                        float rotationY = Random.Range(0.0f, 270.0f);
+                        go = GameObject.Instantiate(barrelCluster, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                        go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, rotationY, go.transform.eulerAngles.z);
+                        break;
+                }
             }
 
             if (go == null)
