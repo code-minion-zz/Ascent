@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
 
     public enum EGameState
     {
+		None = -1, 
         MainMenu,
         Town,
         Tower,
@@ -284,7 +285,10 @@ public class Game : MonoBehaviour
 			return;
 		}
 
-		InitialiseState();
+		if(gameStateToLoad != EGameState.None)
+		{
+			InitialiseState();
+		}
 	}
 
 	public void InitialiseState()
@@ -293,7 +297,14 @@ public class Game : MonoBehaviour
 		{
 			case EGameState.MainMenu:
 				{
-
+					InputManager.UnbindAllDevices();
+					if(players != null)
+					{
+							foreach(Player p in players)
+							{
+								Destroy(p.gameObject);
+							}
+					}
 				}
 				break;
 			case EGameState.Tower:
@@ -336,6 +347,8 @@ public class Game : MonoBehaviour
 		}
 
 		gameState = gameStateToLoad;
+
+		gameStateToLoad = EGameState.None;
 	}
 	
 	#endregion

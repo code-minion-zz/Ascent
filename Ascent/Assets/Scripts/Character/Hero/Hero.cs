@@ -196,7 +196,8 @@ public abstract class Hero : Character
 		hero.backpack = data.backpack;
 
 		// Load in abilities
-		hero.abilities = data.abilities;
+		//hero.abilities = data.abilities;
+		//Debug.Log(hero.abilities);
 
 		// Load in stats
 		hero.HeroStats = new HeroStats(hero, data);

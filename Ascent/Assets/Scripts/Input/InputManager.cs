@@ -74,7 +74,7 @@ public class InputManager : MonoBehaviour
 		if (Input.GetKeyUp(KeyCode.BackQuote))
 		{
 			//Game.Singleton.transform.
-			Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.MainMenu);
+			Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.Town);
 		}
 		#endregion
 
@@ -99,6 +99,13 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
+	public static void UnbindAllDevices()
+	{
+		foreach (InputDevice d in devices)
+		{
+			d.InUse = false;
+		}
+	}
 
 	static void RefreshDevices()
 	{
@@ -213,6 +220,8 @@ public class InputManager : MonoBehaviour
 			OnDeviceDetached(inputDevice);
 		}
 	}
+
+
 
 	static string JoystickHash
 	{
