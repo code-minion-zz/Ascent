@@ -16,7 +16,7 @@ public class WarriorStrike : Action
     {
 		base.Initialise(owner);
 
-        animationSpeed = 2.0f;
+        animationSpeed = 1.5f;
         animationLength = 1.067f;
         cooldownDurationMax = 0.0f;
 		animationTrigger = "Strike";

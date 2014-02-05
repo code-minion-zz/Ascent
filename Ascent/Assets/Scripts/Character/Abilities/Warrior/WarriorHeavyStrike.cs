@@ -12,7 +12,7 @@ public class WarriorHeavyStrike : Action
 
     public override void Initialise(Character owner)
     {
-        animationSpeed = 1.5f;
+        animationSpeed = 1.15f;
         animationLength = 1.233f;
         cooldownDurationMax = 5.0f;
         timeElapsedSinceStarting = 0.0f;
