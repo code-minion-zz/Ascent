@@ -8,7 +8,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 	protected UIButton nextSelection;
 
 	protected UIButton[] buttons;
-	protected int currentButton;
+	protected int currentHighlightedButton = -1; // This value must always be >= 0 after init
 	protected int buttonMax;
 
 	protected bool initialised = false;
@@ -121,25 +121,30 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 
 	protected virtual UIButton NextButton()
 	{
-		currentButton = ++currentButton;
+		currentHighlightedButton = ++currentHighlightedButton;
 
-		if (currentButton >= buttonMax)
+		if (currentHighlightedButton >= buttonMax)
 		{
-			currentButton = 0;
+			currentHighlightedButton = 0;
 		}
 
-		return (buttons[currentButton]);
+		return (buttons[currentHighlightedButton]);
 	}
 
 	protected virtual UIButton PrevButton()
 	{
-		currentButton = --currentButton;
+		currentHighlightedButton = --currentHighlightedButton;
 
-		if (currentButton < 0)
+		if (currentHighlightedButton < 0)
 		{
-			currentButton = buttonMax - 1;
+			currentHighlightedButton = buttonMax - 1;
 		}
 
-		return (buttons[currentButton]);
+		return (buttons[currentHighlightedButton]);
+	}
+
+	public virtual int GetCurrentHighlightedButton()
+	{
+		return currentHighlightedButton;
 	}
 }

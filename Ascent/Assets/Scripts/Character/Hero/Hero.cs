@@ -156,28 +156,29 @@ public abstract class Hero : Character
 	{
 		Backpack backpack = hero.backpack;
 		backpack.AddItem(Backpack.BackpackSlot.ACC1, LootGenerator.RandomlyGenerateAccessory(1));
-		backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2));
-		backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3));
-		backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4));
+        //backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2));
+        //backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3));
+        //backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4));
         backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1));
         backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2));
         backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3));
 
 		HeroInventory inventory = hero.inventory;
 		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7));
         inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4));
-        inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
-        inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5));
+        //inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6));
 	}
 
 	public static void Test_DrawHeroStats(Hero hero)
 	{
-		Debug.Log("POW: " + hero.HeroStats.Power +
+		Debug.Log("Derived: " +
+            "POW: " + hero.HeroStats.Power +
 			" FIN: " + hero.HeroStats.Finesse +
 			" VIT: " + hero.HeroStats.Vitality +
-			" SPR: " + hero.HeroStats.Spirit +
+			" SPR: " + hero.HeroStats.Spirit + " | " +
 
 			" ATK: " + hero.HeroStats.Attack +
 			" PDEF: " + hero.HeroStats.PhysicalDefense +
@@ -187,17 +188,18 @@ public abstract class Hero : Character
 			" DODGE: " + hero.HeroStats.DodgeChance
 			);
 
-		Debug.Log("POW: " + hero.Stats.Power +
-			" FIN: " + hero.Stats.Finesse +
-			" VIT: " + hero.Stats.Vitality +
-			" SPR: " + hero.Stats.Spirit +
+        Debug.Log("Base:     " +
+            "POW: " + hero.HeroStats.BasePower +
+            " FIN: " + hero.HeroStats.BaseFinesse +
+            " VIT: " + hero.HeroStats.BaseVitality +
+            " SPR: " + hero.HeroStats.BaseSpirit + " | " +
 
-			" ATK: " + hero.Stats.Attack +
-			" PDEF: " + hero.Stats.PhysicalDefense +
-			" MDEF: " + hero.Stats.MagicalDefense +
-			" CRIT: " + hero.Stats.CriticalHitChance +
-			" MULT: " + hero.Stats.CritalHitMultiplier +
-			" DODGE: " + hero.Stats.DodgeChance
+            " ATK: " + hero.HeroStats.BaseAttack +
+            " PDEF: " + hero.HeroStats.BasePhysicalDefense +
+            " MDEF: " + hero.HeroStats.BaseMagicalDefense +
+            " CRIT: " + hero.HeroStats.BaseCriticalHitChance +
+            " MULT: " + hero.HeroStats.BaseCritalHitMultiplier +
+            " DODGE: " + hero.HeroStats.BaseDodgeChance
 			);
 	}
 

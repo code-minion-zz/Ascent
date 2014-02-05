@@ -463,7 +463,7 @@ public class Room : MonoBehaviour
                     enemy.transform.localPosition = Vector3.zero;
                     enemy.ContainedRoom = this;
                     enemy.Initialise();
-					//enemy.InitiliseHealthbar();
+					enemy.InitiliseHealthbar();
 				}
 				break;
 

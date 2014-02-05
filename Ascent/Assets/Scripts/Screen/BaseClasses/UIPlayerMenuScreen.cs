@@ -29,6 +29,7 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		{
 			GameObject windowGO =  NGUITools.AddChild(grid, prefabWindow.gameObject);
 			windowGO.name = "P" + (i + 2);
+			NGUITools.SetActive(windowGO,false);
 
 			UIPlayerMenuWindow window = windowGO.GetComponent<UIPlayerMenuWindow>();
 			windows.Add(window);

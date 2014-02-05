@@ -59,7 +59,8 @@ public class WarriorStrike : Action
 							// Apply damage and knockback to the enemey
 
 							damage = ((Hero)owner).HeroStats.Attack;
-					
+                            Debug.Log(this.ToString() + ": " + damage + " dmg");
+
 							e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
@@ -69,7 +70,7 @@ public class WarriorStrike : Action
 							// Tell the hud manager to spawn text.
 							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
 
-							
+                            owner.Stats.CurrentSpecial += 1;
 						}
 					}
 				}

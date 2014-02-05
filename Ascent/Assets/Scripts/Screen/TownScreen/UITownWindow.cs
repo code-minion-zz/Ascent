@@ -14,7 +14,12 @@ public class UITownWindow : UIPlayerMenuWindow
 {
 	public Transform pointerTransform;
 	public List<UIPlayerMenuPanel> TownPanels;
-	protected float pointerAngle = 0f;
+	[HideInInspector]
+	public UILabel TitleLabel = null;
+	public UILabel InfoLabel = null;
+	public UILabel InstructLabel = null;
+
+	protected float pointerAngle = 90f;
 	public float PointerAngle
 	{
 		get 
@@ -29,23 +34,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		Consumable
 	}
 
-	EBackpackTab currentTab = EBackpackTab.Accessory;
-
-	/// <summary>
-	/// Affects the display and logic of Main and Inventory panel
-	/// Also invokes the transition logic
-	/// </summary>
-	public EBackpackTab CurrentTab
-	{
-		get { return currentTab; }
-		set 
-		{
-			currentTab = value;
-
-			//gameObject.GetComponent<TweenColor>().PlayReverse();
-			// TODO: Invoke transition logic here
-		}
-	}
+	bool updateTitle;
 
 	public enum EBackpackPanels
 	{
@@ -57,15 +46,30 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public override void Initialise ()
 	{
-		//parentScreen = transform.parent.parent.parent.GetComponent<UIPlayerMenuScreen>();
-		base.Initialise ();
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
+		base.Initialise ();
+		
+		TitleLabel = transform.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
+		InfoLabel = transform.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
+		InstructLabel = transform.Find("Instructions").GetComponent<UILabel>();
+
+		updateTitle = true;
+	}
+
+	public override void Update()
+	{
+		base.Update();
+
+		if (updateTitle)
+		{
+			SetTitle();
+			updateTitle = false;
+		}
 	}
 
 	void HandleOnMenuLeftStickMove (InputDevice device)
 	{		
 		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value);
-		//Debug.Log ("AnalogX:" + device.LeftStickX.Value + " AnalogY:" + device.LeftStickY.Value + " Angle:" + angle);
 		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
 	}
 
@@ -92,6 +96,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		activePanel.gameObject.SetActive(false);
 		activePanel = panels[index];
 		activePanel.gameObject.SetActive(true);
+		SetTitle();
 	}
 
 	public override void AddAllMenuPanels()
@@ -111,5 +116,52 @@ public class UITownWindow : UIPlayerMenuWindow
 		NGUITools.SetActive(activePanel.gameObject,true);
 	}
 
+	public void SetTitle()
+	{
+		if (TitleLabel != null)
+		{
+			if (activePanel is UITown_MainPanel)
+			{
+				TitleLabel.text = "Town";
+			}
+			else if (activePanel is UITown_BackpackPanel)
+			{
+				TitleLabel.text = "Backpack";
+			}
+		}
+	}
+
+//	public void SetInfo()
+//	{
+//		if (InfoLabel != null)
+//		{
+//			Debug.Log("InfoLabel not null");
+//			int currentButton = activePanel.GetCurrentHighlightedButton();
+//			if (currentButton == -1)
+//			{
+//				Debug.LogError("UITownWindow: Uninitialized Panel Error");
+//			}
+//			if (activePanel is UITown_MainPanel)
+//			{
+//				Debug.Log ("Is a MainPanel");
+//				switch (currentButton)
+//				{
+//				case 0: // tower
+//					InfoLabel.text = "Enter the Tower";
+//					break;
+//				case 1: // quit
+//					InfoLabel.text = "Quit to Main Menu";
+//					break;
+//				case 2: // backpack
+//					InfoLabel.text = "Manage your Equipment";
+//					break;
+//				}
+//			}
+//			else if (activePanel is UITown_BackpackPanel)
+//			{
+//				InfoLabel.text = "Backpack";
+//			}
+//		}
+//	}
 }
 

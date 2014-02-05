@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class SlimeReplicate : Action
 {
+    private const int splitLimit = 3;
+    public int timesSplit = 0;
+
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
@@ -13,15 +16,19 @@ public class SlimeReplicate : Action
         animationTrigger = "Replicate";
         cooldownDurationMax = 2.0f;
         specialCost = 0;
+        
     }
 
     public override void StartAbility()
     {
-        base.StartAbility();
+        if (timesSplit < splitLimit)
+        {
+            base.StartAbility();
 
-        owner.Motor.StopMotion();
-        owner.Motor.EnableMovementForce(false);
-        owner.SetColor(Color.red);
+            owner.Motor.StopMotion();
+            owner.Motor.EnableMovementForce(false);
+            owner.SetColor(Color.red);
+        }
     }
 
     public override void UpdateAbility()
@@ -31,36 +38,44 @@ public class SlimeReplicate : Action
 
     public override void EndAbility()
     {
-        Enemy enemy = owner as Enemy;
-        GameObject go = enemy.ContainedRoom.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
-        go.transform.position = owner.transform.position;
-        go.transform.position += Vector3.left * 0.1f;
-        owner.transform.position += Vector3.right * 0.1f;
-
-        go.GetComponent<Enemy>().AIAgent.SteeringAgent.StartPosition = go.transform.position;
-
-		owner.Stats.CurrentHealth = (int)((float)owner.Stats.CurrentHealth * 0.5f);
-
-		float scale = (float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth;
-        if (scale > 0.15f)
+        if (timesSplit < splitLimit)
         {
-            if (scale < 0.15f)
+            Enemy enemy = owner as Enemy;
+            GameObject go = enemy.ContainedRoom.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
+            go.transform.position = owner.transform.position;
+            go.transform.position += Vector3.left * 0.1f;
+            owner.transform.position += Vector3.right * 0.1f;
+
+            go.GetComponent<Enemy>().AIAgent.SteeringAgent.StartPosition = go.transform.position;
+
+            owner.Stats.CurrentHealth = (int)((float)owner.Stats.CurrentHealth * 0.75f);
+
+            float scale = (float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth;
+            if (scale > 0.15f)
             {
-                scale = 0.15f;
+                if (scale < 0.15f)
+                {
+                    scale = 0.15f;
+                }
+                owner.transform.localScale = new Vector3(scale, scale, scale);
             }
-            owner.transform.localScale = new Vector3(scale, scale, scale);
+            go.transform.localScale = owner.transform.localScale;
+
+            //go.GetComponent<Enemy>().Stats.MaxHealth = owner.Stats.MaxHealth;
+            go.GetComponent<Enemy>().Stats.CurrentHealth = owner.Stats.CurrentHealth;
+
+            //go.GetComponent<Enemy>().ApplyKnockback(Vector3.left, 100.0f);
+            //enemy.ApplyKnockback(Vector3.right, 100.0f);
+
+            SlimeReplicate slimeReplicateB = go.GetComponent<Slime>().GetAbility("SlimeReplicate") as SlimeReplicate;
+
+            timesSplit += 1;
+            slimeReplicateB.timesSplit = timesSplit;
+
+            owner.SetColor(owner.OriginalColor);
+            owner.Motor.EnableMovementForce(true);
         }
-        go.transform.localScale = owner.transform.localScale;
-
-		//go.GetComponent<Enemy>().Stats.MaxHealth = owner.Stats.MaxHealth;
-		go.GetComponent<Enemy>().Stats.CurrentHealth = owner.Stats.CurrentHealth;
-
-        //go.GetComponent<Enemy>().ApplyKnockback(Vector3.left, 100.0f);
-        //enemy.ApplyKnockback(Vector3.right, 100.0f);
-
         base.EndAbility();
-        owner.SetColor(owner.OriginalColor);
-        owner.Motor.EnableMovementForce(true);
     }
 
 #if UNITY_EDITOR

@@ -84,9 +84,34 @@ public class HeroStats : CharacterStats
 
 #endregion
 
-#region SecondaryStats
+    #region BasePrimary
 
-	public override int MaxHealth
+    public int BasePower
+    {
+        get { return base.Power; }
+    }
+
+    public int BaseFinesse
+    {
+        get { return base.Finesse; }
+    }
+
+    public int BaseVitality
+    {
+        get { return base.Vitality; }
+    }
+
+    public int BaseSpirit
+    {
+        get { return base.Spirit; }
+    }
+
+    #endregion
+
+
+    #region SecondaryStats
+
+    public override int MaxHealth
 	{
 		get { return (int)GetDerivedValue(base.MaxHealth, EStats.Health); }
 	}
@@ -114,27 +139,71 @@ public class HeroStats : CharacterStats
 
 	public override float CriticalHitChance
 	{
-		get { return (int)GetDerivedValue(base.CriticalHitChance, EStats.CriticalHitChance); }
+		get { return GetDerivedValue(base.CriticalHitChance, EStats.CriticalHitChance); }
 	}
 
 	public override float CritalHitMultiplier
 	{
-		get { return (int)GetDerivedValue(base.CritalHitMultiplier, EStats.CriticalHitMutliplier); }
+		get { return GetDerivedValue(base.CritalHitMultiplier, EStats.CriticalHitMutliplier); }
 	}
 
 	public override float DodgeChance
 	{
-		get { return (int)GetDerivedValue(base.DodgeChance, EStats.DodgeChance); }
+		get { return GetDerivedValue(base.DodgeChance, EStats.DodgeChance); }
 	}
 
 #endregion
 
-	public float GetDerivedValue(float baseValue, EStats statType)
+#region BaseSecondary
+
+    public int BaseMaxHealth
+    {
+        get { return base.MaxHealth; }
+    }
+
+    public int BaseMaxSpecial
+    {
+        get { return base.MaxSpecial; }
+    }
+
+    public int BaseAttack
+    {
+        get { return base.Attack; }
+    }
+
+    public int BasePhysicalDefense
+    {
+        get { return base.PhysicalDefense; }
+    }
+
+    public int BaseMagicalDefense
+    {
+        get { return base.MagicalDefense; }
+    }
+
+    public float BaseCriticalHitChance
+    {
+        get { return base.CriticalHitChance; }
+    }
+
+    public float BaseCritalHitMultiplier
+    {
+        get { return base.CritalHitMultiplier; }
+    }
+
+    public float BaseDodgeChance
+    {
+        get { return base.DodgeChance; }
+    }
+
+#endregion
+
+    public float GetDerivedValue(float baseValue, EStats statType)
 	{
 		float withAccPrimary = AddAccessoriesPrimaryStats(baseValue, statType);
-		float withAccProps = AddAccessoriesProperties(withAccPrimary, statType);
+        float withAccProps = AddAccessoriesProperties(withAccPrimary, statType);
         float withBuffs = AddBuffs(withAccProps, statType);
-		return (int)withBuffs;
+		return withBuffs;
 	}
 
 	public float AddAccessoriesPrimaryStats(float statValue, EStats statType)
@@ -172,14 +241,53 @@ public class HeroStats : CharacterStats
 					}
 				}
 				break;
-			case EStats.Health:break;
-			case EStats.Special:break;
-			case EStats.Attack:break;
-			case EStats.PhysicalDefence:break;
-			case EStats.MagicalDefence:break;
-			case EStats.DodgeChance:break;
-			case EStats.CriticalHitChance:break;
-			case EStats.CriticalHitMutliplier:break;
+            case EStats.Health:
+            case EStats.Special:
+            case EStats.Attack:
+            case EStats.PhysicalDefence:
+            case EStats.MagicalDefence:
+            case EStats.DodgeChance:
+            case EStats.CriticalHitChance:
+            case EStats.CriticalHitMutliplier:
+                {
+                    Backpack backPack = hero.Backpack;
+
+                    int itemCount = backPack.AllItems.Length;
+
+                    if (itemCount > 0)
+                    {
+                        int statsFromItems = 0;
+
+                        int i;
+                        for (i = 0; i < itemCount; ++i)
+                        {
+                            Item item = backPack.AllItems[i];
+                            if (item == null)
+                            {
+                                continue;
+                            }
+                            if (item is ConsumableItem)
+                            {
+                                continue;
+                            }
+                            statsFromItems += (int)((AccessoryItem)item).PrimaryStats.GetRootStat(statType);
+                        }
+
+                        switch (statType)
+                        {
+                            case EStats.Health: statValue += secondaryStatsGrowth.healthPerVit * statsFromItems; break;
+                            case EStats.Special: statValue += secondaryStatsGrowth.specialPerSpirit * statsFromItems; break;
+                            case EStats.Attack: statValue += secondaryStatsGrowth.attackPerPow * statsFromItems; break;
+                            case EStats.PhysicalDefence: statValue += secondaryStatsGrowth.physicalDefPerVit * statsFromItems; break;
+                            case EStats.MagicalDefence: statValue += secondaryStatsGrowth.magicalDefPerSpr * statsFromItems; break;
+                            case EStats.DodgeChance: statValue += secondaryStatsGrowth.dodgePerFin * statsFromItems; break;
+                            case EStats.CriticalHitChance: statValue += secondaryStatsGrowth.critPerFin * statsFromItems; break;
+                            case EStats.CriticalHitMutliplier: statValue += secondaryStatsGrowth.critMultPerFin * statsFromItems; break;
+                            default: break;
+                        }
+                    }
+                }
+                break;
 			default: { Debug.LogError("Unhandled case."); }break;
 		}
 		

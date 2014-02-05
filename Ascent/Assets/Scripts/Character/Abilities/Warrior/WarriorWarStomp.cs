@@ -11,7 +11,7 @@ public class WarriorWarStomp : Action
 
     public float radius = 3.0f;
     public float knockBack = 10.0f;
-    public int damage = 28;
+    public int damage = 0;
 
     private Circle collisionShape;
 
@@ -70,7 +70,10 @@ public class WarriorWarStomp : Action
 					{
 						foreach (Enemy e in enemies)
 						{
-							e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                            damage = (int)( (float)(((Hero)owner).HeroStats.Attack) * 0.25f);
+                            Debug.Log(this.ToString() + ": " + damage + " dmg");
+
+                            e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyStunEffect(2.25f);
 
 							// Create a blood splatter effect on the enemy.

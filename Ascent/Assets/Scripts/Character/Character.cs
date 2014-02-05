@@ -290,7 +290,7 @@ public abstract class Character : BaseCharacter
 	{
 		if (activeAbility == null)
 		{
-			Action action = abilities.Find(a => a.AnimationTrigger == ability); // this is a lambda 
+			Action action = abilities.Find(a => a.ToString() == ability); // this is a lambda 
 			if (action == null)
 			{
 				Debug.LogError("Could not find and return ability: " + ability);

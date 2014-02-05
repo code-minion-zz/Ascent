@@ -115,6 +115,11 @@ public abstract class CharacterStats
 		get { return currentSpecial; }
 		set
 		{
+            int maxSpecial = MaxSpecial;
+            if (value > maxSpecial)
+            {
+                value = maxSpecial;
+            }
 			if (currentSpecial != value)
 			{
 				if (onCurSpecialChanged != null)

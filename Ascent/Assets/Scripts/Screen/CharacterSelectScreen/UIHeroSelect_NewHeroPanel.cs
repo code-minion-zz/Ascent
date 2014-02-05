@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel 
@@ -20,7 +20,7 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
         buttons[(int)EButtons.Rogue] = transform.FindChild("Rogue").GetComponent<UIButton>();
         buttons[(int)EButtons.Mage] = transform.FindChild("Mage").GetComponent<UIButton>();
 
-        currentButton = (int)EButtons.Warrior;
+        currentHighlightedButton = (int)EButtons.Warrior;
         currentSelection = buttons[(int)EButtons.Warrior];
 
         UICamera.Notify(currentSelection.gameObject, "OnHover", true);
@@ -62,7 +62,7 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
     {
         UICamera.Notify(currentSelection.gameObject, "OnPress", true);
 
-        EButtons current = (EButtons)currentButton;
+        EButtons current = (EButtons)currentHighlightedButton;
 
         switch(current)
         {
