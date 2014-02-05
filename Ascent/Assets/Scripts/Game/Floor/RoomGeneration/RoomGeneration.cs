@@ -171,7 +171,7 @@ public class RoomGeneration
 	/// <param name="room">Room.</param>
 	public void PopulateMiscObjects(RoomProperties room)
 	{
-        List<TileProperties> tempAvailablePosition = new List<TileProperties>();
+        List<TileProperties> tempAvailableTiles = new List<TileProperties>();
 
         // Find all the available positions that a misc object can be placed.
 		for (int i = 0; i < room.NumberOfTilesX; ++i)
@@ -185,47 +185,47 @@ public class RoomGeneration
                 {
                     if (room.RoomTiles[i, j].IsOccupied == false)
                     {
-                        tempAvailablePosition.Add(room.RoomTiles[i, j]);
+                        tempAvailableTiles.Add(room.RoomTiles[i, j]);
                     }
                 }
 			}
 		}
 
-        // Determine how many objects we will try to place.
+        GameObject go = null;
+
+        // For each corner place the braziers.
+        foreach (TileProperties tile in tempAvailableTiles)
+        {
+            if (tile.TileType == TilePropertyType.cornerWallTile)
+            {
+                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
+                go.transform.parent = room.Room.EnvironmentParent;
+                go.transform.localPosition = tile.Position;
+
+                tile.IsOccupied = true;
+            }
+        }
+
+        // Determine how many barrel objects we will try to place.
         int numberOfMisc = (int)miscObjects * Random.Range(1, 4);
         int miscPlaced = 0;
 
         for (miscPlaced = 0; miscPlaced < numberOfMisc; ++miscPlaced)
         {
+            // Reset as we do not want to accidentally place more braziers.
+            go = null;
+
             // If we have exausted all of our available positions we can finish.
-            if (tempAvailablePosition.Count == 0)
+            if (tempAvailableTiles.Count == 0)
                 return;
 
             // Choose a random tile, and a random misc object.
-            int randomTile = Random.Range(0, tempAvailablePosition.Count);
+            int randomTile = Random.Range(0, tempAvailableTiles.Count);
 
-            GameObject go = null;
-
-            // If its a corner piece tile.
-            if (tempAvailablePosition[randomTile].TileType == TilePropertyType.cornerWallTile)
+            // Check to see if the tile type is a wall tile to be sure.
+            if (tempAvailableTiles[randomTile].TileType == TilePropertyType.wallTile)
             {
-                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
-            }
-            else if (tempAvailablePosition[randomTile].TileType == TilePropertyType.wallTile)
-            {
-                int random = Random.Range(0, 1);
-
-                switch (random)
-                {
-                        // Barrel.
-                    case 0:
-                        go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
-                        break;
-
-                    case 1:
-                        go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
-                        break;
-                }
+                go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
             }
 
             if (go == null)
@@ -235,11 +235,11 @@ public class RoomGeneration
             }
 
             go.transform.parent = room.Room.EnvironmentParent;
-            go.transform.localPosition = tempAvailablePosition[randomTile].Position;
+            go.transform.localPosition = tempAvailableTiles[randomTile].Position;
 
-            tempAvailablePosition[randomTile].TileType = TilePropertyType.miscObj;
-            tempAvailablePosition[randomTile].IsOccupied = true;
-            tempAvailablePosition.Remove(tempAvailablePosition[randomTile]);
+            tempAvailableTiles[randomTile].TileType = TilePropertyType.miscObj;
+            tempAvailableTiles[randomTile].IsOccupied = true;
+            tempAvailableTiles.Remove(tempAvailableTiles[randomTile]);
         }
 	}
 
