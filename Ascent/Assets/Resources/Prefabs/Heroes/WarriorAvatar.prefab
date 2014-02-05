@@ -121,6 +121,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400084}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Base HumanRPalm
   m_TagString: Untagged
@@ -1327,6 +1328,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimations: 1
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100084}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35232e65e781bbe41bb380954203ebc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emit: 1
+  _emitTime: 0
+  _material: {fileID: 2100000, guid: a029e2b41b4bdc942be6abb49f3add2f, type: 2}
+  _lifeTime: 1
+  _colors:
+  - {r: .426470578, g: .426470578, b: .426470578, a: 0}
+  _sizes:
+  - 3
+  _minVertexDistance: .100000001
+  _maxVertexDistance: 10
+  _maxAngle: 3
+  _autoDestruct: 0
+  _base: {fileID: 400084}
+  _tip: {fileID: 400088}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1356,7 +1382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applyTilt: 0
   tiltAmount: 25
 --- !u!137 &13700002
 SkinnedMeshRenderer:

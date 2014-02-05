@@ -3,12 +3,12 @@ using System.Collections;
 
 public class AICondition_ReachedTarget : AICondition
 {
-    private AISteeringAgent steerAgent;
+    //private AISteeringAgent steerAgent;
     private bool targetReached = false;
 
     public AICondition_ReachedTarget(AISteeringAgent steerAgent)
     {
-        this.steerAgent = steerAgent;
+        //this.steerAgent = steerAgent;
         steerAgent.OnTargetReached += OnTargetReached;
     }
 

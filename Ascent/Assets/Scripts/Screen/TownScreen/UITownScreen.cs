@@ -13,6 +13,7 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	private int nextEmptyPlayerSlot = 0;
 
+#pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
 
 //    bool allReady = false;
