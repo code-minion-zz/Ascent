@@ -406,7 +406,8 @@ public class RoomGeneration
 				wallGo.transform.parent = walls.transform;
 
                 // Make this tile a wall tile.
-                if (room.RoomTiles[i, room.NumberOfTilesY-1].TileType != TilePropertyType.doorTile)
+                if (room.RoomTiles[i, room.NumberOfTilesY-1].TileType != TilePropertyType.doorTile &&
+                    room.RoomTiles[i, room.NumberOfTilesY-1].TileType != TilePropertyType.cornerWallTile)
                 {
                     room.RoomTiles[i, room.NumberOfTilesY - 1].TileType = TilePropertyType.wallTile;
                 }
@@ -438,7 +439,8 @@ public class RoomGeneration
 				wallGo.transform.parent = walls.transform;
 
                 // Make this tile a wall tile.
-                if (room.RoomTiles[i, 0].TileType != TilePropertyType.doorTile)
+                if (room.RoomTiles[i, 0].TileType != TilePropertyType.doorTile &&
+                    room.RoomTiles[i, 0].TileType != TilePropertyType.cornerWallTile)
                 {
                     room.RoomTiles[i, 0].TileType = TilePropertyType.wallTile;
                 }
@@ -470,7 +472,8 @@ public class RoomGeneration
 				wallGo.transform.parent = walls.transform;
 
                 // Make this tile a wall tile.
-                if (room.RoomTiles[room.NumberOfTilesX-1, i].TileType != TilePropertyType.doorTile)
+                if (room.RoomTiles[room.NumberOfTilesX-1, i].TileType != TilePropertyType.doorTile &&
+                    room.RoomTiles[room.NumberOfTilesX-1, i].TileType != TilePropertyType.cornerWallTile)
                 {
                     room.RoomTiles[room.NumberOfTilesX-1, i].TileType = TilePropertyType.wallTile;
                 }
@@ -502,7 +505,8 @@ public class RoomGeneration
 				wallGo.transform.parent = walls.transform;
 
                 // Make this tile a wall tile.
-                if (room.RoomTiles[0, i].TileType != TilePropertyType.doorTile)
+                if (room.RoomTiles[0, i].TileType != TilePropertyType.doorTile &&
+                    room.RoomTiles[0, i].TileType != TilePropertyType.cornerWallTile)
                 {
                     room.RoomTiles[0, i].TileType = TilePropertyType.wallTile;
                 }

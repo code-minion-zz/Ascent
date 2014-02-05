@@ -187,20 +187,6 @@ public abstract class Hero : Character
 			" MULT: " + hero.HeroStats.CritalHitMultiplier +
 			" DODGE: " + hero.HeroStats.DodgeChance
 			);
-
-        Debug.Log("Base:     " +
-            "POW: " + hero.HeroStats.BasePower +
-            " FIN: " + hero.HeroStats.BaseFinesse +
-            " VIT: " + hero.HeroStats.BaseVitality +
-            " SPR: " + hero.HeroStats.BaseSpirit + " | " +
-
-            " ATK: " + hero.HeroStats.BaseAttack +
-            " PDEF: " + hero.HeroStats.BasePhysicalDefense +
-            " MDEF: " + hero.HeroStats.BaseMagicalDefense +
-            " CRIT: " + hero.HeroStats.BaseCriticalHitChance +
-            " MULT: " + hero.HeroStats.BaseCritalHitMultiplier +
-            " DODGE: " + hero.HeroStats.BaseDodgeChance
-			);
 	}
 
 	public static void Load(Hero hero, HeroSaveData data)

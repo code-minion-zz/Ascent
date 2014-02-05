@@ -73,12 +73,21 @@ public class Floor : MonoBehaviour
 	public void InitialiseFloor()
     {
         InitialiseCamera();
+
+        // Create HUD
+        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup")) as GameObject;
+        hudManagerGO.GetComponent<HudManager>().Initialise();
+
         Initialise();
     }
 
 	public void InitialiseRandomFloor()
 	{
 		InitialiseCamera();
+
+        // Create HUD
+        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup")) as GameObject;
+        hudManagerGO.GetComponent<HudManager>().Initialise();
 
 		FloorGeneration floorGenerator = new FloorGeneration();
         floorGenerator.dungeonLevel = 1;
@@ -122,9 +131,6 @@ public class Floor : MonoBehaviour
 
 	private void Initialise()
 	{
-		// Create HUD
-
-		GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup"));
 
 		// Initialise the players onto the start points
 

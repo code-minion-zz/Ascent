@@ -167,6 +167,7 @@ public class Game : MonoBehaviour
 			}
 		}
 
+       
 		// Add some necessary components
 		tower = GetComponent<Tower>();
 		gameObject.AddComponent<EffectFactory>();
@@ -310,8 +311,8 @@ public class Game : MonoBehaviour
 					{
 						players[i].Hero.gameObject.SetActive(true);
 					}
-					tower.InitialiseRandomFloor();
 
+					tower.InitialiseRandomFloor();
 				}
 				break;
 			case EGameState.Town:

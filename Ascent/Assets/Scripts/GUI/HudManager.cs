@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class HudManager : MonoBehaviour {
 	
-	public static 	HudManager Singleton;
+	public static 	HudManager singleton;
 	public			Camera		hudCamera;
 	public			TextDriver  TextDriver;
 	private			Game		gameScript;
@@ -17,54 +17,62 @@ public class HudManager : MonoBehaviour {
 	protected		List<StatBar> enemyBars;
 	
 	public UIAnchor anchor;
-	
+
+    public static HudManager Singleton
+    {
+        get
+        {
+            if (singleton == null)
+            {
+                singleton = GameObject.FindObjectOfType<HudManager>(); 
+            }
+
+            return singleton;
+        }
+
+    }
+
 	public void OnEnable()
 	{
-		if (Singleton == null)
-			Singleton = this;
+        if (singleton == null)
+        {
+            singleton = this;
+        }
 	}
 
-	public void Awake()
-	{
-		GameObject gameLoop = Game.Singleton.gameObject;
-		if (gameLoop == null)
-		{
-			Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
-			return;
-		}
-		gameScript = gameLoop.GetComponent<Game>();
+    public void Initialise()
+    {
+        GameObject gameLoop = Game.Singleton.gameObject;
+        if (gameLoop == null)
+        {
+            Debug.LogError("HudManager : 'Game' GameObject does not exist!", this);
+            return;
+        }
+        gameScript = gameLoop.GetComponent<Game>();
 
-		enemyBars = new List<StatBar>();
-	}
+        enemyBars = new List<StatBar>();
 
-	public void Start()
-	{
-		int numPlayers = gameScript.NumberOfPlayers;
+        int numPlayers = gameScript.NumberOfPlayers;
 
-		if (numPlayers > 0)
-		{
-			Player1.gameObject.SetActive(true);
-			Player1.Init(gameScript.Players[0].Hero.GetComponent<Hero>());
+        if (numPlayers > 0)
+        {
+            Player1.gameObject.SetActive(true);
+            Player1.Init(gameScript.Players[0].Hero.GetComponent<Hero>());
 
-			if (numPlayers > 1)
-			{
-				Player2.gameObject.SetActive(true);
+            if (numPlayers > 1)
+            {
+                Player2.gameObject.SetActive(true);
                 Player2.Init(gameScript.Players[1].Hero.GetComponent<Hero>());
 
-				if (numPlayers > 2)
-				{
+                if (numPlayers > 2)
+                {
                     Player3.Init(gameScript.Players[2].Hero.GetComponent<Hero>());
-					Player3.gameObject.SetActive(true);
-				}
-			}
-		}
-	}
+                    Player3.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
 	
-	
-	// Update is called once per frame
-	void Update () 
-	{
-	}
 	
 	public StatBar AddEnemyLifeBar(Vector3 characterScale)
 	{
