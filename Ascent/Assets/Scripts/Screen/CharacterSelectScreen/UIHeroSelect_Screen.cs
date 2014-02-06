@@ -29,6 +29,7 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 				
 		for (int i = 0; i < maxPlayers; ++i) // 3 players
 		{
+			windows[i].gameObject.SetActive(true);
 			windows[i].Initialise();
 			windows[i].gameObject.SetActive(false);
 		}
