@@ -41,10 +41,12 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
 		base.Initialise ();
-		
-		TitleLabel = transform.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
-		InfoLabel = transform.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
-		InstructLabel = transform.Find("Instructions").GetComponent<UILabel>();
+
+		Transform sharedEle = transform.Find("Shared Elements");
+
+		TitleLabel = sharedEle.transform.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
+		InfoLabel = sharedEle.transform.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
+		InstructLabel = sharedEle.transform.Find("Instructions").GetComponent<UILabel>();
 
 		updateTitle = true;
 	}

@@ -11,7 +11,7 @@ public class UITownScreen : UIPlayerMenuScreen
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
-	private	uint towerVotes;
+	private	uint readyPlayers;
 
 #pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
@@ -89,31 +89,8 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	void ReadyTracker()
 	{
-//		switch (oldChoice)
-//		{
-//		case PlayerChoice.NONE:
-//			break;
-//		case PlayerChoice.TOWER:
-//			--towerVotes;
-//			break;
-//		case PlayerChoice.QUIT:
-//			--quitVotes;
-//			break;
-//		}
-//
-//		switch (choice)
-//		{
-//		case PlayerChoice.NONE:
-//			break;
-//		case PlayerChoice.TOWER:
-//			++towerVotes;
-//			break;
-//		case PlayerChoice.QUIT:
-//			++quitVotes;
-//			break;
-//		}
 
-		if (towerVotes == Game.Singleton.NumberOfPlayers)
+		if (readyPlayers == Game.Singleton.NumberOfPlayers)
 		{
 			// load next level
 			Game.Singleton.LoadLevel("Sewer_level", Game.EGameState.TowerRandom);
