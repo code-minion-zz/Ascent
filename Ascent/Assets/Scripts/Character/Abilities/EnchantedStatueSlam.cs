@@ -18,7 +18,8 @@ public class EnchantedStatueSlam : Action
 		cooldownDurationMax = 3.0f;
 		specialCost = 0;
 
-		damageArea = new Arc(owner.transform, 20.0f, 10.0f, Vector3.back * 3.0f);
+		//damageArea = new Arc(owner.transform, 20.0f, 10.0f, Vector3.back * 3.0f);
+		damageArea = new Arc(owner.transform, 5.0f, 25.0f, Vector3.back * 1.5f);
 	}
 
 	public override void StartAbility()
@@ -55,7 +56,7 @@ public class EnchantedStatueSlam : Action
 				foreach (Character c in characters)
 				{
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(1, Character.EDamageType.Physical, owner);
+					c.ApplyDamage(owner.DamageFormulaA(0.0f, 1.0f), Character.EDamageType.Physical, owner);
 					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
 					// Create a blood splatter effect on the enemy.

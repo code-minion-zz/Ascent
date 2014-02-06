@@ -11,7 +11,8 @@ public class UITownScreen : UIPlayerMenuScreen
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
-	private	uint readyPlayers;
+#pragma warning disable 0649
+    private	uint readyPlayers;
 
 #pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;

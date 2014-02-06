@@ -59,12 +59,13 @@ public class FloorGeneration
         locationVector = Vector3.zero;
 
 		// Generate the first room in the game.
-		RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "StartRoom");
+		RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
+		//firstRoom.RoomType = FeatureType.none;
 		firstRoom.Position = Vector3.zero;
 		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
-        for (roomsPlaced = 0; roomsPlaced < roomsToPlace; roomsPlaced++)
+        for (roomsPlaced = 1; roomsPlaced < roomsToPlace+1; roomsPlaced++)
         {
             // Pick a random room from the pool of rooms that currently exist
             int randomRoom = Random.Range(0, rooms.Count);
@@ -152,6 +153,8 @@ public class FloorGeneration
 
             switch (type)
             {
+				case FeatureType.none:
+					break;
                 case FeatureType.monster:
                     // Populate room with monsters!
                     //room.Room.GenerateMonsterSpawnLoc(dungeonLevel, room, monsterRarity);

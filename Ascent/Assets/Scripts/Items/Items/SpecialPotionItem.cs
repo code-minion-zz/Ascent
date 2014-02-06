@@ -10,6 +10,7 @@ public class SpecialPotionItem : ConsumableItem
 
 	protected override void Consume(Hero user)
 	{
-		// Restore special
+		// 10HP + 10% of maxHP
+		user.HeroStats.CurrentSpecial += 10 + (int)(user.HeroStats.MaxSpecial * 0.1f);
 	}
 }

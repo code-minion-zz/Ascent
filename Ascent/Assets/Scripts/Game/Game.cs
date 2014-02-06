@@ -171,7 +171,7 @@ public class Game : MonoBehaviour
        
 		// Add some necessary components
 		tower = GetComponent<Tower>();
-		gameObject.AddComponent<EffectFactory>();
+		effectFactory = gameObject.AddComponent<EffectFactory>();
 
 		// Set the game state as the test state specified
 		gameState = testState;

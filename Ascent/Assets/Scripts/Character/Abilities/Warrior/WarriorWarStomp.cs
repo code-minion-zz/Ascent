@@ -23,7 +23,7 @@ public class WarriorWarStomp : Action
         animationLength = 1.667f;
         animationSpeed = 1.5f;
         animationTrigger = "WarStomp";
-        cooldownDurationMax = 3.0f;
+        cooldownDurationMax = 2.0f;
         specialCost = 5;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
@@ -70,18 +70,13 @@ public class WarriorWarStomp : Action
 					{
 						foreach (Enemy e in enemies)
 						{
-                            damage = (int)( (float)(((Hero)owner).HeroStats.Attack) * 0.25f);
-                            Debug.Log(this.ToString() + ": " + damage + " dmg");
+							damage = owner.DamageFormulaA(0.0f, 0.5f);
 
                             e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyStunEffect(2.25f);
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
-
-
-                            // Tell the hud manager to spawn text.
-                            HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
 						}
 					}
 				}

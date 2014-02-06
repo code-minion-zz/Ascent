@@ -48,12 +48,6 @@ public class HeroStats : CharacterStats
 		get { return growth; }
 	}
 
-	public int CurrentExperience
-	{
-		get { return experience; }
-		set { experience = value; }
-	}
-
 	public int RequiredExperience
 	{
 		// RequiredEXP@LV1 + ((RequiredEXP@LV30 - RequiredEXP@LV1) * ((Level / MaxLevel)^2))

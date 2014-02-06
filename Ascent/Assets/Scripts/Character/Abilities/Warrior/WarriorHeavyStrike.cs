@@ -11,7 +11,6 @@ public class WarriorHeavyStrike : Action
 	private MeleeWeaponTrail trail;
 
 	private float previousTrailLength;
-	private float trailLength = 2.0f;
 
     private Arc swingArc;
 
@@ -19,10 +18,10 @@ public class WarriorHeavyStrike : Action
     {
         animationSpeed = 1.15f;
         animationLength = 1.233f;
-        cooldownDurationMax = 5.0f;
+        cooldownDurationMax = 1.0f;
         timeElapsedSinceStarting = 0.0f;
         animationTrigger = "HeavyStrike";
-        specialCost = 0;
+        specialCost = 2;
 
 		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);
 
@@ -67,15 +66,11 @@ public class WarriorHeavyStrike : Action
 					{
 						foreach (Enemy e in enemies)
 						{
-                            int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.5f);
-                            e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                            e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.5f), Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
-
-							// Tell the hud manager to spawn text.
-							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25, Color.cyan);
 						}
 					}
 				}

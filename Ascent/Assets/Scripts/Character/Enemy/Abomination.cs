@@ -18,7 +18,7 @@ public class Abomination : Enemy
     {
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination);
 
         // Add abilities
         Action strike = new AbominationStrike();
@@ -85,7 +85,7 @@ public class Abomination : Enemy
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
-            trigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
+            trigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
             trigger.OnTriggered += OnSurrounded;
 
             trigger = behaviour.AddTrigger();

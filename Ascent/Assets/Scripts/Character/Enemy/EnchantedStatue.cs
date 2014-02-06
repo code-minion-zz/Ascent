@@ -51,6 +51,7 @@ public class EnchantedStatue : Enemy
         motor.MovementSpeed = 1.5f;
         AIAgent.Initialise(transform);
 		AIAgent.SteeringAgent.RotationSpeed = 1.5f;
+		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
 
         AIBehaviour behaviour = null;
 
@@ -68,12 +69,13 @@ public class EnchantedStatue : Enemy
             OnAttackedTrigger = behaviour.AddTrigger();
 			OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
 			OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
-			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 1, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
+			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
 			OnAttackedTrigger.OnTriggered += OnSurrounded;
 
 			OnAttackedTrigger = behaviour.AddTrigger();
             OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[slamActionID]));
-            OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
+            //OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
+			OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 25.0f, Vector3.back * 1.5f)));
             OnAttackedTrigger.OnTriggered += OnTargetInSight;
         }
 

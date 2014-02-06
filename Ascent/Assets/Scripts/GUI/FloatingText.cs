@@ -67,6 +67,7 @@ public class FloatingText : MonoBehaviour
 
     public void LateUpdate()
     {
+		//tweenPos.from = target.transform.position;
         //Following();
     }
 

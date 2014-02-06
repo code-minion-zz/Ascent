@@ -15,7 +15,7 @@ public class Rat : Enemy
 		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
 
 		// Add abilities
-		Action tackle = new EnemyTackle();
+		Action tackle = new RatTackle();
 		tackle.Initialise(this);
 		abilities.Add(tackle);
 
@@ -27,6 +27,7 @@ public class Rat : Enemy
 	   AIAgent.Initialise(transform);
 
        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
+	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.25f;
        motor.MovementSpeed = 3.0f;
        motor.minSpeed = 0.5f;
        motor.acceleration = 1.0f;

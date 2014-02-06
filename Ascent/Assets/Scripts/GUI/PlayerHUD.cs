@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class PlayerHUD : MonoBehaviour {
 
@@ -47,7 +48,7 @@ public class PlayerHUD : MonoBehaviour {
 
 			if (abilities[abilityID] != null)
 			{
-				abilityLabels[i].text = abilities[abilityID].AnimationTrigger + ". CD: " + abilities[abilityID].RemainingCooldown;
+				abilityLabels[i].text = abilities[abilityID].AnimationTrigger + ". CD: " + Math.Round( abilities[abilityID].RemainingCooldown, 2);
 
 				if (abilities[abilityID].RemainingCooldown <= 0.0f)
 				{

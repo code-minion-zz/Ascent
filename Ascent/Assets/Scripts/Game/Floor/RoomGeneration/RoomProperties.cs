@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public enum FeatureType
 {
+	none,
     monster,
     trap,
     treasure,

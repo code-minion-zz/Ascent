@@ -70,14 +70,6 @@ public class InputManager : MonoBehaviour
 
 	public static void Update()
 	{
-		#region HAX
-		if (Input.GetKeyUp(KeyCode.BackQuote))
-		{
-			//Game.Singleton.transform.
-			Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.Town);
-		}
-		#endregion
-
 		if (prevJoystickHash != JoystickHash)
 		{
 			RefreshDevices();

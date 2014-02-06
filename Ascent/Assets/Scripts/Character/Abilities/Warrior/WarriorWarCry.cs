@@ -10,8 +10,8 @@ public class WarriorWarCry : Action
         animationLength = 1.333f;
         animationSpeed = 1.5f;
         animationTrigger = "WarCry";
-        cooldownDurationMax = 5.0f;
-        specialCost = 5;
+        cooldownDurationMax = 10.0f;
+        specialCost = 10;
 
 		Validate();
 	}

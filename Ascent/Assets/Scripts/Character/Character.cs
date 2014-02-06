@@ -336,10 +336,8 @@ public abstract class Character : BaseCharacter
 		int finalDamage = Mathf.Max( Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense)), 1);
 
         HitTaken = true;
-		//int finalDamage = unmitigatedDamage;
-		lastDamagedBy = damageDealer;
 
-		//Debug.Log("UN-MITIGATED DMG: " + unmitigatedDamage +  ", FINAL DMG: " + finalDamage);
+		lastDamagedBy = damageDealer;
 
 		// Let the owner know of the amount of damage done.
 		if (damageDealer != null)
@@ -349,6 +347,16 @@ public abstract class Character : BaseCharacter
 
 		// Obtain the health stat and subtract damage amount to the health.
 		stats.CurrentHealth -= finalDamage;
+
+
+		if (this is Hero)
+		{
+			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
+		}
+		else
+		{
+			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
+		}
 
 		// Tell this character how much damage it has done.
 		OnDamageTaken(finalDamage);
@@ -386,9 +394,10 @@ public abstract class Character : BaseCharacter
 	{
 		if (canBeStunned)
 		{
-			Debug.Log("?");
 			stunDuration = duration;
 			SetColor(Color.yellow);
+
+			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Stunned!", Color.yellow);
 		}
 	}
 
@@ -464,14 +473,18 @@ public abstract class Character : BaseCharacter
 	}
 
     public virtual void RefreshEverything()
-    {
-        stats.CurrentHealth = stats.MaxHealth;
-        stats.CurrentSpecial = stats.MaxSpecial;
+    {	
+		if (stats != null)
+		{
+			stats.CurrentHealth = stats.MaxHealth;
+			stats.CurrentSpecial = stats.MaxSpecial;
 
-        if (isDead)
-        {
-            Respawn(transform.position);
-        }
+			if (isDead)
+			{
+				Debug.Log("a");
+				Respawn(transform.position);
+			}
+		}
     }
 
 	public virtual void AddBuff(Buff buff)
@@ -482,6 +495,21 @@ public abstract class Character : BaseCharacter
 	public virtual void RemoveBuff(Buff buff)
 	{
 		buffList.Remove(buff);
+	}
+
+	public virtual int DamageFormulaA(float addFixedDamage, float addMultiplier)
+	{
+		float damage = 0.0f;
+		if (this is Hero)
+		{
+			damage = (((Hero)this).HeroStats.Attack * addMultiplier) + addFixedDamage;
+		}
+		else
+		{
+			damage = (Stats.Attack* addMultiplier) + addFixedDamage;
+		}
+
+		return (int)damage;
 	}
 
 #if UNITY_EDITOR
