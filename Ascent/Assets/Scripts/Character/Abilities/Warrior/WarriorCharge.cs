@@ -50,7 +50,7 @@ public class WarriorCharge : Action
 	{
         base.StartAbility();
 
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge, Warrior.ECombatAnimations.Charge.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Charge, Warrior.ECombatAnimation.Charge.ToString());
 
         startPos = owner.transform.position;
 		Vector3 rayStart = startPos;
@@ -114,7 +114,7 @@ public class WarriorCharge : Action
 
     public override void StartCast()
     {
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.ChargeCrouch, Warrior.ECombatAnimations.Charge.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.ChargeCrouch, Warrior.ECombatAnimation.Charge.ToString());
     }
 
     public override void UpdateAbility()

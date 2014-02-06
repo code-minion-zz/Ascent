@@ -12,6 +12,10 @@ public class WarriorStrike : Action
     private bool performed = false;
 	private Arc swingArc;
 
+	private Warrior.ECombatAnimation firstStrikeAnim = Warrior.ECombatAnimation.Strike1;
+	private Warrior.ECombatAnimation curStrikeAnim = Warrior.ECombatAnimation.Strike1;
+	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike2;
+
 	public override void Initialise(Character owner)
     {
 		base.Initialise(owner);
@@ -32,10 +36,15 @@ public class WarriorStrike : Action
 
 		performed = false;
 
-		//owner.Animator.PlayAnimation(animationTrigger);
-        int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
-        ((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
-        //((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
+		int strikeAnim = (int)curStrikeAnim;
+		((HeroAnimator)Owner.Animator).PlayCombatAction(strikeAnim, ((Warrior.ECombatAnimation)strikeAnim).ToString());
+    
+		++curStrikeAnim;
+
+		if (curStrikeAnim > lastStrikeAnim)
+		{
+			curStrikeAnim = firstStrikeAnim;
+		}
 
         CanBeInterrupted = false;
 	}
@@ -78,7 +87,7 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
-        else if (timeElapsedSinceStarting >= animationLength * 0.9f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.85f)
         {
             CanBeInterrupted = true;
         }

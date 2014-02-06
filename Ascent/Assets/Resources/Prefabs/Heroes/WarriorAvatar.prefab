@@ -8,6 +8,22 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
+  - 114: {fileID: 11400006}
+  m_Layer: 0
+  m_Name: Base HumanPalmBone003 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100002
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400002}
   m_Layer: 0
   m_Name: Base HumanPalmBone003 1
   m_TagString: Untagged
@@ -136,7 +152,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400084}
-  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Base HumanRPalm
   m_TagString: Untagged
@@ -726,7 +741,19 @@ Transform:
   m_LocalScale: {x: .999992847, y: 1.00001204, z: .999995112}
   m_Children:
   - {fileID: 400078}
+  - {fileID: 400002}
   m_Father: {fileID: 400084}
+--- !u!4 &400002
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_LocalRotation: {x: -3.75926383e-08, y: 3.95816016e-07, z: 2.96335628e-07, w: 1}
+  m_LocalPosition: {x: -.469999999, y: 2.41810358e-06, z: -3.37893198e-06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
 --- !u!4 &400010
 Transform:
   m_ObjectHideFlags: 1
@@ -780,7 +807,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100074}
   m_LocalRotation: {x: -4.39698589e-08, y: 3.90623626e-07, z: 2.12569006e-07, w: 1}
-  m_LocalPosition: {x: -.141023502, y: -1.71430929e-06, z: 5.06846163e-07}
+  m_LocalPosition: {x: -.192201644, y: -2.06813311e-07, z: -2.22140079e-06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -1361,7 +1388,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100084}
+  m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35232e65e781bbe41bb380954203ebc4, type: 3}
@@ -1375,11 +1402,15 @@ MonoBehaviour:
   _sizes: []
   _minVertexDistance: .100000001
   _maxVertexDistance: 10
+  _maxVertexDistanceSqr: 0
   _maxAngle: 3
   _autoDestruct: 0
-  subdivisions: 4
+  subdivisions: 10
   _base: {fileID: 400000}
-  _tip: {fileID: 400078}
+  _tip:
+  - {fileID: 400078}
+  - {fileID: 400002}
+  tipToUse: 0
   fadeOutTimeMax: 1
 --- !u!114 &11400016
 MonoBehaviour:
@@ -1410,7 +1441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAmount: 25
 --- !u!137 &13700002
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

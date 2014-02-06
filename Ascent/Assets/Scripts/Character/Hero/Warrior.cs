@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Warrior : Hero 
 {
-	public enum ECombatAnimations
+	public enum ECombatAnimation
 	{
 		None = -1,
 		Strike1 = 0,
@@ -34,5 +34,7 @@ public class Warrior : Hero
 		AddSkill(new WarriorCharge());
 		AddSkill(new WarriorWarStomp());
         AddSkill(new WarriorWarCry());
-    }
+
+		CanBeStunned = false;
+	}
 }

@@ -8,6 +8,11 @@ public class WarriorHeavyStrike : Action
     public float radius = 4.0f;
     public float arcAngle = 200.0f;
 
+	private MeleeWeaponTrail trail;
+
+	private float previousTrailLength;
+	private float trailLength = 2.0f;
+
     private Arc swingArc;
 
     public override void Initialise(Character owner)
@@ -21,6 +26,8 @@ public class WarriorHeavyStrike : Action
 
 		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);
 
+		trail = ((HeroAnimator)owner.Animator).weaponTrail;
+		//previousTrailLength = trail._tip.transform.position.x;
 
         base.Initialise(owner);
     }
@@ -32,7 +39,14 @@ public class WarriorHeavyStrike : Action
 
         animationLength = 1.167f / animationSpeed;
 		//owner.Animator.PlayAnimation(animationTrigger);
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.HeavyStrike, Warrior.ECombatAnimations.HeavyStrike.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.HeavyStrike, Warrior.ECombatAnimation.HeavyStrike.ToString());
+
+		//Vector3 pos = trail._tip.transform.position;
+		////pos.x = trailLength;
+		//._tip.transform.position = pos;
+		//trail.ExtendLength(2.0f);
+		trail.tipToUse = 1;
+		 
 
         base.StartAbility();
     }
@@ -73,6 +87,10 @@ public class WarriorHeavyStrike : Action
 
     public override void EndAbility()
     {
+		//Vector3 pos = trail._tip.transform.position;
+		//pos.x = previousTrailLength;
+		//trail._tip.transform.position = pos;
+		trail.tipToUse = 0;
         ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }

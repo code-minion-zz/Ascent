@@ -88,8 +88,10 @@ public class HeroController : MonoBehaviour
             //if (!hero.IsStunned)
             if (actionButtonPair.action == null)
             {
+				ProcessMovement(device);
                 ProcessFaceButtons(device);
                 ProcessTriggersAndBumpers(device);
+				ProcessDPad(device);
             }
             else
             {
@@ -100,20 +102,12 @@ public class HeroController : MonoBehaviour
                 }
             }
 
-			if (motor.canMove)
-			{
-				if (!hero.IsStunned)
-				{
-					//ProcessFaceButtons(device);
-					ProcessMovement(device);
-				}
-
-				ProcessDPad(device);
-			}
-
             if (hero.HitTaken)
             {
-                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
+				if (hero.CanInterruptActiveAbility)
+				{
+					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
+				}
             }
 
 #if UNITY_EDITOR
@@ -214,7 +208,8 @@ public class HeroController : MonoBehaviour
 	{
 		animMoveSpeed = 0.0f;
 		bool moved = false;
-		if (GetComponent<CharacterMotor>().canMove && !hero.IsStunned)
+
+		if ((GetComponent<CharacterMotor>().canMove || hero.CanInterruptActiveAbility) && !hero.IsStunned)
 		{
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))

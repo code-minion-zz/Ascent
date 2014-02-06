@@ -27,7 +27,7 @@ public class TreasureChest : Interactable
 	protected EChestState curState = EChestState.Closed;
 
 	protected float timeAccum = 0.0f;
-	protected float[] stateTimes = new float[(int)EChestState.MAX] { 0.0f, 0.25f, 0.15f, 0.0f, 0.0f };
+	protected float[] stateTimes = new float[(int)EChestState.MAX] { 0.0f, 0.25f, 0.1f, 0.0f, 0.0f };
 
 	protected EChestType chestType = EChestType.Loot;
 
@@ -232,7 +232,7 @@ public class TreasureChest : Interactable
 		// Right now just random a quantity and make bags drop over time.
 		// Drops do not need to be uniform.
 
-		quantityOfLoot = Random.Range(5, 10); // TODO: include current bonuses to the roll
+		quantityOfLoot = Random.Range(2, 5); // TODO: include current bonuses to the roll
 		
 		// TODO: Randomly generate items to drop and add them into a list
 		loot = new List<Item>(quantityOfLoot);

@@ -68,12 +68,57 @@ public class RoomGeneration
 		// Apply the new dimensions to the navMesh.
 		room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
 
-		// TODO: Fix the camera setup for this room.
-		room.minCamera.x = -width * 0.25f;
-		room.minCamera.z = -height * 0.25f;
-		room.maxCamera.z = height * 0.25f;
-		room.maxCamera.x = width * 0.25f;
+		float cameraOffsetX = 0.175f;
+		float cameraOffsetZ = 0.57f;
+
+		// A standard room is 18 wide(X) by 14 high(Z)
+		float highestDimension = width > height ? height : width;
+		if (highestDimension <= 6.0f)
+		{
+			room.cameraHeight = 17.0f;
+			room.cameraOffsetZ = -0.3f;
+			cameraOffsetX = 0.20f;
+			cameraOffsetZ = 0.75f;
+
+		}
+		else if (highestDimension <= 10.0f)
+		{
+			room.cameraHeight = 18.0f;
+			room.cameraOffsetZ = -0.318f;
+			cameraOffsetX = 0.20f;
+			cameraOffsetZ = 0.75f;
+		}
+		else if (highestDimension <= 14.0f)
+		{
+			room.cameraHeight = 19.0f;
+			room.cameraOffsetZ = -0.336f;
+			cameraOffsetX = 0.175f;
+			cameraOffsetZ = 0.57f;
+		}
+		else
+		{
+			room.cameraHeight = 20.0f;
+			room.cameraOffsetZ = -0.35f;
+			cameraOffsetX = 0.175f;
+			cameraOffsetZ = 0.57f;
+		}
 		
+
+		// TODO: Fix the camera setup for this room.
+		room.minCamera.x = -width * cameraOffsetX;
+		room.maxCamera.x = width * cameraOffsetX;
+
+		room.minCamera.z = -height * cameraOffsetZ;
+
+		// Min is the bottom. Max is TOp
+
+		// Assuming a base room height is 14 (ie. a room with height 14 will have max as 0), increase the max by the difference from the base height.
+		room.maxCamera.z = (height - 14.0f) * cameraOffsetZ;
+
+		// If the max is less than the min set the max to the min.
+		room.maxCamera.z = room.maxCamera.z < room.minCamera.z ? room.minCamera.z : room.maxCamera.z;
+
+
 		return newRoom;
 	}
 
@@ -126,6 +171,7 @@ public class RoomGeneration
 
                 case Room.EMonsterTypes.EnchantedStatue:
                     go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "EnchantedStatue");
+					go.transform.rotation = Quaternion.LookRotation(Vector3.back);
                     break;
 
                     // These should be left for boss rooms.

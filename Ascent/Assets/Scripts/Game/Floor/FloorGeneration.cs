@@ -159,7 +159,8 @@ public class FloorGeneration
                     break;
 
                 case FeatureType.treasure:
-                    room.Room.InstantiateGameObject(Room.ERoomObjects.Chest, "Chest");
+                    GameObject go = room.Room.InstantiateGameObject(Room.ERoomObjects.Chest, "Chest");
+					go.transform.rotation = Quaternion.LookRotation(Vector3.back);
                     // Place treasure in this room.
                     break;
 

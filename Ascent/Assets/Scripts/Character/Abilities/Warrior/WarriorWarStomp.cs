@@ -45,7 +45,7 @@ public class WarriorWarStomp : Action
 
         performed = false;
 
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.WarStromp, Warrior.ECombatAnimations.WarStromp.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.WarStromp, Warrior.ECombatAnimation.WarStromp.ToString());
     }
 
     public override void UpdateAbility()

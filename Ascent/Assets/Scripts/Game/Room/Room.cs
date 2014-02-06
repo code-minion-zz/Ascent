@@ -37,10 +37,16 @@ public class Room : MonoBehaviour
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
-	public Vector3 minCamera = new Vector3(-2.0f, 24.0f, -2.0f);
-	public Vector3 maxCamera = new Vector3(2.0f, 24.0f, 2.0f);
-	private Vector3 curMinCamera = new Vector3(-2.0f, 24.0f, -2.0f);
-	private Vector3 curMaxCamera = new Vector3(2.0f, 24.0f, 2.0f);
+	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
+	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
+	private Vector3 curMinCamera = new Vector3(-3.0f, 24.0f, -8.0f);
+	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
+
+	public float cameraHeight = 20.0f;
+	private float curCameraHeight = 20.0f;
+
+	public float cameraOffsetZ = 0.35f;
+	private float curCameraOffsetZ = 0.35f;
 
 	protected Doors doors;
     public bool startRoom = false;
@@ -203,12 +209,15 @@ public class Room : MonoBehaviour
 
     public void OnEnable()
     {
-		if (Game.Singleton.Tower.CurrentFloor)
+		if (Game.Singleton.Tower.CurrentFloor != null)
 		{
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
+			camera.minCamera = transform.position + minCamera;
+			camera.maxCamera = transform.position + maxCamera;
 			curMinCamera = minCamera;
 			curMaxCamera = maxCamera;
+			camera.CameraHeight = cameraHeight;
+
 		}
 
 		if(chests == null)
@@ -284,6 +293,16 @@ public class Room : MonoBehaviour
 		{
 			curMaxCamera = maxCamera;
 			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+		}
+		if (cameraHeight != curCameraHeight)
+		{
+			curCameraHeight = cameraHeight;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.CameraHeight = cameraHeight;
+		}
+		if (cameraOffsetZ != curCameraOffsetZ)
+		{
+			curCameraOffsetZ = cameraOffsetZ;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.offsetZ = curCameraOffsetZ;
 		}
 	}
 

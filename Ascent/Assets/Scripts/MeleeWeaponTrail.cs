@@ -41,7 +41,7 @@ public class MeleeWeaponTrail : MonoBehaviour
     float _maxVertexDistance = 10.0f;
 
     float _minVertexDistanceSqr = 0.0f;
-    float _maxVertexDistanceSqr = 0.0f;
+    public float _maxVertexDistanceSqr = 0.0f;
 
     [SerializeField]
     float _maxAngle = 3.00f;
@@ -57,7 +57,10 @@ public class MeleeWeaponTrail : MonoBehaviour
     [SerializeField]
     Transform _base;
     [SerializeField]
-    Transform _tip;
+    public Transform[] _tip;
+	//public Transform _tipB;
+
+	public int tipToUse = 0;
 
     List<Point> _points = new List<Point>();
 #if USE_INTERPOLATION
@@ -190,7 +193,7 @@ public class MeleeWeaponTrail : MonoBehaviour
                 {
                     Point p = new Point();
                     p.basePosition = _base.position;
-                    p.tipPosition = _tip.position;
+                    p.tipPosition = _tip[tipToUse].position;
                     p.timeCreated = Time.time;
                     _points.Add(p);
                     _lastPosition = transform.position;
@@ -262,12 +265,12 @@ public class MeleeWeaponTrail : MonoBehaviour
                 else
                 {
                     _points[_points.Count - 1].basePosition = _base.position;
-                    _points[_points.Count - 1].tipPosition = _tip.position;
+					_points[_points.Count - 1].tipPosition = _tip[tipToUse].position;
                     //_points[_points.Count - 1].timeCreated = Time.time;
 
 #if USE_INTERPOLATION
                     _smoothedPoints[_smoothedPoints.Count - 1].basePosition = _base.position;
-                    _smoothedPoints[_smoothedPoints.Count - 1].tipPosition = _tip.position;
+                    _smoothedPoints[_smoothedPoints.Count - 1].tipPosition = _tip[tipToUse].position;
 #endif
                 }
             }
@@ -276,7 +279,7 @@ public class MeleeWeaponTrail : MonoBehaviour
                 if (_points.Count > 0)
                 {
                     _points[_points.Count - 1].basePosition = _base.position;
-                    _points[_points.Count - 1].tipPosition = _tip.position;
+                    _points[_points.Count - 1].tipPosition = _tip[tipToUse].position;
                     //_points[_points.Count - 1].timeCreated = Time.time;
                 }
 
@@ -284,7 +287,7 @@ public class MeleeWeaponTrail : MonoBehaviour
                 if (_smoothedPoints.Count > 0)
                 {
                     _smoothedPoints[_smoothedPoints.Count - 1].basePosition = _base.position;
-                    _smoothedPoints[_smoothedPoints.Count - 1].tipPosition = _tip.position;
+                    _smoothedPoints[_smoothedPoints.Count - 1].tipPosition = _tip[tipToUse].position;
                 }
 #endif
             }
@@ -396,4 +399,11 @@ public class MeleeWeaponTrail : MonoBehaviour
             pointList.Remove(p);
         }
     }
+
+
+	public void ExtendLength(float length)
+	{
+		_tip[tipToUse].LookAt(_base.transform.position);
+		_tip[tipToUse].transform.position = _tip[tipToUse].transform.position + (_tip[tipToUse].forward * length);
+	}
 }

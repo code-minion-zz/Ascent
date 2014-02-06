@@ -23,7 +23,7 @@ public class WarriorWarCry : Action
         PDefenceBuff buff = new PDefenceBuff();
         buff.ApplyBuff(owner, owner, 15.0f);
 
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Warcry, Warrior.ECombatAnimations.Warcry.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
 	}
 
     public override void UpdateAbility()
