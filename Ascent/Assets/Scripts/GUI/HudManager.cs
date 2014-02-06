@@ -51,7 +51,7 @@ public class HudManager : MonoBehaviour
 
         enemyBars = new List<StatBar>();
 
-        int numPlayers = gameScript.NumberOfPlayers;
+        //int numPlayers = gameScript.NumberOfPlayers;
 
 		//if (numPlayers > 0)
 		//{

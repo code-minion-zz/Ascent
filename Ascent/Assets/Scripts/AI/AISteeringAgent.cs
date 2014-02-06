@@ -17,6 +17,7 @@ public class AISteeringAgent
 
     private Vector3 targetPos;
 
+#pragma warning disable 0414
     private Vector3 posLastFrame;
 
 	private Character targetCharacter;

@@ -158,8 +158,6 @@ public class WarriorCharge : Action
 			{
 				if(enemiesFoundLastCount != enemies.Count)
 				{
-					int newEnemiesToDamage = enemies.Count - enemiesFoundLastCount;
-
 					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
 					{
 						int damage = owner.DamageFormulaA(0.0f, 1.5f);
@@ -190,8 +188,6 @@ public class WarriorCharge : Action
 			{
 				if (enemiesFoundLastCount != enemies.Count)
 				{
-					int newEnemiesToDamage = enemies.Count - enemiesFoundLastCount;
-
 					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
 					{
 						int damage = owner.DamageFormulaA(0.0f, 1.5f);
@@ -203,6 +199,8 @@ public class WarriorCharge : Action
 						// Create a blood splatter effect on the enemy.
 						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
 					}
+
+                    enemiesFoundLastCount = enemies.Count;
 				}
 			}
 		}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class EnchantedStatueAwaken : Action
 {
+#pragma warning disable 0414
 	private Circle damageArea;
 	//private bool executedDamage;
 

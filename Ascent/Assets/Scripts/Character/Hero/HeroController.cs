@@ -32,6 +32,8 @@ public class HeroController : MonoBehaviour
 
 	private Hero hero;
 	private HeroAnimator animator;
+
+#pragma warning disable 0414
 	private CharacterMotor motor;
     private InputDevice inputDevice;
     private bool actionBindingsEnabled = false;
