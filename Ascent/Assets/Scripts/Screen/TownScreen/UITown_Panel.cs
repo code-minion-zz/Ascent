@@ -49,6 +49,17 @@ public class UITown_Panel : UIPlayerMenuPanel
 			}
 		}
 	}
+
+	public override void OnEnable()
+	{
+		base.OnEnable();
+
+		if (currentSelection != null) 
+		{
+			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		}
+	}
 }
 
 

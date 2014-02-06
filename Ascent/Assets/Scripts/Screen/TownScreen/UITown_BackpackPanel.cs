@@ -54,12 +54,9 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnEnable()
 	{
-//		if (initialised)
-//		{
-//			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-//		}
-
 		base.OnEnable();
+
+		if (initialised) (parent as UITownWindow).SetTitle("Backpack");
 	}
 
 	public override void OnDisable()
@@ -118,11 +115,17 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 	}
 
+	void ReturnToTown()
+	{
+		parent.TransitionToPanel(0);
+	}
+
 	UIButton GetButton(EButtons button)
 	{
 		return buttons[(int)button];
 	}
 
+	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
 		HighlightButton();
@@ -163,7 +166,7 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		// TODO: Link back to the main town screen
 
-		//parent.CloseWindow();
+		ReturnToTown();
 	}
 	
 	public override void OnMenuHax(InputDevice device)
@@ -171,4 +174,5 @@ public class UITown_BackpackPanel : UITown_Panel
 		//((UITownScreen)parent.ParentScreen).StartGame();
 //		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 	}
+	#endregion 
 }

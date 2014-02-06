@@ -28,7 +28,8 @@ public class UITown_MainPanel : UITown_Panel
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;
 
-		justInitialized = true;
+		//justInitialized = true;
+		initialised = true;
 	}
 
 
@@ -36,6 +37,10 @@ public class UITown_MainPanel : UITown_Panel
 	{
 		base.OnEnable();
 
+		if (initialised) 
+		{
+			(parent as UITownWindow).SetTitle("Town");
+		}
     }
 
     public void Update()
@@ -46,8 +51,6 @@ public class UITown_MainPanel : UITown_Panel
 			SetInfoLabel();
 			justInitialized = false;
 		}
-
-
 	}
 	
 //	void HighlightButton ()
@@ -76,24 +79,14 @@ public class UITown_MainPanel : UITown_Panel
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
+		if (!gameObject.activeInHierarchy) return;
 		HighlightButton();
 		SetInfoLabel();
 	}
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		switch (currentHighlightedButton)
-		{
-		case 0 : // tower
-			//transition
-			break;
-		case 1 : // quit
-			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
-			break;
-		case 2 : // backpack
-			parent.TransitionToPanel(1);
-			break;
-		}
+		ButtonAction();
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
@@ -128,7 +121,23 @@ public class UITown_MainPanel : UITown_Panel
 	}
 	#endregion 
 
-	public void SetInfoLabel()
+	void ButtonAction()
+	{
+		switch (currentHighlightedButton)
+		{
+		case 0 : // tower
+			parent.TransitionToPanel(2);
+			break;
+		case 1 : // quit
+			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
+			break;
+		case 2 : // backpack
+			parent.TransitionToPanel(1);
+			break;
+		}
+	}
+
+	void SetInfoLabel()
 	{
 		UILabel InfoLabel = (parent as UITownWindow).InfoLabel;
 		if (InfoLabel != null)

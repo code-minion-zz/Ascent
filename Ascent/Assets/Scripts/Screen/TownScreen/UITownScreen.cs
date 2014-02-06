@@ -40,6 +40,7 @@ public class UITownScreen : UIPlayerMenuScreen
 			windows[i].gameObject.SetActive(true);
 			windows[i].SetPlayer(players[i]);
 			windows[i].Initialise();
+			windows[i].OnEnable();
 		}
 	}
 

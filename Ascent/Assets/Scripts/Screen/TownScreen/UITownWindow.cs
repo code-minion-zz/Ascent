@@ -13,11 +13,12 @@ using UnityEngine;
 public class UITownWindow : UIPlayerMenuWindow
 {
 	public Transform pointerTransform;
-	public List<UIPlayerMenuPanel> TownPanels;
+	//public List<UIPlayerMenuPanel> TownPanels;
 	[HideInInspector]
 	public UILabel TitleLabel = null;
 	public UILabel InfoLabel = null;
 	public UILabel InstructLabel = null;
+	Transform sharedEle;
 
 	protected float pointerAngle = 90f;
 	public float PointerAngle
@@ -28,42 +29,50 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 	}
 
-	bool updateTitle;
+//	bool updateTitle;
 
 	public enum EBackpackPanels
 	{
+		TOWN,
 		BACKPACK,
-		INVENTORY,
+		TOWER,
+		SKILLS,
+		TAVERN,
+		QUIT,
 		MAX
 	}
 
 	public override void Initialise ()
 	{
+		sharedEle = transform.Find("Shared Elements");
+		
+		TitleLabel = sharedEle.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
+		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
+		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
+
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
 		base.Initialise ();
-
-		Transform sharedEle = transform.Find("Shared Elements");
-
-		TitleLabel = sharedEle.transform.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
-		InfoLabel = sharedEle.transform.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
-		InstructLabel = sharedEle.transform.Find("Instructions").GetComponent<UILabel>();
-
-		updateTitle = true;
 	}
 
 	public override void Update()
 	{
 		base.Update();
 
-		if (updateTitle)
-		{
-			SetTitle();
-			updateTitle = false;
-		}
+//		if (updateTitle)
+//		{
+//			SetTitle();
+//			updateTitle = false;
+//		}
+	}
+
+	public override void OnEnable()
+	{
+		//if (activePanel != null)
 	}
 
 	void HandleOnMenuLeftStickMove (InputDevice device)
 	{		
+		if (!pointerTransform.gameObject.activeInHierarchy) return;
 		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value);
 		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
 	}
@@ -79,39 +88,48 @@ public class UITownWindow : UIPlayerMenuWindow
 		activePanel.gameObject.SetActive(false);
 		activePanel = panels[index];
 		activePanel.gameObject.SetActive(true);
-		SetTitle();
 	}
 
 	public override void AddAllMenuPanels()
 	{
-		panels[(int)EBackpackPanels.BACKPACK] = TownPanels[0];
-		panels[(int)EBackpackPanels.INVENTORY] = TownPanels[1];
+		panels[(int)EBackpackPanels.BACKPACK] = transform.FindChild("BackpackMenu").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.TOWN] = transform.FindChild("TownMenu").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.TOWER] = transform.FindChild("TowerConfirm").GetComponent<UIPlayerMenuPanel>();
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
 			panels[i].SetParent(this);
+			panels[i].gameObject.SetActive(true);
 			panels[i].Initialise();
 			panels[i].gameObject.SetActive(false);
 		}
 		
-		activePanel = panels[(int)EBackpackPanels.BACKPACK];
+		activePanel = panels[(int)EBackpackPanels.TOWN];
 		player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
+		activePanel.OnEnable();
+	}
+	
+	public void ShowArrow(bool state)
+	{
+		GameObject temp = pointerTransform.gameObject;
+		NGUITools.SetActive(temp , state);
 	}
 
-	public void SetTitle()
+	public void ShowInfo(bool state)
 	{
-		if (TitleLabel != null)
-		{
-			if (activePanel is UITown_MainPanel)
-			{
-				TitleLabel.text = "Town";
-			}
-			else if (activePanel is UITown_BackpackPanel)
-			{
-				TitleLabel.text = "Backpack";
-			}
-		}
+		GameObject temp = sharedEle.FindChild("Information Box").gameObject;
+		NGUITools.SetActive(temp , state);
+	}
+
+	public void SetTitle(string replace)
+	{
+		TitleLabel.text = replace;
+	}
+
+	public void SetInfo(string replace)
+	{
+		InfoLabel.text = replace;
 	}
 }
 
