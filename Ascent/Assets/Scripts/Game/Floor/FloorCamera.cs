@@ -30,7 +30,20 @@ public class FloorCamera : MonoBehaviour
 	public Vector3 minCamera;
 	public Vector3 maxCamera;
 
-	public float cameraHeight = 24.0f;
+	private float oldHeight;
+	private float cameraHeight = 24.0f;
+	public float CameraHeight
+	{
+		get { return cameraHeight; }
+		set 
+		{
+			oldHeight = cameraHeight;
+			cameraHeight = value;
+		}
+	}
+
+
+	public float offsetZ = 0.0f;
 
 
     public Camera Camera
@@ -134,7 +147,7 @@ public class FloorCamera : MonoBehaviour
     {
         Vector3 newVector = CalculateAveragePlayerPosition();
         Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
-		
+		lerpVector.z += offsetZ;
 		// Set the position of our camera.
 		if (clampToRoom)
 		{
@@ -142,6 +155,7 @@ public class FloorCamera : MonoBehaviour
 		}
 		else
 		{
+			
 			_transform.position = lerpVector;
 		}
     }
@@ -152,7 +166,7 @@ public class FloorCamera : MonoBehaviour
         Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
        // Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
 	   cameraHeight,
-        Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
 	void UpdateCameraRotation()
@@ -231,7 +245,13 @@ public class FloorCamera : MonoBehaviour
 	public void TransitionToRoom(Floor.TransitionDirection direction)
 	{
 		startPos = transform.position;
-		targetPos = ClampPositionIntoBounds(CalculateAveragePlayerPosition());
+		startPos.y = oldHeight;
+		targetPos = CalculateAveragePlayerPosition();
+		targetPos.y = cameraHeight;
+		targetPos = Vector3.Lerp(_transform.position, targetPos, 2.0f * Time.deltaTime);
+		targetPos.z += offsetZ;
+		targetPos = ClampPositionIntoBounds(targetPos);
+		
 
 		waitTranisition = 0.0f;
 		time = 0.0f;

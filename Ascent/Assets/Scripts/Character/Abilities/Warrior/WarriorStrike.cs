@@ -12,11 +12,15 @@ public class WarriorStrike : Action
     private bool performed = false;
 	private Arc swingArc;
 
+	private Warrior.ECombatAnimation firstStrikeAnim = Warrior.ECombatAnimation.Strike1;
+	private Warrior.ECombatAnimation curStrikeAnim = Warrior.ECombatAnimation.Strike1;
+	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike2;
+
 	public override void Initialise(Character owner)
     {
 		base.Initialise(owner);
 
-        animationSpeed = 2.0f;
+        animationSpeed = 1.5f;
         animationLength = 1.067f;
         cooldownDurationMax = 0.0f;
 		animationTrigger = "Strike";
@@ -32,10 +36,15 @@ public class WarriorStrike : Action
 
 		performed = false;
 
-		//owner.Animator.PlayAnimation(animationTrigger);
-        int randStrike = Random.Range((int)Warrior.ECombatAnimations.Strike1, (int)Warrior.ECombatAnimations.Strike3 + 1);
-        ((HeroAnimator)Owner.Animator).PlayCombatAction(randStrike, ((Warrior.ECombatAnimations)randStrike).ToString());
-        //((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Strike1, Warrior.ECombatAnimations.Strike1.ToString());
+		int strikeAnim = (int)curStrikeAnim;
+		((HeroAnimator)Owner.Animator).PlayCombatAction(strikeAnim, ((Warrior.ECombatAnimation)strikeAnim).ToString());
+    
+		++curStrikeAnim;
+
+		if (curStrikeAnim > lastStrikeAnim)
+		{
+			curStrikeAnim = firstStrikeAnim;
+		}
 
         CanBeInterrupted = false;
 	}
@@ -68,7 +77,7 @@ public class WarriorStrike : Action
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
 							// Tell the hud manager to spawn text.
-							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage);
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
 
                             owner.Stats.CurrentSpecial += 1;
 						}
@@ -78,7 +87,7 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
-        else if (timeElapsedSinceStarting >= animationLength * 0.9f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.85f)
         {
             CanBeInterrupted = true;
         }

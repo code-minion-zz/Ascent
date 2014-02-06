@@ -61,7 +61,7 @@ public class EnchantedStatueAwaken : Action
 					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
 
 					// Tell the hud manager to spawn text.
-					HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5);
+					HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
 				}
 
 				executedDamage = true;

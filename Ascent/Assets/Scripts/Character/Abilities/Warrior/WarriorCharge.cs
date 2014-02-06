@@ -50,7 +50,7 @@ public class WarriorCharge : Action
 	{
         base.StartAbility();
 
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.Charge, Warrior.ECombatAnimations.Charge.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Charge, Warrior.ECombatAnimation.Charge.ToString());
 
         startPos = owner.transform.position;
 		Vector3 rayStart = startPos;
@@ -114,7 +114,7 @@ public class WarriorCharge : Action
 
     public override void StartCast()
     {
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.ChargeCrouch, Warrior.ECombatAnimations.Charge.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.ChargeCrouch, Warrior.ECombatAnimation.Charge.ToString());
     }
 
     public override void UpdateAbility()
@@ -135,7 +135,6 @@ public class WarriorCharge : Action
 				   foreach (Enemy e in enemies)
 				   {
                        int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.0f);
-                       Debug.Log(this.ToString() + ": " + damage + " dmg");
 
 					   // Apply damage, knockback and stun to the enemy.
 					   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
@@ -144,6 +143,9 @@ public class WarriorCharge : Action
 
 					   // Create a blood splatter effect on the enemy.
 					   Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
+
+                       // Tell the hud manager to spawn text.
+                       HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
 				   }
 			   }
 		   }

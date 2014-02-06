@@ -6,7 +6,7 @@ public class TextDriver : MonoBehaviour
 {
     public GameObject floatingText;
 
-    public void SpawnDamageText(GameObject target, int damage)
+    public void SpawnDamageText(GameObject target, int damage, Color color)
     {
         // Parent it to this game object, it also instantiates the floatingText prefab 
         // with the right size requirements for us.
@@ -17,8 +17,8 @@ public class TextDriver : MonoBehaviour
             ft.SpawnAt(target);
             ft.follow = true;
             ft.UILabel.text = "" + damage;
-            ft.UILabel.color = Color.red;
-            //ft.Following();
+            ft.UILabel.color = color;
+            ft.Following();
 
             TweenPosition tp = ft.TweenPosition;
             tp.duration = 1.5f;

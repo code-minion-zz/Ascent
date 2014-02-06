@@ -76,6 +76,8 @@ public class HeroAnimator : CharacterAnimator
     private float reactionTimeElapsed = 0.0f;
     private float reactionTimeMax = 0.0f;
 
+    public MeleeWeaponTrail weaponTrail;
+
 	public override void Initialise()
 	{
 		base.Initialise();
@@ -86,6 +88,9 @@ public class HeroAnimator : CharacterAnimator
 		animator.SetLayerWeight(3, 0.0f);
 
 		layer = ELayer.Movement;
+
+        animator.SetLayerWeight(1, 1.0f);
+        weaponTrail.enabled = false;
 	}
 
     public void OnEnable()
@@ -93,6 +98,7 @@ public class HeroAnimator : CharacterAnimator
         if (animator != null)
         {
             animator.SetLayerWeight(1, 1.0f);
+            weaponTrail.enabled = false;
         }
     }
 
@@ -154,7 +160,8 @@ public class HeroAnimator : CharacterAnimator
 
 	public void PlayCombatAction(int action, string animName)
 	{
-        //animator.SetInteger("MoveAnimation", -1);
+        weaponTrail.enabled = true;
+        animator.SetInteger("MoveAnimation", 2);
 
         SetActiveLayerBlend(ELayer.Combat, 0.2f);
 
@@ -162,6 +169,8 @@ public class HeroAnimator : CharacterAnimator
         animator.SetBool("NewAnimation", true);
 
         newMoveAnim = true;
+
+
 	}
 
     public void PlayReactionAction(EReactionAnimation anim, float time)
@@ -291,7 +300,9 @@ public class HeroAnimator : CharacterAnimator
     public void CombatAnimationEnd()
     {
         SetActiveLayer(ELayer.Movement);
-        //SetActiveLayerBlend(ELayer.Movement, 0.35f);
+        weaponTrail.enabled = false;
+        PlayMovement(EMoveAnimation.CombatIdling);
+        //SetActiveLayerBlend(ELayer.Movement, 0.5f);
        // animator.SetInteger("CombatAnimation", -1);
 
         //EMoveAnimation curMove = moveAnim;

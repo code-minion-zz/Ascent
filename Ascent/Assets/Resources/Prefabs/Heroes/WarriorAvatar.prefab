@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400006}
+  m_Layer: 0
+  m_Name: Base HumanPalmBone003 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100002
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400002}
+  m_Layer: 0
+  m_Name: Base HumanPalmBone003 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +152,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400084}
-  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Base HumanRPalm
   m_TagString: Untagged
@@ -700,6 +730,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: .169823706, y: .123437852, z: .189613253, w: .959150612}
+  m_LocalPosition: {x: .0243678186, y: .101913929, z: .0263339467}
+  m_LocalScale: {x: .999992847, y: 1.00001204, z: .999995112}
+  m_Children:
+  - {fileID: 400078}
+  - {fileID: 400002}
+  m_Father: {fileID: 400084}
+--- !u!4 &400002
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_LocalRotation: {x: -3.75926383e-08, y: 3.95816016e-07, z: 2.96335628e-07, w: 1}
+  m_LocalPosition: {x: -.469999999, y: 2.41810358e-06, z: -3.37893198e-06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
 --- !u!4 &400010
 Transform:
   m_ObjectHideFlags: 1
@@ -752,11 +806,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100074}
-  m_LocalRotation: {x: .169823706, y: .123437852, z: .189613253, w: .959150612}
-  m_LocalPosition: {x: .0243678186, y: .101913929, z: .0263339467}
-  m_LocalScale: {x: .999992847, y: 1.00001204, z: .999995112}
+  m_LocalRotation: {x: -4.39698589e-08, y: 3.90623626e-07, z: 2.12569006e-07, w: 1}
+  m_LocalPosition: {x: -.192201644, y: -2.06813311e-07, z: -2.22140079e-06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 400084}
+  m_Father: {fileID: 400000}
 --- !u!4 &400080
 Transform:
   m_ObjectHideFlags: 1
@@ -793,7 +847,7 @@ Transform:
   m_Children:
   - {fileID: 400082}
   - {fileID: 400080}
-  - {fileID: 400078}
+  - {fileID: 400000}
   m_Father: {fileID: 400086}
 --- !u!4 &400086
 Transform:
@@ -1328,13 +1382,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimations: 1
+  weaponTrail: {fileID: 11400006}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100084}
-  m_Enabled: 0
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35232e65e781bbe41bb380954203ebc4, type: 3}
   m_Name: 
@@ -1342,17 +1397,21 @@ MonoBehaviour:
   _emit: 1
   _emitTime: 0
   _material: {fileID: 2100000, guid: a029e2b41b4bdc942be6abb49f3add2f, type: 2}
-  _lifeTime: 1
-  _colors:
-  - {r: .426470578, g: .426470578, b: .426470578, a: 0}
-  _sizes:
-  - 3
+  _lifeTime: .25
+  _colors: []
+  _sizes: []
   _minVertexDistance: .100000001
   _maxVertexDistance: 10
+  _maxVertexDistanceSqr: 0
   _maxAngle: 3
   _autoDestruct: 0
-  _base: {fileID: 400084}
-  _tip: {fileID: 400088}
+  subdivisions: 10
+  _base: {fileID: 400000}
+  _tip:
+  - {fileID: 400078}
+  - {fileID: 400002}
+  tipToUse: 0
+  fadeOutTimeMax: 1
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1382,7 +1441,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAmount: 25
 --- !u!137 &13700002
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -1411,7 +1469,7 @@ SkinnedMeshRenderer:
   m_UpdateWhenOffscreen: 0
   m_Mesh: {fileID: 4300000, guid: c5aa4fe55b0d00541819092b43347f5d, type: 3}
   m_Bones:
-  - {fileID: 400078}
+  - {fileID: 400000}
   - {fileID: 400098}
   - {fileID: 400116}
   - {fileID: 400110}

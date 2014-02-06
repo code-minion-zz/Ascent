@@ -8,11 +8,16 @@ public class WarriorHeavyStrike : Action
     public float radius = 4.0f;
     public float arcAngle = 200.0f;
 
+	private MeleeWeaponTrail trail;
+
+	private float previousTrailLength;
+	private float trailLength = 2.0f;
+
     private Arc swingArc;
 
     public override void Initialise(Character owner)
     {
-        animationSpeed = 1.5f;
+        animationSpeed = 1.15f;
         animationLength = 1.233f;
         cooldownDurationMax = 5.0f;
         timeElapsedSinceStarting = 0.0f;
@@ -21,6 +26,8 @@ public class WarriorHeavyStrike : Action
 
 		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);
 
+		trail = ((HeroAnimator)owner.Animator).weaponTrail;
+		//previousTrailLength = trail._tip.transform.position.x;
 
         base.Initialise(owner);
     }
@@ -32,7 +39,14 @@ public class WarriorHeavyStrike : Action
 
         animationLength = 1.167f / animationSpeed;
 		//owner.Animator.PlayAnimation(animationTrigger);
-        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimations.HeavyStrike, Warrior.ECombatAnimations.HeavyStrike.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.HeavyStrike, Warrior.ECombatAnimation.HeavyStrike.ToString());
+
+		//Vector3 pos = trail._tip.transform.position;
+		////pos.x = trailLength;
+		//._tip.transform.position = pos;
+		//trail.ExtendLength(2.0f);
+		trail.tipToUse = 1;
+		 
 
         base.StartAbility();
     }
@@ -54,7 +68,6 @@ public class WarriorHeavyStrike : Action
 						foreach (Enemy e in enemies)
 						{
                             int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.5f);
-                            Debug.Log(this.ToString() + ": " + damage + " dmg");
                             e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
@@ -62,7 +75,7 @@ public class WarriorHeavyStrike : Action
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
 							// Tell the hud manager to spawn text.
-							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25);
+							HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, 25, Color.cyan);
 						}
 					}
 				}
@@ -74,6 +87,10 @@ public class WarriorHeavyStrike : Action
 
     public override void EndAbility()
     {
+		//Vector3 pos = trail._tip.transform.position;
+		//pos.x = previousTrailLength;
+		//trail._tip.transform.position = pos;
+		trail.tipToUse = 0;
         ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }

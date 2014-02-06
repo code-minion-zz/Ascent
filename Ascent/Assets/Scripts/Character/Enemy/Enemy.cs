@@ -106,6 +106,7 @@ public abstract class Enemy : Character
 	{
 		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
+        hpBar.gameObject.SetActive(false);
 
 		PositionHpBar();
 	}

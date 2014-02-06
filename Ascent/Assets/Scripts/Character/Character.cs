@@ -45,6 +45,17 @@ public abstract class Character : BaseCharacter
 	protected List<Action> abilities = new List<Action>();
 
 	protected Action activeAbility;
+	public bool CanInterruptActiveAbility
+	{
+		get 
+		{  
+			if(activeAbility != null)
+			{
+				return activeAbility.CanBeInterrupted;
+			}
+			return true;
+		}
+	}
 
 	protected CharacterStats stats;
 	
@@ -375,6 +386,7 @@ public abstract class Character : BaseCharacter
 	{
 		if (canBeStunned)
 		{
+			Debug.Log("?");
 			stunDuration = duration;
 			SetColor(Color.yellow);
 		}

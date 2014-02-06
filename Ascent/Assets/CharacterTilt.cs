@@ -6,7 +6,7 @@ public class CharacterTilt : MonoBehaviour
 	Transform parentTrans;
 
     private bool applyTilt = true;
-    public float tiltAmount = 12.5f;
+    private float tiltAmount = 12.5f;
 
 	private int lastFrame = 0;
 
@@ -23,7 +23,6 @@ public class CharacterTilt : MonoBehaviour
 
 	public void Process()
 	{
-
         if (applyTilt)
         {
 			Vector3 forwardRotation = new Vector3(tiltAmount, 0.0f, 0.0f);
@@ -31,24 +30,24 @@ public class CharacterTilt : MonoBehaviour
 
             int curFrame = Time.frameCount;
 
+            Vector3 combinedRot = Vector3.zero;
+
             if (lastFrame != curFrame)
             {
-				Vector3 combinedRot = Vector3.zero;
-
-				if (parentTrans.forward.x > 1.0f)
+				if (parentTrans.forward.x > 0.0f)
 				{
 					combinedRot.z = parentTrans.forward.x / rightRotation.z;
 				}
-				else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
+				else if (Mathf.Approximately(parentTrans.forward.x, 0.0f))
 				{
 					combinedRot.z = -(parentTrans.forward.x / rightRotation.z);
 				}
 
-				if (parentTrans.forward.z > 1.0f)
+				if (parentTrans.forward.z > 0.0f)
 				{
 					combinedRot.x = parentTrans.forward.z / forwardRotation.x;
 				}
-				else if (Mathf.Approximately(parentTrans.forward.x, -1.0f))
+				else if (Mathf.Approximately(parentTrans.forward.x, 0.0f))
 				{
 					combinedRot.x = -(parentTrans.forward.z / forwardRotation.x);
 				}

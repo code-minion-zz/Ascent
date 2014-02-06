@@ -235,7 +235,8 @@ public class Game : MonoBehaviour
 				{
 					if(save.heroClass == playerCharacterType[i] &&
 						i != usedSaves[0] &&
-						i != usedSaves[1])
+						i != usedSaves[1] &&
+						i < heroSaves.Count)
 					{
 						hero = AscentGameSaver.LoadHero(heroSaves[i]);
 						hero.Initialise(device, heroSaves[i]);
