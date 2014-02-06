@@ -31,6 +31,9 @@ public class Floor : MonoBehaviour
 	private bool randomFloor;
     //private FloorGeneration floorGenerator;
 
+	public Enemy floorBoss;
+	private bool bossKilled = false;
+
 	// Camera offset
 	//private const float cameraOffset = 15.0f;
 	public bool orthographicCamera = false;
@@ -142,7 +145,6 @@ public class Floor : MonoBehaviour
         }
 
 		players = Game.Singleton.Players;
-
 		for (int i = 0; i < players.Count; ++i)
 		{
 			Vector3 pos = startPoints[i].transform.position;
@@ -159,7 +161,7 @@ public class Floor : MonoBehaviour
 
         // Finds all the rooms
 		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
-		currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
+		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
 
 		if (!randomFloor)
 		{
@@ -276,6 +278,11 @@ public class Floor : MonoBehaviour
 			hero.FloorStatistics.ExperienceGained += (int)enemy.EnemyStats.ExperienceBounty;
         }
 
+		if(enemy == floorBoss)
+		{
+			bossKilled = true;
+		}
+
         // Unsubscribe from listening to events from this enemy.
         enemy.onDeath -= OnEnemyDeath;
     }
@@ -283,20 +290,21 @@ public class Floor : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//DEBUG
-		if (Input.GetKeyUp(KeyCode.F1))
+		if(bossKilled == true || Input.GetKeyUp(KeyCode.F1))
 		{
 			EndFloor();
 		}
-
-
-        if (currentRoom.Doors == null)
-        {
-            return;
-        }
+		////DEBUG
+		//if (Input.GetKeyUp(KeyCode.F1))
+		//{
+		//    EndFloor();
+		//}
+		if (currentRoom.Doors == null)
+		{
+			return;
+		}
 
 		Door[] roomDoors = currentRoom.Doors.doors;
-		
 		if (Input.GetKeyUp(KeyCode.Keypad8)) // UP
 		{
 			foreach (Door d in roomDoors)
@@ -361,7 +369,7 @@ public class Floor : MonoBehaviour
 
         floorInstanceReward.ApplyFloorInstanceRewards();
 
-        Game.Singleton.LoadLevel("Level2", Game.EGameState.Tower);
+        Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.Town);
 
 		// Enable input on summary screen
 	}
@@ -383,10 +391,12 @@ public class Floor : MonoBehaviour
 
 		currentRoom.gameObject.SetActive(true);
 
-		// Move heroes to the new room
+		// Move heroes to the new room also disable the controller
 		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
+			p.Hero.Motor.StopMotion();
+			p.Hero.HeroController.enabled = false;
 		}
 
 		// Move camera over
@@ -401,6 +411,12 @@ public class Floor : MonoBehaviour
 		yield return new WaitForSeconds(1.5f);
 
 		targetRoom.gameObject.SetActive(false);
+
+		// Move heroes to the new room also disable the controller
+		foreach (Player p in players)
+		{
+			p.Hero.HeroController.enabled = true;
+		}
 
 		//fadePlane.gameObject.SetActive(false);
 	}

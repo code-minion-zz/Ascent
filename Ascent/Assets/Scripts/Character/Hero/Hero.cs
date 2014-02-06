@@ -135,6 +135,11 @@ public abstract class Hero : Character
 		heroController.Initialise(this, input, (HeroAnimator)animator, motor);
 	}
 
+	public void OnEnable()
+	{
+		RefreshEverything();
+	}
+
 	public static void Create(Hero hero)
 	{
 		// Create items
@@ -217,7 +222,7 @@ public abstract class Hero : Character
     public void AddExperience(int experience)
     {
         // Add experience
-        int curExp = heroStats.CurrentExperience + experience;
+        int curExp = heroStats.Experience + experience;
 		int maxExp = heroStats.RequiredExperience;
 
         // Keep leveling while experience is above required.
@@ -232,7 +237,7 @@ public abstract class Hero : Character
         }
 
         // Set the new experience value
-		heroStats.CurrentExperience = curExp;
+		heroStats.Experience = curExp;
     }
 
     public void LevelUp()

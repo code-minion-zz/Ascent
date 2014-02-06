@@ -4,16 +4,15 @@ using System.Collections.Generic;
 /// <summary>
 /// Hud manager.
 /// </summary>
-public class HudManager : MonoBehaviour {
+public class HudManager : MonoBehaviour 
+{
 	
 	public static 	HudManager singleton;
 	public			Camera		hudCamera;
 	public			TextDriver  TextDriver;
 	private			Game		gameScript;
 	private			int			numPlayers;
-	public			PlayerHUD	Player1;
-	public			PlayerHUD	Player2;
-	public			PlayerHUD	Player3;
+	public			PlayerHUD[]	playerHUDs;
 	protected		List<StatBar> enemyBars;
 	
 	public UIAnchor anchor;
@@ -54,23 +53,38 @@ public class HudManager : MonoBehaviour {
 
         int numPlayers = gameScript.NumberOfPlayers;
 
-        if (numPlayers > 0)
-        {
-            Player1.gameObject.SetActive(true);
-            Player1.Init(gameScript.Players[0].Hero.GetComponent<Hero>());
+		//if (numPlayers > 0)
+		//{
+		//    Player1.gameObject.SetActive(true);
+		//    Player1.Init(gameScript.Players[0].Hero.GetComponent<Hero>());
+		//    Player1.transform.position = new Vector3(Screen.width * 0.2f, Player1.transform.position.y, Player1.transform.position.z);
 
-            if (numPlayers > 1)
-            {
-                Player2.gameObject.SetActive(true);
-                Player2.Init(gameScript.Players[1].Hero.GetComponent<Hero>());
+		//    if (numPlayers > 1)
+		//    {
+		//        Player2.gameObject.SetActive(true);
+		//        Player2.Init(gameScript.Players[1].Hero.GetComponent<Hero>());
+		//        Player2.transform.position = new Vector3(Screen.width * 0.3f, Player2.transform.position.y, Player2.transform.position.z);
 
-                if (numPlayers > 2)
-                {
-                    Player3.Init(gameScript.Players[2].Hero.GetComponent<Hero>());
-                    Player3.gameObject.SetActive(true);
-                }
-            }
-        }
+		//        if (numPlayers > 2)
+		//        {
+		//            Player3.gameObject.SetActive(true);
+		//            Player3.Init(gameScript.Players[2].Hero.GetComponent<Hero>());
+		//            Player3.transform.position = new Vector3(Screen.width * 0.8f, Player3.transform.position.y, Player3.transform.position.z);
+		//        }
+		//    }
+		//}
+		for (int i = 0; i < playerHUDs.Length; ++i)
+		{
+			if(i >= gameScript.Players.Count)
+			{
+				Destroy(playerHUDs[i].gameObject);
+				continue;
+			}
+
+			playerHUDs[i].gameObject.SetActive(true);
+			playerHUDs[i].Init(gameScript.Players[i].Hero);
+		}
+		GetComponentInChildren<UIGrid>().Reposition();
     }
 	
 	

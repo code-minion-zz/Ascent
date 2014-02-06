@@ -13,6 +13,8 @@ public class Door : MonoBehaviour
 	public Door targetDoor;
 	private bool[] playersLeftDoor;
 
+	public Collider immediateArea;
+
 	private bool startDoor = false;
 	public bool StartDoor
 	{
@@ -20,7 +22,7 @@ public class Door : MonoBehaviour
 		set { startDoor = value; }
 	}
 
-	bool done;
+	bool walkedOutOfTheDoor;
 
 #if UNITY_EDITOR 
 	public void OnDrawGizmos()
@@ -66,12 +68,13 @@ public class Door : MonoBehaviour
 	}
 #endif
 
+
 	public void OnEnable()
 	{
         if (Game.Singleton.Tower.CurrentFloor != null)
         {
             //direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
-            done = false;
+            walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
         }
 	}
@@ -100,49 +103,69 @@ public class Door : MonoBehaviour
 
 			if (countPlayersLeftDoor == playersLeftDoor.Length)
 			{
-				done = false;
+				walkedOutOfTheDoor = false;
 				startDoor = false;
 			}
 		}
 
         if (targetDoor != null)
         {
+			int playerCount = Game.Singleton.Players.Count;
 
-            if (!done)
+			// If only 1 player then they can quickly transition between rooms
+			if (playerCount == 1)
+			{
+				if (Game.Singleton.Players[0].Hero.collider.bounds.Intersects(immediateArea.bounds))
+				{
+					Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+				}
+			}
+
+            int currentPlayerCount = 0;
+
+            // Check if all heroes are in here.
+            foreach (Player p in Game.Singleton.Players)
             {
-                int playerCount = Game.Singleton.Players.Count;
-                int currentPlayerCount = 0;
 
-                // Check if all heroes are in here.
-                foreach (Player p in Game.Singleton.Players)
+                if (p.Hero.collider.bounds.Intersects(collider.bounds))
                 {
-
-                    if (p.Hero.collider.bounds.Intersects(collider.bounds))
-                    {
-                        ++currentPlayerCount;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                if (currentPlayerCount > 0 &&
-                    currentPlayerCount == playerCount)
-                {
-                    standingOnDoorTimer += Time.deltaTime;
-                    if (standingOnDoorTimer >= 1.0f)
-                    {
-						
-                        Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
-                        //gameObject.SetActive(false);
-                        done = true;
-                    }
+                    ++currentPlayerCount;
                 }
                 else
                 {
-                    standingOnDoorTimer = 0.0f;
+                    break;
                 }
+            }
+
+            if (currentPlayerCount > 0 &&
+                currentPlayerCount == playerCount)
+            {
+				if (!walkedOutOfTheDoor)
+				{
+					standingOnDoorTimer += Time.deltaTime;
+					if (standingOnDoorTimer >= 0.5f)
+					{
+						Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+						walkedOutOfTheDoor = true;
+					}
+				}
+				else
+				{
+					// If one player is standing on the immediate area then a transition can occur immediately.
+					foreach (Player p in Game.Singleton.Players)
+					{
+						if (p.Hero.collider.bounds.Intersects(immediateArea.bounds))
+						{
+							Debug.Log("inside it!");
+							Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+							walkedOutOfTheDoor = true;
+						}
+					}
+				}
+            }
+            else
+            {
+                standingOnDoorTimer = 0.0f;
             }
         }
 	}
@@ -150,6 +173,6 @@ public class Door : MonoBehaviour
 	public void SetAsStartDoor()
 	{
 		startDoor = true;
-		done = true;
+		walkedOutOfTheDoor = true;
 	}
 }

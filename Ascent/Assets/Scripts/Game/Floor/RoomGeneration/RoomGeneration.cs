@@ -166,7 +166,7 @@ public class RoomGeneration
                     break;
 
                 case Room.EMonsterTypes.Slime:
-                    //go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
+                    go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Slime");
                     break;
 
                 case Room.EMonsterTypes.EnchantedStatue:
@@ -206,13 +206,17 @@ public class RoomGeneration
     public void PopulateBossRoom(int dungeonLevel, RoomProperties room)
     {
         GameObject go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Abomination");
-        int centreX = (int)(room.NumberOfTilesX * 0.5f);
-        int centreY = (int)(room.NumberOfTilesY * 0.5f);
+        int centreX = (int)(room.NumberOfTilesX * 0.7f);
+        int centreY = (int)(room.NumberOfTilesY * 0.7f);
 
         room.RoomTiles[centreX, centreY].TileType = TilePropertyType.monster;
         room.RoomTiles[centreX, centreY].IsOccupied = true;
         go.transform.localPosition = room.RoomTiles[centreX, centreY].Position;
         go.transform.parent = room.Room.MonsterParent;
+		go.transform.position =  new Vector3(go.transform.position.x, 0.1f, go.transform.position.z);
+
+
+		Game.Singleton.Tower.CurrentFloor.floorBoss = go.GetComponent<Enemy>();
     }
 
 	/// <summary>

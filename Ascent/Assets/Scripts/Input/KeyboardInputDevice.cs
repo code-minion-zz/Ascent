@@ -15,6 +15,7 @@ public class KeyboardInputDevice : InputDevice
 	public KeyboardInputDevice()
 	{
 		this.name = keyboardName;
+		this.isJoystick = false;
 
 		Initialise();
 	}
@@ -96,6 +97,16 @@ public class KeyboardInputDevice : InputDevice
 					}
 				}
 				break;
+			case InputControlType.LeftTrigger:
+				{
+					value = (Input.GetKey(KeyCode.Q) ? 1.0f : 0.0f); 
+				}
+				break;
+			case InputControlType.RightTrigger:
+				{
+					value = (Input.GetKey(KeyCode.R) ? 1.0f : 0.0f); 
+				}
+				break;
 
 		}
 
@@ -116,13 +127,13 @@ public class KeyboardInputDevice : InputDevice
 
 		switch (type)
 		{
-			case InputControlType.Action1: { buttonState = (Input.GetKey(KeyCode.A) ? true : false); } break;
-			case InputControlType.Action2: { buttonState = ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Backspace)) ? true : false); } break;
-			case InputControlType.Action3: { buttonState = (Input.GetKey(KeyCode.D) ? true : false); } break;
-			case InputControlType.Action4: { buttonState = (Input.GetKey(KeyCode.F) ? true : false); } break;
+			case InputControlType.Action1: { buttonState = (Input.GetKey(KeyCode.D) ? true : false); } break;
+			case InputControlType.Action2: { buttonState = ((Input.GetKey(KeyCode.Backspace) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Backspace)) ? true : false); } break;
+			case InputControlType.Action3: { buttonState = (Input.GetKey(KeyCode.A) ? true : false); } break;
+			case InputControlType.Action4: { buttonState = (Input.GetKey(KeyCode.S) ? true : false); } break;
 
-			case InputControlType.LeftBumper: { buttonState = (Input.GetKey(KeyCode.Q) ? true : false); } break;
-			case InputControlType.RightBumper: { buttonState = (Input.GetKey(KeyCode.W) ? true : false); } break;
+			case InputControlType.LeftBumper: { buttonState = (Input.GetKey(KeyCode.W) ? true : false); } break;
+			case InputControlType.RightBumper: { buttonState = (Input.GetKey(KeyCode.E) ? true : false); } break;
 
             case InputControlType.DPadUp: { buttonState = (Input.GetKey(KeyCode.Alpha1) ? true : false); } break;
             case InputControlType.DPadDown: { buttonState = (Input.GetKey(KeyCode.Alpha2) ? true : false); } break;

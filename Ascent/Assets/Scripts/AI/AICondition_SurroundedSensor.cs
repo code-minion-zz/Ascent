@@ -31,7 +31,7 @@ public class AICondition_SurroundedSensor : AICondition
                 iSensed = sensed.Count;
                 agent.SensedCharacters = sensed;
 
-                if (numberRequriedToBeSurrounded >= iSensed)
+				if (iSensed >= numberRequriedToBeSurrounded)
                 {
                     return true;
                 }

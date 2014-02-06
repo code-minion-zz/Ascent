@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// </summary>
 public class AbominationCharge : Action
 {
-    private float distanceMax = 20.0f;
+    private float distanceMax = 50.0f;
 
     private float travelTime;
     private Vector3 startPos;
@@ -94,9 +94,8 @@ public class AbominationCharge : Action
             {
                 foreach (Hero e in enemies)
                 {
-                    int damage = 2;
                     // Apply damage, knockback and stun to the enemy.
-                    e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                    e.ApplyDamage(owner.DamageFormulaA(5, 1.0f), Character.EDamageType.Physical, owner);
                     e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
                     e.ApplyStunEffect(2.0f);
 

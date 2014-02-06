@@ -12,7 +12,7 @@ using System.Collections.Generic;
 /// </summary>
 public class WarriorCharge : Action 
 {	
-	private float distanceMax = 7.5f;
+	private float distanceMax = 12.5f;
 	
     private float travelTime;
 	private float originalAnimationTime;
@@ -21,15 +21,20 @@ public class WarriorCharge : Action
     private Vector3 targetPos;
 
    // private CharacterMotor charMotor;
+	private int checkAtFrame = 5;
+	private int frameCount = 0;
 
     private Circle circle;
 	private Arc arc;
+
+	List<Character> enemies;
+	int enemiesFoundLastCount = 0;
 	
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
 
-        cooldownDurationMax = 5.0f;
+        cooldownDurationMax = 2.0f;
         animationTrigger = "Charge";
         specialCost = 5;
 
@@ -40,7 +45,7 @@ public class WarriorCharge : Action
 
         //charMotor = owner.GetComponentInChildren<CharacterMotor>();
 
-        circle = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.0f));
+        circle = new Circle(owner.transform, 1.5f, new Vector3(0.0f, 0.0f, 0.0f));
 		arc = new Arc(owner.transform, 5.0f, 7.5f, Vector3.zero);
 
         isInstantCast = false;
@@ -57,7 +62,7 @@ public class WarriorCharge : Action
 		rayStart.y = 1.0f;
 
 		Character closestCharacter = null;
-		List<Character> enemies = new List<Character>();
+		enemies = new List<Character>();
 		if (Game.Singleton.InTower)
 		{
 			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
@@ -109,7 +114,12 @@ public class WarriorCharge : Action
 
 		targetPos.y = owner.transform.position.y;
 
+		frameCount = checkAtFrame;
+
         owner.ApplyInvulnerabilityEffect(animationLength);
+
+		enemies = new List<Character>();
+		enemiesFoundLastCount = 0;
 	}
 
     public override void StartCast()
@@ -124,34 +134,78 @@ public class WarriorCharge : Action
         Vector3 motion = Vector3.Lerp(startPos, targetPos, timeElapsedSinceStarting / travelTime);
         owner.transform.position = motion;
 
-        if (timeElapsedSinceStarting == animationLength)
+		if (frameCount >= checkAtFrame)
+		{
+			DoDamageAlongPath();
+			frameCount = 0;
+		}
+        else if (timeElapsedSinceStarting == animationLength)
         {
-           List<Character> enemies = new List<Character>();
-
-		   if (Game.Singleton.InTower)
-		   {
-			   if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
-			   {
-				   foreach (Enemy e in enemies)
-				   {
-                       int damage = (int)((float)(((Hero)owner).HeroStats.Attack) * 1.0f);
-
-					   // Apply damage, knockback and stun to the enemy.
-					   e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
-					   e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
-					   e.ApplyStunEffect(2.0f);
-
-					   // Create a blood splatter effect on the enemy.
-					   Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
-
-                       // Tell the hud manager to spawn text.
-                       HudManager.Singleton.TextDriver.SpawnDamageText(e.gameObject, damage, Color.cyan);
-				   }
-			   }
-		   }
-
-           owner.StopAbility();
+			DoDamageAtEndOfPath();
+			owner.StopAbility();
         }
+
+		++frameCount;
+	}
+
+	private bool DoDamageAlongPath()
+	{
+		bool collisionsFound = false;
+
+		if (Game.Singleton.InTower)
+		{
+			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+			{
+				if(enemiesFoundLastCount != enemies.Count)
+				{
+					int newEnemiesToDamage = enemies.Count - enemiesFoundLastCount;
+
+					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
+					{
+						int damage = owner.DamageFormulaA(0.0f, 1.5f);
+
+						// Apply damage, knockback and stun to the enemy.
+						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
+						enemies[i].ApplyStunEffect(1.0f);
+
+						// Create a blood splatter effect on the enemy.
+						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
+					}
+
+					enemiesFoundLastCount = enemies.Count;
+				}
+
+				collisionsFound = true;
+			}
+		}
+
+		return collisionsFound;
+	}
+
+	private void DoDamageAtEndOfPath()
+	{
+		if (Game.Singleton.InTower)
+		{
+			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+			{
+				if (enemiesFoundLastCount != enemies.Count)
+				{
+					int newEnemiesToDamage = enemies.Count - enemiesFoundLastCount;
+
+					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
+					{
+						int damage = owner.DamageFormulaA(0.0f, 1.5f);
+						// Apply damage, knockback and stun to the enemy.
+						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
+						enemies[i].ApplyKnockback(enemies[i].transform.position - owner.transform.position, 100000.0f);
+						enemies[i].ApplyStunEffect(2.0f);
+
+						// Create a blood splatter effect on the enemy.
+						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
+					}
+				}
+			}
+		}
 	}
 
     public override void EndAbility()

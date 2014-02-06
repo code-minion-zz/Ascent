@@ -59,13 +59,10 @@ public class ImpStrike : Action
                 foreach (Character c in characters)
                 {
                     // Apply damage and knockback to the enemey.
-                    c.ApplyDamage(1, Character.EDamageType.Physical, owner);
+                    c.ApplyDamage(owner.DamageFormulaA(1.0f, 1.10f), Character.EDamageType.Physical, owner);
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
-
-                    // Tell the hud manager to spawn text.
-                    HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
                 }
 
                 executedDamage = true;

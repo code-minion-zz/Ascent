@@ -115,7 +115,7 @@ public class Slime : Enemy
 
         Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
 
-        hero.ApplyDamage(1, EDamageType.Physical, this);
+        hero.ApplyDamage(DamageFormulaA(1, 1.0f), EDamageType.Physical, this);
         hero.ApplyKnockback(direction, 10.0f);
     }
 }

@@ -52,7 +52,6 @@ public class CharacterAnimator : MonoBehaviour
 		set
 		{
 			dying = value;
-			animator.SetBool("Dying", value);
 		}
 	}
 

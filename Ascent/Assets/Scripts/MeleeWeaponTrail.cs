@@ -10,6 +10,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+#pragma warning disable 0649
 
 public class MeleeWeaponTrail : MonoBehaviour
 {

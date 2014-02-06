@@ -68,6 +68,13 @@ public class AISteeringAgent
         set { canRotate = value; }
     }
 
+	protected float distanceToKeepFromTarget = 1.5f;
+	public float DistanceToKeepFromTarget
+	{
+		get { return distanceToKeepFromTarget; }
+		set { distanceToKeepFromTarget = value; }
+	}
+
     protected bool hasTarget = false;
 
     public delegate void TargetReached();
@@ -90,6 +97,7 @@ public class AISteeringAgent
 
     public void Process()
     {
+		bool moveThisFrame = true;
         if (hasTarget)
         {
             if (targetCharacter != null)
@@ -106,7 +114,16 @@ public class AISteeringAgent
                         {
                             //motor.transform.LookAt(targetCharacter.transform.position);
                             motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+
+							// If you are too close to the target. Do not get any closer!
+							if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
+							{
+								moveThisFrame = false;
+								motor.StopMotion();
+							}
                         }
+
+						
                     }
 				}
 
@@ -134,8 +151,11 @@ public class AISteeringAgent
                     }
                 }
             }
-
-            motor.Move(motor.transform.forward);
+			
+			if (moveThisFrame)
+			{
+				motor.Move(motor.transform.forward);
+			}
         }
     }
 

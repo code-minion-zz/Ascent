@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EnchantedStatueAwaken : Action
 {
 	private Circle damageArea;
-	private bool executedDamage;
+	//private bool executedDamage;
 
 	public override void Initialise(Character owner)
 	{
@@ -28,7 +28,7 @@ public class EnchantedStatueAwaken : Action
 		owner.Motor.EnableMovementForce(false);
 		owner.SetColor(Color.red);
 
-		executedDamage = false;
+		//executedDamage = false;
 	}
 
 	public override void UpdateAbility()
@@ -45,28 +45,28 @@ public class EnchantedStatueAwaken : Action
 			owner.Motor.StopMotion();
 			owner.Motor.EnableMovementForce(false);
 		}
-		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
-		{
-			List<Character> characters = new List<Character>();
+		//else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
+		//{
+		//    List<Character> characters = new List<Character>();
 
-			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref characters))
-			{
-				foreach (Character c in characters)
-				{
-					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(1, Character.EDamageType.Physical, owner);
-					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
+		//    if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref characters))
+		//    {
+		//        foreach (Character c in characters)
+		//        {
+		//            // Apply damage and knockback to the enemey.
+		//            c.ApplyDamage(1, Character.EDamageType.Physical, owner);
+		//            c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
-					// Create a blood splatter effect on the enemy.
-					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+		//            // Create a blood splatter effect on the enemy.
+		//            Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
 
-					// Tell the hud manager to spawn text.
-					HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
-				}
+		//            // Tell the hud manager to spawn text.
+		//            HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
+		//        }
 
-				executedDamage = true;
-			}
-		}
+		//        executedDamage = true;
+		//    }
+		//}
 	}
 
 	public override void EndAbility()

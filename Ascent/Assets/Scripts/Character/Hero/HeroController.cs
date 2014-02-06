@@ -216,6 +216,7 @@ public class HeroController : MonoBehaviour
 			{
 				Vector3 moveDirection = Vector3.zero;
 
+				#region blockmovement
 				if (grabbedObject != null)
 				{
 					Debug.DrawLine(transform.position, grabbedObject.transform.position);
@@ -251,8 +252,8 @@ public class HeroController : MonoBehaviour
 				{
 					moveDirection = new Vector3(device.LeftStickX.Value, 0, device.LeftStickY.Value);
 				}
+				#endregion
 
-				
 				if (moveDirection != Vector3.zero)
 				{
 					if(moveDirection.sqrMagnitude > 0.001f)
@@ -261,8 +262,19 @@ public class HeroController : MonoBehaviour
 					}
 				}
 
+				// Keyboard functions differently with diagonals.
+				if(!device.isJoystick) // assume keyboard
+				{
+					if(Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.z) >= 1.9f)
+					{
+						moveDirection.x *= 0.7f;
+						moveDirection.z *= 0.7f;
+					}
+				}
+
 				transform.LookAt(transform.position + moveDirection);
 				GetComponent<CharacterMotor>().Move(moveDirection);
+				//Debug.Log(moveDirection);
 
 				if (moved)
 				{
@@ -282,6 +294,8 @@ public class HeroController : MonoBehaviour
 					animator.PlayMovement(HeroAnimator.EMoveAnimation.Moving);
 					animator.Move(animMoveSpeed);
 				}
+
+
 			}
 		}
 

@@ -36,6 +36,8 @@ public class HeroSaveData
 
 		// Hero info
         unasignedAbilityPoints = hero.unasignedAbilityPoints;
+		experience = hero.HeroStats.Experience;
+		gold = hero.HeroStats.Gold;
 		level = hero.HeroStats.Level;
 		heroClass = hero.HeroClass;
 		growth = hero.HeroStats.Growth;

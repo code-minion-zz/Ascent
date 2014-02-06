@@ -20,6 +20,7 @@ public abstract class Enemy : Character
 	{
 		None,
 		Rat,
+		Abomination
 	}
 
     #endregion
