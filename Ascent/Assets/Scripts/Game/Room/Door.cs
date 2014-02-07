@@ -110,7 +110,7 @@ public class Door : MonoBehaviour
 
         if (targetDoor != null)
         {
-			int playerCount = Game.Singleton.Players.Count;
+			int playerCount = Game.Singleton.AlivePlayerCount;
 
 			// If only 1 player then they can quickly transition between rooms
 			if (playerCount == 1)

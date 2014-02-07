@@ -89,6 +89,23 @@ public class Game : MonoBehaviour
         get { return players; }
     }
 
+    public int AlivePlayerCount
+    {
+        get 
+        {
+            int count = 0;
+            foreach (Player p in players)
+            {
+                if (!p.Hero.IsDead)
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+    }
+
 	public Tower Tower
     {
         get { return tower; }
@@ -192,7 +209,7 @@ public class Game : MonoBehaviour
 	{
 		players = new List<Player>();
 
-		int[] usedSaves = new int[2] {-1,-1};
+		int[] usedSaves = new int[3] {-1,-1, -1};
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
@@ -242,6 +259,7 @@ public class Game : MonoBehaviour
 						hero.Initialise(device, heroSaves[i]);
 						hero.transform.parent = newPlayer.transform;
 						usedSaves[i] = i;
+                        break;
 					}
 				}
 			}

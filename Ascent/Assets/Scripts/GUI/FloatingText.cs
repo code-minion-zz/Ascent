@@ -83,11 +83,21 @@ public class FloatingText : MonoBehaviour
 
     public void Following()
     {
-        // Spawn the text at the top of the collider
-        Collider col = target.GetComponentInChildren<Collider>();
-        Vector3 pos = worldCamera.WorldToViewportPoint(target.transform.position + new Vector3(0.0f, col.bounds.extents.y, 0.0f));
-        pos = guiCamera.ViewportToWorldPoint(pos);
-        pos.z = 0.0f;
-        transform.position = pos;
+        // All these checks to stop an error that occassionally occured.
+        if (target != null)
+        {
+            // Spawn the text at the top of the collider
+            Collider col = target.GetComponentInChildren<Collider>();
+            if (col != null)
+            {
+                if (worldCamera != null)
+                {
+                    Vector3 pos = worldCamera.WorldToViewportPoint(target.transform.position + new Vector3(0.0f, col.bounds.extents.y, 0.0f));
+                    pos = guiCamera.ViewportToWorldPoint(pos);
+                    pos.z = 0.0f;
+                    transform.position = pos;
+                }
+            }
+        }
     }
 }
