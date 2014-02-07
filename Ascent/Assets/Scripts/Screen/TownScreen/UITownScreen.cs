@@ -12,7 +12,7 @@ public class UITownScreen : UIPlayerMenuScreen
 	private List<Player> players = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
 #pragma warning disable 0649
-    private	int readyPlayers;
+    private	int readyPlayers = 0;
 
 #pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
@@ -91,17 +91,19 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	public void Ready(bool state)
 	{
+		//Debug.Log(readyPlayers);
 		readyPlayers += state ? 1 : -1;
+		//Debug.Log(readyPlayers);
 		ReadyTracker();
 	}
 
 	public void ReadyTracker()
 	{
-
+		Debug.Log(Game.Singleton.NumberOfPlayers);
 		if (readyPlayers == Game.Singleton.NumberOfPlayers)
 		{
 			// load next level
-			Game.Singleton.LoadLevel("Sewer_level", Game.EGameState.TowerRandom);
+			Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 		}
 	}
 }
