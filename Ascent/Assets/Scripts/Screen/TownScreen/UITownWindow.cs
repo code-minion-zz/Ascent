@@ -88,6 +88,11 @@ public class UITownWindow : UIPlayerMenuWindow
 		activePanel.gameObject.SetActive(false);
 		activePanel = panels[index];
 		activePanel.gameObject.SetActive(true);
+
+		if (index == 2)
+		{
+			(parentScreen as UITownScreen).Ready(true);
+		}
 	}
 
 	public override void AddAllMenuPanels()

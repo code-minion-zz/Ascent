@@ -12,7 +12,7 @@ public class UITownScreen : UIPlayerMenuScreen
 	private List<Player> players = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
 #pragma warning disable 0649
-    private	uint readyPlayers;
+    private	int readyPlayers;
 
 #pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
@@ -89,7 +89,13 @@ public class UITownScreen : UIPlayerMenuScreen
 		Destroy(p.gameObject);
 	}
 
-	void ReadyTracker()
+	public void Ready(bool state)
+	{
+		readyPlayers += state ? 1 : -1;
+		ReadyTracker();
+	}
+
+	public void ReadyTracker()
 	{
 
 		if (readyPlayers == Game.Singleton.NumberOfPlayers)
