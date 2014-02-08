@@ -49,17 +49,17 @@ public class InputManager : MonoBehaviour
 		platform = (SystemInfo.operatingSystem + " " + SystemInfo.deviceModel).ToUpper();
 
 		string[] joystickNames = Input.GetJoystickNames();
-
+		
 		if(InputManager.debugMessages)
 		{
 			int length = joystickNames.Length;
 			Debug.Log(length + " joysticks attached.");
-		}
 
-		//for (int i = 0; i < length; ++i)
-		//{
-		//    Debug.Log(i + ": " + joystickNames[i]);
-		//}
+			for (int i = 0; i < joystickNames.Length; ++i)
+			{
+				Debug.Log(i + ": " + joystickNames[i]);
+			}
+		}
 
 		OnDeviceAttached = null;
 		OnDeviceDetached = null;
@@ -101,10 +101,17 @@ public class InputManager : MonoBehaviour
 
 	static void RefreshDevices()
 	{
+#if UNITY_WEBPLAYER
+		if(Input.GetJoystickNames().Length > 0)
+		{
+			AttachDevice(new XBox360InputDevice(0));
+		}
+#else
 		DetectAndAttachJoysticks();
 		DetectAndDetachJoysticks();
 
 		prevJoystickHash = JoystickHash;
+#endif
 	}
 
 	static void AttachKeyboard()
@@ -128,7 +135,7 @@ public class InputManager : MonoBehaviour
 
 				foreach (InputDevice d in devices)
 				{
-					if (d.Name == Xbox360InputDevice.xboxName + i)
+					if (d.Name == XInputDevice.xboxName + i)
 					{
 						// It already exists
 						alreadyExists = true;
@@ -138,7 +145,7 @@ public class InputManager : MonoBehaviour
 
 				if (!alreadyExists)
 				{
-					AttachDevice(new Xbox360InputDevice(i));
+					AttachDevice(new XInputDevice(i));
 				}
 			}
 		}
@@ -159,7 +166,7 @@ public class InputManager : MonoBehaviour
 				// Check if it was attached
 				foreach (InputDevice d in devices)
 				{
-					if (d.Name == Xbox360InputDevice.xboxName + i)
+					if (d.Name == XInputDevice.xboxName + i)
 					{
 						detachedDevices.Add(d);
 						break;

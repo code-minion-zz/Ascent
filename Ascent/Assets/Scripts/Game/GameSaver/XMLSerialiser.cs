@@ -92,6 +92,8 @@ public class XMLSerialiser
 		return path;
 	}
 
+#if UNITY_WEBPLAYER
+#else
 	public static void CreateXML(DirectoryTarget target, string path, string _FileName, string _data)
 	{
 		string _FileLocation = GetTargetDirectory(target) + "\\" + path;
@@ -142,6 +144,7 @@ public class XMLSerialiser
 		writer.Write(data);
 		writer.Close();
 	}
+#endif
 
 
 	public static string LoadXML(DirectoryTarget target, string path, string _FileName)

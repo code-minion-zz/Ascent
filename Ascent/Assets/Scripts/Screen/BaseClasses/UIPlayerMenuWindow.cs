@@ -157,7 +157,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
                 if (device.LeftStickX)
 				{
 					leftStickSignificantMovement = true;
-                    if (device.LeftStickX.Value > 0.1f)
+					if (device.LeftStickX.WasPressed && device.LeftStickX.Value > 0.1f)
                     {
                         if (OnMenuRight != null)
                         {
@@ -165,7 +165,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
                         }
 //						leftStickSignificantMovement = true;
                     }
-                    else if (device.LeftStickX.Value < -0.1f)
+					else if (device.LeftStickX.WasPressed && device.LeftStickX.Value < -0.1f)
                     {
                         if (OnMenuLeft != null)
                         {
@@ -198,7 +198,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
                 if (device.LeftStickY)
 				{
 					leftStickSignificantMovement = true;
-                    if (device.LeftStickY.Value > 0.1f)
+					if (device.LeftStickY.WasPressed && device.LeftStickY.Value > 0.1f)
                     {
                         if (OnMenuUp != null)
                         {
@@ -206,7 +206,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 						}
 //						leftStickSignificantMovement = true;
                     }
-                    else if (device.LeftStickY.Value < -0.1f)
+					else if (device.LeftStickY.WasPressed && device.LeftStickY.Value < -0.1f)
                     {
                         if (OnMenuDown != null)
                         {

@@ -38,12 +38,23 @@ public class FloorCamera : MonoBehaviour
 		set 
 		{
 			oldHeight = cameraHeight;
-			cameraHeight = value;
+			//cameraHeight = value;
 		}
 	}
 
-
-	public float offsetZ = 0.0f;
+#if UNITY_WEBPLAYER
+	private float offsetZ = -5.35f;
+#else
+	private float offsetZ = -0.35f;
+#endif
+	public float OffsetZ
+	{
+		get { return offsetZ; }
+		set 
+		{ 
+			//offsetZ = value; 
+		}
+	}
 
 
     public Camera Camera
@@ -145,10 +156,21 @@ public class FloorCamera : MonoBehaviour
 
     void UpdateCameraPosition()
     {
+#if UNITY_WEBPLAYER
+		if (players.Count > 0)
+		{
+			// Calculate camera position based off players
+			Vector3 playerPos = players[0].Hero.transform.position;
+
+			Vector3 lerpVector = Vector3.Lerp(_transform.position, new Vector3(playerPos.x, _transform.position.y, playerPos.z + offsetZ), 2.0f * Time.deltaTime);
+			_transform.position = lerpVector;
+		}
+#else
         Vector3 newVector = CalculateAveragePlayerPosition();
         Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
 		lerpVector.z += offsetZ;
 		// Set the position of our camera.
+
 		if (clampToRoom)
 		{
 			_transform.position = ClampPositionIntoBounds(lerpVector);
@@ -158,6 +180,7 @@ public class FloorCamera : MonoBehaviour
 			
 			_transform.position = lerpVector;
 		}
+#endif
     }
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)

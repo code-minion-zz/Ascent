@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
+	const float KIWebVersion = 0.1f;
+
 	// GameTest Values
 	public Game.EGameState testState = Game.EGameState.Tower;
 	public Character.EHeroClass[] testCharacters;

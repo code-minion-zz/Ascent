@@ -313,7 +313,7 @@ public class Room : MonoBehaviour
 		if (cameraOffsetZ != curCameraOffsetZ)
 		{
 			curCameraOffsetZ = cameraOffsetZ;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.offsetZ = curCameraOffsetZ;
+			Game.Singleton.Tower.CurrentFloor.FloorCamera.OffsetZ = curCameraOffsetZ;
 		}
 	}
 
