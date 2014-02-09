@@ -26,18 +26,29 @@ public class MenuButtonFunctions : MonoBehaviour
 	
 	void Update()
 	{
-		if (UICamera.selectedObject == null)
+		InputDevice device = InputManager.GetDevice(0);
+		
+		Debug.Log (device);
+		//if (device.IsConnected())
 		{
-			UICamera.selectedObject = this.gameObject;
+			Debug.Log ("Connected");
+			if(device.Start.IsPressed)
+			{
+				GoToLevel();
+			}
 		}
+//		if (UICamera.selectedObject == null)
+//		{
+//			UICamera.selectedObject = this.gameObject;
+//		}
 	}
 	
 	void OnKey (KeyCode key)
 	{
-		if (UICamera.selectedObject == this.gameObject)
-		{
-			UICamera.selectedObject = defaultSelection;
-			UICamera.Notify(defaultSelection,"OnHover",false);
-		}
+//		if (UICamera.selectedObject == this.gameObject)
+//		{
+//			UICamera.selectedObject = defaultSelection;
+//			UICamera.Notify(defaultSelection,"OnHover",false);
+//		}
 	}
 }
