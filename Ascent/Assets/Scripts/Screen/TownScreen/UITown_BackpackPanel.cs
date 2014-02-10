@@ -48,6 +48,7 @@ public class UITown_BackpackPanel : UITown_Panel
 		buttonMax = (int)EButtons.MAX;
 
 		initialised = true;
+		updatePointer = true;
 
 		UpdateItems();
 	}
@@ -68,6 +69,15 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 
 		base.OnDisable();
+	}
+
+	protected void Update()
+	{
+		if (updatePointer)
+		{
+			HighlightButton();
+			updatePointer = false;
+		}
 	}
 
 	public void UpdateItems()
@@ -128,7 +138,8 @@ public class UITown_BackpackPanel : UITown_Panel
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
-		HighlightButton();
+		updatePointer = true;
+		//HighlightButton();
 	}
 
 	public override void OnMenuUp(InputDevice device)

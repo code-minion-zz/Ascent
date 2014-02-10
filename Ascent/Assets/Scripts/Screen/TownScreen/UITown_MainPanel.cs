@@ -30,6 +30,7 @@ public class UITown_MainPanel : UITown_Panel
 
 		//justInitialized = true;
 		initialised = true;
+		updatePointer = true;
 	}
 
 
@@ -45,9 +46,14 @@ public class UITown_MainPanel : UITown_Panel
 
     public void Update()
     {
-		if (justInitialized)
+		if (updatePointer)
 		{
 			HighlightButton();
+			updatePointer = false;
+		}
+
+		if (initialised)
+		{
 			SetInfoLabel();
 			justInitialized = false;
 		}
@@ -80,7 +86,8 @@ public class UITown_MainPanel : UITown_Panel
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
 		if (!gameObject.activeInHierarchy) return;
-		HighlightButton();
+		//HighlightButton();
+		updatePointer = true;
 		SetInfoLabel();
 	}
 

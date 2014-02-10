@@ -14,6 +14,7 @@ public class UITown_Panel : UIPlayerMenuPanel
 {
 	protected Dictionary<float, int> AngleIndex;
 	static float ANGLETOLERANCE = 20f;
+	protected bool updatePointer = false;
 
 	protected bool CloseTo(float a, float b)
 	{
@@ -30,23 +31,32 @@ public class UITown_Panel : UIPlayerMenuPanel
 	protected void HighlightButton ()
 	{
 		float angle = (parent as UITownWindow).PointerAngle - 90f;
-		
+		bool hit = false;
+
 		foreach (KeyValuePair<float,int> p in AngleIndex)
 		{
 			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
 			if (CloseTo(angle,p.Key))
 			{
-				if (buttons[p.Value] == currentSelection) return;
-				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-				currentSelection = buttons[p.Value];
-				currentHighlightedButton = p.Value;
+				hit = true;
+				if (buttons[p.Value] == currentSelection) //return;
+				{
+					//UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+				}
+				else
+				{
+					UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+					currentSelection = buttons[p.Value];
+					currentHighlightedButton = p.Value;
+					Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
+				}
 				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-				Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 			}
-			else
-			{
-				//Debug.Log("No Button Highlighted. Angle:" + angle + " against:" + p.Key);
-			}
+		}
+
+		if (!hit)
+		{
+			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 		}
 	}
 

@@ -6,6 +6,7 @@ public class MenuButtonFunctions : MonoBehaviour
 	
 	public string levelName;
 	public GameObject defaultSelection;
+	InputDevice[] devices;
 	
 	void OnEnable()
 	{
@@ -26,13 +27,9 @@ public class MenuButtonFunctions : MonoBehaviour
 	
 	void Update()
 	{
-		InputDevice device = InputManager.GetDevice(0);
-		
-		Debug.Log (device);
-		//if (device.IsConnected())
+		foreach (InputDevice id in InputManager.Devices)
 		{
-			Debug.Log ("Connected");
-			if(device.Start.IsPressed)
+			if(id.Start.IsPressed)
 			{
 				GoToLevel();
 			}

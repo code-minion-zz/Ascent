@@ -1120,7 +1120,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400136}
-  - 114: {fileID: 11400160}
   m_Layer: 14
   m_Name: Information Box
   m_TagString: Untagged
@@ -1237,6 +1236,22 @@ GameObject:
   - 114: {fileID: 11400180}
   m_Layer: 14
   m_Name: Equip Slot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100152
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400152}
+  - 114: {fileID: 11400124}
+  m_Layer: 14
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,6 +2445,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400106}
+  - {fileID: 400152}
   m_Father: {fileID: 400118}
 --- !u!4 &400138
 Transform:
@@ -2524,6 +2540,17 @@ Transform:
   - {fileID: 400046}
   - {fileID: 400120}
   m_Father: {fileID: 400216}
+--- !u!4 &400152
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100152}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400136}
 --- !u!4 &400154
 Transform:
   m_ObjectHideFlags: 1
@@ -5393,6 +5420,54 @@ MonoBehaviour:
   rightType: 1
   bottomType: 1
   topType: 1
+--- !u!114 &11400124
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftAnchor:
+    target: {fileID: 0}
+    relative: 0
+    absolute: -180
+  rightAnchor:
+    target: {fileID: 0}
+    relative: 1
+    absolute: 180
+  bottomAnchor:
+    target: {fileID: 0}
+    relative: 0
+    absolute: -271
+  topAnchor:
+    target: {fileID: 0}
+    relative: 1
+    absolute: -71
+  mColor: {r: 1, g: 1, b: 1, a: 1}
+  mPivot: 4
+  mWidth: 360
+  mHeight: 200
+  mDepth: 6
+  autoResizeBoxCollider: 0
+  hideIfOffScreen: 0
+  keepAspectRatio: 0
+  aspectRatio: 1.79999995
+  mAtlas: {fileID: 11400000, guid: 766c86ca661ee8047a8207a2d6e3b396, type: 2}
+  mSpriteName: Dark
+  mType: 1
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFillCenter: 1
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
 --- !u!114 &11400126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5960,54 +6035,6 @@ MonoBehaviour:
   aspectRatio: 1
   mAtlas: {fileID: 11400000, guid: 766c86ca661ee8047a8207a2d6e3b396, type: 2}
   mSpriteName: Orc Armor - Boots
-  mType: 1
-  mFillDirection: 4
-  mFillAmount: 1
-  mInvert: 0
-  mFillCenter: 1
-  centerType: 1
-  leftType: 1
-  rightType: 1
-  bottomType: 1
-  topType: 1
---- !u!114 &11400160
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftAnchor:
-    target: {fileID: 0}
-    relative: 0
-    absolute: -180
-  rightAnchor:
-    target: {fileID: 0}
-    relative: 1
-    absolute: 180
-  bottomAnchor:
-    target: {fileID: 0}
-    relative: 0
-    absolute: -271
-  topAnchor:
-    target: {fileID: 0}
-    relative: 1
-    absolute: -71
-  mColor: {r: 1, g: 1, b: 1, a: 1}
-  mPivot: 4
-  mWidth: 360
-  mHeight: 200
-  mDepth: 6
-  autoResizeBoxCollider: 0
-  hideIfOffScreen: 0
-  keepAspectRatio: 0
-  aspectRatio: 1.79999995
-  mAtlas: {fileID: 11400000, guid: 766c86ca661ee8047a8207a2d6e3b396, type: 2}
-  mSpriteName: Dark
   mType: 1
   mFillDirection: 4
   mFillAmount: 1
@@ -6718,38 +6745,16 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 0
   mWidth: 356
-  mHeight: 240
+  mHeight: 20
   mDepth: 9
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1.48333335
+  aspectRatio: 17.7999992
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 11400000, guid: 29056518aafb01b49a5b08faf8e30cff, type: 2}
-  mText: 'POW 50 [00AA00]+40
-
-    [FFFFFF]FIN 10 [00AA00]+10
-
-    asdasd
-
-    asd :) o.o >_< x_x
-
-    a
-
-    sd
-
-    as
-
-    da
-
-    sd
-
-    as
-
-    d
-
-    asdasd'
+  mText: Enter the Tower
   mFontSize: 20
   mFontStyle: 0
   mEncoding: 1
