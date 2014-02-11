@@ -13,7 +13,13 @@ public class UITown_BackpackPanel : UITown_Panel
 	EMode activeTab = EMode.BACKPACK;
 
 	int lastActiveButton = 0;
+
+	// Inventory-Tab Variables
 	List<UIButton> inventoryButtons;
+	UIButton inventoryHighlightedButton;
+
+	Backpack heroBackpack = null;
+	HeroInventory heroInvent = null;
 
 	public override void Initialise()
 	{
@@ -24,7 +30,10 @@ public class UITown_BackpackPanel : UITown_Panel
 		inventoryButtons = new List<UIButton>();
 	
 		Transform backpack = transform.FindChild ("BackpackTab");
-		Transform inventory = transform.FindChild ("InventoryTab");
+		GameObject inventoryGrid = transform.FindChild ("InventoryTab").FindChild("Scroll View").FindChild("UIGrid").gameObject;
+
+		// Adding Items to button list
+		// TODO : Replace button-adding with button-instantiation and positioning code
 		buttons[0] = backpack.FindChild("Accessory 1").GetComponent<UIButton>();
 		AngleIndex.Add(-225f, 0);
 		buttons[1] = backpack.FindChild("Accessory 2").GetComponent<UIButton>();
@@ -40,7 +49,15 @@ public class UITown_BackpackPanel : UITown_Panel
 		buttons[6] = backpack.FindChild("Consumable 3").GetComponent<UIButton>();
 		AngleIndex.Add(-135f, 6);
 
+		heroInvent = parent.Player.Hero.HeroInventory;
 
+		int i;
+		for (i = 0; i < heroInvent.Items.Count; ++i)
+		{
+			GameObject itemPrefab = NGUITools.AddChild(inventoryGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
+			inventoryButtons.Add(itemPrefab.GetComponent<UIButton>());
+		}
+		inventoryGrid.GetComponent<UIGrid>().repositionNow = true;
 
 		currentHighlightedButton = 0;
 		currentSelection = buttons[0];
@@ -50,7 +67,7 @@ public class UITown_BackpackPanel : UITown_Panel
 		initialised = true;
 		updatePointer = true;
 
-		UpdateItems();
+		UpdateBackpack();
 	}
 
 	public override void OnEnable()
@@ -62,11 +79,7 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnDisable()
 	{
-//		if (initialised)
-//		{
-//			lastActiveButton = currentHighlightedButton;
-//			currentSelection = buttons[lastActiveButton];
-//		}
+		if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
 		base.OnDisable();
 	}
@@ -87,20 +100,18 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 	}
 
-	public void UpdateItems()
+	public void UpdateBackpack()
 	{
-		//Debug.Log(parent);
 		// Change Button Icons in accordance to backpack data
-		Backpack bp = parent.Player.Hero.Backpack;
+		heroBackpack = parent.Player.Hero.Backpack;
 		
-		Item[] arrayItems = bp.AllItems;
-		for (int i = 0; i < 7; ++i)
+		Item[] arrayItems = heroBackpack.AllItems;
+		for (int i = 0; i < heroBackpack.ItemCount; ++i)
 		{
-			//Debug.Log("UpdateItems:"+i+" "+arrayItems[i]);
 			if (arrayItems[i] != null)
 			{
 				Color temp = new Color();
-				switch ((Item.ItemGrade)bp.AllItems[i].ItemStats.Grade)
+				switch ((Item.ItemGrade)heroBackpack.AllItems[i].ItemStats.Grade)
 				{
 				case Item.ItemGrade.E:
 					temp = Color.red;
@@ -132,6 +143,10 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 	}
 
+	public void UpdateInventory()
+	{
+	}
+
 	void ReturnToTown()
 	{
 		(parent as UITownWindow).RequestTransitionToPanel(0);
@@ -139,7 +154,11 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	void SwapToInventory()
 	{
-
+		(parent as UITownWindow).ShowArrow(false);
+		if (inventoryButtons.Count > 0)
+		{
+			inventoryHighlightedButton = inventoryButtons[0];
+		}
 	}
 
 	#region Input Handling
@@ -151,24 +170,13 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnMenuUp(InputDevice device)
 	{
-		if (activeTab == EMode.INVENTORY)
-		{
+		if (activeTab != EMode.INVENTORY) return;
 
-		}
-//		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-//
-//		currentSelection = PrevButton();
-//
-//		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+
 	}
 
 	public override void OnMenuDown(InputDevice device)
 	{
-//		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-//
-//		currentSelection = NextButton();
-//
-//		UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 	
 	public override void OnMenuLeft(InputDevice device)
@@ -193,8 +201,6 @@ public class UITown_BackpackPanel : UITown_Panel
 	
 	public override void OnMenuHax(InputDevice device)
 	{
-		//((UITownScreen)parent.ParentScreen).StartGame();
-//		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
 	}
 	#endregion 
 }
