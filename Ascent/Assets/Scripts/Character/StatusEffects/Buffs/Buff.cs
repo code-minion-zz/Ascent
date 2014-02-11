@@ -4,9 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Debuff : StatusEffect 
+public class Buff : StatusEffect
 {
-	
-	
-	
+    
 }

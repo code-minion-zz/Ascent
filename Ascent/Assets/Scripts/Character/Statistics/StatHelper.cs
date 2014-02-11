@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class StatHelper
 {
@@ -32,9 +33,9 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+		List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+		int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
@@ -80,9 +81,9 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
@@ -129,9 +130,9 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
@@ -177,9 +178,9 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{

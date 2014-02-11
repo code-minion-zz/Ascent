@@ -4,7 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Buff 
+public class StatusEffect 
 {
     protected bool timed = false;
     public bool Timed
@@ -43,9 +43,28 @@ public class Buff
         set { target = value; }
     }
 
-    public virtual void ApplyBuff(Character caster, Character target, float duration)
+    public void Process()
     {
-        if(duration > 0.0f)
+        if (timed)
+        {
+            if (duration > 0.0f)
+            {
+                duration -= Time.deltaTime;
+
+                ProcessEffect();
+
+                if (duration <= 0.0f)
+                {
+                    EndEffect();
+                    RemoveEffect();
+                }
+            }
+        }
+    }
+    
+    public virtual void ApplyStatusEffect(Character caster, Character target, float duration)
+    {
+        if (duration > 0.0f)
         {
             timed = true;
             this.duration = duration;
@@ -57,73 +76,18 @@ public class Buff
         name = this.ToString();
     }
 
-    public void Process()
-    {
-        if (timed)
-        {
-            if(duration > 0.0f)
-            {
-                duration -= Time.deltaTime;
-
-                ProcessBuff();
-
-                if (duration <= 0.0f)
-                {
-                    EndBuff();
-                    RemoveBuff();
-                }
-            }
-        }
-    }
-
-    protected virtual void ProcessBuff()
+    protected virtual void ProcessEffect()
     {
         // To be derived if it is needed.
     }
 
-    protected virtual void EndBuff()
+    protected virtual void EndEffect()
     {
         // To be derived if needed
     }
 
-    protected virtual void RemoveBuff()
+    protected virtual void RemoveEffect()
     {
-        target.RemoveBuff(this);
+        target.RemoveStatusEffect(this);
     }
-}
-
-public class BaseStatBuff : Buff
-{
-	public EStats type;
-	protected PrimaryStats stats;
-
-	public float Power
-	{
-		get { return stats.power; }
-	}
-
-	public float Finesse
-	{
-		get { return stats.finesse; }
-	}
-
-	public float Vitality
-	{
-		get { return stats.finesse; }
-	}
-
-	public float Spirit
-	{
-		get { return stats.spirit; }
-	}
-
-	public PrimaryStats PrimaryStats
-	{
-		get { return stats; }
-	}
-
-	public void AddBuff(float statValue)
-	{
-		statValue += stats.GetStat(type);
-	}
 }

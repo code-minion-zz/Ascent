@@ -89,12 +89,12 @@ public class PlayerHUD : MonoBehaviour {
 
 
 		// Do Buffs
-		BetterList<Buff> buffs = owner.BuffList;
+		List<StatusEffect> buffs = owner.StatusEffects;
 
  
         for (int i = 0; i < 3; ++i)
         {
-            if (i < buffs.size && buffs[i] != null)
+            if (i < buffs.Count && buffs[i] != null)
             { 
                 buffLabels[i].text = buffs[i].Name + ": " + buffs[i].Duration;
             }
