@@ -52,6 +52,6 @@ public class UITown_TowerConfirm : UITown_Panel {
 
 	public override void OnMenuCancel(InputDevice input)
 	{
-		parent.TransitionToPanel(0);
+		(parent as UITownWindow).RequestTransitionToPanel(0);
 	}
 }

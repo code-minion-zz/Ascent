@@ -4,48 +4,48 @@ using System.Collections.Generic;
 
 public class UITown_BackpackPanel : UITown_Panel 
 {
-	enum EButtons
+	enum EMode
 	{
-		ACC1 = 0,
-		ACC2,
-		ACC3,
-		ACC4,
-		ITM1,
-		ITM2,
-		ITM3,
-		ITM4,
-		MAX,
+		BACKPACK,
+		INVENTORY
 	}
 
+	EMode activeTab = EMode.BACKPACK;
+
 	int lastActiveButton = 0;
+	List<UIButton> inventoryButtons;
 
 	public override void Initialise()
 	{
+
 		base.Initialise();
 
-		buttons = new UIButton[(int)EButtons.MAX];
+		buttons = new UIButton[7];
+		inventoryButtons = new List<UIButton>();
 	
-		Transform acc = transform.FindChild ("BackpackTab");
-		Transform con = transform.FindChild ("BackpackTab");
-		buttons[(int)EButtons.ACC1] = acc.FindChild("Accessory 1").GetComponent<UIButton>();
+		Transform backpack = transform.FindChild ("BackpackTab");
+		Transform inventory = transform.FindChild ("InventoryTab");
+		buttons[0] = backpack.FindChild("Accessory 1").GetComponent<UIButton>();
 		AngleIndex.Add(-225f, 0);
-		buttons[(int)EButtons.ACC2] = acc.FindChild("Accessory 2").GetComponent<UIButton>();
+		buttons[1] = backpack.FindChild("Accessory 2").GetComponent<UIButton>();
 		AngleIndex.Add(90f, 1);
-		buttons[(int)EButtons.ACC3] = acc.FindChild("Accessory 3").GetComponent<UIButton>();
+		buttons[2] = backpack.FindChild("Accessory 3").GetComponent<UIButton>();
 		AngleIndex.Add(45f, 2);
-		buttons[(int)EButtons.ACC4] = acc.FindChild("Accessory 4").GetComponent<UIButton>();
+		buttons[3] = backpack.FindChild("Accessory 4").GetComponent<UIButton>();
 		AngleIndex.Add(0f, 3);
-		buttons[(int)EButtons.ITM1] = con.FindChild("Consumable 1").GetComponent<UIButton>();
+		buttons[4] = backpack.FindChild("Consumable 1").GetComponent<UIButton>();
 		AngleIndex.Add(-45f, 4);
-		buttons[(int)EButtons.ITM2] = con.FindChild("Consumable 2").GetComponent<UIButton>();
+		buttons[5] = backpack.FindChild("Consumable 2").GetComponent<UIButton>();
 		AngleIndex.Add(-90f, 5);
-		buttons[(int)EButtons.ITM3] = con.FindChild("Consumable 3").GetComponent<UIButton>();
+		buttons[6] = backpack.FindChild("Consumable 3").GetComponent<UIButton>();
 		AngleIndex.Add(-135f, 6);
 
-		currentHighlightedButton = (int)EButtons.ACC1;
-		currentSelection = buttons[(int)EButtons.ACC1];
+
+
+		currentHighlightedButton = 0;
+		currentSelection = buttons[0];
 		lastActiveButton = currentHighlightedButton;
-		buttonMax = (int)EButtons.MAX;
+		buttonMax = 7;
 
 		initialised = true;
 		updatePointer = true;
@@ -62,11 +62,11 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnDisable()
 	{
-		if (initialised)
-		{
-			lastActiveButton = currentHighlightedButton;
-			currentSelection = buttons[lastActiveButton];
-		}
+//		if (initialised)
+//		{
+//			lastActiveButton = currentHighlightedButton;
+//			currentSelection = buttons[lastActiveButton];
+//		}
 
 		base.OnDisable();
 	}
@@ -75,7 +75,14 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		if (updatePointer)
 		{
-			HighlightButton();
+			switch (activeTab)
+			{
+			case EMode.BACKPACK:
+				HighlightButton();
+				break;
+			case EMode.INVENTORY:
+				break;
+			}
 			updatePointer = false;
 		}
 	}
@@ -127,12 +134,12 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	void ReturnToTown()
 	{
-		parent.TransitionToPanel(0);
+		(parent as UITownWindow).RequestTransitionToPanel(0);
 	}
 
-	UIButton GetButton(EButtons button)
+	void SwapToInventory()
 	{
-		return buttons[(int)button];
+
 	}
 
 	#region Input Handling
@@ -144,6 +151,10 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnMenuUp(InputDevice device)
 	{
+		if (activeTab == EMode.INVENTORY)
+		{
+
+		}
 //		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 //
 //		currentSelection = PrevButton();

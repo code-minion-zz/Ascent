@@ -133,13 +133,13 @@ public class UITown_MainPanel : UITown_Panel
 		switch (currentHighlightedButton)
 		{
 		case 0 : // tower
-			parent.TransitionToPanel(2);
+			(parent as UITownWindow).RequestTransitionToPanel(2);
 			break;
 		case 1 : // quit
 			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
 			break;
 		case 2 : // backpack
-			parent.TransitionToPanel(1);
+			(parent as UITownWindow).RequestTransitionToPanel(1);
 			break;
 		}
 	}
