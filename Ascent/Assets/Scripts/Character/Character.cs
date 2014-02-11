@@ -40,7 +40,7 @@ public abstract class Character : BaseCharacter
 	public event Damage onDamageTaken;
 	public event Damage onDamageDealt; // Not handled by the character.
 
-	protected BetterList<Buff> buffList = new BetterList<Buff>();
+    protected List<StatusEffect> statusEffects = new List<StatusEffect>();
 
 	protected List<Action> abilities = new List<Action>();
 
@@ -128,9 +128,9 @@ public abstract class Character : BaseCharacter
 		set { lastDamagedBy = value; }
 	}
 
-	public BetterList<Buff> BuffList
+	public List<StatusEffect> StatusEffects
 	{
-		get { return buffList; }
+		get { return statusEffects; }
 	}
 
 	public List<Action> Abilities
@@ -175,7 +175,7 @@ public abstract class Character : BaseCharacter
 		}
 
 		// Process all the buffs
-		foreach (Buff b in buffList)
+		foreach (StatusEffect b in statusEffects)
 		{
 			b.Process();
 		}
@@ -487,14 +487,14 @@ public abstract class Character : BaseCharacter
 		}
     }
 
-	public virtual void AddBuff(Buff buff)
+	public virtual void AddStatusEffect(StatusEffect effect)
 	{
-		buffList.Add(buff);
+        statusEffects.Add(effect);
 	}
 
-	public virtual void RemoveBuff(Buff buff)
+    public virtual void RemoveStatusEffect(StatusEffect effect)
 	{
-		buffList.Remove(buff);
+        statusEffects.Remove(effect);
 	}
 
 	public virtual int DamageFormulaA(float addFixedDamage, float addMultiplier)

@@ -21,7 +21,7 @@ public class WarriorWarCry : Action
         base.StartAbility();
 
         PDefenceBuff buff = new PDefenceBuff();
-        buff.ApplyBuff(owner, owner, 15.0f);
+        buff.ApplyStatusEffect(owner, owner, 15.0f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
 	}

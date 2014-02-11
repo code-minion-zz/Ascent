@@ -9,6 +9,7 @@ public enum TilePropertyType
     cornerWallTile,
 	doorTile,
 	miscObj,
+    brazier,
 	trap,
 	monster,
 	invisibleWall

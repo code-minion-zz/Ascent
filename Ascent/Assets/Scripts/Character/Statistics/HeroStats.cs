@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HeroStats : CharacterStats 
 {
@@ -300,9 +301,9 @@ public class HeroStats : CharacterStats
 	{
 		// NOTE: This only looks for base stat buffs
 		// TODO: Parse for secondary stats aswell
-		BetterList<Buff> buffList = hero.BuffList;
+		List<StatusEffect> buffList = hero.StatusEffects;
 
-		int buffCount = buffList.size;
+		int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{

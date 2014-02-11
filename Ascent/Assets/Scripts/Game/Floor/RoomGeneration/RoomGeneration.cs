@@ -1,6 +1,8 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 /// <summary>
 /// Handles generation of a room for use in the floor generation.
@@ -35,92 +37,201 @@ public class RoomGeneration
         brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
 	}
 
-	/// <summary>
-	/// Creates a new room and intializes variables.
-	/// </summary>
-	/// <returns>The new room.</returns>
-	/// <param name="width">Width.</param>
-	/// <param name="height">Height.</param>
-	/// <param name="name">Name.</param>
-	public RoomProperties CreateNewRoom(int width, int height, string name)
+    public RoomProperties LoadRoom(Stream fileStream)
+    {
+        TilePropertyType[,] tiles = LoadTiles(fileStream);
+
+        Room room = CreateRoomObject("Room : Custom");
+
+        // Handle creation of the ground tiles.
+        RoomProperties newRoom = new RoomProperties(room);
+        newRoom.SetRoomTiles(tiles.GetLength(0), tiles.GetLength(1));
+
+        // Copy over the tiles.
+        for (int i = 0; i < tiles.GetLength(0); ++i)
+        {
+            for (int j = 0; j < tiles.GetLength(1); ++j)
+            {
+                newRoom.RoomTiles[i, j].TileType = tiles[i, j];
+            }
+        }
+
+        // Apply the new dimensions to the navMesh.
+        room.NavMesh.transform.localScale = new Vector3((tiles.GetLength(0) * 2) - 1.0f, (tiles.GetLength(1) * 2) - 1.0f, 0.0f);
+
+        PlaceGroundTiles(newRoom);
+        //PlaceDoorsDisconnected(newRoom);
+        SetupCamera(newRoom);
+        newRoom.IsPreloaded = true;
+
+        return newRoom;
+    }
+
+    /// <summary>
+    /// Loads tiles from a specified file.
+    /// </summary>
+    /// <param name="fileStream">The file path for the room.</param>
+    private TilePropertyType[,] LoadTiles(Stream fileStream)
+    {
+        int width;
+        List<string> lines = new List<string>();
+
+        using (StreamReader reader = new StreamReader(fileStream))
+        {
+            string line = reader.ReadLine();
+            width = line.Length;
+
+            while (line != null)
+            {
+                lines.Add(line);
+                if (line.Length != width)
+                    throw new Exception(String.Format("The length of line {0} is different from all preceeding lines.", lines.Count));
+                line = reader.ReadLine();
+            }
+        }
+
+        TilePropertyType[,] tiles = new TilePropertyType[width, lines.Count];
+
+        for (int y = 0; y < tiles.GetLength(1); ++y)
+        {
+            for (int x = 0; x < tiles.GetLength(0); ++x)
+            {
+                char tileType = lines[y][x];
+                tiles[x, y] = LoadTile(tileType, x, y);
+            }
+        }
+
+        return tiles;
+    }
+
+    /// <summary>
+    /// Based on the tile type will load the appropriate tile.
+    /// </summary>
+    /// <param name="tileType"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    private TilePropertyType LoadTile(char tileType, int x, int y)
+    {
+        TilePropertyType tile = TilePropertyType.none;
+
+        switch (tileType)
+        {
+            case 'B':
+                tile = TilePropertyType.brazier;
+                break;
+
+            case 'C':
+                tile = TilePropertyType.cornerWallTile;
+                break;
+
+            case 'D':
+                tile = TilePropertyType.doorTile;
+                break;
+
+            case 'X':
+                tile = TilePropertyType.wallTile;
+                break;
+        }
+
+        return tile;
+    }
+
+    private Room CreateRoomObject(string name)
+    {
+        GameObject roomGo = new GameObject(name);
+        Room room = roomGo.AddComponent<Room>();
+
+        // Add necessary nodes.
+        room.tag = "RoomRoot";
+        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
+        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
+        doorGo.AddComponent<Doors>();
+        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
+
+        room.AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+        room.AddNewParentCategory("Items", LayerMask.NameToLayer("Items"));
+        room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
+
+        room.Initialise();
+
+        return room;
+    }
+
+    /// <summary>
+    /// Creates a new room and intializes variables.
+    /// </summary>
+    /// <returns>The new room.</returns>
+    /// <param name="width">Width.</param>
+    /// <param name="height">Height.</param>
+    /// <param name="name">Name.</param>
+    public RoomProperties CreateNewRoom(int width, int height, string name)
 	{
-		GameObject roomGo = new GameObject(name);
-		Room room = roomGo.AddComponent<Room>();
-		
-		// Add necessary nodes.
-		room.tag = "RoomRoot";
-		GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
-		GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
-		doorGo.AddComponent<Doors>();
-		room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
-		
-		room.AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
-		room.AddNewParentCategory("Items", LayerMask.NameToLayer("Items"));
-		room.AddNewParentCategory("Lights", LayerMask.NameToLayer("Default"));
-		
-		room.Initialise();
+        Room room = CreateRoomObject(name);
 		
 		// Handle creation of the ground tiles.
 		RoomProperties newRoom = new RoomProperties(room);
-		newRoom.SetRoomTiles(width, height);
+		newRoom.SetRoomTiles((int)(width * 0.5f), (int)(height * 0.5f));
 		PlaceGroundTiles(newRoom);
+        SetupCamera(newRoom);
 		
 		// Apply the new dimensions to the navMesh.
 		room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
 
-		float cameraOffsetX = 0.175f;
-		float cameraOffsetZ = 0.57f;
-
-		// A standard room is 18 wide(X) by 14 high(Z)
-		float highestDimension = width > height ? height : width;
-		if (highestDimension <= 6.0f)
-		{
-			room.cameraHeight = 17.0f;
-			room.cameraOffsetZ = -0.3f;
-			cameraOffsetX = 0.20f;
-			cameraOffsetZ = 0.75f;
-
-		}
-		else if (highestDimension <= 10.0f)
-		{
-			room.cameraHeight = 18.0f;
-			room.cameraOffsetZ = -0.318f;
-			cameraOffsetX = 0.20f;
-			cameraOffsetZ = 0.75f;
-		}
-		else if (highestDimension <= 14.0f)
-		{
-			room.cameraHeight = 19.0f;
-			room.cameraOffsetZ = -0.336f;
-			cameraOffsetX = 0.175f;
-			cameraOffsetZ = 0.57f;
-		}
-		else
-		{
-			room.cameraHeight = 20.0f;
-			room.cameraOffsetZ = -0.35f;
-			cameraOffsetX = 0.175f;
-			cameraOffsetZ = 0.57f;
-		}
-		
-
-		// TODO: Fix the camera setup for this room.
-		room.minCamera.x = -width * cameraOffsetX;
-		room.maxCamera.x = width * cameraOffsetX;
-
-		room.minCamera.z = -height * cameraOffsetZ;
-
-		// Min is the bottom. Max is TOp
-
-		// Assuming a base room height is 14 (ie. a room with height 14 will have max as 0), increase the max by the difference from the base height.
-		room.maxCamera.z = (height - 14.0f) * cameraOffsetZ;
-
-		// If the max is less than the min set the max to the min.
-		room.maxCamera.z = room.maxCamera.z < room.minCamera.z ? room.minCamera.z : room.maxCamera.z;
-
-
 		return newRoom;
 	}
+
+    private void SetupCamera(RoomProperties room)
+    {
+        float cameraOffsetX = 0.175f;
+        float cameraOffsetZ = 0.57f;
+
+        // A standard room is 18 wide(X) by 14 high(Z)
+        float highestDimension = room.Width > room.Height ? room.Height : room.Width;
+        if (highestDimension <= 6.0f)
+        {
+            room.Room.cameraHeight = 17.0f;
+            room.Room.cameraOffsetZ = -0.3f;
+            cameraOffsetX = 0.20f;
+            cameraOffsetZ = 0.75f;
+
+        }
+        else if (highestDimension <= 10.0f)
+        {
+            room.Room.cameraHeight = 18.0f;
+            room.Room.cameraOffsetZ = -0.318f;
+            cameraOffsetX = 0.20f;
+            cameraOffsetZ = 0.75f;
+        }
+        else if (highestDimension <= 14.0f)
+        {
+            room.Room.cameraHeight = 19.0f;
+            room.Room.cameraOffsetZ = -0.336f;
+            cameraOffsetX = 0.175f;
+            cameraOffsetZ = 0.57f;
+        }
+        else
+        {
+            room.Room.cameraHeight = 20.0f;
+            room.Room.cameraOffsetZ = -0.35f;
+            cameraOffsetX = 0.175f;
+            cameraOffsetZ = 0.57f;
+        }
+
+
+        // TODO: Fix the camera setup for this room.
+        room.Room.minCamera.x = -room.Width * cameraOffsetX;
+        room.Room.maxCamera.x = room.Width * cameraOffsetX;
+        room.Room.minCamera.z = -room.Height * cameraOffsetZ;
+
+        // Min is the bottom. Max is TOp
+
+        // Assuming a base room height is 14 (ie. a room with height 14 will have max as 0), increase the max by the difference from the base height.
+        room.Room.maxCamera.z = (room.Height - 14.0f) * cameraOffsetZ;
+
+        // If the max is less than the min set the max to the min.
+        room.Room.maxCamera.z = room.Room.maxCamera.z < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
+    }
 
     public void PopulateMonsters(int dungeonLevel, RoomProperties room, Rarity rarity)
     {
@@ -141,7 +252,7 @@ public class RoomGeneration
 
         // Generate number of monsters.
         // TODO: make this better haha.
-        int numberOfMonsters = (int)rarity * Random.Range(1, 5);
+        int numberOfMonsters = (int)rarity * UnityEngine.Random.Range(1, 5);
         int monstersPlaced = 0;
 
         for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
@@ -151,7 +262,7 @@ public class RoomGeneration
                 return;
 
             // Choose type of monster
-            Room.EMonsterTypes mobType = (Room.EMonsterTypes)(Random.Range(0, (int)Room.EMonsterTypes.MAX));
+            Room.EMonsterTypes mobType = (Room.EMonsterTypes)(UnityEngine.Random.Range(0, (int)Room.EMonsterTypes.MAX));
 
             GameObject go = null;
 
@@ -192,7 +303,7 @@ public class RoomGeneration
 
             // Give the monster a random position.
             // Choose a random tile.
-            int randomTile = Random.Range(0, tempAvailablePosition.Count);
+            int randomTile = UnityEngine.Random.Range(0, tempAvailablePosition.Count);
             go.transform.localPosition = tempAvailablePosition[randomTile].Position;
             go.transform.parent = room.Room.MonsterParent;
 
@@ -225,6 +336,7 @@ public class RoomGeneration
 	/// <param name="room">Room.</param>
 	public void PopulateMiscObjects(RoomProperties room)
 	{
+
         List<TileProperties> tempAvailableTiles = new List<TileProperties>();
 
         // Find all the available positions that a misc object can be placed.
@@ -235,7 +347,8 @@ public class RoomGeneration
                 // Populate random misc objects.
                 if (room.RoomTiles[i, j].TileType == TilePropertyType.miscObj || 
                     room.RoomTiles[i, j].TileType == TilePropertyType.wallTile || 
-                    room.RoomTiles[i, j].TileType == TilePropertyType.cornerWallTile)
+                    room.RoomTiles[i, j].TileType == TilePropertyType.cornerWallTile ||
+                    room.RoomTiles[i, j].TileType == TilePropertyType.brazier)
                 {
                     if (room.RoomTiles[i, j].IsOccupied == false)
                     {
@@ -250,7 +363,8 @@ public class RoomGeneration
         // For each corner place the braziers.
         foreach (TileProperties tile in tempAvailableTiles)
         {
-            if (tile.TileType == TilePropertyType.cornerWallTile)
+            if (tile.TileType == TilePropertyType.cornerWallTile ||
+                tile.TileType == TilePropertyType.brazier)
             {
                 go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
                 go.transform.parent = room.Room.EnvironmentParent;
@@ -260,8 +374,14 @@ public class RoomGeneration
             }
         }
 
+        // Since the room is preloaded we don't need to randomly place things.
+        if (room.IsPreloaded == true)
+        {
+            return;
+        }
+
         // Determine how many barrel objects we will try to place.
-        int numberOfMisc = (int)miscObjects * Random.Range(1, 4);
+        int numberOfMisc = (int)miscObjects * UnityEngine.Random.Range(1, 4);
         int miscPlaced = 0;
 
         for (miscPlaced = 0; miscPlaced < numberOfMisc; ++miscPlaced)
@@ -274,12 +394,12 @@ public class RoomGeneration
                 return;
 
             // Choose a random tile, and a random misc object.
-            int randomTile = Random.Range(0, tempAvailableTiles.Count);
+            int randomTile = UnityEngine.Random.Range(0, tempAvailableTiles.Count);
 
             // Check to see if the tile type is a wall tile to be sure.
             if (tempAvailableTiles[randomTile].TileType == TilePropertyType.wallTile)
             {
-                int random = Random.Range(0, 2);
+                int random = UnityEngine.Random.Range(0, 2);
 
                 switch (random)
                 {
@@ -288,7 +408,7 @@ public class RoomGeneration
                         break;
 
                     case 1:
-                        float rotationY = Random.Range(0.0f, 270.0f);
+                        float rotationY = UnityEngine.Random.Range(0.0f, 270.0f);
                         go = GameObject.Instantiate(barrelCluster, Vector3.zero, barrelObject.transform.rotation) as GameObject;
                         go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, rotationY, go.transform.eulerAngles.z);
                         break;
@@ -315,22 +435,21 @@ public class RoomGeneration
 		// Create the floor tiles and positions.
 		// TODO: If we want to at some point make different shaped rooms we will need to only place tiles
 		// where necessary.
-		for (int i = 0; i < room.NumberOfTilesX; ++i)
+		for (int x = 0; x < room.NumberOfTilesX; ++x)
 		{
-			for (int j = 0; j < room.NumberOfTilesY; ++j)
+			for (int y = 0; y < room.NumberOfTilesY; ++y)
 			{
-				// Create the floor.
-				GameObject floorGo = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-				float tileSizeX = floorObject.transform.localScale.x;
-				float tileSizeY = floorObject.transform.localScale.y;
-				float halfTileX = tileSizeX * 0.5f;
-				float halfTileY = tileSizeY * 0.5f;
-				floorGo.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
-				Vector3 tilePosition = new Vector3(-(room.Width * 0.5f) + halfTileX + (i * tileSizeX), 0.0f, -(room.Height * 0.5f) + halfTileY + (j * tileSizeY));
-				floorGo.transform.position = tilePosition;
-				floorGo.name = "GroundTile[" + i + ", " + j + "]";
-				
-				room.RoomTiles[i,j].Position = tilePosition;
+                if (room.RoomTiles[x, y].TileType == TilePropertyType.none ||
+                    room.RoomTiles[x, y].TileType == TilePropertyType.doorTile ||
+                    room.RoomTiles[x, y].TileType == TilePropertyType.wallTile ||
+                    room.RoomTiles[x, y].TileType == TilePropertyType.brazier ||
+                    room.RoomTiles[x, y].TileType == TilePropertyType.cornerWallTile)
+                {
+                    GameObject groundTile = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
+                    groundTile.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                    groundTile.transform.position = room.RoomTiles[x, y].Position;
+                    groundTile.name = "GroundTile[" + x + ", " + y + "]";
+                }
 			}
 		}
 	}
@@ -349,51 +468,57 @@ public class RoomGeneration
 		
 		// Attach the doors to their rightful component.
 		Doors doorsScript = doors.GetComponent<Doors>();
-		Door returnDoor = null;
 		
 		doorsScript.doors[(int)direction] = doorGo.GetComponent<Door>();
-		returnDoor = doorsScript.doors[(int)direction];
+		Door returnDoor = doorsScript.doors[(int)direction];
 		
-		float widthOffset = (fromRoom.Width * 0.5f) + 1.0f;
-		float heightOffset = (fromRoom.Height * 0.5f) + 1.0f;
+		int lastTileX = fromRoom.NumberOfTilesX - 1;
+		int lastTileY = fromRoom.NumberOfTilesY - 1;
 
-        int tileX = (int)((widthOffset * 0.5f) - 1.0f);
-        int tileY = (int)((heightOffset * 0.5f) - 1.0f);
-		
+        int midXTile = (int)(lastTileX * 0.5f);
+        int midYTile = (int)(lastTileY * 0.5f);
+
 		switch (direction)
 		{
-		case Floor.TransitionDirection.North:
-			doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z + heightOffset);
-			doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
-			doorGo.name = "North Door";
-            fromRoom.RoomTiles[tileX, (int)(heightOffset - 2.0f)].TileType = TilePropertyType.doorTile;
-            fromRoom.RoomTiles[tileX, (int)(heightOffset - 2.0f)].IsOccupied = true;
-			break;
-			
-		case Floor.TransitionDirection.East:
-			doorGo.transform.position = new Vector3(doors.transform.position.x + widthOffset, doorGo.transform.position.y, doors.transform.position.z);
-			doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
-			doorGo.name = "East Door";
-            fromRoom.RoomTiles[(int)(widthOffset - 2.0f), tileY].TileType = TilePropertyType.doorTile;
-            fromRoom.RoomTiles[(int)(widthOffset - 2.0f), tileY].IsOccupied = true;
-			break;
-			
-		case Floor.TransitionDirection.South:
-			doorGo.transform.position = new Vector3(doors.transform.position.x, doorGo.transform.position.y, doors.transform.position.z - heightOffset);
-			doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
-			doorGo.name = "South Door";
-            fromRoom.RoomTiles[tileX, 0].TileType = TilePropertyType.doorTile;
-            fromRoom.RoomTiles[tileX, 0].IsOccupied = true;
-			break;
-			
-		case Floor.TransitionDirection.West:
-			doorGo.transform.position = new Vector3(doors.transform.position.x - widthOffset, doorGo.transform.position.y, doors.transform.position.z);
-			doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
-			doorGo.name = "West Door";
-            fromRoom.RoomTiles[0, tileY].TileType = TilePropertyType.doorTile;
-            fromRoom.RoomTiles[0, tileY].IsOccupied = true;
-			break;
-			
+            case Floor.TransitionDirection.North:
+                {
+                    doorGo.transform.localPosition = fromRoom.RoomTiles[midXTile, lastTileY].Position;
+                    doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
+                    doorGo.name = "North Door";
+                    fromRoom.RoomTiles[midXTile, lastTileY].TileType = TilePropertyType.doorTile;
+                    fromRoom.RoomTiles[midXTile, lastTileY].IsOccupied = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.East:
+                {
+                    doorGo.transform.localPosition = fromRoom.RoomTiles[lastTileX, midYTile].Position;
+                    doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
+                    doorGo.name = "East Door";
+                    fromRoom.RoomTiles[lastTileX, midYTile].TileType = TilePropertyType.doorTile;
+                    fromRoom.RoomTiles[lastTileX, midYTile].IsOccupied = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.South:
+                {
+                    doorGo.transform.localPosition = fromRoom.RoomTiles[midXTile, 0].Position;
+                    doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
+                    doorGo.name = "South Door";
+                    fromRoom.RoomTiles[midXTile, 0].TileType = TilePropertyType.doorTile;
+                    fromRoom.RoomTiles[midXTile, 0].IsOccupied = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.West:
+                {
+                    doorGo.transform.localPosition = fromRoom.RoomTiles[0, midYTile].Position;
+                    doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
+                    doorGo.name = "West Door";
+                    fromRoom.RoomTiles[0, midYTile].TileType = TilePropertyType.doorTile;
+                    fromRoom.RoomTiles[0, midYTile].IsOccupied = true;
+                }
+                break;
 		}
 		
 		return (returnDoor);

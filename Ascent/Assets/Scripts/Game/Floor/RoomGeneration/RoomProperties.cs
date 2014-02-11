@@ -20,11 +20,14 @@ public class RoomProperties
     private int numberOfTilesX;
     private int numberOfTilesY;
     private bool wallsPlaced;
+    private bool isPreloaded;
 
     private Room room;
     private FeatureType roomType;
     private int weight;
     private TileProperties[,] tiles;
+
+    public const int tileSize = 2;
 
     /// <summary>
     /// Gets the bounds of the room.
@@ -96,6 +99,17 @@ public class RoomProperties
         set { wallsPlaced = value; }
     }
 
+    public bool IsPreloaded
+    {
+        get { return isPreloaded; }
+        set { isPreloaded = value; }
+    }
+
+    public int TileSize
+    {
+        get { return tileSize; }
+    }
+
     public Room Room
     {
         get { return room; }
@@ -128,24 +142,27 @@ public class RoomProperties
 	/// <param name="height">Height.</param>
 	/// 
     public void SetRoomTiles(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-        // Tiles are 2x2 units so we will cut the width and height in half.
-        numberOfTilesX = (int)(width * 0.5f);
-        numberOfTilesY = (int)(height * 0.5f);
+    {
+        this.width = (width * TileSize);
+        this.height = (height * TileSize);
 
-        tiles = new TileProperties[numberOfTilesX, numberOfTilesY];
+        numberOfTilesX = width;
+        numberOfTilesY = height;
+
+        tiles = new TileProperties[width, height];
 
         for (int i = 0; i < numberOfTilesX; ++i)
-		{
+        {
             for (int j = 0; j < numberOfTilesY; ++j)
-			{
-				tiles[i,j] = new TileProperties();
-				tiles[i,j].Position = Vector3.zero;
-				tiles[i,j].TileType = TilePropertyType.none;
-			}
-		}
+            {
+                // Create and assign the position of the tile.
+                tiles[i, j] = new TileProperties();
+                float xPos = -(width) + (tileSize * 0.5f) + (i * tileSize);
+                float zPos = -(height) + (tileSize * 0.5f) + (j * tileSize);
+                tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
+                tiles[i, j].TileType = TilePropertyType.none;
+            }
+        }
     }
 
     /// <summary>

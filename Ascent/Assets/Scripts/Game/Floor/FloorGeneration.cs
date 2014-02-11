@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public enum Directions
 {
@@ -47,7 +49,7 @@ public class FloorGeneration
         roomDimensions.Add(6);
 
         //Random.seed = (int)System.DateTime.Today.Millisecond;
-        Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+        UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 
         CreateRooms();
     }
@@ -59,28 +61,32 @@ public class FloorGeneration
         locationVector = Vector3.zero;
 
 		// Generate the first room in the game.
-		RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
-		//firstRoom.RoomType = FeatureType.none;
+		//RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
+        string levelPath = string.Format("Assets/Resources/Maps/{0}.txt", 0);
+
+        FileStream fileStream = new FileStream(levelPath, FileMode.Open);
+        RoomProperties firstRoom = roomGeneration.LoadRoom(fileStream);
 		firstRoom.Position = Vector3.zero;
+        firstRoom.Room.name = "Room 0: Start";
 		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
         for (roomsPlaced = 1; roomsPlaced < roomsToPlace+1; roomsPlaced++)
         {
             // Pick a random room from the pool of rooms that currently exist
-            int randomRoom = Random.Range(0, rooms.Count);
+            int randomRoom = UnityEngine.Random.Range(0, rooms.Count);
             RoomProperties fromRoom = rooms[randomRoom];
 
             // Choose a random direction to place the room
             // TODO: Eventually choose a random wall off a room.
-            int randRoomDir = Random.Range(0, 4);
+            int randRoomDir = UnityEngine.Random.Range(0, 4);
 
             // Checks if we can make a room in this direction
             if (fromRoom.directionsFilled[randRoomDir] == false)
             {
 				// Choose a width and height
-				int width = roomDimensions[Random.Range(0, roomDimensions.Count)];
-				int height = roomDimensions[Random.Range(0, roomDimensions.Count)];
+                int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+                int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
 
 				// If we are ready to place the boss room.
 				if (roomsPlaced == roomsToPlace - 2)
@@ -114,7 +120,7 @@ public class FloorGeneration
     {
         FeatureType type = FeatureType.monster;
 
-        int randomChance = Random.Range(0, 101);
+        int randomChance = UnityEngine.Random.Range(0, 101);
 
         // 75% Percent chance region
         if (randomChance >= 25 && randomChance <= 100)
@@ -310,8 +316,6 @@ public class FloorGeneration
                     // we also need to create the door that connects the previous room.
                     newRoom.FillDirection(Floor.TransitionDirection.South); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
-                    newRoom.Width = width;
-                    newRoom.Height = height;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
@@ -331,8 +335,6 @@ public class FloorGeneration
                     // we also need to create the door that connects the previous room.
                     newRoom.FillDirection(Floor.TransitionDirection.West); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
-                    newRoom.Width = width;
-                    newRoom.Height = height;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
@@ -352,8 +354,6 @@ public class FloorGeneration
                     // we also need to create the door that connects the previous room.
                     newRoom.FillDirection(Floor.TransitionDirection.North); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
-                    newRoom.Width = width;
-                    newRoom.Height = height;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.
@@ -373,8 +373,6 @@ public class FloorGeneration
                     // we also need to create the door that connects the previous room.
                     newRoom.FillDirection(Floor.TransitionDirection.East); // We set this position to filled because its where the other door came from
                     newRoom.Position = locationVector;
-                    newRoom.Width = width;
-                    newRoom.Height = height;
                     rooms.Add(newRoom);
 
                     // Generate the door for this new room and link it to the previous room.

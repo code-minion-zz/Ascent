@@ -4,9 +4,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class StatusEffect : MonoBehaviour 
+public class Debuff : StatusEffect 
 {
-	
-	
 	
 }
