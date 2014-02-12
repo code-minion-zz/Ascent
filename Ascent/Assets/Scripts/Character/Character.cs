@@ -351,11 +351,11 @@ public abstract class Character : BaseCharacter
 
 		if (this is Hero)
 		{
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
 		}
 		else
 		{
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
 		}
 
 		// Tell this character how much damage it has done.
@@ -397,7 +397,7 @@ public abstract class Character : BaseCharacter
 			stunDuration = duration;
 			SetColor(Color.yellow);
 
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Stunned!", Color.yellow);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Stunned!", Color.yellow);
 		}
 	}
 

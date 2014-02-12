@@ -276,6 +276,8 @@ public class Game : MonoBehaviour
 			{
 				newPlayer.Hero = hero;
 			}
+
+            player.name = "Player " + i;
 		}
     }
 
