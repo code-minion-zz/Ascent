@@ -27,6 +27,13 @@ public class StatusEffect
         set { name = value; }
     }
 
+    protected StatusEffectIcon icon;
+    public StatusEffectIcon Icon
+    {
+        get { return icon; }
+        set { icon = value; }
+    }
+
     // The source of the buff
     protected Character caster;
     public Character Caster

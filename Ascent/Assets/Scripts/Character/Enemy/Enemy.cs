@@ -105,7 +105,7 @@ public abstract class Enemy : Character
 
 	public virtual void InitiliseHealthbar()
 	{
-		hpBar = HudManager.Singleton.AddEnemyLifeBar(transform.localScale);
+		hpBar = FloorHUDManager.Singleton.AddEnemyLifeBar(transform.localScale);
 		hpBar.Init(StatBar.eStat.HP, this);
         hpBar.gameObject.SetActive(false);
 
@@ -205,7 +205,7 @@ public abstract class Enemy : Character
 	protected virtual void PositionHpBar()
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
-		Vector3 barPos = HudManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
+		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x,barPos.y);
 		hpBar.transform.position = barPos;
 	}
@@ -263,7 +263,7 @@ public abstract class Enemy : Character
             this.transform.collider.enabled = false;
         }
 
-		HudManager.Singleton.RemoveEnemyLifeBar(hpBar);
+		FloorHUDManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
 
     #endregion

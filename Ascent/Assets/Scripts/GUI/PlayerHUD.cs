@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class PlayerHUD : MonoBehaviour {
-
+public class PlayerHUD : MonoBehaviour 
+{
 	Hero owner;
 	public StatBar hpBar;
 	public StatBar spBar;
@@ -23,19 +23,13 @@ public class PlayerHUD : MonoBehaviour {
 
 	public UILabel livesLabel;
 
-	public void Init(Hero _owner)
+	public void Initialise(Hero _owner)
 	{
 		owner = _owner;
 		hpBar.Init(StatBar.eStat.HP,owner);
 		spBar.Init(StatBar.eStat.SP,owner);
 	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
 	void Update () 
     {
 		// Do Abilities
