@@ -62,26 +62,7 @@ public class UIHeroSelect_NewHeroPanel : UIPlayerMenuPanel
     {
         UICamera.Notify(currentSelection.gameObject, "OnPress", true);
 
-        EButtons current = (EButtons)currentHighlightedButton;
         parent.Player.CreateHero(Character.EHeroClass.Warrior);
-        //switch(current)
-        //{
-        //    case EButtons.Warrior:
-        //        {  
-        //            parent.Player.CreateHero(Character.EHeroClass.Warrior);
-        //        }
-        //        break;
-        //    case EButtons.Rogue:
-        //        {
-        //            parent.Player.CreateHero(Character.EHeroClass.Warrior);
-        //        }
-        //        break;
-        //    case EButtons.Mage:
-        //        {
-        //            parent.Player.CreateHero(Character.EHeroClass.Warrior);
-        //        }
-        //        break;
-        //}
 
 		parent.Player.Hero.gameObject.SetActive(false);
 		parent.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.HeroSelected);

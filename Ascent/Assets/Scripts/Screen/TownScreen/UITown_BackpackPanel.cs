@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class UITown_BackpackPanel : UITown_Panel 
 {
+	GameObject inventoryGrid;
+
 	enum EMode
 	{
 		BACKPACK,
@@ -15,8 +17,9 @@ public class UITown_BackpackPanel : UITown_Panel
 	int lastActiveButton = 0;
 
 	// Inventory-Tab Variables
-	List<UIButton> inventoryButtons;
+	List<UIButton> inventoryAccessories;
 	UIButton inventoryHighlightedButton;
+	List<UIButton> inventoryConsumables;
 
 	Backpack heroBackpack = null;
 	HeroInventory heroInvent = null;
@@ -27,10 +30,10 @@ public class UITown_BackpackPanel : UITown_Panel
 		base.Initialise();
 
 		buttons = new UIButton[7];
-		inventoryButtons = new List<UIButton>();
+		inventoryAccessories = new List<UIButton>();
 	
 		Transform backpack = transform.FindChild ("BackpackTab");
-		GameObject inventoryGrid = transform.FindChild ("InventoryTab").FindChild("Scroll View").FindChild("UIGrid").gameObject;
+		inventoryGrid = transform.FindChild ("InventoryTab").FindChild("Scroll View").FindChild("UIGrid").gameObject;
 
 		// Adding Items to button list
 		// TODO : Replace button-adding with button-instantiation and positioning code
@@ -52,12 +55,22 @@ public class UITown_BackpackPanel : UITown_Panel
 		heroInvent = parent.Player.Hero.HeroInventory;
 
 		int i;
+		heroInvent.Items.ForEach(delegate (Item item)
+		{
+			if (item is AccessoryItem)
+			{
+
+			}
+			else
+			{
+
+			}
+		});
 		for (i = 0; i < heroInvent.Items.Count; ++i)
 		{
 			GameObject itemPrefab = NGUITools.AddChild(inventoryGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
-			inventoryButtons.Add(itemPrefab.GetComponent<UIButton>());
+			inventoryAccessories.Add(itemPrefab.GetComponent<UIButton>());
 		}
-		inventoryGrid.GetComponent<UIGrid>().repositionNow = true;
 
 		currentHighlightedButton = 0;
 		currentSelection = buttons[0];
@@ -154,18 +167,28 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	void SwapToInventory()
 	{
+		// remember currently selected backpack slot
+
+		// check if Accessory or Consumable mode
+		// deactivate/activate item buttons
+
+		// set currently highlighted button to the first element
 		(parent as UITownWindow).ShowArrow(false);
-		if (inventoryButtons.Count > 0)
+		if (inventoryAccessories.Count > 0)
 		{
-			inventoryHighlightedButton = inventoryButtons[0];
+			inventoryHighlightedButton = inventoryAccessories[0];
 		}
+
+		// tell UIGrid to rearrange next Update()
+		inventoryGrid.GetComponent<UIGrid>().repositionNow = true;
 	}
+
+
 
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
 		updatePointer = true;
-		//HighlightButton();
 	}
 
 	public override void OnMenuUp(InputDevice device)
@@ -177,6 +200,9 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnMenuDown(InputDevice device)
 	{
+		if (activeTab != EMode.INVENTORY) return;
+
+
 	}
 	
 	public override void OnMenuLeft(InputDevice device)
