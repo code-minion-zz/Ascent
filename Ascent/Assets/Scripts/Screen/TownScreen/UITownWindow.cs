@@ -14,7 +14,7 @@ public class UITownWindow : UIPlayerMenuWindow
 {
 	Transform sharedEle;
 	public Transform pointerTransform;
-	protected float pointerAngle = 90f;
+	protected float pointerAngle = 0f;
 	public float PointerAngle
 	{
 		get 
@@ -68,6 +68,8 @@ public class UITownWindow : UIPlayerMenuWindow
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
 
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
+		//player.Input.LeftStickX.
+		HandleOnMenuLeftStickMove(player.Input);
 		base.Initialise ();
 	}
 
