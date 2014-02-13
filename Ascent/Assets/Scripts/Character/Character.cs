@@ -92,6 +92,42 @@ public abstract class Character : BaseCharacter
         set { CanBeInterrupted = value; }
     }
 
+	protected bool canBeFrozen = true;
+	public bool CanBeFrozen
+	{
+		get { return canBeFrozen; }
+		set { canBeFrozen = value; }
+	}
+
+	protected bool canBeShocked = true;
+	public bool CanBeShocked
+	{
+		get { return canBeShocked; }
+		set { canBeShocked = value; }
+	}
+
+	protected bool canBeSilenced = true;
+	public bool CanBeSilenced
+	{
+		get { return canBeSilenced; }
+		set { canBeSilenced = value; }
+	}
+
+	protected bool canBePutToSleep = true;
+	public bool CanBePutToSleep
+	{
+		get { return canBePutToSleep; }
+		set { CanBePutToSleep = value; }
+	}
+
+	protected bool canBePoisoned = true;
+	public bool CanBePoisoned
+	{
+		get { return canBePoisoned; }
+		set { canBePoisoned = value; }
+	}
+
+
 
     protected bool hitTaken = false;
     public bool HitTaken
