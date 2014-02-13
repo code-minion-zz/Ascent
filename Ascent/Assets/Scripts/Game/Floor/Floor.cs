@@ -275,7 +275,8 @@ public class Floor : MonoBehaviour
         foreach (Player player in players)
         {
             Hero hero = player.Hero.GetComponent<Hero>();
-			hero.FloorStatistics.ExperienceGained += (int)enemy.EnemyStats.ExperienceBounty;
+            float expGain = enemy.EnemyStats.ExperienceBounty * hero.HeroStats.ExperienceGainBonus;
+            hero.FloorStatistics.ExperienceGained += (int)expGain;
         }
 
 		if(enemy == floorBoss)

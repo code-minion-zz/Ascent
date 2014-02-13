@@ -48,37 +48,59 @@ public abstract class CharacterStats
 
 	public virtual int Power
 	{
-		// BasePOW + ((MaxPOW - BasePOW) * ((Level - 1) / MaxLevel))
-		get { return (int)(primaryStatsGrowth.minPower + ((primaryStatsGrowth.maxPower -  primaryStatsGrowth.minPower) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+        get { return BasePower; }
 	}
 
 	public virtual int Finesse
 	{
-		// BaseFIN + ((MaxFIN - BaseFIN) * ((Level - 1) / MaxLevel))
-		get { return (int)(primaryStatsGrowth.minFinesse + ((primaryStatsGrowth.maxFinesse - primaryStatsGrowth.minFinesse) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+        get { return BaseFinesse;}
 	}
 
 	public virtual int Vitality
 	{
-		// BaseVIT + ((MaxVIT - BaseVIT) * ((Level - 1) / MaxLevel))
-		get { return (int)(primaryStatsGrowth.minVitality + ((primaryStatsGrowth.maxVitality - primaryStatsGrowth.minVitality) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+        get { return BaseVitality; }
 	}
 
 	public virtual int Spirit
 	{
-		// BaseSPR + ((MaxSPR - BaseSPR) * ((Level - 1) / MaxLevel))
-		get { return (int)(primaryStatsGrowth.minSpirit + ((primaryStatsGrowth.maxSpirit - primaryStatsGrowth.minSpirit) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+        get {  return BaseSpirit; }
 	}
 
 #endregion
+
+    #region BasePrimary
+
+    public int BasePower
+    {	
+        // BasePOW + ((MaxPOW - BasePOW) * ((Level - 1) / MaxLevel))
+        get { return (int)(primaryStatsGrowth.minPower + ((primaryStatsGrowth.maxPower - primaryStatsGrowth.minPower) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+    }
+
+    public int BaseFinesse
+    {
+        // BaseFIN + ((MaxFIN - BaseFIN) * ((Level - 1) / MaxLevel))
+        get { return (int)(primaryStatsGrowth.minFinesse + ((primaryStatsGrowth.maxFinesse - primaryStatsGrowth.minFinesse) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+    }
+
+    public int BaseVitality
+    {
+        // BaseVIT + ((MaxVIT - BaseVIT) * ((Level - 1) / MaxLevel))
+        get { return (int)(primaryStatsGrowth.minVitality + ((primaryStatsGrowth.maxVitality - primaryStatsGrowth.minVitality) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+    }
+
+    public int BaseSpirit
+    {
+        // BaseSPR + ((MaxSPR - BaseSPR) * ((Level - 1) / MaxLevel))
+        get { return (int)(primaryStatsGrowth.minSpirit + ((primaryStatsGrowth.maxSpirit - primaryStatsGrowth.minSpirit) * (((float)Level - 1.0f) / (float)StatGrowth.KMaxLevel))); }
+    }
+
+    #endregion
 
 #region SecondaryStats
 
 	public virtual int MaxHealth
 	{
-		// Base HP + (VIT * HP per VIT)
-		get
-		{ return (int)(secondaryStats.health + (primaryStats.vitality * secondaryStatsGrowth.healthPerVit)); }
+        get{ return BaseMaxHealth;}
 	}
 
 	public virtual int CurrentHealth
@@ -106,8 +128,7 @@ public abstract class CharacterStats
 
 	public virtual int MaxSpecial
 	{
-		// Base SP + (SPR * SP per SPR)
-		get { return (int)(secondaryStats.special + (primaryStats.spirit * secondaryStatsGrowth.specialPerSpirit)); }
+         get{ return BaseMaxSpecial;}
 	}
 
 	public virtual int CurrentSpecial
@@ -134,37 +155,150 @@ public abstract class CharacterStats
 
 	public virtual int Attack
 	{
-		get { return (int)(secondaryStats.attack + (secondaryStatsGrowth.attackPerPow * (float)Power)); }
+        get { return BaseAttack; }
 	}
 
 	public virtual int PhysicalDefense
 	{
-		get { return (int)(secondaryStats.physicalDefense + (secondaryStatsGrowth.physicalDefPerVit * (float)Vitality)); }
+        get { return BasePhysicalDefense; }
 	}
 
 	public virtual int MagicalDefense
 	{
-		get { return (int)(secondaryStats.magicalDefense + (secondaryStatsGrowth.magicalDefPerSpr * (float)Spirit)); }
+        get { return BaseMagicalDefense; }
 	}
 
 	public virtual float CriticalHitChance
 	{
-		// BaseCritChance + (CritChancePerFIN * FIN)
-		get { return secondaryStats.criticalHitChance + (secondaryStatsGrowth.critPerFin * (float)Finesse); }
+        get { return BaseCriticalHitChance; }
 	}
 
 	public virtual float CritalHitMultiplier
 	{
-		// BaseCritMutlipler + (CritMultiplierPerFIN * FIN)
-		get { return secondaryStats.criticalHitChance + (secondaryStatsGrowth.critMultPerFin * (float)Finesse); }
+        get { return BaseCritalHitMultiplier; }
 	}
 
 	public virtual float DodgeChance
 	{
-		// BaseDodgeChance + (DodgeChancePerFIN * FIN)
-		get { return secondaryStats.dodgeChance + (secondaryStatsGrowth.dodgePerFin * (float)Finesse); }
+        get { return BaseDodgeChance; }
 	}
 
+    public virtual float SpecialPerStrike
+    {
+        get { return BaseSpecialPerStrike; }
+    }
+
 #endregion
+
+
+    #region BaseSecondary
+
+    public int BaseMaxHealth
+    {
+		// Base HP + (VIT * HP per VIT)
+		get { return (int)(secondaryStats.health + (primaryStats.vitality * secondaryStatsGrowth.healthPerVit)); }
+    }
+
+    public int BaseMaxSpecial
+    {
+        // Base SP + (SPR * SP per SPR)
+        get { return (int)(secondaryStats.special + (primaryStats.spirit * secondaryStatsGrowth.specialPerSpirit)); }
+    }
+
+    public int BaseAttack
+    {
+        get { return (int)(secondaryStats.attack + (secondaryStatsGrowth.attackPerPow * (float)Power)); }
+    }
+
+    public int BasePhysicalDefense
+    {
+        get { return (int)(secondaryStats.physicalDefense + (secondaryStatsGrowth.physicalDefPerVit * (float)Vitality)); }
+    }
+
+    public int BaseMagicalDefense
+    {
+        get { return (int)(secondaryStats.magicalDefense + (secondaryStatsGrowth.magicalDefPerSpr * (float)Spirit)); }
+    }
+
+    public float BaseCriticalHitChance
+    {
+        // BaseCritChance + (CritChancePerFIN * FIN)
+        get { return secondaryStats.criticalHitChance + (secondaryStatsGrowth.critPerFin * (float)Finesse); }
+    }
+
+    public float BaseCritalHitMultiplier
+    {
+        // BaseCritMutlipler + (CritMultiplierPerFIN * FIN)
+        get { return secondaryStats.criticalHitChance + (secondaryStatsGrowth.critMultPerFin * (float)Finesse); }
+    }
+
+    public float BaseDodgeChance
+    {
+        // BaseDodgeChance + (DodgeChancePerFIN * FIN)
+        get { return secondaryStats.dodgeChance + (secondaryStatsGrowth.dodgePerFin * (float)Finesse); }
+    }
+
+    public float BaseSpecialPerStrike
+    {
+        // BaseDodgeChance + (DodgeChancePerFIN * FIN)
+        get { return secondaryStats.specialPerStrike; }
+    }
+    
+    #endregion
+
+
+    /// <summary>
+    ///  Will grab the most derived value of the stat
+    /// </summary>
+    /// <param name="stat"></param>
+    /// <returns></returns>
+    public float GetStat(EStats stat)
+    {
+        switch (stat)
+        {
+            case EStats.Power: return Power;
+            case EStats.Finesse: return Finesse;
+            case EStats.Vitality: return Vitality;
+            case EStats.Spirit: return Spirit;
+            case EStats.Health: return (float)MaxHealth;
+            case EStats.Special: return (float)MaxSpecial;
+            case EStats.Attack: return Attack;
+            case EStats.PhysicalDefence: return (float)PhysicalDefense;
+            case EStats.MagicalDefence: return (float)MagicalDefense;
+            case EStats.DodgeChance: return DodgeChance;
+            case EStats.CriticalHitChance: return CriticalHitChance;
+            case EStats.CriticalHitMutliplier: return CritalHitMultiplier;
+            case EStats.SpecialPerStrike: return SpecialPerStrike;
+            default: { Debug.LogError("Unhandled case"); } break;
+        }
+        return 0.0f;
+    }
+
+    /// <summary>
+    ///  Will grab the base stat for the given level.
+    /// </summary>
+    /// <param name="stat"></param>
+    /// <returns></returns>
+    public float GetBaseStat(EStats stat)
+    {
+        switch (stat)
+        {
+            case EStats.Power: return BasePower;
+            case EStats.Finesse: return BaseFinesse;
+            case EStats.Vitality: return BaseVitality;
+            case EStats.Spirit: return BaseSpirit;
+            case EStats.Health: return (float)BaseMaxHealth;
+            case EStats.Special: return (float)BaseMaxSpecial;
+            case EStats.Attack: return BaseAttack;
+            case EStats.PhysicalDefence: return (float)BasePhysicalDefense;
+            case EStats.MagicalDefence: return (float)BaseMagicalDefense;
+            case EStats.DodgeChance: return BaseDodgeChance;
+            case EStats.CriticalHitChance: return BaseCriticalHitChance;
+            case EStats.CriticalHitMutliplier: return BaseCritalHitMultiplier;
+            case EStats.SpecialPerStrike: return BaseSpecialPerStrike;
+            default: { Debug.LogError("Unhandled case"); } break;
+        }
+        return 0.0f;
+    }
 
 }

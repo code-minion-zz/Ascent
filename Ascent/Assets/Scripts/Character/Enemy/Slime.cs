@@ -18,7 +18,7 @@ public class Slime : Enemy
     {
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat,this);
 
         // Add abilities
         Action replicate = new SlimeReplicate();

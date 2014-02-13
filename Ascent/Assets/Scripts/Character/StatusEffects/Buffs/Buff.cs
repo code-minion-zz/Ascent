@@ -6,5 +6,4 @@ using System.Collections;
 
 public class Buff : StatusEffect
 {
-    
 }

@@ -18,7 +18,7 @@ public class Abomination : Enemy
     {
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination,this);
 
         // Add abilities
         Action strike = new AbominationStrike();

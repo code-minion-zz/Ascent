@@ -31,7 +31,7 @@ public class BaseStatBuff : Buff
         get { return stats; }
     }
 
-    public void AddBuff(float statValue)
+    public void AddBuff(float initialValue, ref float statValue)
     {
         statValue += stats.GetStat(type);
     }

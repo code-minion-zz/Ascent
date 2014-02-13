@@ -39,9 +39,11 @@ public abstract class Enemy : Character
 	{
 		get { return enemyStats; }
 		set 
-		{ 
+		{
 			enemyStats = value;
 			stats = value;
+           
+
 		}
 	}
 

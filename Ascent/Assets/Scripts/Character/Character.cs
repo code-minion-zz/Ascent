@@ -174,11 +174,21 @@ public abstract class Character : BaseCharacter
 			}
 		}
 
+        // Remove any expired buffs
+        for (int i = statusEffects.Count - 1; i > -1; i--)
+        {
+            if (statusEffects[i].ToBeRemoved)
+            {
+                statusEffects.RemoveAt(i);
+            }
+        }
+
 		// Process all the buffs
 		foreach (StatusEffect b in statusEffects)
 		{
 			b.Process();
 		}
+
 
 		if (invulnerableDuration > 0.0f)
 		{
@@ -494,7 +504,7 @@ public abstract class Character : BaseCharacter
 
     public virtual void RemoveStatusEffect(StatusEffect effect)
 	{
-        statusEffects.Remove(effect);
+        effect.ToBeRemoved = true;
 	}
 
 	public virtual int DamageFormulaA(float addFixedDamage, float addMultiplier)

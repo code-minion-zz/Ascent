@@ -5,29 +5,35 @@ using System;
 
 public class PlayerHUD : MonoBehaviour 
 {
-	Hero owner;
+    public UILabel livesLabel;
 	public StatBar hpBar;
 	public StatBar spBar;
-
-	private const int maxAbilities = 4;
     public UILabel[] abilityLabels = new UILabel[maxAbilities];
+    public UILabel[] itemLabels = new UILabel[maxItems];
+    public GameObject statusEffectPrefab;
+    public UIGrid statusEffectGrid;
 
+    private Hero owner;
+	private const int maxAbilities = 4;
 	private const int maxItems = 3;
-	public UILabel[] itemLabels = new UILabel[maxItems];
+    private const int maxStatusEffects = 20;
+    private StatusEffectHUDIcon[] statusEffectIcons = new StatusEffectHUDIcon[maxStatusEffects];
 
-	private const int maxBuffs = 3;
-	public UILabel[] buffLabels = new UILabel[maxBuffs];
-
-	private const int maxDebuffs = 3;
-	public UILabel[] debuffLabels = new UILabel[maxDebuffs];
-
-	public UILabel livesLabel;
 
 	public void Initialise(Hero _owner)
 	{
 		owner = _owner;
 		hpBar.Init(StatBar.eStat.HP,owner);
 		spBar.Init(StatBar.eStat.SP,owner);
+
+        // Create a pool of blank status effect icons.
+        for (int i = 0; i < maxStatusEffects; ++i)
+        {
+            GameObject statusEffectIcon = NGUITools.AddChild(statusEffectGrid.gameObject, statusEffectPrefab);
+            statusEffectIcons[i] = statusEffectIcon.GetComponent<StatusEffectHUDIcon>();
+            statusEffectIcons[i].gameObject.SetActive(false);
+        }
+        statusEffectGrid.Reposition();
 	}
 
 	void Update () 
@@ -59,48 +65,46 @@ public class PlayerHUD : MonoBehaviour
 			}
 		}
 
-		// Do Items
-		ConsumableItem[] consumables = owner.Backpack.ConsumableItems;
+        //// Do Items
+        //ConsumableItem[] consumables = owner.Backpack.ConsumableItems;
 
-		for (int i = 0; i < itemLabels.Length; ++i )
-		{
+        //for (int i = 0; i < itemLabels.Length; ++i )
+        //{
 
-			if (itemLabels[i] != null)
-			{
-                if (consumables[i] != null)
-                {
-                    itemLabels[i].text = consumables[i].ItemStats.Name + " Qty: " + consumables[i].Charges + " CD: " +  consumables[i].Cooldown;
-                }
-			}
-			else
-			{
-				itemLabels[i].text = "NoItem";
-			}
-		}
+        //    if (itemLabels[i] != null)
+        //    {
+        //        if (consumables[i] != null)
+        //        {
+        //            itemLabels[i].text = consumables[i].ItemStats.Name + " Qty: " + consumables[i].Charges + " CD: " +  consumables[i].Cooldown;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        itemLabels[i].text = "NoItem";
+        //    }
+        //}
 
 		// Do lives
 		livesLabel.text = "Lives: " + owner.Lives;
 
 
-		// Do Buffs
-		List<StatusEffect> buffs = owner.StatusEffects;
+        // Do Buffs
+        List<StatusEffect> statusEffects = owner.StatusEffects;
 
- 
-        for (int i = 0; i < 3; ++i)
+        int statusEffectIconSize = statusEffectIcons.Length;
+        for (int i = 0; i < statusEffectIconSize; ++i)
         {
-            if (i < buffs.Count && buffs[i] != null)
-            { 
-                buffLabels[i].text = buffs[i].Name + ": " + buffs[i].Duration;
-            }
-            else
+            // If there is a status effect that can go into this slot then put it in
+            if (i < statusEffects.Count)
             {
-                buffLabels[i].text = "";
+                statusEffectIcons[i].gameObject.SetActive(true);
+                statusEffectIcons[i].Initialise(statusEffects[statusEffects.Count - (i + 1)]);
+            }
+            else // Deactivate the icon so it is not renderered or sorted.
+            {
+                statusEffectIcons[i].gameObject.SetActive(false);
             }
         }
-
-        for (int i = 0; i < debuffLabels.Length; ++i)
-         {
-             debuffLabels[i].text = "";
-         }
+        statusEffectGrid.Reposition();
 	}
 }

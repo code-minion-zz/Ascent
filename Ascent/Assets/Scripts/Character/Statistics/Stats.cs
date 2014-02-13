@@ -21,5 +21,7 @@ public enum EStats
 	DodgeChance,
 	CriticalHitChance,
 	CriticalHitMutliplier,
+
+    SpecialPerStrike,
 }
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ExperienceItemProperty : ItemProperty
+public class ExperienceItemProperty : SecondaryStatItemProperty
 {
     public override void Initialise() { }
     public override void CheckCondition() { }
