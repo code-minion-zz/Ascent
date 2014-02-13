@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class XMLSerialiser 
 {
@@ -49,6 +50,30 @@ public class XMLSerialiser
 
 		return XmlizedString;
 	}
+
+    public static void SerializeObjectBin(string path, object pObject)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
+
+        bf.Serialize(fs, pObject);
+
+        fs.Close();
+    }
+
+    public static object DeserializeObjectBin(string path)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
+
+        object obj = bf.Deserialize(fs);
+
+        fs.Close();
+
+        return obj;
+    }
 
 	// Deserialize it back to its original form 
 	public static object DeserializeObject(string pXmlizedString, string myType)

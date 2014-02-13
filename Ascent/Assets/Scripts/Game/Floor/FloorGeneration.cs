@@ -26,7 +26,7 @@ public class FloorGeneration
 {
     // Variables to control the outcome of the level
     public int dungeonLevel = 1;
-    public int roomsToPlace = 30;
+    public int roomsToPlace = 15;
     public float roomOffsetValue = 25.0f;
 
     // Rarity controls
@@ -46,7 +46,7 @@ public class FloorGeneration
         roomDimensions.Add(18);
         roomDimensions.Add(14);
         roomDimensions.Add(10);
-        roomDimensions.Add(6);
+        //roomDimensions.Add(6);
 
         //Random.seed = (int)System.DateTime.Today.Millisecond;
         UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
@@ -60,14 +60,18 @@ public class FloorGeneration
         rooms = new List<RoomProperties>();
         locationVector = Vector3.zero;
 
-		// Generate the first room in the game.
-		//RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
-        string levelPath = string.Format("Assets/Resources/Maps/{0}.txt", 0);
+        // Save data from the first room as a test.
+        SaveRooms saver = new SaveRooms();
+        saver.Initialize();
+        saver.LoadRooms();
 
-        FileStream fileStream = new FileStream(levelPath, FileMode.Open);
-        RoomProperties firstRoom = roomGeneration.LoadRoom(fileStream);
-		firstRoom.Position = Vector3.zero;
-        firstRoom.Room.name = "Room 0: Start";
+		// Generate the first room in the game.
+        //RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
+		//firstRoom.Position = Vector3.zero;
+
+        RoomProperties firstRoom = saver.RoomSaves.saves[0];
+        roomGeneration.ReconstructRoom(firstRoom);
+
 		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
@@ -82,7 +86,7 @@ public class FloorGeneration
             int randRoomDir = UnityEngine.Random.Range(0, 4);
 
             // Checks if we can make a room in this direction
-            if (fromRoom.directionsFilled[randRoomDir] == false)
+            if (fromRoom.DirectionsFilled[randRoomDir] == false)
             {
 				// Choose a width and height
                 int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
@@ -109,6 +113,19 @@ public class FloorGeneration
         }
 
         GenerateWalls();
+
+        //saver.AddNewRoom(firstRoom);
+
+        //Debug.Log(firstRoom.Name);
+        //Debug.Log(firstRoom.Width);
+        //Debug.Log(firstRoom.Height);
+        //Debug.Log(firstRoom.NumberOfTilesX);
+        //Debug.Log(firstRoom.NumberOfTilesY);
+        //Debug.Log(firstRoom.Position);
+        //Debug.Log(firstRoom.RoomType);
+        //Debug.Log(firstRoom.WallsPlaced);
+
+        saver.SaveAllRooms();
     }
 
     /// <summary>
@@ -123,12 +140,12 @@ public class FloorGeneration
         int randomChance = UnityEngine.Random.Range(0, 101);
 
         // 75% Percent chance region
-        if (randomChance >= 25 && randomChance <= 100)
+        if (randomChance >= 10 && randomChance <= 100)
         {
             type = FeatureType.monster;
         }
         // 25% chance region
-        else if (randomChance <= 25)
+        else if (randomChance <= 10)
         {
             type = FeatureType.treasure;
         }
@@ -226,7 +243,7 @@ public class FloorGeneration
         {
             for (int i = 0; i < 4; ++i)
             {
-                if (furtherestRoom.directionsFilled[i] != true)
+                if (furtherestRoom.DirectionsFilled[i] != true)
                 {
                     // Choose a feature to build based on weights.
                     GenerateNewRoom(width, height, FeatureType.boss, furtherestRoom, (Floor.TransitionDirection)i);

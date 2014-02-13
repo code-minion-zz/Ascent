@@ -1,96 +1,47 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 public enum FeatureType
 {
-	none,
+    none,
     monster,
     trap,
     treasure,
     boss
 }
 
+[Serializable]
 public class RoomProperties
 {
-    public bool[] directionsFilled;
+    [NonSerialized]
     private Vector3 position;
-    private float width;
-    private float height;
-    private int numberOfTilesX;
-    private int numberOfTilesY;
+    [NonSerialized]
     private bool wallsPlaced;
+    [NonSerialized]
     private bool isPreloaded;
-
+    [NonSerialized]
     private Room room;
-    private FeatureType roomType;
-    private int weight;
-    private TileProperties[,] tiles;
 
-    public const int tileSize = 2;
+    // Tiles represent the grid of the room. Every tile has a list of objects it is holding.
+    public Tile[,] Tiles { get; set; }
 
-    /// <summary>
-    /// Gets the bounds of the room.
-    /// </summary>
-    public Bounds Bounds
-    {
-        get
-        {
-            return new Bounds(position, new Vector3(width, 1.0f, height));
-        }
-    }
+    public bool[] DirectionsFilled { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public int NumberOfTilesX { get; set; }
+    public int NumberOfTilesY { get; set; }
+    public string Name { get; set; }
+    public FeatureType RoomType { get; set; }
 
-    /// <summary>
-    /// Gets the tiles of the room. Each tile represents 2x2 world space units.
-    /// </summary>
-    public TileProperties[,] RoomTiles
-    {
-        get
-        {
-            if (tiles == null)
-            {
-                tiles = new TileProperties[(int)width, (int)height];
-                return tiles;
-            }
-            else
-            {
-                return tiles;
-            }
-        }
-    }
-    
-    public int Weight
-    {
-        get { return weight; }
-        set { weight = value; }
-    }
+    public const int TileSize = 2;
 
     public Vector3 Position
     {
         get { return position; }
         set { position = value; }
-    }
-
-    public float Width
-    {
-        get { return width; }
-        set { width = value; }
-    }
-
-    public float Height
-    {
-        get { return height; }
-        set { height = value; }
-    }
-
-    public int NumberOfTilesX
-    {
-        get { return numberOfTilesX; }
-    }
-
-    public int NumberOfTilesY
-    {
-        get { return numberOfTilesY; }
     }
 
     public bool WallsPlaced
@@ -105,9 +56,15 @@ public class RoomProperties
         set { isPreloaded = value; }
     }
 
-    public int TileSize
+    /// <summary>
+    /// Gets the bounds of the room.
+    /// </summary>
+    public Bounds Bounds
     {
-        get { return tileSize; }
+        get
+        {
+            return new Bounds(position, new Vector3(Width, 1.0f, Height));
+        }
     }
 
     public Room Room
@@ -116,62 +73,55 @@ public class RoomProperties
         set { room = value; }
     }
 
-    public FeatureType RoomType
+    public RoomProperties()
     {
-        get { return roomType; }
-        set { roomType = value; }
+        
     }
 
     public RoomProperties(Room room)
     {
         position = Vector3.zero;
-        directionsFilled = new bool[4];
+        DirectionsFilled = new bool[4];
         this.room = room;
         wallsPlaced = false;
 
         for (int i = 0; i < 4; ++i)
         {
-            directionsFilled[i] = false;
-        }
-    }
-
-	/// <summary>
-	/// Sets and initializes the room tiles.
-	/// </summary>
-	/// <param name="width">Width.</param>
-	/// <param name="height">Height.</param>
-	/// 
-    public void SetRoomTiles(int width, int height)
-    {
-        this.width = (width * TileSize);
-        this.height = (height * TileSize);
-
-        numberOfTilesX = width;
-        numberOfTilesY = height;
-
-        tiles = new TileProperties[width, height];
-
-        for (int i = 0; i < numberOfTilesX; ++i)
-        {
-            for (int j = 0; j < numberOfTilesY; ++j)
-            {
-                // Create and assign the position of the tile.
-                tiles[i, j] = new TileProperties();
-                float xPos = -(width) + (tileSize * 0.5f) + (i * tileSize);
-                float zPos = -(height) + (tileSize * 0.5f) + (j * tileSize);
-                tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
-                tiles[i, j].TileType = TilePropertyType.none;
-            }
+            DirectionsFilled[i] = false;
         }
     }
 
     /// <summary>
-    /// Eventually this function will allow for loading a custom room from a file.
+    /// Sets and initializes the room tiles.
     /// </summary>
-    public void LoadFromFile(string filename)
+    /// <param name="width">Width.</param>
+    /// <param name="height">Height.</param>
+    /// 
+    public void SetRoomTiles(int width, int height)
     {
-#pragma warning disable 0219 // Disable unassigned field warning. Remove once filePath is used.
-        string filePath = "Resources/Level/Rooms/" + filename;
+        Width = (width * TileSize);
+        Height = (height * TileSize);
+
+        NumberOfTilesX = width;
+        NumberOfTilesY = height;
+
+        Tiles = new Tile[width, height];
+
+        for (int i = 0; i < NumberOfTilesX; ++i)
+        {
+            for (int j = 0; j < NumberOfTilesY; ++j)
+            {
+                // Create and assign the position of the tile.
+                Tiles[i, j] = new Tile();
+                float xPos = -(width) + (TileSize * 0.5f) + (i * TileSize);
+                float zPos = -(height) + (TileSize * 0.5f) + (j * TileSize);
+                Tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
+                Tiles[i, j].TileType = TileType.none;// This needs to be removed later.
+
+                // Assign each tile with a list of attributes.
+                Tiles[i, j].TileAttributes = new List<TileAttribute>();
+            }
+        }
     }
 
     public void FillDirection(Floor.TransitionDirection direction)
@@ -179,19 +129,19 @@ public class RoomProperties
         switch (direction)
         {
             case Floor.TransitionDirection.North:
-                directionsFilled[0] = true;
+                DirectionsFilled[0] = true;
                 break;
 
             case Floor.TransitionDirection.East:
-                directionsFilled[1] = true;
+                DirectionsFilled[1] = true;
                 break;
 
             case Floor.TransitionDirection.South:
-                directionsFilled[2] = true;
+                DirectionsFilled[2] = true;
                 break;
 
             case Floor.TransitionDirection.West:
-                directionsFilled[3] = true;
+                DirectionsFilled[3] = true;
                 break;
         }
     }
