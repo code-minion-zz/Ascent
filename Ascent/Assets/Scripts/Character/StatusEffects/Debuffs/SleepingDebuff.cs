@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SleepingDebuff : Debuff
+public class SleepingDebuff : StatusEffect
 {
 }

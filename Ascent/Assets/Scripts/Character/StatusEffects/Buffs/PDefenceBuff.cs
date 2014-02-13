@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PDefenceBuff : SecondaryStatBuff
+public class PDefenceBuff : SecondaryStatModifierEffect
 {
     public PDefenceBuff()
     {

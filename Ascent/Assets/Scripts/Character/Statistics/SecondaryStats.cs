@@ -18,6 +18,8 @@ public class SecondaryStats
 
 	public float dodgeChance;
 
+	public float movementSpeed;
+
     public float GetStat(EStats stat)
     {
         switch (stat)

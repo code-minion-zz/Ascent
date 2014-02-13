@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttackBuff : SecondaryStatBuff
+public class AttackBuff : SecondaryStatModifierEffect
 {
     public AttackBuff()
     {

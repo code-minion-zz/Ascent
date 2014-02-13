@@ -22,6 +22,8 @@ public enum EStats
 	CriticalHitChance,
 	CriticalHitMutliplier,
 
+	Accuracy,
     SpecialPerStrike,
+	MovementSpeed,
 }
 

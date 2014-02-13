@@ -134,18 +134,18 @@ public class EnemyStats : CharacterStats
         {
             for (int i = 0; i < statusEffectCount; ++i)
             {
-                if (statusEffectList[i] is BaseStatBuff)
+                if (statusEffectList[i] is PrimaryStatModifierEffect)
                 {
-                    if (((BaseStatBuff)statusEffectList[i]).type == statType)
+					if (((PrimaryStatModifierEffect)statusEffectList[i]).StatType == statType)
                     {
-                        ((BaseStatBuff)statusEffectList[i]).AddBuff(GetBaseStat(statType),ref  statValue);
+                        ((PrimaryStatModifierEffect)statusEffectList[i]).AddBuff(GetBaseStat(statType),ref  statValue);
                     }
                 }
-                else if (statusEffectList[i] is SecondaryStatBuff)
+                else if (statusEffectList[i] is SecondaryStatModifierEffect)
                 {
-                    if (((SecondaryStatBuff)statusEffectList[i]).statType == statType)
+                    if (((SecondaryStatModifierEffect)statusEffectList[i]).statType == statType)
                     {
-                        ((SecondaryStatBuff)statusEffectList[i]).AddBuff(GetBaseStat(statType),ref statValue);
+                        ((SecondaryStatModifierEffect)statusEffectList[i]).AddBuff(GetBaseStat(statType),ref statValue);
                     }
                 }
             }

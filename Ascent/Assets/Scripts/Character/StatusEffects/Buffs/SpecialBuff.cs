@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpecialBuff : SecondaryStatBuff
+public class SpecialBuff : SecondaryStatModifierEffect
 {
     public SpecialBuff()
     {

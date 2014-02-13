@@ -28,7 +28,20 @@ public class CharacterMotor : MonoBehaviour
 		set { originalSpeed = value; }
 	}
 
-	public float maxVelocityChange = 5.0f;
+	protected float buffBonusSpeed;
+	public float BuffBonusSpeed
+	{
+		get { return buffBonusSpeed; }
+		set { buffBonusSpeed = value; }
+	}
+
+	protected float maxVelocityChange = 5.0f;
+	public float MaxVelocityChange
+	{
+		get { return maxVelocityChange; }
+		set { maxVelocityChange = value; }
+	}
+
     public bool canMove = true;
 
     private Vector3 specialMovementForce;
@@ -48,8 +61,6 @@ public class CharacterMotor : MonoBehaviour
     {
         get { return targetVelocity; }
     }
-
-
 
 	// Grid Movement
 	public bool moving;
@@ -118,8 +129,10 @@ public class CharacterMotor : MonoBehaviour
                 float speed = Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z) ? Mathf.Abs(movementForce.x) : Mathf.Abs(movementForce.z);
                 float maxAccel = speed;
 
-                currentSpeed += (speed * movementSpeed) * acceleration * Time.deltaTime;
-                currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxAccel * movementSpeed);
+				float buffedSpeed = movementSpeed + buffBonusSpeed;
+
+				currentSpeed += (speed * buffedSpeed) * acceleration * Time.deltaTime;
+				currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxAccel * buffedSpeed);
             }
             else if (movementForce == Vector3.zero)
             {
@@ -139,8 +152,11 @@ public class CharacterMotor : MonoBehaviour
 		// Apply a force that attempts to reach our target velocity
 		Vector3 velocity = rigidbody.velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
-		velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-		velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+
+		float buffedMaxVelocityChange = maxVelocityChange + (buffBonusSpeed * 0.5f);
+
+		velocityChange.x = Mathf.Clamp(velocityChange.x, -buffedMaxVelocityChange, buffedMaxVelocityChange);
+		velocityChange.z = Mathf.Clamp(velocityChange.z, -buffedMaxVelocityChange, buffedMaxVelocityChange);
 		velocityChange.y = 0;
       
 		rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);

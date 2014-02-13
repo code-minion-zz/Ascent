@@ -20,11 +20,20 @@ public class WarriorWarCry : Action
 	{
         base.StartAbility();
 
-        //PDefenceBuff buff = new PDefenceBuff();
-       // buff.ApplyStatusEffect(owner, owner, SecondaryStatBuff.EBuffType.Percentange, 0.5f, 15.0f);
+        PDefenceBuff buff = new PDefenceBuff();
+		buff.ApplyStatusEffect(owner, owner, StatusEffect.EApplyMethod.Percentange, 0.5f, 15.0f);
 
-        HealthRegenBuff buff = new HealthRegenBuff();
-        buff.ApplyStatusEffect(owner, owner, StatusEffect.EBuffType.Fixed, 5, 10, 10.0f);
+		SpeedBuff buff2 = new SpeedBuff();
+		buff2.ApplyStatusEffect(owner, owner, StatusEffect.EApplyMethod.Fixed, 5.0f, 15.0f);
+
+		//SpecialBuff buff = new SpecialBuff();
+		//buff.ApplyStatusEffect(owner, owner, SecondaryStatBuff.EBuffType.Fixed, 5.0f, 15.0f);
+
+        //HealthRegenBuff buff = new HealthRegenBuff();
+        //buff.ApplyStatusEffect(owner, owner, StatusEffect.EBuffType.Fixed, 5, 10, 10.0f);
+
+		//AccuracyBuff buff = new AccuracyBuff();
+		//buff.ApplyStatusEffect(owner, owner, SecondaryStatModifierEffect.EApplyMethod.Percentange, 0.5f, 15.0f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
 	}

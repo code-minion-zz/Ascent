@@ -309,19 +309,19 @@ public class HeroStats : CharacterStats
 		{		
 			for (int i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					if (((BaseStatBuff)buffList[i]).type == statType)
+					if (((PrimaryStatModifierEffect)buffList[i]).StatType == statType)
 					{
-						((BaseStatBuff)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
+						((PrimaryStatModifierEffect)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
 					}
 				}
-                else if (buffList[i] is SecondaryStatBuff)
+                else if (buffList[i] is SecondaryStatModifierEffect)
                 {
-                    if (((SecondaryStatBuff)buffList[i]).statType == statType)
+                    if (((SecondaryStatModifierEffect)buffList[i]).statType == statType)
                     {
 
-                        ((SecondaryStatBuff)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
+                        ((SecondaryStatModifierEffect)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
                     }
                 }
 			}

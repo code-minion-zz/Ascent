@@ -68,7 +68,7 @@ public abstract class CharacterStats
 
 #endregion
 
-    #region BasePrimary
+#region BasePrimary
 
     public int BasePower
     {	
@@ -191,7 +191,7 @@ public abstract class CharacterStats
 #endregion
 
 
-    #region BaseSecondary
+#region BaseSecondary
 
     public int BaseMaxHealth
     {

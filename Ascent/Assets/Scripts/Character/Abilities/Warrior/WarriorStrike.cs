@@ -73,7 +73,6 @@ public class WarriorStrike : Action
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
-                            Debug.Log((int)((Hero)owner).HeroStats.SpecialPerStrike);
                             owner.Stats.CurrentSpecial += (int)((Hero)owner).HeroStats.SpecialPerStrike;
 						}
 					}

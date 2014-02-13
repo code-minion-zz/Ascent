@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FrozenDebuff : Debuff
+public class FrozenDebuff : StatusEffect
 {
 }

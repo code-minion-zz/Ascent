@@ -6,11 +6,24 @@ using System.Collections;
 
 public class StatusEffect 
 {
-    public enum EBuffType
+    public enum EApplyMethod
     {
         Percentange,
         Fixed
     }
+
+	public enum EEffectType
+	{
+		Buff,
+		Debuff
+	}
+
+	protected EEffectType type;
+	public EEffectType Type
+	{
+		get { return type; }
+		set { type = value; }
+	}
 
     protected bool timed = false;
     public bool Timed
