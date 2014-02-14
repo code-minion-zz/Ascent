@@ -145,6 +145,14 @@ public class UITownWindow : UIPlayerMenuWindow
 		NGUITools.SetActive(temp , state);
 	}
 
+	/// <summary>
+	/// Toggles visibility
+	/// </summary>
+	public void ShowArrow()
+	{
+		ShowArrow(!pointerTransform.gameObject.activeSelf);
+	}
+
 	public void ShowInfo(bool state)
 	{
 		GameObject temp = sharedEle.FindChild("Information Box").gameObject;

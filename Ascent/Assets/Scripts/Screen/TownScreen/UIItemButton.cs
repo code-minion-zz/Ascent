@@ -18,7 +18,9 @@ public class UIItemButton : UIButton
 		ACCESSORY,
 		CONSUMABLE
 	}
-
+	
+	public UISprite Icon;
+	public UILabel Name;
 	public EType Type = EType.NONE;
 	Item linkedItem = null; // Item linked to this button
 	public Item LinkedItem
@@ -32,6 +34,40 @@ public class UIItemButton : UIButton
 		}
 
 		set { linkedItem = value; }
+	}
+
+	void Start()
+	{
+
+	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+		
+		if (Icon == null)
+		{
+			Icon = GetComponent<UISprite>();
+			if (Icon == null) 
+			{
+				Icon = GetComponentInChildren<UISprite>();
+			}
+		}
+		
+		if (Name == null)
+		{
+			Name = GetComponentInChildren<UILabel>();
+		}
+	}
+
+	/// <summary>
+	/// Makes button blank and hides it
+	/// </summary>
+	public void Reset()
+	{
+		Type = EType.NONE;
+		linkedItem = null;
+		NGUITools.SetActive(gameObject, false);
 	}
 }
 

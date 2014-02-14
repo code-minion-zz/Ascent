@@ -85,6 +85,7 @@ public class UITown_BackpackPanel : UITown_Panel
 		updatePointer = true;
 
 		UpdateBackpack();
+		//UpdateInventory();
 		initialised = true;
 	}
 
@@ -130,7 +131,7 @@ public class UITown_BackpackPanel : UITown_Panel
 			if (arrayItems[i] != null)
 			{
 				Color temp = new Color();
-				switch ((Item.ItemGrade)heroBackpack.AllItems[i].ItemStats.Grade)
+				switch ((Item.ItemGrade)arrayItems[i].ItemStats.Grade)
 				{
 				case Item.ItemGrade.E:
 					temp = Color.red;
@@ -165,34 +166,57 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public void UpdateInventory()
 	{
-		int i;
+		int itemIndex;
+		int buttonIndex = 0;
 		List<Item> items = heroInvent.Items;
 
-		for (i = 0; i < items.Count; i++) {
-			Item item = items [i];
-			if (item is AccessoryItem) {
-				if (inventType == UIItemButton.EType.ACCESSORY) {
-					inventoryItemButtons [i].Type = inventType;
-					inventoryItemButtons [i].LinkedItem = item;
-					NGUITools.SetActive (inventoryItemButtons [i].gameObject, false);
+		for (itemIndex = 0; itemIndex < items.Count; itemIndex++) 
+		{
+			bool theDroidsYouAreLookingFor = false;
+			Item item = items [itemIndex];
+			Debug.Log (item);
+			if (item is AccessoryItem) 
+			{
+				if (inventType == UIItemButton.EType.ACCESSORY) 
+				{
+					theDroidsYouAreLookingFor = true;
 				}
 			}
 			else if (item is ConsumableItem) 
 			{
-				if (inventType == UIItemButton.EType.CONSUMABLE) {
-					inventoryItemButtons [i].Type = inventType;
-					inventoryItemButtons [i].LinkedItem = item;
-					NGUITools.SetActive (inventoryItemButtons [i].gameObject, false);
+				if (inventType == UIItemButton.EType.CONSUMABLE) 
+				{
+					theDroidsYouAreLookingFor = true;
 				}
 			}
-			else 
+
+			if (theDroidsYouAreLookingFor)
 			{
-				inventoryItemButtons [i].Type = UIItemButton.EType.NONE;
-				inventoryItemButtons [i].LinkedItem = null;				
-				NGUITools.SetActive (inventoryItemButtons [i].gameObject, false);
+				string newName;
+				if (item.ItemStats.Name != null)
+				{
+					newName = item.ItemStats.Name;
+				}
+				else
+				{
+					newName = "NullString";
+				}
+				inventoryItemButtons[buttonIndex].Name.text = newName;
+				inventoryItemButtons[buttonIndex].Name.MarkAsChanged();
+				inventoryItemButtons [buttonIndex].Type = inventType;
+				inventoryItemButtons [buttonIndex].LinkedItem = item;
+				NGUITools.SetActive (inventoryItemButtons [buttonIndex].gameObject, true);
+				++buttonIndex;
 			}
 		}
+
+		for (; buttonIndex < inventoryItemButtons.Count; ++buttonIndex)
+		{
+			inventoryItemButtons [buttonIndex].Reset();
+		}
 	}
+
+
 
 	void ReturnToTown()
 	{
@@ -206,6 +230,8 @@ public class UITown_BackpackPanel : UITown_Panel
 		NGUITools.SetActive(inventoryTab, false);
 		NGUITools.SetActive(backpackTab, true);
 		activeTab = EMode.BACKPACK;
+
+		(parent as UITownWindow).ShowArrow(true);
 	}
 
 	void SwapToInventory()
