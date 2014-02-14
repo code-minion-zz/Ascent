@@ -50,7 +50,7 @@ public class UIItemButton : UIButton
 			Icon = GetComponent<UISprite>();
 			if (Icon == null) 
 			{
-				Icon = GetComponentInChildren<UISprite>();
+				Icon = transform.Find ("Icon").GetComponent<UISprite>();
 			}
 		}
 		

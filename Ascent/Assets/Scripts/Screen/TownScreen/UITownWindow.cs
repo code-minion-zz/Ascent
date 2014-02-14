@@ -22,6 +22,7 @@ public class UITownWindow : UIPlayerMenuWindow
 			// refresh value whenever it is requested
 			pointerAngle = Utilities.VectorToAngleInDegrees(player.Input.LeftStickX.Value, player.Input.LeftStickY.Value);
 			return pointerAngle;
+			//return Utilities.VectorToAngleInDegrees(pointerTransform.forward.x - pointerTransform.position.x, pointerTransform.forward.y - pointerTransform.position.y);
 		}
 	}
 
@@ -91,7 +92,8 @@ public class UITownWindow : UIPlayerMenuWindow
 	void HandleOnMenuLeftStickMove (InputDevice device)
 	{		
 		if (!pointerTransform.gameObject.activeInHierarchy) return;
-
+		
+		//pointerAngle = Utilities.VectorToAngleInDegrees(player.Input.LeftStickX.Value, player.Input.LeftStickY.Value);
 		pointerTransform.rotation = Quaternion.Euler(0f,0f,PointerAngle - 90f);
 	}
 

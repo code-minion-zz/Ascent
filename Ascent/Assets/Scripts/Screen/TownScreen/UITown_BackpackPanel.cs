@@ -28,6 +28,8 @@ public class UITown_BackpackPanel : UITown_Panel
 	// Inventory-Tab Variables
 	List<UIItemButton> inventoryItemButtons;
 	UIItemButton inventoryHighlightedItemButton;
+	int inventoryHighlightedButton = -1;
+	int inventoryButtonCount = -1;
 
 
 	public override void Initialise()
@@ -98,7 +100,7 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	public override void OnDisable()
 	{
-		if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+		//if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
 		base.OnDisable();
 	}
@@ -107,16 +109,13 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		if (updatePointer)
 		{
-			switch (activeTab)
+			if (activeTab == EMode.BACKPACK)
 			{
-			case EMode.BACKPACK:
 				HighlightButton();
-				break;
-			case EMode.INVENTORY:
-				break;
 			}
 			updatePointer = false;
 		}
+
 	}
 
 	public void UpdateBackpack()
@@ -169,24 +168,35 @@ public class UITown_BackpackPanel : UITown_Panel
 		int itemIndex;
 		int buttonIndex = 0;
 		List<Item> items = heroInvent.Items;
+		inventoryButtonCount = 0;
 
 		for (itemIndex = 0; itemIndex < items.Count; itemIndex++) 
 		{
-			bool theDroidsYouAreLookingFor = false;
+			bool theDroidsYouAreLookingFor = true;
 			Item item = items [itemIndex];
 			Debug.Log (item);
 			if (item is AccessoryItem) 
 			{
-				if (inventType == UIItemButton.EType.ACCESSORY) 
+				if (inventType != UIItemButton.EType.ACCESSORY) 
 				{
-					theDroidsYouAreLookingFor = true;
+					theDroidsYouAreLookingFor = false;
+				}
+				else
+				{
+					// TODO : Replace this with grabbing icon data from Item
+					inventoryItemButtons[buttonIndex].Icon.spriteName = "Orc Armor - Boots";
 				}
 			}
 			else if (item is ConsumableItem) 
 			{
-				if (inventType == UIItemButton.EType.CONSUMABLE) 
+				if (inventType != UIItemButton.EType.CONSUMABLE) 
 				{
-					theDroidsYouAreLookingFor = true;
+					theDroidsYouAreLookingFor = false;
+				}
+				else
+				{
+					// TODO : Replace this with grabbing icon data from Item				
+					inventoryItemButtons[buttonIndex].Icon.spriteName = "Sword";
 				}
 			}
 
@@ -206,6 +216,7 @@ public class UITown_BackpackPanel : UITown_Panel
 				inventoryItemButtons [buttonIndex].Type = inventType;
 				inventoryItemButtons [buttonIndex].LinkedItem = item;
 				NGUITools.SetActive (inventoryItemButtons [buttonIndex].gameObject, true);
+				++inventoryButtonCount;
 				++buttonIndex;
 			}
 		}
@@ -247,9 +258,14 @@ public class UITown_BackpackPanel : UITown_Panel
 
 		// set currently highlighted button to the first element
 		(parent as UITownWindow).ShowArrow(false);
-		if (inventoryItemButtons.Count > 0)
+		if (inventoryButtonCount > 0)
 		{
-			inventoryHighlightedItemButton = inventoryItemButtons[0];
+			inventoryHighlightedButton = 0;
+			HighlightInventoryButton();
+		}
+		else
+		{
+			inventoryHighlightedButton = -1;
 		}
 
 		// tell UIGrid to rearrange next Update()
@@ -267,7 +283,33 @@ public class UITown_BackpackPanel : UITown_Panel
 		{
 			uib = currentSelection as UIItemButton;
 		}
-		(parent as UITownWindow).SetInfo(uib.LinkedItem.ToString());
+		if (uib.LinkedItem != null)
+		{
+			(parent as UITownWindow).SetInfo(uib.LinkedItem.ToString());
+		}
+	}
+
+	void HighlightInventoryButton()
+	{
+		if (inventoryHighlightedItemButton != null)
+		{
+			UICamera.Notify(inventoryHighlightedItemButton.gameObject, "OnHover", false);
+		}
+		inventoryHighlightedItemButton = inventoryItemButtons[inventoryHighlightedButton];
+		Debug.Log (inventoryHighlightedButton);
+		UICamera.Notify(inventoryHighlightedItemButton.gameObject, "OnHover", true);
+		SetInfoLabel();
+	}
+
+	protected override bool HighlightButton()
+	{
+		bool hit = base.HighlightButton();
+
+		if (hit)
+		{			
+			SetInfoLabel();
+		}
+		return hit;
 	}
 
 	#region Input Handling
@@ -280,14 +322,30 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		if (activeTab != EMode.INVENTORY) return;
 
+		if (inventoryHighlightedButton == -1) return;
 
+		if (inventoryHighlightedButton == 0) 
+		{
+			inventoryHighlightedButton = inventoryButtonCount;
+		}
+		--inventoryHighlightedButton;
+
+		HighlightInventoryButton();
 	}
 
 	public override void OnMenuDown(InputDevice device)
 	{
 		if (activeTab != EMode.INVENTORY) return;
-
-
+		
+		if (inventoryHighlightedButton == -1) return;
+		
+		if (inventoryHighlightedButton == inventoryButtonCount-1) 
+		{
+			inventoryHighlightedButton = -1;
+		}
+		++inventoryHighlightedButton;
+		
+		HighlightInventoryButton();
 	}
 	
 	public override void OnMenuLeft(InputDevice device)
@@ -302,7 +360,20 @@ public class UITown_BackpackPanel : UITown_Panel
 	{
 		if (activeTab == EMode.BACKPACK)
 		{
-			SwapToInventory();
+			if (currentHighlightedButton != -1)
+			{
+				SwapToInventory();
+			}
+		}
+		
+		if (activeTab == EMode.INVENTORY)
+		{
+			if (inventoryHighlightedButton != -1)
+			{
+				// Replace Selected Backpack Item with Selected Inventory Item
+
+				SwapToBackpack();
+			}
 		}
 	}
 
