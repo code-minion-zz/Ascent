@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShockedDebuff : Debuff
+public class ShockedDebuff : StatusEffect
 {
 
 }

@@ -38,11 +38,77 @@ public class HeroStats : CharacterStats
 		set { experience = value; }
 	}
 
+    public float ExperienceGainBonus
+    {
+        get 
+        {
+            // Check equipment, status effects, blessings, floor bonus.
+
+            // Equipment
+            float experienceBonus = 0.0f; 
+            AccessoryItem[] accessories = hero.Backpack.AccessoryItems;
+            foreach (AccessoryItem item in accessories)
+            {
+                if (item != null)
+                {
+                    experienceBonus += item.ExperienceGainBonus;
+                }
+            }
+
+            // Status effects
+            List<StatusEffect> statusEffects = hero.StatusEffects;
+            foreach (StatusEffect effect in statusEffects)
+            {
+                if (effect is ExperienceBuff)
+                {
+                    experienceBonus += ((ExperienceBuff)effect).ExperienceGainBonus;
+                }
+            }
+      
+            // Floor bonus
+            experienceBonus += Game.Singleton.Tower.ExperienceGainBonus;
+
+            return experienceBonus; 
+        }
+    }
+
 	public int Gold
 	{
 		get { return gold; }
 		set { gold = value; }
 	}
+
+    public float GoldGainBonus
+    {
+        get
+        {
+            // Equipment
+            float goldBonus = 0.0f;
+            AccessoryItem[] accessories = hero.Backpack.AccessoryItems;
+            foreach (AccessoryItem item in accessories)
+            {
+                if (item != null)
+                {
+                    goldBonus += item.GoldGainBonus;
+                }
+            }
+
+            // Status effects
+            List<StatusEffect> statusEffects = hero.StatusEffects;
+            foreach (StatusEffect effect in statusEffects)
+            {
+                if (effect is GoldBuff)
+                {
+                    goldBonus += ((GoldBuff)effect).GoldGainBonus;
+                }
+            }
+
+            // Floor bonus
+            goldBonus += Game.Singleton.Tower.GoldGainBonus;
+
+            return goldBonus;
+        }
+    }
 
 	public HeroStatGrowth Growth
 	{
@@ -79,32 +145,8 @@ public class HeroStats : CharacterStats
 
 #endregion
 
-    #region BasePrimary
 
-    public int BasePower
-    {
-        get { return base.Power; }
-    }
-
-    public int BaseFinesse
-    {
-        get { return base.Finesse; }
-    }
-
-    public int BaseVitality
-    {
-        get { return base.Vitality; }
-    }
-
-    public int BaseSpirit
-    {
-        get { return base.Spirit; }
-    }
-
-    #endregion
-
-
-    #region SecondaryStats
+#region SecondaryStats
 
     public override int MaxHealth
 	{
@@ -147,57 +189,17 @@ public class HeroStats : CharacterStats
 		get { return GetDerivedValue(base.DodgeChance, EStats.DodgeChance); }
 	}
 
-#endregion
-
-#region BaseSecondary
-
-    public int BaseMaxHealth
+    public override float SpecialPerStrike
     {
-        get { return base.MaxHealth; }
+        get { return GetDerivedValue(base.SpecialPerStrike, EStats.SpecialPerStrike); }
     }
-
-    public int BaseMaxSpecial
-    {
-        get { return base.MaxSpecial; }
-    }
-
-    public int BaseAttack
-    {
-        get { return base.Attack; }
-    }
-
-    public int BasePhysicalDefense
-    {
-        get { return base.PhysicalDefense; }
-    }
-
-    public int BaseMagicalDefense
-    {
-        get { return base.MagicalDefense; }
-    }
-
-    public float BaseCriticalHitChance
-    {
-        get { return base.CriticalHitChance; }
-    }
-
-    public float BaseCritalHitMultiplier
-    {
-        get { return base.CritalHitMultiplier; }
-    }
-
-    public float BaseDodgeChance
-    {
-        get { return base.DodgeChance; }
-    }
-
 #endregion
 
     public float GetDerivedValue(float baseValue, EStats statType)
 	{
 		float withAccPrimary = AddAccessoriesPrimaryStats(baseValue, statType);
         float withAccProps = AddAccessoriesProperties(withAccPrimary, statType);
-        float withBuffs = AddBuffs(withAccProps, statType);
+        float withBuffs = AddStatusEffects(withAccProps, statType);
 		return withBuffs;
 	}
 
@@ -248,7 +250,6 @@ public class HeroStats : CharacterStats
                     Backpack backPack = hero.Backpack;
 
                     int itemCount = backPack.AllItems.Length;
-
                     if (itemCount > 0)
                     {
                         int statsFromItems = 0;
@@ -283,7 +284,9 @@ public class HeroStats : CharacterStats
                     }
                 }
                 break;
-			default: { Debug.LogError("Unhandled case."); }break;
+            case EStats.SpecialPerStrike: // Not used
+                break;
+			default: { Debug.LogError(statType + " is Unhandled case."); }break;
 		}
 		
 		return statValue;
@@ -297,26 +300,30 @@ public class HeroStats : CharacterStats
 		return statValue;
 	}
 
-	public float AddBuffs(float statValue, EStats statType)
+	public float AddStatusEffects(float statValue, EStats statType)
 	{
-		// NOTE: This only looks for base stat buffs
-		// TODO: Parse for secondary stats aswell
 		List<StatusEffect> buffList = hero.StatusEffects;
 
 		int buffCount = buffList.Count;
-
 		if (buffCount > 0)
-		{
-			int i;
-			for (i = 0; i < buffCount; ++i)
+		{		
+			for (int i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					if (((BaseStatBuff)buffList[i]).type == statType)
+					if (((PrimaryStatModifierEffect)buffList[i]).StatType == statType)
 					{
-						((BaseStatBuff)buffList[i]).AddBuff(statValue);
+						((PrimaryStatModifierEffect)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
 					}
 				}
+                else if (buffList[i] is SecondaryStatModifierEffect)
+                {
+                    if (((SecondaryStatModifierEffect)buffList[i]).statType == statType)
+                    {
+
+                        ((SecondaryStatModifierEffect)buffList[i]).AddBuff(GetBaseStat(statType), ref statValue);
+                    }
+                }
 			}
 		}
 
@@ -363,6 +370,7 @@ public class HeroStats : CharacterStats
 						criticalHitChance = 5.0f,
 						criticalHitMultiplier = 25.0f,
 						dodgeChance = 2.5f,
+                        specialPerStrike = 1.0f,
 					};
 
 					secondaryStatsGrowth = new SecondaryStatsGrowthRates()

@@ -21,5 +21,9 @@ public enum EStats
 	DodgeChance,
 	CriticalHitChance,
 	CriticalHitMutliplier,
+
+	Accuracy,
+    SpecialPerStrike,
+	MovementSpeed,
 }
 

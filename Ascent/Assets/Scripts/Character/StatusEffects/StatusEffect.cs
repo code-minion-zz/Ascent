@@ -6,6 +6,25 @@ using System.Collections;
 
 public class StatusEffect 
 {
+    public enum EApplyMethod
+    {
+        Percentange,
+        Fixed
+    }
+
+	public enum EEffectType
+	{
+		Buff,
+		Debuff
+	}
+
+	protected EEffectType type;
+	public EEffectType Type
+	{
+		get { return type; }
+		set { type = value; }
+	}
+
     protected bool timed = false;
     public bool Timed
     {
@@ -13,8 +32,15 @@ public class StatusEffect
         set { timed = value; }
     }
 
+    protected float timeElapsed = 0.0f;
+    public float TimeElapsed
+    {
+        get { return timeElapsed; }
+        set { timeElapsed = value; }
+    }
+
     protected float duration = 0.0f;
-    public float Duration
+    public float FullDuration
     {
         get { return duration; }
         set { duration = value; }
@@ -25,13 +51,6 @@ public class StatusEffect
     {
         get { return name; }
         set { name = value; }
-    }
-
-    protected StatusEffectIcon icon;
-    public StatusEffectIcon Icon
-    {
-        get { return icon; }
-        set { icon = value; }
     }
 
     // The source of the buff
@@ -50,17 +69,28 @@ public class StatusEffect
         set { target = value; }
     }
 
+    protected bool toBeRemoved;
+    public bool ToBeRemoved
+    {
+        get { return toBeRemoved; }
+        set { toBeRemoved = value; }
+    }
+
     public void Process()
     {
         if (timed)
         {
-            if (duration > 0.0f)
+            if (timeElapsed < duration)
             {
-                duration -= Time.deltaTime;
+                timeElapsed += Time.deltaTime;
+                if (timeElapsed >= duration)
+                {
+                    timeElapsed = duration;
+                }
 
                 ProcessEffect();
 
-                if (duration <= 0.0f)
+                if (timeElapsed >= duration)
                 {
                     EndEffect();
                     RemoveEffect();
@@ -68,8 +98,8 @@ public class StatusEffect
             }
         }
     }
-    
-    public virtual void ApplyStatusEffect(Character caster, Character target, float duration)
+
+    protected virtual void ApplyStatusEffect(Character caster, Character target, float duration)
     {
         if (duration > 0.0f)
         {
@@ -79,8 +109,6 @@ public class StatusEffect
 
         this.caster = caster;
         this.target = target;
-
-        name = this.ToString();
     }
 
     protected virtual void ProcessEffect()

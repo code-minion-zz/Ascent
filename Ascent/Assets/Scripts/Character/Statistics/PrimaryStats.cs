@@ -33,6 +33,7 @@ public class PrimaryStats
             case EStats.DodgeChance: return finesse;
             case EStats.CriticalHitChance: return finesse;
             case EStats.CriticalHitMutliplier: return finesse;
+            case EStats.SpecialPerStrike: return spirit;
             default: { Debug.LogError("Unhandled case"); } break;
         }
         return 0.0f;

@@ -3,13 +3,14 @@ using System.Collections;
 
 public static class EnemyStatLoader 
 {
-	public static EnemyStats Load(Enemy.EEnemy enemy)
+	public static EnemyStats Load(Enemy.EEnemy enemyType, Enemy enemy)
 	{
 		// TODO: Load all stats from file. Instead of this massive switch case!
 
 		EnemyStats stats = new EnemyStats();
+        stats.enemy = enemy;
 
-		switch(enemy)
+		switch(enemyType)
 		{
 			case Enemy.EEnemy.Rat:
 				{

@@ -12,6 +12,7 @@ public class FloorHUDManager : MonoBehaviour
     private List<StatBar> enemyBars;
 
     // These are to be set through the editor
+    public bool testHUD;
 	public			Camera		hudCamera;
 	public			TextDriver  TextDriver;
     public          PlayerHUD   playerHUD;
@@ -39,6 +40,11 @@ public class FloorHUDManager : MonoBehaviour
         {
             singleton = this;
         }
+
+        if (testHUD)
+        {
+            gameObject.SetActive(false);
+        }
 	}
 
     public void OnDestroy()
@@ -55,8 +61,6 @@ public class FloorHUDManager : MonoBehaviour
             return;
         }
         Game game = Game.Singleton;
-
-        Debug.Log(playerHUD);
 
         // Create HUD container for number of players
         int iPlayers = game.Players.Count;

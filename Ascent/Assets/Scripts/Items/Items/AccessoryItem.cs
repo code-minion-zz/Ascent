@@ -94,6 +94,38 @@ public class AccessoryItem : Item
 		set { durabilityMax = value; }
 	}
 
+    public float ExperienceGainBonus
+    {
+        get 
+        {
+            float experienceBonus = 0.0f;
+            foreach (ItemProperty property in itemProperties)
+            {
+                if (property is ExperienceItemProperty)
+                {
+                    experienceBonus = ((ExperienceItemProperty)property).value;
+                }
+            }
+            return experienceBonus; 
+        }
+    }
+
+    public float GoldGainBonus
+    {
+        get
+        {
+            float experienceBonus = 0.0f;
+            foreach (ItemProperty property in itemProperties)
+            {
+                if (property is GoldItemProperty)
+                {
+                    experienceBonus = ((GoldItemProperty)property).value;
+                }
+            }
+            return experienceBonus;
+        }
+    }
+
 	public override string ToString()
 	{
 		return GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +

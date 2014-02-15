@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WalkingBombDebuff : Debuff 
+public class WalkingBombDebuff : StatusEffect 
 {
 
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SilenceDebuff : Debuff
+public class SilenceDebuff : StatusEffect
 {
 }
