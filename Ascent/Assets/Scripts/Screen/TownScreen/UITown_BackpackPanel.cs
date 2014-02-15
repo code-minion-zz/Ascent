@@ -277,10 +277,14 @@ public class UITown_BackpackPanel : UITown_Panel
 		UIItemButton uib;
 		if (activeTab == EMode.INVENTORY)
 		{
+			if (inventoryHighlightedButton == -1) return;
+
 			uib = inventoryHighlightedItemButton;
 		}
 		else
 		{
+			if (currentHighlightedButton == -1) return;
+
 			uib = currentSelection as UIItemButton;
 		}
 		if (uib.LinkedItem != null)
@@ -296,7 +300,6 @@ public class UITown_BackpackPanel : UITown_Panel
 			UICamera.Notify(inventoryHighlightedItemButton.gameObject, "OnHover", false);
 		}
 		inventoryHighlightedItemButton = inventoryItemButtons[inventoryHighlightedButton];
-		Debug.Log (inventoryHighlightedButton);
 		UICamera.Notify(inventoryHighlightedItemButton.gameObject, "OnHover", true);
 		SetInfoLabel();
 	}
@@ -364,9 +367,8 @@ public class UITown_BackpackPanel : UITown_Panel
 			{
 				SwapToInventory();
 			}
-		}
-		
-		if (activeTab == EMode.INVENTORY)
+		}		
+		else if (activeTab == EMode.INVENTORY)
 		{
 			if (inventoryHighlightedButton != -1)
 			{
