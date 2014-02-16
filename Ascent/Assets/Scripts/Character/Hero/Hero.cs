@@ -264,7 +264,7 @@ public abstract class Hero : Character
     {
         // Reset the health
 		RefreshEverything();
-        motor.canMove = true;
+        motor.IsHaltingMovementToPerformAction = true;
         Animator.Dying = false;
         collider.enabled = true;
 
@@ -274,7 +274,7 @@ public abstract class Hero : Character
     protected override void OnDeath()
     {
         motor.StopMotion();
-        motor.canMove = false;
+        motor.IsHaltingMovementToPerformAction = false;
         collider.enabled = false;
         Animator.Dying = true;
 
@@ -301,12 +301,6 @@ public abstract class Hero : Character
 	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
 	{
         base.ApplyDamage(unmitigatedDamage, type, owner);
-
-		if (heroController.GrabbingObject)
-		{
-			heroController.ReleaseGrabbedObject();
-			GetComponent<CharacterMotor>().StopMovingAlongGrid();
-		}
 
         if (type == Character.EDamageType.Trap)
         {

@@ -116,7 +116,7 @@ public class WarriorCharge : Action
 
 		frameCount = checkAtFrame;
 
-        owner.ApplyInvulnerabilityEffect(animationLength);
+        owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
 
 		enemies = new List<Character>();
 		enemiesFoundLastCount = 0;
@@ -164,7 +164,7 @@ public class WarriorCharge : Action
 
 						// Apply damage, knockback and stun to the enemy.
 						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
-						enemies[i].ApplyStunEffect(1.0f);
+						enemies[i].ApplyStatusEffect(new StunnedDebuff(owner, enemies[i], 1.0f));
 
 						// Create a blood splatter effect on the enemy.
 						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
@@ -194,7 +194,7 @@ public class WarriorCharge : Action
 						// Apply damage, knockback and stun to the enemy.
 						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
 						enemies[i].ApplyKnockback(enemies[i].transform.position - owner.transform.position, 100000.0f);
-						enemies[i].ApplyStunEffect(2.0f);
+						enemies[i].ApplyStatusEffect(new StunnedDebuff(owner, enemies[i], 1.0f));
 
 						// Create a blood splatter effect on the enemy.
 						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);

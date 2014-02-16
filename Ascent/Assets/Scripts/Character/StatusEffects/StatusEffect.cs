@@ -4,6 +4,23 @@
 using UnityEngine;
 using System.Collections;
 
+[System.Flags]
+public enum EStatus 
+{
+	None = 0x00000,
+	Stun = 0x00001,
+	Knock = 0x00002,
+	Interrupt = 0x00004,
+	Frozen = 0x00008,
+	Shock = 0x00010,
+	Silence = 0x00020,
+	Sleep = 0x00040,
+	Poison = 0x00080,
+	Invulnerability = 0x00100,
+
+	All = 0xFFFFFFF,
+}
+
 public class StatusEffect 
 {
     public enum EApplyMethod

@@ -57,7 +57,7 @@ public class SecondaryStatModifierEffect : StatusEffect
 
 		base.ApplyStatusEffect(caster, target, duration);
 
-		target.AddStatusEffect(this);
+		target.ApplyStatusEffect(this);
 	}
 
 

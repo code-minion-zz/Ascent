@@ -96,7 +96,7 @@ public class Slime : Enemy
 
                     if (otherCharacter != null)
                     {
-                        if (!IsStunned && !otherCharacter.IsInvulnerable)
+                        if (!IsInState(EStatus.Stun) && !otherCharacter.IsInState(EStatus.Invulnerability))
                         {
                             CollideWithHero(otherCharacter as Hero, other);
                         }

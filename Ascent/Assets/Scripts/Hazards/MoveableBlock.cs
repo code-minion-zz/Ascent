@@ -5,7 +5,7 @@ public class MoveableBlock : Interactable
 {
 	public bool grabbed;
 
-	public bool moving;
+	public bool IsInMotion;
 
 	float offset = 1.0f;
 	float moveTime = 0.5f;
@@ -26,33 +26,33 @@ public class MoveableBlock : Interactable
 	// Update is called once per frame
 	void Update () 
 	{
-		if(!moving)
+		if(!IsInMotion)
 		{
 			if(Input.GetKeyUp(KeyCode.UpArrow))
 			{
-				Move(new Vector3(0, 0.0f, offset));
+				MoveAlongGrid(new Vector3(0, 0.0f, offset));
 			}
 			else if (Input.GetKeyUp(KeyCode.DownArrow))
 			{
-				Move(new Vector3(0, 0.0f, -offset));
+				MoveAlongGrid(new Vector3(0, 0.0f, -offset));
 			}
 			else if (Input.GetKeyUp(KeyCode.RightArrow))
 			{
-				Move(new Vector3(offset, 0.0f, 0));
+				MoveAlongGrid(new Vector3(offset, 0.0f, 0));
 			}
 			else if (Input.GetKeyUp(KeyCode.LeftArrow))
 			{
-				Move(new Vector3(-offset, 0.0f, 0));
+				MoveAlongGrid(new Vector3(-offset, 0.0f, 0));
 			}
 		}
 
-		if (moving)
+		if (IsInMotion)
 		{
 			timeAccum += Time.deltaTime;
 			if(timeAccum > moveTime)
 			{
 				timeAccum = 1.0f;
-				moving = false;
+				IsInMotion = false;
 			}
 
 			 transform.position = Vector3.Lerp(startPos, targetPos, timeAccum / moveTime);
@@ -62,11 +62,11 @@ public class MoveableBlock : Interactable
 		//GetComponentInChildren<CharacterTilt>().Process();
 	}
 
-	public void Move(Vector3 direction)
+	public void MoveAlongGrid(Vector3 direction)
 	{
-		if (!moving)
+		if (!IsInMotion)
 		{
-			moving = true;
+			IsInMotion = true;
 			timeAccum = 0.0f;
 			startPos = transform.position;
 			targetPos = startPos + direction.normalized * offset;

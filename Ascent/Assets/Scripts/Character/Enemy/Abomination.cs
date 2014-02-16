@@ -38,10 +38,7 @@ public class Abomination : Enemy
 
         InitialiseAI();
 
-        canBeDebuffed = false;
-        canBeStunned = false;
-        canBeInterrupted = false;
-        canBeKnockedBack = false;
+		vulnerabilities = EStatus.None;
     }
 
     public void InitialiseAI()

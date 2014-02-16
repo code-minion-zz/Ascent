@@ -169,7 +169,7 @@ public abstract class Enemy : Character
         {
             base.Update();
 
-            if (!IsStunned)
+            if (!CanMove && !CanAct)
             {
                 if (activeAbility == null)
                 {

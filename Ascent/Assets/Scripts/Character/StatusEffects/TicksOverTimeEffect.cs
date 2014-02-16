@@ -20,7 +20,7 @@ public class TicksOverTimeEffect : StatusEffect
 
 		timePerTick = duration / ticks;
 
-		target.AddStatusEffect(this);
+		target.ApplyStatusEffect(this);
 	}
 
 	protected override void ProcessEffect()

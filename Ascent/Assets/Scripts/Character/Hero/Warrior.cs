@@ -35,6 +35,6 @@ public class Warrior : Hero
 		AddSkill(new WarriorWarStomp());
         AddSkill(new WarriorWarCry());
 
-		CanBeStunned = false;
+		vulnerabilities = EStatus.None;
 	}
 }

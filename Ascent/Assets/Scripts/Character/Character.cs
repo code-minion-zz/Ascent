@@ -41,10 +41,15 @@ public abstract class Character : BaseCharacter
 	public event Damage onDamageDealt; // Not handled by the character.
 
     protected List<StatusEffect> statusEffects = new List<StatusEffect>();
-
 	protected List<Action> abilities = new List<Action>();
-
+	protected CharacterStats stats;
+	protected bool hitTaken;
 	protected Action activeAbility;
+	protected bool isDead;
+	protected Character lastDamagedBy;
+	protected EStatus vulnerabilities;
+	protected EStatus status;
+
 	public bool CanInterruptActiveAbility
 	{
 		get 
@@ -57,79 +62,6 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
-	protected CharacterStats stats;
-	
-	protected float stunDuration;
-	protected float stunTimeAccum;
-	protected float invulnerableDuration;
-	protected float invulnerableTimeAccum;
-
-	protected bool canBeStunned = true;
-    public bool CanBeStunned
-    {
-        get { return canBeStunned; }
-        set { canBeStunned = value; }
-    }
-
-	protected bool canBeKnockedBack = true;
-    public bool CanBeKnockedBack
-    {
-        get { return canBeKnockedBack; }
-        set { canBeKnockedBack = value; }
-    }
-
-	protected bool canBeDebuffed = true;
-    public bool CanBeDebuffed
-    {
-        get { return CanBeDebuffed; }
-        set { CanBeDebuffed = value; }
-    }
-
-	protected bool canBeInterrupted = true;
-    public bool CanBeInterrupted
-    {
-        get { return CanBeInterrupted; }
-        set { CanBeInterrupted = value; }
-    }
-
-	protected bool canBeFrozen = true;
-	public bool CanBeFrozen
-	{
-		get { return canBeFrozen; }
-		set { canBeFrozen = value; }
-	}
-
-	protected bool canBeShocked = true;
-	public bool CanBeShocked
-	{
-		get { return canBeShocked; }
-		set { canBeShocked = value; }
-	}
-
-	protected bool canBeSilenced = true;
-	public bool CanBeSilenced
-	{
-		get { return canBeSilenced; }
-		set { canBeSilenced = value; }
-	}
-
-	protected bool canBePutToSleep = true;
-	public bool CanBePutToSleep
-	{
-		get { return canBePutToSleep; }
-		set { CanBePutToSleep = value; }
-	}
-
-	protected bool canBePoisoned = true;
-	public bool CanBePoisoned
-	{
-		get { return canBePoisoned; }
-		set { canBePoisoned = value; }
-	}
-
-
-
-    protected bool hitTaken = false;
     public bool HitTaken
     {
         get { return hitTaken; }
@@ -142,16 +74,6 @@ public abstract class Character : BaseCharacter
             
         }
     }
-    public IEnumerator SetHitTaken()
-    {
-        hitTaken = true;
-        yield return new WaitForSeconds(0.1f);
-        hitTaken = false;
-    } 
-
-	protected bool isDead = false;
-
-	protected Character lastDamagedBy;
 
 	public CharacterStats Stats
 	{
@@ -174,14 +96,26 @@ public abstract class Character : BaseCharacter
 		get { return abilities; }
 	}
 
-	public bool IsStunned
+	public EStatus Vulnerabilities
 	{
-		get { return stunDuration > 0.0f; }
+		get { return vulnerabilities; }
+		set { vulnerabilities = value; }
 	}
 
-	public bool IsInvulnerable
+	public EStatus Status
 	{
-		get { return invulnerableDuration > 0.0f; }
+		get { return status; }
+		set { status = value; }
+	}
+
+	public bool CanMove
+	{
+		get { return !IsInState(EStatus.Stun); }
+	}
+
+	public bool CanAct
+	{
+		get { return !IsInState(EStatus.Stun); }
 	}
 
 	/// <summary>
@@ -223,31 +157,6 @@ public abstract class Character : BaseCharacter
 		foreach (StatusEffect b in statusEffects)
 		{
 			b.Process();
-		}
-
-
-		if (invulnerableDuration > 0.0f)
-		{
-			invulnerableDuration -= Time.deltaTime;
-
-			if (invulnerableDuration < 0.0f)
-			{
-				invulnerableDuration = 0.0f;
-				SetColor(originalColour);
-			}
-		}
-
-		if (stunDuration > 0.0f)
-		{
-			stunDuration -= Time.deltaTime;
-
-			GetComponentInChildren<CharacterMotor>().StopMotion();
-
-			if (stunDuration < 0.0f)
-			{
-				stunDuration = 0.0f;
-				SetColor(originalColour);
-			}
 		}
 	}
 
@@ -299,7 +208,7 @@ public abstract class Character : BaseCharacter
 				stats.CurrentSpecial -= ability.SpecialCost;
 
 				motor.StopMotion();
-				motor.canMove = false;
+				motor.IsHaltingMovementToPerformAction = false;
 			}
 		}
 	}
@@ -339,7 +248,7 @@ public abstract class Character : BaseCharacter
             //activeAbility = ability;
 
             motor.StopMotion();
-            motor.canMove = false;
+            motor.IsHaltingMovementToPerformAction = false;
         }
     }
 
@@ -365,7 +274,7 @@ public abstract class Character : BaseCharacter
 			activeAbility.EndAbility();
 			activeAbility = null;
 
-			motor.canMove = true;
+			motor.IsHaltingMovementToPerformAction = true;
 		}
 	}
 
@@ -416,9 +325,17 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
+	public IEnumerator SetHitTaken()
+	{
+		hitTaken = true;
+		yield return new WaitForSeconds(0.1f);
+		hitTaken = false;
+	} 
+
+
 	public virtual void ApplyKnockback(Vector3 direction, float magnitude)
 	{
-		if (canBeKnockedBack)
+		if (IsVulnerableTo(EStatus.Knock))
 		{
 			// Taking damage may or may not interrupt the current ability
 			direction = new Vector3(direction.x, 0.0f, direction.z);
@@ -430,27 +347,10 @@ public abstract class Character : BaseCharacter
 
 	public virtual void ApplySpellEffect()
 	{
-		if (canBeDebuffed)
+		if (IsVulnerableTo(EStatus.All))
 		{
 			// Taking damage may or may not interrupt the current ability
 		}
-	}
-
-	public virtual void ApplyStunEffect(float duration)
-	{
-		if (canBeStunned)
-		{
-			stunDuration = duration;
-			SetColor(Color.yellow);
-
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Stunned!", Color.yellow);
-		}
-	}
-
-	public virtual void ApplyInvulnerabilityEffect(float duration)
-	{
-		invulnerableDuration = duration;
-		SetColor(Color.blue);
 	}
 
 	/// <summary>
@@ -527,13 +427,22 @@ public abstract class Character : BaseCharacter
 
 			if (isDead)
 			{
-				Debug.Log("a");
 				Respawn(transform.position);
 			}
 		}
     }
 
-	public virtual void AddStatusEffect(StatusEffect effect)
+	public bool IsVulnerableTo(EStatus statusEffect)
+	{
+		return (vulnerabilities & statusEffect) == statusEffect;
+	}
+
+	public bool IsInState(EStatus statusEffect)
+	{
+		return (status & statusEffect) == statusEffect;
+	}
+
+	public virtual void ApplyStatusEffect(StatusEffect effect)
 	{
         statusEffects.Add(effect);
 	}
