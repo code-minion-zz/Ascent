@@ -66,12 +66,8 @@ public class FloorGeneration
         saver.LoadRooms();
 
 		// Generate the first room in the game.
-        //RoomProperties firstRoom = roomGeneration.CreateNewRoom(18, 14, "Room 0: Start");
-		//firstRoom.Position = Vector3.zero;
-
         RoomProperties firstRoom = saver.RoomSaves.saves[0];
         roomGeneration.ReconstructRoom(firstRoom);
-
 		rooms.Add(firstRoom);
 
         // Go through and place all the floor components based on the number of them we have.
@@ -113,19 +109,6 @@ public class FloorGeneration
         }
 
         GenerateWalls();
-
-        //saver.AddNewRoom(firstRoom);
-
-        //Debug.Log(firstRoom.Name);
-        //Debug.Log(firstRoom.Width);
-        //Debug.Log(firstRoom.Height);
-        //Debug.Log(firstRoom.NumberOfTilesX);
-        //Debug.Log(firstRoom.NumberOfTilesY);
-        //Debug.Log(firstRoom.Position);
-        //Debug.Log(firstRoom.RoomType);
-        //Debug.Log(firstRoom.WallsPlaced);
-
-        saver.SaveAllRooms();
     }
 
     /// <summary>
@@ -423,26 +406,21 @@ public class FloorGeneration
             // North
             case Floor.TransitionDirection.North:
                 // Vector to test new location. 
-                //locationVector = new Vector3(from.position.x, 0.0f, ((from.position.z + from.height * 0.5f) + (height * roomOffsetMultiplier)));
                 locationVector = new Vector3(from.Position.x, 0.0f, ((from.Position.z + from.Height * 0.5f) + roomOffsetValue));
                 break;
 
             // East
             case Floor.TransitionDirection.East:
-
-                //locationVector = new Vector3(((from.position.x + from.width * 0.5f) + (width * roomOffsetMultiplier)), 0.0f, from.position.z);
                 locationVector = new Vector3(((from.Position.x + from.Width * 0.5f) + roomOffsetValue), 0.0f, from.Position.z);
                 break;
 
             // South
             case Floor.TransitionDirection.South:
-                //locationVector = new Vector3(from.position.x, 0.0f, ((from.position.z - from.height * 0.5f) - (height * roomOffsetMultiplier)));
                 locationVector = new Vector3(from.Position.x, 0.0f, ((from.Position.z - from.Height * 0.5f) - roomOffsetValue));
                 break;
 
             // West
             case Floor.TransitionDirection.West:
-                //locationVector = new Vector3(((from.position.x - from.width * 0.5f) - (width * roomOffsetMultiplier)), 0.0f, from.position.z);
                 locationVector = new Vector3(((from.Position.x - from.Width * 0.5f) - roomOffsetValue), 0.0f, from.Position.z);
                 break;
         }

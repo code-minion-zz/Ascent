@@ -9,23 +9,40 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class SaveRooms
 {
     private RoomSaves roomSaves = new RoomSaves();
-    public string FilePath { get; set; }
+    private string filePath;
+
+    public string FilePath 
+    {
+        get { return filePath; }
+        set { filePath = value; }
+    }
 
     public RoomSaves RoomSaves
     {
         get { return roomSaves; }
     }
 
+    public void Awake()
+    {
+        Initialize();
+    }
+
+    public void Start()
+    {
+        Initialize();
+    }
+
     public void Initialize()
     {
+        roomSaves = new RoomSaves();
         FilePath = string.Format("Assets/Resources/Maps/RoomSaves.bin");
-        //LoadRooms();
     }
 
     [ContextMenu("SaveRooms")]
     public void SaveAllRooms()
     {
         XMLSerialiser.SerializeObjectBin(FilePath, roomSaves);
+        XMLSerialiser.SerializeToString("Assets/Resources/Maps/RoomSaves.txt", roomSaves);
     }
 
     public void AddNewRoom(RoomProperties data)
@@ -38,5 +55,21 @@ public class SaveRooms
         roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(FilePath);
 
         return roomSaves;
+    }
+
+    [ContextMenu("Load First Room")]
+    public void LoadFirstRoom()
+    {
+        Initialize();
+        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(filePath);
+
+        if (roomSaves != null)
+        {
+            Debug.Log(roomSaves.saves.Count);
+            // Reconstruct the first room.
+            RoomGeneration roomGen = new RoomGeneration();
+            RoomProperties firstRoom = roomSaves.saves[1];
+            roomGen.ReconstructRoom(firstRoom);
+        }
     }
 }

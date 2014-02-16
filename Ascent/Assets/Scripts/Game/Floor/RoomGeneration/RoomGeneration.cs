@@ -239,6 +239,11 @@ public class RoomGeneration
 	/// <param name="room">Room.</param>
 	public void PopulateMiscObjects(RoomProperties room)
 	{
+        // Since the room is preloaded we don't need to randomly place things.
+        if (room.IsPreloaded == true)
+        {
+            return;
+        }
 
         List<Tile> tempAvailableTiles = new List<Tile>();
 
@@ -248,10 +253,10 @@ public class RoomGeneration
 			for (int j = 0; j < room.NumberOfTilesY; ++j)
 			{
                 // Populate random misc objects.
-                if (room.Tiles[i, j].TileType == TileType.miscObj ||
-                    room.Tiles[i, j].TileType == TileType.standardWall || 
-                    room.Tiles[i, j].TileType == TileType.cornerWallTile ||
-                    room.Tiles[i, j].TileType == TileType.brazier)
+                if (room.Tiles[i, j].ContainsAttribute(TileType.miscObj) ||
+                    room.Tiles[i, j].ContainsAttribute(TileType.standardWall) ||
+                    room.Tiles[i, j].ContainsAttribute(TileType.cornerWallTile) ||
+                    room.Tiles[i, j].ContainsAttribute(TileType.brazier))
                 {
                     if (room.Tiles[i, j].IsOccupied == false)
                     {
@@ -266,21 +271,14 @@ public class RoomGeneration
         // For each corner place the braziers.
         foreach (Tile tile in tempAvailableTiles)
         {
-            if (tile.TileType == TileType.cornerWallTile ||
-                tile.TileType == TileType.brazier)
+            if (tile.ContainsAttribute(TileType.cornerWallTile))
             {
-                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
+                go = GetGameObjectByType(TileType.brazier);
                 go.transform.parent = room.Room.EnvironmentParent;
                 go.transform.localPosition = tile.Position;
 
                 tile.IsOccupied = true;
             }
-        }
-
-        // Since the room is preloaded we don't need to randomly place things.
-        if (room.IsPreloaded == true)
-        {
-            return;
         }
 
         // Determine how many barrel objects we will try to place.
@@ -291,6 +289,7 @@ public class RoomGeneration
         {
             // Reset as we do not want to accidentally place more braziers.
             go = null;
+            float angle = 0.0f;
 
             // If we have exausted all of our available positions we can finish.
             if (tempAvailableTiles.Count == 0)
@@ -300,7 +299,7 @@ public class RoomGeneration
             int randomTile = UnityEngine.Random.Range(0, tempAvailableTiles.Count);
 
             // Check to see if the tile type is a wall tile to be sure.
-            if (tempAvailableTiles[randomTile].TileType == TileType.standardWall)
+            if (tempAvailableTiles[randomTile].ContainsAttribute(TileType.standardWall))
             {
                 int random = UnityEngine.Random.Range(0, 2);
 
@@ -312,6 +311,7 @@ public class RoomGeneration
 
                     case 1:
                         float rotationY = UnityEngine.Random.Range(0.0f, 270.0f);
+                        angle = rotationY;
                         go = GameObject.Instantiate(barrelCluster, Vector3.zero, barrelObject.transform.rotation) as GameObject;
                         go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, rotationY, go.transform.eulerAngles.z);
                         break;
@@ -327,7 +327,12 @@ public class RoomGeneration
             go.transform.parent = room.Room.EnvironmentParent;
             go.transform.localPosition = tempAvailableTiles[randomTile].Position;
 
-            tempAvailableTiles[randomTile].TileType = TileType.miscObj;
+            // Add the attribute of this object.
+            TileAttribute att = new TileAttribute();
+            att.Angle = angle;
+            att.Type = TileType.miscObj;
+
+            tempAvailableTiles[randomTile].TileAttributes.Add(att);
             tempAvailableTiles[randomTile].IsOccupied = true;
             tempAvailableTiles.Remove(tempAvailableTiles[randomTile]);
         }
@@ -423,6 +428,10 @@ public class RoomGeneration
                 go = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
                 break;
 
+            case TileType.brazier:
+                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
+                break;
+
             case TileType.door:
                 go = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
                 break;
@@ -440,7 +449,7 @@ public class RoomGeneration
 	/// <param name="direction">Direction.</param>
 	public Door CreateDoor(GameObject doors, RoomProperties fromRoom, Floor.TransitionDirection direction)
 	{
-		GameObject doorGo = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
+        GameObject doorGo = GetGameObjectByType(TileType.door);
 		doorGo.transform.parent = doors.transform;
 		
 		// Attach the doors to their rightful component.

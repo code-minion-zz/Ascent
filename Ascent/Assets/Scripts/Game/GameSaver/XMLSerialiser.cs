@@ -54,12 +54,22 @@ public class XMLSerialiser
     public static void SerializeObjectBin(string path, object pObject)
     {
         BinaryFormatter bf = new BinaryFormatter();
-
         FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
 
         bf.Serialize(fs, pObject);
 
         fs.Close();
+    }
+
+    public static string SerializeToString(string path, object pObject)
+    {
+        using (MemoryStream s = new MemoryStream())
+        {
+            new BinaryFormatter().Serialize(s, pObject);
+            string str = Convert.ToBase64String(s.ToArray());
+            CreateXML(path, str);
+            return str;
+        } 
     }
 
     public static object DeserializeObjectBin(string path)
