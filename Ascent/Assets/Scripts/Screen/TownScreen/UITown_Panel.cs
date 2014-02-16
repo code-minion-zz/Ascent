@@ -60,9 +60,9 @@ public class UITown_Panel : UIPlayerMenuPanel
 			currentHighlightedButton = -1;
 			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public override void OnEnable()

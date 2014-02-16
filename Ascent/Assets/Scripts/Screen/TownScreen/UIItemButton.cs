@@ -29,7 +29,7 @@ public class UIItemButton : UIButton
 		{ 
 			if (linkedItem != null) return linkedItem;
 
-			Debug.LogError("No Item Linked to this Item Button");
+			Debug.Log("No Item Linked to this Item Button");
 			return null;
 		}
 

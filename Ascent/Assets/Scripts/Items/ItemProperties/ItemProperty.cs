@@ -9,4 +9,5 @@ public abstract class ItemProperty
 	public abstract void Initialise();
 	public abstract void CheckCondition();
 	public abstract void DoAction ();	// condition is met, do action
+	//public abstract string Description();
 }
