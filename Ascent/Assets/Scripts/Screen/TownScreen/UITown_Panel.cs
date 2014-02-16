@@ -28,36 +28,41 @@ public class UITown_Panel : UIPlayerMenuPanel
 		AngleIndex = new Dictionary<float, int>();
 	}
 
-	protected void HighlightButton ()
+	/// <summary>
+	/// Check if arrow is pointing at a button, and highlights it.
+	/// Returns false if no button is highlighted.
+	/// </summary>
+	protected virtual bool HighlightButton ()
 	{
 		float angle = (parent as UITownWindow).PointerAngle - 90f;
-		bool hit = false;
+
+		bool hit = false; // True if at least one match is made
 
 		foreach (KeyValuePair<float,int> p in AngleIndex)
 		{
-			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
 			if (CloseTo(angle,p.Key))
 			{
 				hit = true;
-				if (buttons[p.Value] == currentSelection) //return;
-				{
-					//UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-				}
-				else
+				if (buttons[p.Value] != currentSelection)
 				{
 					UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 					currentSelection = buttons[p.Value];
 					currentHighlightedButton = p.Value;
-					Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
+					//Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 				}
 				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 			}
 		}
 
-		if (!hit)
+		// comment out next line for 'sticky selection' behaviour
+		if (!hit) // Removes button selection if no longer in range
 		{
+			currentHighlightedButton = -1;
 			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+
+			return false;
 		}
+		return true;
 	}
 
 	public override void OnEnable()

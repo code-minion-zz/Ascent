@@ -128,12 +128,18 @@ public class AccessoryItem : Item
 
 	public override string ToString()
 	{
-		return GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
-				"Desc: " + stats.Description + "\n" +
-				"Dura: " + durability + "\\" + durabilityMax + "\n" +
-				"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
-				"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n" +
-				"Prop count: " + itemProperties.Count + "\n";
+		string retVal = "Grade: " +GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
+			"Desc: " + stats.Description + "\n" +
+			"Dura: " + durability + "\\" + durabilityMax + "\n" +
+			"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
+			"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n";
+			//"Prop count: " + itemProperties.Count + "\n";
 
+		foreach (ItemProperty ip in itemProperties)
+		{
+			retVal += ip.ToString() + "\n";
+		}
+
+		return retVal;
 	}
 }

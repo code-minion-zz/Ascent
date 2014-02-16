@@ -48,7 +48,10 @@ public class UITown_MainPanel : UITown_Panel
     {
 		if (updatePointer)
 		{
-			HighlightButton();
+			if (HighlightButton())
+			{
+				SetInfoLabel();
+			}
 			updatePointer = false;
 		}
 
@@ -88,12 +91,11 @@ public class UITown_MainPanel : UITown_Panel
 		if (!gameObject.activeInHierarchy) return;
 		//HighlightButton();
 		updatePointer = true;
-		SetInfoLabel();
 	}
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		ButtonAction();
+		if (currentSelection.gameObject.activeInHierarchy)	ButtonAction();
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
@@ -141,34 +143,30 @@ public class UITown_MainPanel : UITown_Panel
 		case 2 : // backpack
 			(parent as UITownWindow).RequestTransitionToPanel(1);
 			break;
+		default : // nothing meaningful is highlighted
+			break;
 		}
 	}
 
 	void SetInfoLabel()
 	{
-		UILabel InfoLabel = (parent as UITownWindow).InfoLabel;
-		if (InfoLabel != null)
+		UITownWindow townWindow = (parent as UITownWindow);
+
+		switch (currentHighlightedButton)
 		{
-			//Debug.Log("InfoLabel not null");
-
-			if (currentHighlightedButton == -1)
-			{
-				Debug.LogError("UITownWindow: Uninitialized Panel Error");
-			}
-
-			switch (currentHighlightedButton)
-			{
-			case 0: // tower
-				InfoLabel.text = "Enter the Tower";
-				break;
-			case 1: // quit
-				InfoLabel.text = "Quit to Main Menu";
-				break;
-			case 2: // backpack
-				InfoLabel.text = "Manage your Equipment";
-				break;
-			}
-
+		case 0: // tower
+			townWindow.SetInfo("Enter the Tower");
+			break;
+		case 1: // quit
+			townWindow.SetInfo("Quit to Main Menu");
+			break;
+		case 2: // backpack
+		townWindow.SetInfo("Manage your Equipment");
+			break;
+		default:
+			townWindow.SetInfo("");
+			break;
 		}
 	}
+
 }
