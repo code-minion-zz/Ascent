@@ -14,7 +14,7 @@ public class SlimeReplicate : Action
         animationLength = 0.2f;
         animationSpeed = 1.0f;
         animationTrigger = "Replicate";
-        cooldownDurationMax = 2.0f;
+        cooldownFullDuration = 2.0f;
         specialCost = 0;
         
     }
@@ -26,7 +26,7 @@ public class SlimeReplicate : Action
             base.StartAbility();
 
             owner.Motor.StopMotion();
-            owner.Motor.EnableMovementForce(false);
+            owner.Motor.EnableStandardMovement(false);
             owner.SetColor(Color.red);
         }
     }
@@ -73,7 +73,7 @@ public class SlimeReplicate : Action
             slimeReplicateB.timesSplit = timesSplit;
 
             owner.SetColor(owner.OriginalColor);
-            owner.Motor.EnableMovementForce(true);
+            owner.Motor.EnableStandardMovement(true);
         }
         base.EndAbility();
     }

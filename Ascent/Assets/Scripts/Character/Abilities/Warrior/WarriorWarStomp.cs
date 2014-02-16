@@ -23,7 +23,7 @@ public class WarriorWarStomp : Action
         animationLength = 1.667f;
         animationSpeed = 1.5f;
         animationTrigger = "WarStomp";
-        cooldownDurationMax = 2.0f;
+        cooldownFullDuration = 2.0f;
         specialCost = 5;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
@@ -73,7 +73,7 @@ public class WarriorWarStomp : Action
 							damage = owner.DamageFormulaA(0.0f, 0.5f);
 
                             e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
-							e.ApplyStunEffect(2.25f);
+							e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.0f));
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);

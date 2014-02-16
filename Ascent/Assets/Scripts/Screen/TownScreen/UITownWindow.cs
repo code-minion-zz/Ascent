@@ -12,24 +12,40 @@ using UnityEngine;
 
 public class UITownWindow : UIPlayerMenuWindow
 {
-	public Transform pointerTransform;
-	//public List<UIPlayerMenuPanel> TownPanels;
-	[HideInInspector]
-	public UILabel TitleLabel = null;
-	public UILabel InfoLabel = null;
-	public UILabel InstructLabel = null;
 	Transform sharedEle;
-
-	protected float pointerAngle = 90f;
+	public Transform pointerTransform;
+	protected float pointerAngle = 0f;
 	public float PointerAngle
 	{
 		get 
 		{
+			// refresh value whenever it is requested
+			pointerAngle = Utilities.VectorToAngleInDegrees(player.Input.LeftStickX.Value, player.Input.LeftStickY.Value);
 			return pointerAngle;
+			//return Utilities.VectorToAngleInDegrees(pointerTransform.forward.x - pointerTransform.position.x, pointerTransform.forward.y - pointerTransform.position.y);
 		}
 	}
 
-//	bool updateTitle;
+	[HideInInspector]
+	public UILabel TitleLabel = null;
+	[HideInInspector]
+	public UILabel InfoLabel = null;
+	[HideInInspector]
+	public UILabel InstructLabel = null;
+
+	Spin spinScript = null;
+	GameObject cardBack = null;
+
+	int transitionTarget = -1;
+
+	/// <summary>
+	/// 0 = idle,
+	/// 1 = start forward,
+	/// 2 = forward,
+	/// 3 = start reverse,
+	/// 4 = reverse,
+	/// </summary>
+	int flipState = 0; 
 
 	public enum EBackpackPanels
 	{
@@ -44,13 +60,17 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public override void Initialise ()
 	{
+		spinScript = GetComponent<Spin>();
 		sharedEle = transform.Find("Shared Elements");
-		
+
+		cardBack = sharedEle.Find("CardBack").gameObject;
 		TitleLabel = sharedEle.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
 
 		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
+		//player.Input.LeftStickX.
+		HandleOnMenuLeftStickMove(player.Input);
 		base.Initialise ();
 	}
 
@@ -58,11 +78,10 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		base.Update();
 
-//		if (updateTitle)
-//		{
-//			SetTitle();
-//			updateTitle = false;
-//		}
+		if (flipState > 0)
+		{
+			ProcessFlip();
+		}
 	}
 
 	public override void OnEnable()
@@ -73,14 +92,21 @@ public class UITownWindow : UIPlayerMenuWindow
 	void HandleOnMenuLeftStickMove (InputDevice device)
 	{		
 		if (!pointerTransform.gameObject.activeInHierarchy) return;
-		pointerAngle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value,device.LeftStickY.Value);
-		pointerTransform.rotation = Quaternion.Euler(0f,0f,pointerAngle - 90f);
+		
+		//pointerAngle = Utilities.VectorToAngleInDegrees(player.Input.LeftStickX.Value, player.Input.LeftStickY.Value);
+		pointerTransform.rotation = Quaternion.Euler(0f,0f,PointerAngle - 90f);
 	}
 
 	/// <summary> Return item to inventory if space permits. </summary>
 	public bool Unequip(int slot)
 	{
 		return true;
+	}
+
+	public void RequestTransitionToPanel(int index)
+	{
+		transitionTarget = index;
+		flipState = 1;
 	}
 
 	public override void TransitionToPanel(int index)
@@ -121,6 +147,14 @@ public class UITownWindow : UIPlayerMenuWindow
 		NGUITools.SetActive(temp , state);
 	}
 
+	/// <summary>
+	/// Toggles visibility
+	/// </summary>
+	public void ShowArrow()
+	{
+		ShowArrow(!pointerTransform.gameObject.activeSelf);
+	}
+
 	public void ShowInfo(bool state)
 	{
 		GameObject temp = sharedEle.FindChild("Information Box").gameObject;
@@ -135,6 +169,58 @@ public class UITownWindow : UIPlayerMenuWindow
 	public void SetInfo(string replace)
 	{
 		InfoLabel.text = replace;
+	}
+
+	public void ProcessFlip()
+	{
+		switch (flipState)
+		{
+		case 0:
+			Debug.LogError("flipState = 0. Should never happen.");
+			break;
+		case 1:
+			flipState = 2;
+			spinScript.ElapsedSeconds = 0f;
+			spinScript.enabled = true;
+			break;
+		case 2:
+			if (spinScript.ElapsedSeconds <= 0.25f) return;
+
+			flipState = 3;
+			NGUITools.SetActive(cardBack, true);
+			TransitionToPanel(transitionTarget);
+
+			break;
+		case 3:
+			if (spinScript.ElapsedSeconds <= 0.75f) return;
+			
+			flipState = 4;
+			NGUITools.SetActive(cardBack, false);
+			break;
+		case 4:
+			if (spinScript.ElapsedSeconds <= 0.95f) return;
+			
+			flipState = 5;
+			spinScript.enabled = false;
+			break;
+		case 5:
+			flipState = 0;
+			transform.rotation = Quaternion.Euler(Vector3.zero);
+			break;
+		}
+	}
+	
+	protected override void HandleInputEvents()
+	{
+		// disallow input while flip animation is playing
+		if (flipState > 0) return;
+
+		base.HandleInputEvents();
+	}
+
+	void OnDestroy()
+	{
+		OnMenuLeftStickMove -= HandleOnMenuLeftStickMove;
 	}
 }
 

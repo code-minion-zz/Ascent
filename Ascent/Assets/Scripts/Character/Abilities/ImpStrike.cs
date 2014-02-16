@@ -15,7 +15,7 @@ public class ImpStrike : Action
         animationLength = 1.0f;
         animationSpeed = 1.0f;
         animationTrigger = "Strike";
-        cooldownDurationMax = 2.0f;
+        cooldownFullDuration = 2.0f;
         specialCost = 0;
 
         damageArea = new Circle(owner.transform, 1.0f, new Vector3(0.0f, 0.0f, 0.5f));
@@ -28,10 +28,10 @@ public class ImpStrike : Action
         base.StartAbility();
 
         owner.Motor.StopMotion();
-        owner.Motor.EnableMovementForce(false);
+        owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 
-        prevSpeed = owner.Motor.MovementSpeed;
+        prevSpeed = owner.Motor.MaxSpeed;
         executedDamage = false;
     }
 
@@ -41,14 +41,14 @@ public class ImpStrike : Action
 
         if (timeElapsedSinceStarting >= animationLength * 1.0f)
         {
-            owner.Motor.EnableMovementForce(true);
+            owner.Motor.EnableStandardMovement(true);
             owner.ResetColor();
         }
         else if (timeElapsedSinceStarting >= animationLength * 0.8f)
         {
             owner.Motor.StopMotion();
-            owner.Motor.EnableMovementForce(false);
-            owner.Motor.MovementSpeed = prevSpeed;
+            owner.Motor.EnableStandardMovement(false);
+            owner.Motor.MaxSpeed = prevSpeed;
         }
         else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
         {
@@ -70,14 +70,14 @@ public class ImpStrike : Action
         }
         else if (timeElapsedSinceStarting >= animationLength * 0.25f)
         {
-            owner.Motor.EnableMovementForce(true);
+            owner.Motor.EnableStandardMovement(true);
         }
     }
 
     public override void EndAbility()
     {
         base.EndAbility();
-        owner.Motor.EnableMovementForce(true);
+        owner.Motor.EnableStandardMovement(true);
         owner.ResetColor();
     }
 

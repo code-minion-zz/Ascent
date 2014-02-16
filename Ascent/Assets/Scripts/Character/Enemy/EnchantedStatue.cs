@@ -20,7 +20,7 @@ public class EnchantedStatue : Enemy
     {
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat,this);
 
         // Add abilities
         Action slam = new EnchantedStatueSlam();
@@ -40,15 +40,12 @@ public class EnchantedStatue : Enemy
 
         InitialiseAI();
 
-        canBeDebuffed = false;
-        canBeStunned = false;
-        canBeInterrupted = false;
-        canBeKnockedBack = false;
+		vulnerabilities = EStatus.None;
     }
 
     public void InitialiseAI()
     {
-        motor.MovementSpeed = 1.5f;
+        motor.MaxSpeed = 1.5f;
         AIAgent.Initialise(transform);
 		AIAgent.SteeringAgent.RotationSpeed = 1.5f;
 		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;

@@ -15,7 +15,7 @@ public class EnchantedStatueSlam : Action
 		animationLength = 1.0f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Slam";
-		cooldownDurationMax = 3.0f;
+		cooldownFullDuration = 3.0f;
 		specialCost = 0;
 
 		//damageArea = new Arc(owner.transform, 20.0f, 10.0f, Vector3.back * 3.0f);
@@ -27,7 +27,7 @@ public class EnchantedStatueSlam : Action
 		base.StartAbility();
 
 		owner.Motor.StopMotion();
-		owner.Motor.EnableMovementForce(false);
+		owner.Motor.EnableStandardMovement(false);
 		owner.SetColor(Color.red);
 
 		executedDamage = false;
@@ -39,13 +39,13 @@ public class EnchantedStatueSlam : Action
 
 		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
-			owner.Motor.EnableMovementForce(true);
+			owner.Motor.EnableStandardMovement(true);
 			owner.ResetColor();
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
 		{
 			owner.Motor.StopMotion();
-			owner.Motor.EnableMovementForce(false);
+			owner.Motor.EnableStandardMovement(false);
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		{
@@ -63,7 +63,7 @@ public class EnchantedStatueSlam : Action
 					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
 
 					// Tell the hud manager to spawn text.
-					HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
+					FloorHUDManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
 				}
 
 				executedDamage = true;
@@ -74,7 +74,7 @@ public class EnchantedStatueSlam : Action
 	public override void EndAbility()
 	{
 		base.EndAbility();
-		owner.Motor.EnableMovementForce(true);
+		owner.Motor.EnableStandardMovement(true);
 		owner.ResetColor();
 	}
 

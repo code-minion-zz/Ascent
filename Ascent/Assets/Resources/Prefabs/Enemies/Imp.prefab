@@ -15,7 +15,7 @@ GameObject:
   - 65: {fileID: 6500000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400010}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Imp
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400004}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tilt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,12 +347,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100000}
-  currentSpeed: 5
-  acceleration: 10
-  minSpeed: 5.5
-  maxVelocityChange: 1.5
-  canMove: 1
-  moving: 0
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -14,7 +14,7 @@ public class Imp : Enemy
     {
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
 
         // Add abilities
         Action charge = new ImpStrike();
@@ -31,9 +31,9 @@ public class Imp : Enemy
 
 		AIAgent.SteeringAgent.RotationSpeed = 15.0f;
 		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.25f;
-		motor.MovementSpeed = 3.0f;
-		motor.minSpeed = 0.5f;
-		motor.acceleration = 1.0f;
+		motor.MaxSpeed = 3.0f;
+		motor.MinSpeed = 0.5f;
+		motor.Acceleration = 1.0f;
 
 
         AIBehaviour behaviour = null;
@@ -94,7 +94,7 @@ public class Imp : Enemy
         AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
         AIAgent.SteeringAgent.RotationSpeed = 5.0f;
         AIAgent.SteeringAgent.CloseEnoughRange = .5f;
-        motor.MovementSpeed = 2.0f;
+        motor.MaxSpeed = 2.0f;
     }
 
     public void OnWanderEnd()

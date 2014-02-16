@@ -21,7 +21,7 @@ public class WarriorCharge : Action
     private Vector3 targetPos;
 
    // private CharacterMotor charMotor;
-	private int checkAtFrame = 5;
+	private int checkAtFrame = 3;
 	private int frameCount = 0;
 
     private Circle circle;
@@ -34,7 +34,7 @@ public class WarriorCharge : Action
     {
         base.Initialise(owner);
 
-        cooldownDurationMax = 2.0f;
+        cooldownFullDuration = 2.0f;
         animationTrigger = "Charge";
         specialCost = 5;
 
@@ -61,27 +61,29 @@ public class WarriorCharge : Action
 		Vector3 rayStart = startPos;
 		rayStart.y = 1.0f;
 
+		//// Find the closest character
 		Character closestCharacter = null;
-		enemies = new List<Character>();
-		if (Game.Singleton.InTower)
-		{
-			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
-			{
-				float closestDistance = 1000000.0f;
+		//enemies = new List<Character>();
+		//if (Game.Singleton.InTower)
+		//{
+		//    if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
+		//    {
+		//        float closestDistance = 1000000.0f;
 
-				foreach (Character e in enemies)
-				{
-					float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
+		//        foreach (Character e in enemies)
+		//        {
+		//            float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
 
-					if (distance < closestDistance)
-					{
-						closestDistance = distance;
-						closestCharacter = e;
-					}
-				}
-			}
-		}
+		//            if (distance < closestDistance)
+		//            {
+		//                closestDistance = distance;
+		//                closestCharacter = e;
+		//            }
+		//        }
+		//    }
+		//}
 
+		// Charge to the closest character
 		if (closestCharacter != null)
 		{
 			RaycastHit hitInfo;
@@ -95,10 +97,19 @@ public class WarriorCharge : Action
 		}
 		else
 		{
+			int layerMask = ((1 << 17) | (1 << 18) | (1 << 8));
 			RaycastHit hitInfo;
-			if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
+			//if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
+			//{
+			//    targetPos = hitInfo.point - (owner.transform.forward);
+
+			//    travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
+			//    animationLength = travelTime;
+			//}
+			if (Physics.SphereCast(new Ray(rayStart, owner.transform.forward), 0.05f, out hitInfo, distanceMax, layerMask))
 			{
-				targetPos = hitInfo.point - (owner.transform.forward);
+				//targetPos = hitInfo.point - (owner.transform.forward);
+				targetPos = rayStart + (owner.transform.forward * hitInfo.distance);
 
 				travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
 				animationLength = travelTime;
@@ -116,7 +127,7 @@ public class WarriorCharge : Action
 
 		frameCount = checkAtFrame;
 
-        owner.ApplyInvulnerabilityEffect(animationLength);
+        owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
 
 		enemies = new List<Character>();
 		enemiesFoundLastCount = 0;
@@ -150,13 +161,23 @@ public class WarriorCharge : Action
 
 	private bool DoDamageAlongPath()
 	{
+		return DoDamageCheck();
+	}
+
+	private void DoDamageAtEndOfPath()
+	{
+		DoDamageCheck();
+	}
+
+	private bool DoDamageCheck()
+	{
 		bool collisionsFound = false;
 
 		if (Game.Singleton.InTower)
 		{
 			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
 			{
-				if(enemiesFoundLastCount != enemies.Count)
+				if (enemiesFoundLastCount != enemies.Count)
 				{
 					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
 					{
@@ -164,7 +185,7 @@ public class WarriorCharge : Action
 
 						// Apply damage, knockback and stun to the enemy.
 						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
-						enemies[i].ApplyStunEffect(1.0f);
+						enemies[i].ApplyStatusEffect(new StunnedDebuff(owner, enemies[i], 1.5f));
 
 						// Create a blood splatter effect on the enemy.
 						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
@@ -178,32 +199,6 @@ public class WarriorCharge : Action
 		}
 
 		return collisionsFound;
-	}
-
-	private void DoDamageAtEndOfPath()
-	{
-		if (Game.Singleton.InTower)
-		{
-			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
-			{
-				if (enemiesFoundLastCount != enemies.Count)
-				{
-					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
-					{
-						int damage = owner.DamageFormulaA(0.0f, 1.5f);
-						// Apply damage, knockback and stun to the enemy.
-						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
-						enemies[i].ApplyKnockback(enemies[i].transform.position - owner.transform.position, 100000.0f);
-						enemies[i].ApplyStunEffect(2.0f);
-
-						// Create a blood splatter effect on the enemy.
-						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
-					}
-
-                    enemiesFoundLastCount = enemies.Count;
-				}
-			}
-		}
 	}
 
     public override void EndAbility()

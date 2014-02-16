@@ -12,7 +12,7 @@ public abstract class Action
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
 
-    protected float cooldownDurationMax = 0.0f;
+    protected float cooldownFullDuration = 0.0f;
     private float coolingDownTimeElapsed = 0.0f;
 
     protected float timeElapsedSinceStarting = 0.0f;
@@ -63,6 +63,12 @@ public abstract class Action
         set { coolingDownTimeElapsed = value; }
     }
 
+	public float CooldownFullDuration
+	{
+		get { return cooldownFullDuration; }
+		set { cooldownFullDuration = value; }
+	}
+
     public bool IsOnCooldown
     {
         get { return coolingDownTimeElapsed > 0.0f; }
@@ -100,7 +106,7 @@ public abstract class Action
     public virtual void StartAbility()
     {
         timeElapsedSinceStarting = 0.0f;
-        coolingDownTimeElapsed = cooldownDurationMax;
+        coolingDownTimeElapsed = cooldownFullDuration;
     }
 
     public virtual void StartCast()

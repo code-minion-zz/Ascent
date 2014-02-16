@@ -31,4 +31,15 @@ public class Tower : MonoBehaviour
         currentFloor.InitialiseRandomFloor();
 	}
 
+    protected float experienceGainBonus;
+    public float ExperienceGainBonus
+    {
+        get { return experienceGainBonus; }
+    }
+
+    protected float goldGainBonus;
+    public float GoldGainBonus
+    {
+        get { return goldGainBonus; }
+    }
 }

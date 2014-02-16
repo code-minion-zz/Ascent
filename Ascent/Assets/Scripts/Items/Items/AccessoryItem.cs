@@ -94,14 +94,52 @@ public class AccessoryItem : Item
 		set { durabilityMax = value; }
 	}
 
+    public float ExperienceGainBonus
+    {
+        get 
+        {
+            float experienceBonus = 0.0f;
+            foreach (ItemProperty property in itemProperties)
+            {
+                if (property is ExperienceItemProperty)
+                {
+					experienceBonus = ((ExperienceItemProperty)property).ExperienceGainBonus;
+                }
+            }
+            return experienceBonus; 
+        }
+    }
+
+    public float GoldGainBonus
+    {
+        get
+        {
+            float experienceBonus = 0.0f;
+            foreach (ItemProperty property in itemProperties)
+            {
+                if (property is GoldItemProperty)
+                {
+					experienceBonus = ((GoldItemProperty)property).GoldGainBonus;
+                }
+            }
+            return experienceBonus;
+        }
+    }
+
 	public override string ToString()
 	{
-		return GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
-				"Desc: " + stats.Description + "\n" +
-				"Dura: " + durability + "\\" + durabilityMax + "\n" +
-				"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
-				"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n" +
-				"Prop count: " + itemProperties.Count + "\n";
+		string retVal = "Grade: " +GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
+			"Desc: " + stats.Description + "\n" +
+			"Dura: " + durability + "\\" + durabilityMax + "\n" +
+			"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
+			"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n";
+			//"Prop count: " + itemProperties.Count + "\n";
 
+		foreach (ItemProperty ip in itemProperties)
+		{
+			retVal += ip.ToString() + "\n";
+		}
+
+		return retVal;
 	}
 }

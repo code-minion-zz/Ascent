@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class UITownScreen : UIPlayerMenuScreen 
 {
 	public GameObject WindowPrefab;
-	public GameObject PlayerGrid;
+	//public GameObject PlayerGrid;
 	public delegate void ReadyHandler();
 
 	private const int maxPlayers = 3;

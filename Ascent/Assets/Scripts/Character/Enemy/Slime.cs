@@ -18,7 +18,7 @@ public class Slime : Enemy
     {
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat,this);
 
         // Add abilities
         Action replicate = new SlimeReplicate();
@@ -34,9 +34,9 @@ public class Slime : Enemy
         AIAgent.Initialise(transform);
 
         AIAgent.SteeringAgent.RotationSpeed = 50.0f;
-        motor.MovementSpeed = 2.0f;
-        motor.minSpeed = 0.3f;
-        motor.acceleration = 0.3f;
+        motor.MaxSpeed = 2.0f;
+        motor.MinSpeed = 0.3f;
+        motor.Acceleration = 0.3f;
 
         AIBehaviour behaviour = null;
 
@@ -96,7 +96,7 @@ public class Slime : Enemy
 
                     if (otherCharacter != null)
                     {
-                        if (!IsStunned && !otherCharacter.IsInvulnerable)
+                        if (!IsInState(EStatus.Stun) && !otherCharacter.IsInState(EStatus.Invulnerability))
                         {
                             CollideWithHero(otherCharacter as Hero, other);
                         }

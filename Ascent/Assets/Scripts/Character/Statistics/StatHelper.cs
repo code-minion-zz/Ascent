@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class StatHelper
 {
@@ -32,18 +33,18 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+		List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+		int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
 			int i;
 			for (i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					power += (int)((BaseStatBuff)buffList[i]).Power;
+					power += (int)((PrimaryStatModifierEffect)buffList[i]).Power;
 				}
 			}
 		}
@@ -80,18 +81,18 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
 			int i;
 			for (i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					finesse += (int)((BaseStatBuff)buffList[i]).Finesse;
+					finesse += (int)((PrimaryStatModifierEffect)buffList[i]).Finesse;
 				}
 			}
 		}
@@ -129,18 +130,18 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
 			int i;
 			for (i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					vitality += (int)((BaseStatBuff)buffList[i]).Vitality;
+					vitality += (int)((PrimaryStatModifierEffect)buffList[i]).Vitality;
 				}
 			}
 		}
@@ -177,18 +178,18 @@ public static class StatHelper
 
 		// Add status buff modifiers
 		//character.}
-		BetterList<Buff> buffList = character.BuffList;
+        List<StatusEffect> buffList = character.StatusEffects;
 
-		int buffCount = buffList.size;
+        int buffCount = buffList.Count;
 
 		if (buffCount > 0)
 		{
 			int i;
 			for (i = 0; i < buffCount; ++i)
 			{
-				if (buffList[i] is BaseStatBuff)
+				if (buffList[i] is PrimaryStatModifierEffect)
 				{
-					spirit += (int)((BaseStatBuff)buffList[i]).Spirit;
+					spirit += (int)((PrimaryStatModifierEffect)buffList[i]).Spirit;
 				}
 			}
 		}

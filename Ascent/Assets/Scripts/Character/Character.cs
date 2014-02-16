@@ -40,11 +40,18 @@ public abstract class Character : BaseCharacter
 	public event Damage onDamageTaken;
 	public event Damage onDamageDealt; // Not handled by the character.
 
-	protected BetterList<Buff> buffList = new BetterList<Buff>();
-
+    protected List<StatusEffect> statusEffects = new List<StatusEffect>();
 	protected List<Action> abilities = new List<Action>();
-
+	protected CharacterStats stats;
+	protected bool hitTaken;
 	protected Action activeAbility;
+	protected bool isDead;
+	protected Character lastDamagedBy;
+	protected EStatus vulnerabilities = EStatus.All;
+	protected EStatus status;
+	protected EStatusColour statusColour = EStatusColour.White;
+	protected bool colourHasChanged = false;
+
 	public bool CanInterruptActiveAbility
 	{
 		get 
@@ -57,43 +64,6 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
-	protected CharacterStats stats;
-	
-	protected float stunDuration;
-	protected float stunTimeAccum;
-	protected float invulnerableDuration;
-	protected float invulnerableTimeAccum;
-
-	protected bool canBeStunned = true;
-    public bool CanBeStunned
-    {
-        get { return canBeStunned; }
-        set { canBeStunned = value; }
-    }
-
-	protected bool canBeKnockedBack = true;
-    public bool CanBeKnockedBack
-    {
-        get { return canBeKnockedBack; }
-        set { canBeKnockedBack = value; }
-    }
-
-	protected bool canBeDebuffed = true;
-    public bool CanBeDebuffed
-    {
-        get { return CanBeDebuffed; }
-        set { CanBeDebuffed = value; }
-    }
-
-	protected bool canBeInterrupted = true;
-    public bool CanBeInterrupted
-    {
-        get { return CanBeInterrupted; }
-        set { CanBeInterrupted = value; }
-    }
-
-
-    protected bool hitTaken = false;
     public bool HitTaken
     {
         get { return hitTaken; }
@@ -106,16 +76,6 @@ public abstract class Character : BaseCharacter
             
         }
     }
-    public IEnumerator SetHitTaken()
-    {
-        hitTaken = true;
-        yield return new WaitForSeconds(0.1f);
-        hitTaken = false;
-    } 
-
-	protected bool isDead = false;
-
-	protected Character lastDamagedBy;
 
 	public CharacterStats Stats
 	{
@@ -128,9 +88,9 @@ public abstract class Character : BaseCharacter
 		set { lastDamagedBy = value; }
 	}
 
-	public BetterList<Buff> BuffList
+	public List<StatusEffect> StatusEffects
 	{
-		get { return buffList; }
+		get { return statusEffects; }
 	}
 
 	public List<Action> Abilities
@@ -138,14 +98,46 @@ public abstract class Character : BaseCharacter
 		get { return abilities; }
 	}
 
-	public bool IsStunned
+	public EStatus Vulnerabilities
 	{
-		get { return stunDuration > 0.0f; }
+		get { return vulnerabilities; }
+		set { vulnerabilities = value; }
 	}
 
-	public bool IsInvulnerable
+	public EStatus Status
 	{
-		get { return invulnerableDuration > 0.0f; }
+		get { return status; }
+		set { status = value; }
+	}
+
+	public EStatusColour StatusColour
+	{
+		get { return statusColour; }
+		set 
+		{
+			// If this is a new colour flag it for updating.
+			if ((statusColour & value) != value)
+			{
+				colourHasChanged = true;
+			}
+
+			statusColour = value; 
+		}
+	}	 
+
+	public bool CanMove
+	{
+		get { return !IsInState(EStatus.Stun); }
+	}
+
+	public bool CanAct
+	{
+		get { return !IsInState(EStatus.Stun); }
+	}
+
+	public bool CanAttack
+	{
+		get { return !IsInState(EStatus.Stun); }
 	}
 
 	/// <summary>
@@ -165,6 +157,11 @@ public abstract class Character : BaseCharacter
 	{
 		UpdateActiveAbility();
 
+		if (colourHasChanged)
+		{
+			SetColor(StatusEffectUtility.GetColour(StatusColour));
+		}
+
 		// Update abilities that require cooldown
 		foreach (Action ability in abilities)
 		{
@@ -174,34 +171,19 @@ public abstract class Character : BaseCharacter
 			}
 		}
 
+        // Remove any expired buffs
+        for (int i = statusEffects.Count - 1; i > -1; i--)
+        {
+            if (statusEffects[i].ToBeRemoved)
+            {
+                statusEffects.RemoveAt(i);
+            }
+        }
+
 		// Process all the buffs
-		foreach (Buff b in buffList)
+		foreach (StatusEffect b in statusEffects)
 		{
 			b.Process();
-		}
-
-		if (invulnerableDuration > 0.0f)
-		{
-			invulnerableDuration -= Time.deltaTime;
-
-			if (invulnerableDuration < 0.0f)
-			{
-				invulnerableDuration = 0.0f;
-				SetColor(originalColour);
-			}
-		}
-
-		if (stunDuration > 0.0f)
-		{
-			stunDuration -= Time.deltaTime;
-
-			GetComponentInChildren<CharacterMotor>().StopMotion();
-
-			if (stunDuration < 0.0f)
-			{
-				stunDuration = 0.0f;
-				SetColor(originalColour);
-			}
 		}
 	}
 
@@ -237,6 +219,16 @@ public abstract class Character : BaseCharacter
         if (canUse)
 		{
 			Action ability = abilities[abilityID];
+
+			if (ability.IsOnCooldown)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
+			}
+			else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
+			}
+
 			// Make sure the cooldown is off otherwise we cannot use the ability
 			if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
 			{
@@ -253,7 +245,7 @@ public abstract class Character : BaseCharacter
 				stats.CurrentSpecial -= ability.SpecialCost;
 
 				motor.StopMotion();
-				motor.canMove = false;
+				motor.IsHaltingMovementToPerformAction = false;
 			}
 		}
 	}
@@ -274,10 +266,19 @@ public abstract class Character : BaseCharacter
         return canUse;
     }
 
-    public virtual void UseCastAbility(int abilityID)
+    public virtual bool UseCastAbility(int abilityID)
     {
         Action ability = abilities[abilityID];
         // Make sure the cooldown is off otherwise we cannot use the ability
+
+		if (ability.IsOnCooldown)
+		{
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
+		}
+		else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+		{
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
+		}
 
         if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
         {
@@ -293,8 +294,12 @@ public abstract class Character : BaseCharacter
             //activeAbility = ability;
 
             motor.StopMotion();
-            motor.canMove = false;
+            motor.IsHaltingMovementToPerformAction = false;
+
+			return true;
         }
+
+		return false;
     }
 
 	public Action GetAbility(string ability)
@@ -319,7 +324,7 @@ public abstract class Character : BaseCharacter
 			activeAbility.EndAbility();
 			activeAbility = null;
 
-			motor.canMove = true;
+			motor.IsHaltingMovementToPerformAction = true;
 		}
 	}
 
@@ -351,11 +356,11 @@ public abstract class Character : BaseCharacter
 
 		if (this is Hero)
 		{
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
 		}
 		else
 		{
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
 		}
 
 		// Tell this character how much damage it has done.
@@ -370,9 +375,17 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
+	public IEnumerator SetHitTaken()
+	{
+		hitTaken = true;
+		yield return new WaitForSeconds(0.1f);
+		hitTaken = false;
+	} 
+
+
 	public virtual void ApplyKnockback(Vector3 direction, float magnitude)
 	{
-		if (canBeKnockedBack)
+		if (IsVulnerableTo(EStatus.Knock))
 		{
 			// Taking damage may or may not interrupt the current ability
 			direction = new Vector3(direction.x, 0.0f, direction.z);
@@ -384,27 +397,10 @@ public abstract class Character : BaseCharacter
 
 	public virtual void ApplySpellEffect()
 	{
-		if (canBeDebuffed)
+		if (IsVulnerableTo(EStatus.All))
 		{
 			// Taking damage may or may not interrupt the current ability
 		}
-	}
-
-	public virtual void ApplyStunEffect(float duration)
-	{
-		if (canBeStunned)
-		{
-			stunDuration = duration;
-			SetColor(Color.yellow);
-
-			HudManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Stunned!", Color.yellow);
-		}
-	}
-
-	public virtual void ApplyInvulnerabilityEffect(float duration)
-	{
-		invulnerableDuration = duration;
-		SetColor(Color.blue);
 	}
 
 	/// <summary>
@@ -481,20 +477,60 @@ public abstract class Character : BaseCharacter
 
 			if (isDead)
 			{
-				Debug.Log("a");
 				Respawn(transform.position);
 			}
 		}
     }
 
-	public virtual void AddBuff(Buff buff)
+	public bool IsVulnerableTo(EStatus statusEffect)
 	{
-		buffList.Add(buff);
+		return (vulnerabilities & statusEffect) == statusEffect;
 	}
 
-	public virtual void RemoveBuff(Buff buff)
+	public bool IsInState(EStatus statusEffect)
 	{
-		buffList.Remove(buff);
+		return (status & statusEffect) == statusEffect;
+	}
+
+	public virtual void ApplyStatusEffect(StatusEffect effect)
+	{
+		bool overridePrevious = effect.OverridePrevious;
+		bool overrideSuccesful = false;
+		
+		if (overridePrevious)
+		{
+			// Check if the effect already exists
+			for (int i = 0; i < statusEffects.Count; ++i)
+			{
+				// Override the existing effect if the new one is more powerful
+				// TODO: write comparison function in base class and have derived classes override it.
+				if (statusEffects[i].Type == effect.Type)
+				{
+					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > effect.FullDuration;
+					if (isDurationLonger)
+					{
+						statusEffects[i] = effect;
+					}
+					else
+					{
+						// Extend the life of the existing buff
+						statusEffects[i].TimeElapsed -= effect.FullDuration;
+					}
+
+					overrideSuccesful = true;
+				}
+			}
+		}
+
+		if (!overrideSuccesful)
+		{
+			statusEffects.Add(effect);
+		}
+	}
+
+    public virtual void RemoveStatusEffect(StatusEffect effect)
+	{
+        effect.ToBeRemoved = true;
 	}
 
 	public virtual int DamageFormulaA(float addFixedDamage, float addMultiplier)
@@ -510,6 +546,19 @@ public abstract class Character : BaseCharacter
 		}
 
 		return (int)damage;
+	}
+
+	public virtual void SetColor(EStatusColour colour)
+	{
+		//Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		//foreach (Renderer render in renderers)
+		//{
+		//    render.material.color = color;
+		//}
+	}
+
+	public override void ResetColor()
+	{
 	}
 
 #if UNITY_EDITOR

@@ -12,7 +12,7 @@ public class Rat : Enemy
     {
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
 
 		// Add abilities
 		Action tackle = new RatTackle();
@@ -28,9 +28,9 @@ public class Rat : Enemy
 
        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
 	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.25f;
-       motor.MovementSpeed = 3.0f;
-       motor.minSpeed = 0.5f;
-       motor.acceleration = 1.0f;
+       motor.MaxSpeed = 3.0f;
+       motor.MinSpeed = 0.5f;
+       motor.Acceleration = 1.0f;
 
 	   AIBehaviour behaviour = null;
 	   AITrigger trigger = null;
@@ -97,7 +97,7 @@ public class Rat : Enemy
 	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   OnWanderEnd();
 
-	   motor.MovementSpeed = 3.0f;
+	   motor.MaxSpeed = 3.0f;
    }
 
    public void OnAttacked()
@@ -105,7 +105,7 @@ public class Rat : Enemy
 	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   AIAgent.TargetCharacter = lastDamagedBy;
-	   motor.MovementSpeed = 5.0f;
+	   motor.MaxSpeed = 5.0f;
    }
 
    public void OnCanUseTackle()
@@ -120,6 +120,6 @@ public class Rat : Enemy
        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
        AIAgent.SteeringAgent.RemoveTarget();
        OnWanderEnd();
-       motor.MovementSpeed = 3.0f;
+       motor.MaxSpeed = 3.0f;
    }
 }

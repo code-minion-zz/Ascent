@@ -7,9 +7,6 @@ public class UITown_MainPanel : UITown_Panel
     const float BACKPACK = 270f;
     const float QUIT = 90f;
 
-
-	bool justInitialized = false;
-
 	public override void Initialise()
 	{
 		base.Initialise();
@@ -30,6 +27,7 @@ public class UITown_MainPanel : UITown_Panel
 
 		//justInitialized = true;
 		initialised = true;
+		updatePointer = true;
 	}
 
 
@@ -45,11 +43,18 @@ public class UITown_MainPanel : UITown_Panel
 
     public void Update()
     {
-		if (justInitialized)
+		if (updatePointer)
 		{
-			HighlightButton();
+			if (HighlightButton())
+			{
+				SetInfoLabel();
+			}
+			updatePointer = false;
+		}
+
+		if (initialised)
+		{
 			SetInfoLabel();
-			justInitialized = false;
 		}
 	}
 	
@@ -80,13 +85,13 @@ public class UITown_MainPanel : UITown_Panel
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
 		if (!gameObject.activeInHierarchy) return;
-		HighlightButton();
-		SetInfoLabel();
+		//HighlightButton();
+		updatePointer = true;
 	}
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		ButtonAction();
+		if (currentSelection.gameObject.activeInHierarchy)	ButtonAction();
 	}
 	
 	public override void OnMenuCancel(InputDevice device)
@@ -126,42 +131,38 @@ public class UITown_MainPanel : UITown_Panel
 		switch (currentHighlightedButton)
 		{
 		case 0 : // tower
-			parent.TransitionToPanel(2);
+			(parent as UITownWindow).RequestTransitionToPanel(2);
 			break;
 		case 1 : // quit
 			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
 			break;
 		case 2 : // backpack
-			parent.TransitionToPanel(1);
+			(parent as UITownWindow).RequestTransitionToPanel(1);
+			break;
+		default : // nothing meaningful is highlighted
 			break;
 		}
 	}
 
 	void SetInfoLabel()
 	{
-		UILabel InfoLabel = (parent as UITownWindow).InfoLabel;
-		if (InfoLabel != null)
+		UITownWindow townWindow = (parent as UITownWindow);
+
+		switch (currentHighlightedButton)
 		{
-			//Debug.Log("InfoLabel not null");
-
-			if (currentHighlightedButton == -1)
-			{
-				Debug.LogError("UITownWindow: Uninitialized Panel Error");
-			}
-
-			switch (currentHighlightedButton)
-			{
-			case 0: // tower
-				InfoLabel.text = "Enter the Tower";
-				break;
-			case 1: // quit
-				InfoLabel.text = "Quit to Main Menu";
-				break;
-			case 2: // backpack
-				InfoLabel.text = "Manage your Equipment";
-				break;
-			}
-
+		case 0: // tower
+			townWindow.SetInfo("Enter the Tower");
+			break;
+		case 1: // quit
+			townWindow.SetInfo("Quit to Main Menu");
+			break;
+		case 2: // backpack
+		townWindow.SetInfo("Manage your Equipment");
+			break;
+		default:
+			townWindow.SetInfo("");
+			break;
 		}
 	}
+
 }

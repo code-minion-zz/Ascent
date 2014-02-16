@@ -16,7 +16,7 @@ public class RatTackle : Action
 		animationLength = 0.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
-		cooldownDurationMax = 2.0f;
+		cooldownFullDuration = 2.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 0.25f));
@@ -27,11 +27,11 @@ public class RatTackle : Action
 		base.StartAbility();
 
 		//owner.Motor.StopMotion();
-		owner.Motor.EnableMovementForce(false);
+		owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 
-		prevSpeed = owner.Motor.MovementSpeed;
-        prevAccel = owner.Motor.acceleration;
+		prevSpeed = owner.Motor.MaxSpeed;
+        prevAccel = owner.Motor.Acceleration;
 
 		executedDamage = false;
 	}
@@ -42,15 +42,15 @@ public class RatTackle : Action
 
 		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
-			owner.Motor.EnableMovementForce(true);
+			owner.Motor.EnableStandardMovement(true);
 			owner.ResetColor();
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
 		{
 			owner.Motor.StopMotion();
-			owner.Motor.EnableMovementForce(false);
-			owner.Motor.MovementSpeed = prevSpeed;
-            owner.Motor.acceleration = prevAccel;
+			owner.Motor.EnableStandardMovement(false);
+			owner.Motor.MaxSpeed = prevSpeed;
+            owner.Motor.Acceleration = prevAccel;
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		{
@@ -73,16 +73,16 @@ public class RatTackle : Action
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.25f)
 		{
-			owner.Motor.EnableMovementForce(true);
-			owner.Motor.MovementSpeed = 10.0f;
-            owner.Motor.acceleration = 10.0f;
+			owner.Motor.EnableStandardMovement(true);
+			owner.Motor.MaxSpeed = 10.0f;
+            owner.Motor.Acceleration = 10.0f;
 		}
     }
 
     public override void EndAbility()
     {
         base.EndAbility();
-        owner.Motor.EnableMovementForce(true);
+        owner.Motor.EnableStandardMovement(true);
         owner.ResetColor();
     }
 

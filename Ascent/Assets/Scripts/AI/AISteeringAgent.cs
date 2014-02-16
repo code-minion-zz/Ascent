@@ -103,7 +103,7 @@ public class AISteeringAgent
         {
             if (targetCharacter != null)
             {
-				if (motor.UsingMovementForce)
+				if (motor.IsUsingMovementForce)
 				{
                     if (canRotate)
                     {
@@ -138,7 +138,7 @@ public class AISteeringAgent
             }
             else
             {
-				if (motor.UsingMovementForce)
+				if (motor.IsUsingMovementForce)
 				{
 					//motor.transform.LookAt(targetPos);
                     motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);

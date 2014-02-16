@@ -10,7 +10,7 @@ public class WarriorWarCry : Action
         animationLength = 1.333f;
         animationSpeed = 1.5f;
         animationTrigger = "WarCry";
-        cooldownDurationMax = 10.0f;
+        cooldownFullDuration = 10.0f;
         specialCost = 10;
 
 		Validate();
@@ -21,7 +21,21 @@ public class WarriorWarCry : Action
         base.StartAbility();
 
         PDefenceBuff buff = new PDefenceBuff();
-        buff.ApplyBuff(owner, owner, 15.0f);
+		buff.ApplyStatusEffect(owner, owner, StatusEffect.EApplyMethod.Percentange, 0.5f, 15.0f);
+
+		SpeedBuff buff2 = new SpeedBuff();
+		buff2.ApplyStatusEffect(owner, owner, StatusEffect.EApplyMethod.Fixed, 5.0f, 15.0f);
+
+		//owner.ApplyStatusEffect(new SleepingDebuff(owner, owner, 5.0f));
+
+		//SpecialBuff buff = new SpecialBuff();
+		//buff.ApplyStatusEffect(owner, owner, SecondaryStatBuff.EBuffType.Fixed, 5.0f, 15.0f);
+
+        //HealthRegenBuff buff = new HealthRegenBuff();
+        //buff.ApplyStatusEffect(owner, owner, StatusEffect.EBuffType.Fixed, 5, 10, 10.0f);
+
+		//AccuracyBuff buff = new AccuracyBuff();
+		//buff.ApplyStatusEffect(owner, owner, SecondaryStatModifierEffect.EApplyMethod.Percentange, 0.5f, 15.0f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
 	}

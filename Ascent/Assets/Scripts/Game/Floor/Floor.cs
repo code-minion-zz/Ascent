@@ -78,8 +78,8 @@ public class Floor : MonoBehaviour
         InitialiseCamera();
 
         // Create HUD
-        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup")) as GameObject;
-        hudManagerGO.GetComponent<HudManager>().Initialise();
+        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
+        hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
 
         Initialise();
     }
@@ -89,8 +89,8 @@ public class Floor : MonoBehaviour
 		InitialiseCamera();
 
         // Create HUD
-        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/HUD_backup")) as GameObject;
-        hudManagerGO.GetComponent<HudManager>().Initialise();
+        GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
+        hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
 
 		FloorGeneration floorGenerator = new FloorGeneration();
         floorGenerator.dungeonLevel = 1;
@@ -275,7 +275,8 @@ public class Floor : MonoBehaviour
         foreach (Player player in players)
         {
             Hero hero = player.Hero.GetComponent<Hero>();
-			hero.FloorStatistics.ExperienceGained += (int)enemy.EnemyStats.ExperienceBounty;
+            float expGain = enemy.EnemyStats.ExperienceBounty * hero.HeroStats.ExperienceGainBonus;
+            hero.FloorStatistics.ExperienceGained += (int)expGain;
         }
 
 		if(enemy == floorBoss)
@@ -395,6 +396,7 @@ public class Floor : MonoBehaviour
 		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
+			p.Hero.StopAbility();
 			p.Hero.Motor.StopMotion();
 			p.Hero.HeroController.enabled = false;
 		}

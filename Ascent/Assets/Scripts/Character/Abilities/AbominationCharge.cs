@@ -31,7 +31,7 @@ public class AbominationCharge : Action
     {
         base.Initialise(owner);
 
-        cooldownDurationMax = 5.0f;
+        cooldownFullDuration = 5.0f;
         animationTrigger = "Charge";
         specialCost = 0;
 
@@ -70,7 +70,7 @@ public class AbominationCharge : Action
 
 		targetPos.y = startPos.y;
 
-        owner.ApplyInvulnerabilityEffect(animationLength);
+		owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
     }
 
     public override void UpdateAbility()
@@ -97,7 +97,7 @@ public class AbominationCharge : Action
                     // Apply damage, knockback and stun to the enemy.
                     e.ApplyDamage(owner.DamageFormulaA(5, 1.0f), Character.EDamageType.Physical, owner);
                     e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
-                    e.ApplyStunEffect(2.0f);
+					e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.5f));
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);
@@ -113,9 +113,7 @@ public class AbominationCharge : Action
             }
             if (hitWall)
             {
-                owner.CanBeStunned = true;
-                owner.ApplyStunEffect(2.5f);
-                owner.CanBeStunned = false;
+				owner.ApplyStatusEffect(new StunnedDebuff(owner, owner, 2.5f));
             }
 
             owner.StopAbility();

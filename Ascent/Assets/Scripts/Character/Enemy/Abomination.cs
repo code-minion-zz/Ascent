@@ -18,7 +18,7 @@ public class Abomination : Enemy
     {
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination);
+		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination,this);
 
         // Add abilities
         Action strike = new AbominationStrike();
@@ -38,15 +38,12 @@ public class Abomination : Enemy
 
         InitialiseAI();
 
-        canBeDebuffed = false;
-        canBeStunned = false;
-        canBeInterrupted = false;
-        canBeKnockedBack = false;
+		vulnerabilities = EStatus.None;
     }
 
     public void InitialiseAI()
     {
-        motor.MovementSpeed = 1.5f;
+        motor.MaxSpeed = 1.5f;
         AIAgent.Initialise(transform);
         AIAgent.SteeringAgent.RotationSpeed = 2.5f;
 

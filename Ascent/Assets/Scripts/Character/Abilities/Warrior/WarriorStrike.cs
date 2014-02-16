@@ -14,15 +14,15 @@ public class WarriorStrike : Action
 
 	private Warrior.ECombatAnimation firstStrikeAnim = Warrior.ECombatAnimation.Strike1;
 	private Warrior.ECombatAnimation curStrikeAnim = Warrior.ECombatAnimation.Strike1;
-	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike2;
+	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike3;
 
 	public override void Initialise(Character owner)
     {
 		base.Initialise(owner);
 
-        animationSpeed = 1.5f;
+        animationSpeed = 1.75f;
         animationLength = 1.067f;
-        cooldownDurationMax = 0.0f;
+        cooldownFullDuration = 0.0f;
 		animationTrigger = "Strike";
 		specialCost = 0;
 
@@ -55,7 +55,7 @@ public class WarriorStrike : Action
 
 		if (!performed)
 		{
-			if (timeElapsedSinceStarting >= animationLength * 0.7f)
+			if (timeElapsedSinceStarting >= animationLength * 0.65f)
 			{
 				List<Character> enemies = new List<Character>();
 
@@ -73,7 +73,7 @@ public class WarriorStrike : Action
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 
-                            owner.Stats.CurrentSpecial += 1;
+                            owner.Stats.CurrentSpecial += (int)((Hero)owner).HeroStats.SpecialPerStrike;
 						}
 					}
 				}
@@ -81,7 +81,7 @@ public class WarriorStrike : Action
 				performed = true;
 			}
 		}
-		else if (timeElapsedSinceStarting >= animationLength * 0.85f)
+		else if (timeElapsedSinceStarting >= animationLength * 0.65f)
         {
             CanBeInterrupted = true;
         }

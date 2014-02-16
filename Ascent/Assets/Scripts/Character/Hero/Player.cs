@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private Hero heroScript;
     private InputDevice input;
 
-	public UIPlayerMenuPanel activePlayerPanel;
+	private UIPlayerMenuPanel activePlayerPanel;
 	public UIPlayerMenuPanel ActivePlayerPanel
 	{
 		get { return activePlayerPanel; }
