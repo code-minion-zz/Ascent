@@ -302,8 +302,27 @@ public class HeroStats : CharacterStats
 
 	public float AddAccessoriesProperties(float statValue, EStats statType)
 	{
-		// TODO: Parse through accessory properties to look for stat changing ones.
-		// TODO: Add the stat changing ones to the value.
+		Backpack backPack = hero.Backpack;
+        int itemCount = backPack.AccessoryItems.Length;
+
+		foreach (AccessoryItem item in backPack.AccessoryItems)
+		{
+			if (item == null)
+			{
+				continue;
+			}
+
+			foreach(ItemProperty property in item.ItemProperties)
+			{
+				if (property is SecondaryStatItemProperty)
+				{
+					if (((SecondaryStatItemProperty)property).StatType == statType)
+					{
+						statValue += ((SecondaryStatItemProperty)property).BuffValue;
+					}
+				}
+			}
+		}
 
 		return statValue;
 	}

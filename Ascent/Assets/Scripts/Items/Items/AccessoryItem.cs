@@ -103,7 +103,7 @@ public class AccessoryItem : Item
             {
                 if (property is ExperienceItemProperty)
                 {
-                    experienceBonus = ((ExperienceItemProperty)property).value;
+					experienceBonus = ((ExperienceItemProperty)property).ExperienceGainBonus;
                 }
             }
             return experienceBonus; 
@@ -119,7 +119,7 @@ public class AccessoryItem : Item
             {
                 if (property is GoldItemProperty)
                 {
-                    experienceBonus = ((GoldItemProperty)property).value;
+					experienceBonus = ((GoldItemProperty)property).GoldGainBonus;
                 }
             }
             return experienceBonus;
