@@ -4,23 +4,6 @@
 using UnityEngine;
 using System.Collections;
 
-[System.Flags]
-public enum EStatus 
-{
-	None = 0x00000,
-	Stun = 0x00001,
-	Knock = 0x00002,
-	Interrupt = 0x00004,
-	Frozen = 0x00008,
-	Shock = 0x00010,
-	Silence = 0x00020,
-	Sleep = 0x00040,
-	Poison = 0x00080,
-	Invulnerability = 0x00100,
-
-	All = 0xFFFFFFF,
-}
-
 public class StatusEffect 
 {
     public enum EApplyMethod
@@ -53,7 +36,15 @@ public class StatusEffect
     public float TimeElapsed
     {
         get { return timeElapsed; }
-        set { timeElapsed = value; }
+        set 
+		{
+			timeElapsed = value;
+
+			if (timeElapsed < 0.0f)
+			{
+				timeElapsed = 0.0f;
+			}
+		}
     }
 
     protected float duration = 0.0f;
@@ -69,6 +60,13 @@ public class StatusEffect
         get { return name; }
         set { name = value; }
     }
+
+	protected bool overridePrevious;
+	public bool OverridePrevious
+	{
+		get { return overridePrevious; }
+		set { overridePrevious = value; }
+	}
 
     // The source of the buff
     protected Character caster;
@@ -115,6 +113,13 @@ public class StatusEffect
             }
         }
     }
+
+	
+	protected void ProcessImmuneEffect()
+	{
+		FloorHUDManager.Singleton.TextDriver.SpawnDamageText(target.gameObject, "Immune", Color.white);
+		RemoveEffect();
+	}
 
     protected virtual void ApplyStatusEffect(Character caster, Character target, float duration)
     {

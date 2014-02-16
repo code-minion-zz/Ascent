@@ -9,6 +9,7 @@ public class PlayerHUD : MonoBehaviour
 	public StatBar hpBar;
 	public StatBar spBar;
     public UILabel[] abilityLabels = new UILabel[maxAbilities];
+	public UISprite[] abilityIcons = new UISprite[maxAbilities];
     public UILabel[] itemLabels = new UILabel[maxItems];
     public GameObject statusEffectPrefab;
     public UIGrid statusEffectGrid;
@@ -42,28 +43,45 @@ public class PlayerHUD : MonoBehaviour
         List<Action> abilities = owner.Abilities;
 
 		int abilityID = 0;
-		for (int i = 0; i < abilityLabels.Length; ++i )
+		for (int i = 0; i < abilityIcons.Length; ++i)
 		{
 			++abilityID;
 
 			if (abilities[abilityID] != null)
 			{
-				abilityLabels[i].text = abilities[abilityID].AnimationTrigger + ". CD: " + Math.Round( abilities[abilityID].RemainingCooldown, 2);
-
-				if (abilities[abilityID].RemainingCooldown <= 0.0f)
-				{
-					abilityLabels[i].color = Color.green;
-				}
-				else
-				{
-					abilityLabels[i].color = Color.red;
-				}
+				Color color = abilityIcons[i].color;
+				color.a = 1.0f - (abilities[abilityID].RemainingCooldown / abilities[abilityID].CooldownFullDuration);
+				abilityIcons[i].color = color;
 			}
 			else
 			{
-				abilityLabels[i].text = "NoAbility";
+				abilityIcons[i].gameObject.SetActive(false);
 			}
 		}
+
+		//int abilityID = 0;
+		//for (int i = 0; i < abilityLabels.Length; ++i )
+		//{
+		//    ++abilityID;
+
+		//    if (abilities[abilityID] != null)
+		//    {
+		//        abilityLabels[i].text = abilities[abilityID].AnimationTrigger + ". CD: " + Math.Round( abilities[abilityID].RemainingCooldown, 2);
+
+		//        if (abilities[abilityID].RemainingCooldown <= 0.0f)
+		//        {
+		//            abilityLabels[i].color = Color.green;
+		//        }
+		//        else
+		//        {
+		//            abilityLabels[i].color = Color.red;
+		//        }
+		//    }
+		//    else
+		//    {
+		//        abilityLabels[i].text = "NoAbility";
+		//    }
+		//}
 
         //// Do Items
         //ConsumableItem[] consumables = owner.Backpack.ConsumableItems;

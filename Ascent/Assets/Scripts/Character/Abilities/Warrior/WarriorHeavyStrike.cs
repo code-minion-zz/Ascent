@@ -18,7 +18,7 @@ public class WarriorHeavyStrike : Action
     {
         animationSpeed = 1.15f;
         animationLength = 1.233f;
-        cooldownDurationMax = 1.0f;
+        cooldownFullDuration = 1.0f;
         timeElapsedSinceStarting = 0.0f;
         animationTrigger = "HeavyStrike";
         specialCost = 2;

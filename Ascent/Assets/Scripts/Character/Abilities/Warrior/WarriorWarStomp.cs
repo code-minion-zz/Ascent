@@ -23,7 +23,7 @@ public class WarriorWarStomp : Action
         animationLength = 1.667f;
         animationSpeed = 1.5f;
         animationTrigger = "WarStomp";
-        cooldownDurationMax = 2.0f;
+        cooldownFullDuration = 2.0f;
         specialCost = 5;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;

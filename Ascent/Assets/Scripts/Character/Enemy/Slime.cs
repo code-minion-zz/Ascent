@@ -34,9 +34,9 @@ public class Slime : Enemy
         AIAgent.Initialise(transform);
 
         AIAgent.SteeringAgent.RotationSpeed = 50.0f;
-        motor.MovementSpeed = 2.0f;
-        motor.minSpeed = 0.3f;
-        motor.acceleration = 0.3f;
+        motor.MaxSpeed = 2.0f;
+        motor.MinSpeed = 0.3f;
+        motor.Acceleration = 0.3f;
 
         AIBehaviour behaviour = null;
 

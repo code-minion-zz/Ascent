@@ -23,7 +23,7 @@ public class AbominationStomp : Action
         animationLength = 1.2f;
         animationSpeed = 2.0f;
         animationTrigger = "Stomp";
-        cooldownDurationMax = 3.0f;
+        cooldownFullDuration = 3.0f;
         specialCost = 0;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
@@ -44,7 +44,7 @@ public class AbominationStomp : Action
         performed = false;
 
         owner.Motor.StopMotion();
-        owner.Motor.EnableMovementForce(false);
+        owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
     }
 
@@ -88,7 +88,7 @@ public class AbominationStomp : Action
     {
         base.EndAbility();
 
-        owner.Motor.EnableMovementForce(true);
+        owner.Motor.EnableStandardMovement(true);
         owner.ResetColor();
     }
 

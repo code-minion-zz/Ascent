@@ -9,74 +9,107 @@ public class CharacterMotor : MonoBehaviour
 	public GameObject actor;
 
 	private Vector3 movementForce;
-
-	public float currentSpeed = 0.0f;
-	public float acceleration = 1.0f;
-	public float minSpeed = 5.5f;
-
-	protected float originalSpeed = 6.0f;
-	protected float movementSpeed = 6.0f;
-
-	protected float buffBonusSpeed;
-	protected float maxVelocityChange = 5.0f;
-	protected bool canMove = true;
-
-
-	private float knockbackMag;
-	private float knockbackDecel = 0.65f;
-
 	private Vector3 targetVelocity;
 	private Vector3 knockbackDirection;
 
-	private bool usingMovementForce = true;
+	private float currentSpeed = 0.0f;
+	private float originalSpeed = 6.0f;
+	private float buffBonusSpeed;
 
-	// Grid Movement
-	public bool MovingAlongGrid;
-	float offset = 1.0f;
-	float moveTime = 0.5f;
-	float timeAccum;
-	Vector3 startPos;
-	Vector3 targetPos;
+	private float maxSpeed = 6.0f;
+	private float minSpeed = 5.5f;
+	private float acceleration = 1.0f;
+	private float maxVelocityChange = 5.0f;
+	
+	private float knockbackMag;
+	private float knockbackDecel = 0.65f;
 
-	public float MovementSpeed
-	{
-		get { return movementSpeed; }
-		set { movementSpeed = value; }
-	}
+	private bool isActionHaltingMovement = true;
+	private bool usingStandardMovement = true;
 
+	private bool isMovingAlongGrid;
+	private const float gridUnitOffset = 1.0f;
+	private const float timeToMoveAlongGrid = 0.5f;
+	private float gridMovementTimeAccum;
+	private Vector3 gridStartPos;
+	private Vector3 gridTargetPos;
+
+	/// <summary>
+	/// Speed without any buffs applied
+	/// </summary>
 	public float OriginalSpeed
 	{
 		get { return originalSpeed; }
 		set { originalSpeed = value; }
 	}
 
+	/// <summary>
+	/// Speed with buffs applied
+	/// </summary>
 	public float BuffBonusSpeed
 	{
 		get { return buffBonusSpeed; }
 		set { buffBonusSpeed = value; }
 	}
 
+	/// <summary>
+	/// Maximum speed increase per frame
+	/// </summary>
 	public float MaxVelocityChange
 	{
 		get { return maxVelocityChange; }
 		set { maxVelocityChange = value; }
 	}
 
+	/// <summary>
+	/// Rate of speed gain
+	/// </summary>
+	public float Acceleration
+	{
+		get { return acceleration; }
+		set { acceleration = value; }
+	}
+
+	/// <summary>
+	/// Max speed threshold
+	/// </summary>
+	public float MaxSpeed
+	{
+		get { return maxSpeed; }
+		set { maxSpeed = value; }
+	}
+
+	/// <summary>
+	/// Minimum amount of speed threshold.
+	/// </summary>
+	public float MinSpeed
+	{
+		get { return minSpeed; }
+		set { minSpeed = value; }
+	}
+
 	public bool IsHaltingMovementToPerformAction
 	{
-		get { return canMove; }
-		set { canMove = value; }
+		get { return isActionHaltingMovement; }
+		set { isActionHaltingMovement = value; }
 	}
 
 	public bool IsUsingMovementForce
 	{
-		get { return usingMovementForce; }
+		get { return usingStandardMovement; }
 	}
 
     public Vector3 TargetVelocity
     {
         get { return targetVelocity; }
     }
+
+	public bool IsMovingAlongGrid
+	{
+		get { return isMovingAlongGrid; }
+		set { isMovingAlongGrid = value; }
+	}
+
 	
 	public virtual void Initialise()
 	{
@@ -88,7 +121,7 @@ public class CharacterMotor : MonoBehaviour
 
 	public virtual void FixedUpdate()
 	{
-		if (MovingAlongGrid)
+		if (IsMovingAlongGrid)
 		{
 			ProcessGridMovement();
 		}
@@ -98,73 +131,40 @@ public class CharacterMotor : MonoBehaviour
 		}
 	}
 
-	public void ProcessGridMovement()
-	{
-		// TODO: Do a check in HeroController to stop prevent this movement happening.
-		// Grid movement uses Lerp. This is dangerous because it can go through other objects.
-		timeAccum += Time.deltaTime;
-		if (timeAccum > moveTime)
-		{
-			timeAccum = 1.0f;
-			MovingAlongGrid = false;
-		}
-
-		transform.position = Vector3.Lerp(startPos, targetPos, timeAccum / moveTime);
-	}
-
-	public void ProcessMovement()
+	protected void ProcessMovement()
 	{
 		// Reset the targets
 		targetVelocity = Vector3.zero;
-		Vector3 knockbackVel = Vector3.zero;
 		int forces = 0;
 
-		
-		if (knockbackMag > 0.0f)
+		// Calculate knockback velocity
+		Vector3 knockbackVel = ProcessKnockback();
+		//if (knockbackVel != Vector3.zero)
+		//{
+		//    targetVelocity += knockbackVel;
+		//    ++forces;
+		//}
+
+		// movementForce is fed into the Motor based on user inputs or the SteeringAI
+		Vector3 standardMovement = ProcessStandardMovement(); // Also works out current speed
+		if (standardMovement != Vector3.zero)
 		{
-			//float knockbackWeight = 1000000.0f;
-			//targetVelocity += (knockbackDirection * knockbackMag) * knockbackWeight;
-			//++forces;
-
-			knockbackMag -= knockbackMag * knockbackDecel;
-
-			knockbackVel = (knockbackDirection * knockbackMag);
-
-			if (knockbackMag < 0.01f)
-			{
-				knockbackMag = 0.0f;
-			}
-		}
-
-		if (movementForce != Vector3.zero && usingMovementForce)
-		{
-			// Add to forces
-			targetVelocity += new Vector3(movementForce.x, 0.0f, movementForce.z);
+			targetVelocity += standardMovement;
 			++forces;
-
-			float speed = Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z) ? Mathf.Abs(movementForce.x) : Mathf.Abs(movementForce.z);
-			float maxAccel = speed;
-
-			float buffedSpeed = movementSpeed + buffBonusSpeed;
-
-			currentSpeed += (speed * buffedSpeed) * acceleration * Time.deltaTime;
-			currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxAccel * buffedSpeed);
-		}
-		else if (movementForce == Vector3.zero)
-		{
-			currentSpeed = 0.0f;
 		}
 
+		// Combine the forces if any
 		if (forces > 0)
 		{
 			targetVelocity /= (float)forces;
-
 			targetVelocity = new Vector3(targetVelocity.x, 0.0f, targetVelocity.z);
 		}
 
+		// Apply speed to the velocity
+		// Apply the knockback separately
 		targetVelocity = (targetVelocity * currentSpeed) + knockbackVel;
 
-		// Apply a force that attempts to reach our target velocity
+		// Apply a force that attempts to reach target velocity
 		Vector3 velocity = rigidbody.velocity;
 		Vector3 velocityChange = (targetVelocity - velocity);
 
@@ -175,6 +175,68 @@ public class CharacterMotor : MonoBehaviour
 		velocityChange.y = 0;
 
 		rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+	}
+
+	protected Vector3 ProcessKnockback()
+	{
+		Vector3 knockbackVel = Vector3.zero;
+
+		if (knockbackMag > 0.0f)
+		{
+			knockbackVel = (knockbackDirection * knockbackMag);
+
+			// The knockback deaccellerates each frame
+			knockbackMag -= knockbackMag * knockbackDecel;
+
+			// If it is too small it is ignored.
+			if (knockbackMag < 0.01f)
+			{
+				knockbackMag = 0.0f;
+			}
+		}
+
+		return knockbackVel;
+	}
+
+	protected Vector3 ProcessStandardMovement()
+	{
+		Vector3 movement = Vector3.zero;
+
+		if (movementForce != Vector3.zero && usingStandardMovement)
+		{
+			movement = new Vector3(movementForce.x, 0.0f, movementForce.z);
+
+			// The highest value on either axis is used as the accelleration value
+			float speed = Mathf.Abs(movementForce.x) > Mathf.Abs(movementForce.z) ? Mathf.Abs(movementForce.x) : Mathf.Abs(movementForce.z);
+			float maxAccel = speed;
+
+			// Buffs are added to the speed
+			float buffedSpeed = maxSpeed + buffBonusSpeed;
+
+			// CurrentSpeed is calculated using acceleration
+			currentSpeed += (speed * buffedSpeed) * Acceleration * Time.deltaTime;
+			currentSpeed = Mathf.Clamp(currentSpeed, MinSpeed, maxAccel * buffedSpeed);
+		}
+		else if (movementForce == Vector3.zero)
+		{
+		    currentSpeed = 0.0f;
+		}
+
+		return movement;
+	}
+
+	protected void ProcessGridMovement()
+	{
+		// TODO: Do a check in HeroController to stop prevent this movement happening.
+		// Grid movement uses Lerp. This is dangerous because it can go through other objects.
+		gridMovementTimeAccum += Time.deltaTime;
+		if (gridMovementTimeAccum > timeToMoveAlongGrid)
+		{
+			gridMovementTimeAccum = 1.0f;
+			IsMovingAlongGrid = false;
+		}
+
+		transform.position = Vector3.Lerp(gridStartPos, gridTargetPos, gridMovementTimeAccum / timeToMoveAlongGrid);
 	}
 
 	public virtual void Move(Vector3 motion)
@@ -207,19 +269,19 @@ public class CharacterMotor : MonoBehaviour
 
 	public void MoveAlongGrid(Vector3 direction)
 	{
-		if (!MovingAlongGrid)
+		if (!IsMovingAlongGrid)
 		{
-			MovingAlongGrid = true;
-			timeAccum = 0.0f;
-			startPos = transform.position;
-			targetPos = startPos + direction.normalized * offset;
+			IsMovingAlongGrid = true;
+			gridMovementTimeAccum = 0.0f;
+			gridStartPos = transform.position;
+			gridTargetPos = gridStartPos + direction.normalized * gridUnitOffset;
 		};
 	}
 
 	public void StopMovingAlongGrid()
 	{
-		timeAccum = 1.0f;
-		MovingAlongGrid = false;
+		gridMovementTimeAccum = 1.0f;
+		IsMovingAlongGrid = false;
 	}
 
     public void StopMotion()
@@ -228,8 +290,8 @@ public class CharacterMotor : MonoBehaviour
         currentSpeed = 0.0f;
     }
 
-	public void EnableMovementForce(bool b)
+	public void EnableStandardMovement(bool b)
 	{
-		usingMovementForce = b;
+		usingStandardMovement = b;
 	}
 }

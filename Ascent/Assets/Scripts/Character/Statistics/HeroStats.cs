@@ -63,6 +63,10 @@ public class HeroStats : CharacterStats
                 {
                     experienceBonus += ((ExperienceBuff)effect).ExperienceGainBonus;
                 }
+				else if (effect is BlessingOfWisdom)
+				{
+					experienceBonus += ((BlessingOfWisdom)effect).ExperienceGainBonus;
+				}
             }
       
             // Floor bonus
@@ -101,6 +105,10 @@ public class HeroStats : CharacterStats
                 {
                     goldBonus += ((GoldBuff)effect).GoldGainBonus;
                 }
+				else if (effect is BlessingOfWealth)
+				{
+					goldBonus += ((BlessingOfWealth)effect).GoldGainBonus;
+				}
             }
 
             // Floor bonus

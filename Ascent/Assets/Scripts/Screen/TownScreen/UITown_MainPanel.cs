@@ -7,9 +7,6 @@ public class UITown_MainPanel : UITown_Panel
     const float BACKPACK = 270f;
     const float QUIT = 90f;
 
-
-	bool justInitialized = false;
-
 	public override void Initialise()
 	{
 		base.Initialise();
@@ -58,7 +55,6 @@ public class UITown_MainPanel : UITown_Panel
 		if (initialised)
 		{
 			SetInfoLabel();
-			justInitialized = false;
 		}
 	}
 	

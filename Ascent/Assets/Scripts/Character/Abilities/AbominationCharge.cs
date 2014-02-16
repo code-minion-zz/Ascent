@@ -31,7 +31,7 @@ public class AbominationCharge : Action
     {
         base.Initialise(owner);
 
-        cooldownDurationMax = 5.0f;
+        cooldownFullDuration = 5.0f;
         animationTrigger = "Charge";
         specialCost = 0;
 

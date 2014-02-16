@@ -396,6 +396,7 @@ public class Floor : MonoBehaviour
 		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
+			p.Hero.StopAbility();
 			p.Hero.Motor.StopMotion();
 			p.Hero.HeroController.enabled = false;
 		}

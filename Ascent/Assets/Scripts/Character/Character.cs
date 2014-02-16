@@ -47,8 +47,10 @@ public abstract class Character : BaseCharacter
 	protected Action activeAbility;
 	protected bool isDead;
 	protected Character lastDamagedBy;
-	protected EStatus vulnerabilities;
+	protected EStatus vulnerabilities = EStatus.All;
 	protected EStatus status;
+	protected EStatusColour statusColour = EStatusColour.White;
+	protected bool colourHasChanged = false;
 
 	public bool CanInterruptActiveAbility
 	{
@@ -108,12 +110,32 @@ public abstract class Character : BaseCharacter
 		set { status = value; }
 	}
 
+	public EStatusColour StatusColour
+	{
+		get { return statusColour; }
+		set 
+		{
+			// If this is a new colour flag it for updating.
+			if ((statusColour & value) != value)
+			{
+				colourHasChanged = true;
+			}
+
+			statusColour = value; 
+		}
+	}	 
+
 	public bool CanMove
 	{
 		get { return !IsInState(EStatus.Stun); }
 	}
 
 	public bool CanAct
+	{
+		get { return !IsInState(EStatus.Stun); }
+	}
+
+	public bool CanAttack
 	{
 		get { return !IsInState(EStatus.Stun); }
 	}
@@ -134,6 +156,11 @@ public abstract class Character : BaseCharacter
 	public override void Update()
 	{
 		UpdateActiveAbility();
+
+		if (colourHasChanged)
+		{
+			SetColor(StatusEffectUtility.GetColour(StatusColour));
+		}
 
 		// Update abilities that require cooldown
 		foreach (Action ability in abilities)
@@ -192,6 +219,16 @@ public abstract class Character : BaseCharacter
         if (canUse)
 		{
 			Action ability = abilities[abilityID];
+
+			if (ability.IsOnCooldown)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
+			}
+			else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
+			}
+
 			// Make sure the cooldown is off otherwise we cannot use the ability
 			if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
 			{
@@ -229,10 +266,19 @@ public abstract class Character : BaseCharacter
         return canUse;
     }
 
-    public virtual void UseCastAbility(int abilityID)
+    public virtual bool UseCastAbility(int abilityID)
     {
         Action ability = abilities[abilityID];
         // Make sure the cooldown is off otherwise we cannot use the ability
+
+		if (ability.IsOnCooldown)
+		{
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
+		}
+		else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+		{
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
+		}
 
         if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
         {
@@ -249,7 +295,11 @@ public abstract class Character : BaseCharacter
 
             motor.StopMotion();
             motor.IsHaltingMovementToPerformAction = false;
+
+			return true;
         }
+
+		return false;
     }
 
 	public Action GetAbility(string ability)
@@ -444,7 +494,38 @@ public abstract class Character : BaseCharacter
 
 	public virtual void ApplyStatusEffect(StatusEffect effect)
 	{
-        statusEffects.Add(effect);
+		bool overridePrevious = effect.OverridePrevious;
+		bool overrideSuccesful = false;
+		
+		if (overridePrevious)
+		{
+			// Check if the effect already exists
+			for (int i = 0; i < statusEffects.Count; ++i)
+			{
+				// Override the existing effect if the new one is more powerful
+				// TODO: write comparison function in base class and have derived classes override it.
+				if (statusEffects[i].Type == effect.Type)
+				{
+					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > effect.FullDuration;
+					if (isDurationLonger)
+					{
+						statusEffects[i] = effect;
+					}
+					else
+					{
+						// Extend the life of the existing buff
+						statusEffects[i].TimeElapsed -= effect.FullDuration;
+					}
+
+					overrideSuccesful = true;
+				}
+			}
+		}
+
+		if (!overrideSuccesful)
+		{
+			statusEffects.Add(effect);
+		}
 	}
 
     public virtual void RemoveStatusEffect(StatusEffect effect)
@@ -465,6 +546,19 @@ public abstract class Character : BaseCharacter
 		}
 
 		return (int)damage;
+	}
+
+	public virtual void SetColor(EStatusColour colour)
+	{
+		//Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		//foreach (Renderer render in renderers)
+		//{
+		//    render.material.color = color;
+		//}
+	}
+
+	public override void ResetColor()
+	{
 	}
 
 #if UNITY_EDITOR

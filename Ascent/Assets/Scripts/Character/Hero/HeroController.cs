@@ -102,21 +102,68 @@ public class HeroController : MonoBehaviour
 		// Left Bump
 		if (device.LeftBumper.WasPressed)
 		{
-            Action action = hero.Abilities[(int)EHeroAction.Action1];
+            Action action = hero.Abilities[(int)EHeroAction.Action2];
             if (action.IsInstanctCast)
             {
-                hero.UseAbility((int)EHeroAction.Action1);
+                hero.UseAbility((int)EHeroAction.Action2);
             }
             else
             {
-                hero.UseCastAbility((int)EHeroAction.Action1);
-                actionButtonPair.action = action;
-                actionButtonPair.control = device.LeftBumper;
+				if (hero.CanCastAbility((int)EHeroAction.Action2))
+				{
+					if (hero.UseCastAbility((int)EHeroAction.Action2))
+					{
+						actionButtonPair.action = action;
+						actionButtonPair.control = device.LeftBumper;
+					}
+				}
             }
 		}
 
 		// Left Trigger
 		else if (device.LeftTrigger.WasPressed)
+		{
+			Action action = hero.Abilities[(int)EHeroAction.Action1];
+			if (action.IsInstanctCast)
+			{
+				hero.UseAbility((int)EHeroAction.Action1);
+			}
+			else
+			{
+				if (hero.CanCastAbility((int)EHeroAction.Action1))
+				{
+					if (hero.UseCastAbility((int)EHeroAction.Action1))
+					{
+						actionButtonPair.action = action;
+						actionButtonPair.control = device.LeftTrigger;
+					}
+				}
+			}
+		}
+
+		// Right bump
+		else if (device.RightBumper.WasPressed)
+		{
+            Action action = hero.Abilities[(int)EHeroAction.Action3];
+            if (action.IsInstanctCast)
+            {
+                hero.UseAbility((int)EHeroAction.Action3);
+            }
+            else
+            {
+                if (hero.CanCastAbility((int)EHeroAction.Action3))
+                {
+                    if (hero.UseCastAbility((int)EHeroAction.Action3))
+					{
+						actionButtonPair.action = action;
+						actionButtonPair.control = device.RightBumper;
+					}
+                }
+            }
+		}
+
+		// Right Trigger
+		else if (device.RightTrigger.WasPressed)
 		{
 			Action action = hero.Abilities[(int)EHeroAction.Action4];
 			if (action.IsInstanctCast)
@@ -125,46 +172,13 @@ public class HeroController : MonoBehaviour
 			}
 			else
 			{
-				hero.UseCastAbility((int)EHeroAction.Action4);
-				actionButtonPair.action = action;
-				actionButtonPair.control = device.LeftBumper;
-			}
-		}
-
-		// Right bump
-		else if (device.RightBumper.IsPressed)
-		{
-            Action action = hero.Abilities[(int)EHeroAction.Action2];
-            if (action.IsInstanctCast)
-            {
-                hero.UseAbility((int)EHeroAction.Action2);
-            }
-            else
-            {
-                if (hero.CanCastAbility((int)EHeroAction.Action2))
-                {
-                    hero.UseCastAbility((int)EHeroAction.Action2);
-                    actionButtonPair.action = action;
-                    actionButtonPair.control = device.RightBumper;
-                }
-            }
-		}
-
-		// Right Trigger
-		else if (device.RightTrigger.WasPressed)
-		{
-			Action action = hero.Abilities[(int)EHeroAction.Action3];
-			if (action.IsInstanctCast)
-			{
-				hero.UseAbility((int)EHeroAction.Action3);
-			}
-			else
-			{
-				if (hero.CanCastAbility((int)EHeroAction.Action3))
+				if (hero.CanCastAbility((int)EHeroAction.Action4))
 				{
-					hero.UseCastAbility((int)EHeroAction.Action3);
-					actionButtonPair.action = action;
-					actionButtonPair.control = device.RightBumper;
+					if (hero.UseCastAbility((int)EHeroAction.Action4))
+					{
+						actionButtonPair.action = action;
+						actionButtonPair.control = device.RightTrigger;
+					}
 				}
 			}
 		}

@@ -15,7 +15,7 @@ public class EnchantedStatueAwaken : Action
 		animationLength = 1.0f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Awaken";
-		cooldownDurationMax = 2.0f;
+		cooldownFullDuration = 2.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 3.5f, new Vector3(0.0f, 0.0f, 0.0f));
@@ -26,7 +26,7 @@ public class EnchantedStatueAwaken : Action
 		base.StartAbility();
 
 		owner.Motor.StopMotion();
-		owner.Motor.EnableMovementForce(false);
+		owner.Motor.EnableStandardMovement(false);
 		owner.SetColor(Color.red);
 
 		//executedDamage = false;
@@ -38,13 +38,13 @@ public class EnchantedStatueAwaken : Action
 
 		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
-			owner.Motor.EnableMovementForce(true);
+			owner.Motor.EnableStandardMovement(true);
 			owner.ResetColor();
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
 		{
 			owner.Motor.StopMotion();
-			owner.Motor.EnableMovementForce(false);
+			owner.Motor.EnableStandardMovement(false);
 		}
 		//else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		//{
@@ -73,7 +73,7 @@ public class EnchantedStatueAwaken : Action
 	public override void EndAbility()
 	{
 		base.EndAbility();
-		owner.Motor.EnableMovementForce(true);
+		owner.Motor.EnableStandardMovement(true);
 		owner.ResetColor();
 	}
 

@@ -653,7 +653,10 @@ public class Room : MonoBehaviour
 
 						if (CheckCircle(shape as Circle, c))
                         {
-                            charactersColliding.Add(c);
+							if (!charactersColliding.Contains(c))
+							{
+								charactersColliding.Add(c);
+							}
                         }
                     }
 				}
@@ -669,7 +672,10 @@ public class Room : MonoBehaviour
 
 						if(CheckArc(shape as Arc, c))
 						{
-							charactersColliding.Add(c);
+							if (!charactersColliding.Contains(c))
+							{
+								charactersColliding.Add(c);
+							}
 						}
 					}
 				}

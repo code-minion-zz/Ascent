@@ -10,7 +10,7 @@ public class WarriorWarCry : Action
         animationLength = 1.333f;
         animationSpeed = 1.5f;
         animationTrigger = "WarCry";
-        cooldownDurationMax = 10.0f;
+        cooldownFullDuration = 10.0f;
         specialCost = 10;
 
 		Validate();
@@ -25,6 +25,8 @@ public class WarriorWarCry : Action
 
 		SpeedBuff buff2 = new SpeedBuff();
 		buff2.ApplyStatusEffect(owner, owner, StatusEffect.EApplyMethod.Fixed, 5.0f, 15.0f);
+
+		//owner.ApplyStatusEffect(new SleepingDebuff(owner, owner, 5.0f));
 
 		//SpecialBuff buff = new SpecialBuff();
 		//buff.ApplyStatusEffect(owner, owner, SecondaryStatBuff.EBuffType.Fixed, 5.0f, 15.0f);
