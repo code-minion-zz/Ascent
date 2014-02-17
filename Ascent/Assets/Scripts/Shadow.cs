@@ -26,14 +26,18 @@ public class Shadow : MonoBehaviour
 		initialScale = size;
 		initialScale++;
 
-		shadow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Shadow")) as GameObject;
+        if (shadow == null)
+        {
+            shadow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Shadow")) as GameObject;
+        }
 
-		shadow.transform.parent = this.transform;
+        shadow.transform.parent = this.transform;
 
-		shadowTransform = shadow.transform;
-		parentTransform = transform;
+        shadowTransform = shadow.transform;
+        parentTransform = transform;
 
-		shadowTransform.localScale = new Vector3(size, size, size);
+        shadowTransform.localScale = new Vector3(size, size, size);
+
 	}
 
 	public void Update()
