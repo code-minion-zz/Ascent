@@ -51,9 +51,23 @@ public class HeroController : MonoBehaviour
 				// Action's that cannot be interrupted will not cause this to happen.
 				if (hero.CanInterruptActiveAbility)
 				{
+                    hero.StopAbility();
+
 					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
 				}
 			}
+
+            // Process stun only
+            else if(!hero.CanAct && !hero.CanAttack && ! hero.CanMove)
+            {
+
+                if (hero.CanInterruptActiveAbility)
+                {
+                    hero.StopAbility();
+
+                    animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
+                }
+            }
 
 			// Process everything as normal if no cast action is being used
 			else if (actionButtonPair.action == null && !hero.HitTaken)

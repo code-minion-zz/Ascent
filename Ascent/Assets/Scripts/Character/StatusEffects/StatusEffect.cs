@@ -115,8 +115,9 @@ public class StatusEffect
     }
 
 	
-	protected void ProcessImmuneEffect()
+	protected void ProcessImmuneEffect(Character target)
 	{
+        this.target = target;
 		FloorHUDManager.Singleton.TextDriver.SpawnDamageText(target.gameObject, "Immune", Color.white);
 		RemoveEffect();
 	}

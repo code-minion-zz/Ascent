@@ -22,7 +22,7 @@ public class SilenceDebuff : StatusEffect
 		}
 		else
 		{
-			ProcessImmuneEffect();
+			ProcessImmuneEffect(target);
 		}
 	}
 

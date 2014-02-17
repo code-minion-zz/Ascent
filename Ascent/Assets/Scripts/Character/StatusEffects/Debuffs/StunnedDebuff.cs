@@ -33,7 +33,7 @@ public class StunnedDebuff : StatusEffect
 		}
 		else
 		{
-			ProcessImmuneEffect();
+            ProcessImmuneEffect(target);
 		}
 	}
 
