@@ -35,7 +35,8 @@ public class SaveRooms
     public void Initialize()
     {
         roomSaves = new RoomSaves();
-        FilePath = string.Format("Assets/Resources/Maps/RoomSaves.bin");
+        //FilePath = string.Format("Assets/Resources/Maps/RoomSaves.bin");
+        FilePath = string.Format("Maps/RoomSaves");
     }
 
     [ContextMenu("SaveRooms")]
@@ -52,7 +53,7 @@ public class SaveRooms
 
     public RoomSaves LoadRooms()
     {
-        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(FilePath);
+        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(FilePath, true);
 
         return roomSaves;
     }
@@ -61,7 +62,7 @@ public class SaveRooms
     public void LoadFirstRoom()
     {
         Initialize();
-        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(filePath);
+        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(filePath, true);
 
         if (roomSaves != null)
         {

@@ -134,7 +134,6 @@ public class Floor : MonoBehaviour
 
 	private void Initialise()
 	{
-
 		// Initialise the players onto the start points
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
@@ -183,20 +182,23 @@ public class Floor : MonoBehaviour
 		}
 
 		// Initialise all the enemies (Must occur after rooms are initialised)
-		enemies = new List<Enemy>();
-		GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-		for (int i = 0; i < monsters.Length; ++i)
-		{
-			Enemy thisEnemy = monsters[i].GetComponent<Enemy>();
+        if (!randomFloor)
+        {
+            enemies = new List<Enemy>();
+            GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+            for (int i = 0; i < monsters.Length; ++i)
+            {
+                Enemy thisEnemy = monsters[i].GetComponent<Enemy>();
 
-			if (thisEnemy != null)
-			{
-				thisEnemy.Initialise();
-				thisEnemy.InitiliseHealthbar();
-                thisEnemy.onDeath += OnEnemyDeath;
-				enemies.Add(thisEnemy);
-			}
-		}
+                if (thisEnemy != null)
+                {
+                    thisEnemy.Initialise();
+                    thisEnemy.InitiliseHealthbar();
+                    thisEnemy.onDeath += OnEnemyDeath;
+                    enemies.Add(thisEnemy);
+                }
+            }
+        }
 
 		// Init the fade plane
 		GameObject go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;

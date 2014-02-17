@@ -239,6 +239,10 @@ public class UITown_BackpackPanel : UITown_Panel
 		{
 			NGUITools.SetActive(emptyInventoryLabel, true);
 		}
+		else 
+		{
+			NGUITools.SetActive(emptyInventoryLabel, false);
+		}
 
 		for (; buttonIndex < inventoryItemButtons.Count; ++buttonIndex)
 		{

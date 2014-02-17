@@ -115,10 +115,16 @@ public class Door : MonoBehaviour
 			// If only 1 player then they can quickly transition between rooms
 			if (playerCount == 1)
 			{
-				if (Game.Singleton.Players[0].Hero.collider.bounds.Intersects(immediateArea.bounds))
-				{
-					Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
-				}
+                foreach (Player p in Game.Singleton.Players)
+                {
+                    if (!p.Hero.IsDead)
+                    {
+                       if(p.Hero.collider.bounds.Intersects(immediateArea.bounds))
+                       {
+                           Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                       }
+                    }
+                }
 			}
 
             int currentPlayerCount = 0;
@@ -126,14 +132,9 @@ public class Door : MonoBehaviour
             // Check if all heroes are in here.
             foreach (Player p in Game.Singleton.Players)
             {
-
                 if (p.Hero.collider.bounds.Intersects(collider.bounds))
                 {
                     ++currentPlayerCount;
-                }
-                else
-                {
-                    break;
                 }
             }
 

@@ -27,7 +27,7 @@ public class ShockedDebuff : TicksOverTimeEffect
 		}
 		else
 		{
-			ProcessImmuneEffect();
+			ProcessImmuneEffect(target);
 		}
 	}
 
