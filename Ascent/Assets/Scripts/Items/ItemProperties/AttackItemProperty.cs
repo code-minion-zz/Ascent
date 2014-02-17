@@ -5,7 +5,7 @@ public class AttackItemProperty : SecondaryStatItemProperty
 {
 	public AttackItemProperty()
     {
-        statType = EStats.Attack;
+		statType = EStats.Attack;
     }
 
     public override void Initialise(){}

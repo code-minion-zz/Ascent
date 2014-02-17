@@ -241,7 +241,7 @@ public class TreasureChest : Interactable
 		
 		for (int i = 0; i < quantityOfLoot;  ++i)
 		{
-			Item newItem = LootGenerator.RandomlyGenerateAccessory(Game.Singleton.Tower.CurrentFloorNumber);
+			Item newItem = LootGenerator.RandomlyGenerateAccessory(Game.Singleton.Tower.CurrentFloorNumber, false);
 			loot.Add(newItem);
 		}
 

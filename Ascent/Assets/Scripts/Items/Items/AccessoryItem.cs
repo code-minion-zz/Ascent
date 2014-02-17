@@ -10,6 +10,15 @@ public class AccessoryItem : Item
     [System.Xml.Serialization.XmlIgnore()]
     protected List<ItemProperty> itemProperties = new List<ItemProperty>();
 
+	protected bool appraised;
+
+	[System.Xml.Serialization.XmlIgnore()]
+	public bool IsAppraised
+	{
+		get { return appraised; }
+		set { appraised = value; }
+	}
+
     protected int durability;
     protected int durabilityMax;
 

@@ -29,7 +29,7 @@ public static class LootGenerator
 		Max
 	}
 
-	public static Item RandomlyGenerateItem(int floorNum, ELootType type)
+	public static Item RandomlyGenerateItem(int floorNum, ELootType type, bool identified)
 	{
 		// Randomly select the type of item
 		if (type == ELootType.Any)
@@ -44,12 +44,12 @@ public static class LootGenerator
 		{
 			case ELootType.Accessory:
 				{
-					brandSpankingNewItem = RandomlyGenerateAccessory(floorNum);
+					brandSpankingNewItem = RandomlyGenerateAccessory(floorNum, identified);
 				}
 				break;
 			case ELootType.Consumable:
 				{
-					brandSpankingNewItem = RandomlyGenerateConsumable(floorNum);
+					brandSpankingNewItem = RandomlyGenerateConsumable(floorNum, identified);
 				}
 				break;
 		}
@@ -57,7 +57,7 @@ public static class LootGenerator
 		return brandSpankingNewItem;
 	}
 
-	public static Item RandomlyGenerateAccessory(int floorNum)
+	public static Item RandomlyGenerateAccessory(int floorNum, bool idendified)
 	{
 		Item.ItemGrade grade = RandomGrade();
 
@@ -69,14 +69,13 @@ public static class LootGenerator
 		newAccItem.ItemStats.Name = RandomAccessoryName();
 		newAccItem.ItemStats.Description = RandomAccessoryDescription();
 		newAccItem.ItemStats.Grade = (int)grade;
-        newAccItem.ItemProperties.Add(new AttackItemProperty());
 
 		RandomAccessoryProperties((AccessoryItem)newItem);
 
 		return newItem;
 	}
 
-	public static Item RandomlyGenerateConsumable(int floorNum)
+	public static Item RandomlyGenerateConsumable(int floorNum, bool identified)
 	{
 		Item.ItemGrade grade = RandomGrade();
 
@@ -160,32 +159,59 @@ public static class LootGenerator
             switch (propertyType)
             {
                 // Secondary stats are all the same.
-                case ItemProperty.EType.Attack:      newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.Accuracy:    newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.CriticalHit: newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.Dodge:       newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.MDefence:    newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.PDefence:   newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-                case ItemProperty.EType.Special:    newProperty = new AttackItemProperty(); secondaryStatProperty = true; break;
-
+				case ItemProperty.EType.Attack:
+					{
+						newProperty = new AttackItemProperty(); secondaryStatProperty = true;
+					}
+					break;
+                case ItemProperty.EType.Accuracy:  
+					{
+						newProperty = new AccuracyItemProperty(); secondaryStatProperty = true; 
+					}
+					break;
+                case ItemProperty.EType.CriticalHit:
+					{
+						newProperty = new CriticalItemProperty(); secondaryStatProperty = true;
+					}
+					break;
+				case ItemProperty.EType.Dodge:
+					{
+						newProperty = new DodgeItemProperty(); secondaryStatProperty = true;
+					}
+					break;
+				case ItemProperty.EType.MDefence:
+					{
+						newProperty = new MDefenceItemProperty(); secondaryStatProperty = true;
+					}
+					break;
+				case ItemProperty.EType.PDefence:
+					{
+						newProperty = new PDefenceItemProperty(); secondaryStatProperty = true;
+					}
+					break;
+				case ItemProperty.EType.Special:
+					{
+						newProperty = new SpecialItemProperty(); secondaryStatProperty = true;
+					}
+					break;
                 case ItemProperty.EType.Experience:
                     {
                         newProperty = new ExperienceItemProperty();
 
-                        float buffValue = Random.Range(0.1f, 5.0f);
+						float buffValue = Random.Range(1.0f, (float)accessoryItem.ItemStats.Level);
 
-                        ((ExperienceItemProperty)newProperty).BuffValue = buffValue;
-                        ((ExperienceItemProperty)newProperty).BuffType = StatusEffect.EApplyMethod.Percentange;
+                        ((ExperienceItemProperty)newProperty).ExperienceGainBonus = buffValue;
+                        ((ExperienceItemProperty)newProperty).ApplyMethod = StatusEffect.EApplyMethod.Percentange;
                     }
                     break;
                 case ItemProperty.EType.Gold:
                     {
                         newProperty = new GoldItemProperty();
 
-                        float buffValue = Random.Range(0.1f, 5.0f);
+						float buffValue = Random.Range(1.0f, (float)accessoryItem.ItemStats.Level);
 
-                        ((GoldItemProperty)newProperty).BuffValue = buffValue;
-                        ((GoldItemProperty)newProperty).BuffType = StatusEffect.EApplyMethod.Percentange;
+                        ((GoldItemProperty)newProperty).GoldGainBonus = buffValue;
+						((GoldItemProperty)newProperty).ApplyMethod = StatusEffect.EApplyMethod.Percentange;
                     }
                     break;
 
@@ -202,7 +228,7 @@ public static class LootGenerator
             if (secondaryStatProperty)
             {
                 // Randomly select the apply method.
-                StatusEffect.EApplyMethod applyMethod = (StatusEffect.EApplyMethod)Random.Range(0, 1);
+                StatusEffect.EApplyMethod applyMethod = (StatusEffect.EApplyMethod)Random.Range(0, 0);
 
                 float buffValue = 1.0f;
 
@@ -211,12 +237,12 @@ public static class LootGenerator
                 {
                     case StatusEffect.EApplyMethod.Percentange:
                         {
-                             buffValue = Random.Range(0.1f, 5.0f);
+                             buffValue = Random.Range(1.0f, (float)accessoryItem.ItemStats.Level);
                         }
                         break;
                     case StatusEffect.EApplyMethod.Fixed:
                         {
-                            buffValue = (float)Random.Range(1, 5);
+							buffValue = (float)Random.Range(1, (float)accessoryItem.ItemStats.Level);
                         }
                         break;
                     default:
