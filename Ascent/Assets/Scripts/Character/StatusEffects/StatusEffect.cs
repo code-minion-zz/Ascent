@@ -8,7 +8,7 @@ public class StatusEffect
 {
     public enum EApplyMethod
     {
-        Percentange,
+        Percentange = 0,
         Fixed
     }
 
