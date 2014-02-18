@@ -219,7 +219,14 @@ public class UITown_BackpackPanel : UITown_Panel
 				string newName;
 				if (item.ItemStats.Name != null)
 				{
-					newName = item.ItemStats.Name;
+                    if (item.IsAppraised)
+                    {
+                        newName = item.ItemStats.Name;
+                    }
+                    else
+                    {
+                        newName = "??????";
+                    }
 				}
 				else
 				{
@@ -299,14 +306,21 @@ public class UITown_BackpackPanel : UITown_Panel
 
 	void SetInfoLabel()
 	{
-		string newString = "";
+        string newString = "";
 		if (activeTab == EMode.INVENTORY)
 		{
 			if (inventoryHighlightedButton != -1)
 			{
 				if (inventoryHighlightedItemButton.LinkedItem != null)
 				{
-					newString = inventoryHighlightedItemButton.LinkedItem.ToString();
+                    if (inventoryHighlightedItemButton.LinkedItem.IsAppraised)
+                    {
+                        newString = inventoryHighlightedItemButton.LinkedItem.ToString();
+                    }
+                    else
+                    {
+                        newString = inventoryHighlightedItemButton.LinkedItem.ToStringUnidentified();
+                    }
 				}
 			}
 		}
@@ -410,10 +424,13 @@ public class UITown_BackpackPanel : UITown_Panel
 			if (inventoryHighlightedButton != -1)
 			{
 				// Replace Selected Backpack Item with Selected Inventory Item
-				parent.Player.Hero.Equip(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
-				//heroBackpack.ReplaceItem(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
+                if (inventoryHighlightedItemButton.LinkedItem.IsAppraised)
+                {
+                    parent.Player.Hero.Equip(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
+                    //heroBackpack.ReplaceItem(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
 
-				SwapToBackpack();
+                    SwapToBackpack();
+                }
 			}
 		}
 	}

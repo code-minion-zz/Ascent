@@ -21,6 +21,30 @@ public abstract class Item
 		set { stats = value; }
 	}
 
+    protected bool appraised;
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public bool IsAppraised
+    {
+        get { return appraised; }
+        set { appraised = value; }
+    }
+
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public int Grade
+    {
+        get { return stats.Grade; }
+        set { stats.Grade = value; }
+    }
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public ItemGrade GradeEnum
+    {
+        get { return (ItemGrade)stats.Grade; }
+        set { stats.Grade = (int)value; }
+    }
+
     protected virtual int CalculateSellValue()
     {
         // TODO: Find a formula for this. Or retrieve the value from elsewhere.
@@ -29,5 +53,11 @@ public abstract class Item
 		float modifier = 1f;
 
 		return (int)(0 * 0.5f * modifier);
+    }
+
+    public virtual string ToStringUnidentified()
+    {
+        return "This needs to be overidden.";
+
     }
 }

@@ -36,13 +36,6 @@ public class ConsumableItem : Item
         get { return cooldown; }
 	}
 
-	[System.Xml.Serialization.XmlIgnore()]
-	public ItemGrade GradeEnum
-	{
-		get { return (ItemGrade)stats.Grade; }
-		set { stats.Grade = (int)value; }
-	}
-
     [System.Xml.Serialization.XmlIgnore()]
 	protected float cooldownMax = 2.0f;
 
@@ -97,4 +90,10 @@ public class ConsumableItem : Item
 			"Desc: " + stats.Description + "\n" + "Value: buy-" + 0 + ", sell-" + 0 + "\n";
 		
 	}
+
+    public override string ToStringUnidentified()
+    {
+        return "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + "?" + "\n" +
+            "Desc: " + "?" + "\n" + "Value: buy-" + 0 + ", sell-" + 0 + "\n";
+    }
 }

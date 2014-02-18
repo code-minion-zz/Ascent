@@ -10,15 +10,6 @@ public class AccessoryItem : Item
     [System.Xml.Serialization.XmlIgnore()]
     protected List<ItemProperty> itemProperties = new List<ItemProperty>();
 
-	protected bool appraised;
-
-	[System.Xml.Serialization.XmlIgnore()]
-	public bool IsAppraised
-	{
-		get { return appraised; }
-		set { appraised = value; }
-	}
-
     protected int durability;
     protected int durabilityMax;
 
@@ -68,20 +59,6 @@ public class AccessoryItem : Item
 	{
 		get { return itemProperties; }
 		protected set { itemProperties = value; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore()]
-	public int Grade
-	{
-		get { return stats.Grade; }
-		set { stats.Grade = value; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore()]
-	public ItemGrade GradeEnum
-	{
-		get { return (ItemGrade)stats.Grade; }
-		set { stats.Grade = (int)value; }
 	}
 
 	public int Durability
@@ -137,7 +114,7 @@ public class AccessoryItem : Item
 
 	public override string ToString()
 	{
-		string retVal = "Grade: " +GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
+		string retVal = "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
 			"Desc: " + stats.Description + "\n" +
 			"Dura: " + durability + "\\" + durabilityMax + "\n" +
 			"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
@@ -151,4 +128,21 @@ public class AccessoryItem : Item
 
 		return retVal;
 	}
+
+    public override string ToStringUnidentified()
+    {
+        string retVal = "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + "?????" + "\n" +
+            "Desc: " + "?????" + "\n" +
+            "Dura: " + durability + "\\" + durabilityMax + "\n" +
+            "Value: buy-" + 0 + ", sell-" + 0 + "\n" +
+            "Stats: POW-" + "??" + ", FIN-" + "??" + ", VIT-" + "??" + ", SPR-" + "??" + "\n";
+        //"Prop count: " + itemProperties.Count + "\n";
+
+        foreach (ItemProperty ip in itemProperties)
+        {
+            retVal += "?????" + "\n";
+        }
+
+        return retVal;
+    }
 }
