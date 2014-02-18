@@ -62,11 +62,9 @@ public class FloorGeneration
 
         // Save data from the first room as a test.
         SaveRooms saver = new SaveRooms();
-        saver.Initialize();
-        saver.LoadRooms();
 
 		// Generate the first room in the game.
-        RoomProperties firstRoom = saver.RoomSaves.saves[0];
+        RoomProperties firstRoom = saver.LoadRoom("Assets/Resources/Maps/NewRoom.bin");
         roomGeneration.ReconstructRoom(firstRoom);
 		rooms.Add(firstRoom);
 

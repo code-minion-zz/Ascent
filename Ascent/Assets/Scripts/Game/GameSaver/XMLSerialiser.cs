@@ -75,7 +75,7 @@ public class XMLSerialiser
     public static object DeserializeObjectBin(string path)
     {
         BinaryFormatter bf = new BinaryFormatter();
-
+       
         FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
 
         object obj = bf.Deserialize(fs);

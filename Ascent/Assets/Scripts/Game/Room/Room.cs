@@ -431,7 +431,7 @@ public class Room : MonoBehaviour
     /// Helper function to find all the nodes and add them to 
     /// the dictionairy of node references.
     /// </summary>
-    private void FindAllNodes()
+    public void FindAllNodes()
     {
         // We want to get the second level nodes from this room object.
         foreach (Transform T in transform)

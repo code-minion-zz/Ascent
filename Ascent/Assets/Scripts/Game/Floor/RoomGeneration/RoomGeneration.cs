@@ -270,7 +270,7 @@ public class RoomGeneration
 
         // For each corner place the braziers.
         foreach (Tile tile in tempAvailableTiles)
-        {
+        { 
             if (tile.ContainsAttribute(TileType.cornerWallTile))
             {
                 go = GetGameObjectByType(TileType.brazier);
@@ -341,7 +341,6 @@ public class RoomGeneration
 	public void PlaceGroundTiles(RoomProperties room)
 	{
 		// Create the floor tiles and positions.
-		// TODO: If we want to at some point make different shaped rooms we will need to only place tiles
 
 		// where necessary.
 		for (int x = 0; x < room.NumberOfTilesX; ++x)
@@ -356,9 +355,11 @@ public class RoomGeneration
 
                 // Create the ground tile.
                 GameObject groundTile = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-                groundTile.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                //groundTile.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
+                room.Tiles[x, y].GameObject = groundTile;
 			}
 		}
 	}
@@ -371,6 +372,7 @@ public class RoomGeneration
     {
         // Reconstruct the object.
         room.Room = CreateRoomObject(room.Name);
+        room.CreateBaseTiles();
 
         // Construct all the tiles.
         for (int x = 0; x < room.NumberOfTilesX; ++x)
@@ -397,7 +399,8 @@ public class RoomGeneration
 
             if (go != null)
             {
-                go.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                //go.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                go.transform.parent = room.Tiles[x, y].GameObject.transform;
                 go.transform.position = room.Tiles[x, y].Position;
                 go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
                 go.name = "[" + x + ", " + y + "]" + go.name;
@@ -418,22 +421,27 @@ public class RoomGeneration
         {
             case TileType.groundTile:
                 go = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
+                go.name = floorObject.name;
                 break;
 
             case TileType.standardWall:
                 go = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
+                go.name = wallObject.name;
                 break;
 
             case TileType.cornerWallTile:
                 go = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+                go.name = wallCorner.name;
                 break;
 
             case TileType.brazier:
                 go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
+                go.name = brazierObject.name;
                 break;
 
             case TileType.door:
                 go = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
+                go.name = doorObject.name;
                 break;
         }
 

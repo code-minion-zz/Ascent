@@ -27,6 +27,7 @@ GameObject:
   - 4: {fileID: 400002}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -136,8 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applyTilt: 0
-  tiltAmount: 12.5
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -151,6 +150,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 1.20000005
   offsetZ: -.200000003
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 11
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

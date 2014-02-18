@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class SaveRooms
 {
     private RoomSaves roomSaves = new RoomSaves();
-    private string filePath;
+    private string filePath = "Assets/Resources/Maps/RoomSaves.bin";
 
     public string FilePath 
     {
@@ -22,34 +22,6 @@ public class SaveRooms
         get { return roomSaves; }
     }
 
-    public void Awake()
-    {
-        Initialize();
-    }
-
-    public void Start()
-    {
-        Initialize();
-    }
-
-    public void Initialize()
-    {
-        roomSaves = new RoomSaves();
-        FilePath = string.Format("Assets/Resources/Maps/RoomSaves.bin");
-    }
-
-    [ContextMenu("SaveRooms")]
-    public void SaveAllRooms()
-    {
-        XMLSerialiser.SerializeObjectBin(FilePath, roomSaves);
-        XMLSerialiser.SerializeToString("Assets/Resources/Maps/RoomSaves.txt", roomSaves);
-    }
-
-    public void AddNewRoom(RoomProperties data)
-    {
-        roomSaves.saves.Add(data);
-    }
-
     public RoomSaves LoadRooms()
     {
         roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(FilePath);
@@ -57,19 +29,26 @@ public class SaveRooms
         return roomSaves;
     }
 
-    [ContextMenu("Load First Room")]
-    public void LoadFirstRoom()
+    /// <summary>
+    /// Saves a room to the file path specified.
+    /// </summary>
+    /// <param name="room">The room properties to save.</param>
+    /// <param name="filePath">The file path for the room.</param>
+    public void SaveRoom(RoomProperties room, string filePath)
     {
-        Initialize();
-        roomSaves = (RoomSaves)XMLSerialiser.DeserializeObjectBin(filePath);
+        RoomSaves newRoom = new RoomSaves();
+        newRoom.saves.Add(room);
+        XMLSerialiser.SerializeObjectBin(filePath, newRoom);
+    }
 
-        if (roomSaves != null)
-        {
-            Debug.Log(roomSaves.saves.Count);
-            // Reconstruct the first room.
-            RoomGeneration roomGen = new RoomGeneration();
-            RoomProperties firstRoom = roomSaves.saves[1];
-            roomGen.ReconstructRoom(firstRoom);
-        }
+    /// <summary>
+    /// Loads a room from the file path specified.
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    public RoomProperties LoadRoom(string filePath)
+    {
+        RoomSaves savedRoom = (RoomSaves)XMLSerialiser.DeserializeObjectBin(filePath);
+        return (savedRoom.saves[0]);
     }
 }
