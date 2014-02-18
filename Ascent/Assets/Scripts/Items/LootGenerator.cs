@@ -91,10 +91,11 @@ public static class LootGenerator
 		"Kittles",
 	};
 
-	private const int maxPersonSuffix = 1;
+	private const int maxPersonSuffix = 2;
 	static string[] personNameSuffixes = new string[maxPersonSuffix] 
 	{
 		" the Loof",
+		" the Calculator"
 	};
 
 	private const int maxRace = 1;
@@ -131,39 +132,39 @@ public static class LootGenerator
 		S = 1,
 	}
 
-	static Dictionary<Item.ItemGrade, string[]> gradeQualitySynonyms = new Dictionary<Item.ItemGrade, string[]>()
+	static Dictionary<Item.EGrade, string[]> gradeQualitySynonyms = new Dictionary<Item.EGrade, string[]>()
 	{
-		{ Item.ItemGrade.E, new string[(int)EMaxGradeAjective.E]
+		{ Item.EGrade.E, new string[(int)EMaxGradeAjective.E]
 			{
 				   "Damaged",
 			}
 		},
 
-		{ Item.ItemGrade.D, new string[(int)EMaxGradeAjective.D]
+		{ Item.EGrade.D, new string[(int)EMaxGradeAjective.D]
 			{
 				   "Flawed",
 			}
 		},
 
-		{ Item.ItemGrade.C, new string[(int)EMaxGradeAjective.C]
+		{ Item.EGrade.C, new string[(int)EMaxGradeAjective.C]
 			{
 				   "Clean",
 			}
 		},
 
-		{ Item.ItemGrade.B, new string[(int)EMaxGradeAjective.B]
+		{ Item.EGrade.B, new string[(int)EMaxGradeAjective.B]
 			{
 				   "Polished",
 			}
 		},
 
-		{ Item.ItemGrade.A, new string[(int)EMaxGradeAjective.A]
+		{ Item.EGrade.A, new string[(int)EMaxGradeAjective.A]
 			{
 				   "Superb",
 			}
 		},
 
-		{ Item.ItemGrade.S, new string[(int)EMaxGradeAjective.S]
+		{ Item.EGrade.S, new string[(int)EMaxGradeAjective.S]
 			{
 				   "Immaculate",
 			}
@@ -176,7 +177,7 @@ public static class LootGenerator
 		// Randomly select the type of item
 		if (type == ELootType.Any)
 		{
-			type = (ELootType)Random.Range(0, 1);
+			type = (ELootType)Random.Range(0, 2);
 		}
 
 		Item brandSpankingNewItem = null;
@@ -201,7 +202,7 @@ public static class LootGenerator
 
 	public static Item RandomlyGenerateAccessory(int floorNum, bool idendified)
 	{
-		Item.ItemGrade grade = RandomGrade();
+		Item.EGrade grade = RandomGrade();
 
 		Item newItem = new AccessoryItem();
 
@@ -212,7 +213,9 @@ public static class LootGenerator
 		newAccItem.ItemStats = new ItemStats();
 		newAccItem.ItemStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
         newAccItem.ItemStats.Grade = (int)grade;
-		((AccessoryItem)newAccItem).Type = (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max - 1);
+		newAccItem.DurabilityMax = RandomDurability(grade);
+		newAccItem.Durability = newAccItem.DurabilityMax;
+		((AccessoryItem)newAccItem).Type = RandomAccessoryType();
 		
 
         RandomTitleAndDescription((AccessoryItem)newAccItem);
@@ -223,7 +226,7 @@ public static class LootGenerator
 
 	public static Item RandomlyGenerateConsumable(int floorNum, bool identified)
 	{
-		Item.ItemGrade grade = RandomGrade();
+		Item.EGrade grade = RandomGrade();
 
 		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
 		ConsumableItem newItem = null;
@@ -291,19 +294,19 @@ public static class LootGenerator
 
 	private static AccessoryItem.EAccessoryType RandomAccessoryType()
 	{
-		return (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max - 1);
+		return (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max);
 	}
 
-	private static Item.ItemGrade RandomGrade()
+	private static Item.EGrade RandomGrade()
 	{
-		return (Item.ItemGrade)Random.Range((int)Item.ItemGrade.E, (int)Item.ItemGrade.S);
+		return (Item.EGrade)Random.Range((int)Item.EGrade.INVALID_GRADE + 1, (int)Item.EGrade.MAX_GRADE);
 	}
 
     private static void RandomTitleAndDescription(AccessoryItem accessoryItem)
     {
         accessoryItem.ItemStats.Name = RandomAccessoryName(accessoryItem);
 
-		if(Random.Range(0, 1) == 0)
+		if(Random.Range(0, 2) == 0)
 		{
 			accessoryItem.ItemStats.Description = RandomAccessoryCityThemedDescription(accessoryItem);
 		}
@@ -313,10 +316,60 @@ public static class LootGenerator
 		}
     }
 
+	private static int RandomDurability(Item.EGrade grade)
+	{
+		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=1
+
+		int maxDuability = 0;
+
+		switch (grade)
+		{
+			case Item.EGrade.E:
+				{
+					maxDuability = 30 + (Random.Range(0, 41) - 20);
+				}
+				break;
+			case Item.EGrade.D:
+				{
+					maxDuability = 50 + (Random.Range(0, 31) - 15);
+				}
+				break;
+			case Item.EGrade.C:
+				{
+					maxDuability = 60 + (Random.Range(0, 21) - 10);
+				}
+				break;
+			case Item.EGrade.B:
+				{
+					maxDuability = 70 + (Random.Range(0, 11) - 5);
+				}
+				break;
+			case Item.EGrade.A:
+				{
+					maxDuability = 80 + (Random.Range(0, 11) - 5);
+				}
+				break;
+			case Item.EGrade.S:
+				{
+					maxDuability = 100;
+				}
+				break;
+			case Item.EGrade.MAX_GRADE:	// Fall
+			case Item.EGrade.INVALID_GRADE:	// Fall
+			default:
+				{
+					Debug.LogError("Unhandled case.");		
+				}
+				break;
+		}
+
+		return maxDuability;
+	}
+
 	private static void RandomAccessoryProperties(AccessoryItem accessoryItem)
 	{
         // Randomly choose properties based on grade.
-        int numberOfProperties = Random.Range(0, accessoryItem.Grade);
+        int numberOfProperties = Random.Range(0, accessoryItem.Grade + 1);
 
         for (int i = 0; i < numberOfProperties; ++i)
         {
@@ -542,14 +595,14 @@ public static class LootGenerator
 		string description = "Generic " + accessoryItem.Type;
 
 		int maxStories = 2;
-		int randomStory = Random.Range(0, maxStories);
+		int randomStory = Random.Range(0, maxStories + 1);
 
 		switch (randomStory)
 		{
 			case 0: // [CraftSynonym] by [Person/Race] of [Location/Store].
 				{
-					int name = Random.Range(0, 1);
-					int from = Random.Range(0, 1);
+					int name = Random.Range(0, 2);
+					int from = Random.Range(0, 2);
 
 					string strName = (name == 0 ? RandomPersonName() : RandomRaceName(false));
 					string strLocation = (from == 0 ? (" from " + RandomLocationName()) : (" of " + RandomStoreName(false)));
@@ -564,7 +617,7 @@ public static class LootGenerator
 				break;
 			case 2: // Accessories designed by [Person/Store] are the latest craze!
 				{
-					int by = Random.Range(0, 1);
+					int by = Random.Range(0, 2);
 					string strBy = (by == 0 ? RandomPersonName() : RandomStoreName(false));
 
 					description = "Accessories designed by " + strBy + " are the latest craze!";
@@ -615,9 +668,10 @@ public static class LootGenerator
 	}
 
 
-	private static string RandomFlavourWord(Item.ItemGrade grade)
+	private static string RandomFlavourWord(Item.EGrade grade)
 	{
-		int rand = Random.Range(0, GetMaxAdjectiveCount(grade));
+		int rand = Random.Range(0, gradeQualitySynonyms[grade].Length);
+	
 		string flavourWord = gradeQualitySynonyms[grade][rand];
 
 		return flavourWord;
@@ -625,7 +679,7 @@ public static class LootGenerator
 
 	private static string RandomCreationSynoynm(bool lower)
 	{
-		int rand = Random.Range(0, maxCraftSynoynms - 1);
+		int rand = Random.Range(0, maxCraftSynoynms);
 
 		string creationSynoynm = craftSynoynms[rand];
 
@@ -640,15 +694,15 @@ public static class LootGenerator
 	private static string RandomPersonName()
 	{
 		// Title
-		int rand = Random.Range(0, maxPersonTitle - 1);
+		int rand = Random.Range(0, maxPersonTitle);
 		string name = personNameTitles[rand];
 
 		// Name
-		rand = Random.Range(0, maxPersonNames - 1);
+		rand = Random.Range(0, maxPersonNames);
 		name += personNames[rand];
 
 		// Suffix
-		rand = Random.Range(0, maxPersonSuffix - 1);
+		rand = Random.Range(0, maxPersonSuffix);
 		if (personNameSuffixes[rand] != "")
 		{
 			name += personNameSuffixes[rand];
@@ -659,55 +713,25 @@ public static class LootGenerator
 
 	private static string RandomLocationName()
 	{
-		int rand = Random.Range(0, maxLocationNames - 1);
+		int rand = Random.Range(0, maxLocationNames);
 		return locationNames[rand];
 	}
 
 	private static string RandomBrandName(bool lower)
 	{
-		int rand = Random.Range(0, maxBrandNames - 1);
+		int rand = Random.Range(0, maxBrandNames);
 		return brandNames[rand];
 	}
 
 	private static string RandomStoreName(bool lower)
 	{
-		int rand = Random.Range(0, maxStoreNames - 1);
+		int rand = Random.Range(0, maxStoreNames);
 		return storeNames[rand];
 	}
 
 	private static string RandomRaceName(bool lower)
 	{
-		int rand = Random.Range(0, maxRace - 1);
+		int rand = Random.Range(0, maxRace);
 		return raceNames[rand];
 	}
-
-	private static int GetMaxAdjectiveCount(Item.ItemGrade grade)
-	{
-		int count = 0;
-
-		switch (grade)
-		{
-			case Item.ItemGrade.INVALID_GRADE:
-				break;
-			case Item.ItemGrade.E: count = (int)EMaxGradeAjective.E; 
-				break;
-			case Item.ItemGrade.D: count = (int)EMaxGradeAjective.D; 
-				break;
-			case Item.ItemGrade.C: count = (int)EMaxGradeAjective.C; 
-				break;
-			case Item.ItemGrade.B: count = (int)EMaxGradeAjective.B; 
-				break;
-			case Item.ItemGrade.A: count = (int)EMaxGradeAjective.A; 
-				break;
-			case Item.ItemGrade.S: count = (int)EMaxGradeAjective.S; 
-				break;
-			case Item.ItemGrade.MAX_GRADE:
-				break;
-			default:
-				break;
-		}
-
-		return count;
-	}
-
 }
