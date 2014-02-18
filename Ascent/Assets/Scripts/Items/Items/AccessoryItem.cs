@@ -179,7 +179,7 @@ public class AccessoryItem : Item
 	{
 		get
 		{
-			float repairCost = AppraisalCost * 0.1f;
+            float repairCost = ((float)durabilityMax - (float)durability) * (AppraisalCost * 0.1f);
 			return Mathf.RoundToInt(repairCost);
 		}
 	}
