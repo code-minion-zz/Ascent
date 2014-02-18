@@ -79,8 +79,8 @@ public static class LootGenerator
 	static string[] personNameTitles = new string[maxPersonTitle] 
 	{
 		"World Famous ",
-		"Locally Produced",
-		"Home Grown"
+		"Locally Produced ",
+		"Home Grown "
 	};
 
 	private const int maxPersonNames = 3;
