@@ -411,7 +411,6 @@ public class UITown_BackpackPanel : UITown_Panel
 			{
 				// Replace Selected Backpack Item with Selected Inventory Item
 				parent.Player.Hero.Equip(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
-				//heroBackpack.ReplaceItem(currentHighlightedButton, inventoryHighlightedItemButton.LinkedItem);
 
 				SwapToBackpack();
 			}
@@ -431,9 +430,6 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 
 	}
-	
-	public override void OnMenuHax(InputDevice device)
-	{
-	}
+
 	#endregion 
 }

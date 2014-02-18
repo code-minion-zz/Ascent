@@ -97,13 +97,7 @@ public class UITown_MainPanel : UITown_Panel
 	public override void OnMenuCancel(InputDevice device)
 	{
 	}
-	
-	public override void OnMenuHax(InputDevice device)
-	{
-		//((UITownScreen)parent.ParentScreen).StartGame();
-		Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
-	}
-	
+
 	public override void OnMenuUp(InputDevice device)
 	{
 		// TODO: Change character's equipment

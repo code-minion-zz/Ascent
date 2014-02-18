@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UITown_Skills : MonoBehaviour {
+public class UITown_Skills : UIPlayerMenuPanel {
 
 	// Use this for initialization
 	void Start () {
