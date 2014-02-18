@@ -11,13 +11,22 @@ public class ConsumableItem : Item
 	{
 		INVALID = -1,
 
-		Health,
-		Special,
+		HealthPotion,
+		SpecialPotion,
 
 		Key,
 		Bomb,
 
 		MAX
+	}
+
+	[System.Xml.Serialization.XmlIgnore]
+	protected EConsumableType consumableType;
+
+	public EConsumableType Type
+	{
+		get { return consumableType; }
+		set { consumableType = value; }
 	}
 
 	protected int charges;

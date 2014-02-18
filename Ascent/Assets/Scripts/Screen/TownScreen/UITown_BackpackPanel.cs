@@ -131,36 +131,45 @@ public class UITown_BackpackPanel : UITown_Panel
 
 		for (int i = 0; i < Backpack.kMaxItems; ++i)
 		{
-			Color temp = new Color(.1f,.1f,.1f,.5f);
+			//Color temp = new Color(.1f,.1f,.1f,.5f);
 			if (arrayItems[i] != null)
 			{
-				switch ((Item.ItemGrade)arrayItems[i].ItemStats.Grade)
-				{
-				case Item.ItemGrade.E:
-					temp = Color.red;
-					break;
-				case Item.ItemGrade.D:
-					temp = Color.magenta;
-					break;
-				case Item.ItemGrade.C:
-					temp = Color.blue;
-					break;
-				case Item.ItemGrade.B:
-					temp = Color.yellow;
-					break;
-				case Item.ItemGrade.A:
-					temp = Color.cyan;
-					break;
-				case Item.ItemGrade.S:
-					temp = Color.green;
-					break;
-				}
-				buttons[i].transform.FindChild("Item").GetComponent<UISprite>().color = temp;
+				//switch ((Item.ItemGrade)arrayItems[i].ItemStats.Grade)
+				//{
+				//case Item.ItemGrade.E:
+				//    temp = Color.red;
+				//    break;
+				//case Item.ItemGrade.D:
+				//    temp = Color.magenta;
+				//    break;
+				//case Item.ItemGrade.C:
+				//    temp = Color.blue;
+				//    break;
+				//case Item.ItemGrade.B:
+				//    temp = Color.yellow;
+				//    break;
+				//case Item.ItemGrade.A:
+				//    temp = Color.cyan;
+				//    break;
+				//case Item.ItemGrade.S:
+				//    temp = Color.green;
+				//    break;
+				//}
+
+				UISprite sprite = buttons[i].transform.FindChild("Item").GetComponent<UISprite>();
+				//sprite.color = temp;
+
 				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, true);
 				(buttons[i] as UIItemButton).LinkedItem = arrayItems[i];
 				if (i < 4)
 				{
 					(buttons[i] as UIItemButton).Type = UIItemButton.EType.ACCESSORY;
+
+					// Cast to UIItemButton then to AccessoryItem
+					AccessoryItem accessoryItem = ((AccessoryItem)((UIItemButton)buttons[i]).LinkedItem);
+					
+					string accessoryType = accessoryItem.Type.ToString().ToLower();
+					sprite.spriteName = "accessory_" + accessoryType + "_" + accessoryItem.GradeEnum.ToString().ToLower();
 				}
 				else
 				{
@@ -196,7 +205,13 @@ public class UITown_BackpackPanel : UITown_Panel
 				else
 				{
 					// TODO : Replace this with grabbing icon data from Item
-					inventoryItemButtons[buttonIndex].Icon.spriteName = "Orc Armor - Boots";
+					//AccessoryItem accessoryItem = ((AccessoryItem)((UIItemButton)inventoryItemButtons[buttonIndex]).LinkedItem);
+					AccessoryItem accessoryItem = (AccessoryItem)item;
+
+					string accessoryType = accessoryItem.Type.ToString().ToLower();
+					string accessorySpriteName = "accessory_" + accessoryType + "_" + accessoryItem.GradeEnum.ToString().ToLower();
+
+					inventoryItemButtons[buttonIndex].Icon.spriteName = accessorySpriteName;
 					theDroidsYouAreLookingFor = true;
 				}
 			}
@@ -208,8 +223,14 @@ public class UITown_BackpackPanel : UITown_Panel
 				}
 				else
 				{
-					// TODO : Replace this with grabbing icon data from Item				
-					inventoryItemButtons[buttonIndex].Icon.spriteName = "Sword";
+					// TODO : Replace this with grabbing icon data from Item	
+					//ConsumableItem consumableItem = ((ConsumableItem)((UIItemButton)inventoryItemButtons[buttonIndex]).LinkedItem);
+					ConsumableItem consumableItem = (ConsumableItem)item;
+
+					string consumableType = consumableItem.Type.ToString().ToLower();
+					string consumableSpriteName = "consumable_" + consumableType;
+
+					inventoryItemButtons[buttonIndex].Icon.spriteName = consumableSpriteName;
 					theDroidsYouAreLookingFor = true;
 				}
 			}
