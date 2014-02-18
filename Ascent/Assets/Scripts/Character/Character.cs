@@ -334,7 +334,7 @@ public abstract class Character : BaseCharacter
 	/// <param name="unmitigatedDamage">The amount of damage.</param>
 	/// <param name="type">The type of damage.</param>
 	/// <param name="owner">The character that has dealt the damage to this character.</param>
-	public virtual void ApplyDamage(int unmitigatedDamage, EDamageType type, Character damageDealer)
+	public virtual void ApplyDamage(int unmitigatedDamage, bool crit, EDamageType type, Character damageDealer)
 	{
 		int damageDealerLevel = damageDealer.Stats.Level;
 
