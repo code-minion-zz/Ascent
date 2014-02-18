@@ -66,10 +66,9 @@ public static class LootGenerator
 		newAccItem.PrimaryStats = RandomAccessoryStats(floorNum);
 		newAccItem.ItemStats = new ItemStats();
 		newAccItem.ItemStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
-		newAccItem.ItemStats.Name = RandomAccessoryName();
-		newAccItem.ItemStats.Description = RandomAccessoryDescription();
-		newAccItem.ItemStats.Grade = (int)grade;
+        newAccItem.ItemStats.Grade = (int)grade;
 
+        RandomTitleAndDescription((AccessoryItem)newAccItem);
 		RandomAccessoryProperties((AccessoryItem)newItem);
 
 		return newItem;
@@ -84,8 +83,8 @@ public static class LootGenerator
         ItemStats stats = new ItemStats();
         stats.Level = floorNum;
         stats.Grade = (int)grade;
-        stats.Name = RandomAccessoryName();
-        stats.Description = RandomAccessoryDescription();
+        stats.Name = "Consumables";
+        stats.Description = "Description";
 
 		// Create the consumable item
 		// TODO: Randomly generate quanity and power of the consumable (Not all consumables benefit from power)
@@ -142,6 +141,14 @@ public static class LootGenerator
 	{
 		return (Item.ItemGrade)Random.Range((int)Item.ItemGrade.E, (int)Item.ItemGrade.S);
 	}
+
+    private static void RandomTitleAndDescription(AccessoryItem accessoryItem)
+    {
+        AccessoryItem.EAccessoryType type = (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max - 1);
+
+        accessoryItem.ItemStats.Name = RandomAccessoryName(accessoryItem);
+        accessoryItem.ItemStats.Description = RandomAccessoryDescription(accessoryItem);
+    }
 
 	private static void RandomAccessoryProperties(AccessoryItem accessoryItem)
 	{
@@ -260,15 +267,95 @@ public static class LootGenerator
         }
 	}
 
-	private static string RandomAccessoryName()
+    private static string RandomAccessoryName(AccessoryItem accessoryItem)
 	{
-		return "RndName";
+        AccessoryItem.EAccessoryType type = accessoryItem.Type;
+
+        string name = "Generic " + type;
+
+        switch (type)
+        {
+            case AccessoryItem.EAccessoryType.Ring:
+                {
+
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Necklace:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Earring:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Bracelet:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Medal:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.None: // Fall
+            case AccessoryItem.EAccessoryType.Max: // Fall
+            default:
+                {
+                    Debug.Log("Unhandled case: " + type);
+                }
+                break;
+        }
+
+        return name;
 	}
 
-	private static string RandomAccessoryDescription()
+    private static string RandomAccessoryDescription(AccessoryItem accessoryItem)
 	{
-		return "RndDesc";
+        AccessoryItem.EAccessoryType type = accessoryItem.Type;
+
+
+        string description = "Generic " + type;
+
+
+        switch (type)
+        {
+            case AccessoryItem.EAccessoryType.Ring:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Necklace:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Earring:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Bracelet:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.Medal:
+                {
+                }
+                break;
+            case AccessoryItem.EAccessoryType.None: // Fall
+            case AccessoryItem.EAccessoryType.Max: // Fall
+            default:
+                {
+                    Debug.Log("Unhandled case: " + type);
+                }
+                break;
+        }
+
+        return description;
 	}
+
+    private static string RandomFlavourWord(Item.ItemGrade grade)
+    {
+        string flavourWord = "Generic";
+
+        return flavourWord;
+    }
 
 	private static PrimaryStats RandomAccessoryStats(int level)
 	{

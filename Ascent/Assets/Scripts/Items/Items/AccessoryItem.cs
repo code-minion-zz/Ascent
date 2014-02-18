@@ -4,6 +4,29 @@ using System.Collections.Generic;
 
 public class AccessoryItem : Item
 {
+    public enum EAccessoryType
+    {
+        None,
+
+        Ring,
+        Necklace,
+        Earring,
+        Bracelet,
+        Medal,
+
+        Max,
+
+    }
+
+    [System.Xml.Serialization.XmlIgnore]
+    protected EAccessoryType accessoryType;
+
+    public EAccessoryType Type
+    {
+        get { return accessoryType; }
+        set { accessoryType = value; }
+    }
+
 	[System.Xml.Serialization.XmlIgnore]
 	protected PrimaryStats primaryStats = new PrimaryStats();
 
