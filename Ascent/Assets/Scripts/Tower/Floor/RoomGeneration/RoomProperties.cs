@@ -91,6 +91,34 @@ public class RoomProperties
         }
     }
 
+    public void InitialiseTiles(int tilesX, int tilesY)
+    {
+        Width = (tilesX * TileSize);
+        Height = (tilesY * TileSize);
+
+        NumberOfTilesX = tilesX;
+        NumberOfTilesY = tilesY;
+
+        Tiles = new Tile[tilesX, tilesY];
+
+        for (int i = 0; i < NumberOfTilesX; ++i)
+        {
+            for (int j = 0; j < NumberOfTilesY; ++j)
+            {
+                // Create and assign the position of the tile.
+                Tiles[i, j] = new Tile();
+                float xPos = -(tilesX) + (TileSize * 0.5f) + (i * TileSize);
+                float zPos = -(tilesY) + (TileSize * 0.5f) + (j * TileSize);
+
+                Tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
+                Tiles[i, j].TileType = TileType.none;// This needs to be removed later.
+
+                // Assign each tile with a list of attributes.
+                Tiles[i, j].TileAttributes = new List<TileAttribute>();
+            }
+        }
+    }
+
     /// <summary>
     /// Sets and initializes the room tiles.
     /// </summary>
@@ -115,11 +143,36 @@ public class RoomProperties
                 Tiles[i, j] = new Tile();
                 float xPos = -(width) + (TileSize * 0.5f) + (i * TileSize);
                 float zPos = -(height) + (TileSize * 0.5f) + (j * TileSize);
+
                 Tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
                 Tiles[i, j].TileType = TileType.none;// This needs to be removed later.
 
                 // Assign each tile with a list of attributes.
                 Tiles[i, j].TileAttributes = new List<TileAttribute>();
+
+                // TODO: Make sure the room object exists.
+                GameObject tile = new GameObject();
+                tile.transform.parent = room.GetNodeByLayer("Environment").transform;
+                tile.transform.localPosition = Tiles[i, j].Position;
+                tile.name = "Tile[" + i + ", " + j + "]";
+                tile.tag = "RoomTile";
+                Tiles[i, j].GameObject = tile;
+            }
+        }
+    }
+
+    public void CreateBaseTiles()
+    {
+        for (int i = 0; i < NumberOfTilesX; ++i)
+        {
+            for (int j = 0; j < NumberOfTilesY; ++j)
+            {
+                GameObject tile = new GameObject();
+                tile.transform.parent = room.GetNodeByLayer("Environment").transform;
+                tile.transform.localPosition = Tiles[i, j].Position;
+                tile.name = "Tile[" + i + ", " + j + "]";
+                tile.tag = "RoomTile";
+                Tiles[i, j].GameObject = tile;
             }
         }
     }

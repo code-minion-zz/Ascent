@@ -28,6 +28,9 @@ public class Tile
 {
     [NonSerialized]
     private Vector3 position;
+    [NonSerialized]
+    private GameObject gameObject;
+
     // TODO: Get rid of this as this tile is just a place holder.
     private bool isOccupied;
 
@@ -56,6 +59,15 @@ public class Tile
             PosY = position.y;
             PosZ = position.z;
         }
+    }
+
+    /// <summary>
+    /// The game object associated with this tile.
+    /// </summary>
+    public GameObject GameObject
+    {
+        get { return gameObject; }
+        set { gameObject = value; }
     }
 
     public bool IsOccupied
