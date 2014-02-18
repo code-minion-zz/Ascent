@@ -162,6 +162,8 @@ public class Game : MonoBehaviour
 
 	private void Initialise()
 	{
+		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
 		// Never destroy this object unless the game closes itself.
 		DontDestroyOnLoad(gameObject);
 

@@ -72,18 +72,38 @@ public class XMLSerialiser
         } 
     }
 
-    public static object DeserializeObjectBin(string path)
+    public static object DeserializeObjectBin(string path, bool isResource)
     {
+        object obj = null;
+
         BinaryFormatter bf = new BinaryFormatter();
-       
-        FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
 
-        object obj = bf.Deserialize(fs);
+        if (!isResource)
+        {
 
-        fs.Close();
+            FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
+
+            obj = bf.Deserialize(fs);
+
+            fs.Close();
+        }
+        else
+        {
+            TextAsset textAsset = Resources.Load(path) as TextAsset;
+            if (textAsset == null)
+            {
+                Debug.Log(path);
+            }
+            Stream stream = new MemoryStream(textAsset.bytes);
+
+            obj = bf.Deserialize(stream);
+
+            stream.Close();
+        }
 
         return obj;
     }
+
 
 	// Deserialize it back to its original form 
 	public static object DeserializeObject(string pXmlizedString, string myType)

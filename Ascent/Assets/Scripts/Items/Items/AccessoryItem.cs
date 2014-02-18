@@ -4,6 +4,29 @@ using System.Collections.Generic;
 
 public class AccessoryItem : Item
 {
+    public enum EAccessoryType
+    {
+        None,
+
+        Ring,
+        Necklace,
+        Earring,
+        Bracelet,
+        Medal,
+
+        Max,
+
+    }
+
+    [System.Xml.Serialization.XmlIgnore]
+    protected EAccessoryType accessoryType;
+
+    public EAccessoryType Type
+    {
+        get { return accessoryType; }
+        set { accessoryType = value; }
+    }
+
 	[System.Xml.Serialization.XmlIgnore]
 	protected PrimaryStats primaryStats = new PrimaryStats();
 
@@ -61,20 +84,6 @@ public class AccessoryItem : Item
 		protected set { itemProperties = value; }
 	}
 
-    [System.Xml.Serialization.XmlIgnore()]
-	public int Grade
-	{
-		get { return stats.Grade; }
-		set { stats.Grade = value; }
-	}
-
-    [System.Xml.Serialization.XmlIgnore()]
-	public ItemGrade GradeEnum
-	{
-		get { return (ItemGrade)stats.Grade; }
-		set { stats.Grade = (int)value; }
-	}
-
 	public int Durability
 	{
 		get { return durability; }
@@ -126,12 +135,61 @@ public class AccessoryItem : Item
         }
     }
 
+	protected override int SellCost
+	{
+		get 
+		{
+			float sellCost = 0.0f;
+
+			if (appraised)
+			{
+				sellCost = BuyCost * 0.075f;
+			}
+			else
+			{
+				sellCost = SellCostUnAppraised();
+			}
+
+			return Mathf.RoundToInt(sellCost); 
+		}
+	}
+
+	protected override int BuyCost
+	{
+		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=0
+
+		get 
+		{
+			float buyCost = (float)KBaseItemValue + ((float)KMaxItemValue - (float)KBaseItemValue) * Mathf.Pow((((float)stats.Level + (float)gradeHeuristics[GradeEnum]) / (float)StatGrowth.KMaxLevel), 2.0f);
+
+			return Mathf.RoundToInt(buyCost); 
+		}
+	}
+
+	protected override int AppraisalCost
+	{
+		get
+		{
+			float appraisalCost = (float)SellCostUnAppraised() * (1.0f - (1.0f / (float)gradeHeuristics[GradeEnum])) * 0.5f;
+			return Mathf.RoundToInt(appraisalCost);
+		}
+	}
+
+	protected override int RepairCost
+	{
+		get
+		{
+			float repairCost = AppraisalCost * 0.1f;
+			return Mathf.RoundToInt(repairCost);
+		}
+	}
+
 	public override string ToString()
 	{
-		string retVal = "Grade: " +GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
+		string retVal = "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
 			"Desc: " + stats.Description + "\n" +
-			"Dura: " + durability + "\\" + durabilityMax + "\n" +
-			"Value: buy-" + 0 + ", sell-" + 0 + "\n" +
+			"Durability: " + durability + " \\ " + durabilityMax + "\n" +
+			"Value: buy-" + BuyCost + ", sell-" + SellCost + "\n" +
 			"Stats: POW-" + Power + ", FIN-" + Finesse + ", VIT-" + Vitality + ", SPR-" + Spirit + "\n";
 			//"Prop count: " + itemProperties.Count + "\n";
 
@@ -142,4 +200,21 @@ public class AccessoryItem : Item
 
 		return retVal;
 	}
+
+    public override string ToStringUnidentified()
+    {
+        string retVal = "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + "?????" + "\n" +
+            "Desc: " + "?????" + "\n" +
+            "Dura: " + "??" + " \\ " + "??" + "\n" +
+            "Value: buy-" + BuyCost + ", sell-" + SellCost + "\n" +
+            "Stats: POW-" + "??" + ", FIN-" + "??" + ", VIT-" + "??" + ", SPR-" + "??" + "\n";
+        //"Prop count: " + itemProperties.Count + "\n";
+
+        foreach (ItemProperty ip in itemProperties)
+        {
+            retVal += "?????" + "\n";
+        }
+
+        return retVal;
+    }
 }

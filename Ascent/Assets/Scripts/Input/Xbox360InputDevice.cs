@@ -6,6 +6,7 @@ using XInputDotNetPure;
 
 #pragma warning disable 0162
 #pragma warning disable 0429
+#pragma warning disable 0414
 
 public class XBox360InputDevice : InputDevice
 {

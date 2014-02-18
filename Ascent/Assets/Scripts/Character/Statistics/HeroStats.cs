@@ -303,7 +303,6 @@ public class HeroStats : CharacterStats
 	public float AddAccessoriesProperties(float statValue, EStats statType)
 	{
 		Backpack backPack = hero.Backpack;
-        int itemCount = backPack.AccessoryItems.Length;
 
 		foreach (AccessoryItem item in backPack.AccessoryItems)
 		{
@@ -318,7 +317,7 @@ public class HeroStats : CharacterStats
 				{
 					if (((SecondaryStatItemProperty)property).StatType == statType)
 					{
-						statValue += ((SecondaryStatItemProperty)property).BuffValue;
+						((SecondaryStatItemProperty)property).AddBuff(GetBaseStat(statType), ref statValue);
 					}
 				}
 			}

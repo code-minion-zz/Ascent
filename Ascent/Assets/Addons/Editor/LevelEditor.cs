@@ -93,12 +93,12 @@ namespace Ascent
 
             if (GUILayout.Button("Load Room", GUILayout.Width(buttonSize)))
             {
-                directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "bin");
+                directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "txt");
 
                 if (directory != "")
                 {
                     // Load and add the room to the list of rooms.
-                    RoomProperties room = roomSaver.LoadRoom(directory);
+                    RoomProperties room = roomSaver.LoadRoom(directory, false);
 
                     if (room != null)
                     {
@@ -130,7 +130,7 @@ namespace Ascent
                 return;
             }
 
-            directory = EditorUtility.SaveFilePanel("Save Room", "Assets/Resources/Maps", "NewRoom", "bin");
+            directory = EditorUtility.SaveFilePanel("Save Room", "Assets/Resources/Maps", "NewRoom", "txt");
 
             Room room = selectedRoom.GetComponent<Room>();
             room.FindAllNodes();

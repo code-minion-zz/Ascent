@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class HeroInventory 
 {
+	[System.Xml.Serialization.XmlIgnoreAttribute]
     public int MAX_INVENTORY_SLOTS = 15; // can be altered by skills?
 	
 	[System.Xml.Serialization.XmlIgnoreAttribute]
