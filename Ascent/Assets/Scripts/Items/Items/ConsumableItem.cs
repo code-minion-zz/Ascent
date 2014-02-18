@@ -11,13 +11,22 @@ public class ConsumableItem : Item
 	{
 		INVALID = -1,
 
-		Health,
-		Special,
+		HealthPotion,
+		SpecialPotion,
 
 		Key,
 		Bomb,
 
 		MAX
+	}
+
+	[System.Xml.Serialization.XmlIgnore]
+	protected EConsumableType consumableType;
+
+	public EConsumableType Type
+	{
+		get { return consumableType; }
+		set { consumableType = value; }
 	}
 
 	protected int charges;
@@ -34,13 +43,6 @@ public class ConsumableItem : Item
     public float Cooldown
     {
         get { return cooldown; }
-	}
-
-	[System.Xml.Serialization.XmlIgnore()]
-	public ItemGrade GradeEnum
-	{
-		get { return (ItemGrade)stats.Grade; }
-		set { stats.Grade = (int)value; }
 	}
 
     [System.Xml.Serialization.XmlIgnore()]
@@ -60,6 +62,47 @@ public class ConsumableItem : Item
 	{
 		get { return charges > 0 && cooldown == 0.0f; }
 	}
+
+	protected override int SellCost
+	{
+		get
+		{
+			float sellCost = 0.0f;
+
+			if (appraised)
+			{
+				sellCost = BuyCost * 0.075f;
+			}
+			else
+			{
+				sellCost = SellCostUnAppraised();
+			}
+
+			return Mathf.RoundToInt(sellCost);
+		}
+	}
+
+	protected override int BuyCost
+	{
+		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=0
+
+		get
+		{
+			float buyCost = (float)KBaseItemValue + ((float)KMaxItemValue - (float)KBaseItemValue) * Mathf.Pow((((float)stats.Level + (float)gradeHeuristics[GradeEnum]) / (float)StatGrowth.KMaxLevel), 2.0f);
+
+			return Mathf.RoundToInt(buyCost);
+		}
+	}
+
+	protected override int AppraisalCost
+	{
+		get
+		{
+			float appraisalCost = (float)SellCostUnAppraised() * (1.0f - (1.0f / (float)gradeHeuristics[GradeEnum])) * 0.5f;
+			return Mathf.RoundToInt(appraisalCost);
+		}
+	}
+
 
 	public void Process()
 	{
@@ -94,7 +137,13 @@ public class ConsumableItem : Item
 	public override string ToString()
 	{
 		return "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + stats.Name + "\n" +
-			"Desc: " + stats.Description + "\n" + "Value: buy-" + 0 + ", sell-" + 0 + "\n";
+			"Desc: " + stats.Description + "\n" + "Value: buy-" + BuyCost + ", sell-" + SellCost + "\n";
 		
 	}
+
+    public override string ToStringUnidentified()
+    {
+        return "Grade: " + GradeEnum.ToString() + " Lv" + stats.Level + ", Name: " + "?" + "\n" +
+			"Desc: " + "?" + "\n" + "Value: buy-" + BuyCost + ", sell-" + SellCost + "\n";
+    }
 }

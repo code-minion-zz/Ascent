@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UITown_Tavern : MonoBehaviour {
+public class UITown_Tavern : UIPlayerMenuPanel {
 
 	// Use this for initialization
 	void Start () {

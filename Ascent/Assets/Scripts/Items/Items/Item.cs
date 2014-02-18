@@ -1,18 +1,36 @@
+using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public abstract class Item
 {
-    public enum ItemGrade
+    public enum EGrade
     {
 		INVALID_GRADE = -1,
-        E,	// Cursed
-        D,	// Shitty
-        C,	// Not bad but not good either
-        B,	// Kinda good
-        A,	// The bee's knees
-        S,	// Bloody legend
+        E,	
+        D,	
+        C,	
+        B,	
+        A,	
+        S,	
 		MAX_GRADE
     }
+
+	// int is a Heuristic item Value used for gold calculations
+	public static Dictionary<EGrade, int> gradeHeuristics = new Dictionary<EGrade,int>()
+	{
+		{ EGrade.E, 2 },
+		{ EGrade.D, 4 },
+		{ EGrade.C, 5 },
+		{ EGrade.B, 6 },
+		{ EGrade.A, 7 },
+		{ EGrade.S, 9 },
+	};
+
+	[System.Xml.Serialization.XmlIgnore]
+	protected const int KBaseItemValue = 100;
+	[System.Xml.Serialization.XmlIgnore]
+	protected const int KMaxItemValue = 10000;
 
 	protected ItemStats stats;
 	public ItemStats ItemStats
@@ -21,13 +39,64 @@ public abstract class Item
 		set { stats = value; }
 	}
 
-    protected virtual int CalculateSellValue()
+    protected bool appraised;
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public bool IsAppraised
     {
-        // TODO: Find a formula for this. Or retrieve the value from elsewhere.
+        get { return appraised; }
+        set { appraised = value; }
+    }
 
-		// 50% of base value + modifiers?
-		float modifier = 1f;
 
-		return (int)(0 * 0.5f * modifier);
+    [System.Xml.Serialization.XmlIgnore()]
+    public int Grade
+    {
+        get { return stats.Grade; }
+        set { stats.Grade = value; }
+    }
+
+    [System.Xml.Serialization.XmlIgnore()]
+    public EGrade GradeEnum
+    {
+        get { return (EGrade)stats.Grade; }
+        set { stats.Grade = (int)value; }
+    }
+
+    protected virtual int SellCost
+    {
+		// To be overriden
+		get { return 0; }
+    }
+
+	protected virtual int BuyCost
+	{
+		// To be overriden
+		get { return 0; }
+	}
+
+	protected virtual int AppraisalCost
+	{
+		// To be overriden
+		get { return 0; }
+	}
+
+	protected virtual int RepairCost
+	{
+		// To be overriden
+		get { return 0; }
+	}
+
+	protected virtual int SellCostUnAppraised()
+	{
+		return Mathf.RoundToInt((float)BuyCost * 0.075f);
+	}
+
+
+
+    public virtual string ToStringUnidentified()
+    {
+        return "This needs to be overidden.";
+
     }
 }

@@ -13,28 +13,171 @@ public static class LootGenerator
 		Any,
 	}
 
-	public enum EAccessoryTemplate
+	private enum EAccessoryTemplate
 	{
 		Power = 0,
 		Finesse,
 		Vitaliy,
 		Spirit,
+
 		PowerFinesse,
 		PowerVitality,
 		PowerSpirit,
+
 		FinesseVitality,
 		FinesseSpirit,
+
 		VitalitySpirit,
+
 		All,
+
 		Max
 	}
+
+	private enum EAccessoryMaterial
+	{
+		// http://www.makermends.com/gemstones.html
+
+		Ruby = EAccessoryTemplate.Power,
+		Topaz = EAccessoryTemplate.Finesse,
+		Emerald = EAccessoryTemplate.Vitaliy,
+		Sapphire = EAccessoryTemplate.Spirit,
+
+		Jet = EAccessoryTemplate.PowerFinesse,
+		Bloodstone = EAccessoryTemplate.PowerVitality,
+		Moonstone = EAccessoryTemplate.PowerSpirit,
+
+		Jasper = EAccessoryTemplate.FinesseVitality,
+		Turquiose = EAccessoryTemplate.FinesseSpirit,
+
+		Lazuli = EAccessoryTemplate.VitalitySpirit,
+
+		Opal = EAccessoryTemplate.All,
+
+		Max
+	}
+
+	private static EAccessoryTemplate currentAccessoryTemplate;
+
+	private const int maxCraftSynoynms = 5;
+	static string[] craftSynoynms = new string[maxCraftSynoynms] 
+	{
+		"Crafted",
+		"Forged",
+		"Constructed",
+		"Produced",
+		"Manufactured",
+	};
+
+	private const int maxLocationNames = 1;
+	static string[] locationNames = new string[maxLocationNames] 
+	{
+		"The Land of Loofs",
+	};
+
+	private const int maxPersonTitle = 3;
+	static string[] personNameTitles = new string[maxPersonTitle] 
+	{
+		"World Famous ",
+		"Locally Produced ",
+		"Home Grown "
+	};
+
+	private const int maxPersonNames = 3;
+	static string[] personNames = new string[maxPersonNames] 
+	{
+		"Kitler",
+		"Kittens",
+		"Kittles",
+	};
+
+	private const int maxPersonSuffix = 2;
+	static string[] personNameSuffixes = new string[maxPersonSuffix] 
+	{
+		" the Loof",
+		" the Calculator"
+	};
+
+	private const int maxRace = 1;
+	static string[] raceNames = new string[maxRace] 
+	{
+	    "Loofen",
+	};
+
+	private const int maxStoreNames = 1;
+	static string[] storeNames = new string[maxStoreNames] 
+	{
+	    "Kitler's Kool Kilo-Jools",
+	};
+
+	private const int maxBrandNames = 1;
+	static string[] brandNames = new string[maxBrandNames] 
+	{
+	    "Kitch",
+	};
+
+	private const int maxGradeE_Adjectives = 1;
+	static string[] gradeEAdjectives = new string[maxBrandNames] 
+	{
+	    "Damaged",
+	};
+
+	private enum EMaxGradeAjective
+	{
+		E = 1,
+		D = 1,
+		C = 1,
+		B = 1,
+		A = 1,
+		S = 1,
+	}
+
+	static Dictionary<Item.EGrade, string[]> gradeQualitySynonyms = new Dictionary<Item.EGrade, string[]>()
+	{
+		{ Item.EGrade.E, new string[(int)EMaxGradeAjective.E]
+			{
+				   "Damaged",
+			}
+		},
+
+		{ Item.EGrade.D, new string[(int)EMaxGradeAjective.D]
+			{
+				   "Flawed",
+			}
+		},
+
+		{ Item.EGrade.C, new string[(int)EMaxGradeAjective.C]
+			{
+				   "Clean",
+			}
+		},
+
+		{ Item.EGrade.B, new string[(int)EMaxGradeAjective.B]
+			{
+				   "Polished",
+			}
+		},
+
+		{ Item.EGrade.A, new string[(int)EMaxGradeAjective.A]
+			{
+				   "Superb",
+			}
+		},
+
+		{ Item.EGrade.S, new string[(int)EMaxGradeAjective.S]
+			{
+				   "Immaculate",
+			}
+		},
+	};
+
 
 	public static Item RandomlyGenerateItem(int floorNum, ELootType type, bool identified)
 	{
 		// Randomly select the type of item
 		if (type == ELootType.Any)
 		{
-			type = (ELootType)Random.Range(0, 1);
+			type = (ELootType)Random.Range(0, 2);
 		}
 
 		Item brandSpankingNewItem = null;
@@ -59,17 +202,23 @@ public static class LootGenerator
 
 	public static Item RandomlyGenerateAccessory(int floorNum, bool idendified)
 	{
-		Item.ItemGrade grade = RandomGrade();
+		Item.EGrade grade = RandomGrade();
 
 		Item newItem = new AccessoryItem();
+
+		currentAccessoryTemplate = (EAccessoryTemplate)Random.Range(0, (int)EAccessoryTemplate.Max);
+
 		AccessoryItem newAccItem = newItem as AccessoryItem;
 		newAccItem.PrimaryStats = RandomAccessoryStats(floorNum);
 		newAccItem.ItemStats = new ItemStats();
 		newAccItem.ItemStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
-		newAccItem.ItemStats.Name = RandomAccessoryName();
-		newAccItem.ItemStats.Description = RandomAccessoryDescription();
-		newAccItem.ItemStats.Grade = (int)grade;
+        newAccItem.ItemStats.Grade = (int)grade;
+		newAccItem.DurabilityMax = RandomDurability(grade);
+		newAccItem.Durability = newAccItem.DurabilityMax;
+		((AccessoryItem)newAccItem).Type = RandomAccessoryType();
+		
 
+        RandomTitleAndDescription((AccessoryItem)newAccItem);
 		RandomAccessoryProperties((AccessoryItem)newItem);
 
 		return newItem;
@@ -77,33 +226,35 @@ public static class LootGenerator
 
 	public static Item RandomlyGenerateConsumable(int floorNum, bool identified)
 	{
-		Item.ItemGrade grade = RandomGrade();
+		Item.EGrade grade = RandomGrade();
 
 		ConsumableItem.EConsumableType consumableType = (ConsumableItem.EConsumableType)(Random.Range((int)ConsumableItem.EConsumableType.INVALID + 1, (int)ConsumableItem.EConsumableType.MAX));
 		ConsumableItem newItem = null;
         ItemStats stats = new ItemStats();
         stats.Level = floorNum;
         stats.Grade = (int)grade;
-        stats.Name = RandomAccessoryName();
-        stats.Description = RandomAccessoryDescription();
+        stats.Name = "Consumables";
+        stats.Description = "Description";
 
 		// Create the consumable item
 		// TODO: Randomly generate quanity and power of the consumable (Not all consumables benefit from power)
 
 		switch (consumableType)
 		{
-			case ConsumableItem.EConsumableType.Health:
+			case ConsumableItem.EConsumableType.HealthPotion:
 				{
 					newItem = new HealthPotionItem();
-                    stats.Name = "HPPot";
+                    stats.Name = "Health Potion";
+					stats.Description = "Restore some Health.";
                     newItem.Charges = 5;
                     newItem.CooldownMax = 1.0f;
 				} 
 				break;
-			case ConsumableItem.EConsumableType.Special:
+			case ConsumableItem.EConsumableType.SpecialPotion:
 				{
 					newItem = new SpecialPotionItem();
-                    stats.Name = "SPPot";
+                    stats.Name = "Special Potion";
+					stats.Description = "Restore some Special Power.";
                     newItem.Charges = 5;
                     newItem.CooldownMax = 1.0f;
 				}
@@ -112,6 +263,7 @@ public static class LootGenerator
 				{
 					newItem = new BombItem();
                     stats.Name = "Bomb";
+					stats.Description = "Use em' to blow up hidden pathways or enemies!";
                     newItem.Charges = 5;
                     newItem.CooldownMax = 1.0f;
 				}
@@ -120,6 +272,7 @@ public static class LootGenerator
 				{
 					newItem = new KeyItem();
                     stats.Name = "Key";
+					stats.Description = "Use to open locked doors!";
                     newItem.Charges = 5;
 				}
 				break;
@@ -132,21 +285,91 @@ public static class LootGenerator
 
         if (newItem != null)
         {
+			newItem.Type = consumableType;
             newItem.ItemStats = stats;
         }
 
 		return (Item)newItem;
 	}
 
-	private static Item.ItemGrade RandomGrade()
+	private static AccessoryItem.EAccessoryType RandomAccessoryType()
 	{
-		return (Item.ItemGrade)Random.Range((int)Item.ItemGrade.E, (int)Item.ItemGrade.S);
+		return (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max);
+	}
+
+	private static Item.EGrade RandomGrade()
+	{
+		return (Item.EGrade)Random.Range((int)Item.EGrade.INVALID_GRADE + 1, (int)Item.EGrade.MAX_GRADE);
+	}
+
+    private static void RandomTitleAndDescription(AccessoryItem accessoryItem)
+    {
+        accessoryItem.ItemStats.Name = RandomAccessoryName(accessoryItem);
+
+		if(Random.Range(0, 2) == 0)
+		{
+			accessoryItem.ItemStats.Description = RandomAccessoryCityThemedDescription(accessoryItem);
+		}
+		else
+		{
+			accessoryItem.ItemStats.Description = RandomAccessoryTowerThemedDescription(accessoryItem);
+		}
+    }
+
+	private static int RandomDurability(Item.EGrade grade)
+	{
+		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=1
+
+		int maxDuability = 0;
+
+		switch (grade)
+		{
+			case Item.EGrade.E:
+				{
+					maxDuability = 30 + (Random.Range(0, 41) - 20);
+				}
+				break;
+			case Item.EGrade.D:
+				{
+					maxDuability = 50 + (Random.Range(0, 31) - 15);
+				}
+				break;
+			case Item.EGrade.C:
+				{
+					maxDuability = 60 + (Random.Range(0, 21) - 10);
+				}
+				break;
+			case Item.EGrade.B:
+				{
+					maxDuability = 70 + (Random.Range(0, 11) - 5);
+				}
+				break;
+			case Item.EGrade.A:
+				{
+					maxDuability = 80 + (Random.Range(0, 11) - 5);
+				}
+				break;
+			case Item.EGrade.S:
+				{
+					maxDuability = 100;
+				}
+				break;
+			case Item.EGrade.MAX_GRADE:	// Fall
+			case Item.EGrade.INVALID_GRADE:	// Fall
+			default:
+				{
+					Debug.LogError("Unhandled case.");		
+				}
+				break;
+		}
+
+		return maxDuability;
 	}
 
 	private static void RandomAccessoryProperties(AccessoryItem accessoryItem)
 	{
         // Randomly choose properties based on grade.
-        int numberOfProperties = Random.Range(0, accessoryItem.Grade);
+        int numberOfProperties = Random.Range(0, accessoryItem.Grade + 1);
 
         for (int i = 0; i < numberOfProperties; ++i)
         {
@@ -260,16 +483,6 @@ public static class LootGenerator
         }
 	}
 
-	private static string RandomAccessoryName()
-	{
-		return "RndName";
-	}
-
-	private static string RandomAccessoryDescription()
-	{
-		return "RndDesc";
-	}
-
 	private static PrimaryStats RandomAccessoryStats(int level)
 	{
 		// Random between different templates
@@ -279,9 +492,7 @@ public static class LootGenerator
 
 		PrimaryStats stats = new PrimaryStats();
 
-		EAccessoryTemplate template = (EAccessoryTemplate)Random.Range(0, (int)EAccessoryTemplate.Max);
-
-		switch (template)
+		switch (currentAccessoryTemplate)
 		{
 			case EAccessoryTemplate.Power:
 				{
@@ -370,4 +581,157 @@ public static class LootGenerator
 		return points;
 	}
 
+	private static string RandomAccessoryName(AccessoryItem accessoryItem)
+	{
+		AccessoryItem.EAccessoryType type = accessoryItem.Type;
+
+		string name = RandomFlavourWord(accessoryItem.GradeEnum) + " " + (EAccessoryMaterial)currentAccessoryTemplate + " " + type.ToString();
+
+		return name;
+	}
+
+	private static string RandomAccessoryCityThemedDescription(AccessoryItem accessoryItem)
+	{
+		string description = "Generic " + accessoryItem.Type;
+
+		int maxStories = 2;
+		int randomStory = Random.Range(0, maxStories + 1);
+
+		switch (randomStory)
+		{
+			case 0: // [CraftSynonym] by [Person/Race] of [Location/Store].
+				{
+					int name = Random.Range(0, 2);
+					int from = Random.Range(0, 2);
+
+					string strName = (name == 0 ? RandomPersonName() : RandomRaceName(false));
+					string strLocation = (from == 0 ? (" from " + RandomLocationName()) : (" of " + RandomStoreName(false)));
+
+					description = RandomCreationSynoynm(false) + " by " + strName + strLocation + ".";
+				}
+				break;
+			case 1: // [Store] accessories are currently the hottest store in town!
+				{
+					description = RandomBrandName(false) + " accessories are currently the hottest things in town!";
+				}
+				break;
+			case 2: // Accessories designed by [Person/Store] are the latest craze!
+				{
+					int by = Random.Range(0, 2);
+					string strBy = (by == 0 ? RandomPersonName() : RandomStoreName(false));
+
+					description = "Accessories designed by " + strBy + " are the latest craze!";
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled case.");
+				}
+				break;
+		}
+
+		return description;
+	}
+
+	private static string RandomAccessoryTowerThemedDescription(AccessoryItem accessoryItem)
+	{
+		string description = "Generic " + accessoryItem.Type;
+
+		int maxStories = 2;
+		int randomStory = Random.Range(0, maxStories);
+
+		switch (randomStory)
+		{
+			case 0: 
+				{
+					description = "Really dirty but pretty.";
+				}
+				break;
+			case 1: 
+				{
+					description = "Feels like it has been inside something.";
+				}
+				break;
+			case 2: 
+				{
+					description = "Has a weird smell to it.";
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled case.");
+				}
+				break;
+		}
+
+		return description;
+	}
+
+
+	private static string RandomFlavourWord(Item.EGrade grade)
+	{
+		int rand = Random.Range(0, gradeQualitySynonyms[grade].Length);
+	
+		string flavourWord = gradeQualitySynonyms[grade][rand];
+
+		return flavourWord;
+	}
+
+	private static string RandomCreationSynoynm(bool lower)
+	{
+		int rand = Random.Range(0, maxCraftSynoynms);
+
+		string creationSynoynm = craftSynoynms[rand];
+
+		if (lower)
+		{
+			creationSynoynm = creationSynoynm.ToLower();
+		}
+
+		return creationSynoynm;
+	}
+
+	private static string RandomPersonName()
+	{
+		// Title
+		int rand = Random.Range(0, maxPersonTitle);
+		string name = personNameTitles[rand];
+
+		// Name
+		rand = Random.Range(0, maxPersonNames);
+		name += personNames[rand];
+
+		// Suffix
+		rand = Random.Range(0, maxPersonSuffix);
+		if (personNameSuffixes[rand] != "")
+		{
+			name += personNameSuffixes[rand];
+		}
+
+		return name;
+	}
+
+	private static string RandomLocationName()
+	{
+		int rand = Random.Range(0, maxLocationNames);
+		return locationNames[rand];
+	}
+
+	private static string RandomBrandName(bool lower)
+	{
+		int rand = Random.Range(0, maxBrandNames);
+		return brandNames[rand];
+	}
+
+	private static string RandomStoreName(bool lower)
+	{
+		int rand = Random.Range(0, maxStoreNames);
+		return storeNames[rand];
+	}
+
+	private static string RandomRaceName(bool lower)
+	{
+		int rand = Random.Range(0, maxRace);
+		return raceNames[rand];
+	}
 }
