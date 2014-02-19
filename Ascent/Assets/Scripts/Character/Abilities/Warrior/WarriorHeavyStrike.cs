@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorHeavyStrike : Action 
+public class WarriorHeavyStrike : Ability 
 {
     bool performed = false;
     public float radius = 4.0f;

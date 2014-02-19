@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnchantedStatueSlam : Action
+public class EnchantedStatueSlam : Ability
 {
 	private Arc damageArea;
 	private float prevSpeed;

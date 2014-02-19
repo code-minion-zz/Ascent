@@ -100,6 +100,9 @@ public abstract class Enemy : Character
             Debug.LogError("Could not find AIAgent component. Attach one to AI.", this);
         }
 
+        loadout = new EnemyAbilityLoadout();
+        loadout.Initialise(this);
+
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
 
         animator.hasAnimations = false;
@@ -171,7 +174,7 @@ public abstract class Enemy : Character
 
             if (CanMove && CanAct)
             {
-                if (activeAbility == null)
+                if (!loadout.IsAbilityActive)
                 {
                     AIAgent.MindAgent.Process();
                 }

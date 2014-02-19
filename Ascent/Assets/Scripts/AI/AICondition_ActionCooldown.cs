@@ -3,9 +3,9 @@ using System.Collections;
 
 public class AICondition_ActionCooldown : AICondition
 {
-	Action action;
+	Ability action;
 
-	public AICondition_ActionCooldown(Action action)
+	public AICondition_ActionCooldown(Ability action)
 	{
 		this.action = action;
 	}

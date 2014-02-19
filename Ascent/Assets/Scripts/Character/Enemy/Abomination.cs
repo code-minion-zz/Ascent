@@ -16,25 +16,29 @@ public class Abomination : Enemy
 
     public override void Initialise()
     {
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination, this);
+
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination,this);
-
         // Add abilities
-        Action strike = new AbominationStrike();
+        loadout.SetSize(3);
+
+        Ability strike = new AbominationStrike();
         strike.Initialise(this);
-        abilities.Add(strike);
         strikeActionID = 0;
+        loadout.SetAbility(strike, strikeActionID);
 
-        Action stomp = new AbominationStomp();
+        Ability stomp = new AbominationStomp();
         stomp.Initialise(this);
-        abilities.Add(stomp);
         stompActionID = 1;
+        loadout.SetAbility(stomp, stompActionID);
 
-        Action charge = new AbominationCharge();
+
+        Ability charge = new AbominationCharge();
         charge.Initialise(this);
-        abilities.Add(charge);
         chargeActionID = 2;
+        loadout.SetAbility(charge, chargeActionID);
+
 
         InitialiseAI();
 
@@ -58,7 +62,7 @@ public class Abomination : Enemy
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionEnd(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
             trigger.OnTriggered += OnInitialChargeEnd;
         }
@@ -68,26 +72,26 @@ public class Abomination : Enemy
             ChangeTargetTrigger = behaviour.AddTrigger();
             ChangeTargetTrigger.Priority = AITrigger.EConditionalExit.Stop;
             ChangeTargetTrigger.AddCondition(new AICondition_Timer(6.0f, 0.0f, 5.0f, true));
-            ChangeTargetTrigger.AddCondition(new AICondition_ActionEnd(abilities[chargeActionID]), AITrigger.EConditional.Or);
+            ChangeTargetTrigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]), AITrigger.EConditional.Or);
             //ChangeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
             ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
             ChangeTargetTrigger.OnTriggered += OnCanChangeTarget;
 
             AITrigger trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
             trigger.OnTriggered += OnTargetInSight;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
+            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
             trigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
             trigger.OnTriggered += OnSurrounded;
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[strikeActionID]));
+            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[strikeActionID]));
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
             trigger.OnTriggered += OnCanUseStrike;
         }
@@ -97,7 +101,7 @@ public class Abomination : Enemy
 
     public void OnInitialCharge()
     {
-        UseAbility(chargeActionID);
+        loadout.UseAbility(chargeActionID);
     }
 
     public void OnInitialChargeEnd()
@@ -114,17 +118,17 @@ public class Abomination : Enemy
 
     public void OnSurrounded()
     {
-        UseAbility(stompActionID);
+        loadout.UseAbility(stompActionID);
     }
 
     public void OnTargetInSight()
     {
-        UseAbility(chargeActionID);
+        loadout.UseAbility(chargeActionID);
     }
 
     public void OnCanUseStrike()
     {
-        UseAbility(strikeActionID);
+        loadout.UseAbility(strikeActionID);
     }
 
     public override void OnDisable()

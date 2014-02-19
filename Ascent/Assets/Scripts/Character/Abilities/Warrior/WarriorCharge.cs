@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// Charging Action/Skill. 
 /// Deals damage and knockback based on distance traveled (in other words, momentum)
 /// </summary>
-public class WarriorCharge : Action 
+public class WarriorCharge : Ability 
 {	
 	private float distanceMax = 12.5f;
 	
@@ -153,7 +153,7 @@ public class WarriorCharge : Action
         else if (timeElapsedSinceStarting == animationLength)
         {
 			DoDamageAtEndOfPath();
-			owner.StopAbility();
+			owner.Loadout.StopAbility();
         }
 
 		++frameCount;

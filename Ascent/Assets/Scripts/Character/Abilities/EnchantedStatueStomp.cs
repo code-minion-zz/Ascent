@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnchantedStatueStomp : Action
+public class EnchantedStatueStomp : Ability
 {
 	private const float explosionMaxRadius = 7.5f;
 	private GameObject stompObject;

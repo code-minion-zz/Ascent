@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WarriorWarCry : Action 
+public class WarriorWarCry : Ability 
 {
     public override void Initialise(Character owner)
 	{
