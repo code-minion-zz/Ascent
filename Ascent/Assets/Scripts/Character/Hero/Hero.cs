@@ -304,9 +304,16 @@ public abstract class Hero : Character
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
+	public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character source)
 	{
-        base.ApplyDamage(unmitigatedDamage, type, owner);
+        base.ApplyDamage(unmitigatedDamage, crit, type, source);
+
+        // Apply durability Loss
+        AccessoryItem[] accessories = backpack.AccessoryItems;
+        foreach (AccessoryItem acc in accessories)
+        {
+            acc.ApplyDurabilityDamage(unmitigatedDamage, crit, this, source);
+        }
 
         if (type == Character.EDamageType.Trap)
         {

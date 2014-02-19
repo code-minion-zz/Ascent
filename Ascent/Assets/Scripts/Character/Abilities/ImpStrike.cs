@@ -59,7 +59,7 @@ public class ImpStrike : Action
                 foreach (Character c in characters)
                 {
                     // Apply damage and knockback to the enemey.
-                    c.ApplyDamage(owner.DamageFormulaA(1.0f, 1.10f), Character.EDamageType.Physical, owner);
+                    c.ApplyDamage(owner.DamageFormulaA(1.0f, 1.10f), false, Character.EDamageType.Physical, owner);
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);

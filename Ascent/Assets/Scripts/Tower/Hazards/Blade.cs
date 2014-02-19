@@ -48,7 +48,7 @@ public class Blade : MonoBehaviour
 	private void CollideWithHero(Hero hero, Collision collision)
 	{
 		// Apply damage to the hero
-		hero.ApplyDamage(damage, Character.EDamageType.Trap, null);
+		hero.ApplyDamage(damage, false, Character.EDamageType.Trap, null);
 		hero.ApplyKnockback(-collision.contacts[0].normal, 1.0f);
 
 	}

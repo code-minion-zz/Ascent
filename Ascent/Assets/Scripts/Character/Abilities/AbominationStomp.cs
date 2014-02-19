@@ -68,7 +68,7 @@ public class AbominationStomp : Action
                 {
                     foreach (Character c in characters)
                     {
-						c.ApplyDamage(owner.DamageFormulaA(1, 0.75f), Character.EDamageType.Physical, owner);
+						c.ApplyDamage(owner.DamageFormulaA(1, 0.75f), false, Character.EDamageType.Physical, owner);
                         c.ApplyStatusEffect(new StunnedDebuff(owner, c, 1.0f));
                         c.ApplyKnockback(c.transform.position - owner.transform.position, knockBack);
 

@@ -236,7 +236,7 @@ public abstract class Enemy : Character
 		}
 	}
 
-    public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
+    public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character owner)
     {
         // Check to see if the enemy was last damaged by a hero,
         // thus update the floor statistics of the hero. This function may want to pass in
@@ -249,7 +249,7 @@ public abstract class Enemy : Character
             hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
         }
 
-        base.ApplyDamage(unmitigatedDamage, type, owner);
+        base.ApplyDamage(unmitigatedDamage, crit, type, owner);
     }
 
 	protected override void OnDeath ()

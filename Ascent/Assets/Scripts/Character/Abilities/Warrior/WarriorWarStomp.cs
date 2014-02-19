@@ -72,7 +72,7 @@ public class WarriorWarStomp : Action
 						{
 							damage = owner.DamageFormulaA(0.0f, 0.5f);
 
-                            e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                            e.ApplyDamage(damage, false, Character.EDamageType.Physical, owner);
 							e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.0f));
 
 							// Create a blood splatter effect on the enemy.
