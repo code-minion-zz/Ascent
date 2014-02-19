@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class RatTackle : Action
+public class RatTackle : Ability
 {
 	private Circle damageArea;
 	private float prevSpeed;

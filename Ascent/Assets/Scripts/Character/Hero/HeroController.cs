@@ -7,6 +7,7 @@ public class HeroController : MonoBehaviour
 	private Hero hero;
 	private HeroAnimator animator;
 	private CharacterMotor motor;
+    private HeroAbilityLoadout loadout;
 
     private InputDevice inputDevice;
     private THeroActionButtonPair actionButtonPair = new THeroActionButtonPair();
@@ -24,12 +25,13 @@ public class HeroController : MonoBehaviour
 		set;
 	}
 
-	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor)
+	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor, HeroAbilityLoadout loadout)
 	{
 		this.hero = hero;
 		this.inputDevice = inputDevice;
 		this.animator = animator;
 		this.motor = motor;
+        this.loadout = loadout;
 
 		CanUseInput = true;
 	}
@@ -49,9 +51,9 @@ public class HeroController : MonoBehaviour
 				}
 
 				// Action's that cannot be interrupted will not cause this to happen.
-				if (hero.CanInterruptActiveAbility)
+				if (hero.Loadout.CanInterruptActiveAbility)
 				{
-                    hero.StopAbility();
+                    hero.Loadout.StopAbility();
 
 					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
 				}
@@ -61,9 +63,9 @@ public class HeroController : MonoBehaviour
             else if(!hero.CanAct && !hero.CanAttack && ! hero.CanMove)
             {
 
-                if (hero.CanInterruptActiveAbility)
+                if (hero.Loadout.CanInterruptActiveAbility)
                 {
-                    hero.StopAbility();
+                    hero.Loadout.StopAbility();
 
                     animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
                 }
@@ -91,7 +93,7 @@ public class HeroController : MonoBehaviour
 			{
 				if (actionButtonPair.control.WasReleased)
 				{
-					hero.UseAbility(actionButtonPair.action);
+					hero.Loadout.UseAbility(hero.Loadout.GetAbilityID(actionButtonPair.action));
 					actionButtonPair.action = null;
 				}
 			}
@@ -108,95 +110,62 @@ public class HeroController : MonoBehaviour
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
-		// If an action is an instant cast, it will be perform as soon as the button is pressed.
-		// If it has a cast component then the cast will occur when the button is pressed...
-		// the action is performed after the button has been released.
-		// Actions will be successfully performed only if conditions such as cooldowns are met.
-
-		// Left Bump
-		if (device.LeftBumper.WasPressed)
-		{
-            Action action = hero.Abilities[(int)EHeroAction.Action2];
-            if (action.IsInstanctCast)
-            {
-                hero.UseAbility((int)EHeroAction.Action2);
-            }
-            else
-            {
-				if (hero.CanCastAbility((int)EHeroAction.Action2))
-				{
-					if (hero.UseCastAbility((int)EHeroAction.Action2))
-					{
-						actionButtonPair.action = action;
-						actionButtonPair.control = device.LeftBumper;
-					}
-				}
-            }
-		}
-
 		// Left Trigger
-		else if (device.LeftTrigger.WasPressed)
+		if (device.LeftTrigger.WasPressed)
 		{
-			Action action = hero.Abilities[(int)EHeroAction.Action1];
-			if (action.IsInstanctCast)
-			{
-				hero.UseAbility((int)EHeroAction.Action1);
-			}
-			else
-			{
-				if (hero.CanCastAbility((int)EHeroAction.Action1))
-				{
-					if (hero.UseCastAbility((int)EHeroAction.Action1))
-					{
-						actionButtonPair.action = action;
-						actionButtonPair.control = device.LeftTrigger;
-					}
-				}
-			}
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device);
 		}
+
+        // Left Bump
+        else if (device.LeftBumper.WasPressed)
+        {
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device);
+        }
 
 		// Right bump
 		else if (device.RightBumper.WasPressed)
 		{
-            Action action = hero.Abilities[(int)EHeroAction.Action3];
-            if (action.IsInstanctCast)
-            {
-                hero.UseAbility((int)EHeroAction.Action3);
-            }
-            else
-            {
-                if (hero.CanCastAbility((int)EHeroAction.Action3))
-                {
-                    if (hero.UseCastAbility((int)EHeroAction.Action3))
-					{
-						actionButtonPair.action = action;
-						actionButtonPair.control = device.RightBumper;
-					}
-                }
-            }
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device);
 		}
 
 		// Right Trigger
 		else if (device.RightTrigger.WasPressed)
 		{
-			Action action = hero.Abilities[(int)EHeroAction.Action4];
-			if (action.IsInstanctCast)
-			{
-				hero.UseAbility((int)EHeroAction.Action4);
-			}
-			else
-			{
-				if (hero.CanCastAbility((int)EHeroAction.Action4))
-				{
-					if (hero.UseCastAbility((int)EHeroAction.Action4))
-					{
-						actionButtonPair.action = action;
-						actionButtonPair.control = device.RightTrigger;
-					}
-				}
-			}
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device);
 		}
 	}
+
+    private bool ProcessAbility(Ability ability, InputDevice device)
+    {
+        // If an action is an instant cast, it will be perform as soon as the button is pressed.
+        // If it has a cast component then the cast will occur when the button is pressed...
+        // the action is performed after the button has been released.
+        // Actions will be successfully performed only if conditions such as cooldowns are met.
+
+        int abilityID = hero.Loadout.GetAbilityID(ability);
+
+        bool usedAbility = false;
+
+        if (ability.IsInstanctCast)
+        {
+            usedAbility = hero.Loadout.UseAbility(abilityID);
+        }
+        else
+        {
+            if (hero)
+            {
+                if (hero.Loadout.UseCastAbility(abilityID))
+                {
+                    actionButtonPair.action = ability;
+                    actionButtonPair.control = device.LeftBumper;
+
+                    usedAbility = true;
+                }
+            }
+        }
+
+        return usedAbility;
+    }
 
     public void ProcessDPad(InputDevice device)
     {
@@ -232,7 +201,7 @@ public class HeroController : MonoBehaviour
 
 		// The Hero can move if there is no action being performed and the Hero does not have a status effect impeding movement.
 		// If the action allows it, the action can also be interrupted to allow movement.
-		if ((motor.IsHaltingMovementToPerformAction || hero.CanInterruptActiveAbility) && hero.CanMove)
+        if ((motor.IsHaltingMovementToPerformAction || hero.Loadout.CanInterruptActiveAbility) && hero.CanMove)
 		{
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
@@ -359,7 +328,7 @@ public class HeroController : MonoBehaviour
 		// TODO: Remove X or A depending on what people think is more intuitive
 		if (device.X.WasPressed || device.A.WasPressed) 
 		{
-			hero.UseAbility((int)EHeroAction.Strike);
+			hero.Loadout.UseAbility((int)EHeroAction.Strike);
 		}
 
 		if (device.Y.WasPressed)
@@ -508,6 +477,8 @@ public class HeroController : MonoBehaviour
 		Action3 = 3,
 		Action4 = 4,
 
+        ActionMax = 5,
+
 		Consumable1 = 0,
 		Consumable2 = 1,
 		Consumable3 = 2,
@@ -516,7 +487,7 @@ public class HeroController : MonoBehaviour
 
 	private struct THeroActionButtonPair
 	{
-		public Action action;
+		public Ability action;
 		public InputControl control;
 	}
 

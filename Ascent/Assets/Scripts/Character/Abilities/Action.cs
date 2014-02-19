@@ -7,7 +7,7 @@ using System.Collections;
 [System.Xml.Serialization.XmlInclude(typeof(WarriorCharge))]
 [System.Xml.Serialization.XmlInclude(typeof(WarriorWarCry))]
 [System.Xml.Serialization.XmlInclude(typeof(WarriorWarStomp))]
-public abstract class Action
+public abstract class Ability
 {
     protected float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
@@ -130,7 +130,7 @@ public abstract class Action
 
         if (timeElapsedSinceStarting >= animationLength)
 		{
-			owner.StopAbility();
+			owner.Loadout.StopAbility();
 		}
 	}
 

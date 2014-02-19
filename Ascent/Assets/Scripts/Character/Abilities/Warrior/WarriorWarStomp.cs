@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorWarStomp : Action
+public class WarriorWarStomp : Ability
 {
     private const float explosionMaxRadius = 10.0f;
     private GameObject stompObject;

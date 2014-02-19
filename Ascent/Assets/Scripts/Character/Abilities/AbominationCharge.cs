@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// Charging Action/Skill. 
 /// Deals damage and knockback based on distance traveled (in other words, momentum)
 /// </summary>
-public class AbominationCharge : Action
+public class AbominationCharge : Ability
 {
     private float distanceMax = 50.0f;
 
@@ -116,7 +116,7 @@ public class AbominationCharge : Action
 				owner.ApplyStatusEffect(new StunnedDebuff(owner, owner, 2.5f));
             }
 
-            owner.StopAbility();
+            owner.Loadout.StopAbility();
         }
     }
 

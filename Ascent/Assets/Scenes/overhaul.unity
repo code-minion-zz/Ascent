@@ -2652,6 +2652,7 @@ GameObject:
   - 114: {fileID: 27996129}
   - 65: {fileID: 27996128}
   - 114: {fileID: 27996127}
+  - 114: {fileID: 27996130}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -2717,6 +2718,19 @@ MonoBehaviour:
   Fumee: {fileID: 42680232}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &27996130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 858535662}
+  m_GameObject: {fileID: 27996125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &28209983
 GameObject:
   m_ObjectHideFlags: 0
@@ -5582,6 +5596,7 @@ GameObject:
   - 4: {fileID: 96408297}
   - 114: {fileID: 96408299}
   - 65: {fileID: 96408298}
+  - 114: {fileID: 96408300}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -5630,6 +5645,19 @@ MonoBehaviour:
   direction: 2
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 284179320}
+--- !u!114 &96408300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1286888900}
+  m_GameObject: {fileID: 96408296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &97138017
 GameObject:
   m_ObjectHideFlags: 0
@@ -7209,6 +7237,7 @@ GameObject:
   - 114: {fileID: 125831454}
   - 65: {fileID: 125831453}
   - 114: {fileID: 125831452}
+  - 114: {fileID: 125831455}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -7274,6 +7303,19 @@ MonoBehaviour:
   Fumee: {fileID: 2032587744}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &125831455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 536410587}
+  m_GameObject: {fileID: 125831450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &125950307
 GameObject:
   m_ObjectHideFlags: 0
@@ -20834,6 +20876,7 @@ GameObject:
   - 114: {fileID: 351712714}
   - 65: {fileID: 351712713}
   - 114: {fileID: 351712712}
+  - 114: {fileID: 351712715}
   m_Layer: 8
   m_Name: Brazier
   m_TagString: Untagged
@@ -20899,6 +20942,19 @@ MonoBehaviour:
   Fumee: {fileID: 526996266}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &351712715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 650294623}
+  m_GameObject: {fileID: 351712710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &357069115
 GameObject:
   m_ObjectHideFlags: 0
@@ -21356,6 +21412,7 @@ GameObject:
   - 4: {fileID: 373656054}
   - 114: {fileID: 373656056}
   - 65: {fileID: 373656055}
+  - 114: {fileID: 373656057}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -21404,6 +21461,19 @@ MonoBehaviour:
   direction: 2
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 242642754}
+--- !u!114 &373656057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 288353229}
+  m_GameObject: {fileID: 373656053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &381383506
 GameObject:
   m_ObjectHideFlags: 0
@@ -21415,6 +21485,7 @@ GameObject:
   - 114: {fileID: 381383510}
   - 65: {fileID: 381383509}
   - 114: {fileID: 381383508}
+  - 114: {fileID: 381383511}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -21480,6 +21551,19 @@ MonoBehaviour:
   Fumee: {fileID: 224582750}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &381383511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1221790363}
+  m_GameObject: {fileID: 381383506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &385901512
 GameObject:
   m_ObjectHideFlags: 0
@@ -34414,6 +34498,7 @@ GameObject:
   - 4: {fileID: 639101793}
   - 114: {fileID: 639101795}
   - 65: {fileID: 639101794}
+  - 114: {fileID: 639101796}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -34462,6 +34547,19 @@ MonoBehaviour:
   direction: 3
   targetDoor: {fileID: 2008642463}
   immediateArea: {fileID: 1307855195}
+--- !u!114 &639101796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 56291057}
+  m_GameObject: {fileID: 639101792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &641485098
 GameObject:
   m_ObjectHideFlags: 0
@@ -36953,6 +37051,7 @@ GameObject:
   - 114: {fileID: 671708106}
   - 65: {fileID: 671708105}
   - 114: {fileID: 671708104}
+  - 114: {fileID: 671708107}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -37018,6 +37117,19 @@ MonoBehaviour:
   Fumee: {fileID: 1036823450}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &671708107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 606261150}
+  m_GameObject: {fileID: 671708102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1001 &677311975
 Prefab:
   m_ObjectHideFlags: 0
@@ -37235,6 +37347,7 @@ GameObject:
   - 114: {fileID: 687349003}
   - 65: {fileID: 687349002}
   - 114: {fileID: 687349001}
+  - 114: {fileID: 687349004}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -37300,6 +37413,19 @@ MonoBehaviour:
   Fumee: {fileID: 1132483179}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &687349004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 371328026}
+  m_GameObject: {fileID: 687348999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &688342412
 GameObject:
   m_ObjectHideFlags: 0
@@ -40955,6 +41081,7 @@ GameObject:
   - 114: {fileID: 805007436}
   - 65: {fileID: 805007435}
   - 114: {fileID: 805007434}
+  - 114: {fileID: 805007437}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -41020,6 +41147,19 @@ MonoBehaviour:
   Fumee: {fileID: 2112733094}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &805007437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1881664835}
+  m_GameObject: {fileID: 805007432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &807987911
 GameObject:
   m_ObjectHideFlags: 0
@@ -41097,6 +41237,7 @@ GameObject:
   - 114: {fileID: 818721070}
   - 65: {fileID: 818721069}
   - 114: {fileID: 818721068}
+  - 114: {fileID: 818721071}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -41162,6 +41303,19 @@ MonoBehaviour:
   Fumee: {fileID: 2110177722}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &818721071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 2023278888}
+  m_GameObject: {fileID: 818721066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &819395654
 GameObject:
   m_ObjectHideFlags: 0
@@ -48436,6 +48590,7 @@ GameObject:
   - 114: {fileID: 1027439313}
   - 65: {fileID: 1027439312}
   - 114: {fileID: 1027439311}
+  - 114: {fileID: 1027439314}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -48501,6 +48656,19 @@ MonoBehaviour:
   Fumee: {fileID: 1893806692}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1027439314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 749671253}
+  m_GameObject: {fileID: 1027439309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1030967845
 GameObject:
   m_ObjectHideFlags: 0
@@ -54280,9 +54448,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2008642464}
-  - {fileID: 1095255157}
   - {fileID: 1330248504}
+  - {fileID: 1095255157}
+  - {fileID: 2008642464}
   m_Father: {fileID: 49304209}
 --- !u!114 &1062370234
 MonoBehaviour:
@@ -54450,6 +54618,7 @@ GameObject:
   - 4: {fileID: 1069338313}
   - 114: {fileID: 1069338315}
   - 65: {fileID: 1069338314}
+  - 114: {fileID: 1069338316}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -54498,6 +54667,19 @@ MonoBehaviour:
   direction: 0
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 934482560}
+--- !u!114 &1069338316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 67166157}
+  m_GameObject: {fileID: 1069338312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &1070031532
 GameObject:
   m_ObjectHideFlags: 0
@@ -54509,6 +54691,7 @@ GameObject:
   - 114: {fileID: 1070031536}
   - 65: {fileID: 1070031535}
   - 114: {fileID: 1070031534}
+  - 114: {fileID: 1070031537}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -54574,6 +54757,19 @@ MonoBehaviour:
   Fumee: {fileID: 1085268530}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1070031537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1834501831}
+  m_GameObject: {fileID: 1070031532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1071698199
 GameObject:
   m_ObjectHideFlags: 0
@@ -56140,6 +56336,7 @@ GameObject:
   - 4: {fileID: 1095255157}
   - 114: {fileID: 1095255159}
   - 65: {fileID: 1095255158}
+  - 114: {fileID: 1095255160}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -56188,6 +56385,19 @@ MonoBehaviour:
   direction: 0
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 891831643}
+--- !u!114 &1095255160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 361371515}
+  m_GameObject: {fileID: 1095255156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &1102025110
 GameObject:
   m_ObjectHideFlags: 0
@@ -62471,6 +62681,7 @@ GameObject:
   - 4: {fileID: 1246971057}
   - 114: {fileID: 1246971059}
   - 65: {fileID: 1246971058}
+  - 114: {fileID: 1246971060}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -62519,6 +62730,19 @@ MonoBehaviour:
   direction: 3
   targetDoor: {fileID: 2008642463}
   immediateArea: {fileID: 248778400}
+--- !u!114 &1246971060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1866919726}
+  m_GameObject: {fileID: 1246971056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &1252305212
 GameObject:
   m_ObjectHideFlags: 0
@@ -66482,6 +66706,7 @@ GameObject:
   - 4: {fileID: 1330248504}
   - 114: {fileID: 1330248506}
   - 65: {fileID: 1330248505}
+  - 114: {fileID: 1330248507}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -66530,6 +66755,19 @@ MonoBehaviour:
   direction: 3
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 124976368}
+--- !u!114 &1330248507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 447291792}
+  m_GameObject: {fileID: 1330248503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &1331691039
 GameObject:
   m_ObjectHideFlags: 0
@@ -67626,6 +67864,7 @@ GameObject:
   - 114: {fileID: 1332877768}
   - 65: {fileID: 1332877767}
   - 114: {fileID: 1332877766}
+  - 114: {fileID: 1332877769}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -67691,6 +67930,19 @@ MonoBehaviour:
   Fumee: {fileID: 127398891}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1332877769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 965990740}
+  m_GameObject: {fileID: 1332877764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1338455006
 GameObject:
   m_ObjectHideFlags: 0
@@ -67845,6 +68097,7 @@ GameObject:
   - 114: {fileID: 1354020801}
   - 65: {fileID: 1354020800}
   - 114: {fileID: 1354020799}
+  - 114: {fileID: 1354020802}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -67910,6 +68163,19 @@ MonoBehaviour:
   Fumee: {fileID: 1109514349}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1354020802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 644297784}
+  m_GameObject: {fileID: 1354020797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1001 &1358337092
 Prefab:
   m_ObjectHideFlags: 0
@@ -69498,6 +69764,7 @@ GameObject:
   - 114: {fileID: 1394126382}
   - 65: {fileID: 1394126381}
   - 114: {fileID: 1394126380}
+  - 114: {fileID: 1394126383}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -69563,6 +69830,19 @@ MonoBehaviour:
   Fumee: {fileID: 715754847}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1394126383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1600579094}
+  m_GameObject: {fileID: 1394126378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1399070566
 GameObject:
   m_ObjectHideFlags: 0
@@ -72401,6 +72681,7 @@ GameObject:
   - 114: {fileID: 1446930743}
   - 65: {fileID: 1446930742}
   - 114: {fileID: 1446930741}
+  - 114: {fileID: 1446930744}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -72466,6 +72747,19 @@ MonoBehaviour:
   Fumee: {fileID: 1769857246}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1446930744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 581307652}
+  m_GameObject: {fileID: 1446930739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1448200084
 GameObject:
   m_ObjectHideFlags: 0
@@ -75560,6 +75854,7 @@ GameObject:
   - 4: {fileID: 1525637342}
   - 114: {fileID: 1525637344}
   - 65: {fileID: 1525637343}
+  - 114: {fileID: 1525637345}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -75608,6 +75903,19 @@ MonoBehaviour:
   direction: 0
   targetDoor: {fileID: 0}
   immediateArea: {fileID: 1653747452}
+--- !u!114 &1525637345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 81056719}
+  m_GameObject: {fileID: 1525637341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &1529753511
 GameObject:
   m_ObjectHideFlags: 0
@@ -75693,8 +76001,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1069338313}
-  - {fileID: 373656054}
   - {fileID: 1246971057}
+  - {fileID: 373656054}
   m_Father: {fileID: 194972460}
 --- !u!114 &1530335736
 MonoBehaviour:
@@ -77627,6 +77935,7 @@ GameObject:
   - 114: {fileID: 1574502379}
   - 65: {fileID: 1574502378}
   - 114: {fileID: 1574502377}
+  - 114: {fileID: 1574502380}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -77692,6 +78001,19 @@ MonoBehaviour:
   Fumee: {fileID: 1896709566}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1574502380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1358337092}
+  m_GameObject: {fileID: 1574502375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1575632830
 GameObject:
   m_ObjectHideFlags: 0
@@ -80196,6 +80518,7 @@ GameObject:
   - 114: {fileID: 1666766592}
   - 65: {fileID: 1666766591}
   - 114: {fileID: 1666766590}
+  - 114: {fileID: 1666766593}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -80261,6 +80584,19 @@ MonoBehaviour:
   Fumee: {fileID: 1795883996}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1666766593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1914600291}
+  m_GameObject: {fileID: 1666766588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1670685331
 GameObject:
   m_ObjectHideFlags: 0
@@ -80452,6 +80788,7 @@ GameObject:
   - 114: {fileID: 1674611446}
   - 65: {fileID: 1674611445}
   - 114: {fileID: 1674611444}
+  - 114: {fileID: 1674611447}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -80517,6 +80854,19 @@ MonoBehaviour:
   Fumee: {fileID: 132917627}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1674611447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 2025710736}
+  m_GameObject: {fileID: 1674611442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1674746592
 GameObject:
   m_ObjectHideFlags: 0
@@ -82412,7 +82762,7 @@ MonoBehaviour:
   cellWidth: 400
   cellHeight: 200
   animateSmoothly: 0
-  sorted: 0
+  sorted: 1
   hideInactive: 1
   keepWithinPanel: 0
 --- !u!4 &1748865567
@@ -89251,8 +89601,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 639101793}
-  - {fileID: 1525637342}
   - {fileID: 96408297}
+  - {fileID: 1525637342}
   m_Father: {fileID: 890228622}
 --- !u!114 &1881114275
 MonoBehaviour:
@@ -96524,6 +96874,7 @@ GameObject:
   - 114: {fileID: 1940160276}
   - 65: {fileID: 1940160275}
   - 114: {fileID: 1940160274}
+  - 114: {fileID: 1940160277}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -96589,6 +96940,19 @@ MonoBehaviour:
   Fumee: {fileID: 2064314475}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1940160277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 2051121917}
+  m_GameObject: {fileID: 1940160272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1942869306
 GameObject:
   m_ObjectHideFlags: 0
@@ -98023,6 +98387,7 @@ GameObject:
   - 114: {fileID: 1983743043}
   - 65: {fileID: 1983743042}
   - 114: {fileID: 1983743041}
+  - 114: {fileID: 1983743044}
   m_Layer: 18
   m_Name: Brazier
   m_TagString: Untagged
@@ -98088,6 +98453,19 @@ MonoBehaviour:
   Fumee: {fileID: 1803834095}
   MaxLightIntensity: 3
   IntensityLight: 1
+--- !u!114 &1983743044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400006, guid: 2525dccf9250fa74188b0c0721b3fa4b,
+    type: 2}
+  m_PrefabInternal: {fileID: 2218771}
+  m_GameObject: {fileID: 1983743039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 12
 --- !u!1 &1986934261
 GameObject:
   m_ObjectHideFlags: 0
@@ -99346,6 +99724,7 @@ GameObject:
   - 4: {fileID: 2008642464}
   - 114: {fileID: 2008642463}
   - 65: {fileID: 2008642465}
+  - 114: {fileID: 2008642466}
   m_Layer: 18
   m_Name: Door
   m_TagString: Untagged
@@ -99394,6 +99773,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.69999981, y: 2.61999989, z: 1.38999999}
   m_Center: {x: -3.80999994, y: 1.35000002, z: 0}
+--- !u!114 &2008642466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 738a01dfed2ac914db87d49d58b4256c,
+    type: 2}
+  m_PrefabInternal: {fileID: 329938847}
+  m_GameObject: {fileID: 2008642462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 2
 --- !u!1 &2009776007
 GameObject:
   m_ObjectHideFlags: 0

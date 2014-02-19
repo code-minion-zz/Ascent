@@ -40,7 +40,7 @@ public class PlayerHUD : MonoBehaviour
 	void Update () 
     {
 		// Do Abilities
-        List<Action> abilities = owner.Abilities;
+        Ability[] abilities = owner.Loadout.AbilityBinds;
 
 		int abilityID = 0;
 		for (int i = 0; i < abilityIcons.Length; ++i)

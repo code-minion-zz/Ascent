@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SlimeReplicate : Action
+public class SlimeReplicate : Ability
 {
     private const int splitLimit = 3;
     public int timesSplit = 0;
@@ -67,7 +67,7 @@ public class SlimeReplicate : Action
             //go.GetComponent<Enemy>().ApplyKnockback(Vector3.left, 100.0f);
             //enemy.ApplyKnockback(Vector3.right, 100.0f);
 
-            SlimeReplicate slimeReplicateB = go.GetComponent<Slime>().GetAbility("SlimeReplicate") as SlimeReplicate;
+            SlimeReplicate slimeReplicateB = go.GetComponent<Slime>().Loadout.GetAbility("SlimeReplicate") as SlimeReplicate;
 
             timesSplit += 1;
             slimeReplicateB.timesSplit = timesSplit;

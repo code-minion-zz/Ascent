@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyCharge : Action
+public class EnemyCharge : Ability
 {
     // TODO: Move this somewhere else
     public int damageValue = 2;
@@ -60,7 +60,7 @@ public class EnemyCharge : Action
 
 		if (timeElapsed > actionTime)
 		{
-			owner.StopAbility();
+			owner.Loadout.StopAbility();
 		}
 	}
 

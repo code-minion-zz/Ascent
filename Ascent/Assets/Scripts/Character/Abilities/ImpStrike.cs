@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ImpStrike : Action
+public class ImpStrike : Ability
 {
     private Circle damageArea;
     private float prevSpeed;

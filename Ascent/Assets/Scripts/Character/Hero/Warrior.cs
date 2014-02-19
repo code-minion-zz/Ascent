@@ -29,11 +29,12 @@ public class Warrior : Hero
 		base.Initialise(input, saveData);
 		
         // Add abilities (TODO: Save/Load/Create this.)
-		AddSkill(new WarriorStrike());
-		AddSkill(new WarriorHeavyStrike());
-		AddSkill(new WarriorCharge());
-		AddSkill(new WarriorWarStomp());
-        AddSkill(new WarriorWarCry());
+        loadout.SetAbility(new WarriorStrike(), (int)HeroController.EHeroAction.Strike);
+
+        loadout.SetAbility(new WarriorHeavyStrike(), (int)HeroController.EHeroAction.Action1);
+        loadout.SetAbility(new WarriorCharge(), (int)HeroController.EHeroAction.Action2);
+        loadout.SetAbility(new WarriorWarStomp(), (int)HeroController.EHeroAction.Action3);
+        loadout.SetAbility(new WarriorWarCry(), (int)HeroController.EHeroAction.Action4);
 
 		vulnerabilities = EStatus.None;
 	}

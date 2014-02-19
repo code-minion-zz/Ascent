@@ -41,10 +41,9 @@ public abstract class Character : BaseCharacter
 	public event Damage onDamageDealt; // Not handled by the character.
 
     protected List<StatusEffect> statusEffects = new List<StatusEffect>();
-	protected List<Action> abilities = new List<Action>();
+    protected AbilityLoadout loadout;
 	protected CharacterStats stats;
 	protected bool hitTaken;
-	protected Action activeAbility;
 	protected bool isDead;
 	protected Character lastDamagedBy;
 	protected EStatus vulnerabilities = EStatus.All;
@@ -52,17 +51,10 @@ public abstract class Character : BaseCharacter
 	protected EStatusColour statusColour = EStatusColour.White;
 	protected bool colourHasChanged = false;
 
-	public bool CanInterruptActiveAbility
-	{
-		get 
-		{  
-			if(activeAbility != null)
-			{
-				return activeAbility.CanBeInterrupted;
-			}
-			return true;
-		}
-	}
+    public AbilityLoadout Loadout
+    {
+        get { return loadout; }
+    }
 
     public bool HitTaken
     {
@@ -91,11 +83,6 @@ public abstract class Character : BaseCharacter
 	public List<StatusEffect> StatusEffects
 	{
 		get { return statusEffects; }
-	}
-
-	public List<Action> Abilities
-	{
-		get { return abilities; }
 	}
 
 	public EStatus Vulnerabilities
@@ -155,20 +142,11 @@ public abstract class Character : BaseCharacter
 
 	public override void Update()
 	{
-		UpdateActiveAbility();
+        loadout.Process();
 
 		if (colourHasChanged)
 		{
 			SetColor(StatusEffectUtility.GetColour(StatusColour));
-		}
-
-		// Update abilities that require cooldown
-		foreach (Action ability in abilities)
-		{
-			if (ability.IsOnCooldown == true)
-			{
-				ability.UpdateCooldown();
-			}
 		}
 
         // Remove any expired buffs
@@ -184,147 +162,6 @@ public abstract class Character : BaseCharacter
 		foreach (StatusEffect b in statusEffects)
 		{
 			b.Process();
-		}
-	}
-
-	private void UpdateActiveAbility()
-	{
-		if (activeAbility != null)
-		{
-			activeAbility.Update();
-		}
-	}
-
-    public virtual void UseAbility(Action ability)
-    {
-        int i = abilities.FindIndex(x => x == ability);
-
-        UseAbility(i);
-    }
-
-	public virtual void UseAbility(int abilityID)
-	{
-        // If there no active ability then we can use a new one
-        bool canUse = (activeAbility == null);
-
-        // Or if there is an active one we can use a new one if the old one can be interupted
-        bool interupt = false;
-        if (!canUse)
-        {
-            interupt = activeAbility.CanBeInterrupted;
-            canUse = interupt;
-
-        }
-
-        if (canUse)
-		{
-			Action ability = abilities[abilityID];
-
-			if (ability.IsOnCooldown)
-			{
-				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
-			}
-			else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
-			{
-				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
-			}
-
-			// Make sure the cooldown is off otherwise we cannot use the ability
-			if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
-			{
-                
-                if (interupt)
-                {
-                    StopAbility();
-                }
-
-				// TODO: Check if we are not in a state that denies abilities to perform.
-				ability.StartAbility();
-				activeAbility = ability;
-
-				stats.CurrentSpecial -= ability.SpecialCost;
-
-				motor.StopMotion();
-				motor.IsHaltingMovementToPerformAction = false;
-			}
-		}
-	}
-
-    public bool CanCastAbility(int abilityID)
-    {
-        // If there no active ability then we can use a new one
-        bool canUse = (activeAbility == null);
-
-        // Or if there is an active one we can use a new one if the old one can be interupted
-        bool interupt = false;
-        if (!canUse)
-        {
-            interupt = activeAbility.CanBeInterrupted;
-            canUse = interupt;
-        }
-
-        return canUse;
-    }
-
-    public virtual bool UseCastAbility(int abilityID)
-    {
-        Action ability = abilities[abilityID];
-        // Make sure the cooldown is off otherwise we cannot use the ability
-
-		if (ability.IsOnCooldown)
-		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Cooling down", Color.white);
-		}
-		else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
-		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, "Insufficient SP", Color.white);
-		}
-
-        if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
-        {
-            if (activeAbility != null)
-            {
-                if (activeAbility.CanBeInterrupted)
-                {
-                    StopAbility();
-                }
-            }
-
-            ability.StartCast();
-            //activeAbility = ability;
-
-            motor.StopMotion();
-            motor.IsHaltingMovementToPerformAction = false;
-
-			return true;
-        }
-
-		return false;
-    }
-
-	public Action GetAbility(string ability)
-	{
-		if (activeAbility == null)
-		{
-			Action action = abilities.Find(a => a.ToString() == ability); // this is a lambda 
-			if (action == null)
-			{
-				Debug.LogError("Could not find and return ability: " + ability);
-			}
-
-			return (action);
-		}
-		return null;
-	}
-
-	public virtual void StopAbility()
-	{
-		if (activeAbility != null)
-		{
-			activeAbility.EndAbility();
-			activeAbility = null;
-
-			motor.IsHaltingMovementToPerformAction = true;
 		}
 	}
 
@@ -395,14 +232,6 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
-	public virtual void ApplySpellEffect()
-	{
-		if (IsVulnerableTo(EStatus.All))
-		{
-			// Taking damage may or may not interrupt the current ability
-		}
-	}
-
 	/// <summary>
 	/// When the character needs to respawn into the game.
 	/// </summary>
@@ -461,12 +290,6 @@ public abstract class Character : BaseCharacter
             onDamageTaken(damage);
         }
     }
-	
-	protected void AddSkill(Action skill)
-	{
-		skill.Initialise(this);
-		abilities.Add(skill);
-	}
 
     public virtual void RefreshEverything()
     {	
@@ -548,26 +371,10 @@ public abstract class Character : BaseCharacter
 		return (int)damage;
 	}
 
-	public virtual void SetColor(EStatusColour colour)
-	{
-		//Renderer[] renderers = GetComponentsInChildren<Renderer>();
-		//foreach (Renderer render in renderers)
-		//{
-		//    render.material.color = color;
-		//}
-	}
-
-	public override void ResetColor()
-	{
-	}
-
 #if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
-		if (activeAbility != null)
-		{
-			activeAbility.DebugDraw();
-		}
+        loadout.DebugDraw();
 	}
 #endif
 }

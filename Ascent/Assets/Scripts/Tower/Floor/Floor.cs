@@ -155,7 +155,7 @@ public class Floor : MonoBehaviour
             players[i].Hero.GetComponent<Hero>().onDeath += OnPlayerDeath;
 
             // Reset individual hero floor records.
-            players[i].Hero.GetComponent<Hero>().ResetFloorStatistics();
+            players[i].Hero.GetComponent<Hero>().FloorStatistics = new FloorStats();
 		}
 
         // Finds all the rooms
@@ -398,7 +398,7 @@ public class Floor : MonoBehaviour
 		foreach (Player p in players)
 		{
 			p.Hero.transform.position = targetDoor.transform.position;
-			p.Hero.StopAbility();
+			p.Hero.Loadout.StopAbility();
 			p.Hero.Motor.StopMotion();
 			p.Hero.HeroController.enabled = false;
 		}

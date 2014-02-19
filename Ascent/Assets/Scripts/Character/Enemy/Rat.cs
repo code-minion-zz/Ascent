@@ -10,14 +10,15 @@ public class Rat : Enemy
 {
    public override void Initialise()
     {
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+
         base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
-
 		// Add abilities
-		Action tackle = new RatTackle();
-		tackle.Initialise(this);
-		abilities.Add(tackle);
+        loadout.SetSize(1);
+
+		Ability tackle = new RatTackle();
+        loadout.SetAbility(tackle, 0);
 
 		InitialiseAI();
 	}
@@ -64,7 +65,7 @@ public class Rat : Enemy
            // OnCanUseTackle, triggers if target in range and action off cooldown
            trigger = behaviour.AddTrigger();
            trigger.Priority = AITrigger.EConditionalExit.Stop;
-           trigger.AddCondition(new AICondition_ActionCooldown(abilities[0]));
+           trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[0]));
            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
            trigger.OnTriggered += OnCanUseTackle;
 
@@ -110,7 +111,7 @@ public class Rat : Enemy
 
    public void OnCanUseTackle()
    {
-	   UseAbility(0);
+	   loadout.UseAbility(0);
    }
 
    public override void OnDisable()

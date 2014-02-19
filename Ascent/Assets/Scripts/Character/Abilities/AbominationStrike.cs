@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AbominationStrike : Action
+public class AbominationStrike : Ability
 {
     private Circle damageArea;
     private float prevSpeed;
