@@ -56,8 +56,10 @@ public class EnchantedStatueSlam : Ability
 				foreach (Character c in characters)
 				{
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(owner.DamageFormulaA(0.0f, 1.0f), false, Character.EDamageType.Physical, owner);
-					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
+					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+					combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 1.0f));
+					combatEvaluator.Apply();
 
 					// Create a blood splatter effect on the enemy.
 					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);

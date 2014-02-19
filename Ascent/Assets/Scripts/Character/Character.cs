@@ -171,37 +171,39 @@ public abstract class Character : BaseCharacter
 	/// <param name="unmitigatedDamage">The amount of damage.</param>
 	/// <param name="type">The type of damage.</param>
 	/// <param name="owner">The character that has dealt the damage to this character.</param>
-	public virtual void ApplyDamage(int unmitigatedDamage, bool crit, EDamageType type, Character damageDealer)
+	public virtual void ApplyCombatEffects(DamageResult result)
 	{
-		int damageDealerLevel = damageDealer.Stats.Level;
+		int finalDamage = result.finalDamage;
+		if (!result.dodged)
+		{
+			HitTaken = true;
 
-		int finalDamage = Mathf.Max( Mathf.RoundToInt((float)damageDealerLevel * ((float)(damageDealerLevel * unmitigatedDamage)) / (float)(Stats.Level * stats.PhysicalDefense)), 1);
+			lastDamagedBy = result.source;
 
-        HitTaken = true;
+			// Let the owner know of the amount of damage done.
+			if (result.source != null)
+			{
+				result.source.OnDamageDealt(finalDamage);
+			}
 
-		lastDamagedBy = damageDealer;
+			// Obtain the health stat and subtract damage amount to the health.
+			stats.CurrentHealth -= finalDamage;
 
-		// Let the owner know of the amount of damage done.
-		if (damageDealer != null)
-        {
-			damageDealer.OnDamageDealt(finalDamage);
-        }
+			// Tell this character how much damage it has done.
+			OnDamageTaken(finalDamage);
+		}
 
-		// Obtain the health stat and subtract damage amount to the health.
-		stats.CurrentHealth -= finalDamage;
 
+		string damageText = (result.dodged ? "Dodged!" : (finalDamage > 0) ? finalDamage.ToString() : "No Damage!");
 
 		if (this is Hero)
 		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.red);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.red);
 		}
 		else
 		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(this.gameObject, finalDamage, Color.cyan);
+			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.cyan);
 		}
-
-		// Tell this character how much damage it has done.
-		OnDamageTaken(finalDamage);
 
 		// If the character is dead
 		if (stats.CurrentHealth <= 0 && !isDead)

@@ -184,8 +184,10 @@ public class WarriorCharge : Ability
 						int damage = owner.DamageFormulaA(0.0f, 1.5f);
 
 						// Apply damage, knockback and stun to the enemy.
-						enemies[i].ApplyDamage(damage, false, Character.EDamageType.Physical, owner);
-						enemies[i].ApplyStatusEffect(new StunnedDebuff(owner, enemies[i], 1.5f));
+						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
+						combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));
+						combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, enemies[i], 1.5f)));
+						combatEvaluator.Apply();
 
 						// Create a blood splatter effect on the enemy.
 						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);

@@ -239,7 +239,7 @@ public abstract class Enemy : Character
 		}
 	}
 
-    public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character owner)
+    public override void ApplyCombatEffects(DamageResult result)
     {
         // Check to see if the enemy was last damaged by a hero,
         // thus update the floor statistics of the hero. This function may want to pass in
@@ -249,10 +249,10 @@ public abstract class Enemy : Character
             // TODO: This might need to move.
             Hero hero = lastDamagedBy as Hero;
 
-            hero.FloorStatistics.TotalDamageDealt += unmitigatedDamage;
+			hero.FloorStatistics.TotalDamageDealt += result.finalDamage;
         }
 
-        base.ApplyDamage(unmitigatedDamage, crit, type, owner);
+		base.ApplyCombatEffects(result);
     }
 
 	protected override void OnDeath ()

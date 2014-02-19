@@ -66,8 +66,10 @@ public class WarriorHeavyStrike : Ability
 					{
 						foreach (Enemy e in enemies)
 						{
-                            e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.5f), false, Character.EDamageType.Physical, owner);
-							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
+							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
+							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));
+							combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, 10000000.0f));
+							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);

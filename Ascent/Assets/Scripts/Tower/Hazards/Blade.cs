@@ -48,8 +48,10 @@ public class Blade : MonoBehaviour
 	private void CollideWithHero(Hero hero, Collision collision)
 	{
 		// Apply damage to the hero
-		hero.ApplyDamage(damage, false, Character.EDamageType.Trap, null);
-		hero.ApplyKnockback(-collision.contacts[0].normal, 1.0f);
+		CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
+		combatEvaluator.Add(new TrapDamageProperty(1.0f, 1.0f));
+		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1.0f));
+		combatEvaluator.Apply();
 
 	}
 }
