@@ -4,39 +4,6 @@ using System.Collections.Generic;
 
 public abstract class Hero : Character 
 {
-	public struct HeroClassStatModifier
-	{
-		public float PowerAttack;
-		public float FinesseCritChance;
-		public float FinesseCritBonus;
-		public float FinesseDodge;
-		public float FinesseBlock;
-		public float VitalityHP;
-		public float VitalityPhysRes;
-		public float VitalityHPRegen;
-		public float SpiritSP;
-		public float SpiritMagRes;
-
-
-		HeroClassStatModifier(float _powerAttack, float _finesseCritChance,
-							  float _finesseCritBonus, float _finesseDodge,
-							  float _finesseBlock, float _vitalityHP,
-							  float _vitalityPhysRes, float _vitalityHpRegen,
-							  float _spiritSP, float _spiritMagRes)
-		{
-			PowerAttack = _powerAttack;
-			FinesseCritChance = _finesseCritChance;
-			FinesseCritBonus = _finesseCritBonus;
-			FinesseDodge = _finesseDodge;
-			FinesseBlock = _finesseBlock;
-			VitalityHP = _vitalityHP;
-			VitalityPhysRes = _vitalityPhysRes;
-			VitalityHPRegen = _vitalityHpRegen;
-			SpiritSP = _spiritSP;
-			SpiritMagRes = _spiritMagRes;
-		}
-	}
-
 	protected ulong saveUID;
 	public ulong SaveUID
 	{
@@ -47,17 +14,17 @@ public abstract class Hero : Character
 	protected int lives;
 	public int Lives
 	{
-		get {return lives; }
+		get { return lives; }
 		set { lives = value; }
 	}
 
 	protected EHeroClass heroClass;
 	protected HeroAnimator heroAnimator;
-	protected HeroClassStatModifier classStatMod;
     protected HeroController heroController;
 	protected Backpack backpack;
     protected HeroInventory inventory;
     protected FloorStats floorStatistics;
+    protected AbilityTree abilityTree;
 	protected uint highestFloorReached;
     public int unasignedAbilityPoints;
 
@@ -83,11 +50,6 @@ public abstract class Hero : Character
 		get { return heroClass; }
 	}
 
-	public HeroClassStatModifier ClassStatMod
-	{
-		get { return classStatMod; }
-	}
-
 	public Backpack Backpack
 	{
 		get { return backpack; }
@@ -98,6 +60,11 @@ public abstract class Hero : Character
 		get { return inventory; }
 	}
 
+    public HeroAbilityLoadout HeroLoadout
+    {
+        get { return (HeroAbilityLoadout)loadout; }
+    }
+
 	public HeroController HeroController
 	{
 		get { return heroController; }
@@ -106,6 +73,13 @@ public abstract class Hero : Character
     public FloorStats FloorStatistics
     {
         get { return floorStatistics; }
+        set { floorStatistics = value; }
+    }
+
+    public AbilityTree AbilityTree
+    {
+        get { return abilityTree; }
+        set { abilityTree = value; }
     }
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
@@ -132,7 +106,7 @@ public abstract class Hero : Character
 
 		// Initialise Controller, hook it up with the hero, hero animator and motor
 		heroController = gameObject.GetComponent<HeroController>();
-		heroController.Initialise(this, input, (HeroAnimator)animator, motor);
+		heroController.Initialise(this, input, (HeroAnimator)animator, motor, HeroLoadout);
 	}
 
 	public void OnEnable()
@@ -146,76 +120,34 @@ public abstract class Hero : Character
 		hero.backpack = new Backpack();
 		hero.inventory = new HeroInventory();
 
-		// Create abilities
-		hero.abilities = new List<Action>();
-
 		// Create stats
 		hero.HeroStats = new HeroStats(hero);
 		hero.HeroStats.Reset();
+
+        // Create abilities
+        hero.loadout = new HeroAbilityLoadout();
+        hero.loadout.Initialise(hero);
 
 		Test_PopulateInventoryAndBackpack(hero);
 		Test_DrawHeroStats(hero);
 	}
 
-	public static void Test_PopulateInventoryAndBackpack(Hero hero)
-	{
-		Backpack backpack = hero.backpack;
-		backpack.AddItem(Backpack.BackpackSlot.ACC1, LootGenerator.RandomlyGenerateAccessory(1, true));
-		backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
-		backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
-		backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
-		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1, true));
-		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2, true));
-		backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3, true));
+    public static void Load(Hero hero, HeroSaveData data)
+    {
+        // Load in Items
+        hero.inventory = data.inventory;
+        hero.backpack = data.backpack;
 
-		HeroInventory inventory = hero.inventory;
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5, false));
-		inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6, false));
-	}
+        // Load in stats
+        hero.HeroStats = new HeroStats(hero, data);
+        hero.HeroStats.Reset();
 
-	public static void Test_DrawHeroStats(Hero hero)
-	{
-		Debug.Log("Derived: " +
-            "POW: " + hero.HeroStats.Power +
-			" FIN: " + hero.HeroStats.Finesse +
-			" VIT: " + hero.HeroStats.Vitality +
-			" SPR: " + hero.HeroStats.Spirit + " | " +
+        // Load in abilities
+        hero.loadout = data.loadout;
+        hero.loadout.Initialise(hero);
 
-			" ATK: " + hero.HeroStats.Attack +
-			" PDEF: " + hero.HeroStats.PhysicalDefense +
-			" MDEF: " + hero.HeroStats.MagicalDefense +
-			" CRIT: " + hero.HeroStats.CriticalHitChance +
-			" MULT: " + hero.HeroStats.CritalHitMultiplier +
-			" DODGE: " + hero.HeroStats.DodgeChance
-			);
-	}
-
-	public static void Load(Hero hero, HeroSaveData data)
-	{
-		// Load in Items
-		hero.inventory = data.inventory;
-		hero.backpack = data.backpack;
-
-		// Load in abilities
-		//hero.abilities = data.abilities;
-		//Debug.Log(hero.abilities);
-
-		// Load in stats
-		hero.HeroStats = new HeroStats(hero, data);
-		hero.HeroStats.Reset();
-
-		Test_DrawHeroStats(hero);
-	}
+        Test_DrawHeroStats(hero);
+    }
 
     public override void Update()
     {
@@ -261,11 +193,6 @@ public abstract class Hero : Character
         }
     }
 
-    public void ResetFloorStatistics()
-    {
-        floorStatistics = new FloorStats();
-    }
-
     protected override void Respawn(Vector3 position)
     {
         // Reset the health
@@ -298,15 +225,22 @@ public abstract class Hero : Character
         base.RefreshEverything();
 
         // Reset cooldowns
-        foreach(Action a in abilities)
+        if (loadout != null)
         {
-            a.RefreshCooldown();
+            loadout.Refresh();
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, Character.EDamageType type, Character owner)
+	public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character source)
 	{
-        base.ApplyDamage(unmitigatedDamage, type, owner);
+        base.ApplyDamage(unmitigatedDamage, crit, type, source);
+
+        // Apply durability Loss
+        AccessoryItem[] accessories = backpack.AccessoryItems;
+        foreach (AccessoryItem acc in accessories)
+        {
+            acc.ApplyDurabilityDamage(unmitigatedDamage, crit, this, source);
+        }
 
         if (type == Character.EDamageType.Trap)
         {
@@ -350,4 +284,47 @@ public abstract class Hero : Character
 		}
 		return false;
 	}
+
+    public static void Test_PopulateInventoryAndBackpack(Hero hero)
+    {
+        Backpack backpack = hero.backpack;
+        backpack.AddItem(Backpack.BackpackSlot.ACC1, LootGenerator.RandomlyGenerateAccessory(1, true));
+        backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
+        backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
+        backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
+        backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1, true));
+        backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2, true));
+        backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3, true));
+
+        HeroInventory inventory = hero.inventory;
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(6, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(7, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(4, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(5, false));
+        inventory.AddItem(LootGenerator.RandomlyGenerateConsumable(6, false));
+    }
+
+    public static void Test_DrawHeroStats(Hero hero)
+    {
+        Debug.Log("Derived: " +
+            "POW: " + hero.HeroStats.Power +
+            " FIN: " + hero.HeroStats.Finesse +
+            " VIT: " + hero.HeroStats.Vitality +
+            " SPR: " + hero.HeroStats.Spirit + " | " +
+
+            " ATK: " + hero.HeroStats.Attack +
+            " PDEF: " + hero.HeroStats.PhysicalDefense +
+            " MDEF: " + hero.HeroStats.MagicalDefense +
+            " CRIT: " + hero.HeroStats.CriticalHitChance +
+            " MULT: " + hero.HeroStats.CritalHitMultiplier +
+            " DODGE: " + hero.HeroStats.DodgeChance
+            );
+    }
 }

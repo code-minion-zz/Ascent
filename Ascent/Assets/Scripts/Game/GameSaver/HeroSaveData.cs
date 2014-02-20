@@ -20,7 +20,8 @@ public class HeroSaveData
 	public HeroStatGrowth growth;
 	public Backpack backpack;
 	public HeroInventory inventory;
-	public List<Action> abilities;
+    public HeroAbilityLoadout loadout;
+	public List<Ability> abilities;
 
 
 	public HeroSaveData()
@@ -43,6 +44,7 @@ public class HeroSaveData
 		growth = hero.HeroStats.Growth;
 		backpack = hero.Backpack;
 		inventory = hero.HeroInventory;
+        loadout = hero.HeroLoadout;
 		//abilities = hero.Abilities;
 		highestFloor = hero.HighestFloorReached;
 

@@ -18,25 +18,27 @@ public class EnchantedStatue : Enemy
 
     public override void Initialise()
     {
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat,this);
-
         // Add abilities
-        Action slam = new EnchantedStatueSlam();
+        loadout.SetSize(3);
+
+        Ability slam = new EnchantedStatueSlam();
 		slam.Initialise(this);
-		abilities.Add(slam);
         slamActionID = 0;
+        loadout.SetAbility(slam, slamActionID);
 
-		Action stomp = new EnchantedStatueStomp();
+		Ability stomp = new EnchantedStatueStomp();
         stomp.Initialise(this);
-        abilities.Add(stomp);
         stompActionID = 1;
+        loadout.SetAbility(stomp, stompActionID);
 
-		Action awaken = new EnchantedStatueAwaken();
+		Ability awaken = new EnchantedStatueAwaken();
         awaken.Initialise(this);
-        abilities.Add(awaken);
         awakenActionID = 2;
+        loadout.SetAbility(awaken, awakenActionID);
 
         InitialiseAI();
 
@@ -65,12 +67,12 @@ public class EnchantedStatue : Enemy
         {
             OnAttackedTrigger = behaviour.AddTrigger();
 			OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-			OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[stompActionID]));
+			OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
 			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
 			OnAttackedTrigger.OnTriggered += OnSurrounded;
 
 			OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[slamActionID]));
+            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[slamActionID]));
             //OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 10.0f, Vector3.back * 3.0f)));
 			OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 25.0f, Vector3.back * 1.5f)));
             OnAttackedTrigger.OnTriggered += OnTargetInSight;
@@ -86,17 +88,17 @@ public class EnchantedStatue : Enemy
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 
-       UseAbility(awakenActionID);
+        loadout.UseAbility(awakenActionID);
     }
 
     public void OnSurrounded()
     {
-		UseAbility(stompActionID);
+        loadout.UseAbility(stompActionID);
     }
 
     public void OnTargetInSight()
     {
-		UseAbility(slamActionID);
+        loadout.UseAbility(slamActionID);
     }
 
     public override void OnDisable()

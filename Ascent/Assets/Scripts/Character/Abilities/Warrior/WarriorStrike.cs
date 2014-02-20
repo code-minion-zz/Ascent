@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorStrike : Action
+public class WarriorStrike : Ability
 {
 	public float radius = 2.5f;
 	public float arcAngle = 85.0f;
@@ -67,7 +67,7 @@ public class WarriorStrike : Action
 						{
 							// Apply damage and knockback to the enemey
 
-							e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.0f), Character.EDamageType.Physical, owner);
+							e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.0f), false, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
 
 							// Create a blood splatter effect on the enemy.

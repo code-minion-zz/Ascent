@@ -16,15 +16,17 @@ public class Slime : Enemy
 
     public override void Initialise()
     {
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat,this);
-
         // Add abilities
-        Action replicate = new SlimeReplicate();
+        loadout.SetSize(1);
+
+        Ability replicate = new SlimeReplicate();
         replicate.Initialise(this);
-        abilities.Add(replicate);
         replicateActionID = 0;
+        loadout.SetAbility(replicate, replicateActionID);
        
         InitialiseAI();
     }
@@ -47,7 +49,7 @@ public class Slime : Enemy
             OnAttackedTrigger = behaviour.AddTrigger();
             OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
             OnAttackedTrigger.AddCondition(new AICondition_Attacked(this));
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(abilities[replicateActionID]), AITrigger.EConditional.And);
+            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[replicateActionID]), AITrigger.EConditional.And);
             OnAttackedTrigger.OnTriggered += OnAttacked;
 
             OnReplicateTrigger = behaviour.AddTrigger();
@@ -79,7 +81,7 @@ public class Slime : Enemy
 
     public void OnAttacked()
     {
-        UseAbility(replicateActionID);
+        loadout.UseAbility(replicateActionID);
         OnAttackedTrigger.Reset();
         OnReplicateTrigger.Reset();
     }
@@ -115,7 +117,7 @@ public class Slime : Enemy
 
         Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
 
-        hero.ApplyDamage(DamageFormulaA(1, 1.0f), EDamageType.Physical, this);
+        hero.ApplyDamage(DamageFormulaA(1, 1.0f), false, EDamageType.Physical, this);
         hero.ApplyKnockback(direction, 10.0f);
     }
 }

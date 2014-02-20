@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AbominationStrike : Action
+public class AbominationStrike : Ability
 {
     private Circle damageArea;
     private float prevSpeed;
@@ -57,7 +57,7 @@ public class AbominationStrike : Action
                 foreach (Character c in characters)
                 {
                     // Apply damage and knockback to the enemey.
-					c.ApplyDamage(owner.DamageFormulaA(3, 0.75f), Character.EDamageType.Physical, owner);
+					c.ApplyDamage(owner.DamageFormulaA(3, 0.75f), false, Character.EDamageType.Physical, owner);
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);

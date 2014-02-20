@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorWarStomp : Action
+public class WarriorWarStomp : Ability
 {
     private const float explosionMaxRadius = 10.0f;
     private GameObject stompObject;
@@ -72,7 +72,7 @@ public class WarriorWarStomp : Action
 						{
 							damage = owner.DamageFormulaA(0.0f, 0.5f);
 
-                            e.ApplyDamage(damage, Character.EDamageType.Physical, owner);
+                            e.ApplyDamage(damage, false, Character.EDamageType.Physical, owner);
 							e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.0f));
 
 							// Create a blood splatter effect on the enemy.

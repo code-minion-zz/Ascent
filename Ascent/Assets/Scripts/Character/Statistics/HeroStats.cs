@@ -241,7 +241,12 @@ public class HeroStats : CharacterStats
 							{
 								continue;
 							}
-							statValue += (int)((AccessoryItem)item).PrimaryStats.GetStat(statType);
+                            if (((AccessoryItem)item).IsBroken)
+                            {
+                                continue;
+                            }
+
+                            statValue += (int)((AccessoryItem)item).PrimaryStats.GetStat(statType);
 						}
 					}
 				}
@@ -271,6 +276,10 @@ public class HeroStats : CharacterStats
                                 continue;
                             }
                             if (item is ConsumableItem)
+                            {
+                                continue;
+                            }
+                            if (((AccessoryItem)item).IsBroken)
                             {
                                 continue;
                             }
@@ -310,7 +319,10 @@ public class HeroStats : CharacterStats
 			{
 				continue;
 			}
-
+            if (item.IsBroken)
+            {
+                continue;
+            }
 			foreach(ItemProperty property in item.ItemProperties)
 			{
 				if (property is SecondaryStatItemProperty)

@@ -6,7 +6,7 @@ public class AICondition_ActionEnd : AICondition
     bool actionEnded;
 	string name;
 
-    public AICondition_ActionEnd(Action action)
+    public AICondition_ActionEnd(Ability action)
     {
         actionEnded = false;
         action.OnActionEnd += OnActionEnd;

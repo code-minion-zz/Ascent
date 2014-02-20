@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorHeavyStrike : Action 
+public class WarriorHeavyStrike : Ability 
 {
     bool performed = false;
     public float radius = 4.0f;
@@ -66,7 +66,7 @@ public class WarriorHeavyStrike : Action
 					{
 						foreach (Enemy e in enemies)
 						{
-                            e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.5f), Character.EDamageType.Physical, owner);
+                            e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.5f), false, Character.EDamageType.Physical, owner);
 							e.ApplyKnockback(e.transform.position - owner.transform.position, 100000000000.0f);
 
 							// Create a blood splatter effect on the enemy.

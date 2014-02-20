@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// Charging Action/Skill. 
 /// Deals damage and knockback based on distance traveled (in other words, momentum)
 /// </summary>
-public class WarriorCharge : Action 
+public class WarriorCharge : Ability 
 {	
 	private float distanceMax = 12.5f;
 	
@@ -153,7 +153,7 @@ public class WarriorCharge : Action
         else if (timeElapsedSinceStarting == animationLength)
         {
 			DoDamageAtEndOfPath();
-			owner.StopAbility();
+			owner.Loadout.StopAbility();
         }
 
 		++frameCount;
@@ -184,7 +184,7 @@ public class WarriorCharge : Action
 						int damage = owner.DamageFormulaA(0.0f, 1.5f);
 
 						// Apply damage, knockback and stun to the enemy.
-						enemies[i].ApplyDamage(damage, Character.EDamageType.Physical, owner);
+						enemies[i].ApplyDamage(damage, false, Character.EDamageType.Physical, owner);
 						enemies[i].ApplyStatusEffect(new StunnedDebuff(owner, enemies[i], 1.5f));
 
 						// Create a blood splatter effect on the enemy.

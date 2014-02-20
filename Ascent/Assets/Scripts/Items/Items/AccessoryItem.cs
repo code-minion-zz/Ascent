@@ -19,6 +19,16 @@ public class AccessoryItem : Item
     }
 
     [System.Xml.Serialization.XmlIgnore]
+    protected int hitsTaken;
+
+    [System.Xml.Serialization.XmlIgnore]
+    public int HitsTaken
+    {
+        get { return hitsTaken; }
+        set { hitsTaken = value; }
+    }
+
+    [System.Xml.Serialization.XmlIgnore]
     protected EAccessoryType accessoryType;
 
     public EAccessoryType Type
@@ -183,6 +193,37 @@ public class AccessoryItem : Item
 			return Mathf.RoundToInt(repairCost);
 		}
 	}
+
+    public void ApplyDurabilityDamage(int unmitigatedDamage, bool crit, Character owner, Character source)
+    {
+        // https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=4
+
+        hitsTaken++;
+
+        float divisor = (crit) ? 100.0f : 50.0f;
+        float expo = (crit) ? 1.50f : 1.25f;
+
+        float durabilityLossChance = ((Mathf.Pow((float)source.Stats.Level + (float)hitsTaken, expo)) / owner.Stats.Level) / divisor;
+        
+        float critBonus = 30.0f;
+        durabilityLossChance += (crit) ? critBonus : 0.0f;
+
+        float maxRandChance = 100.0f;
+
+        if (durabilityLossChance > maxRandChance)
+        {
+            durabilityLossChance = maxRandChance;
+        }
+
+        float rand = Random.Range(0.0f, maxRandChance);
+
+        if (rand <= durabilityLossChance)
+        {
+            hitsTaken = 0;
+            durability -= 1;
+            Debug.Log(stats.Name + ": " + durability + " / " + durabilityMax);
+        }
+    }
 
 	public override string ToString()
 	{

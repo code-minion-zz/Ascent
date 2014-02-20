@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnchantedStatueAwaken : Action
+public class EnchantedStatueAwaken : Ability
 {
 #pragma warning disable 0414
 	private Circle damageArea;

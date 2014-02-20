@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class RatTackle : Action
+public class RatTackle : Ability
 {
 	private Circle damageArea;
 	private float prevSpeed;
@@ -61,7 +61,7 @@ public class RatTackle : Action
 				foreach (Character c in characters)
 				{
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(owner.DamageFormulaA(1, 1.10f), Character.EDamageType.Physical, owner);
+					c.ApplyDamage(owner.DamageFormulaA(1, 1.10f), false, Character.EDamageType.Physical, owner);
 					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
 					// Create a blood splatter effect on the enemy.

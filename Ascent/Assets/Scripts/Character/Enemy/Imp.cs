@@ -12,15 +12,17 @@ public class Imp : Enemy
 
     public override void Initialise()
     {
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+
 		base.Initialise();
 
-		EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
-
         // Add abilities
-        Action charge = new ImpStrike();
+        loadout.SetSize(1);
+
+        Ability charge = new ImpStrike();
         charge.Initialise(this);
-        abilities.Add(charge);
         chargeActionID = 0;
+        loadout.SetAbility(charge, chargeActionID);
 
         InitialiseAI();
     }
@@ -57,7 +59,7 @@ public class Imp : Enemy
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
             trigger.OnTriggered += OnCanUseCharge;
         }
@@ -73,7 +75,7 @@ public class Imp : Enemy
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(abilities[chargeActionID]));
+            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
             trigger.OnTriggered += OnCanUseCharge;
 
@@ -114,7 +116,7 @@ public class Imp : Enemy
 
     public void OnCanUseCharge()
     {
-        UseAbility(chargeActionID);
+        loadout.UseAbility(chargeActionID);
         AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
