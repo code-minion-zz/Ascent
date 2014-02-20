@@ -38,7 +38,7 @@ public class FloorGeneration
 	private RoomGeneration roomGeneration = new RoomGeneration();
     private List<RoomProperties> rooms = new List<RoomProperties>();
     private List<int> roomDimensions = new List<int>();
-    private Vector3 locationVector;
+    private Vector3 locationVector = Vector3.zero;
     private int roomsPlaced = 0;
 
     public void GenerateFloor()
@@ -51,23 +51,23 @@ public class FloorGeneration
         //Random.seed = (int)System.DateTime.Today.Millisecond;
         UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 
-        CreateRooms();
+        LoadCustomRooms();
+        CreateAndPlaceRooms();
     }
 
-    private void CreateRooms()
+    private void LoadCustomRooms()
     {
-        rooms.Clear();
-        rooms = new List<RoomProperties>();
-        locationVector = Vector3.zero;
-
         // Save data from the first room as a test.
         SaveRooms saver = new SaveRooms();
 
-		// Generate the first room in the game.
+        // Generate the first room in the game.
         RoomProperties firstRoom = saver.LoadRoom("Maps/NewRoom", true);
         roomGeneration.ReconstructRoom(firstRoom);
-		rooms.Add(firstRoom);
+        rooms.Add(firstRoom);
+    }
 
+    private void CreateAndPlaceRooms()
+    {
         // Go through and place all the floor components based on the number of them we have.
         for (roomsPlaced = 1; roomsPlaced < roomsToPlace+1; roomsPlaced++)
         {
@@ -75,38 +75,88 @@ public class FloorGeneration
             int randomRoom = UnityEngine.Random.Range(0, rooms.Count);
             RoomProperties fromRoom = rooms[randomRoom];
 
-            // Choose a random direction to place the room
-            // TODO: Eventually choose a random wall off a room.
-            int randRoomDir = UnityEngine.Random.Range(0, 4);
-
-            // Checks if we can make a room in this direction
-            if (fromRoom.DirectionsFilled[randRoomDir] == false)
+            // Check if this room is a custom loaded room. 
+            // If so we will handle placement so that all the doors are handled.
+            if (fromRoom.IsPreloaded)
             {
-				// Choose a width and height
-                int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
-                int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
-
-				// If we are ready to place the boss room.
-				if (roomsPlaced == roomsToPlace - 2)
-                {
-                    GenerateBossRoom(22, 22, fromRoom, (Floor.TransitionDirection)randRoomDir);
-                }
-                else
-                {
-                    // Choose a random feature
-                    FeatureType roomToMake = ChooseFeatureRoom();
-
-                    // See if we can add a new room through the chosen direction.
-                    GenerateNewRoom(width, height, roomToMake, fromRoom, (Floor.TransitionDirection)randRoomDir);
-                }
+                HandleCustomRoomPlacement(fromRoom);
             }
             else
             {
-                roomsPlaced--;
+                HandleRandomRoomPlacement(fromRoom);
             }
         }
 
         GenerateWalls();
+    }
+
+    private Door ChooseDoor(RoomProperties room)
+    {
+        if (room.IsPreloaded)
+        {
+            foreach (Door door in room.Doors)
+            {
+                if (!door.isConnected)
+                {
+                    return door;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void HandleCustomRoomPlacement(RoomProperties fromRoom)
+    {
+        // Check the room for a door that is required.
+        Door door = ChooseDoor(fromRoom);
+
+        if (door != null)
+        {
+
+            // Choose a width and height for the new room to build off.
+            int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+            int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+
+            // Choose a random feature
+            FeatureType roomToMake = ChooseFeatureRoom();
+
+            // See if we can add a new room through the chosen door.
+            GenerateNewRoom(width, height, roomToMake, fromRoom, door);
+        }
+    }
+
+    private void HandleRandomRoomPlacement(RoomProperties fromRoom)
+    {
+        // Choose a random direction to place the room
+        // TODO: Eventually choose a random wall off a room.
+        int randRoomDir = UnityEngine.Random.Range(0, 4);
+
+        // Checks if we can make a room in this direction
+        if (fromRoom.DirectionsFilled[randRoomDir] == false)
+        {
+            // Choose a width and height
+            int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+            int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+
+            // If we are ready to place the boss room.
+            if (roomsPlaced == roomsToPlace)
+            {
+                GenerateBossRoom(22, 22, fromRoom, (Floor.TransitionDirection)randRoomDir);
+            }
+            else
+            {
+                // Choose a random feature
+                FeatureType roomToMake = ChooseFeatureRoom();
+
+                // See if we can add a new room through the chosen direction.
+                GenerateNewRoom(width, height, roomToMake, fromRoom, (Floor.TransitionDirection)randRoomDir);
+            }
+        }
+        else
+        {
+            roomsPlaced--;
+        }
     }
 
     /// <summary>
@@ -240,10 +290,8 @@ public class FloorGeneration
         }
     }
 
-    public RoomProperties GenerateNewRoom(float width, float height, FeatureType feature, RoomProperties from, Floor.TransitionDirection dir)
+    public void GenerateNewRoom(float width, float height, FeatureType feature, RoomProperties from, Floor.TransitionDirection dir)
     {
-        RoomProperties room = null;
-
         // Test placing the new room.
         if (TestRoomPlacement(dir, from, width, height) == true)
         {
@@ -254,17 +302,13 @@ public class FloorGeneration
         {
             roomsPlaced--;
         }
-
-        return room;
     }
 
-    public void GenerateNewRoom(RoomProperties roomToMake, RoomProperties from, Floor.TransitionDirection dir)
+    public void GenerateNewRoom(float width, float height, FeatureType feature, RoomProperties fromRoom, Door fromDoor)
     {
-        // Test placing the new room.
-        if (TestRoomPlacement(dir, from, roomToMake.Width, roomToMake.Height) == true)
+        if (TestRoomPlacement(fromDoor, width, height) == true)
         {
-            // Build the new room.
-            BuildFeatureRoom(dir, roomToMake.Width, roomToMake.Height, roomToMake.RoomType, from);
+            BuildFeatureRoom(fromDoor, width, height, feature, fromRoom);
         }
         else
         {
@@ -304,6 +348,7 @@ public class FloorGeneration
         Transform doors = fromRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
         Door entryDoor = roomGeneration.CreateDoor(doors.gameObject, fromRoom, dir);
         entryDoor.direction = dir;
+        entryDoor.isConnected = true;
 
         // TODO: Find a way to get rid of this switch its too big.
         switch (dir)
@@ -324,6 +369,7 @@ public class FloorGeneration
                     // Link the doors
                     entryDoor.targetDoor = exitDoor;
                     exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
                 }
                 break;
 
@@ -343,6 +389,7 @@ public class FloorGeneration
                     // Link the doors
                     entryDoor.targetDoor = exitDoor;
                     exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
                 }
                 break;
 
@@ -362,6 +409,7 @@ public class FloorGeneration
                     // Link the doors
                     entryDoor.targetDoor = exitDoor;
                     exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
                 }
                 break;
 
@@ -381,6 +429,134 @@ public class FloorGeneration
                     // Link the doors
                     entryDoor.targetDoor = exitDoor;
                     exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
+                    break;
+                }
+        }
+    }
+
+    private void BuildFeatureRoom(Door fromDoor, float width, float height, FeatureType roomType, RoomProperties fromRoom)
+    {
+        string name = "room";
+        switch (roomType)
+        {
+            case FeatureType.monster:
+                name = "Room " + roomsPlaced + ": " + "Monster";
+                break;
+
+            case FeatureType.boss:
+                name = "Room " + roomsPlaced + ": " + "Boss";
+                break;
+
+            case FeatureType.trap:
+                name = "Room " + roomsPlaced + ": " + "Trap";
+                break;
+
+            case FeatureType.treasure:
+                name = "Room " + roomsPlaced + ": " + "Treasure";
+                break;
+
+        }
+
+        // TODO: If we know the feature to create we can choose the right one to create here.
+        RoomProperties newRoom = roomGeneration.CreateNewRoom((int)width, (int)height, name);
+        newRoom.Room.transform.position = locationVector;
+        newRoom.RoomType = roomType;
+
+        Floor.TransitionDirection dir = fromDoor.direction;
+
+        Transform doors = fromRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+        Door entryDoor = fromDoor;
+        entryDoor.transform.parent = doors;
+
+        Doors doorsScript = doors.GetComponent<Doors>();
+        doorsScript.doors[(int)dir] = entryDoor;
+
+        entryDoor.direction = dir;
+        entryDoor.isConnected = true;
+
+        Debug.Log(entryDoor.direction);
+
+        // TODO: Find a way to get rid of this switch its too big.
+        switch (dir)
+        {
+            case Floor.TransitionDirection.North:
+                {
+                    // Create the new room with number of doors.
+                    // we also need to create the door that connects the previous room.
+                    newRoom.FillDirection(Floor.TransitionDirection.South); // We set this position to filled because its where the other door came from
+                    newRoom.Position = locationVector;
+                    rooms.Add(newRoom);
+
+                    // Generate the door for this new room and link it to the previous room.
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.South);
+                    exitDoor.direction = Floor.TransitionDirection.South;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.East:
+                {
+                    // Create the new room with number of doors.
+                    // we also need to create the door that connects the previous room.
+                    newRoom.FillDirection(Floor.TransitionDirection.West); // We set this position to filled because its where the other door came from
+                    newRoom.Position = locationVector;
+                    rooms.Add(newRoom);
+
+                    // Generate the door for this new room and link it to the previous room.
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.West);
+                    exitDoor.direction = Floor.TransitionDirection.West;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.South:
+                {
+                    // Create the new room with number of doors.
+                    // we also need to create the door that connects the previous room.
+                    newRoom.FillDirection(Floor.TransitionDirection.North); // We set this position to filled because its where the other door came from
+                    newRoom.Position = locationVector;
+                    rooms.Add(newRoom);
+
+                    // Generate the door for this new room and link it to the previous room.
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.North);
+                    exitDoor.direction = Floor.TransitionDirection.North;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
+                }
+                break;
+
+            case Floor.TransitionDirection.West:
+                {
+                    // Create the new room with number of doors.
+                    // we also need to create the door that connects the previous room.
+                    newRoom.FillDirection(Floor.TransitionDirection.East); // We set this position to filled because its where the other door came from
+                    newRoom.Position = locationVector;
+                    rooms.Add(newRoom);
+
+                    // Generate the door for this new room and link it to the previous room.
+                    Transform newDoor = newRoom.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                    Door exitDoor = roomGeneration.CreateDoor(newDoor.gameObject, newRoom, Floor.TransitionDirection.East);
+                    exitDoor.direction = Floor.TransitionDirection.East;
+
+                    // Link the doors
+                    entryDoor.targetDoor = exitDoor;
+                    exitDoor.targetDoor = entryDoor;
+                    exitDoor.isConnected = true;
                     break;
                 }
         }
@@ -420,6 +596,53 @@ public class FloorGeneration
             // West
             case Floor.TransitionDirection.West:
                 locationVector = new Vector3(((from.Position.x - from.Width * 0.5f) - roomOffsetValue), 0.0f, from.Position.z);
+                break;
+        }
+
+        // Test to see if the room intersects anywhere.
+        testBounds = new Bounds(locationVector, new Vector3(width, 1.0f, height));
+
+        // Check to see if the position is filled by another room.
+        for (int a = 0; a < rooms.Count; a++)
+        {
+            if (testBounds.Intersects(rooms[a].Bounds))
+            {
+                return (false);
+            }
+        }
+
+        return (true);
+    }
+
+    private bool TestRoomPlacement(Door fromDoor, float width, float height)
+    {
+        Bounds testBounds = new Bounds();
+        
+        Floor.TransitionDirection dir = fromDoor.direction;
+        Transform from = fromDoor.transform;
+
+        // Find the new location of the room.
+        switch (dir)
+        {
+            // North
+            case Floor.TransitionDirection.North:
+                // Vector to test new location. 
+                locationVector = new Vector3(from.position.x, 0.0f, from.position.z + roomOffsetValue);
+                break;
+
+            // East
+            case Floor.TransitionDirection.East:
+                locationVector = new Vector3(from.position.x + roomOffsetValue, 0.0f, from.position.z);
+                break;
+
+            // South
+            case Floor.TransitionDirection.South:
+                locationVector = new Vector3(from.position.x, 0.0f, from.position.z - roomOffsetValue);
+                break;
+
+            // West
+            case Floor.TransitionDirection.West:
+                locationVector = new Vector3(from.position.x - roomOffsetValue, 0.0f, from.position.z);
                 break;
         }
 

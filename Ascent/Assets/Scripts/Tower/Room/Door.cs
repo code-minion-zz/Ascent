@@ -11,11 +11,11 @@ public class Door : MonoBehaviour
 	private float standingOnDoorTimer = 0.0f;
 	public Floor.TransitionDirection direction;
 	public Door targetDoor;
+    public bool isConnected;
 	private bool[] playersLeftDoor;
-
 	public Collider immediateArea;
-
 	private bool startDoor = false;
+
 	public bool StartDoor
 	{
 		get { return startDoor; }

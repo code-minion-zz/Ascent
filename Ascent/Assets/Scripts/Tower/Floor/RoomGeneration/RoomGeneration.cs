@@ -399,13 +399,43 @@ public class RoomGeneration
 
             if (go != null)
             {
-                //go.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
                 go.transform.parent = room.Tiles[x, y].GameObject.transform;
                 go.transform.position = room.Tiles[x, y].Position;
                 go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
                 go.name = "[" + x + ", " + y + "]" + go.name;
+
+                if (att.Type == TileType.door)
+                {
+                    Door door = go.GetComponent<Door>();
+                    door.direction = GetDirectionFromRot(go.transform.eulerAngles.y);
+                    room.Doors.Add(door);
+                }
             }
         }
+    }
+
+    private Floor.TransitionDirection GetDirectionFromRot(float angle)
+    {
+        Floor.TransitionDirection dir = Floor.TransitionDirection.North;
+
+        if (angle >= 0.0f && angle < 90.0f)
+        {
+            dir = Floor.TransitionDirection.West;
+        }
+        else if (angle >= 90.0f && angle < 180.0f)
+        {
+            dir = Floor.TransitionDirection.North;
+        }
+        else if (angle >= 180.0f && angle < 270.0f)
+        {
+            dir = Floor.TransitionDirection.East;
+        }
+        else if (angle >= 270.0f)
+        {
+            dir = Floor.TransitionDirection.South;
+        }
+
+        return dir;
     }
 
     /// <summary>
@@ -413,7 +443,7 @@ public class RoomGeneration
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    private GameObject GetGameObjectByType(TileType type)
+    public GameObject GetGameObjectByType(TileType type)
     {
         GameObject go = null;
 

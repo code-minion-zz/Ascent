@@ -24,6 +24,8 @@ public class RoomProperties
     private bool isPreloaded;
     [NonSerialized]
     private Room room;
+    [NonSerialized]
+    private List<Door> doors;
 
     // Tiles represent the grid of the room. Every tile has a list of objects it is holding.
     public Tile[,] Tiles { get; set; }
@@ -73,9 +75,15 @@ public class RoomProperties
         set { room = value; }
     }
 
+    public List<Door> Doors
+    {
+        get { return doors; }
+        set { doors = value; }
+    }
+
     public RoomProperties()
     {
-        
+
     }
 
     public RoomProperties(Room room)
@@ -163,6 +171,8 @@ public class RoomProperties
 
     public void CreateBaseTiles()
     {
+        doors = new List<Door>();
+
         for (int i = 0; i < NumberOfTilesX; ++i)
         {
             for (int j = 0; j < NumberOfTilesY; ++j)
