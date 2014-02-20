@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-public class UITown_BackpackPanel : UITown_Panel 
+public class UITown_BackpackPanel : UITown_RadialPanel 
 {
 	enum EMode
 	{
@@ -99,7 +99,7 @@ public class UITown_BackpackPanel : UITown_Panel
 
 		if (initialised) (parent as UITownWindow).SetTitle("Backpack");
 
-		if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		if (currentSelection) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 
 	public override void OnDisable()

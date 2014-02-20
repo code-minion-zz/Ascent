@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class UITown_TowerConfirm : UITown_Panel {
+public class UITown_TowerConfirm : UITown_RadialPanel {
 
 	// Use this for initialization
 	void Start () {

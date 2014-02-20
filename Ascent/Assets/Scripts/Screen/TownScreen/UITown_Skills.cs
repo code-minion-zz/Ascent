@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UITown_Skills : UIPlayerMenuPanel {
+public class UITown_Skills : UITown_RadialPanel {
 
 	// Use this for initialization
 	void Start () {

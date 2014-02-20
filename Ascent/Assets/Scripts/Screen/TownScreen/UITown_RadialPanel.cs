@@ -10,7 +10,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class UITown_Panel : UIPlayerMenuPanel
+/// <summary>
+/// Panel plus code to handle Radial menu input
+/// </summary>
+public class UITown_RadialPanel : UIPlayerMenuPanel
 {
 	protected Dictionary<float, int> AngleIndex;
 	static float ANGLETOLERANCE = 20f;

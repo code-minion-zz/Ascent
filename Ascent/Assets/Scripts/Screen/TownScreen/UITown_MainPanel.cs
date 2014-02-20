@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class UITown_MainPanel : UITown_Panel
+public class UITown_MainPanel : UITown_RadialPanel
 {
 	const float TOWER = 0f;
     const float BACKPACK = 270f;
@@ -11,16 +11,22 @@ public class UITown_MainPanel : UITown_Panel
 	{
 		base.Initialise();
 
-		buttons = new UIButton[3];
+		buttons = new UIButton[5];
 		
 		buttons[0] = transform.Find("Button Tower").GetComponent<UIButton>();
 		AngleIndex.Add(0f, 0);
 
-		buttons[1] = transform.Find("Button Quit").GetComponent<UIButton>();
-		AngleIndex.Add(90f, 1);
+		buttons[1] = transform.Find("Button ConShop").GetComponent<UIButton>();
+		AngleIndex.Add(45f, 1);
+
+		buttons[2] = transform.Find("Button Quit").GetComponent<UIButton>();
+		AngleIndex.Add(90f, 2);
 		
-		buttons[2] = transform.Find("Button Backpack").GetComponent<UIButton>();
-		AngleIndex.Add(-90f, 2);
+		buttons[3] = transform.Find("Button Backpack").GetComponent<UIButton>();
+		AngleIndex.Add(-90f, 3);
+		
+		buttons[4] = transform.Find("Button AccShop").GetComponent<UIButton>();
+		AngleIndex.Add(-45f, 4);
 
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;
@@ -127,11 +133,17 @@ public class UITown_MainPanel : UITown_Panel
 		case 0 : // tower
 			(parent as UITownWindow).RequestTransitionToPanel(2);
 			break;
-		case 1 : // quit
+		case 1 : // conshop
+			(parent as UITownWindow).RequestTransitionToPanel(5);
+			break;
+		case 2 : // quit
 			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
 			break;
-		case 2 : // backpack
+		case 3 : // backpack
 			(parent as UITownWindow).RequestTransitionToPanel(1);
+			break;
+		case 4 : // accshop
+			(parent as UITownWindow).RequestTransitionToPanel(4);
 			break;
 		default : // nothing meaningful is highlighted
 			break;
@@ -147,11 +159,17 @@ public class UITown_MainPanel : UITown_Panel
 		case 0: // tower
 			townWindow.SetInfo("Enter the Tower");
 			break;
-		case 1: // quit
+		case 1: // conshop
+			townWindow.SetInfo("Visit the Item Shop");
+			break;
+		case 2: // quit
 			townWindow.SetInfo("Quit to Main Menu");
 			break;
-		case 2: // backpack
-		townWindow.SetInfo("Manage your Equipment");
+		case 3: // backpack
+			townWindow.SetInfo("Manage your Equipment");
+			break;
+		case 4: // accshop
+			townWindow.SetInfo("Visit the Gem shop");
 			break;
 		default:
 			townWindow.SetInfo("");
