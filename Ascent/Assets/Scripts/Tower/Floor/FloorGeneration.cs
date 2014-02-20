@@ -475,8 +475,6 @@ public class FloorGeneration
         entryDoor.direction = dir;
         entryDoor.isConnected = true;
 
-        Debug.Log(entryDoor.direction);
-
         // TODO: Find a way to get rid of this switch its too big.
         switch (dir)
         {
