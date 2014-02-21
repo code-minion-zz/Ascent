@@ -20,7 +20,6 @@ public enum TileType
     brazier,
     trap,
     monster,
-    invalid
 }
 
 [Serializable]

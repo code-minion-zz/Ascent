@@ -13,11 +13,12 @@ namespace Ascent
         private const int buttonSize = 255;
 
         private GameObject selectedRoom = null;
-
+        private GameObject selectedTile = null;
 
         private SaveRooms roomSaver = new SaveRooms();
         private int selectedIndex = 0;
         private int index = 0;
+        private TileType tileType;
         private List<RoomProperties> roomSaves = new List<RoomProperties>();
         private List<string> roomSaveNames = new List<string>();
         private string directory;
@@ -49,6 +50,7 @@ namespace Ascent
         void Update()
         {
             UpdateSelectedRoom();
+            UpdateSelectedTile();
 
             this.Repaint();
         }
@@ -56,6 +58,7 @@ namespace Ascent
         void GridUpdate(SceneView sceneView)
         {
             UpdateSelectedRoom();
+            UpdateSelectedTile();
 
             Event e = Event.current;
             Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
@@ -80,6 +83,12 @@ namespace Ascent
                 EditorGUILayout.Separator();
 
                 GUILayout.Label("Selected Room: " + selectedRoomText);
+            }
+
+            if (selectedTile != null)
+            {
+                GUILayout.Label("Selected Tile: " + selectedTile.name);
+                TilePlacementGUI();
             }
 
             EditorGUILayout.EndScrollView();
@@ -159,8 +168,13 @@ namespace Ascent
                             {
                                 TileAttribute att = new TileAttribute();
                                 att.Type = id.TileAttributeType;
-                                att.Angle = child.rotation.y;
+                                att.Angle = child.eulerAngles.y;
                                 roomProperties.Tiles[x, y].TileAttributes.Add(att);
+
+                                if (att.Type == TileType.door)
+                                {
+
+                                }
                             }
                             else
                             {
@@ -172,6 +186,22 @@ namespace Ascent
             }
 
             roomSaver.SaveRoom(roomProperties, directory);
+        }
+
+        private void TilePlacementGUI()
+        {
+            tileType = (TileType)EditorGUILayout.EnumPopup("Choose Environment Piece", (Enum)tileType);
+
+            if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
+            {
+                GameObject go = roomGen.GetGameObjectByType(tileType);
+
+                if (go != null)
+                {
+                    go.transform.parent = selectedTile.transform;
+                    go.transform.position = selectedTile.transform.position;
+                }
+            }
         }
 
         public void AddRoom(RoomProperties room)
@@ -199,6 +229,30 @@ namespace Ascent
             }
 
             return go;
+        }
+
+        private void UpdateSelectedTile()
+        {
+            GameObject go = Selection.activeGameObject;
+
+            if (go != null && go != selectedTile)
+            {
+                Transform T = go.transform;
+
+                while (T.parent != null && T.tag != "RoomTile")
+                {
+                    T = T.parent;
+                }
+
+                if (T.tag != "RoomTile")
+                {
+                    selectedTile = null;
+                }
+                else
+                {
+                    selectedTile = T.gameObject;
+                }
+            }
         }
 
         /// <summary>

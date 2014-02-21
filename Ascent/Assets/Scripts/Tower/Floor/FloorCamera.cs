@@ -5,19 +5,15 @@ using System.Collections.Generic;
 public class FloorCamera : MonoBehaviour
 {
     private List<Player> players;
-    private Transform _transform;
-    private Camera floorCamera;
-    private Plane[] cameraFrustPlanes;
-    private const float cameraOffset = 5.0f;
+    private Transform myTransform;
+    private Camera mainCamera;
 
     private bool transition = false;
-	private float waitTranisition = 0.0f;
-    private Vector3 startPos;
-    private Vector3 targetPos;
-    private float time;
+    private Vector3 transitionStartPos;
+    private Vector3 transitionTargetPos;
+    private float transitionTimeElapsed;
 
-	private float fadeToBlackTime = 0.5f;
-	public float transitionTime = 0.5f;
+	private float transitionTime = 0.5f;
 
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
 	private const float verticalIncrement = 25.0f;
@@ -25,27 +21,28 @@ public class FloorCamera : MonoBehaviour
 
     private CameraShake cameraShake;
 
-	public bool clampToRoom = true;
+	private bool clampToRoom = true;
 
 	public Vector3 minCamera;
-	public Vector3 maxCamera;
+	public Vector3 maxCamera; // Rightside and Bottom
 
-	private float oldHeight;
-	private float cameraHeight = 24.0f;
-	public float CameraHeight
-	{
-		get { return cameraHeight; }
-		set 
-		{
-			oldHeight = cameraHeight;
-			//cameraHeight = value;
-		}
-	}
+    //private float oldHeight;
+    //private float cameraHeight = 24.0f;
+    //public float CameraHeight
+    //{
+    //    get { return cameraHeight; }
+    //    set 
+    //    {
+    //        oldHeight = cameraHeight;
+    //        //cameraHeight = value;
+    //    }
+    //}
 
 #if UNITY_WEBPLAYER
 	private float offsetZ = -5.35f;
 #else
-	private float offsetZ = -0.35f;
+    [HideInInspector]
+	public float offsetZ = -0.35f;
 #endif
 	public float OffsetZ
 	{
@@ -57,44 +54,34 @@ public class FloorCamera : MonoBehaviour
 	}
 
 
-    public Camera Camera
+    public Camera MainCamera
     {
-        get { return floorCamera; }
+        get { return mainCamera; }
     }
 
 	public void Initialise()
 	{
 		players = Game.Singleton.Players;
-		_transform = transform;
-		floorCamera = GetComponent<Camera>();
+		myTransform = transform;
+		mainCamera = GetComponent<Camera>();
         cameraShake = GetComponent<CameraShake>();
 	}
 
     public void Update()
     {
-
-		//UpdateCameraRotation();
-
-        //UpdateCameraPosition();
 		if (transition)
 		{
-			if (waitTranisition < fadeToBlackTime)
-			{
-				waitTranisition += Time.deltaTime;
-			}
-			else
-			{
-				time += Time.deltaTime;
+			transitionTimeElapsed += Time.deltaTime;
 
-				if (time >= transitionTime)
-				{
-					time = transitionTime;
-				}
-				Vector3 lerpVector = Vector3.Lerp(startPos, targetPos, time / transitionTime);
-
-				transform.position = lerpVector;
+			if (transitionTimeElapsed >= transitionTime)
+			{
+				transitionTimeElapsed = transitionTime;
 			}
-			if (time == transitionTime)
+			Vector3 lerpVector = Vector3.Lerp(transitionStartPos, transitionTargetPos, transitionTimeElapsed / transitionTime);
+
+			transform.position = lerpVector;
+
+			if (transitionTimeElapsed == transitionTime)
 			{
 				transition = false;
 				
@@ -104,57 +91,9 @@ public class FloorCamera : MonoBehaviour
 		{
 			UpdateCameraPosition();
 		}
-
-		if(Input.GetKeyUp(KeyCode.Keypad5))
-		{
-			transitionTime = 0.25f;
-			fadeToBlackTime = 0.0f;
-		}
-		//else
-		//{
-		//    if (Input.GetKeyUp(KeyCode.Space))
-		//    {
-		//        ++currentRoom;
-
-		//        if (currentRoom > lastRoom)
-		//        {
-		//            currentRoom = 0;
-		//        }
-
-		//        transition = true;
-		//        time = 0.0f;
-
-		//        startPos = _transform.position;
-
-		//        switch(currentRoom)
-		//        {
-		//            case 0:
-		//                {
-		//                    targetPos = new Vector3(0.0f, 30.0f, -4.8f);
-		//                }
-		//                break;
-		//            case 1:
-		//                {
-		//                    targetPos = new Vector3(30.0f, 30.0f, -4.8f);
-		//                }
-		//                break;
-		//            case 2:
-		//                {
-		//                    targetPos = new Vector3(30.0f, 30.0f, 15.2f);
-		//                }
-		//                break;
-		//            case 3:
-		//                {
-		//                    targetPos = new Vector3(0.0f, 30.0f, 15.2f);
-		//                }
-		//                break;
-		//        }
-                
-		//    }
-		//}
     }
 
-    void UpdateCameraPosition()
+    public void UpdateCameraPosition()
     {
 #if UNITY_WEBPLAYER
 		if (players.Count > 0)
@@ -167,18 +106,18 @@ public class FloorCamera : MonoBehaviour
 		}
 #else
         Vector3 newVector = CalculateAveragePlayerPosition();
-        Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
+        Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, 2.0f * Time.deltaTime);
 		lerpVector.z += offsetZ;
-		// Set the position of our camera.
 
+		// Set the position of our camera.
 		if (clampToRoom)
 		{
-			_transform.position = ClampPositionIntoBounds(lerpVector);
+			myTransform.position = ClampPositionIntoBounds(lerpVector);
 		}
 		else
 		{
 			
-			_transform.position = lerpVector;
+			myTransform.position = lerpVector;
 		}
 #endif
     }
@@ -187,12 +126,11 @@ public class FloorCamera : MonoBehaviour
 	{
         return new Vector3(
         Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
-       // Mathf.Clamp(pos.y, minCamera.y, maxCamera.y),
-	   cameraHeight,
+        22.0f,
 		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
-	void UpdateCameraRotation()
+	public Vector3 CalculateAveragePlayerPosition()
 	{
 		if (players.Count > 0)
 		{
@@ -210,74 +148,26 @@ public class FloorCamera : MonoBehaviour
 
 			// Calculate camera position based off players
 			float x = totalVector.x / players.Count;
-			float y = totalVector.y;
-			float z = (totalVector.z / players.Count);
-
-			Vector3 newVector = new Vector3(x, y, z);
-			Debug.Log(newVector);
-			transform.LookAt(newVector, Vector3.up);
-			//Vector3 lerpVector = Vector3.Lerp(_transform.position, newVector, 2.0f * Time.deltaTime);
-
-			// Set the position of our camera.
-			//_transform.position = lerpVector;
-		}
-	}
-
-	private Vector3 CalculateAveragePlayerPosition()
-	{
-		if (players.Count > 0)
-		{
-			// Ulter position of the camera to center on the players
-			Vector3 totalVector = Vector3.zero;
-
-			// Add up all the vectors
-			foreach (Player player in players)
-			{
-				if (player != null)
-				{
-					totalVector += player.Hero.transform.position;
-				}
-			}
-
-			// Calculate camera position based off players
-			float x = totalVector.x / players.Count;
-			float y = _transform.position.y;
+			float y = myTransform.position.y;
 			float z = (totalVector.z / players.Count);
 
 			return new Vector3(x, y, z);
 		}
 
-		return _transform.position;
+		return myTransform.position;
 	}
-
-    private void CalculateCameraFrustum()
-    {
-        cameraFrustPlanes = GeometryUtility.CalculateFrustumPlanes(floorCamera);
-
-        int count = 0;
-        foreach (Plane plane in cameraFrustPlanes)
-        {
-            GameObject p = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            p.name = "Plane " + count.ToString();
-            p.transform.position = -plane.normal * plane.distance;
-            p.transform.rotation = Quaternion.FromToRotation(Vector3.up, plane.normal);
-            count++;
-        }
-    }
 
 	public void TransitionToRoom(Floor.TransitionDirection direction)
 	{
-		startPos = transform.position;
-		startPos.y = oldHeight;
-		targetPos = CalculateAveragePlayerPosition();
-		targetPos.y = cameraHeight;
-		targetPos = Vector3.Lerp(_transform.position, targetPos, 2.0f * Time.deltaTime);
-		targetPos.z += offsetZ;
-		targetPos = ClampPositionIntoBounds(targetPos);
+		transitionStartPos = transform.position;
+		//transitionStartPos.y = oldHeight;
+		transitionTargetPos = CalculateAveragePlayerPosition();
+		//transitionTargetPos.y = cameraHeight;
+		transitionTargetPos = Vector3.Lerp(myTransform.position, transitionTargetPos, 2.0f * Time.deltaTime);
+		transitionTargetPos.z += offsetZ;
+		transitionTargetPos = ClampPositionIntoBounds(transitionTargetPos);
 		
-
-		waitTranisition = 0.0f;
-		time = 0.0f;
+		transitionTimeElapsed = 0.0f;
 		transition = true;
 	}
 
