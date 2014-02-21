@@ -11,7 +11,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 	{
 		base.Initialise();
 
-		buttons = new UIButton[7];
+		buttons = new UIButton[8];
 		
 		buttons[0] = transform.Find("Button Tower").GetComponent<UIButton>();
 		AngleIndex.Add(0f, 0);
@@ -29,10 +29,13 @@ public class UITown_MainPanel : UITown_RadialPanel
 		AngleIndex.Add(-45f, 4);
 		
 		buttons[5] = transform.Find("Button Skilltree").GetComponent<UIButton>();
-		AngleIndex.Add(-135f, 4);
-
+		AngleIndex.Add(-135f, 5);
+		
 		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
-		AngleIndex.Add(135f, 4);
+		AngleIndex.Add(135f, 6);
+
+		buttons[7] = transform.Find("Button Chapel").GetComponent<UIButton>();
+		AngleIndex.Add(-180f, 7);
 
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;
