@@ -149,6 +149,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		panels[(int)EBackpackPanels.ACCSHOP] = transform.FindChild("AccessoryShop").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.CONSHOP] = transform.FindChild("ConsumableShop").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.SKILLS] = transform.FindChild("Skills").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.TAVERN] = transform.FindChild("Tavern").GetComponent<UIPlayerMenuPanel>();
 
 		for (int i = 0; i < panels.Count; ++i)
 		{

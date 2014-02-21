@@ -11,7 +11,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 	{
 		base.Initialise();
 
-		buttons = new UIButton[5];
+		buttons = new UIButton[7];
 		
 		buttons[0] = transform.Find("Button Tower").GetComponent<UIButton>();
 		AngleIndex.Add(0f, 0);
@@ -27,6 +27,12 @@ public class UITown_MainPanel : UITown_RadialPanel
 		
 		buttons[4] = transform.Find("Button AccShop").GetComponent<UIButton>();
 		AngleIndex.Add(-45f, 4);
+		
+		buttons[5] = transform.Find("Button Skilltree").GetComponent<UIButton>();
+		AngleIndex.Add(-135f, 4);
+
+		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
+		AngleIndex.Add(135f, 4);
 
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;
@@ -144,6 +150,12 @@ public class UITown_MainPanel : UITown_RadialPanel
 			break;
 		case 4 : // accshop
 			(parent as UITownWindow).RequestTransitionToPanel(4);
+			break;
+		case 5 : // skills
+			(parent as UITownWindow).RequestTransitionToPanel(3);
+			break;
+		case 6 : // tavern
+			(parent as UITownWindow).RequestTransitionToPanel(6);
 			break;
 		default : // nothing meaningful is highlighted
 			break;

@@ -12,4 +12,11 @@ public class UITown_Skills : UITown_RadialPanel {
 	void Update () {
 	
 	}
+
+	public override void OnEnable()
+	{		
+		base.OnEnable();
+		
+		if (initialised) (parent as UITownWindow).SetTitle("Skill Tree");
+	}
 }
