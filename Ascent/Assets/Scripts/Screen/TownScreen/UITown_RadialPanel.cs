@@ -13,17 +13,17 @@ using System.Collections.Generic;
 /// <summary>
 /// Panel plus code to handle Radial menu input
 /// </summary>
-public class UITown_RadialPanel : UIPlayerMenuPanel
+public class UITown_RadialPanel : UITown_Panel
 {
 	protected Dictionary<float, int> AngleIndex;
 	protected bool updatePointer = false;
-
 
 	public override void Initialise ()
 	{
 		base.Initialise ();
 		
 		AngleIndex = new Dictionary<float, int>();
+
 	}
 
 	/// <summary>
@@ -73,7 +73,9 @@ public class UITown_RadialPanel : UIPlayerMenuPanel
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 		}
 	}
-	
+
+
+
 	/// <summary>
 	/// Does input satisfy deadzone requirements?
 	/// 0up, 1left, 2down, 3right
@@ -115,7 +117,7 @@ public class UITown_RadialPanel : UIPlayerMenuPanel
 			if (angle > 0) facingLeft = true;
 			
 			satisfied = Utilities.CloseTo(angle, checkAngle);
-			Debug.Log (angle + " passes Deadzone? :" +satisfied);
+			//Debug.Log (angle + " passes Deadzone? :" +satisfied);
 			
 		}
 		else if (dPadButton.IsPressed)

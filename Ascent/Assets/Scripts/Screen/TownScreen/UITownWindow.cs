@@ -36,6 +36,8 @@ public class UITownWindow : UIPlayerMenuWindow
 	Spin spinScript = null;
 	GameObject cardBack = null;
 	GameObject confirmBox = null;
+	public delegate void ConfirmBoxEvent(bool result);
+	public event ConfirmBoxEvent ConfirmBoxClose ;
 
 	int transitionTarget = -1;
 	/// <summary>
@@ -47,6 +49,15 @@ public class UITownWindow : UIPlayerMenuWindow
 	/// </summary>
 	int flipState = 0; 
 	int confirmState = 0;
+
+	public bool Confirming
+	{
+		get
+		{
+			return confirmState > 0; 
+		}
+
+	}
 
 	public enum EBackpackPanels
 	{
@@ -85,6 +96,11 @@ public class UITownWindow : UIPlayerMenuWindow
 		if (flipState > 0)
 		{
 			ProcessFlip();
+		}
+
+		if (confirmState > 0)
+		{
+			ProcessConfirmBox();
 		}
 	}
 
@@ -180,9 +196,9 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public void RequestConfirmBox(string str)
 	{
-		confirmBox.GetComponentInChildren<UILabel>().text = str;
+		confirmBox.GetComponentInChildren<UILabel>().text = str + "\n Press (A) to confirm, or (B) to cancel";
 
-//		isConfirming = true;
+		confirmState = 1;
 	}
 
 	public void ProcessConfirmBox()
@@ -194,36 +210,48 @@ public class UITownWindow : UIPlayerMenuWindow
 			break;
 		case 1:
 			++confirmState;
-			NGUITools.SetActive(confirmBox, true);
+			//NGUITools.SetActive(confirmBox, true);
 			confirmBox.GetComponent<UITweener>().PlayForward();
 			break;
 		case 2:
-			if (confirmBox.GetComponent<UITweener>().tweenFactor > 1f)
+			if (confirmBox.GetComponent<UITweener>().tweenFactor >= 1f)
 			{				
 				++confirmState;
-				confirmBox.GetComponent<UITweener>().PlayReverse();
 			}
 			break;
 		case 3:
-			if (confirmBox.GetComponent<UITweener>().tweenFactor > 1f)
-			{				
+		{
+			if (player.Input.A.IsPressed)
+			{
+				confirmBox.GetComponent<UITweener>().PlayReverse();
 				++confirmState;
-
+				ConfirmBoxClose.Invoke(true);
+			}
+			else if (player.Input.B.IsPressed)
+			{
+				confirmBox.GetComponent<UITweener>().PlayReverse();
+				++confirmState;
+				ConfirmBoxClose.Invoke(false);
+			}
+		}
+			break;
+		case 4:
+			if (confirmBox.GetComponent<UITweener>().tweenFactor <= 0f)
+			{				
+				confirmState = 0;
+				//NGUITools.SetActive(confirmBox, false);
 			}
 			break;
 		}
-
 	}
 
-	public void SpawnConfirmBox()
-	{
-	}
-
-	public bool CloseConfirmBox()
-	{
-		confirmBox.GetComponent<UITweener>().PlayReverse();
-		return false;
-	}
+//
+//	public void CloseConfirmBox()
+//	{
+//		if (confirmState == )
+//
+//		confirmBox.GetComponent<UITweener>().PlayReverse();
+//	}
 
 	protected void ProcessFlip()
 	{

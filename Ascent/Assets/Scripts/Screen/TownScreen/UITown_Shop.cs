@@ -206,6 +206,8 @@ public class UITown_Shop : UITown_RadialPanel
 	#region Input Handling	
 	public override void OnMenuUp(InputDevice device)
 	{
+		if (parentConfirming) return;
+
 		if (!SatisfiesDeadzone(device,0)) return;
 
 		if (shopMode == EMode.BUY)
@@ -227,6 +229,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuDown(InputDevice device)
 	{
+		if (parentConfirming) return;
+
 		if (!SatisfiesDeadzone(device,2)) return;
 
 		if (shopMode == EMode.BUY)
@@ -249,6 +253,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuLeft(InputDevice device)
 	{
+		if (parentConfirming) return;
+
 		if (!SatisfiesDeadzone(device,1)) return;
 
 		--shopMode;
@@ -260,6 +266,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuRight(InputDevice device)
 	{
+		if (parentConfirming) return;
+
 		if (!SatisfiesDeadzone(device,3)) return;
 
 		++shopMode;
@@ -271,17 +279,20 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuOK(InputDevice device)
 	{
+		if (parentConfirming) return;
+
 		switch (shopMode)
 		{
 		case EMode.BUY:
 			if (currentSelection)
 			{
-//				int value = (currentSelection as UIItemButton).LinkedItem.ItemStats.PurchaseValue;
-//				if (playerHero.HeroStats.Gold >= value)
-//				{
-//					// can afford
-//					// TODO: Spawn Confirmation dialog box
-//				}
+				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
+				int value = itemStat.PurchaseValue;
+				if (playerHero.HeroStats.Gold >= value)
+				{
+					// can afford
+					(parent as UITownWindow).RequestConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
+				}
 			}
 			break;
 		case EMode.REPAIR:
@@ -294,6 +305,11 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
+		if (parentConfirming) return;
+
+		if ((parent as UITownWindow).Confirming) return;
+
+
 		(parent as UITownWindow).RequestTransitionToPanel(0);
 //		if (activeTab == EMode.INVENTORY)
 //		{
