@@ -114,7 +114,7 @@ public abstract class Enemy : Character
 		hpBar.Init(StatBar.eStat.HP, this);
         hpBar.gameObject.SetActive(false);
 
-		PositionHpBar();
+		//PositionHpBar();
 	}
 
     public virtual void OnEnable()
@@ -189,14 +189,19 @@ public abstract class Enemy : Character
                     if (stats.CurrentHealth != stats.MaxHealth)
                     {
                         if (!hpBar.gameObject.activeInHierarchy)
+                        {
                             NGUITools.SetActive(hpBar.gameObject, true);
+                        }
 
                         PositionHpBar();
                     }
                     else
                     {
                         if (hpBar.gameObject.activeInHierarchy)
+                        {
                             NGUITools.SetActive(hpBar.gameObject, false);
+                        }
+
                     }
                 }
             }

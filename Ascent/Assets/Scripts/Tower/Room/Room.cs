@@ -43,7 +43,7 @@ public class Room : MonoBehaviour
 	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 
 	public float cameraHeight = 20.0f;
-	private float curCameraHeight = 20.0f;
+	//private float curCameraHeight = 20.0f;
 
 	public float cameraOffsetZ = 0.35f;
 	private float curCameraOffsetZ = 0.35f;
@@ -209,14 +209,14 @@ public class Room : MonoBehaviour
 
     public void OnEnable()
     {
-		if (Game.Singleton.Tower.CurrentFloor != null)
+        if (Game.Singleton.Tower.CurrentFloor != null && Game.Singleton.Tower.CurrentFloor.initialised)
 		{
 			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
 			camera.minCamera = transform.position + minCamera;
 			camera.maxCamera = transform.position + maxCamera;
 			curMinCamera = minCamera;
 			curMaxCamera = maxCamera;
-			camera.CameraHeight = cameraHeight;
+			//camera.CameraHeight = cameraHeight;
 
 		}
 
@@ -305,11 +305,11 @@ public class Room : MonoBehaviour
 			curMaxCamera = maxCamera;
 			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
 		}
-		if (cameraHeight != curCameraHeight)
-		{
-			curCameraHeight = cameraHeight;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.CameraHeight = cameraHeight;
-		}
+        //if (cameraHeight != curCameraHeight)
+        //{
+        //    curCameraHeight = cameraHeight;
+        //    Game.Singleton.Tower.CurrentFloor.FloorCamera.CameraHeight = cameraHeight;
+        //}
 		if (cameraOffsetZ != curCameraOffsetZ)
 		{
 			curCameraOffsetZ = cameraOffsetZ;
