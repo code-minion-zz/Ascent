@@ -16,13 +16,8 @@ using System.Collections.Generic;
 public class UITown_RadialPanel : UIPlayerMenuPanel
 {
 	protected Dictionary<float, int> AngleIndex;
-	static float ANGLETOLERANCE = 20f;
 	protected bool updatePointer = false;
 
-	protected bool CloseTo(float a, float b)
-	{
-		return (Mathf.Abs(a - b) <= ANGLETOLERANCE);
-	}
 
 	public override void Initialise ()
 	{
@@ -43,7 +38,7 @@ public class UITown_RadialPanel : UIPlayerMenuPanel
 
 		foreach (KeyValuePair<float,int> p in AngleIndex)
 		{
-			if (CloseTo(angle,p.Key))
+			if (Utilities.CloseTo(angle,p.Key))
 			{
 				hit = true;
 				if (buttons[p.Value] != currentSelection)
@@ -77,6 +72,58 @@ public class UITown_RadialPanel : UIPlayerMenuPanel
 			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 			UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 		}
+	}
+	
+	/// <summary>
+	/// Does input satisfy deadzone requirements?
+	/// 0up, 1left, 2down, 3right
+	/// </summary>
+	protected static bool SatisfiesDeadzone(InputDevice device, int direction)
+	{		
+		bool satisfied = false;
+		float checkAngle = 0f;
+		InputControl dPadButton = null;
+		
+		switch (direction)
+		{
+		case 0:
+			dPadButton = device.DPadUp;
+			checkAngle = 0f;
+			break;
+		case 1:
+			dPadButton = device.DPadLeft;
+			checkAngle = 90f;
+			break;
+		case 2:
+			dPadButton = device.DPadDown;
+			checkAngle = -180f;
+			break;
+		case 3:
+			dPadButton = device.DPadRight;
+			checkAngle = -90f;
+			break;
+		default:
+			return false;
+			break;
+		}
+		
+		if (device.LeftStickX.IsPressed || device.LeftStickY.IsPressed)
+		{
+			// -90 = right, 0 = up, 90 = left, -180 = down
+			bool facingLeft = false;
+			float angle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value, device.LeftStickY.Value) -90f;
+			if (angle > 0) facingLeft = true;
+			
+			satisfied = Utilities.CloseTo(angle, checkAngle);
+			Debug.Log (angle + " passes Deadzone? :" +satisfied);
+			
+		}
+		else if (dPadButton.IsPressed)
+		{
+			satisfied = true;
+		}
+		
+		return satisfied;
 	}
 }
 

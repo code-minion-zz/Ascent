@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Additional functions for buying/selling
 /// </summary>
-public class UITown_Shop : UIPlayerMenuPanel 
+public class UITown_Shop : UITown_RadialPanel 
 {
 	#region Variables
 	protected List<Item> shopInventory;
@@ -19,7 +19,6 @@ public class UITown_Shop : UIPlayerMenuPanel
 	{
 		INVALID = -1,
 		BUY,
-		SELL,
 		REPAIR,
 		APPRAISE,
 		MAX
@@ -47,8 +46,7 @@ public class UITown_Shop : UIPlayerMenuPanel
 		shopInventory = new List<Item>(20);
 		
 		buyButtonGrid = transform.Find("Buy").Find("Scroll View").Find("UIGrid").gameObject;
-		sellButtonGrid = transform.Find("Sell").Find("Scroll View").Find("UIGrid").gameObject;
-		NGUITools.SetActive(sellButtonGrid, false);
+		//NGUITools.SetActive(sellButtonGrid, false);
 
 		InitShopInventory();
 
@@ -65,6 +63,7 @@ public class UITown_Shop : UIPlayerMenuPanel
 		// cache the hero stat for easy access to gold and such
 		playerHero = (parent as UITownWindow).Player.Hero;
 
+		UnhighlightButton();
 		updateHighlight = true;
 		initialised = true;
 	}
@@ -90,6 +89,17 @@ public class UITown_Shop : UIPlayerMenuPanel
 		}
 
 		UpdateInventory();
+	}
+	#endregion
+		
+	#region Per-Frame Processes
+	protected virtual void Update()
+	{
+		if (updateHighlight)
+		{
+			if (HighlightButton()) SetInfoLabel();
+			updateHighlight = false;
+		}
 	}
 	#endregion
 
@@ -139,6 +149,14 @@ public class UITown_Shop : UIPlayerMenuPanel
 		return false;
 	}
 
+	protected virtual bool UnhighlightButton()
+	{
+		if (!currentSelection) return false;
+
+		UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+		return true;
+	}
+
 	public override void OnEnable()
 	{
 		base.OnEnable();
@@ -146,6 +164,15 @@ public class UITown_Shop : UIPlayerMenuPanel
 		updateHighlight = true;
 		shopMode = EMode.BUY;
 		ChangeTab();
+		
+//		if (shopMode == EMode.APPRAISE)
+//		{
+//			(parent as UITownWindow).SetTitle("Appraise");
+//		}
+//		else if (shopMode == EMode.REPAIR)
+//		{
+//			(parent as UITownWindow).SetTitle("Repair");
+//		}
 	}
 
 	protected virtual void ChangeTab()
@@ -154,70 +181,92 @@ public class UITown_Shop : UIPlayerMenuPanel
 		{
 		case EMode.BUY:
 			NGUITools.SetActive(buyButtonGrid, true);
-			NGUITools.SetActive(sellButtonGrid, false);
-			break;
-		case EMode.SELL:
-			NGUITools.SetActive(buyButtonGrid, false);
-			NGUITools.SetActive(sellButtonGrid, true);
 			break;
 		case EMode.REPAIR:
 			NGUITools.SetActive(buyButtonGrid, false);
-			NGUITools.SetActive(sellButtonGrid, false);
 			break;
 		case EMode.APPRAISE:
 			NGUITools.SetActive(buyButtonGrid, false);
-			NGUITools.SetActive(sellButtonGrid, false);
 			break;
 		default:
 			Debug.LogError("Invalid Tab");
 			return;
 			break;
 		}
+		ChangeTitle();
 	}
-	#endregion
 
-	#region Per-Frame Processes
-	protected virtual void Update()
+	protected virtual void ChangeTitle()
 	{
-		if (updateHighlight)
-		{
-			if (HighlightButton()) SetInfoLabel();
-			updateHighlight = false;
-		}
+		// override me
 	}
+
 	#endregion
 		
 	#region Input Handling	
 	public override void OnMenuUp(InputDevice device)
 	{
-		++currentHighlightedButton;
-		if (currentHighlightedButton >= shopButtons.Count) currentHighlightedButton = 0;
+		if (!SatisfiesDeadzone(device,0)) return;
 
-		currentSelection = shopButtons[currentHighlightedButton];
+		if (shopMode == EMode.BUY)
+		{
+			if (shopInventory.Count < 2) return;
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);
+			
+			--currentHighlightedButton;
+			if (currentHighlightedButton < 0) currentHighlightedButton = 0;//shopButtons.Count -1;
+			
+			UnhighlightButton();
+			currentSelection = shopButtons[currentHighlightedButton];
+
+			sv.Scroll(1.08f);
+
+			updateHighlight = true;
+		}
 	}
 	
 	public override void OnMenuDown(InputDevice device)
 	{
-		--currentHighlightedButton;
-		if (currentHighlightedButton < 0) currentHighlightedButton = shopButtons.Count -1;
+		if (!SatisfiesDeadzone(device,2)) return;
 
-		currentSelection = shopButtons[currentHighlightedButton];
+		if (shopMode == EMode.BUY)
+		{
+			if (shopInventory.Count < 2) return;
+
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);			
+			++currentHighlightedButton;
+
+			if (currentHighlightedButton >= shopButtons.Count) currentHighlightedButton = shopButtons.Count - 1;//0;
+
+			UnhighlightButton();
+			currentSelection = shopButtons[currentHighlightedButton];
+
+			sv.Scroll(-1.08f);
+
+			updateHighlight = true;
+		}
 	}
 	
 	public override void OnMenuLeft(InputDevice device)
 	{
+		if (!SatisfiesDeadzone(device,1)) return;
+
 		--shopMode;
 		if (shopMode == EMode.INVALID) shopMode = EMode.MAX - 1;
 
 		ChangeTab();
+		updateHighlight = true;
 	}
 	
 	public override void OnMenuRight(InputDevice device)
 	{
+		if (!SatisfiesDeadzone(device,3)) return;
+
 		++shopMode;
 		if (shopMode == EMode.MAX) shopMode = EMode.INVALID + 1;
 		
 		ChangeTab();
+		updateHighlight = true;
 	}
 	
 	public override void OnMenuOK(InputDevice device)
@@ -234,8 +283,6 @@ public class UITown_Shop : UIPlayerMenuPanel
 //					// TODO: Spawn Confirmation dialog box
 //				}
 			}
-			break;
-		case EMode.SELL:
 			break;
 		case EMode.REPAIR:
 			break;
