@@ -28,9 +28,8 @@ public class FloorInstanceReward
         Hero leastDeaths = CalcDiedTheLeast();
 
         // For each hero we want to calculate the rewards and penalties for.
-        foreach (Player player in floorInstance.Players)
+        foreach (Hero hero in floorInstance.Heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
 
             // Work out percentages
             float goldBonusPercentage = 0.0f;
@@ -93,10 +92,8 @@ public class FloorInstanceReward
         Hero mostMonstersHero = null;
         int mostMonstersKilled = 0;
 
-        foreach (Player player in floorInstance.Players)
+        foreach (Hero hero in floorInstance.Heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
-
             if (mostMonstersHero == null)
             {
                 mostMonstersKilled = hero.FloorStatistics.NumberOfMonstersKilled;
@@ -122,10 +119,8 @@ public class FloorInstanceReward
         Hero mostDamageHero = null;
         int mostDamageDealt = 0;
 
-        foreach (Player player in floorInstance.Players)
+        foreach (Hero hero in floorInstance.Heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
-
             if (mostDamageHero == null)
             {
                 mostDamageDealt = hero.FloorStatistics.TotalDamageDealt;
@@ -152,10 +147,8 @@ public class FloorInstanceReward
         Hero leastDamageTaken = null;
         int leastDamage = 0;
 
-        foreach (Player player in floorInstance.Players)
+        foreach (Hero hero in floorInstance.Heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
-
             if (leastDamageTaken == null)
             {
                 leastDamage = hero.FloorStatistics.DamageTaken;
@@ -181,10 +174,8 @@ public class FloorInstanceReward
         Hero diedTheLeast = null;
         int lives = 0;
 
-        foreach (Player player in floorInstance.Players)
+        foreach (Hero hero in floorInstance.Heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
-
             if (diedTheLeast == null)
             {
                 lives = hero.FloorStatistics.NumberOfDeaths;

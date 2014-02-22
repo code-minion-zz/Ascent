@@ -19,24 +19,20 @@ public class Floor : MonoBehaviour
 	public GameObject cornerPrefab = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
 	public GameObject archPrefab = Resources.Load("Prefabs/RoomWalls/Archway") as GameObject;
 
-	private List<Player> players;
-    private List<Enemy> enemies;
+	private List<Hero> heroes;
+
 	private GameObject[] startPoints;
-	private GameObject floorCamera;
+	private FloorCamera floorCamera;
 	private Room currentRoom;
 	private Room targetRoom;
 	private FadePlane fadePlane;
-    private Room[] allRooms;
     private FloorInstanceReward floorInstanceReward;
 	private bool randomFloor;
-    //private FloorGeneration floorGenerator;
 
 	public Enemy floorBoss;
 	private bool bossKilled = false;
 
-	// Camera offset
-	//private const float cameraOffset = 15.0f;
-	public bool orthographicCamera = false;
+    public bool initialised;
 
     public Room CurrentRoom
     {
@@ -63,14 +59,9 @@ public class Floor : MonoBehaviour
         get { return floorInstanceReward; }
     }
 
-	public List<Enemy> Enemies
-	{
-		get { return enemies; }
-	}
-
-    public List<Player> Players
+    public List<Hero> Heroes
     {
-        get { return players; }
+        get { return heroes; }
     }
 
 	public void InitialiseFloor()
@@ -107,34 +98,12 @@ public class Floor : MonoBehaviour
     // Initialize the camera first.
     private void InitialiseCamera()
     {
-       
-        // Create the floor's camera
-        GameObject go = null;
 
-        if (orthographicCamera)
-        {
-            go = Resources.Load("Prefabs/Floors/floorCameraOrtho") as GameObject;
-        }
-        else
-        {
-            go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
-        }
-
-        floorCamera = Instantiate(go) as GameObject;
-        floorCamera.name = "FloorCamera";
-
-        floorCamera.GetComponent<FloorCamera>().Initialise();
-
-		//go = new GameObject();
-		//go.name = "Cameras";
-		//go.tag = "Cameras";
-
-		//floorCamera.transform.parent = go.transform;
     }
 
 	private void Initialise()
 	{
-		// Initialise the players onto the start points
+		// Initialise the heroes onto the start points
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
@@ -143,48 +112,65 @@ public class Floor : MonoBehaviour
             Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
         }
 
-		players = Game.Singleton.Players;
-		for (int i = 0; i < players.Count; ++i)
+        // Construct Hero list from player list
+        heroes = new List<Hero>();
+
+		List<Player> players = Game.Singleton.Players;
+        for (int i = 0; i < players.Count; ++i)
+        {
+            heroes.Add(players[i].Hero);
+        }
+
+        // Initialise the Hero in a default state
+		for (int i = 0; i < heroes.Count; ++i)
 		{
 			Vector3 pos = startPoints[i].transform.position;
-			players[i].Hero.transform.position = pos;
-			players[i].Hero.transform.rotation = Quaternion.identity;
-			players[i].Hero.transform.localScale = Vector3.one;
-			players[i].Hero.gameObject.SetActive(true);
+			heroes[i].transform.position = pos;
+			heroes[i].transform.rotation = Quaternion.identity;
+			heroes[i].transform.localScale = Vector3.one;
+			heroes[i].gameObject.SetActive(true);
 
-            players[i].Hero.GetComponent<Hero>().onDeath += OnPlayerDeath;
+            heroes[i].onDeath += OnPlayerDeath;
 
             // Reset individual hero floor records.
-            players[i].Hero.GetComponent<Hero>().FloorStatistics = new FloorStats();
+            heroes[i].FloorStatistics = new FloorStats();
 		}
+
+        // Position the camera into a default state
+        // Create the floor's camera
+        GameObject go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
+        floorCamera = (Instantiate(go) as GameObject).GetComponent<FloorCamera>();
+        floorCamera.name = "FloorCamera";
+        floorCamera.Initialise();
+
+        Vector3 camPos = FloorCamera.CalculateAveragePlayerPosition();
+        camPos.z -= 15.0f;
+        floorCamera.transform.position = camPos;
+        FloorCamera.UpdateCameraPosition();
 
         // Finds all the rooms
-		allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
+		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
-
-		if (!randomFloor)
-		{
-			currentRoom.Initialise();
-		}
 
 		// The floor generator will initilise the rooms. 
 		// If the generator was not used then we must do it here.
-		if (!randomFloor)
-		{
-			foreach (Room r in allRooms)
-			{
-				if(currentRoom == r)
-				{
-					continue;
-				}
-				r.Initialise();
-			}
-		}
+        if (!randomFloor)
+        {
+            currentRoom.Initialise();
+
+            foreach (Room r in allRooms)
+            {
+                if (currentRoom == r)
+                {
+                    continue;
+                }
+                r.Initialise();
+            }
+        }
 
 		// Initialise all the enemies (Must occur after rooms are initialised)
         if (!randomFloor)
         {
-            enemies = new List<Enemy>();
             GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
             for (int i = 0; i < monsters.Length; ++i)
             {
@@ -195,13 +181,12 @@ public class Floor : MonoBehaviour
                     thisEnemy.Initialise();
                     thisEnemy.InitiliseHealthbar();
                     thisEnemy.onDeath += OnEnemyDeath;
-                    enemies.Add(thisEnemy);
                 }
             }
         }
 
 		// Init the fade plane
-		GameObject go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
@@ -216,11 +201,8 @@ public class Floor : MonoBehaviour
 
 		// Activate the start room
 		currentRoom.gameObject.SetActive(true);
-	}
 
-	public void AddEnemy(Enemy _enemy)
-	{
-		enemies.Add(_enemy);
+        initialised = true;
 	}
 
 	#region Update
@@ -273,10 +255,9 @@ public class Floor : MonoBehaviour
             hero.FloorStatistics.NumberOfMonstersKilled++;
         }
 
-        // Give all players in the room the bounty.
-        foreach (Player player in players)
+        // Give all heroes in the room the bounty.
+        foreach (Hero hero in heroes)
         {
-            Hero hero = player.Hero.GetComponent<Hero>();
             float expGain = enemy.EnemyStats.ExperienceBounty * hero.HeroStats.ExperienceGainBonus;
             hero.FloorStatistics.ExperienceGained += (int)expGain;
         }
@@ -290,81 +271,91 @@ public class Floor : MonoBehaviour
         enemy.onDeath -= OnEnemyDeath;
     }
 
-	// Update is called once per frame
 	void Update()
 	{
-		if(bossKilled == true || Input.GetKeyUp(KeyCode.F1))
-		{
-			EndFloor();
-		}
-		////DEBUG
-		//if (Input.GetKeyUp(KeyCode.F1))
-		//{
-		//    EndFloor();
-		//}
-		if (currentRoom.Doors == null)
-		{
-			return;
-		}
-
-		Door[] roomDoors = currentRoom.Doors.doors;
-		if (Input.GetKeyUp(KeyCode.Keypad8)) // UP
-		{
-			foreach (Door d in roomDoors)
-			{
-				if (d == null) continue;
-				if (d.targetDoor != null && d.direction == TransitionDirection.North)
-				{
-					TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
-				}
-			}
-		}
-		else if (Input.GetKeyUp(KeyCode.Keypad2))
-		{
-			foreach (Door d in roomDoors)
-			{
-				if (d == null) continue;
-				if (d.targetDoor != null && d.direction == TransitionDirection.South)
-				{
-					TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
-				}
-			};
-		}
-		else if (Input.GetKeyUp(KeyCode.Keypad4))
-		{
-			foreach (Door d in roomDoors)
-			{
-				if (d == null) continue;
-				if (d.targetDoor != null && d.direction == TransitionDirection.West)
-				{
-					TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
-				}
-			}
-		}
-		else if (Input.GetKeyUp(KeyCode.Keypad6))
-		{
-			foreach (Door d in roomDoors)
-			{
-				if (d == null) continue;
-				if (d.targetDoor != null && d.direction == TransitionDirection.East)
-				{
-					TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
-				}
-			}
-		}
+        ProcessDebugKeys();
 	}
+
+    private void ProcessDebugKeys()
+    {
+        if (bossKilled == true || Input.GetKeyUp(KeyCode.F1))
+        {
+            EndFloor();
+        }
+
+        if (currentRoom.Doors == null)
+        {
+            return;
+        }
+
+        // Travel North, South, East or West
+
+        Door[] roomDoors = currentRoom.Doors.doors;
+
+        // North
+        if (Input.GetKeyUp(KeyCode.Keypad8)) 
+        {
+            foreach (Door d in roomDoors)
+            {
+                if (d == null) continue;
+                if (d.targetDoor != null && d.direction == TransitionDirection.North)
+                {
+                    TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
+                }
+            }
+        }
+
+        // South
+        else if (Input.GetKeyUp(KeyCode.Keypad2))
+        {
+            foreach (Door d in roomDoors)
+            {
+                if (d == null) continue;
+                if (d.targetDoor != null && d.direction == TransitionDirection.South)
+                {
+                    TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
+                }
+            };
+        }
+
+        // West
+        else if (Input.GetKeyUp(KeyCode.Keypad4))
+        {
+            foreach (Door d in roomDoors)
+            {
+                if (d == null) continue;
+                if (d.targetDoor != null && d.direction == TransitionDirection.West)
+                {
+                    TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
+                }
+            }
+        }
+
+        // East
+        else if (Input.GetKeyUp(KeyCode.Keypad6))
+        {
+            foreach (Door d in roomDoors)
+            {
+                if (d == null) continue;
+                if (d.targetDoor != null && d.direction == TransitionDirection.East)
+                {
+                    TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
+                }
+            }
+        }
+    }
 
 	void EndFloor()
 	{
 		// Disable the whole floor( audio listener from the camera )
 		enabled = false;
-		floorCamera.SetActive(false);
+		floorCamera.gameObject.SetActive(false);
 
 		// Disable input on all heroes
-		foreach (Player player in players)
+		foreach (Hero hero in heroes)
 		{
 			//player.Hero.GetComponent<Hero>().HeroController.DisableInput();
-			player.Hero.gameObject.SetActive(false);
+            hero.gameObject.SetActive(false);
 		}
 
 		// Show summary screen
@@ -395,12 +386,12 @@ public class Floor : MonoBehaviour
 		currentRoom.gameObject.SetActive(true);
 
 		// Move heroes to the new room also disable the controller
-		foreach (Player p in players)
+		foreach (Hero hero in heroes)
 		{
-			p.Hero.transform.position = targetDoor.transform.position;
-			p.Hero.Loadout.StopAbility();
-			p.Hero.Motor.StopMotion();
-			p.Hero.HeroController.enabled = false;
+			hero.transform.position = targetDoor.transform.position;
+			hero.Loadout.StopAbility();
+			hero.Motor.StopMotion();
+			hero.HeroController.enabled = false;
 		}
 
 		// Move camera over
@@ -417,9 +408,9 @@ public class Floor : MonoBehaviour
 		targetRoom.gameObject.SetActive(false);
 
 		// Move heroes to the new room also disable the controller
-		foreach (Player p in players)
+		foreach (Hero hero in heroes)
 		{
-			p.Hero.HeroController.enabled = true;
+			hero.HeroController.enabled = true;
 		}
 
 		//fadePlane.gameObject.SetActive(false);
@@ -434,9 +425,9 @@ public class Floor : MonoBehaviour
 		currentRoom.gameObject.SetActive(true);
 
 		// Move heroes to the new room
-		foreach (Player p in players)
+		foreach (Hero hero in heroes)
 		{
-			p.Hero.transform.position = targetDoor.transform.position;
+            hero.transform.position = targetDoor.transform.position;
 		}
 
 		// Move camera over
