@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 
-public class UITown_BackpackPanel : UITown_Panel 
+public class UITown_BackpackPanel : UITown_RadialPanel 
 {
 	enum EMode
 	{
@@ -99,7 +99,7 @@ public class UITown_BackpackPanel : UITown_Panel
 
 		if (initialised) (parent as UITownWindow).SetTitle("Backpack");
 
-		if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+		if (currentSelection) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
 
 	public override void OnDisable()
@@ -295,7 +295,7 @@ public class UITown_BackpackPanel : UITown_Panel
 		NGUITools.SetActive(backpackTab, true);
 		
 		UpdateBackpack();
-		(parent as UITownWindow).ShowArrow(true);
+		townParent.ShowArrow(true);
 	}
 
 	void SwapToInventory()
@@ -310,7 +310,7 @@ public class UITown_BackpackPanel : UITown_Panel
 		UpdateInventory();
 
 		// set currently highlighted button to the first element
-		(parent as UITownWindow).ShowArrow(false);
+		townParent.ShowArrow(false);
 		if (inventoryButtonCount > 0)
 		{
 			inventoryHighlightedButton = 0;
@@ -361,7 +361,7 @@ public class UITown_BackpackPanel : UITown_Panel
 			}
 		}
 
-		(parent as UITownWindow).SetInfo(newString);
+		townParent.SetInfo(newString);
 
 	}
 
@@ -469,9 +469,6 @@ public class UITown_BackpackPanel : UITown_Panel
 		}
 
 	}
-	
-	public override void OnMenuHax(InputDevice device)
-	{
-	}
+
 	#endregion 
 }

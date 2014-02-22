@@ -35,9 +35,11 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	Spin spinScript = null;
 	GameObject cardBack = null;
+	GameObject confirmBox = null;
+	public delegate void ConfirmBoxEvent(bool result);
+	public event ConfirmBoxEvent ConfirmBoxClose ;
 
 	int transitionTarget = -1;
-
 	/// <summary>
 	/// 0 = idle,
 	/// 1 = start forward,
@@ -46,6 +48,16 @@ public class UITownWindow : UIPlayerMenuWindow
 	/// 4 = reverse,
 	/// </summary>
 	int flipState = 0; 
+	int confirmState = 0;
+
+	public bool Confirming
+	{
+		get
+		{
+			return confirmState > 0; 
+		}
+
+	}
 
 	public enum EBackpackPanels
 	{
@@ -53,6 +65,8 @@ public class UITownWindow : UIPlayerMenuWindow
 		BACKPACK,
 		TOWER,
 		SKILLS,
+		ACCSHOP,
+		CONSHOP,
 		TAVERN,
 		QUIT,
 		MAX
@@ -62,8 +76,9 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		spinScript = GetComponent<Spin>();
 		sharedEle = transform.Find("Shared Elements");
-
+		
 		cardBack = sharedEle.Find("CardBack").gameObject;
+		confirmBox = sharedEle.Find("Confirmation").gameObject;
 		TitleLabel = sharedEle.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
@@ -81,6 +96,11 @@ public class UITownWindow : UIPlayerMenuWindow
 		if (flipState > 0)
 		{
 			ProcessFlip();
+		}
+
+		if (confirmState > 0)
+		{
+			ProcessConfirmBox();
 		}
 	}
 
@@ -126,6 +146,10 @@ public class UITownWindow : UIPlayerMenuWindow
 		panels[(int)EBackpackPanels.BACKPACK] = transform.FindChild("BackpackMenu").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.TOWN] = transform.FindChild("TownMenu").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.TOWER] = transform.FindChild("TowerConfirm").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.ACCSHOP] = transform.FindChild("AccessoryShop").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.CONSHOP] = transform.FindChild("ConsumableShop").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.SKILLS] = transform.FindChild("Skills").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.TAVERN] = transform.FindChild("Tavern").GetComponent<UIPlayerMenuPanel>();
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
@@ -171,7 +195,66 @@ public class UITownWindow : UIPlayerMenuWindow
 		InfoLabel.text = replace;
 	}
 
-	public void ProcessFlip()
+	public void RequestConfirmBox(string str)
+	{
+		confirmBox.GetComponentInChildren<UILabel>().text = str + "\n Press (A) to confirm, or (B) to cancel";
+
+		confirmState = 1;
+	}
+
+	public void ProcessConfirmBox()
+	{
+		switch (confirmState)
+		{
+		case 0:
+			Debug.LogError("confirmState = 0. Should never happen.");
+			break;
+		case 1:
+			++confirmState;
+			//NGUITools.SetActive(confirmBox, true);
+			confirmBox.GetComponent<UITweener>().PlayForward();
+			break;
+		case 2:
+			if (confirmBox.GetComponent<UITweener>().tweenFactor >= 1f)
+			{				
+				++confirmState;
+			}
+			break;
+		case 3:
+		{
+			if (player.Input.A.IsPressed)
+			{
+				confirmBox.GetComponent<UITweener>().PlayReverse();
+				++confirmState;
+				ConfirmBoxClose.Invoke(true);
+			}
+			else if (player.Input.B.IsPressed)
+			{
+				confirmBox.GetComponent<UITweener>().PlayReverse();
+				++confirmState;
+				ConfirmBoxClose.Invoke(false);
+			}
+		}
+			break;
+		case 4:
+			if (confirmBox.GetComponent<UITweener>().tweenFactor <= 0f)
+			{				
+				confirmState = 0;
+				//NGUITools.SetActive(confirmBox, false);
+			}
+			break;
+		}
+	}
+
+//
+//	public void CloseConfirmBox()
+//	{
+//		if (confirmState == )
+//
+//		confirmBox.GetComponent<UITweener>().PlayReverse();
+//	}
+
+	protected void ProcessFlip()
 	{
 		switch (flipState)
 		{
