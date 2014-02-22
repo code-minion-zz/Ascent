@@ -295,7 +295,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		NGUITools.SetActive(backpackTab, true);
 		
 		UpdateBackpack();
-		(parent as UITownWindow).ShowArrow(true);
+		townParent.ShowArrow(true);
 	}
 
 	void SwapToInventory()
@@ -310,7 +310,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		UpdateInventory();
 
 		// set currently highlighted button to the first element
-		(parent as UITownWindow).ShowArrow(false);
+		townParent.ShowArrow(false);
 		if (inventoryButtonCount > 0)
 		{
 			inventoryHighlightedButton = 0;
@@ -361,7 +361,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			}
 		}
 
-		(parent as UITownWindow).SetInfo(newString);
+		townParent.SetInfo(newString);
 
 	}
 

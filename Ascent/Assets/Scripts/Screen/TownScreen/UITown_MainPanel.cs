@@ -32,7 +32,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 		AngleIndex.Add(-135f, 5);
 		
 		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
-		AngleIndex.Add(135f, 6);
+		AngleIndex.Add(-215f, 6);
 
 		buttons[7] = transform.Find("Button Chapel").GetComponent<UIButton>();
 		AngleIndex.Add(-180f, 7);

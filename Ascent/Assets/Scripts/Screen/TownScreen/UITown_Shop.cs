@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Additional functions for buying/selling
 /// </summary>
 public class UITown_Shop : UITown_RadialPanel 
 {
-	#region Variables
+	#region Variables & Properties
 	protected List<Item> shopInventory;
 
 	/// <summary>
@@ -36,11 +37,34 @@ public class UITown_Shop : UITown_RadialPanel
 	protected EMode shopMode = EMode.BUY;
 	protected bool updateHighlight = false;
 	protected Hero playerHero;
+	protected Item confirmItem = null;
+
+	/// <summary>
+	/// Returns item on currently selected item button, Null if not possible
+	/// </summary>
+	/// <value>The current item.</value>
+	Item CurrentItem
+	{
+		get
+		{
+			Item retval = null;
+			if (currentSelection)
+			{
+				if (currentSelection is UIItemButton)
+				{
+					retval = (currentSelection as UIItemButton).LinkedItem; 
+				}
+			}
+			return retval;
+		}
+	}
 	#endregion
 
 	#region Initialization/Setup
 	public override void Initialise()
 	{
+		base.Initialise();
+
 		quantityItems = Random.Range(15,20);
 		shopButtons = new List<UIItemButton>(20);
 		shopInventory = new List<Item>(20);
@@ -99,6 +123,20 @@ public class UITown_Shop : UITown_RadialPanel
 		{
 			if (HighlightButton()) SetInfoLabel();
 			updateHighlight = false;
+		}
+
+		if (confirmItem != null)
+		{
+			if (parentConfirming) return;
+
+			if (confirmBoxResult == true)
+			{
+				playerHero.HeroStats.Gold -= confirmItem.ItemStats.SellValue;
+				playerHero.HeroInventory.AddItem(confirmItem);
+				Debug.Log("Purchased " + confirmItem.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
+				confirmItem = null;
+				// TODO: play sounds, fx, etc
+			}
 		}
 	}
 	#endregion
@@ -290,8 +328,23 @@ public class UITown_Shop : UITown_RadialPanel
 				int value = itemStat.PurchaseValue;
 				if (playerHero.HeroStats.Gold >= value)
 				{
+					if (playerHero.HeroInventory.Items.Count >= playerHero.HeroInventory.MAX_INVENTORY_SLOTS)
+					{
+						Debug.Log("Inventory Full");
+						break;
+					}
+
+					confirmItem = CurrentItem;
 					// can afford
-					(parent as UITownWindow).RequestConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
+					if (confirmItem != null)
+					{
+						OpenConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
+					}
+					else 
+					{
+						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+					}
+
 				}
 			}
 			break;
