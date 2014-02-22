@@ -134,7 +134,7 @@ public class Game : MonoBehaviour
 		{
 			Singleton = this;
 		}
-
+		
         if (!initialised)
         {
             Initialise();

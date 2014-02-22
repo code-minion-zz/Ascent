@@ -381,7 +381,7 @@ public abstract class Character : BaseCharacter
 #if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
-        loadout.DebugDraw();
+        if(loadout != null) loadout.DebugDraw();
 	}
 #endif
 }
