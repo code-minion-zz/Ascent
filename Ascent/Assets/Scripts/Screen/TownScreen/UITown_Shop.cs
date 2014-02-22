@@ -177,7 +177,7 @@ public class UITown_Shop : UITown_RadialPanel
 		}
 	}
 
-	protected virtual bool HighlightButton()
+	protected override bool HighlightButton()
 	{
 		if (currentSelection)
 		{
@@ -229,7 +229,6 @@ public class UITown_Shop : UITown_RadialPanel
 		default:
 			Debug.LogError("Invalid Tab");
 			return;
-			break;
 		}
 		ChangeTitle();
 	}
