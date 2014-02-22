@@ -41,9 +41,19 @@ public class StatBar : MonoBehaviour {
 		}
 	}
 	
-	// Use this for initialization
-	void Awake () {
+	void Awake () 
+	{
 		defaultWidth = barFront.width;
+	}
+
+	void OnEnable()
+	{
+		StartDrawing();
+	}
+
+	void OnDisable()
+	{
+		StopDrawing();
 	}
 	
 	public void Init(eStat stat, Character _character)

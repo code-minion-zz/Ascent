@@ -27,6 +27,8 @@ public class TextDriver : MonoBehaviour
 
 			// Destroy the text after the tween duration.
 			ft.DestroyText(tp.duration);
+
+			//floatingTextList.Add(ft);
 		}
 		else
 		{
@@ -38,4 +40,13 @@ public class TextDriver : MonoBehaviour
     {
 		SpawnDamageText(target, damage.ToString(), color);
     }
+
+	//public void RemoveText(FloatingText text)
+	//{
+	//    if (floatingTextList.Contains(text))
+	//    {
+	//        floatingTextList.Remove(text);
+	//    }
+	//}
+
 }

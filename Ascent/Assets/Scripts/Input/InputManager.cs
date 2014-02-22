@@ -14,6 +14,8 @@ public class InputManager : MonoBehaviour
 		EventDriven
 	}
 
+	private const int KIXBox360Hash = -1383746887; // "Controller (XBOX 360 For Windows)"
+
 	public const bool debugMessages = false;
 	public const InputHandlingMethod inputHandlingMethod = InputHandlingMethod.Polling;
 
@@ -65,14 +67,17 @@ public class InputManager : MonoBehaviour
 		OnDeviceDetached = null;
 
 		AttachKeyboard();
-		RefreshDevices();
+		RefreshDevicesList();
 	}
 
 	public static void Update()
 	{
 		if (prevJoystickHash != JoystickHash)
 		{
-			RefreshDevices();
+#if UNITY_WEBPLAYER
+#else
+			RefreshDevicesList();
+#endif
 		}
 
 		if(inputHandlingMethod == InputHandlingMethod.Polling)
@@ -99,12 +104,24 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	static void RefreshDevices()
+	static void RefreshDevicesList()
 	{
 #if UNITY_WEBPLAYER
-		if(Input.GetJoystickNames().Length > 0)
+		if (Input.GetJoystickNames().Length > 0)
 		{
-			AttachDevice(new XBox360InputDevice(0));
+			int xboxDeviceCount = 0;
+			foreach (string deviceName in Input.GetJoystickNames())
+			{
+				if (deviceName.GetHashCode() == KIXBox360Hash)
+				{
+					++xboxDeviceCount;
+				}
+			}
+
+			for (int i = 0; i < xboxDeviceCount; ++i)
+			{
+				AttachDevice(new XBox360InputDevice(i));
+			}
 		}
 #else
 		DetectAndAttachJoysticks();
@@ -123,6 +140,10 @@ public class InputManager : MonoBehaviour
 	{
 		for (int i = 0; i < maxJoysticks; ++i)
 		{
+#if UNITY_WEBPLAYER
+
+
+#else
 			PlayerIndex playerIndex = (PlayerIndex)i;
 
 			XInputDotNetPure.GamePadState state = GamePad.GetState(playerIndex);
@@ -148,6 +169,7 @@ public class InputManager : MonoBehaviour
 					AttachDevice(new XInputDevice(i));
 				}
 			}
+#endif
 		}
 	}
 

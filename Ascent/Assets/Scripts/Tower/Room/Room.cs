@@ -43,10 +43,7 @@ public class Room : MonoBehaviour
 	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 
 	public float cameraHeight = 20.0f;
-	//private float curCameraHeight = 20.0f;
-
 	public float cameraOffsetZ = 0.35f;
-	private float curCameraOffsetZ = 0.35f;
 
 	protected Doors doors;
     public bool startRoom = false;
@@ -304,16 +301,6 @@ public class Room : MonoBehaviour
 		{
 			curMaxCamera = maxCamera;
 			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
-		}
-        //if (cameraHeight != curCameraHeight)
-        //{
-        //    curCameraHeight = cameraHeight;
-        //    Game.Singleton.Tower.CurrentFloor.FloorCamera.CameraHeight = cameraHeight;
-        //}
-		if (cameraOffsetZ != curCameraOffsetZ)
-		{
-			curCameraOffsetZ = cameraOffsetZ;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.OffsetZ = curCameraOffsetZ;
 		}
 	}
 
@@ -865,4 +852,92 @@ public class Room : MonoBehaviour
 
         return inside;
     }
+
+	[ContextMenu("Go to Room")]
+	public void Reposition()
+	{
+		Floor floor = Game.Singleton.Tower.CurrentFloor;
+		Room currentRoom = floor.CurrentRoom;
+
+		if (currentRoom == this)
+		{
+			return;
+		}
+
+		// Find direction to enter from
+		float heading = MathUtility.ConvertVectorToHeading((transform.position - currentRoom.transform.position).normalized) * Mathf.Rad2Deg;
+
+		bool transitioned = false;
+
+		// Try north
+		if (heading >= -0.45f && heading <= 45.0f)
+		{
+			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				transitioned = true;
+			}
+		}
+
+		// Try East
+		if (!transitioned && (heading >= 0.45f && heading <= 135.0f))
+		{
+			if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				transitioned = true;
+			}
+		}
+
+		// Try South
+		if (!transitioned && ((heading >= 135.0f && heading <= 180.0f) || (heading <= -135.0f)))
+		{
+			if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				transitioned = true;
+			}
+		}
+
+		// Try West
+		if (!transitioned && (heading <= -0.45f && heading >= -135.0f))
+		{
+			if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				transitioned = true;
+			}
+		}
+
+		if(!transitioned)
+		{
+			// Try any door :<
+
+			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				transitioned = true;
+			}
+			else if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				transitioned = true;
+			}
+			else if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				transitioned = true;
+			}
+			else if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			{
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				transitioned = true;
+			}
+
+			if (!transitioned)
+			{
+				Debug.Log("No Direction or no door to enter, " + heading);
+			}
+		}
+	}
 }

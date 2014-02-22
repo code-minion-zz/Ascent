@@ -197,7 +197,7 @@ public abstract class Hero : Character
     {
         // Reset the health
 		RefreshEverything();
-        motor.IsHaltingMovementToPerformAction = true;
+        motor.IsHaltingMovementToPerformAction = false;
         Animator.Dying = false;
         collider.enabled = true;
 
@@ -207,7 +207,7 @@ public abstract class Hero : Character
     protected override void OnDeath()
     {
         motor.StopMotion();
-        motor.IsHaltingMovementToPerformAction = false;
+        motor.IsHaltingMovementToPerformAction = true;
         collider.enabled = false;
         Animator.Dying = true;
 

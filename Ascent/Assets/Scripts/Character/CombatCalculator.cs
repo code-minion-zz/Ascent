@@ -199,6 +199,8 @@ public class StatusEffectCombatProperty : CombatProperty
 
 	public override DamageResult Evaluate(DamageResult result, Character target, Character source)
 	{
+		target.ApplyStatusEffect(statusEffect);
+
 		return result;
 	}
 }

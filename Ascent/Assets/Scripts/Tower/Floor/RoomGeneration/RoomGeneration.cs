@@ -86,47 +86,65 @@ public class RoomGeneration
 
     private void SetupCamera(RoomProperties room)
     {
-        float cameraOffsetX = 1.0f; // Per tile
-        float cameraOffsetZ = 1.0f; // Per tile
+        float cameraOffsetX = 1.0f;
+        float cameraOffsetMinZ = 1.0f;
+		float cameraOffsetMaxZ = 1.0f;
 
-        switch (room.Width)
-        {
-            case 10: cameraOffsetX = 1.0f; break;
-            case 14: cameraOffsetX = 1.0f; break;
-            case 18: cameraOffsetX = 1.0f; break;
-            case 22: cameraOffsetX = 1.0f; break;
+		if (Game.Singleton.IsWideScreen)
+		{
+			switch (room.Width)
+			{
+				case 10: cameraOffsetX = 0.0f; break;
+				case 14: cameraOffsetX = 0.0f; break;
+				case 18: cameraOffsetX = 1.0f; break;
+				case 22: cameraOffsetX = 3.0f; break;
 
-            default: Debug.LogError("Unhandled case: " + room.Width); break;
-        }
+				default: Debug.LogError("Unhandled case: " + room.Width); break;
+			}
+		}
+		else
+		{
+			switch (room.Width)
+			{
+				case 10: cameraOffsetX = 0.0f; break;
+				case 14: cameraOffsetX = 1.0f; break;
+				case 18: cameraOffsetX = 3.0f; break;
+				case 22: cameraOffsetX = 5.0f; break;
 
-        switch (room.Height)
-        {
-            case 10: cameraOffsetZ = 1.0f; break;
-            case 14: cameraOffsetZ = 1.0f; break;
-            case 18: cameraOffsetZ = 1.0f; break;
-            case 22: cameraOffsetZ = 1.0f; break;
+				default: Debug.LogError("Unhandled case: " + room.Width); break;
+			}
 
-            default: Debug.LogError("Unhandled case: " + room.Height); break;
-        }
+		}
 
-//        min -7.25
-//max -2.5
+		switch (room.Height)
+		{
+			case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
+			case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
+			case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
+			case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
 
-//-11.25 * x = -9
-        
-        room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
-        room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
+			default: Debug.LogError("Unhandled case: " + room.Height); break;
+		}
 
-        room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
-        room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
+		room.Room.minCamera.x = -cameraOffsetX;
+		room.Room.maxCamera.x = cameraOffsetX;
 
-        room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + 6.75f) * cameraOffsetZ) : -5.0f;
-        room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - 16.5f) * cameraOffsetZ) : -5.0f;
+		room.Room.minCamera.z = cameraOffsetMinZ;
+		room.Room.maxCamera.z = cameraOffsetMaxZ;
+
+		//room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
+		//room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
+
+		//room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
+		//room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
+
+		//room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + (room.Height * 0.48f)) * cameraOffsetZ) : -5.0f;
+		//room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - (room.Height * 1.17f)) * cameraOffsetZ) : -5.0f;
 
         //room.Room.minCamera.z = Math.Max(room.Room.minCamera.z, -9.25f);
         //room.Room.maxCamera.z = Math.Min(room.Room.maxCamera.z, 0.0f);
 
-        room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
+        //room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
     }
 
     public void PopulateMonsters(int dungeonLevel, RoomProperties room, Rarity rarity)

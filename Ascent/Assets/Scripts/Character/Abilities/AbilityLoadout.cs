@@ -166,7 +166,7 @@ public class AbilityLoadout
                 stats.CurrentSpecial -= ability.SpecialCost;
 
                 motor.StopMotion();
-                motor.IsHaltingMovementToPerformAction = false;
+                motor.IsHaltingMovementToPerformAction = true;
 
                 return true;
             }
@@ -219,7 +219,8 @@ public class AbilityLoadout
             //activeAbility = ability;
 
             motor.StopMotion();
-            motor.IsHaltingMovementToPerformAction = false;
+            motor.IsHaltingMovementToPerformAction = true;
+			motor.IsHaltingRotationToPerformAction = false;
 
             return true;
         }
@@ -234,7 +235,8 @@ public class AbilityLoadout
             activeAbility.EndAbility();
             activeAbility = null;
 
-            motor.IsHaltingMovementToPerformAction = true;
+            motor.IsHaltingMovementToPerformAction = false;
+			motor.IsHaltingRotationToPerformAction = false;
         }
     }
 

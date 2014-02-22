@@ -32,6 +32,13 @@ public class Floor : MonoBehaviour
 	public Enemy floorBoss;
 	private bool bossKilled = false;
 
+	private float roomTransitionTime = 0.5f;
+	public float RoomTransitionTime
+	{
+		get { return roomTransitionTime; }
+		set { roomTransitionTime = value; }
+	}
+
     public bool initialised;
 
     public Room CurrentRoom
@@ -66,8 +73,6 @@ public class Floor : MonoBehaviour
 
 	public void InitialiseFloor()
     {
-        InitialiseCamera();
-
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
@@ -77,8 +82,6 @@ public class Floor : MonoBehaviour
 
 	public void InitialiseRandomFloor()
 	{
-		InitialiseCamera();
-
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
@@ -95,11 +98,6 @@ public class Floor : MonoBehaviour
 		Initialise();
 	}
 
-    // Initialize the camera first.
-    private void InitialiseCamera()
-    {
-
-    }
 
 	private void Initialise()
 	{
@@ -143,8 +141,8 @@ public class Floor : MonoBehaviour
         floorCamera.name = "FloorCamera";
         floorCamera.Initialise();
 
-        Vector3 camPos = FloorCamera.CalculateAveragePlayerPosition();
-        camPos.z -= 15.0f;
+		Vector3 camPos = FloorCamera.CalculateAverageHeroPosition();
+        camPos.z -= 5.25f;
         floorCamera.transform.position = camPos;
         FloorCamera.UpdateCameraPosition();
 
@@ -372,7 +370,7 @@ public class Floor : MonoBehaviour
 	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
 	{
 		// Set old remove inactive and new one active
-		fadePlane.StartFade(0.5f, currentRoom.transform.position);
+		fadePlane.StartFade(roomTransitionTime * 0.5f, currentRoom.transform.position);
 
 		StartCoroutine(CoTransitionToRoom());
 
@@ -385,6 +383,23 @@ public class Floor : MonoBehaviour
 
 		currentRoom.gameObject.SetActive(true);
 
+		// Disable all the enemies
+		if (prevRoom.Enemies != null)
+		{
+			foreach (Enemy e in prevRoom.Enemies)
+			{
+				e.enabled = false;
+				e.HPBar.enabled = false;
+			}
+		}
+		if (currentRoom.Enemies != null)
+		{
+			foreach (Enemy e in currentRoom.Enemies)
+			{
+				e.enabled = false;
+			}
+		}
+
 		// Move heroes to the new room also disable the controller
 		foreach (Hero hero in heroes)
 		{
@@ -395,7 +410,7 @@ public class Floor : MonoBehaviour
 		}
 
 		// Move camera over
-		FloorCamera.TransitionToRoom(direction);
+		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
@@ -403,7 +418,7 @@ public class Floor : MonoBehaviour
 
 	public IEnumerator CoTransitionToRoom()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(roomTransitionTime);
 
 		targetRoom.gameObject.SetActive(false);
 
@@ -413,7 +428,18 @@ public class Floor : MonoBehaviour
 			hero.HeroController.enabled = true;
 		}
 
-		//fadePlane.gameObject.SetActive(false);
+		yield return new WaitForSeconds(0.05f);
+
+		// Enable all new enemies
+		if (currentRoom.Enemies != null)
+		{
+			foreach (Enemy e in currentRoom.Enemies)
+			{
+				e.enabled = true;
+				e.HPBar.enabled = true;
+			}
+		}
+
 	}
 
 	public void TransitionToRoomImmediately(TransitionDirection direction, Door targetDoor)
@@ -431,7 +457,7 @@ public class Floor : MonoBehaviour
 		}
 
 		// Move camera over
-        FloorCamera.TransitionToRoom(direction);
+		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();

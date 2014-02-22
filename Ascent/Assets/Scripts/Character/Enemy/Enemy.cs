@@ -73,8 +73,6 @@ public abstract class Enemy : Character
 
     #endregion
 
-	public int health = 100;
-
     #region Initialization
 
 	public override void Initialise()

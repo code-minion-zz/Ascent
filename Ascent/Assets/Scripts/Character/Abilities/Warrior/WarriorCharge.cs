@@ -106,7 +106,7 @@ public class WarriorCharge : Ability
 			//    travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
 			//    animationLength = travelTime;
 			//}
-			if (Physics.SphereCast(new Ray(rayStart, owner.transform.forward), 0.05f, out hitInfo, distanceMax, layerMask))
+			if (Physics.SphereCast(new Ray(rayStart, owner.transform.forward), 0.1f, out hitInfo, distanceMax, layerMask))
 			{
 				//targetPos = hitInfo.point - (owner.transform.forward);
 				targetPos = rayStart + (owner.transform.forward * hitInfo.distance);
