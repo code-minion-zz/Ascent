@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
-	const float KIWebVersion = 0.1f;
+#if UNITY_WEBPLAYER
+	public const float KfWebVersion = 0.1f;
+#endif
 
 	// GameTest Values
 	public Game.EGameState testState = Game.EGameState.Tower;
@@ -15,6 +17,7 @@ public class Game : MonoBehaviour
     {
 		None = -1, 
         MainMenu,
+		HeroSelect,
         Town,
         Tower,
 		Loading,
@@ -112,6 +115,12 @@ public class Game : MonoBehaviour
     {
         get { return tower; }
     }
+
+	private bool isWide;
+	public bool IsWideScreen
+	{
+		get { return isWide; }
+	}
 	
 	#endregion
 	
@@ -125,7 +134,7 @@ public class Game : MonoBehaviour
 		{
 			Singleton = this;
 		}
-
+		
         if (!initialised)
         {
             Initialise();
@@ -163,6 +172,17 @@ public class Game : MonoBehaviour
 	private void Initialise()
 	{
 		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
+		float aspectRatio = ((float)Screen.width / (float)Screen.height);
+		if (aspectRatio >= 1.6f) // 16:9 
+		{
+			isWide = true;
+		}
+		else // Default to 4:3
+		{
+			isWide = false;
+		}
+		Debug.Log("Aspect:" + Screen.width + "x" + Screen.height + " | " + aspectRatio + " | " + (isWide ? "16:9 (Wide)" : "4:3 (Normal)"));
 
 		// Never destroy this object unless the game closes itself.
 		DontDestroyOnLoad(gameObject);
@@ -290,14 +310,7 @@ public class Game : MonoBehaviour
 
 	public void LoadLevel(string level, EGameState state)
 	{
-		// This state will be used to handle the initialisation of the new scene
 		gameStateToLoad = state;
-		//gameState = EGameState.Loading;
-		
-		//// The Loading screen will grab this string and then load the correct scene
-		//levelName = level;
-
-		//Application.LoadLevel("LoadingScreen");
 
 		Application.LoadLevel(level);
 	}
@@ -320,7 +333,8 @@ public class Game : MonoBehaviour
 	{
 		switch (gameStateToLoad)
 		{
-			case EGameState.MainMenu:
+			case EGameState.MainMenu:// Fall
+			case EGameState.HeroSelect: 
 				{
 					InputManager.UnbindAllDevices();
 					if(players != null)

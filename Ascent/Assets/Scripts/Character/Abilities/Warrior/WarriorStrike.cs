@@ -66,9 +66,10 @@ public class WarriorStrike : Ability
 						foreach (Enemy e in enemies)
 						{
 							// Apply damage and knockback to the enemey
-
-							e.ApplyDamage(owner.DamageFormulaA(0.0f, 1.0f), false, Character.EDamageType.Physical, owner);
-							e.ApplyKnockback(e.transform.position - owner.transform.position, knockBackValue);
+							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
+							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+							combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, knockBackValue));
+							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);

@@ -95,9 +95,11 @@ public class AbominationCharge : Ability
                 foreach (Hero e in enemies)
                 {
                     // Apply damage, knockback and stun to the enemy.
-                    e.ApplyDamage(owner.DamageFormulaA(5, 1.0f), false, Character.EDamageType.Physical, owner);
-                    e.ApplyKnockback(e.transform.position - owner.transform.position, 1000000.0f);
-					e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.5f));
+					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
+					combatEvaluator.Add(new PhysicalDamageProperty(5.0f, 1.0f));
+					combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, 1000000.0f));
+					combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.5f)));
+					combatEvaluator.Apply();
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);

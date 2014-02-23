@@ -21,7 +21,7 @@ public class MenuButtonFunctions : MonoBehaviour
 	{
         if (enabled)
         {
-            Application.LoadLevel(levelName);
+			Game.Singleton.LoadLevel(levelName, Game.EGameState.HeroSelect);
         }
 	}	
 	
@@ -32,6 +32,7 @@ public class MenuButtonFunctions : MonoBehaviour
 			if(id.Start.IsPressed)
 			{
 				GoToLevel();
+				return;
 			}
 		}
 //		if (UICamera.selectedObject == null)

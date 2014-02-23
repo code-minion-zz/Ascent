@@ -63,16 +63,28 @@ public class FloatingText : MonoBehaviour
 
     void Start()
     {
+
     }
 
-    public void LateUpdate()
-    {
-		//tweenPos.from = target.transform.position;
-        //Following();
+    public void Update()
+	{
+		if (target.activeInHierarchy)
+		{
+			transform.position = GetTargetPos();
+
+			tweenPos.from = transform.localPosition;
+			tweenPos.to = tweenPos.from + Vector3.up * 100.0f;
+		}
+		else
+		{
+			tweenPos.enabled = false;
+		}
     }
 
     public void DestroyText(float time)
     {
+		//FloorHUDManager.Singleton.TextDriver.RemoveText(this);
+
         Destroy(gameObject, time);
     }
 
@@ -83,21 +95,28 @@ public class FloatingText : MonoBehaviour
 
     public void Following()
     {
-        // All these checks to stop an error that occassionally occured.
-        if (target != null)
-        {
-            // Spawn the text at the top of the collider
-            Collider col = target.GetComponentInChildren<Collider>();
-            if (col != null)
-            {
-                if (worldCamera != null)
-                {
-                    Vector3 pos = worldCamera.WorldToViewportPoint(target.transform.position + new Vector3(0.0f, col.bounds.extents.y, 0.0f));
-                    pos = guiCamera.ViewportToWorldPoint(pos);
-                    pos.z = 0.0f;
-                    transform.position = pos;
-                }
-            }
-        }
+		transform.position = GetTargetPos();
     }
+
+	public Vector3 GetTargetPos()
+	{
+		// All these checks to stop an error that occassionally occured.
+		if (target != null)
+		{
+			// Spawn the text at the top of the collider
+			Collider col = target.GetComponentInChildren<Collider>();
+			if (col != null)
+			{
+				if (worldCamera != null)
+				{
+					Vector3 pos = worldCamera.WorldToViewportPoint(target.transform.position + new Vector3(0.0f, col.bounds.extents.y, 0.0f));
+					pos = guiCamera.ViewportToWorldPoint(pos);
+					pos.z = 0.0f;
+					return pos; 
+				}
+			}
+		}
+
+		return Vector3.zero;
+	}
 }

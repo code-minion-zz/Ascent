@@ -86,54 +86,65 @@ public class RoomGeneration
 
     private void SetupCamera(RoomProperties room)
     {
-        float cameraOffsetX = 0.175f;
-        float cameraOffsetZ = 0.57f;
+        float cameraOffsetX = 1.0f;
+        float cameraOffsetMinZ = 1.0f;
+		float cameraOffsetMaxZ = 1.0f;
 
-        // A standard room is 18 wide(X) by 14 high(Z)
-        float highestDimension = room.Width > room.Height ? room.Height : room.Width;
-        if (highestDimension <= 6.0f)
-        {
-            room.Room.cameraHeight = 17.0f;
-            room.Room.cameraOffsetZ = -0.3f;
-            cameraOffsetX = 0.20f;
-            cameraOffsetZ = 0.75f;
+		if (Game.Singleton.IsWideScreen)
+		{
+			switch (room.Width)
+			{
+				case 10: cameraOffsetX = 0.0f; break;
+				case 14: cameraOffsetX = 0.0f; break;
+				case 18: cameraOffsetX = 1.0f; break;
+				case 22: cameraOffsetX = 3.0f; break;
 
-        }
-        else if (highestDimension <= 10.0f)
-        {
-            room.Room.cameraHeight = 18.0f;
-            room.Room.cameraOffsetZ = -0.318f;
-            cameraOffsetX = 0.20f;
-            cameraOffsetZ = 0.75f;
-        }
-        else if (highestDimension <= 14.0f)
-        {
-            room.Room.cameraHeight = 19.0f;
-            room.Room.cameraOffsetZ = -0.336f;
-            cameraOffsetX = 0.175f;
-            cameraOffsetZ = 0.57f;
-        }
-        else
-        {
-            room.Room.cameraHeight = 20.0f;
-            room.Room.cameraOffsetZ = -0.35f;
-            cameraOffsetX = 0.175f;
-            cameraOffsetZ = 0.57f;
-        }
+				default: Debug.LogError("Unhandled case: " + room.Width); break;
+			}
+		}
+		else
+		{
+			switch (room.Width)
+			{
+				case 10: cameraOffsetX = 0.0f; break;
+				case 14: cameraOffsetX = 1.0f; break;
+				case 18: cameraOffsetX = 3.0f; break;
+				case 22: cameraOffsetX = 5.0f; break;
 
+				default: Debug.LogError("Unhandled case: " + room.Width); break;
+			}
 
-        // TODO: Fix the camera setup for this room.
-        room.Room.minCamera.x = -room.Width * cameraOffsetX;
-        room.Room.maxCamera.x = room.Width * cameraOffsetX;
-        room.Room.minCamera.z = -room.Height * cameraOffsetZ;
+		}
 
-        // Min is the bottom. Max is TOp
+		switch (room.Height)
+		{
+			case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
+			case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
+			case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
+			case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
 
-        // Assuming a base room height is 14 (ie. a room with height 14 will have max as 0), increase the max by the difference from the base height.
-        room.Room.maxCamera.z = (room.Height - 14.0f) * cameraOffsetZ;
+			default: Debug.LogError("Unhandled case: " + room.Height); break;
+		}
 
-        // If the max is less than the min set the max to the min.
-        room.Room.maxCamera.z = room.Room.maxCamera.z < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
+		room.Room.minCamera.x = -cameraOffsetX;
+		room.Room.maxCamera.x = cameraOffsetX;
+
+		room.Room.minCamera.z = cameraOffsetMinZ;
+		room.Room.maxCamera.z = cameraOffsetMaxZ;
+
+		//room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
+		//room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
+
+		//room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
+		//room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
+
+		//room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + (room.Height * 0.48f)) * cameraOffsetZ) : -5.0f;
+		//room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - (room.Height * 1.17f)) * cameraOffsetZ) : -5.0f;
+
+        //room.Room.minCamera.z = Math.Max(room.Room.minCamera.z, -9.25f);
+        //room.Room.maxCamera.z = Math.Min(room.Room.maxCamera.z, 0.0f);
+
+        //room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
     }
 
     public void PopulateMonsters(int dungeonLevel, RoomProperties room, Rarity rarity)

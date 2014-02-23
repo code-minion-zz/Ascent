@@ -197,7 +197,7 @@ public abstract class Hero : Character
     {
         // Reset the health
 		RefreshEverything();
-        motor.IsHaltingMovementToPerformAction = true;
+        motor.IsHaltingMovementToPerformAction = false;
         Animator.Dying = false;
         collider.enabled = true;
 
@@ -207,7 +207,7 @@ public abstract class Hero : Character
     protected override void OnDeath()
     {
         motor.StopMotion();
-        motor.IsHaltingMovementToPerformAction = false;
+        motor.IsHaltingMovementToPerformAction = true;
         collider.enabled = false;
         Animator.Dying = true;
 
@@ -231,18 +231,21 @@ public abstract class Hero : Character
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character source)
+	public override void ApplyCombatEffects(DamageResult result)
 	{
-        base.ApplyDamage(unmitigatedDamage, crit, type, source);
+		base.ApplyCombatEffects(result);
 
-        // Apply durability Loss
-        AccessoryItem[] accessories = backpack.AccessoryItems;
-        foreach (AccessoryItem acc in accessories)
-        {
-            acc.ApplyDurabilityDamage(unmitigatedDamage, crit, this, source);
-        }
+		if (!result.dodged)
+		{
+			// Apply durability Loss
+			AccessoryItem[] accessories = backpack.AccessoryItems;
+			foreach (AccessoryItem acc in accessories)
+			{
+				acc.ApplyDurabilityDamage(result.finalDamage, result.criticalHit, this, result.source);
+			}
+		}
 
-        if (type == Character.EDamageType.Trap)
+		if (result.damageType == Character.EDamageType.Trap)
         {
             floorStatistics.NumberOfTrapsTripped++;
         }

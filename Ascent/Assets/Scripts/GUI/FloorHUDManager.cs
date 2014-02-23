@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// </summary>
 public class FloorHUDManager : MonoBehaviour 
 {
-	public static 	FloorHUDManager singleton;
+	private static 	FloorHUDManager singleton;
 
     private PlayerHUD[] playerHUDs;
     private List<StatBar> enemyBars;
@@ -33,6 +33,7 @@ public class FloorHUDManager : MonoBehaviour
         }
 
     }
+
 
 	public void OnEnable()
 	{

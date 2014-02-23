@@ -57,7 +57,10 @@ public class AbominationStrike : Ability
                 foreach (Character c in characters)
                 {
                     // Apply damage and knockback to the enemey.
-					c.ApplyDamage(owner.DamageFormulaA(3, 0.75f), false, Character.EDamageType.Physical, owner);
+					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+					combatEvaluator.Add(new PhysicalDamageProperty(3.0f, 0.7f));
+					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 100.0f));
+					combatEvaluator.Apply();
 
                     // Create a blood splatter effect on the enemy.
                     Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
