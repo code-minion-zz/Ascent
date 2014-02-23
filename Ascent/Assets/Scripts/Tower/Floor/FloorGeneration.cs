@@ -322,19 +322,19 @@ public class FloorGeneration
         switch (roomType)
         {
             case FeatureType.monster:
-                name = "Room " + roomsPlaced + ": " + "Monster";
+				name = "Room " + roomsPlaced + ": " + "Monster" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.boss:
-                name = "Room " + roomsPlaced + ": " + "Boss";
+				name = "Room " + roomsPlaced + ": " + "Boss" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.trap:
-                name = "Room " + roomsPlaced + ": " + "Trap";
+				name = "Room " + roomsPlaced + ": " + "Trap" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.treasure:
-                name = "Room " + roomsPlaced + ": " + "Treasure";
+				name = "Room " + roomsPlaced + ": " + "Treasure" + " [" + width + ", " + height + "]";
                 break;
 
         }
@@ -441,19 +441,19 @@ public class FloorGeneration
         switch (roomType)
         {
             case FeatureType.monster:
-                name = "Room " + roomsPlaced + ": " + "Monster";
+				name = "Room " + roomsPlaced + "[F]: " + "Monster" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.boss:
-                name = "Room " + roomsPlaced + ": " + "Boss";
+				name = "Room " + roomsPlaced + "[F]: " + "Boss" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.trap:
-                name = "Room " + roomsPlaced + ": " + "Trap";
+				name = "Room " + roomsPlaced + "[F]: " + "Trap" + " [" + width + ", " + height + "]";
                 break;
 
             case FeatureType.treasure:
-                name = "Room " + roomsPlaced + ": " + "Treasure";
+				name = "Room " + roomsPlaced + "[F]: " + "Treasure" + " [" + width + ", " + height + "]";
                 break;
 
         }

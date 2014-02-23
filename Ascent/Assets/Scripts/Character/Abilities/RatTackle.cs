@@ -61,8 +61,10 @@ public class RatTackle : Ability
 				foreach (Character c in characters)
 				{
 					// Apply damage and knockback to the enemey.
-					c.ApplyDamage(owner.DamageFormulaA(1, 1.10f), false, Character.EDamageType.Physical, owner);
-					c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
+					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+					combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.1f));
+					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 1.0f));
+					combatEvaluator.Apply();
 
 					// Create a blood splatter effect on the enemy.
 					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);

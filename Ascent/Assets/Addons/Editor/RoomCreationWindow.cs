@@ -10,18 +10,10 @@ public class RoomCreationWindow : EditorWindow
     private int numberOfTilesX;
     private int numberOfTilesY;
     private RoomGeneration roomGenRef;
-    private RoomProperties roomProperties;
-    private Ascent.LevelEditor roomEditorRef;
 
-    public RoomProperties RoomProperties
-    {
-        get { return roomProperties; }
-    }
-
-    public void Initialise(Ascent.LevelEditor roomEditor, RoomGeneration generator)
+    public void Initialise(RoomGeneration generator)
     {
         roomGenRef = generator;
-        roomEditorRef = roomEditor;
     }
 
     void OnGUI()
@@ -32,14 +24,8 @@ public class RoomCreationWindow : EditorWindow
 
         if (GUILayout.Button("Create"))
         {
-            roomProperties = roomGenRef.CreateNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
-
-            if (roomProperties != null)
-            {
-                roomEditorRef.AddRoom(roomProperties);
-            }
-
-            EditorWindow.DestroyImmediate(this);
+            roomGenRef.CreateNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
+            this.Close();
         }
     }
 }

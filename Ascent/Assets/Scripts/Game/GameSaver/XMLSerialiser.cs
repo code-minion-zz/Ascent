@@ -67,7 +67,11 @@ public class XMLSerialiser
         {
             new BinaryFormatter().Serialize(s, pObject);
             string str = Convert.ToBase64String(s.ToArray());
+
+#if UNITY_WEBPLAYER
+#else
             CreateXML(path, str);
+#endif
             return str;
         } 
     }

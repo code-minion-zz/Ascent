@@ -106,15 +106,14 @@ public class UITown_RadialPanel : UITown_Panel
 			break;
 		default:
 			return false;
-			break;
 		}
 		
 		if (device.LeftStickX.IsPressed || device.LeftStickY.IsPressed)
 		{
 			// -90 = right, 0 = up, 90 = left, -180 = down
-			bool facingLeft = false;
+			//bool facingLeft = false; // @KIT commented this field and statement below because it was causing a warning. It is unused anyway? - 22/02/2014
 			float angle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value, device.LeftStickY.Value) -90f;
-			if (angle > 0) facingLeft = true;
+			//if (angle > 0) facingLeft = true;
 			
 			satisfied = Utilities.CloseTo(angle, checkAngle);
 			//Debug.Log (angle + " passes Deadzone? :" +satisfied);

@@ -70,10 +70,10 @@ public class WarriorWarStomp : Ability
 					{
 						foreach (Enemy e in enemies)
 						{
-							damage = owner.DamageFormulaA(0.0f, 0.5f);
-
-                            e.ApplyDamage(damage, false, Character.EDamageType.Physical, owner);
-							e.ApplyStatusEffect(new StunnedDebuff(owner, e, 1.0f));
+							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
+							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 0.5f));
+							combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.0f)));
+							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 3.0f);

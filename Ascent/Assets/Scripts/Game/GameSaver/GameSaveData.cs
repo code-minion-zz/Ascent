@@ -5,6 +5,10 @@ using System.Xml.Serialization;
 
 public class GameSaveData  
 {
+#if UNITY_WEBPLAYER
+	public float gameWebVersion;
+#endif
+
 	public System.DateTime totalTimePlayed;
 	public int highestTowerProgression;
 

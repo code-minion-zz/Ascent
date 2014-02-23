@@ -51,6 +51,7 @@ public class ConsumableItem : Item
     [System.Xml.Serialization.XmlIgnore()]
 	public float CooldownMax
 	{
+		get { return cooldownMax; }
 		set { cooldownMax = value; }
 	}
 

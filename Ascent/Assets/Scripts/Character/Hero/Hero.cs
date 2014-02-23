@@ -104,6 +104,14 @@ public abstract class Hero : Character
 			Create(this);
 		}
 
+		// Attach a light to it
+		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
+		light.transform.parent = gameObject.transform;
+		light.transform.localPosition = Vector3.zero;
+		light.transform.localScale = Vector3.one;
+		light.transform.rotation = Quaternion.identity;
+		light.name = "HeroPointLight";
+
 		// Initialise Controller, hook it up with the hero, hero animator and motor
 		heroController = gameObject.GetComponent<HeroController>();
 		heroController.Initialise(this, input, (HeroAnimator)animator, motor, HeroLoadout);
@@ -197,7 +205,7 @@ public abstract class Hero : Character
     {
         // Reset the health
 		RefreshEverything();
-        motor.IsHaltingMovementToPerformAction = true;
+        motor.IsHaltingMovementToPerformAction = false;
         Animator.Dying = false;
         collider.enabled = true;
 
@@ -207,7 +215,7 @@ public abstract class Hero : Character
     protected override void OnDeath()
     {
         motor.StopMotion();
-        motor.IsHaltingMovementToPerformAction = false;
+        motor.IsHaltingMovementToPerformAction = true;
         collider.enabled = false;
         Animator.Dying = true;
 
@@ -231,18 +239,21 @@ public abstract class Hero : Character
         }
     }
 
-	public override void ApplyDamage(int unmitigatedDamage, bool crit, Character.EDamageType type, Character source)
+	public override void ApplyCombatEffects(DamageResult result)
 	{
-        base.ApplyDamage(unmitigatedDamage, crit, type, source);
+		base.ApplyCombatEffects(result);
 
-        // Apply durability Loss
-        AccessoryItem[] accessories = backpack.AccessoryItems;
-        foreach (AccessoryItem acc in accessories)
-        {
-            acc.ApplyDurabilityDamage(unmitigatedDamage, crit, this, source);
-        }
+		if (!result.dodged)
+		{
+			// Apply durability Loss
+			AccessoryItem[] accessories = backpack.AccessoryItems;
+			foreach (AccessoryItem acc in accessories)
+			{
+				acc.ApplyDurabilityDamage(result.finalDamage, result.criticalHit, this, result.source);
+			}
+		}
 
-        if (type == Character.EDamageType.Trap)
+		if (result.damageType == Character.EDamageType.Trap)
         {
             floorStatistics.NumberOfTrapsTripped++;
         }
@@ -292,9 +303,9 @@ public abstract class Hero : Character
         backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
         backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
         backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3, true));
+		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));
+		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Key, 50));
+        backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));
 
         HeroInventory inventory = hero.inventory;
         inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));

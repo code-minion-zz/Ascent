@@ -32,6 +32,13 @@ public class Floor : MonoBehaviour
 	public Enemy floorBoss;
 	private bool bossKilled = false;
 
+	private float roomTransitionTime = 0.5f;
+	public float RoomTransitionTime
+	{
+		get { return roomTransitionTime; }
+		set { roomTransitionTime = value; }
+	}
+
     public bool initialised;
 
     public Room CurrentRoom
@@ -64,10 +71,8 @@ public class Floor : MonoBehaviour
         get { return heroes; }
     }
 
-	public void InitialiseFloor()
+	public void InitialiseTestFloor()
     {
-        InitialiseCamera();
-
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
@@ -77,8 +82,6 @@ public class Floor : MonoBehaviour
 
 	public void InitialiseRandomFloor()
 	{
-		InitialiseCamera();
-
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
@@ -95,11 +98,6 @@ public class Floor : MonoBehaviour
 		Initialise();
 	}
 
-    // Initialize the camera first.
-    private void InitialiseCamera()
-    {
-
-    }
 
 	private void Initialise()
 	{
@@ -107,10 +105,14 @@ public class Floor : MonoBehaviour
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
-        if (startPoints == null)
+		if (startPoints == null)
         {
             Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
         }
+		else if (startPoints != null && startPoints.Length == 0)
+		{
+			Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
+		}
 
         // Construct Hero list from player list
         heroes = new List<Hero>();
@@ -138,19 +140,27 @@ public class Floor : MonoBehaviour
 
         // Position the camera into a default state
         // Create the floor's camera
-        GameObject go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
+        GameObject go = Resources.Load("Prefabs/Tower/FloorCamera") as GameObject;
         floorCamera = (Instantiate(go) as GameObject).GetComponent<FloorCamera>();
         floorCamera.name = "FloorCamera";
         floorCamera.Initialise();
 
-        Vector3 camPos = FloorCamera.CalculateAveragePlayerPosition();
-        camPos.z -= 15.0f;
+		//go = Resources.Load("Prefabs/Tower/FloorDirectionalLight") as GameObject;
+
+		Vector3 camPos = FloorCamera.CalculateAverageHeroPosition();
+        camPos.z -= 5.25f;
         floorCamera.transform.position = camPos;
         FloorCamera.UpdateCameraPosition();
 
         // Finds all the rooms
 		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
+
+		// Put start rooms in first room so that it is tidy
+		foreach (GameObject startPoint in startPoints)
+		{
+			startPoint.transform.parent = currentRoom.transform;
+		}
 
 		// The floor generator will initilise the rooms. 
 		// If the generator was not used then we must do it here.
@@ -186,7 +196,7 @@ public class Floor : MonoBehaviour
         }
 
 		// Init the fade plane
-		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+		go = Instantiate(Resources.Load("Prefabs/Tower/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
@@ -363,7 +373,7 @@ public class Floor : MonoBehaviour
 
         floorInstanceReward.ApplyFloorInstanceRewards();
 
-        Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.Town);
+		Game.Singleton.LoadLevel(Game.EGameState.FloorSummary);
 
 		// Enable input on summary screen
 	}
@@ -372,7 +382,7 @@ public class Floor : MonoBehaviour
 	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
 	{
 		// Set old remove inactive and new one active
-		fadePlane.StartFade(0.5f, currentRoom.transform.position);
+		fadePlane.StartFade(roomTransitionTime * 0.5f, currentRoom.transform.position);
 
 		StartCoroutine(CoTransitionToRoom());
 
@@ -385,6 +395,23 @@ public class Floor : MonoBehaviour
 
 		currentRoom.gameObject.SetActive(true);
 
+		// Disable all the enemies
+		if (prevRoom.Enemies != null)
+		{
+			foreach (Enemy e in prevRoom.Enemies)
+			{
+				e.enabled = false;
+				e.HPBar.enabled = false;
+			}
+		}
+		if (currentRoom.Enemies != null)
+		{
+			foreach (Enemy e in currentRoom.Enemies)
+			{
+				e.enabled = false;
+			}
+		}
+
 		// Move heroes to the new room also disable the controller
 		foreach (Hero hero in heroes)
 		{
@@ -395,7 +422,7 @@ public class Floor : MonoBehaviour
 		}
 
 		// Move camera over
-		FloorCamera.TransitionToRoom(direction);
+		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
@@ -403,7 +430,7 @@ public class Floor : MonoBehaviour
 
 	public IEnumerator CoTransitionToRoom()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(roomTransitionTime);
 
 		targetRoom.gameObject.SetActive(false);
 
@@ -413,7 +440,18 @@ public class Floor : MonoBehaviour
 			hero.HeroController.enabled = true;
 		}
 
-		//fadePlane.gameObject.SetActive(false);
+		yield return new WaitForSeconds(0.05f);
+
+		// Enable all new enemies
+		if (currentRoom.Enemies != null)
+		{
+			foreach (Enemy e in currentRoom.Enemies)
+			{
+				e.enabled = true;
+				e.HPBar.enabled = true;
+			}
+		}
+
 	}
 
 	public void TransitionToRoomImmediately(TransitionDirection direction, Door targetDoor)
@@ -431,7 +469,7 @@ public class Floor : MonoBehaviour
 		}
 
 		// Move camera over
-        FloorCamera.TransitionToRoom(direction);
+		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();

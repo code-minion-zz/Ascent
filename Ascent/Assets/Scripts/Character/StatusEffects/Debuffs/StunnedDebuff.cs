@@ -28,7 +28,6 @@ public class StunnedDebuff : StatusEffect
 			target.Motor.StopMotion();
 			target.Motor.StopMovingAlongGrid();
 
-
 			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(target.gameObject, "Stunned!", Color.yellow);
 		}
 		else

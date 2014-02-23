@@ -24,7 +24,8 @@ public class CharacterMotor : MonoBehaviour
 	private float knockbackMag;
 	private float knockbackDecel = 0.65f;
 
-	private bool isActionHaltingMovement = true;
+	private bool isActionHaltingMovement = false;
+	private bool isActionRotationMovement = false;
 	private bool usingStandardMovement = true;
 
 	private bool isMovingAlongGrid;
@@ -92,6 +93,12 @@ public class CharacterMotor : MonoBehaviour
 	{
 		get { return isActionHaltingMovement; }
 		set { isActionHaltingMovement = value; }
+	}
+
+	public bool IsHaltingRotationToPerformAction
+	{
+		get { return isActionRotationMovement; }
+		set { isActionRotationMovement = value; }
 	}
 
 	public bool IsUsingMovementForce

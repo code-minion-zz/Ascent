@@ -6,18 +6,20 @@ using System.Collections.Generic;
 /// </summary>
 public class FloorHUDManager : MonoBehaviour 
 {
-	public static 	FloorHUDManager singleton;
+	private static 	FloorHUDManager singleton;
 
     private PlayerHUD[] playerHUDs;
     private List<StatBar> enemyBars;
 
     // These are to be set through the editor
-    public bool testHUD;
+	public			UIRoot root;
 	public			Camera		hudCamera;
 	public			TextDriver  TextDriver;
     public          PlayerHUD   playerHUD;
     public          StatBar     enemyStatBar;
     public          GameObject  enemHealthBars;
+
+	public UIPanel mainPanel;
 
 
     public static FloorHUDManager Singleton
@@ -34,6 +36,7 @@ public class FloorHUDManager : MonoBehaviour
 
     }
 
+
 	public void OnEnable()
 	{
         if (singleton == null)
@@ -41,10 +44,15 @@ public class FloorHUDManager : MonoBehaviour
             singleton = this;
         }
 
-        if (testHUD)
-        {
-            gameObject.SetActive(false);
-        }
+		//if (Game.Singleton.IsWideScreen)
+		//{
+		//    root.manualHeight = 720;
+		//}
+		//else
+		//{
+		//    root.manualHeight = 1020;
+		//}
+		//mainPanel.SetDirty();
 	}
 
     public void OnDestroy()
@@ -95,13 +103,57 @@ public class FloorHUDManager : MonoBehaviour
 
             // Set name so that it is findable in the editor
             playerHUDs[i].name = "PlayerHUD " + i;
+			playerHUDs[i].playerLabel.text = "P" + (i + 1);
             
             // Initialise the PlayerHUD with the PlayerHero
             playerHUDs[i].Initialise(game.Players[i].Hero);
         }
 
         // Reposition all the PlayerHUDs using the Grid
-		GetComponentInChildren<UIGrid>().Reposition();
+		UIGrid playerGrid = GetComponentInChildren<UIGrid>();
+		//playerGrid.cellWidth = (Screen.width / 2);
+		//playerGrid.Reposition();
+
+		if (Game.Singleton.IsWideScreen)
+		{
+			playerGrid.GetComponent<UIWidget>().width = 1600;
+		}
+		else
+		{
+			playerGrid.GetComponent<UIWidget>().width = 1200;
+		}
+		playerGrid.transform.localPosition = new Vector3(playerGrid.GetComponent<UIWidget>().width * -0.5f, 450.0f, playerGrid.transform.localPosition.z);
+
+
+		float playerHUDWidth = 350.0f;
+
+		if(playerHUDs.Length == 1)
+		{
+			// Just 1 player. Place it top left.
+			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
+		}
+		else if(playerHUDs.Length == 2)
+		{
+			// Place P1 on top left. Place P2 on top right.
+			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
+
+			playerHUDs[1].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Right;
+			playerHUDs[1].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[1].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
+			playerHUDs[1].transform.localRotation = playerHUDs[0].transform.localRotation;
+		}
+		else if(playerHUDs.Length == 3)
+		{
+			// Place P1 on top left. P2  topcentre and P3 top Right.
+			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
+
+			playerHUDs[1].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Center;
+			playerHUDs[1].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[1].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
+			playerHUDs[1].transform.localRotation = playerHUDs[0].transform.localRotation;
+
+			playerHUDs[2].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Right;
+			playerHUDs[2].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[2].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
+			playerHUDs[2].transform.localRotation = playerHUDs[0].transform.localRotation;
+		}
 
         // Create a list of health bars for the enemies.
         enemyBars = new List<StatBar>();

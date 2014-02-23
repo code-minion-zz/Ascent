@@ -38,6 +38,7 @@ public class HeroController : MonoBehaviour
 
     void Update()
     {
+
 		if (CanUseInput && InputManager.IsPolling)
 		{
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
@@ -91,6 +92,9 @@ public class HeroController : MonoBehaviour
 			// No other inputs are processed.
 			else
 			{
+				// Movement is still process incase movement is allowed with this cast.
+				ProcessRotation(inputDevice);
+
 				if (actionButtonPair.control.WasReleased)
 				{
 					hero.Loadout.UseAbility(hero.Loadout.GetAbilityID(actionButtonPair.action));
@@ -99,14 +103,42 @@ public class HeroController : MonoBehaviour
 			}
 
 #if UNITY_EDITOR
-			// Restore character to original state.
-            if (inputDevice.Back.WasPressed)
-            {
-                hero.RefreshEverything();
-            }
+   DebugKeys();
 #endif
 		}
     }
+
+#if UNITY_EDITOR
+    void DebugKeys()
+    {
+		// Restore character to original state.
+        if (inputDevice.Back.WasPressed)
+        {
+            hero.RefreshEverything();
+        }
+
+		//if(Input.GetKeyUp(KeyCode.Alpha1))
+		//{
+		//    hero.Backpack.AccessoryItems[0].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha2))
+		//{
+		//    hero.Backpack.AccessoryItems[1].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha3))
+		//{
+		//    hero.Backpack.AccessoryItems[2].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha4))
+		//{
+		//    hero.Backpack.AccessoryItems[3].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha5))
+		//{
+		//    Hero.Test_DrawHeroStats(hero);
+		//}
+    }
+#endif
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
@@ -172,11 +204,11 @@ public class HeroController : MonoBehaviour
 		// Items will only be successfully used if they actually exist, and it is off cooldown.
 
         int itemToUse = -1;
-        if (device.DPadUp.WasPressed)
+		if (device.DPadLeft.WasPressed)
         {
             itemToUse = (int)EHeroAction.Consumable1;
         }
-        else if (device.DPadLeft.WasPressed)
+		else if (device.DPadUp.WasPressed)
         {
             itemToUse = (int)EHeroAction.Consumable2;
         }
@@ -201,7 +233,7 @@ public class HeroController : MonoBehaviour
 
 		// The Hero can move if there is no action being performed and the Hero does not have a status effect impeding movement.
 		// If the action allows it, the action can also be interrupted to allow movement.
-        if ((motor.IsHaltingMovementToPerformAction || hero.Loadout.CanInterruptActiveAbility) && hero.CanMove)
+        if ((!motor.IsHaltingMovementToPerformAction || hero.Loadout.CanInterruptActiveAbility) && hero.CanMove)
 		{
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
@@ -267,6 +299,33 @@ public class HeroController : MonoBehaviour
 		if (!newMovementThisFrame)
 		{
 			animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
+		}
+	}
+
+	public void ProcessRotation(InputDevice device)
+	{
+		if (hero.CanMove && !motor.IsHaltingRotationToPerformAction)
+		{
+			// L Stick
+			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
+			{
+				Vector3 moveDirection = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value);
+
+				// Keyboard functions differently with diagonals.
+				// IE. On Keyboard X + Y == 2.0f. On XBox X + Y == 1.5f.
+				if (!device.isJoystick) // Then assume keyboard
+				{
+					if (Mathf.Abs(moveDirection.x) + Mathf.Abs(moveDirection.z) >= 1.9f)
+					{
+						// 0.7f is the value given on XBox for perfectly diagonal movement
+						moveDirection.x *= 0.7f;
+						moveDirection.z *= 0.7f;
+					}
+				}
+
+				// Look at the direction of movement and push character forward
+				transform.LookAt(transform.position + moveDirection);
+			}
 		}
 	}
 
@@ -403,7 +462,38 @@ public class HeroController : MonoBehaviour
 
 
 		// Is there a door?
-		// Find closest door
+		if (curRoom.Doors.lockedDoorCount > 0)
+		{
+			// Do we have a key?
+			ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
+			KeyItem key = null;
+			foreach(ConsumableItem item in consumables)
+			{
+				if (item is KeyItem)
+				{					
+					key = (KeyItem)item;
+					break;
+				}
+			}
+
+			if (key != null)
+			{
+				// Find closest door
+				LockedDoor[] lockedDoors = curRoom.Doors.LockedDoors;
+
+				//Debug.Log(lockedDoors.Length);
+				foreach (LockedDoor door in lockedDoors)
+				{
+					if (door.triggerRegion.IsInside(position))
+					{
+						key.UseItem(hero);
+						door.Open();
+						return;
+					}
+				}
+			}
+		}
+
 		// Has it already been opened?
 
 		// Is there a block?

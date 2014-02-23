@@ -68,9 +68,10 @@ public class AbominationStomp : Ability
                 {
                     foreach (Character c in characters)
                     {
-						c.ApplyDamage(owner.DamageFormulaA(1, 0.75f), false, Character.EDamageType.Physical, owner);
-                        c.ApplyStatusEffect(new StunnedDebuff(owner, c, 1.0f));
-                        c.ApplyKnockback(c.transform.position - owner.transform.position, knockBack);
+						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+						combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 0.75f));
+						combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, knockBack));
+						combatEvaluator.Apply();
 
                         // Create a blood splatter effect on the enemy.
                         Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 3.0f);

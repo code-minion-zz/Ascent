@@ -27,6 +27,7 @@ public static class AscentGameSaver
 		string saveString = XMLSerialiser.SerializeObject(gameSave);
 		
 #if UNITY_WEBPLAYER
+		PlayerPrefs.SetFloat("WebVersion", Game.KfWebVersion);
 		PlayerPrefs.SetString(fileName, saveString);
 		PlayerPrefs.Save();
 #else
@@ -67,6 +68,11 @@ public static class AscentGameSaver
 	private static void CreateNewGameDataSave()
 	{
 		gameSave = new GameSaveData();
+
+#if UNITY_WEBPLAYER
+		gameSave.gameWebVersion = Game.KfWebVersion;
+#endif
+
 		SaveGame();
 	}
 
@@ -171,7 +177,42 @@ public static class AscentGameSaver
 	public static bool DoesFilePathExist(string path)
 	{
 #if UNITY_WEBPLAYER
-		return (PlayerPrefs.HasKey(fileName));
+
+		bool hasSave = PlayerPrefs.HasKey(fileName);
+
+		if (hasSave)
+		{
+			Debug.Log("Save Found.");
+
+			hasSave = PlayerPrefs.HasKey("WebVersion");
+
+			if (hasSave)
+			{
+				hasSave = PlayerPrefs.GetFloat("WebVersion") == Game.KfWebVersion;
+
+				if (!hasSave)
+				{
+					Debug.Log("Old version of game save.");
+				}
+			}
+			else
+			{
+				Debug.Log("Does not contain version info.");
+			}
+		}
+		else
+		{
+			Debug.Log("Save not Found.");
+		}
+	
+		if(!hasSave)
+		{
+			PlayerPrefs.DeleteAll();
+
+			Debug.Log("Recreating save file.");
+		}		
+
+		return (hasSave);
 #else
 		FileInfo t = new FileInfo(path);
 

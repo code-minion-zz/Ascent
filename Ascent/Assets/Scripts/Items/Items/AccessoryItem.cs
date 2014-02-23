@@ -221,7 +221,7 @@ public class AccessoryItem : Item
         {
             hitsTaken = 0;
             durability -= 1;
-            Debug.Log(stats.Name + ": " + durability + " / " + durabilityMax);
+            //Debug.Log(stats.Name + ": " + durability + " / " + durabilityMax);
         }
     }
 

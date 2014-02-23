@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Game : MonoBehaviour 
 {
-	const float KIWebVersion = 0.1f;
+#if UNITY_WEBPLAYER
+	public const float KfWebVersion = 0.1f;
+#endif
 
 	// GameTest Values
-	public Game.EGameState testState = Game.EGameState.Tower;
+	public Game.EGameState testState = Game.EGameState.TestTower;
 	public Character.EHeroClass[] testCharacters;
 	public int targetFrameRate = 60;
 
@@ -15,10 +17,12 @@ public class Game : MonoBehaviour
     {
 		None = -1, 
         MainMenu,
-        Town,
-        Tower,
+		HeroSelect,
+        City,
+		FloorSummary,
+        TestTower,
 		Loading,
-		TowerRandom
+		Tower
     }
 
 	#region Fields
@@ -56,7 +60,7 @@ public class Game : MonoBehaviour
 
 	public bool InTower
 	{
-		get { return gameState == EGameState.Tower || gameState == EGameState.TowerRandom; }
+		get { return gameState == EGameState.TestTower || gameState == EGameState.Tower; }
 	}
 
 	private EGameState gameStateToLoad;
@@ -112,6 +116,12 @@ public class Game : MonoBehaviour
     {
         get { return tower; }
     }
+
+	private bool isWide;
+	public bool IsWideScreen
+	{
+		get { return isWide; }
+	}
 	
 	#endregion
 	
@@ -125,7 +135,7 @@ public class Game : MonoBehaviour
 		{
 			Singleton = this;
 		}
-
+		
         if (!initialised)
         {
             Initialise();
@@ -163,6 +173,17 @@ public class Game : MonoBehaviour
 	private void Initialise()
 	{
 		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
+
+		float aspectRatio = ((float)Screen.width / (float)Screen.height);
+		if (aspectRatio >= 1.6f) // 16:9 
+		{
+			isWide = true;
+		}
+		else // Default to 4:3
+		{
+			isWide = false;
+		}
+		Debug.Log("Aspect:" + Screen.width + "x" + Screen.height + " | " + aspectRatio + " | " + (isWide ? "16:9 (Wide)" : "4:3 (Normal)"));
 
 		// Never destroy this object unless the game closes itself.
 		DontDestroyOnLoad(gameObject);
@@ -288,18 +309,55 @@ public class Game : MonoBehaviour
 		this.players = players;
 	}
 
-	public void LoadLevel(string level, EGameState state)
+	public void LoadLevel(EGameState state)
 	{
-		// This state will be used to handle the initialisation of the new scene
 		gameStateToLoad = state;
-		//gameState = EGameState.Loading;
-		
-		//// The Loading screen will grab this string and then load the correct scene
-		//levelName = level;
 
-		//Application.LoadLevel("LoadingScreen");
+		switch (state)
+		{
+			case EGameState.MainMenu:
+				{
+					Application.LoadLevel("MainMenu");
+				}
+				break;
+			case EGameState.HeroSelect:
+				{
+					Application.LoadLevel("HeroSelect");
+				}
+				break;
+			case EGameState.City:
+				{
+					Application.LoadLevel("City");
+				}
+				break;
+			case EGameState.Tower:
+				{
+					Application.LoadLevel("Tower");
+				}
+				break;
+			case EGameState.TestTower:
+				{
+					Application.LoadLevel("TestTower");
+				}
+				break;
+			case EGameState.FloorSummary:
+				{
+					Application.LoadLevel("FloorSummary");
+				}
+				break;
+			case EGameState.Loading:
+				{
+					Application.LoadLevel("Loading");
+				}
+				break;
+			case EGameState.None: // Fall
+			default:
+				{
+					Debug.LogError("Unhandled case.");
+				}
+				break;
+		}
 
-		Application.LoadLevel(level);
 	}
 
 	public void OnLevelWasLoaded(int iLevelID)
@@ -320,7 +378,8 @@ public class Game : MonoBehaviour
 	{
 		switch (gameStateToLoad)
 		{
-			case EGameState.MainMenu:
+			case EGameState.MainMenu:// Fall
+			case EGameState.HeroSelect: 
 				{
 					InputManager.UnbindAllDevices();
 					if(players != null)
@@ -332,26 +391,27 @@ public class Game : MonoBehaviour
 					}
 				}
 				break;
+			case EGameState.TestTower:
+				{
+					for (int i = 0; i < players.Count; ++i)
+					{
+						players[i].Hero.gameObject.SetActive(true);
+					}
+					tower.InitialiseTestFloor();
+				}
+				break;
 			case EGameState.Tower:
 				{
 					for (int i = 0; i < players.Count; ++i)
 					{
 						players[i].Hero.gameObject.SetActive(true);
 					}
+
 					tower.InitialiseFloor();
 				}
 				break;
-			case EGameState.TowerRandom:
-				{
-					for (int i = 0; i < players.Count; ++i)
-					{
-						players[i].Hero.gameObject.SetActive(true);
-					}
-
-					tower.InitialiseRandomFloor();
-				}
-				break;
-			case EGameState.Town:
+			case EGameState.FloorSummary: // Fall
+			case EGameState.City:
 				{
 					for (int i = 0; i < players.Count; ++i)
 					{

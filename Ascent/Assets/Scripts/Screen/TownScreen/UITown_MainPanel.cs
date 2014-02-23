@@ -146,7 +146,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 			(parent as UITownWindow).RequestTransitionToPanel(5);
 			break;
 		case 2 : // quit
-			Game.Singleton.LoadLevel("MainMenu",Game.EGameState.MainMenu);
+			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
 			break;
 		case 3 : // backpack
 			(parent as UITownWindow).RequestTransitionToPanel(1);

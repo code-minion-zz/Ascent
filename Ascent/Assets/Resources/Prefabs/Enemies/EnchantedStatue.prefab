@@ -199,12 +199,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100000}
-  currentSpeed: 5
-  acceleration: 10
-  minSpeed: 5.5
-  maxVelocityChange: 1.5
-  canMove: 1
-  moving: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -216,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000e97198569e8748b0dc853b06f9c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: .75
+  size: 1.5
   offsetZ: 0
 --- !u!114 &11400004
 MonoBehaviour:
@@ -229,7 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fe9570ff75509c41a9083479177475d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 80
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216cca89d6cbd2140bae7059548b7c24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiltAmount: 12.5
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1

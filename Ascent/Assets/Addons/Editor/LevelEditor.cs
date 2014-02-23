@@ -9,26 +9,15 @@ namespace Ascent
     public class LevelEditor : EditorWindow
 	{
         private Vector2 scrollPosition;
-        private string selectedRoomText;
         private const int buttonSize = 255;
 
         private GameObject selectedRoom = null;
         private GameObject selectedTile = null;
 
         private SaveRooms roomSaver = new SaveRooms();
-        private int selectedIndex = 0;
-        private int index = 0;
-        private TileType tileType;
-        private List<RoomProperties> roomSaves = new List<RoomProperties>();
-        private List<string> roomSaveNames = new List<string>();
-        private string directory;
-
         private RoomGeneration roomGen = new RoomGeneration();
-
-        public List<RoomProperties> RoomSaves
-        {
-            get { return roomSaves; }
-        }
+        private TileType tileType;
+        private string directory;
 
         [MenuItem("Ascent/Level Editor %h")]
         private static void showEditor()
@@ -73,23 +62,10 @@ namespace Ascent
             if (GUILayout.Button("Create New Room", GUILayout.Width(buttonSize)))
             {                
                 RoomCreationWindow roomCreationWnd = EditorWindow.GetWindow<RoomCreationWindow>("Create Room");
-                roomCreationWnd.Initialise(this, roomGen);
+                roomCreationWnd.Initialise(roomGen);
             }
 
             SelectRoomGUI();
-
-            if (selectedRoomText != null)
-            {
-                EditorGUILayout.Separator();
-
-                GUILayout.Label("Selected Room: " + selectedRoomText);
-            }
-
-            if (selectedTile != null)
-            {
-                GUILayout.Label("Selected Tile: " + selectedTile.name);
-                TilePlacementGUI();
-            }
 
             EditorGUILayout.EndScrollView();
         }
@@ -98,8 +74,6 @@ namespace Ascent
 
         private void SelectRoomGUI()
         {
-            selectedIndex = EditorGUILayout.Popup("Select a Room", selectedIndex, roomSaveNames.ToArray(), GUILayout.Width(buttonSize));
-
             if (GUILayout.Button("Load Room", GUILayout.Width(buttonSize)))
             {
                 directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "txt");
@@ -111,16 +85,9 @@ namespace Ascent
 
                     if (room != null)
                     {
-                        AddRoom(room);
+                        roomGen.ReconstructRoom(room);
                     }
                 }
-            }
-
-            if (GUILayout.Button("Insert", GUILayout.Width(buttonSize)))
-            {
-                RoomProperties room = roomSaves[selectedIndex];
-
-                roomGen.ReconstructRoom(room);
             }
 
             if (roomSaver != null)
@@ -129,6 +96,17 @@ namespace Ascent
                 {
                     SaveSelected();
                 }
+            }
+
+            if (selectedRoom != null)
+            {
+                GUILayout.Label("Selected Room: " + selectedRoom.name);
+            }
+
+            if (selectedTile != null)
+            {
+                GUILayout.Label("Selected Tile: " + selectedTile.name);
+                TilePlacementGUI();
             }
         }
 
@@ -140,6 +118,11 @@ namespace Ascent
             }
 
             directory = EditorUtility.SaveFilePanel("Save Room", "Assets/Resources/Maps", "NewRoom", "txt");
+
+            if (directory == "")
+            {
+                return;
+            }
 
             Room room = selectedRoom.GetComponent<Room>();
             room.FindAllNodes();
@@ -204,13 +187,6 @@ namespace Ascent
             }
         }
 
-        public void AddRoom(RoomProperties room)
-        {
-            roomSaveNames.Add(index + ". " + room.Name);
-            roomSaves.Add(room);
-            index++;
-        }
-
         /// <summary>
         /// Finds a specific node of a room based on the layer name.
         /// </summary>
@@ -271,8 +247,14 @@ namespace Ascent
                     T = T.parent;
                 }
 
-                selectedRoom = T.gameObject;
-                selectedRoomText = selectedRoom.name;
+                if (T.tag != "RoomRoot")
+                {
+                    selectedRoom = null;
+                }
+                else
+                {
+                    selectedRoom = T.gameObject;
+                }
             }
         }
 
