@@ -462,7 +462,38 @@ public class HeroController : MonoBehaviour
 
 
 		// Is there a door?
-		// Find closest door
+		if (curRoom.Doors.lockedDoorCount > 0)
+		{
+			// Do we have a key?
+			ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
+			KeyItem key = null;
+			foreach(ConsumableItem item in consumables)
+			{
+				if (item is KeyItem)
+				{					
+					key = (KeyItem)item;
+					break;
+				}
+			}
+
+			if (key != null)
+			{
+				// Find closest door
+				LockedDoor[] lockedDoors = curRoom.Doors.LockedDoors;
+
+				Debug.Log(lockedDoors.Length);
+				foreach (LockedDoor door in lockedDoors)
+				{
+					if (door.triggerRegion.IsInside(position))
+					{
+						key.UseItem(hero);
+						door.Open();
+						return;
+					}
+				}
+			}
+		}
+
 		// Has it already been opened?
 
 		// Is there a block?

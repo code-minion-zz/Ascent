@@ -23,7 +23,7 @@ public class Bomb : MonoBehaviour
 		// Defines the collision shape and properties of this ability.
 		damageArea = new Circle(transform, radius, new Vector3(0.0f, 0.0f, 0.0f));
 
-		transform.position = owner.transform.position + owner.transform.forward + Vector3.up;
+		transform.position = owner.transform.position + (owner.transform.forward * 0.25f) + Vector3.up;
 		rigidbody.AddForce((owner.transform.forward * 25.0f) + (Vector3.up * 25.0f), ForceMode.Impulse);
 		rigidbody.AddTorque(new Vector3(Random.Range(10.0f, 100.0f), Random.Range(10.0f, 100.0f), Random.Range(10.0f, 100.0f)), ForceMode.Impulse);
 	}
@@ -42,7 +42,9 @@ public class Bomb : MonoBehaviour
 
 				if (Game.Singleton.InTower)
 				{
-					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.All, ref characters))
+					// Do damage
+					Room room = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+					if (room.CheckCollisionArea(damageArea, Character.EScope.All, ref characters))
 					{
 						foreach (Character c in characters)
 						{
@@ -53,6 +55,24 @@ public class Bomb : MonoBehaviour
 
 							// Create a blood splatter effect on the enemy.
 							Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+						}
+					}
+
+					// Check for any doors that can be opened
+					if (room.Doors.hiddenDoorCount > 0)
+					{
+						HiddenDoor[] hiddenDoors = room.Doors.HiddenDoors;
+
+						foreach (HiddenDoor d in hiddenDoors)
+						{
+							if (d.opened)
+							{
+								continue;
+							}
+							if (MathUtility.IsWithinCircle(d.transform.position, damageArea.Position, damageArea.radius))
+							{
+								d.Open();
+							}
 						}
 					}
 				}

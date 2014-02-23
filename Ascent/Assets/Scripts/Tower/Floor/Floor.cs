@@ -71,7 +71,7 @@ public class Floor : MonoBehaviour
         get { return heroes; }
     }
 
-	public void InitialiseFloor()
+	public void InitialiseTestFloor()
     {
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
