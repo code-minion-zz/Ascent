@@ -62,7 +62,7 @@ namespace Ascent
             if (GUILayout.Button("Create New Room", GUILayout.Width(buttonSize)))
             {                
                 RoomCreationWindow roomCreationWnd = EditorWindow.GetWindow<RoomCreationWindow>("Create Room");
-                roomCreationWnd.Initialise(this, roomGen);
+                roomCreationWnd.Initialise(roomGen);
             }
 
             SelectRoomGUI();

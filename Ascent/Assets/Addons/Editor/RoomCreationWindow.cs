@@ -10,12 +10,10 @@ public class RoomCreationWindow : EditorWindow
     private int numberOfTilesX;
     private int numberOfTilesY;
     private RoomGeneration roomGenRef;
-    private Ascent.LevelEditor roomEditorRef;
 
-    public void Initialise(Ascent.LevelEditor roomEditor, RoomGeneration generator)
+    public void Initialise(RoomGeneration generator)
     {
         roomGenRef = generator;
-        roomEditorRef = roomEditor;
     }
 
     void OnGUI()
