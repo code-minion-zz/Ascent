@@ -105,10 +105,14 @@ public class Floor : MonoBehaviour
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
-        if (startPoints == null)
+		if (startPoints == null)
         {
             Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
         }
+		else if (startPoints != null && startPoints.Length == 0)
+		{
+			Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
+		}
 
         // Construct Hero list from player list
         heroes = new List<Hero>();

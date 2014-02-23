@@ -37,15 +37,21 @@ public class Room : MonoBehaviour
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
+	[HideInInspector]
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
+	[HideInInspector]
 	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 	private Vector3 curMinCamera = new Vector3(-3.0f, 24.0f, -8.0f);
 	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
-
+	
+	[HideInInspector]
 	public float cameraHeight = 20.0f;
+	
+	[HideInInspector]
 	public float cameraOffsetZ = 0.35f;
 
 	protected Doors doors;
+	[HideInInspector]
     public bool startRoom = false;
 
     public Doors Doors
@@ -495,6 +501,25 @@ public class Room : MonoBehaviour
 		return newObject;
 	}
 
+
+	public GameObject InstantiateGameObject(string name)
+	{
+		GameObject newObject = null;
+
+		newObject = GameObject.Instantiate(Resources.Load(name)) as GameObject;
+
+		Vector3 localPosition = newObject.transform.position;
+		Vector3 localScale = newObject.transform.localScale;
+		Quaternion localRotation = newObject.transform.localRotation;
+
+		newObject.transform.parent = this.transform;
+		newObject.transform.position = localPosition;
+		newObject.transform.localScale = localScale;
+		newObject.transform.rotation = localRotation;
+
+		return newObject;
+	}
+
     // TODO: Make some monster generation script and offload logic there.
     //public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
     //{
@@ -691,11 +716,20 @@ public class Room : MonoBehaviour
 					if (enemies != null)
 					{
 						characters = new List<Character>(enemies);
-					}
 
-					foreach (Player p in players)
+						foreach (Player p in players)
+						{
+							characters.Add(p.Hero);
+						}
+					}
+					else
 					{
-						characters.Add(p.Hero.GetComponent<Hero>());
+						characters = new List<Character>();
+
+						foreach (Player p in players)
+						{
+							characters.Add(p.Hero);
+						}
 					}
 				}
 				break;
