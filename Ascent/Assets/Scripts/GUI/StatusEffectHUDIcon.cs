@@ -22,15 +22,33 @@ public class StatusEffectHUDIcon : PlayerHUDIcon
 
         if (effect.Timed)
         {
-            float alphaRatio = 1.0f- (effect.TimeElapsed / effect.FullDuration);
+            float alphaRatio = 1.0f - (effect.TimeElapsed / effect.FullDuration);
 
             Color color = iconSprite.color;
-            color.a = alphaRatio;
+
+			if (statusEffect is Blessing)
+			{
+				color = new Color(0.3f, 1.0f, 0.3f, alphaRatio);
+			}
+			else
+			{
+				if (statusEffect.Type == StatusEffect.EEffectType.Debuff)
+				{
+					color = new Color(1.0f, 0.4f, 0.4f, alphaRatio);
+				}
+				else
+				{
+					color = new Color(0.4f, 1.0f, 0.4f, alphaRatio);
+				}
+			}
+
             iconSprite.color = color;
         }
 
-        //IconName = effect.Name;
-        IconName = "Skills";
-        initialised = true;
+		IconName = "StatusEffect_" + statusEffect.GetType().ToString();
+
+		//Debug.Log("StatusEffect_" + statusEffect.GetType().ToString());
+		
+		initialised = true;
     }
 }

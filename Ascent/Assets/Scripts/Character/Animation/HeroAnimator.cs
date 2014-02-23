@@ -272,7 +272,7 @@ public class HeroAnimator : CharacterAnimator
         }
 
 #if UNITY_EDITOR
-        DebugKeys();
+        //DebugKeys();
 #endif
 	}
 

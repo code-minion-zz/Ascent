@@ -103,14 +103,42 @@ public class HeroController : MonoBehaviour
 			}
 
 #if UNITY_EDITOR
-			// Restore character to original state.
-            if (inputDevice.Back.WasPressed)
-            {
-                hero.RefreshEverything();
-            }
+   DebugKeys();
 #endif
 		}
     }
+
+#if UNITY_EDITOR
+    void DebugKeys()
+    {
+		// Restore character to original state.
+        if (inputDevice.Back.WasPressed)
+        {
+            hero.RefreshEverything();
+        }
+
+		//if(Input.GetKeyUp(KeyCode.Alpha1))
+		//{
+		//    hero.Backpack.AccessoryItems[0].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha2))
+		//{
+		//    hero.Backpack.AccessoryItems[1].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha3))
+		//{
+		//    hero.Backpack.AccessoryItems[2].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha4))
+		//{
+		//    hero.Backpack.AccessoryItems[3].Durability -= 10;
+		//}
+		//if (Input.GetKeyUp(KeyCode.Alpha5))
+		//{
+		//    Hero.Test_DrawHeroStats(hero);
+		//}
+    }
+#endif
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
@@ -176,11 +204,11 @@ public class HeroController : MonoBehaviour
 		// Items will only be successfully used if they actually exist, and it is off cooldown.
 
         int itemToUse = -1;
-        if (device.DPadUp.WasPressed)
+		if (device.DPadLeft.WasPressed)
         {
             itemToUse = (int)EHeroAction.Consumable1;
         }
-        else if (device.DPadLeft.WasPressed)
+		else if (device.DPadUp.WasPressed)
         {
             itemToUse = (int)EHeroAction.Consumable2;
         }
