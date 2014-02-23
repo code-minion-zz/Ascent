@@ -323,7 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25ebcc4cb996b419c14e2e9f6c51f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: CharSelect
   defaultSelection: {fileID: 0}
 --- !u!1 &220614630
 GameObject:
@@ -410,13 +409,13 @@ MonoBehaviour:
     absolute: 0
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 1104
-  mHeight: 540
+  mWidth: 752
+  mHeight: 564
   mDepth: 0
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 2.04444456
+  aspectRatio: 1.33333337
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_temp
   mType: 0
@@ -608,7 +607,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772219792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 470.963196, y: -95.5, z: 0}
+  m_LocalPosition: {x: 382.990784, y: -95.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -641,13 +640,13 @@ MonoBehaviour:
     absolute: -290
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 532
+  mWidth: 356
   mHeight: 54
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 9.85185146
+  aspectRatio: 6.59259272
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_options
   mType: 0
@@ -726,7 +725,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 532, y: 53.5090904, z: 0}
+  m_Size: {x: 356, y: 53.5090904, z: 0}
   m_Center: {x: 0, y: -.245454788, z: 0}
 --- !u!114 &772219798
 MonoBehaviour:
@@ -794,13 +793,13 @@ MonoBehaviour:
     absolute: -357
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 470
+  mWidth: 294
   mHeight: 56
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 8.39285755
+  aspectRatio: 5.25
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_exit
   mType: 0
@@ -820,7 +819,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 773587627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 388.963196, y: -164.5, z: 0}
+  m_LocalPosition: {x: 300.990784, y: -164.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -890,8 +889,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 396.522888, y: 56, z: 0}
-  m_Center: {x: 36.7385483, y: 0, z: 0}
+  m_Size: {x: 248.037735, y: 56, z: 0}
+  m_Center: {x: 22.9811325, y: 0, z: 0}
 --- !u!114 &773587633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,7 +1035,7 @@ Transform:
   m_GameObject: {fileID: 1221796964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00370370364, y: .00370370364, z: .00370370364}
+  m_LocalScale: {x: .00354609918, y: .00354609918, z: .00354609918}
   m_Children:
   - {fileID: 439019122}
   - {fileID: 220614631}
@@ -1144,7 +1143,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1259012436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 408.520996, y: -29.5, z: 0}
+  m_LocalPosition: {x: 320.510498, y: -29.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -1177,13 +1176,13 @@ MonoBehaviour:
     absolute: -223
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 495
+  mWidth: 319
   mHeight: 54
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 9.16666698
+  aspectRatio: 5.90740728
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_play
   mType: 0
@@ -1262,8 +1261,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 437.628052, y: 54, z: 0}
-  m_Center: {x: 28.6859818, y: 0, z: 0}
+  m_Size: {x: 282.026947, y: 54, z: 0}
+  m_Center: {x: 18.4865227, y: 0, z: 0}
 --- !u!114 &1259012442
 MonoBehaviour:
   m_ObjectHideFlags: 0

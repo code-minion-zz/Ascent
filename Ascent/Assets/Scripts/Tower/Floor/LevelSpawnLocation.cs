@@ -13,7 +13,7 @@ public class LevelSpawnLocation : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        Game.Singleton.LoadLevel("Level2", Game.EGameState.Tower);
+        Game.Singleton.LoadLevel(Game.EGameState.Tower);
     }
 
     void OnTriggerEnter(Collider other)

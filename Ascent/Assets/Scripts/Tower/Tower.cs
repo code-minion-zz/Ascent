@@ -17,14 +17,14 @@ public class Tower : MonoBehaviour
 	}
 
 
-    public void InitialiseFloor()
+    public void InitialiseTestFloor()
     {
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
         currentFloor.InitialiseFloor();
     }
 
-	public void InitialiseRandomFloor()
+	public void InitialiseFloor()
 	{
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
