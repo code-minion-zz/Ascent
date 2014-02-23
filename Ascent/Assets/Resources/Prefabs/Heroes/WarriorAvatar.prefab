@@ -760,8 +760,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 4.32133675e-07, y: -.0100003481, z: 4}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -.0100003481, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400072}
@@ -1424,12 +1424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100010}
-  currentSpeed: 5
-  acceleration: 10
-  minSpeed: 5.5
-  maxVelocityChange: 5
-  canMove: 1
-  moving: 0
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1

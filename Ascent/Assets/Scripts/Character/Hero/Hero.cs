@@ -104,6 +104,14 @@ public abstract class Hero : Character
 			Create(this);
 		}
 
+		// Attach a light to it
+		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
+		light.transform.parent = gameObject.transform;
+		light.transform.localPosition = Vector3.zero;
+		light.transform.localScale = Vector3.one;
+		light.transform.rotation = Quaternion.identity;
+		light.name = "HeroPointLight";
+
 		// Initialise Controller, hook it up with the hero, hero animator and motor
 		heroController = gameObject.GetComponent<HeroController>();
 		heroController.Initialise(this, input, (HeroAnimator)animator, motor, HeroLoadout);

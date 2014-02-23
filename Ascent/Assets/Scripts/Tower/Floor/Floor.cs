@@ -136,10 +136,12 @@ public class Floor : MonoBehaviour
 
         // Position the camera into a default state
         // Create the floor's camera
-        GameObject go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
+        GameObject go = Resources.Load("Prefabs/Tower/FloorCamera") as GameObject;
         floorCamera = (Instantiate(go) as GameObject).GetComponent<FloorCamera>();
         floorCamera.name = "FloorCamera";
         floorCamera.Initialise();
+
+		//go = Resources.Load("Prefabs/Tower/FloorDirectionalLight") as GameObject;
 
 		Vector3 camPos = FloorCamera.CalculateAverageHeroPosition();
         camPos.z -= 5.25f;
@@ -149,6 +151,12 @@ public class Floor : MonoBehaviour
         // Finds all the rooms
 		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
+
+		// Put start rooms in first room so that it is tidy
+		foreach (GameObject startPoint in startPoints)
+		{
+			startPoint.transform.parent = currentRoom.transform;
+		}
 
 		// The floor generator will initilise the rooms. 
 		// If the generator was not used then we must do it here.
@@ -184,7 +192,7 @@ public class Floor : MonoBehaviour
         }
 
 		// Init the fade plane
-		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+		go = Instantiate(Resources.Load("Prefabs/Tower/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
