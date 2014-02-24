@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public abstract class Hero : Character 
 {
@@ -338,4 +339,28 @@ public abstract class Hero : Character
             " DODGE: " + hero.HeroStats.DodgeChance
             );
     }
+	
+	public IEnumerable<AccessoryItem> GetRepairable()
+	{
+		IEnumerable<Item> backpackAccessories = backpack.AccessoryItems;
+		IEnumerable<Item> inventoryAccessories = inventory.Items.Where(item => item.GetType() == typeof(AccessoryItem));
+		
+		IEnumerable<AccessoryItem> allAccessories = backpackAccessories.Cast<AccessoryItem>().Union(inventoryAccessories.Cast<AccessoryItem>());
+		
+		IEnumerable<AccessoryItem> damagedAccessories = allAccessories.Where(acc => acc.Durability < acc.DurabilityMax);
+		
+		return damagedAccessories;
+	}
+
+	public IEnumerable<Item> GetUnidentified()
+	{
+		IEnumerable<Item> backpackItems = backpack.AllItems;
+		IEnumerable<Item> inventoryItems = inventory.Items;
+		
+		IEnumerable<Item> allItems = backpackItems.Union(inventoryItems);
+		
+		IEnumerable<Item> unappraisedItems = allItems.Where(item => item.IsAppraised == true);
+		
+		return unappraisedItems;
+	}
 }
