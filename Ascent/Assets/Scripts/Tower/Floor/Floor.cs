@@ -12,13 +12,6 @@ public class Floor : MonoBehaviour
 		West
 	}
 
-	public GameObject groundPrefab = Resources.Load("Prefabs/RoomWalls/Ground") as GameObject;
-	public GameObject wallPrefab = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
-	public GameObject wallWindowPrefab = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
-	public GameObject doorPrefab = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
-	public GameObject cornerPrefab = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
-	public GameObject archPrefab = Resources.Load("Prefabs/RoomWalls/Archway") as GameObject;
-
 	private List<Hero> heroes;
 
 	private GameObject[] startPoints;
