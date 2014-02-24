@@ -43,7 +43,10 @@ public class UITown_RadialPanel : UITown_Panel
 				hit = true;
 				if (buttons[p.Value] != currentSelection)
 				{
-					UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+					if (currentSelection)
+					{
+						UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+					}
 					currentSelection = buttons[p.Value];
 					currentHighlightedButton = p.Value;
 					//Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
@@ -55,8 +58,12 @@ public class UITown_RadialPanel : UITown_Panel
 		// comment out next line for 'sticky selection' behaviour
 		if (!hit) // Removes button selection if no longer in range
 		{
+			if (currentSelection)
+			{
+				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+			}
 			currentHighlightedButton = -1;
-			UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+			currentSelection = null;
 
 			return false;
 		}
