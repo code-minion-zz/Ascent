@@ -189,10 +189,15 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		TitleLabel.text = replace;
 	}
-
+	
 	public void SetInfo(string replace)
 	{
 		InfoLabel.text = replace;
+	}
+
+	public void SetInstructions(string replace)
+	{
+		InstructLabel.text = replace;
 	}
 
 	public void RequestConfirmBox(string str)

@@ -18,8 +18,17 @@ public class Utilities
 		return retval;
 	}
 
-	public static bool CloseTo(float a, float b)
+	public static bool CloseTo(float a, float b, float tolerance)
 	{
-		return (Mathf.Abs(a - b) <= ANGLETOLERANCE);
+		return (Mathf.Abs(AbsoluteAngle(a) - AbsoluteAngle(b)) <= tolerance);
+	}
+
+	public static float AbsoluteAngle(float f)
+	{
+		if (f < 0)
+		{
+			return f += 360f;
+		}
+		return f;
 	}
 }

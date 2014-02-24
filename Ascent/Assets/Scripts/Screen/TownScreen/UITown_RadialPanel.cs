@@ -38,7 +38,7 @@ public class UITown_RadialPanel : UITown_Panel
 
 		foreach (KeyValuePair<float,int> p in AngleIndex)
 		{
-			if (Utilities.CloseTo(angle,p.Key))
+			if (Utilities.CloseTo(angle,p.Key, 20f))
 			{
 				hit = true;
 				if (buttons[p.Value] != currentSelection)
@@ -98,11 +98,11 @@ public class UITown_RadialPanel : UITown_Panel
 			break;
 		case 2:
 			dPadButton = device.DPadDown;
-			checkAngle = -180f;
+			checkAngle = 180f;
 			break;
 		case 3:
 			dPadButton = device.DPadRight;
-			checkAngle = -90f;
+			checkAngle = 270f;
 			break;
 		default:
 			return false;
@@ -115,7 +115,7 @@ public class UITown_RadialPanel : UITown_Panel
 			float angle = Utilities.VectorToAngleInDegrees(device.LeftStickX.Value, device.LeftStickY.Value) -90f;
 			//if (angle > 0) facingLeft = true;
 			
-			satisfied = Utilities.CloseTo(angle, checkAngle);
+			satisfied = Utilities.CloseTo(angle, checkAngle, 10f);
 			//Debug.Log (angle + " passes Deadzone? :" +satisfied);
 			
 		}

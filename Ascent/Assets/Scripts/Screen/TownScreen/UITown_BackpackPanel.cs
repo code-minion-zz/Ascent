@@ -25,6 +25,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	UIItemButton.EType inventType = UIItemButton.EType.ACCESSORY;
 	Backpack heroBackpack = null;
 	HeroInventory heroInvent = null;
+	Item confirmSell;
 
 	// Inventory-Tab Variables
 	List<UIItemButton> inventoryItemButtons;
@@ -97,7 +98,11 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	{
 		base.OnEnable();
 
-		if (initialised) (parent as UITownWindow).SetTitle("Backpack");
+		if (initialised) 
+		{
+			townParent.SetTitle("Backpack");
+			townParent.SetInstructions("Press (A) to Select\nPress (B) to Cancel\nPress (Y) to Sell");
+		}
 
 		if (currentSelection) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
 	}
@@ -311,6 +316,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 		// set currently highlighted button to the first element
 		townParent.ShowArrow(false);
+		townParent.SetInfo("Press (A) to select an item");
 		if (inventoryButtonCount > 0)
 		{
 			inventoryHighlightedButton = 0;
@@ -357,7 +363,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			}
 			if ((currentSelection as UIItemButton).LinkedItem != null)
 			{
-				newString += (currentSelection as UIItemButton).LinkedItem.ToString();
+				newString += ((currentSelection as UIItemButton).LinkedItem.IsAppraised)?(currentSelection as UIItemButton).LinkedItem.ToString() : (currentSelection as UIItemButton).LinkedItem.ToStringUnidentified();
 			}
 		}
 
@@ -456,9 +462,12 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		}
 	}
 
-
 	public override void OnMenuCancel(InputDevice device)
 	{
+		if (parentConfirming) return;
+		
+		if ((parent as UITownWindow).Confirming) return;
+
 		if (activeTab == EMode.INVENTORY)
 		{
 			SwapToBackpack();
@@ -468,6 +477,40 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			ReturnToTown();
 		}
 
+	}
+	
+	public override void OnMenuSpecial(InputDevice device)
+	{
+		UIItemButton button = null;
+		if (activeTab == EMode.INVENTORY)
+		{
+			if (inventoryHighlightedItemButton)
+			{
+				button = inventoryHighlightedItemButton;
+			}
+		}
+		else 
+		{
+			if (currentSelection)
+			{
+				button = currentSelection as UIItemButton;
+			}
+		}
+		if (button)
+		{
+			string name = null;
+			confirmSell = button.LinkedItem;
+			if (!confirmSell.IsAppraised)
+			{
+				name = "?????";
+			}
+			else
+			{
+				name = confirmSell.ItemStats.Name;
+			}
+			Debug.Log (confirmSell.ItemStats.Name + confirmSell.IsAppraised);
+			townParent.RequestConfirmBox("Are you sure you want to sell " + name + " for " + button.LinkedItem.ItemStats.SellValue + " gold?");
+		}
 	}
 
 	#endregion 

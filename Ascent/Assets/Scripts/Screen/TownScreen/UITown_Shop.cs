@@ -112,7 +112,7 @@ public class UITown_Shop : UITown_RadialPanel
 			buyButtons.Add(uib);
 		}
 
-		UpdateInventory();
+		UpdateItemButtons();
 	}
 	#endregion
 		
@@ -145,7 +145,7 @@ public class UITown_Shop : UITown_RadialPanel
 	/// <summary>
 	/// Updates the shop's item buttons
 	/// </summary>
-	protected virtual void UpdateInventory()
+	protected virtual void UpdateItemButtons()
 	{
 		int buttonCount = 0;
 		foreach (Item item in shopInventory)
@@ -163,6 +163,9 @@ public class UITown_Shop : UITown_RadialPanel
 			buyButtons[buttonCount].LinkedItem = null;
 			NGUITools.SetActive(buyButtons[buttonCount].gameObject, false);
 		}
+		
+		NGUITools.FindInParents<UIScrollView>(buyButtonGrid).Scroll(1f);
+		//NGUITools.FindInParents<UIScrollView>(buyButtonGrid).enabled = true;
 	}
 
 	protected virtual void SetInfoLabel()
@@ -199,10 +202,12 @@ public class UITown_Shop : UITown_RadialPanel
 	{
 		base.OnEnable();
 
-		updateHighlight = true;
-		shopMode = EMode.BUY;
-		ChangeTab();
-		
+		if (initialised)
+		{
+			updateHighlight = true;
+			shopMode = EMode.BUY;
+			ChangeTab();
+		}
 //		if (shopMode == EMode.APPRAISE)
 //		{
 //			(parent as UITownWindow).SetTitle("Appraise");
@@ -219,6 +224,7 @@ public class UITown_Shop : UITown_RadialPanel
 		{
 		case EMode.BUY:
 			NGUITools.SetActive(buyButtonGrid, true);
+			UpdateItemButtons();
 			break;
 		case EMode.REPAIR:
 			NGUITools.SetActive(buyButtonGrid, false);
