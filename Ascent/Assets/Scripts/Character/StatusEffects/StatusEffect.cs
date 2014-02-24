@@ -54,13 +54,6 @@ public class StatusEffect
         set { duration = value; }
     }
 
-    protected string name;
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
-
 	protected bool overridePrevious;
 	public bool OverridePrevious
 	{

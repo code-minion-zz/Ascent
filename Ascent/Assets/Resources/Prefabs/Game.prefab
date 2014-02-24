@@ -8,8 +8,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -36,12 +36,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb4c1b076388a4ca8dba43a1a575fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a5fb8e9c0bdbbd47a463333775b505f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacterType: 
-  levelName: 
-  Cameras: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -50,9 +47,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5fb8e9c0bdbbd47a463333775b505f, type: 3}
+  m_Script: {fileID: 11500000, guid: fbdb4c1b076388a4ca8dba43a1a575fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testState: 6
+  testCharacters: 00000000
+  targetFrameRate: 60
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

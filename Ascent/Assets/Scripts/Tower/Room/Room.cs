@@ -37,15 +37,21 @@ public class Room : MonoBehaviour
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
 
+	[HideInInspector]
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
+	[HideInInspector]
 	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 	private Vector3 curMinCamera = new Vector3(-3.0f, 24.0f, -8.0f);
 	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
-
+	
+	[HideInInspector]
 	public float cameraHeight = 20.0f;
+	
+	[HideInInspector]
 	public float cameraOffsetZ = 0.35f;
 
 	protected Doors doors;
+	[HideInInspector]
     public bool startRoom = false;
 
     public Doors Doors
@@ -246,10 +252,11 @@ public class Room : MonoBehaviour
     }
 
     /// <summary>
-    /// Pass in a list to populate it with found objects of that type in this room.
+    /// Pass in a list to populate it with found objects of that type in the parent.
     /// </summary>
     /// <typeparam name="T">The type of the component.</typeparam>
     /// <param name="populateList">The list to populate.</param>
+    /// <param name="parent">The parent to get components from children.</param>
     private void PopulateListOfObjects<T>(ref List<T> populateList, GameObject parent) where T: Component
     {
         if (populateList == null)
@@ -484,6 +491,25 @@ public class Room : MonoBehaviour
 		return newObject;
 	}
 
+
+	public GameObject InstantiateGameObject(string name)
+	{
+		GameObject newObject = null;
+
+		newObject = GameObject.Instantiate(Resources.Load(name)) as GameObject;
+
+		Vector3 localPosition = newObject.transform.position;
+		Vector3 localScale = newObject.transform.localScale;
+		Quaternion localRotation = newObject.transform.localRotation;
+
+		newObject.transform.parent = this.transform;
+		newObject.transform.position = localPosition;
+		newObject.transform.localScale = localScale;
+		newObject.transform.rotation = localRotation;
+
+		return newObject;
+	}
+
     public void RemoveObject(ERoomObjects type, GameObject go)
 	{
 		switch(type)
@@ -499,7 +525,50 @@ public class Room : MonoBehaviour
 
     public void ProcessCollisionBreakables(Shape2D shape)
     {
+        Shape2D.EType type = shape.type;
 
+        switch (type)
+        {
+            case Shape2D.EType.Circle:
+                {
+                    foreach (BreakableEnvObject b in breakables)
+                    {
+                        if (b.IsDestroyed)
+                        {
+                            continue;
+                        }
+
+                        if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
+                        }
+                    }
+                }
+                break;
+            case Shape2D.EType.Arc:
+                {
+                    foreach (BreakableEnvObject b in breakables)
+                    {
+                        if (b.IsDestroyed)
+                        {
+                            continue;
+                        }
+
+                        if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
+                        }
+                    }
+                }
+                break;
+            default:
+                {
+                    Debug.LogError("No more shapezies for you");
+                }
+                break;
+        }
     }
 
 	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
@@ -579,11 +648,20 @@ public class Room : MonoBehaviour
 					if (enemies != null)
 					{
 						characters = new List<Character>(enemies);
-					}
 
-					foreach (Player p in players)
+						foreach (Player p in players)
+						{
+							characters.Add(p.Hero);
+						}
+					}
+					else
 					{
-						characters.Add(p.Hero.GetComponent<Hero>());
+						characters = new List<Character>();
+
+						foreach (Player p in players)
+						{
+							characters.Add(p.Hero);
+						}
 					}
 				}
 				break;
@@ -645,7 +723,7 @@ public class Room : MonoBehaviour
 
             foreach (Collider col in colliders)
             {
-                if ((CheckArc(arc, c, col)))
+                if ((CheckArc(arc, col)))
                 {
                     return true;
                 }
@@ -653,10 +731,10 @@ public class Room : MonoBehaviour
             return false;
         }
 
-        return CheckArc(arc, c, c.collider);
+        return CheckArc(arc, c.collider);
 	}
 
-    public bool CheckArc(Arc arc, Character character, Collider col)
+    public bool CheckArc(Arc arc, Collider col)
     {
         Vector3 extents = new Vector3(col.bounds.extents.x, 0.1f, col.bounds.extents.z);
         Vector3 pos = col.transform.position;

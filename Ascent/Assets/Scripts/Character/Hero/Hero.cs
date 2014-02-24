@@ -104,6 +104,14 @@ public abstract class Hero : Character
 			Create(this);
 		}
 
+		// Attach a light to it
+		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
+		light.transform.parent = gameObject.transform;
+		light.transform.localPosition = Vector3.zero;
+		light.transform.localScale = Vector3.one;
+		light.transform.rotation = Quaternion.identity;
+		light.name = "HeroPointLight";
+
 		// Initialise Controller, hook it up with the hero, hero animator and motor
 		heroController = gameObject.GetComponent<HeroController>();
 		heroController.Initialise(this, input, (HeroAnimator)animator, motor, HeroLoadout);
@@ -295,9 +303,9 @@ public abstract class Hero : Character
         backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
         backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
         backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.RandomlyGenerateConsumable(1, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.RandomlyGenerateConsumable(2, true));
-        backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.RandomlyGenerateConsumable(3, true));
+		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));
+		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Key, 50));
+        backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));
 
         HeroInventory inventory = hero.inventory;
         inventory.AddItem(LootGenerator.RandomlyGenerateAccessory(5, false));

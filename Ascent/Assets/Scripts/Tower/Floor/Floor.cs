@@ -64,7 +64,7 @@ public class Floor : MonoBehaviour
         get { return heroes; }
     }
 
-	public void InitialiseFloor()
+	public void InitialiseTestFloor()
     {
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
@@ -98,10 +98,14 @@ public class Floor : MonoBehaviour
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");
 
-        if (startPoints == null)
+		if (startPoints == null)
         {
             Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
         }
+		else if (startPoints != null && startPoints.Length == 0)
+		{
+			Debug.Log("Could not find StartPoints please make sure there is an object with tag StartPoint");
+		}
 
         // Construct Hero list from player list
         heroes = new List<Hero>();
@@ -129,10 +133,12 @@ public class Floor : MonoBehaviour
 
         // Position the camera into a default state
         // Create the floor's camera
-        GameObject go = Resources.Load("Prefabs/Floors/floorCamera") as GameObject;
+        GameObject go = Resources.Load("Prefabs/Tower/FloorCamera") as GameObject;
         floorCamera = (Instantiate(go) as GameObject).GetComponent<FloorCamera>();
         floorCamera.name = "FloorCamera";
         floorCamera.Initialise();
+
+		//go = Resources.Load("Prefabs/Tower/FloorDirectionalLight") as GameObject;
 
 		Vector3 camPos = FloorCamera.CalculateAverageHeroPosition();
         camPos.z -= 5.25f;
@@ -142,6 +148,12 @@ public class Floor : MonoBehaviour
         // Finds all the rooms
 		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
 		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
+
+		// Put start rooms in first room so that it is tidy
+		foreach (GameObject startPoint in startPoints)
+		{
+			startPoint.transform.parent = currentRoom.transform;
+		}
 
 		// The floor generator will initilise the rooms. 
 		// If the generator was not used then we must do it here.
@@ -177,7 +189,7 @@ public class Floor : MonoBehaviour
         }
 
 		// Init the fade plane
-		go = Instantiate(Resources.Load("Prefabs/Floors/FadePlane")) as GameObject;
+		go = Instantiate(Resources.Load("Prefabs/Tower/FadePlane")) as GameObject;
 		fadePlane = go.GetComponent<FadePlane>();
 		go.SetActive(false);
 
@@ -354,7 +366,7 @@ public class Floor : MonoBehaviour
 
         floorInstanceReward.ApplyFloorInstanceRewards();
 
-        Game.Singleton.LoadLevel("FloorSummary", Game.EGameState.Town);
+		Game.Singleton.LoadLevel(Game.EGameState.FloorSummary);
 
 		// Enable input on summary screen
 	}

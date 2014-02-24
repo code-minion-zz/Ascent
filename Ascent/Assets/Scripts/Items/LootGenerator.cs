@@ -292,6 +292,71 @@ public static class LootGenerator
 		return (Item)newItem;
 	}
 
+	/// <summary>
+	///  Test function for creating a specific consumable
+	/// </summary>
+	/// <param name="consumableType"></param>
+	/// <param name="quantity"></param>
+	/// <returns></returns>
+	public static Item Test_CreateNewConsumable(ConsumableItem.EConsumableType consumableType, int quantity)
+	{
+		Item.EGrade grade = RandomGrade();
+
+
+		ConsumableItem newItem = null;
+		ItemStats stats = new ItemStats();
+		stats.Level = 1;
+		stats.Grade = (int)grade;
+		stats.Name = "Consumables";
+		stats.Description = "Description";
+
+		switch (consumableType)
+		{
+			case ConsumableItem.EConsumableType.HealthPotion:
+				{
+					newItem = new HealthPotionItem();
+					stats.Name = "Health Potion";
+					stats.Description = "Restore some Health.";
+					newItem.Charges = quantity;
+					newItem.CooldownMax = 1.0f;
+				}
+				break;
+			case ConsumableItem.EConsumableType.SpecialPotion:
+				{
+					newItem = new SpecialPotionItem();
+					stats.Name = "Special Potion";
+					stats.Description = "Restore some Special Power.";
+					newItem.Charges = quantity;
+					newItem.CooldownMax = 1.0f;
+				}
+				break;
+			case ConsumableItem.EConsumableType.Bomb:
+				{
+					newItem = new BombItem();
+					stats.Name = "Bomb";
+					stats.Description = "Use em' to blow up hidden pathways or enemies!";
+					newItem.Charges = quantity;
+					newItem.CooldownMax = 1.0f;
+				}
+				break;
+			case ConsumableItem.EConsumableType.Key:
+				{
+					newItem = new KeyItem();
+					stats.Name = "Key";
+					stats.Description = "Use to open locked doors!";
+					newItem.Charges = quantity;
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled Case");
+				}
+				break;
+		}
+
+		return newItem;
+	}
+
 	private static AccessoryItem.EAccessoryType RandomAccessoryType()
 	{
 		return (AccessoryItem.EAccessoryType)Random.Range((int)AccessoryItem.EAccessoryType.None + 1, (int)AccessoryItem.EAccessoryType.Max);

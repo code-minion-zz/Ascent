@@ -3,8 +3,6 @@ using System.Collections;
 
 public class MenuButtonFunctions : MonoBehaviour 
 {
-	
-	public string levelName;
 	public GameObject defaultSelection;
 	InputDevice[] devices;
 	
@@ -21,7 +19,7 @@ public class MenuButtonFunctions : MonoBehaviour
 	{
         if (enabled)
         {
-			Game.Singleton.LoadLevel(levelName, Game.EGameState.HeroSelect);
+			Game.Singleton.LoadLevel(Game.EGameState.HeroSelect);
         }
 	}	
 	

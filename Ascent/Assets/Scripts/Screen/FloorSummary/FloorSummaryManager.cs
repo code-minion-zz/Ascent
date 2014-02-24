@@ -54,11 +54,11 @@ public class FloorSummaryManager : MonoBehaviour {
 			{
 				if (townVotes > levelVotes)
 				{
-					Game.Singleton.LoadLevel("Town", Game.EGameState.Town);
+					Game.Singleton.LoadLevel(Game.EGameState.City);
 				}
 				else
 				{
-					Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
+					Game.Singleton.LoadLevel(Game.EGameState.Tower);
 				}
 			}
 		}
@@ -94,12 +94,12 @@ public class FloorSummaryManager : MonoBehaviour {
 		else if (townVotes == Game.Singleton.NumberOfPlayers)
 		{
 			// skip timer and just transition
-			Game.Singleton.LoadLevel("Town", Game.EGameState.Town);
+			Game.Singleton.LoadLevel(Game.EGameState.City);
 		}
 		else if (levelVotes == Game.Singleton.NumberOfPlayers)
 		{
 			// skip timer and just transition
-			Game.Singleton.LoadLevel("Sewer_Levels", Game.EGameState.TowerRandom);
+			Game.Singleton.LoadLevel(Game.EGameState.Tower);
 		}
 		else // in all other cases
 		{
