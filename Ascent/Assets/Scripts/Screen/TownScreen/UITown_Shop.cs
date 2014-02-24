@@ -249,7 +249,8 @@ public class UITown_Shop : UITown_RadialPanel
 	#region Input Handling	
 	public override void OnMenuUp(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,0)) return;
 
@@ -272,7 +273,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuDown(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,2)) return;
 
@@ -296,7 +298,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuLeft(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,1)) return;
 
@@ -309,7 +312,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuRight(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,3)) return;
 
@@ -322,7 +326,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuOK(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		switch (shopMode)
 		{
@@ -363,11 +368,10 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
-		if ((parent as UITownWindow).Confirming) return;
-
-
+		// quit to main menu
 		(parent as UITownWindow).RequestTransitionToPanel(0);
 //		if (activeTab == EMode.INVENTORY)
 //		{
@@ -377,6 +381,16 @@ public class UITown_Shop : UITown_RadialPanel
 //		{
 //			ReturnToTown();
 //		}		
+	}
+
+	bool IsAcceptingInput()
+	{
+		bool retval = true;
+		if (parentConfirming) retval = false;
+		
+		if ((parent as UITownWindow).Confirming) retval = false;
+
+		return retval;
 	}
 	#endregion 
 }
