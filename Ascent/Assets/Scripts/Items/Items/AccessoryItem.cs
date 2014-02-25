@@ -203,7 +203,17 @@ public class AccessoryItem : Item
         float divisor = (crit) ? 100.0f : 50.0f;
         float expo = (crit) ? 1.50f : 1.25f;
 
-        float durabilityLossChance = ((Mathf.Pow((float)source.Stats.Level + (float)hitsTaken, expo)) / owner.Stats.Level) / divisor;
+		
+        float durabilityLossChance = 0.0f;
+
+		if (source != null)
+		{
+			durabilityLossChance = ((Mathf.Pow((float)source.Stats.Level + (float)hitsTaken, expo)) / owner.Stats.Level) / divisor;
+		}
+		else
+		{
+			durabilityLossChance = 10.0f;
+		}
         
         float critBonus = 30.0f;
         durabilityLossChance += (crit) ? critBonus : 0.0f;

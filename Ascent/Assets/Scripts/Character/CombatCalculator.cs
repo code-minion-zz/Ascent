@@ -163,6 +163,9 @@ public class MagicalDamageProperty : DamageProperty
 
 public class TrapDamageProperty : DamageProperty
 {
+	private float fixedDamage;
+	private float multiplierDamage;
+
 	public TrapDamageProperty(float addFixedDamage, float addMultiplerDamager)
 		: base(addFixedDamage, addMultiplerDamager)
 	{
@@ -173,10 +176,10 @@ public class TrapDamageProperty : DamageProperty
 	public override DamageResult Evaluate(DamageResult result, Character target, Character source)
 	{
 		// Evaluate unmitigated damage
-		float unmitigatedDamage = (source.Stats.Attack * addMultiplerDamage) + addFixedDamage;
+		float unmitigatedDamage = addFixedDamage;
 
 		// Work out final damage
-		float finalDamage = Mathf.Max(Mathf.RoundToInt((float)source.Stats.Level * ((float)(source.Stats.Level * unmitigatedDamage)) / (float)(target.Stats.Level * target.Stats.PhysicalDefense)), 1);
+		float finalDamage = unmitigatedDamage;
 
 
 		result.damageType = Character.EDamageType.Trap;
@@ -184,7 +187,7 @@ public class TrapDamageProperty : DamageProperty
 		result.dodged = false;
 		result.finalDamage = (int)finalDamage;
 
-		return null;
+		return result;
 	}
 }
 
