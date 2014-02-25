@@ -36,8 +36,9 @@ public class UITownWindow : UIPlayerMenuWindow
 	Spin spinScript = null;
 	GameObject cardBack = null;
 	GameObject confirmBox = null;
-	public delegate void ConfirmBoxEvent(bool result);
-	public event ConfirmBoxEvent ConfirmBoxClose ;
+	GameObject noticeBox = null;
+	public delegate void PopupEvent(bool result);
+	public event PopupEvent PopupClose ;
 
 	int transitionTarget = -1;
 	/// <summary>
@@ -49,12 +50,13 @@ public class UITownWindow : UIPlayerMenuWindow
 	/// </summary>
 	int flipState = 0; 
 	int confirmState = 0;
+	int noticeState = 0;
 
-	public bool Confirming
+	public bool PopupActive
 	{
 		get
 		{
-			return confirmState > 0; 
+			return (flipState > 0 || confirmState > 0 || noticeState > 0); 
 		}
 
 	}
@@ -79,6 +81,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		
 		cardBack = sharedEle.Find("CardBack").gameObject;
 		confirmBox = sharedEle.Find("Confirmation").gameObject;
+		noticeBox = sharedEle.Find("Notice").gameObject;
 		TitleLabel = sharedEle.Find("MenuTitle").transform.Find("Label").GetComponent<UILabel>();
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
@@ -97,10 +100,15 @@ public class UITownWindow : UIPlayerMenuWindow
 		{
 			ProcessFlip();
 		}
-
+		
 		if (confirmState > 0)
 		{
 			ProcessConfirmBox();
+		}
+		
+		if (noticeState > 0)
+		{
+			ProcessNoticeBox();
 		}
 	}
 
@@ -199,14 +207,21 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		InstructLabel.text = replace;
 	}
-
+	
 	public void RequestConfirmBox(string str)
 	{
-		confirmBox.GetComponentInChildren<UILabel>().text = str + "\n Press (A) to confirm, or (B) to cancel";
-
+		confirmBox.GetComponentInChildren<UILabel>().text = str + "\n\n Press (A) to confirm, or (B) to cancel";
+		
 		confirmState = 1;
 	}
 
+	public void RequestNoticeBox(string str)
+	{
+		noticeBox.GetComponentInChildren<UILabel>().text = str + "\n\n Press (A) to continue";
+		
+		noticeState = 1;
+	}
+	
 	public void ProcessConfirmBox()
 	{
 		switch (confirmState)
@@ -217,7 +232,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		case 1:
 			++confirmState;
 			//NGUITools.SetActive(confirmBox, true);
-			confirmBox.GetComponent<UITweener>().PlayForward();
+			confirmBox.GetComponent<UIPlayTween>().Play(true);
 			break;
 		case 2:
 			if (confirmBox.GetComponent<UITweener>().tweenFactor >= 1f)
@@ -229,15 +244,15 @@ public class UITownWindow : UIPlayerMenuWindow
 		{
 			if (player.Input.A.IsPressed)
 			{
-				confirmBox.GetComponent<UITweener>().PlayReverse();
+				confirmBox.GetComponent<UIPlayTween>().Play(false);
 				++confirmState;
-				ConfirmBoxClose.Invoke(true);
+				PopupClose.Invoke(true);
 			}
 			else if (player.Input.B.IsPressed)
 			{
-				confirmBox.GetComponent<UITweener>().PlayReverse();
+				confirmBox.GetComponent<UIPlayTween>().Play(false);
 				++confirmState;
-				ConfirmBoxClose.Invoke(false);
+				PopupClose.Invoke(false);
 			}
 		}
 			break;
@@ -251,13 +266,50 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 	}
 
-//
-//	public void CloseConfirmBox()
-//	{
-//		if (confirmState == )
-//
-//		confirmBox.GetComponent<UITweener>().PlayReverse();
-//	}
+	public void ProcessNoticeBox()
+	{
+		switch (noticeState)
+		{
+		case 0:
+			Debug.LogError("warningState = 0. Should never happen.");
+			break;
+		case 1:
+			++noticeState;
+			//NGUITools.SetActive(confirmBox, true);
+			noticeBox.GetComponent<UIPlayTween>().Play(true);
+			break;
+		case 2:
+			if (noticeBox.GetComponent<UITweener>().tweenFactor >= 1f)
+			{				
+				++noticeState;
+			}
+			break;
+		case 3:
+		{
+			if (player.Input.A.IsPressed)
+			{
+				noticeBox.GetComponent<UIPlayTween>().Play(false);
+				++noticeState;
+				PopupClose.Invoke(true);
+			}
+			else if (player.Input.B.IsPressed)
+			{
+				noticeBox.GetComponent<UIPlayTween>().Play(false);
+				++noticeState;
+				PopupClose.Invoke(false);
+			}
+		}
+			break;
+		case 4:
+			if (noticeBox.GetComponent<UITweener>().tweenFactor <= 0f)
+			{				
+				noticeState = 0;
+				//NGUITools.SetActive(confirmBox, false);
+			}
+			break;
+		}
+	}
+
 
 	protected void ProcessFlip()
 	{

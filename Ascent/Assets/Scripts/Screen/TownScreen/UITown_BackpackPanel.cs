@@ -94,26 +94,8 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		initialised = true;
 	}
 
-	public override void OnEnable()
-	{
-		base.OnEnable();
 
-		if (initialised) 
-		{
-			townParent.SetTitle("Backpack");
-			townParent.SetInstructions("Press (A) to Select\nPress (B) to Cancel\nPress (Y) to Sell");
-		}
-
-		if (currentSelection) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-	}
-
-	public override void OnDisable()
-	{
-		//if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-
-		base.OnDisable();
-	}
-
+	#region Per-frame Processes
 	protected void Update()
 	{
 		if (updatePointer)
@@ -125,8 +107,14 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			updatePointer = false;
 		}
 
+		if (confirmSell != null)
+		{
+			Sell (1);
+		}
 	}
+	#endregion
 
+	#region As-Needed Functions
 	public void UpdateBackpack()
 	{
 		// Change Button Icons in accordance to backpack data
@@ -136,31 +124,8 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 		for (int i = 0; i < Backpack.kMaxItems; ++i)
 		{
-			//Color temp = new Color(.1f,.1f,.1f,.5f);
 			if (arrayItems[i] != null)
 			{
-				//switch ((Item.ItemGrade)arrayItems[i].ItemStats.Grade)
-				//{
-				//case Item.ItemGrade.E:
-				//    temp = Color.red;
-				//    break;
-				//case Item.ItemGrade.D:
-				//    temp = Color.magenta;
-				//    break;
-				//case Item.ItemGrade.C:
-				//    temp = Color.blue;
-				//    break;
-				//case Item.ItemGrade.B:
-				//    temp = Color.yellow;
-				//    break;
-				//case Item.ItemGrade.A:
-				//    temp = Color.cyan;
-				//    break;
-				//case Item.ItemGrade.S:
-				//    temp = Color.green;
-				//    break;
-				//}
-
 				UISprite sprite = buttons[i].transform.FindChild("Item").GetComponent<UISprite>();
 				//sprite.color = temp;
 
@@ -188,6 +153,26 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			}
 		}
 	}
+	
+	public override void OnEnable()
+	{
+		base.OnEnable();
+		
+		if (initialised) 
+		{
+			townParent.SetTitle("Backpack");
+			townParent.SetInstructions("Press (A) to Select\nPress (B) to Cancel\nPress (Y) to Sell");
+		}
+		
+		if (currentSelection) UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+	}
+	
+	public override void OnDisable()
+	{
+		//if (currentSelection != null) UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+		
+		base.OnDisable();
+	}
 
 	public void UpdateInventory()
 	{
@@ -200,7 +185,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		{
 			bool theDroidsYouAreLookingFor = false;
 			Item item = items [itemIndex];
-			Debug.Log (item);
+//			Debug.Log (item);
 			if (item is AccessoryItem) 
 			{
 				if (inventType != UIItemButton.EType.ACCESSORY) 
@@ -281,10 +266,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		{
 			inventoryItemButtons [buttonIndex].Reset();
 		}
-
 	}
-
-
 
 	void ReturnToTown()
 	{
@@ -393,14 +375,80 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		return hit;
 	}
 
+	
+	protected virtual void Sell(int step)
+	{
+		Hero playerHero = townParent.Player.Hero;
+		switch (step)
+		{
+		case 0:
+			if (currentSelection)
+			{
+				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
+				int value = itemStat.PurchaseValue;
+				if (playerHero.HeroStats.Gold >= value)
+				{					
+					confirmSell = CurrentItem;
+
+					// can afford
+					if (confirmSell != null)
+					{
+						OpenConfirmBox("Are you sure you want to sell " + itemStat.Name + " for " + confirmSell.ItemStats.SellValue + "?\n");
+					}
+					else 
+					{
+						Debug.Log("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+					}					
+				}
+			}
+			break;
+		case 1:
+			if (parentConfirming) return;
+			
+			if (confirmBoxResult == true)
+			{
+				playerHero.HeroStats.Gold += confirmSell.ItemStats.SellValue;
+
+				// TODO: remove item from respective list here
+				if (activeTab == EMode.BACKPACK)
+				{
+					playerHero.Backpack.RemoveItem(confirmSell);
+					UpdateBackpack();
+				}
+				else
+				{
+					playerHero.HeroInventory.Items.Remove(confirmSell);
+					UpdateInventory();
+				}
+				
+				Debug.Log("Sold " + confirmSell.ItemStats.Name + ". Current gold:" + playerHero.HeroStats.Gold);
+
+				townParent.RequestNoticeBox("Sold " + confirmSell.ItemStats.Name + " for " + confirmSell.ItemStats.SellValue);
+				confirmSell = null;
+
+				// TODO: Update Backpack or Inventory here
+				// TODO: play sounds, fx, etc
+			}
+			break;
+		}
+	}
+	#endregion
+
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
 	{
-		if (activeTab == EMode.BACKPACK) updatePointer = true;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+		
+		//if (activeTab == EMode.BACKPACK) updatePointer = true;
+		updatePointer = true;
 	}
 
 	public override void OnMenuUp(InputDevice device)
 	{
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+
 		if (activeTab != EMode.INVENTORY) return;
 
 		if (inventoryHighlightedButton == -1) return;
@@ -416,6 +464,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 	public override void OnMenuDown(InputDevice device)
 	{
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+
 		if (activeTab != EMode.INVENTORY) return;
 		
 		if (inventoryHighlightedButton == -1) return;
@@ -439,6 +490,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 	public override void OnMenuOK(InputDevice device)
 	{
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+
 		if (activeTab == EMode.BACKPACK)
 		{
 			if (currentHighlightedButton != -1)
@@ -464,9 +518,8 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 	public override void OnMenuCancel(InputDevice device)
 	{
-		if (parentConfirming) return;
-		
-		if ((parent as UITownWindow).Confirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (activeTab == EMode.INVENTORY)
 		{
@@ -481,6 +534,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	
 	public override void OnMenuSpecial(InputDevice device)
 	{
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+
 		UIItemButton button = null;
 		if (activeTab == EMode.INVENTORY)
 		{
@@ -498,18 +554,19 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		}
 		if (button)
 		{
-			string name = null;
-			confirmSell = button.LinkedItem;
-			if (!confirmSell.IsAppraised)
-			{
-				name = "?????";
-			}
-			else
-			{
-				name = confirmSell.ItemStats.Name;
-			}
-			Debug.Log (confirmSell.ItemStats.Name + confirmSell.IsAppraised);
-			townParent.RequestConfirmBox("Are you sure you want to sell " + name + " for " + button.LinkedItem.ItemStats.SellValue + " gold?");
+			Sell (0);
+//			string name = null;
+//			confirmSell = button.LinkedItem;
+//			if (!confirmSell.IsAppraised)
+//			{
+//				name = "?????";
+//			}
+//			else
+//			{
+//				name = confirmSell.ItemStats.Name;
+//			}
+//			Debug.Log (confirmSell.ItemStats.Name + confirmSell.IsAppraised);
+//			townParent.RequestConfirmBox("Are you sure you want to sell " + name + " for " + button.LinkedItem.ItemStats.SellValue + " gold?");
 		}
 	}
 

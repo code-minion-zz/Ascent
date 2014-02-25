@@ -9,12 +9,14 @@ public class UITown_Shop : UITown_RadialPanel
 {
 	#region Variables & Properties
 	protected List<Item> shopInventory;
+	protected List<AccessoryItem> repairList;
+	protected List<Item> unappraisedList;
 
 	/// <summary>
 	/// Stores shop item buttons
 	/// </summary>
 	[SerializeField]
-	protected List<UIItemButton> buyButtons;
+	protected List<UIItemButton> itemButtons;
 
 	protected enum EMode
 	{
@@ -30,34 +32,15 @@ public class UITown_Shop : UITown_RadialPanel
 	/// </summary>
 	protected UIItemButton.EType shopType;
 	
-	GameObject buyButtonGrid;
-	GameObject sellButtonGrid;
+	GameObject itemButtonGrid;
 
 	int quantityItems;
 	protected EMode shopMode = EMode.BUY;
 	protected bool updateHighlight = false;
 	protected Hero playerHero;
 	protected Item confirmItem = null;
+	bool firstRunHack = true;
 
-	/// <summary>
-	/// Returns item on currently selected item button, Null if not possible
-	/// </summary>
-	/// <value>The current item.</value>
-	Item CurrentItem
-	{
-		get
-		{
-			Item retval = null;
-			if (currentSelection)
-			{
-				if (currentSelection is UIItemButton)
-				{
-					retval = (currentSelection as UIItemButton).LinkedItem; 
-				}
-			}
-			return retval;
-		}
-	}
 	#endregion
 
 	#region Initialization/Setup
@@ -66,19 +49,19 @@ public class UITown_Shop : UITown_RadialPanel
 		base.Initialise();
 
 		quantityItems = Random.Range(15,20);
-		buyButtons = new List<UIItemButton>(20);
+		itemButtons = new List<UIItemButton>(20);
 		shopInventory = new List<Item>(20);
 		
-		buyButtonGrid = transform.Find("Buy").Find("Scroll View").Find("UIGrid").gameObject;
+		itemButtonGrid = transform.Find("ItemList").Find("Scroll View").Find("UIGrid").gameObject;
 		//NGUITools.SetActive(sellButtonGrid, false);
 
 		InitShopInventory();
 
-		foreach (UIButton button in buyButtons)
+		foreach (UIButton button in itemButtons)
 		{
 			if (button.gameObject.activeSelf)
 			{
-				currentHighlightedButton = buyButtons.IndexOf(button as UIItemButton);
+				currentHighlightedButton = itemButtons.IndexOf(button as UIItemButton);
 				currentSelection = button;
 				break;
 			}
@@ -97,22 +80,8 @@ public class UITown_Shop : UITown_RadialPanel
 	/// </summary>
 	protected virtual void InitShopInventory()
 	{
-		LootGenerator.ELootType itemType = (shopType == UIItemButton.EType.ACCESSORY) ? LootGenerator.ELootType.Accessory : LootGenerator.ELootType.Consumable;
-
-		int count;
-		for (count = 0; count < quantityItems; ++count)
-		{
-			shopInventory.Add(LootGenerator.RandomlyGenerateItem(0, itemType, true));
-		}
-
-		for (count = 0; count < quantityItems; ++count)
-		{		
-			GameObject itemPrefab = NGUITools.AddChild(buyButtonGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
-			UIItemButton uib = itemPrefab.GetComponent<UIItemButton>();
-			buyButtons.Add(uib);
-		}
-
-		UpdateItemButtons();
+		Restock();
+		UpdateButtons(shopInventory);
 	}
 	#endregion
 		
@@ -127,46 +96,68 @@ public class UITown_Shop : UITown_RadialPanel
 
 		if (confirmItem != null)
 		{
-			if (parentConfirming) return;
-
-			if (confirmBoxResult == true)
-			{
-				playerHero.HeroStats.Gold -= confirmItem.ItemStats.SellValue;
-				playerHero.HeroInventory.AddItem(confirmItem);
-				Debug.Log("Purchased " + confirmItem.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
-				confirmItem = null;
-				// TODO: play sounds, fx, etc
-			}
+			Buy (1);
 		}
 	}
 	#endregion
 
-	#region On-Call Processes
+	#region As-Needed Functions
 	/// <summary>
-	/// Updates the shop's item buttons
+	/// Changes item buttons to Buy list buttons
 	/// </summary>
-	protected virtual void UpdateItemButtons()
+	protected virtual void UpdateButtons(List<Item> itemList)
 	{
 		int buttonCount = 0;
-		foreach (Item item in shopInventory)
+		foreach (Item item in itemList)
 		{
-			NGUITools.SetActive(buyButtons[buttonCount].gameObject, true);
-			buyButtons[buttonCount].LinkedItem = item;
-			buyButtons[buttonCount].Name.gradientBottom = Color.grey;
-			buyButtons[buttonCount].Name.text = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
-			buyButtons[buttonCount].Type = (item is AccessoryItem) ? UIItemButton.EType.ACCESSORY : UIItemButton.EType.CONSUMABLE;
+			NGUITools.SetActive(itemButtons[buttonCount].gameObject, true);
+			itemButtons[buttonCount].LinkedItem = item;
+			itemButtons[buttonCount].Name.gradientBottom = Color.grey;
+			itemButtons[buttonCount].Name.text = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
+			itemButtons[buttonCount].Type = (item is AccessoryItem) ? UIItemButton.EType.ACCESSORY : UIItemButton.EType.CONSUMABLE;
 			++buttonCount;
 		}
 		
-		for (; buttonCount < buyButtons.Count; ++buttonCount)
+		for (; buttonCount < itemButtons.Count; ++buttonCount)
 		{
-			buyButtons[buttonCount].LinkedItem = null;
-			NGUITools.SetActive(buyButtons[buttonCount].gameObject, false);
+			itemButtons[buttonCount].LinkedItem = null;
+			NGUITools.SetActive(itemButtons[buttonCount].gameObject, false);
+		}
+		if (firstRunHack)
+		{
+			NGUITools.FindInParents<UIScrollView>(itemButtonGrid).Scroll(1f);
+			firstRunHack = false;
+		}
+	}
+
+	protected virtual void Restock()
+	{
+		LootGenerator.ELootType itemType = (shopType == UIItemButton.EType.ACCESSORY) ? LootGenerator.ELootType.Accessory : LootGenerator.ELootType.Consumable;
+		
+		int count;
+		for (count = 0; count < quantityItems; ++count)
+		{
+			shopInventory.Add(LootGenerator.RandomlyGenerateItem(0, itemType, true));
 		}
 		
-		NGUITools.FindInParents<UIScrollView>(buyButtonGrid).Scroll(1f);
-		//NGUITools.FindInParents<UIScrollView>(buyButtonGrid).enabled = true;
+		for (count = 0; count < quantityItems; ++count)
+		{		
+			GameObject itemPrefab = NGUITools.AddChild(itemButtonGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
+			UIItemButton uib = itemPrefab.GetComponent<UIItemButton>();
+			itemButtons.Add(uib);
+		}
 	}
+
+	protected virtual void RefreshRepairList()
+	{
+		repairList = playerHero.GetRepairable().ToList();
+	}
+
+	protected virtual void RefreshUnappraisedList()
+	{
+		unappraisedList = playerHero.GetUnappraised().ToList();
+	}
+
 
 	protected virtual void SetInfoLabel()
 	{
@@ -223,14 +214,14 @@ public class UITown_Shop : UITown_RadialPanel
 		switch (shopMode)
 		{
 		case EMode.BUY:
-			NGUITools.SetActive(buyButtonGrid, true);
-			UpdateItemButtons();
+			NGUITools.SetActive(itemButtonGrid, true);
+			UpdateButtons(shopInventory);
 			break;
 		case EMode.REPAIR:
-			NGUITools.SetActive(buyButtonGrid, false);
+			NGUITools.SetActive(itemButtonGrid, false);
 			break;
 		case EMode.APPRAISE:
-			NGUITools.SetActive(buyButtonGrid, false);
+			NGUITools.SetActive(itemButtonGrid, false);
 			break;
 		default:
 			Debug.LogError("Invalid Tab");
@@ -244,6 +235,55 @@ public class UITown_Shop : UITown_RadialPanel
 		// override me
 	}
 
+	protected virtual void Buy(int step)
+	{
+		switch (step)
+		{
+		case 0:
+			if (currentSelection)
+			{
+				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
+				int value = itemStat.PurchaseValue;
+				if (playerHero.HeroStats.Gold >= value)
+				{
+					if (playerHero.HeroInventory.Items.Count >= playerHero.HeroInventory.MAX_INVENTORY_SLOTS)
+					{
+						Debug.Log("Inventory Full");
+						townParent.RequestNoticeBox("Inventory Full");
+						break;
+					}
+					
+					confirmItem = CurrentItem;
+					// can afford
+					if (confirmItem != null)
+					{
+						OpenConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
+					}
+					else 
+					{
+						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+					}
+					
+				}
+			}
+			break;
+		case 1:
+			if (parentConfirming) return;
+			
+			if (confirmBoxResult == true)
+			{
+				playerHero.HeroStats.Gold -= confirmItem.ItemStats.PurchaseValue;
+				playerHero.HeroInventory.AddItem(confirmItem);
+				Debug.Log("Purchased " + confirmItem.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
+				shopInventory.Remove(confirmItem);
+				townParent.RequestNoticeBox("Thanks for buying " + confirmItem.ItemStats.Name + "!");
+				confirmItem = null;
+				UpdateButtons(shopInventory);
+				// TODO: play sounds, fx, etc
+			}
+			break;
+		}
+	}
 	#endregion
 		
 	#region Input Handling	
@@ -257,13 +297,28 @@ public class UITown_Shop : UITown_RadialPanel
 		if (shopMode == EMode.BUY)
 		{
 			if (shopInventory.Count < 2) return;
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);
 			
 			--currentHighlightedButton;
 			if (currentHighlightedButton < 0) currentHighlightedButton = 0;//shopButtons.Count -1;
 			
 			UnhighlightButton();
-			currentSelection = buyButtons[currentHighlightedButton];
+			
+			if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
+			{
+				List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+				
+				UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+				
+				currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+				
+				if (currentHighlightedButton == -1) 
+				{
+					currentSelection = null;
+				}
+			}
+
+			currentSelection = itemButtons[currentHighlightedButton];
 
 			sv.Scroll(1.08f);
 
@@ -282,13 +337,28 @@ public class UITown_Shop : UITown_RadialPanel
 		{
 			if (shopInventory.Count < 2) return;
 
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);			
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);			
 			++currentHighlightedButton;
 
-			if (currentHighlightedButton >= buyButtons.Count) currentHighlightedButton = buyButtons.Count - 1;//0;
+			if (currentHighlightedButton >= itemButtons.Count) currentHighlightedButton = itemButtons.Count - 1;//0;
 
 			UnhighlightButton();
-			currentSelection = buyButtons[currentHighlightedButton];
+
+			if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
+			{
+				List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+
+				UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+
+				currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+
+				if (currentHighlightedButton == -1) 
+				{
+					currentSelection = null;
+				}
+			}
+
+			currentSelection = itemButtons[currentHighlightedButton];
 
 			sv.Scroll(-1.08f);
 
@@ -332,31 +402,7 @@ public class UITown_Shop : UITown_RadialPanel
 		switch (shopMode)
 		{
 		case EMode.BUY:
-			if (currentSelection)
-			{
-				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
-				int value = itemStat.PurchaseValue;
-				if (playerHero.HeroStats.Gold >= value)
-				{
-					if (playerHero.HeroInventory.Items.Count >= playerHero.HeroInventory.MAX_INVENTORY_SLOTS)
-					{
-						Debug.Log("Inventory Full");
-						break;
-					}
-
-					confirmItem = CurrentItem;
-					// can afford
-					if (confirmItem != null)
-					{
-						OpenConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
-					}
-					else 
-					{
-						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
-					}
-
-				}
-			}
+			Buy (0);
 			break;
 		case EMode.REPAIR:
 			break;
@@ -383,14 +429,5 @@ public class UITown_Shop : UITown_RadialPanel
 //		}		
 	}
 
-	bool IsAcceptingInput()
-	{
-		bool retval = true;
-		if (parentConfirming) retval = false;
-		
-		if ((parent as UITownWindow).Confirming) retval = false;
-
-		return retval;
-	}
 	#endregion 
 }

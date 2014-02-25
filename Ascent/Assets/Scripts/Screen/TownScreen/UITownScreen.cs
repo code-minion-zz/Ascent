@@ -99,6 +99,7 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	public void ReadyTracker()
 	{
+		Debug.Log(readyPlayers + " players ready out of " + Game.Singleton.NumberOfPlayers);
 		if (readyPlayers == Game.Singleton.NumberOfPlayers)
 		{
 			// load next level
