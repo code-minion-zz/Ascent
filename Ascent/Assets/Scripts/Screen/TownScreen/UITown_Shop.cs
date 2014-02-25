@@ -9,7 +9,7 @@ public class UITown_Shop : UITown_RadialPanel
 {
 	#region Variables & Properties
 	protected List<Item> shopInventory;
-	protected List<AccessoryItem> repairList;
+	protected List<Item> repairList;
 	protected List<Item> unappraisedList;
 
 	/// <summary>
@@ -110,10 +110,20 @@ public class UITown_Shop : UITown_RadialPanel
 		int buttonCount = 0;
 		foreach (Item item in itemList)
 		{
+			string toDisplay = "UNKNOWN";
+			if (item.IsAppraised)
+			{
+				toDisplay = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
+			}
+			else
+			{
+				toDisplay = "?????";
+			}
+
 			NGUITools.SetActive(itemButtons[buttonCount].gameObject, true);
 			itemButtons[buttonCount].LinkedItem = item;
 			itemButtons[buttonCount].Name.gradientBottom = Color.grey;
-			itemButtons[buttonCount].Name.text = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
+			itemButtons[buttonCount].Name.text = toDisplay;
 			itemButtons[buttonCount].Type = (item is AccessoryItem) ? UIItemButton.EType.ACCESSORY : UIItemButton.EType.CONSUMABLE;
 			++buttonCount;
 		}
@@ -161,13 +171,20 @@ public class UITown_Shop : UITown_RadialPanel
 
 	protected virtual void SetInfoLabel()
 	{
-		if (currentSelection)
+		if (CurrentItem != null)
 		{
-			if (currentSelection is UIItemButton)
+			Item item = CurrentItem;
+			string toDisplay = "NO DATA";
+			if (item.IsAppraised)
 			{
-				UIItemButton itemButton = currentSelection as UIItemButton;
-				(parent as UITownWindow).SetInfo(itemButton.LinkedItem.ToString());
+				toDisplay = item.ToString();
 			}
+			else
+			{
+				toDisplay = item.ToStringUnidentified();
+			}
+
+			townParent.SetInfo(toDisplay);
 		}
 	}
 
@@ -218,10 +235,14 @@ public class UITown_Shop : UITown_RadialPanel
 			UpdateButtons(shopInventory);
 			break;
 		case EMode.REPAIR:
-			NGUITools.SetActive(itemButtonGrid, false);
+			//NGUITools.SetActive(itemButtonGrid, false);
+			RefreshRepairList();
+			UpdateButtons(repairList);
 			break;
 		case EMode.APPRAISE:
-			NGUITools.SetActive(itemButtonGrid, false);
+			//NGUITools.SetActive(itemButtonGrid, false);
+			RefreshUnappraisedList();
+			UpdateButtons(unappraisedList);
 			break;
 		default:
 			Debug.LogError("Invalid Tab");
@@ -235,6 +256,10 @@ public class UITown_Shop : UITown_RadialPanel
 		// override me
 	}
 
+	/// <summary>
+	/// Manages the stages of a 'Buy' process.
+	/// </summary>
+	/// <param name="step">Determines whether to initiate, confirm or cancel a transaction</param>
 	protected virtual void Buy(int step)
 	{
 		switch (step)
@@ -284,6 +309,23 @@ public class UITown_Shop : UITown_RadialPanel
 			break;
 		}
 	}
+	
+	protected virtual void Repair(IEnumerable<Item> toRepair)
+	{
+		IEnumerable<AccessoryItem> accessoriesToRepair = toRepair.Cast<AccessoryItem>();
+		foreach (AccessoryItem item in accessoriesToRepair)
+		{
+			item.Durability = item.DurabilityMax;
+		}
+	}
+
+	protected virtual void Appraise(IEnumerable<Item> toAppraise)
+	{
+		foreach (Item item in toAppraise)
+		{
+			item.IsAppraised = true;
+		}
+	}
 	#endregion
 		
 	#region Input Handling	
@@ -294,35 +336,39 @@ public class UITown_Shop : UITown_RadialPanel
 
 		if (!SatisfiesDeadzone(device,0)) return;
 
-		if (shopMode == EMode.BUY)
+		switch (shopMode)
 		{
-			if (shopInventory.Count < 2) return;
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);
-			
-			--currentHighlightedButton;
-			if (currentHighlightedButton < 0) currentHighlightedButton = 0;//shopButtons.Count -1;
-			
-			UnhighlightButton();
-			
-			if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
+			default:
 			{
-				List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+				if (shopInventory.Count < 2) return;
+				UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);
 				
-				UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+				--currentHighlightedButton;
+				if (currentHighlightedButton < 0) currentHighlightedButton = 0;//shopButtons.Count -1;
 				
-				currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+				UnhighlightButton();
 				
-				if (currentHighlightedButton == -1) 
+				if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
 				{
-					currentSelection = null;
+					List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+					
+					UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+					
+					currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+					
+					if (currentHighlightedButton == -1) 
+					{
+						currentSelection = null;
+					}
 				}
+
+				currentSelection = itemButtons[currentHighlightedButton];
+
+				sv.Scroll(1.08f);
+
+				updateHighlight = true;
+				break;
 			}
-
-			currentSelection = itemButtons[currentHighlightedButton];
-
-			sv.Scroll(1.08f);
-
-			updateHighlight = true;
 		}
 	}
 	
@@ -333,36 +379,40 @@ public class UITown_Shop : UITown_RadialPanel
 
 		if (!SatisfiesDeadzone(device,2)) return;
 
-		if (shopMode == EMode.BUY)
+		switch (shopMode)
 		{
-			if (shopInventory.Count < 2) return;
-
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);			
-			++currentHighlightedButton;
-
-			if (currentHighlightedButton >= itemButtons.Count) currentHighlightedButton = itemButtons.Count - 1;//0;
-
-			UnhighlightButton();
-
-			if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
+			default:
 			{
-				List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+				if (shopInventory.Count < 2) return;
 
-				UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+				UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);			
+				++currentHighlightedButton;
 
-				currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+				if (currentHighlightedButton >= itemButtons.Count) currentHighlightedButton = itemButtons.Count - 1;//0;
 
-				if (currentHighlightedButton == -1) 
+				UnhighlightButton();
+
+				if (!itemButtons[currentHighlightedButton].gameObject.activeSelf)
 				{
-					currentSelection = null;
+					List<UIItemButton> activeButtons = itemButtons.Where(button=> button.gameObject.activeSelf == true).ToList();
+
+					UIItemButton newHighlight = activeButtons[activeButtons.Count -1];
+
+					currentHighlightedButton = itemButtons.IndexOf(newHighlight);
+
+					if (currentHighlightedButton == -1) 
+					{
+						currentSelection = null;
+					}
 				}
+
+				currentSelection = itemButtons[currentHighlightedButton];
+
+				sv.Scroll(-1.08f);
+
+				updateHighlight = true;
+				break;
 			}
-
-			currentSelection = itemButtons[currentHighlightedButton];
-
-			sv.Scroll(-1.08f);
-
-			updateHighlight = true;
 		}
 	}
 	
@@ -416,18 +466,27 @@ public class UITown_Shop : UITown_RadialPanel
 	{
 		// reject input if these conditions are not met
 		if (!IsAcceptingInput()) return;
-
+		
 		// quit to main menu
 		(parent as UITownWindow).RequestTransitionToPanel(0);
-//		if (activeTab == EMode.INVENTORY)
-//		{
-//			SwapToBackpack();
-//		}
-//		else
-//		{
-//			ReturnToTown();
-//		}		
 	}
 
+	/// <summary>
+	/// If in Repair or Appraise screen, this option attempts to repair ALL
+	/// </summary>
+	public override void OnMenuSpecial(InputDevice device)
+	{
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
+
+		if (shopMode == EMode.APPRAISE)
+		{
+
+		}
+		if (shopMode == EMode.REPAIR)
+		{
+			
+		}
+	}
 	#endregion 
 }

@@ -200,7 +200,7 @@ public static class LootGenerator
 		return brandSpankingNewItem;
 	}
 
-	public static Item RandomlyGenerateAccessory(int floorNum, bool idendified)
+	public static Item RandomlyGenerateAccessory(int floorNum, bool identified)
 	{
 		Item.EGrade grade = RandomGrade();
 
@@ -209,6 +209,7 @@ public static class LootGenerator
 		currentAccessoryTemplate = (EAccessoryTemplate)Random.Range(0, (int)EAccessoryTemplate.Max);
 
 		AccessoryItem newAccItem = newItem as AccessoryItem;
+		newAccItem.IsAppraised = identified;
 		newAccItem.PrimaryStats = RandomAccessoryStats(floorNum);
 		newAccItem.ItemStats = new ItemStats();
 		newAccItem.ItemStats.Level = Mathf.Max(1, Random.Range(floorNum - 1, floorNum + 1));
@@ -287,6 +288,7 @@ public static class LootGenerator
         {
 			newItem.Type = consumableType;
             newItem.ItemStats = stats;
+			newItem.IsAppraised = identified;
         }
 
 		return (Item)newItem;

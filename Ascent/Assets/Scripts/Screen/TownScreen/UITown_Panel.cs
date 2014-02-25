@@ -7,6 +7,26 @@ public class UITown_Panel : UIPlayerMenuPanel
 	protected bool parentConfirming = false;
 	protected bool confirmBoxResult = false;
 	protected UITownWindow townParent;
+	
+	/// <summary>
+	/// Returns item on currently selected item button, Null if not possible
+	/// </summary>
+	/// <value>The current item.</value>
+	protected virtual Item CurrentItem
+	{
+		get
+		{
+			Item retval = null;
+			if (currentSelection)
+			{
+				if (currentSelection is UIItemButton)
+				{
+					retval = (currentSelection as UIItemButton).LinkedItem; 
+				}
+			}
+			return retval;
+		}
+	}
 
 	public override void Initialise() 
 	{
@@ -37,33 +57,14 @@ public class UITown_Panel : UIPlayerMenuPanel
 
 	protected virtual bool IsAcceptingInput()
 	{
-		bool retval = true;
-		if (parentConfirming) retval = false;
+		bool retVal = true;
+		if (parentConfirming) retVal = false;
 		
-		if ((parent as UITownWindow).PopupActive) retval = false;
+		if ((parent as UITownWindow).PopupActive) retVal = false;
 		
-		if (!gameObject.activeInHierarchy) retval = false;
+		if (!gameObject.activeInHierarchy) retVal = false;
 		
-		return retval;
+		return retVal;
 	}
-	
-	/// <summary>
-	/// Returns item on currently selected item button, Null if not possible
-	/// </summary>
-	/// <value>The current item.</value>
-	protected virtual Item CurrentItem
-	{
-		get
-		{
-			Item retval = null;
-			if (currentSelection)
-			{
-				if (currentSelection is UIItemButton)
-				{
-					retval = (currentSelection as UIItemButton).LinkedItem; 
-				}
-			}
-			return retval;
-		}
-	}
+
 }
