@@ -121,18 +121,40 @@ public class Backpack
         return retval;
     }
 
-    public void RemoveItem(Item item)
+    public bool RemoveItem(Item item)
     {
-        for (int i = 0; i < kMaxItems; ++i)
-        {
-            if (AllItems[i] != null)
-            {
-                if (AllItems[i] == item)
-                {
-                    AllItems[i] = null;
-                }
-            }
-        }
+		bool itemRemoved = false;
+
+		if (item is AccessoryItem)
+		{
+			for (int i = 0; i < accessoryItems.Length; ++i)
+			{
+				if (accessoryItems[i] == item)
+				{
+					accessoryItems[i] = null;
+					item = null;
+
+					itemRemoved = true;
+					break;
+				}
+			}
+		}
+		else if(item is ConsumableItem)
+		{
+			for (int i = 0; i < consumableItems.Length; ++i)
+			{
+				if (consumableItems[i] == item)
+				{
+					consumableItems[i] = null;
+					item = null;
+
+					itemRemoved = true;
+					break;
+				}
+			}
+		}
+
+		return itemRemoved;
     }
 
     public Item GetItem(BackpackSlot slot)
