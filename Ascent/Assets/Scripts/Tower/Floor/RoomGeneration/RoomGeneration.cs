@@ -23,6 +23,7 @@ public class RoomGeneration
 	private GameObject barrelObject;
     private GameObject barrelCluster;
     private GameObject brazierObject;
+    private GameObject arrowShooter;
 
     private Rarity miscObjects = Rarity.few;
 
@@ -37,6 +38,7 @@ public class RoomGeneration
 		barrelObject = Resources.Load("Prefabs/RoomPieces/Barrel") as GameObject;
         barrelCluster = Resources.Load("Prefabs/RoomPieces/BarrelCluster") as GameObject;
         brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
+        arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
 	}
 
     private Room CreateRoomObject(string name)
@@ -75,6 +77,8 @@ public class RoomGeneration
 		RoomProperties newRoom = new RoomProperties(room);
         newRoom.Name = name;
 		newRoom.SetRoomTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        room.NumberOfTilesX = newRoom.NumberOfTilesX;
+        room.NumberOfTilesY = newRoom.NumberOfTilesY;
 		PlaceGroundTiles(newRoom);
         SetupCamera(newRoom);
 		
@@ -98,6 +102,7 @@ public class RoomGeneration
 				case 14: cameraOffsetX = 0.0f; break;
 				case 18: cameraOffsetX = 1.0f; break;
 				case 22: cameraOffsetX = 3.0f; break;
+                case 24: cameraOffsetX = 4.0f; break;
 
 				default: Debug.LogError("Unhandled case: " + room.Width); break;
 			}
@@ -110,6 +115,7 @@ public class RoomGeneration
 				case 14: cameraOffsetX = 1.0f; break;
 				case 18: cameraOffsetX = 3.0f; break;
 				case 22: cameraOffsetX = 5.0f; break;
+                case 24: cameraOffsetX = 4.0f; break;
 
 				default: Debug.LogError("Unhandled case: " + room.Width); break;
 			}
@@ -122,6 +128,7 @@ public class RoomGeneration
 			case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
 			case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
 			case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
+            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
 
 			default: Debug.LogError("Unhandled case: " + room.Height); break;
 		}
@@ -264,7 +271,7 @@ public class RoomGeneration
 			for (int j = 0; j < room.NumberOfTilesY; ++j)
 			{
                 // Populate random misc objects.
-                if (room.Tiles[i, j].ContainsAttribute(TileType.miscObj) ||
+                if (room.Tiles[i, j].ContainsAttribute(TileType.randMisc) ||
                     room.Tiles[i, j].ContainsAttribute(TileType.standardWall) ||
                     room.Tiles[i, j].ContainsAttribute(TileType.cornerWallTile) ||
                     room.Tiles[i, j].ContainsAttribute(TileType.brazier))
@@ -341,7 +348,7 @@ public class RoomGeneration
             // Add the attribute of this object.
             TileAttribute att = new TileAttribute();
             att.Angle = angle;
-            att.Type = TileType.miscObj;
+            att.Type = TileType.randMisc;
 
             tempAvailableTiles[randomTile].TileAttributes.Add(att);
             tempAvailableTiles[randomTile].IsOccupied = true;
@@ -393,6 +400,9 @@ public class RoomGeneration
                 ConstructBaseTiles(room, room.Tiles[x, y], x, y);
             }
         }
+
+        room.Room.NumberOfTilesX = room.NumberOfTilesX;
+        room.Room.NumberOfTilesY = room.NumberOfTilesY;
 
         SetupCamera(room);
 
@@ -483,6 +493,11 @@ public class RoomGeneration
             case TileType.door:
                 go = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
                 go.name = doorObject.name;
+                break;
+
+            case TileType.arrowShooter:
+                go = GameObject.Instantiate(arrowShooter, Vector3.zero, arrowShooter.transform.rotation) as GameObject;
+                go.name = arrowShooter.name;
                 break;
         }
 

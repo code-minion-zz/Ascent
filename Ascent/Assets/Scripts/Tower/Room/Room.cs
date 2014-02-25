@@ -36,6 +36,8 @@ public class Room : MonoBehaviour
     #region Fields
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
+    private int numberOfTilesX;
+    private int numberOfTilesY;
 
 	[HideInInspector]
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
@@ -54,6 +56,24 @@ public class Room : MonoBehaviour
 	[HideInInspector]
     public bool startRoom = false;
 
+    protected List<Character> enemies = new List<Character>();
+    protected List<TreasureChest> chests = new List<TreasureChest>();
+    protected List<LootDrop> lootDrops = new List<LootDrop>();
+    protected List<MoveableBlock> moveables = new List<MoveableBlock>();
+    protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
+
+    public int NumberOfTilesX
+    {
+        get { return numberOfTilesX; }
+        set { numberOfTilesX = value; }
+    }
+
+    public int NumberOfTilesY
+    {
+        get { return numberOfTilesY; }
+        set { numberOfTilesY = value; }
+    }
+
     public Doors Doors
     {
         get { return doors; }
@@ -67,30 +87,30 @@ public class Room : MonoBehaviour
         set { entryDoor = value; }
     }
 
-    protected List<Character> enemies;
     public List<Character> Enemies
     {
         get { return enemies; }
     }
 
-	protected List<TreasureChest> chests;
 	public List<TreasureChest> Chests
 	{
 		get { return chests; }
 	}
 
-	protected List<LootDrop> lootDrops;
 	public List<LootDrop> LootDrops
 	{
 		get { return lootDrops; }
 	}
 
-
-	protected List<MoveableBlock> moveables;
 	public List<MoveableBlock> Moveables
 	{
 		get { return moveables; }
 	}
+
+    public List<BreakableEnvObject> Breakables
+    {
+        get { return breakables; }
+    }
 
     protected RoomFloorNav navMesh;
 	public RoomFloorNav NavMesh
@@ -189,25 +209,6 @@ public class Room : MonoBehaviour
         {
             Debug.LogWarning("Could not find any doors for this room");
         }
-
-		if (enemies == null)
-		{
-			Enemy[] roomEnemies = gameObject.GetComponentsInChildren<Enemy>() as Enemy[];
-
-			if (roomEnemies.Length > 0)
-			{
-				enemies = new List<Character>();
-
-				foreach (Enemy e in roomEnemies)
-				{
-					if (!enemies.Contains(e))
-					{
-						e.ContainedRoom = this;
-						enemies.Add(e);
-					}
-				}
-			}
-		}
 	}
 
     public void OnEnable()
@@ -220,26 +221,13 @@ public class Room : MonoBehaviour
 			curMinCamera = minCamera;
 			curMaxCamera = maxCamera;
 			//camera.CameraHeight = cameraHeight;
-
 		}
 
-		if(chests == null)
-		{
-			TreasureChest[] roomChest = gameObject.GetComponentsInChildren<TreasureChest>() as TreasureChest[];
-
-			if (roomChest.Length > 0)
-			{
-				chests = new List<TreasureChest>();
-
-				foreach (TreasureChest t in roomChest)
-				{
-					if (!chests.Contains(t))
-					{
-						chests.Add(t);
-					}
-				}
-			}
-		}
+        // Find and populate all the lists of objects in the room.
+        PopulateListOfObjects(ref enemies, gameObject);
+        PopulateListOfObjects(ref breakables, gameObject);
+        PopulateListOfObjects(ref moveables, gameObject);
+        PopulateListOfObjects(ref chests, gameObject);
 
 		if (chests != null)
 		{
@@ -265,23 +253,6 @@ public class Room : MonoBehaviour
 			}
 		}
 
-		if(moveables == null)
-		{
-			MoveableBlock[] roomMoveables = gameObject.GetComponentsInChildren<MoveableBlock>() as MoveableBlock[];
-			if (roomMoveables.Length > 0)
-			{
-				moveables = new List<MoveableBlock>();
-
-				foreach (MoveableBlock m in roomMoveables)
-				{
-					if (!moveables.Contains(m))
-					{
-						moveables.Add(m);
-					}
-				}
-			}
-		}
-
 		if (enemies != null)
 		{
 			foreach (Enemy e in enemies)
@@ -292,6 +263,36 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
+    }
+
+    /// <summary>
+    /// Pass in a list to populate it with found objects of that type in the parent.
+    /// </summary>
+    /// <typeparam name="T">The type of the component.</typeparam>
+    /// <param name="populateList">The list to populate.</param>
+    /// <param name="parent">The parent to get components from children.</param>
+    private void PopulateListOfObjects<T>(ref List<T> populateList, GameObject parent) where T: Component
+    {
+        T[] foundObjects = parent.GetComponentsInChildren<T>();
+
+        if (foundObjects != null && foundObjects.Length > 0)
+        {
+            populateList = new List<T>();
+
+            foreach (T type in foundObjects)
+            {
+                if (!populateList.Contains(type))
+                {
+                    if (type.GetType() == typeof(Enemy))
+                    {
+                        Enemy enemy = type as Enemy;
+                        enemy.ContainedRoom = this;
+                    }
+
+                    populateList.Add(type);
+                }
+            }
+        }
     }
 
 	void Update()
@@ -520,113 +521,6 @@ public class Room : MonoBehaviour
 		return newObject;
 	}
 
-    // TODO: Make some monster generation script and offload logic there.
-    //public void GenerateMonsterSpawnLoc(int dungeonLevel, RoomProperties room, Rarity rarity)
-    //{
-    //    // Generate number of monsters.
-    //    // TODO: make this better haha.
-    //    int numberOfMonsters = (int)rarity * Random.Range(1, 5);
-
-    //    int monstersPlaced = 0;
-
-    //    for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
-    //    {
-    //        // Choose type of monster
-    //        EMonsterTypes mobType = (EMonsterTypes)(Random.Range(0, (int)EMonsterTypes.MAX));
-
-    //        GameObject go = null;
-
-    //        switch (mobType)
-    //        {
-    //            case EMonsterTypes.Rat:
-    //                go = InstantiateGameObject(ERoomObjects.Enemy, "Rat");
-    //                break;
-
-    //            case EMonsterTypes.Imp:
-    //                go = InstantiateGameObject(ERoomObjects.Enemy, "Imp");
-    //                break;
-
-    //            case EMonsterTypes.Slime:
-    //                //go = InstantiateGameObject(ERoomObjects.Enemy, "Slime");
-    //                break;
-
-    //            case EMonsterTypes.EnchantedStatue:
-    //                go = InstantiateGameObject(ERoomObjects.Enemy, "EnchantedStatue");
-    //                break;
-
-    //                // Abominations are crashing
-    //            case EMonsterTypes.Abomination:
-    //                //go = InstantiateGameObject(ERoomObjects.Enemy, "Abomination");
-    //                break;
-
-    //            case EMonsterTypes.Boss:
-    //                break;
-    //        }
-
-    //        if (go == null)
-    //        {
-    //            // We may not have created a monster.
-    //            continue;
-    //        }
-
-    //        Enemy enemy = go.GetComponentInChildren<Enemy>();
-    //        Debug.Log(enemy);
-    //        Bounds enemyBound = enemy.collider.bounds;
-    //        bool isPlaced = false;
-
-    //        float timeToPlace = 0.0f;
-
-    //        int maxTries = 50;
-    //        int tries = 0;
-
-    //        while (isPlaced == false)
-    //        {
-    //            timeToPlace += Time.deltaTime;
-
-    //            // If it takes to long we are going to skip.
-    //            if (timeToPlace >= 6.0f)
-    //            {
-    //                isPlaced = true;
-    //                timeToPlace = 0.0f;
-    //                Debug.Log("Took way too long to place monster");
-    //            }
-
-    //            // Give the monster a random position.
-    //            go.transform.position = new Vector3(Random.Range(room.Bounds.min.x, room.Bounds.max.x), 0.0f, Random.Range(room.Bounds.min.z, room.Bounds.max.z));
-
-    //            // Check to see if the position is filled by another monster
-    //            for (int a = 0; a < enemies.Count; a++)
-    //            {
-    //                if (enemyBound.Intersects(enemies[a].collider.bounds))
-    //                {
-    //                    break;
-    //                }
-
-    //                // Yay didn't collide.
-    //                if (a == enemies.Count - 1)
-    //                {
-    //                    isPlaced = true;
-    //                }
-    //            }
-
-    //            ++tries;
-    //            if (tries == maxTries)
-    //            {
-    //                Debug.Log("Tried 50 times to place monster.");
-    //                tries = 0;
-    //                isPlaced = true;
-    //            }
-    //        }
-
-
-    //        // Spawn monster check for safe region.
-
-    //        // Place monster.
-
-    //        // Repeat steps.
-    //    }
-    //}
-
     public void RemoveObject(ERoomObjects type, GameObject go)
 	{
 		switch(type)
@@ -640,9 +534,58 @@ public class Room : MonoBehaviour
 		}
 	}
 
+    public void ProcessCollisionBreakables(Shape2D shape)
+    {
+        Shape2D.EType type = shape.type;
+
+        switch (type)
+        {
+            case Shape2D.EType.Circle:
+                {
+                    foreach (BreakableEnvObject b in breakables)
+                    {
+                        if (b.IsDestroyed)
+                        {
+                            continue;
+                        }
+
+                        if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
+                        }
+                    }
+                }
+                break;
+            case Shape2D.EType.Arc:
+                {
+                    foreach (BreakableEnvObject b in breakables)
+                    {
+                        if (b.IsDestroyed)
+                        {
+                            continue;
+                        }
+
+                        if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
+                        }
+                    }
+                }
+                break;
+            default:
+                {
+                    Debug.LogError("No more shapezies for you");
+                }
+                break;
+        }
+    }
 
 	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
 	{
+        ProcessCollisionBreakables(shape);
+
 		Shape2D.EType type = shape.type;
 
 		List<Character> characters = GetCharacterList(scope);
@@ -773,6 +716,15 @@ public class Room : MonoBehaviour
 		return (MathUtility.IsCircleCircle(circle.Position, circle.radius, pos, (extents.x + extents.z * 0.5f)));
 	}
 
+    public bool CheckCircle(Circle circle, Collider collider)
+    {
+        Vector3 extents = new Vector3(collider.bounds.extents.x, 0.5f, collider.bounds.extents.z);
+        Vector3 pos = new Vector3(collider.transform.position.x, 0.5f, collider.transform.position.z);
+
+        return (MathUtility.IsCircleCircle(circle.Position, circle.radius, pos, (extents.x + extents.z * 0.5f)));
+    }
+
+
 	public bool CheckArc(Arc arc, Character c)
 	{
         Transform xform = c.transform.FindChild("Colliders");
@@ -782,7 +734,7 @@ public class Room : MonoBehaviour
 
             foreach (Collider col in colliders)
             {
-                if ((CheckArc(arc, c, col)))
+                if ((CheckArc(arc, col)))
                 {
                     return true;
                 }
@@ -790,10 +742,10 @@ public class Room : MonoBehaviour
             return false;
         }
 
-        return CheckArc(arc, c, c.collider);
+        return CheckArc(arc, c.collider);
 	}
 
-    public bool CheckArc(Arc arc, Character character, Collider col)
+    public bool CheckArc(Arc arc, Collider col)
     {
         Vector3 extents = new Vector3(col.bounds.extents.x, 0.1f, col.bounds.extents.z);
         Vector3 pos = col.transform.position;

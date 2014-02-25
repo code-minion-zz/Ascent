@@ -48,7 +48,7 @@ public class WarriorStrike : Ability
 
         CanBeInterrupted = false;
 
-		owner.Motor.Move(((Hero)owner).HeroController.MoveDirection * 0.45f);
+		owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
 	}
 
 	public override void UpdateAbility()
