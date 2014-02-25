@@ -57,14 +57,14 @@ public class UITown_Panel : UIPlayerMenuPanel
 
 	protected virtual bool IsAcceptingInput()
 	{
-		bool retval = true;
-		if (parentConfirming) retval = false;
+		bool retVal = true;
+		if (parentConfirming) retVal = false;
 		
-		if ((parent as UITownWindow).PopupActive) retval = false;
+		if ((parent as UITownWindow).PopupActive) retVal = false;
 		
-		if (!gameObject.activeInHierarchy) retval = false;
+		if (!gameObject.activeInHierarchy) retVal = false;
 		
-		return retval;
+		return retVal;
 	}
 
 }

@@ -10,6 +10,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		INVENTORY
 	}
 
+	#region Properties and Variables
 	// Panel-management Variables
 	GameObject inventoryGrid;
 	GameObject backpackTab;
@@ -32,8 +33,32 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	UIItemButton inventoryHighlightedItemButton;
 	int inventoryHighlightedButton = -1;
 	int inventoryButtonCount = -1;
+	bool updateTooltip = false;
 
+	/// <summary>
+	/// Returns item on currently selected item button, Null if not possible
+	/// </summary>
+	/// <value>The current item.</value>
+	protected override Item CurrentItem
+	{
+		get
+		{
+			if (activeTab == EMode.BACKPACK) return base.CurrentItem;
 
+			Item retval = null;
+			if (inventoryHighlightedItemButton)
+			{
+				if (inventoryHighlightedItemButton is UIItemButton)
+				{
+					retval = (inventoryHighlightedItemButton as UIItemButton).LinkedItem; 
+				}
+			}
+			return retval;
+		}
+	}
+	#endregion
+
+	#region Initialization
 	public override void Initialise()
 	{
 		base.Initialise();
@@ -93,7 +118,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		//UpdateInventory();
 		initialised = true;
 	}
-
+	#endregion
 
 	#region Per-frame Processes
 	protected void Update()
@@ -110,6 +135,12 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		if (confirmSell != null)
 		{
 			Sell (1);
+		}
+
+		if (updateTooltip)
+		{
+			SetInfoLabel();
+			updateTooltip = false;
 		}
 	}
 	#endregion
@@ -153,6 +184,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, false);
 			}
 		}
+		updateTooltip = true;
 	}
 	
 	public override void OnEnable()
@@ -267,6 +299,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		{
 			inventoryItemButtons [buttonIndex].Reset();
 		}
+		updateTooltip = true;
 	}
 
 	void ReturnToTown()
@@ -281,7 +314,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 		NGUITools.SetActive(inventoryTab, false);
 		NGUITools.SetActive(backpackTab, true);
-		
+
+		inventoryHighlightedItemButton = null;
+		inventoryHighlightedButton = -1;
 		UpdateBackpack();
 		townParent.ShowArrow(true);
 	}
@@ -344,9 +379,12 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			{
 				newString = "CONSUMABLE\n";
 			}
-			if ((currentSelection as UIItemButton).LinkedItem != null)
+			if (currentSelection != null)
 			{
-				newString += ((currentSelection as UIItemButton).LinkedItem.IsAppraised)?(currentSelection as UIItemButton).LinkedItem.ToString() : (currentSelection as UIItemButton).LinkedItem.ToStringUnidentified();
+				if (CurrentItem != null)
+				{
+					newString += (CurrentItem.IsAppraised)?(currentSelection as UIItemButton).LinkedItem.ToString() : (currentSelection as UIItemButton).LinkedItem.ToStringUnidentified();
+				}
 			}
 		}
 
@@ -407,6 +445,10 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 					}					
 				}
 			}
+			else if (inventoryHighlightedItemButton)
+			{
+
+			}
 			break;
 		case 1:
 			if (parentConfirming) return;
@@ -431,7 +473,6 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 
 				townParent.RequestNoticeBox("Sold " + confirmSell.ItemStats.Name + " for " + confirmSell.ItemStats.SellValue);
 				confirmSell = null;
-
 				// TODO: Update Backpack or Inventory here
 				// TODO: play sounds, fx, etc
 			}
