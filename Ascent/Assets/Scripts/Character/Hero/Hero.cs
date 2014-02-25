@@ -250,7 +250,10 @@ public abstract class Hero : Character
 			AccessoryItem[] accessories = backpack.AccessoryItems;
 			foreach (AccessoryItem acc in accessories)
 			{
-				acc.ApplyDurabilityDamage(result.finalDamage, result.criticalHit, this, result.source);
+				if (acc != null)
+				{
+					acc.ApplyDurabilityDamage(result.finalDamage, result.criticalHit, this, result.source);
+				}
 			}
 		}
 
@@ -301,9 +304,9 @@ public abstract class Hero : Character
     {
         Backpack backpack = hero.backpack;
         backpack.AddItem(Backpack.BackpackSlot.ACC1, LootGenerator.RandomlyGenerateAccessory(1, true));
-        backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
-        backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
-        backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
+		//backpack.AddItem(Backpack.BackpackSlot.ACC2, LootGenerator.RandomlyGenerateAccessory(2, true));
+		//backpack.AddItem(Backpack.BackpackSlot.ACC3, LootGenerator.RandomlyGenerateAccessory(3, true));
+		//backpack.AddItem(Backpack.BackpackSlot.ACC4, LootGenerator.RandomlyGenerateAccessory(4, true));
 		backpack.AddItem(Backpack.BackpackSlot.ITM1, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));
 		backpack.AddItem(Backpack.BackpackSlot.ITM2, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Key, 50));
         backpack.AddItem(Backpack.BackpackSlot.ITM3, LootGenerator.Test_CreateNewConsumable(ConsumableItem.EConsumableType.Bomb, 50));

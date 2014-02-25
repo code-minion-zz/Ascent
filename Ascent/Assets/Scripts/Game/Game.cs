@@ -9,7 +9,7 @@ public class Game : MonoBehaviour
 #endif
 
 	// GameTest Values
-	public Game.EGameState testState = Game.EGameState.TestTower;
+	public Game.EGameState testState = Game.EGameState.Tower;
 	public Character.EHeroClass[] testCharacters;
 	public int targetFrameRate = 60;
 
@@ -56,7 +56,7 @@ public class Game : MonoBehaviour
         set { gameState = value; }
     }
 
-	private bool firstState = true;
+	//private bool firstState = true;
 
 	public bool InTower
 	{
@@ -362,11 +362,12 @@ public class Game : MonoBehaviour
 
 	public void OnLevelWasLoaded(int iLevelID)
 	{
-		if (firstState)
-		{
-			firstState = false;
-			return;
-		}
+		//if (firstState)
+		//{
+		//    Debug.Log("FIRST");
+		//    firstState = false;
+		//    return;
+		//}
 
 		if(gameStateToLoad != EGameState.None)
 		{
@@ -384,38 +385,49 @@ public class Game : MonoBehaviour
 					InputManager.UnbindAllDevices();
 					if(players != null)
 					{
-							foreach(Player p in players)
+						foreach(Player p in players)
+						{
+							if (p != null)
 							{
 								Destroy(p.gameObject);
 							}
+						}
 					}
 				}
 				break;
 			case EGameState.TestTower:
 				{
-					for (int i = 0; i < players.Count; ++i)
+					foreach (Player p in players)
 					{
-						players[i].Hero.gameObject.SetActive(true);
+						if (p != null)
+						{
+							p.Hero.gameObject.SetActive(true);
+						}
 					}
 					tower.InitialiseTestFloor();
 				}
 				break;
 			case EGameState.Tower:
 				{
-					for (int i = 0; i < players.Count; ++i)
+					foreach (Player p in players)
 					{
-						players[i].Hero.gameObject.SetActive(true);
+						if (p != null)
+						{
+							p.Hero.gameObject.SetActive(true);
+						}
 					}
-
 					tower.InitialiseFloor();
 				}
 				break;
 			case EGameState.FloorSummary: // Fall
 			case EGameState.City:
 				{
-					for (int i = 0; i < players.Count; ++i)
+					foreach (Player p in players)
 					{
-						players[i].Hero.gameObject.SetActive(false);
+						if (p != null)
+						{
+							p.Hero.gameObject.SetActive(false);
+						}
 					}
 				}
 				break;

@@ -277,7 +277,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 439019121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .105728149, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1221796965}
@@ -310,8 +310,8 @@ MonoBehaviour:
     absolute: 0
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 1054
-  mHeight: 593
+  mWidth: 640
+  mHeight: 480
   mDepth: 0
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
@@ -508,7 +508,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772219792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 458.387787, y: -95.5, z: 0}
+  m_LocalPosition: {x: 354.46698, y: -95.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -541,13 +541,13 @@ MonoBehaviour:
     absolute: -290
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 508
+  mWidth: 301
   mHeight: 54
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 6.59259272
+  aspectRatio: 5.57407427
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_options
   mType: 0
@@ -626,7 +626,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 508, y: 53.5090904, z: 0}
+  m_Size: {x: 301, y: 53.5090904, z: 0}
   m_Center: {x: 0, y: -.245454788, z: 0}
 --- !u!114 &772219798
 MonoBehaviour:
@@ -694,13 +694,13 @@ MonoBehaviour:
     absolute: -357
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 446
+  mWidth: 239
   mHeight: 56
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 5.25
+  aspectRatio: 4.26785707
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_exit
   mType: 0
@@ -720,7 +720,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 773587627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 376.387787, y: -164.5, z: 0}
+  m_LocalPosition: {x: 272.46698, y: -164.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -790,8 +790,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 376.274933, y: 56, z: 0}
-  m_Center: {x: 34.8625336, y: 0, z: 0}
+  m_Size: {x: 201.636108, y: 56, z: 0}
+  m_Center: {x: 18.681942, y: 0, z: 0}
 --- !u!114 &773587633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -991,7 +991,7 @@ Transform:
   m_GameObject: {fileID: 1221796964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: .00337268133, y: .00337268133, z: .00337268133}
+  m_LocalScale: {x: .00416666688, y: .00416666688, z: .00416666688}
   m_Children:
   - {fileID: 439019122}
   - {fileID: 220614631}
@@ -1099,7 +1099,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1259012436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 396.293121, y: -29.5, z: 0}
+  m_LocalPosition: {x: 292.494995, y: -29.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 220614631}
@@ -1132,13 +1132,13 @@ MonoBehaviour:
     absolute: -223
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 470
+  mWidth: 263
   mHeight: 54
   mDepth: 1
   autoResizeBoxCollider: 1
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 5.90740728
+  aspectRatio: 4.87037039
   mAtlas: {fileID: 11400000, guid: 7928ddc72d2e806479b371995bdc1420, type: 2}
   mSpriteName: ascentTitle_play
   mType: 0
@@ -1217,8 +1217,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 415.525604, y: 54, z: 0}
-  m_Center: {x: 27.2371979, y: 0, z: 0}
+  m_Size: {x: 232.517517, y: 54, z: 0}
+  m_Center: {x: 15.2412415, y: 0, z: 0}
 --- !u!114 &1259012442
 MonoBehaviour:
   m_ObjectHideFlags: 0
