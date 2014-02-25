@@ -104,6 +104,7 @@ public class FloorHUDManager : MonoBehaviour
             // Set name so that it is findable in the editor
             playerHUDs[i].name = "PlayerHUD " + i;
 			playerHUDs[i].playerLabel.text = "P" + (i + 1);
+			playerHUDs[i].playerLabel.GetComponent<UIWidget>().color = Player.GetPlayerColor(i);
             
             // Initialise the PlayerHUD with the PlayerHero
             playerHUDs[i].Initialise(game.Players[i].Hero);

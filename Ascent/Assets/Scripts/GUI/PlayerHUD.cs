@@ -23,6 +23,9 @@ public class PlayerHUD : MonoBehaviour
     private const int maxStatusEffects = 20;
     private StatusEffectHUDIcon[] statusEffectIcons = new StatusEffectHUDIcon[maxStatusEffects];
 
+	public UISprite[] lowHealthIndicators = new UISprite[2];
+	private float time;
+	
 
 	public void Initialise(Hero _owner)
 	{
@@ -120,21 +123,31 @@ public class PlayerHUD : MonoBehaviour
 			}
 		}
 
-		//for (int i = 0; i < itemLabels.Length; ++i )
-		//{
-
-		//    if (itemLabels[i] != null)
-		//    {
-		//        if (consumables[i] != null)
-		//        {
-		//            itemLabels[i].text = consumables[i].ItemStats.Name + " Qty: " + consumables[i].Charges + " CD: " +  consumables[i].Cooldown;
-		//        }
-		//    }
-		//    else
-		//    {
-		//        itemLabels[i].text = "NoItem";
-		//    }
-		//}
+		// Health indicators
+		float healthRatio = ((float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth);
+		if (healthRatio < 0.50f && healthRatio > 0.0f)
+		{
+			foreach (UISprite sprite in lowHealthIndicators)
+			{
+				Color color = sprite.color;
+				//color.a = 1.0f - ((1.0f - healthRatio) * 0.75f);
+				time += Time.deltaTime * 0.25f;
+				color.a = 0.25f + Mathf.PingPong(time, 1.0f - ((1.0f - healthRatio) * 0.75f) + 0.25f);
+				sprite.color = color;
+			}
+		}
+		else
+		{
+			foreach (UISprite sprite in lowHealthIndicators)
+			{
+				Color color = sprite.color;
+				if (color.a != 1.0f)
+				{
+					color.a -= Time.deltaTime;
+					sprite.color = color;
+				}
+			}
+		}
 
 		// Do lives
 		livesLabel.text = (owner.Lives + 1).ToString();

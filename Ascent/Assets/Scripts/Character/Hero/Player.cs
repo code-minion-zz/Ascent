@@ -72,27 +72,9 @@ public class Player : MonoBehaviour
 		heroObject = heroScript.gameObject;
 
 		// This is test code to assign players colours
-		switch (playerId)
-		{
-			case 0:
-				{
-					heroScript.OriginalColor = Color.red;
-					heroScript.SetColor(Color.red);
-				}
-				break;
-			case 1:
-				{
-					heroScript.OriginalColor = Color.green;
-					heroScript.SetColor(Color.green);
-				}
-				break;
-			case 2:
-				{
-					heroScript.OriginalColor = Color.blue;
-					heroScript.SetColor(Color.blue);
-				}
-				break;
-		}
+		Color color = GetPlayerColor(playerId);
+		heroScript.OriginalColor = color;
+		heroScript.SetColor(color);
 
         // Create the animator and controller for this hero (binds the input with the controller)
         heroScript.Initialise(input, null);
@@ -103,4 +85,20 @@ public class Player : MonoBehaviour
         heroObject.transform.localPosition = Vector3.zero;
         heroObject.transform.localRotation = Quaternion.identity;
     }
+
+	public static Color GetPlayerColor(int i)
+	{
+		Color color = Color.red;
+
+		if(i == 1)
+		{
+			color = Color.green;
+		}
+		else if(i == 2)
+		{
+			color = Color.blue;
+		}
+
+		return color;
+	}
 }

@@ -96,20 +96,28 @@ public class FloorCamera : MonoBehaviour
 			Vector3 totalVector = Vector3.zero;
 
 			// Add up all the vectors
+			int heroCount = 0;
 			foreach (Hero hero in Heros)
 			{
 				if (hero != null)
 				{
-					totalVector += hero.transform.position;
+					if (!hero.IsDead)
+					{
+						totalVector += hero.transform.position;
+						++heroCount;
+					}
 				}
 			}
 
 			// Calculate camera position based off Heros
-			float x = totalVector.x / Heros.Count;
-			float y = myTransform.position.y;
-			float z = (totalVector.z / Heros.Count);
+			if (heroCount != 0)
+			{
+				float x = totalVector.x / Heros.Count;
+				float y = myTransform.position.y;
+				float z = (totalVector.z / (float)heroCount);
 
-			return new Vector3(x, y, z);
+				return new Vector3(x, y, z);
+			}
 		}
 
 		return myTransform.position;

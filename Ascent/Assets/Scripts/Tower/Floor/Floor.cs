@@ -148,7 +148,15 @@ public class Floor : MonoBehaviour
 
         // Finds all the rooms
 		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
-        currentRoom = floorGenerator.Rooms[0].Room;
+
+		if (!randomFloor)
+		{
+			currentRoom = allRooms[0];
+		}
+		else
+		{
+			currentRoom = floorGenerator.Rooms[0].Room;
+		}
 
 
 		// Put start rooms in first room so that it is tidy
@@ -204,10 +212,17 @@ public class Floor : MonoBehaviour
 			r.gameObject.SetActive(false);
 		}
 
-		// Activate the start room
-		currentRoom.gameObject.SetActive(true);
+
+		// Put player indicators on the heroes.
+		for (int i = 0; i < players.Count; ++i)
+		{
+			heroes[i].GetComponent<PlayerIndicator>().Initialise(Player.GetPlayerColor(i)); 
+		}
 
         initialised = true;
+
+		// Activate the start room
+		currentRoom.gameObject.SetActive(true);
 	}
 
 	#region Update

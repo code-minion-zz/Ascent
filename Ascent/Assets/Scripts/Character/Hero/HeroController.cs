@@ -102,6 +102,35 @@ public class HeroController : MonoBehaviour
 				else
 				{
 					ProcessMovement(inputDevice);
+
+					// Targetting system
+					// Select closest object in front of Hero
+					Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+					GameObject newTarget = curRoom.FindHeroTarget(hero, shapeA);
+					if (newTarget == null)
+					{
+						newTarget = curRoom.FindHeroTarget(hero, shapeB);
+					}
+					if (newTarget == null)
+					{
+						newTarget = curRoom.FindHeroTarget(hero, shapeC);
+					}
+
+					if (targetObject != null)
+					{
+						targetObject.GetComponent<Enemy>().StopHighlight();
+					}
+
+					if (newTarget != null)
+					{
+						targetObject = newTarget;
+						targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
+					}
+					else
+					{
+						targetObject = null;
+					}
+
 					ProcessFaceButtons(inputDevice);
 					ProcessTriggersAndBumpers(inputDevice);
 					ProcessDPad(inputDevice);
@@ -122,33 +151,7 @@ public class HeroController : MonoBehaviour
 				}
 			}
 
-			// Targetting system
-			// Select closest object in front of Hero
-			Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
-			GameObject newTarget = curRoom.FindHeroTarget(hero, shapeA);
-			if (newTarget == null)
-			{
-				newTarget = curRoom.FindHeroTarget(hero, shapeB);
-			}
-			if (newTarget == null)
-			{
-				newTarget = curRoom.FindHeroTarget(hero, shapeC);
-			}
-
-			if (targetObject != null)
-			{
-				targetObject.GetComponent<Enemy>().StopHighlight();
-			}
-
-			if (newTarget != null)
-			{
-				targetObject = newTarget;
-				targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
-			}
-			else
-			{
-				targetObject = null;
-			}
+	
 
 #if UNITY_EDITOR
    DebugKeys();

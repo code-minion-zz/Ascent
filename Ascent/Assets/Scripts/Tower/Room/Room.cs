@@ -218,8 +218,10 @@ public class Room : MonoBehaviour
 			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
 			camera.minCamera = transform.position + minCamera;
 			camera.maxCamera = transform.position + maxCamera;
-			curMinCamera = minCamera;
-			curMaxCamera = maxCamera;
+			//curMinCamera = minCamera;
+			//curMaxCamera = maxCamera;
+
+			//Debug.Log(camera.maxCamera);
 			//camera.CameraHeight = cameraHeight;
 		}
 
@@ -299,16 +301,16 @@ public class Room : MonoBehaviour
 	{
 		CheckDoors();
 
-		if (minCamera != curMinCamera)
-		{
-			curMinCamera = minCamera;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
-		}
-		if (maxCamera != curMaxCamera)
-		{
-			curMaxCamera = maxCamera;
-			Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
-		}
+		////if (minCamera != curMinCamera)
+		//{
+		//    curMinCamera = minCamera;
+		//    Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
+		//}
+		////if (maxCamera != curMaxCamera)
+		//{
+		//    curMaxCamera = maxCamera;
+		//    Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
+		//}
 	}
 
 	void CheckDoors()
