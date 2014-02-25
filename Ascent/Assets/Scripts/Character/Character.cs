@@ -221,9 +221,29 @@ public abstract class Character : BaseCharacter
 
 	public IEnumerator SetHitTaken()
 	{
+		//Renderer[] renderers = GetComponentsInChildren<Renderer>();
+		Renderer[] renderers = Renderers;
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Outlined/Diffuse");
+				mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+				mat.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+		}
+
 		hitTaken = true;
 		yield return new WaitForSeconds(0.1f);
 		hitTaken = false;
+
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Diffuse");
+			}
+		}
 	} 
 
 

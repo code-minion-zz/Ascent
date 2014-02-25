@@ -30,8 +30,19 @@ public abstract class BaseCharacter : MonoBehaviour
 		set { originalColour = value; }
 	}
 
+	private Renderer[] renderers;
+	public Renderer[] Renderers
+	{
+		get
+		{
+			return renderers;
+		}
+	}
+
 	public virtual void Initialise()
 	{
+		renderers = GetComponentsInChildren<Renderer>();
+		
 		Shadow shadow = GetComponentInChildren<Shadow>();
 		if (shadow == null)
 		{
@@ -51,19 +62,23 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void SetColor(Color color)
 	{
-		Renderer[] renderers = GetComponentsInChildren<Renderer>();
-		foreach (Renderer render in renderers)
+		if (renderers != null)
 		{
-			render.material.color = color;
+			foreach (Renderer render in renderers)
+			{
+				render.material.color = color;
+			}
 		}
 	}
 
 	public virtual void ResetColor()
 	{
-		Renderer[] renderers = GetComponentsInChildren<Renderer>();
-		foreach (Renderer render in renderers)
+		if (renderers != null)
 		{
-			render.material.color = originalColour;
+			foreach (Renderer render in renderers)
+			{
+				render.material.color = originalColour;
+			}
 		}
 	}
 

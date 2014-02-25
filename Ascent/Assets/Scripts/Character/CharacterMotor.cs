@@ -27,6 +27,7 @@ public class CharacterMotor : MonoBehaviour
 	private bool isActionHaltingMovement = false;
 	private bool isActionRotationMovement = false;
 	private bool usingStandardMovement = true;
+	private bool isRunAttacking = false;
 
 	private bool isMovingAlongGrid;
 	private const float gridUnitOffset = 1.0f;
@@ -182,6 +183,11 @@ public class CharacterMotor : MonoBehaviour
 		velocityChange.y = 0;
 
 		rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+	}
+
+	protected void ProcessRunAttackMovement()
+	{
+		//Vector3 standardMovement = ProcessStandardMovement();
 	}
 
 	protected Vector3 ProcessKnockback()
