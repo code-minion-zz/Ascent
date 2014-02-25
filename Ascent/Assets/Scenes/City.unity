@@ -715,6 +715,10 @@ Prefab:
       propertyPath: m_Name
       value: P1
       objectReference: {fileID: 0}
+    - target: {fileID: 100046, guid: eae506b1a81222240ad8f4546d2f6e77, type: 2}
+      propertyPath: m_Name
+      value: ItemList
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eae506b1a81222240ad8f4546d2f6e77, type: 2}
   m_RootGameObject: {fileID: 137582310}
@@ -1096,7 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55c8aaf3608c564693be23093d9a9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buyButtons: []
+  itemButtons: []
 --- !u!1 &306531247
 GameObject:
   m_ObjectHideFlags: 0
@@ -4346,7 +4350,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1361900461}
   m_Layer: 14
-  m_Name: Buy
+  m_Name: ItemList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5379,7 +5383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bdff2154e16934e924fd61570a8000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buyButtons: []
+  itemButtons: []
 --- !u!1 &1733196336
 GameObject:
   m_ObjectHideFlags: 0

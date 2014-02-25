@@ -251,7 +251,8 @@ public class AccessoryItem : Item
             "Stats: POW-" + "??" + ", FIN-" + "??" + ", VIT-" + "??" + ", SPR-" + "??" + "\n";
         //"Prop count: " + itemProperties.Count + "\n";
 
-        foreach (ItemProperty ip in itemProperties)
+		int i = 0;
+		for (;i < itemProperties.Count; ++i)
         {
             retVal += "?????" + "\n";
         }

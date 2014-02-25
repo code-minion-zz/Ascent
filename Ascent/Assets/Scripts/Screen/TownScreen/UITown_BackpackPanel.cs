@@ -200,7 +200,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		{
 			bool theDroidsYouAreLookingFor = false;
 			Item item = items [itemIndex];
-			Debug.Log (item);
+//			Debug.Log (item);
 			if (item is AccessoryItem) 
 			{
 				if (inventType != UIItemButton.EType.ACCESSORY) 
@@ -281,10 +281,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		{
 			inventoryItemButtons [buttonIndex].Reset();
 		}
-
 	}
-
-
 
 	void ReturnToTown()
 	{

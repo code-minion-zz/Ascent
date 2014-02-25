@@ -352,7 +352,7 @@ public abstract class Hero : Character
 		return damagedAccessories;
 	}
 
-	public IEnumerable<Item> GetUnidentified()
+	public IEnumerable<Item> GetUnappraised()
 	{
 		IEnumerable<Item> backpackItems = backpack.AllItems;
 		IEnumerable<Item> inventoryItems = inventory.Items;

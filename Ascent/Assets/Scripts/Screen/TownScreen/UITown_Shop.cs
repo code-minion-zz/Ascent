@@ -9,12 +9,14 @@ public class UITown_Shop : UITown_RadialPanel
 {
 	#region Variables & Properties
 	protected List<Item> shopInventory;
+	protected List<AccessoryItem> repairList;
+	protected List<Item> unappraisedList;
 
 	/// <summary>
 	/// Stores shop item buttons
 	/// </summary>
 	[SerializeField]
-	protected List<UIItemButton> buyButtons;
+	protected List<UIItemButton> itemButtons;
 
 	protected enum EMode
 	{
@@ -30,8 +32,7 @@ public class UITown_Shop : UITown_RadialPanel
 	/// </summary>
 	protected UIItemButton.EType shopType;
 	
-	GameObject buyButtonGrid;
-	GameObject sellButtonGrid;
+	GameObject itemButtonGrid;
 
 	int quantityItems;
 	protected EMode shopMode = EMode.BUY;
@@ -66,19 +67,19 @@ public class UITown_Shop : UITown_RadialPanel
 		base.Initialise();
 
 		quantityItems = Random.Range(15,20);
-		buyButtons = new List<UIItemButton>(20);
+		itemButtons = new List<UIItemButton>(20);
 		shopInventory = new List<Item>(20);
 		
-		buyButtonGrid = transform.Find("Buy").Find("Scroll View").Find("UIGrid").gameObject;
+		itemButtonGrid = transform.Find("ItemList").Find("Scroll View").Find("UIGrid").gameObject;
 		//NGUITools.SetActive(sellButtonGrid, false);
 
 		InitShopInventory();
 
-		foreach (UIButton button in buyButtons)
+		foreach (UIButton button in itemButtons)
 		{
 			if (button.gameObject.activeSelf)
 			{
-				currentHighlightedButton = buyButtons.IndexOf(button as UIItemButton);
+				currentHighlightedButton = itemButtons.IndexOf(button as UIItemButton);
 				currentSelection = button;
 				break;
 			}
@@ -97,22 +98,8 @@ public class UITown_Shop : UITown_RadialPanel
 	/// </summary>
 	protected virtual void InitShopInventory()
 	{
-		LootGenerator.ELootType itemType = (shopType == UIItemButton.EType.ACCESSORY) ? LootGenerator.ELootType.Accessory : LootGenerator.ELootType.Consumable;
-
-		int count;
-		for (count = 0; count < quantityItems; ++count)
-		{
-			shopInventory.Add(LootGenerator.RandomlyGenerateItem(0, itemType, true));
-		}
-
-		for (count = 0; count < quantityItems; ++count)
-		{		
-			GameObject itemPrefab = NGUITools.AddChild(buyButtonGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
-			UIItemButton uib = itemPrefab.GetComponent<UIItemButton>();
-			buyButtons.Add(uib);
-		}
-
-		UpdateItemButtons();
+		Restock();
+		UpdateButtons(shopInventory);
 	}
 	#endregion
 		
@@ -143,30 +130,58 @@ public class UITown_Shop : UITown_RadialPanel
 
 	#region On-Call Processes
 	/// <summary>
-	/// Updates the shop's item buttons
+	/// Changes item buttons to Buy list buttons
 	/// </summary>
-	protected virtual void UpdateItemButtons()
+	protected virtual void UpdateButtons(List<Item> itemList)
 	{
 		int buttonCount = 0;
-		foreach (Item item in shopInventory)
+		foreach (Item item in itemList)
 		{
-			NGUITools.SetActive(buyButtons[buttonCount].gameObject, true);
-			buyButtons[buttonCount].LinkedItem = item;
-			buyButtons[buttonCount].Name.gradientBottom = Color.grey;
-			buyButtons[buttonCount].Name.text = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
-			buyButtons[buttonCount].Type = (item is AccessoryItem) ? UIItemButton.EType.ACCESSORY : UIItemButton.EType.CONSUMABLE;
+			NGUITools.SetActive(itemButtons[buttonCount].gameObject, true);
+			itemButtons[buttonCount].LinkedItem = item;
+			itemButtons[buttonCount].Name.gradientBottom = Color.grey;
+			itemButtons[buttonCount].Name.text = item.ItemStats.Name + " [ff9900]" + item.ItemStats.PurchaseValue;
+			itemButtons[buttonCount].Type = (item is AccessoryItem) ? UIItemButton.EType.ACCESSORY : UIItemButton.EType.CONSUMABLE;
 			++buttonCount;
 		}
 		
-		for (; buttonCount < buyButtons.Count; ++buttonCount)
+		for (; buttonCount < itemButtons.Count; ++buttonCount)
 		{
-			buyButtons[buttonCount].LinkedItem = null;
-			NGUITools.SetActive(buyButtons[buttonCount].gameObject, false);
+			itemButtons[buttonCount].LinkedItem = null;
+			NGUITools.SetActive(itemButtons[buttonCount].gameObject, false);
 		}
 		
-		NGUITools.FindInParents<UIScrollView>(buyButtonGrid).Scroll(1f);
-		//NGUITools.FindInParents<UIScrollView>(buyButtonGrid).enabled = true;
+		NGUITools.FindInParents<UIScrollView>(itemButtonGrid).Scroll(1f);
 	}
+
+	protected virtual void Restock()
+	{
+		LootGenerator.ELootType itemType = (shopType == UIItemButton.EType.ACCESSORY) ? LootGenerator.ELootType.Accessory : LootGenerator.ELootType.Consumable;
+		
+		int count;
+		for (count = 0; count < quantityItems; ++count)
+		{
+			shopInventory.Add(LootGenerator.RandomlyGenerateItem(0, itemType, true));
+		}
+		
+		for (count = 0; count < quantityItems; ++count)
+		{		
+			GameObject itemPrefab = NGUITools.AddChild(itemButtonGrid, Resources.Load("Prefabs/UI/Town/ItemContainer") as GameObject);
+			UIItemButton uib = itemPrefab.GetComponent<UIItemButton>();
+			itemButtons.Add(uib);
+		}
+	}
+
+	protected virtual void RefreshRepairList()
+	{
+		repairList = playerHero.GetRepairable().ToList();
+	}
+
+	protected virtual void RefreshUnappraisedList()
+	{
+		unappraisedList = playerHero.GetUnappraised().ToList();
+	}
+
 
 	protected virtual void SetInfoLabel()
 	{
@@ -223,14 +238,14 @@ public class UITown_Shop : UITown_RadialPanel
 		switch (shopMode)
 		{
 		case EMode.BUY:
-			NGUITools.SetActive(buyButtonGrid, true);
-			UpdateItemButtons();
+			NGUITools.SetActive(itemButtonGrid, true);
+			UpdateButtons(shopInventory);
 			break;
 		case EMode.REPAIR:
-			NGUITools.SetActive(buyButtonGrid, false);
+			NGUITools.SetActive(itemButtonGrid, false);
 			break;
 		case EMode.APPRAISE:
-			NGUITools.SetActive(buyButtonGrid, false);
+			NGUITools.SetActive(itemButtonGrid, false);
 			break;
 		default:
 			Debug.LogError("Invalid Tab");
@@ -257,13 +272,13 @@ public class UITown_Shop : UITown_RadialPanel
 		if (shopMode == EMode.BUY)
 		{
 			if (shopInventory.Count < 2) return;
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);
 			
 			--currentHighlightedButton;
 			if (currentHighlightedButton < 0) currentHighlightedButton = 0;//shopButtons.Count -1;
 			
 			UnhighlightButton();
-			currentSelection = buyButtons[currentHighlightedButton];
+			currentSelection = itemButtons[currentHighlightedButton];
 
 			sv.Scroll(1.08f);
 
@@ -282,13 +297,13 @@ public class UITown_Shop : UITown_RadialPanel
 		{
 			if (shopInventory.Count < 2) return;
 
-			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(buyButtonGrid.transform);			
+			UIScrollView sv = NGUITools.FindInParents<UIScrollView>(itemButtonGrid.transform);			
 			++currentHighlightedButton;
 
-			if (currentHighlightedButton >= buyButtons.Count) currentHighlightedButton = buyButtons.Count - 1;//0;
+			if (currentHighlightedButton >= itemButtons.Count) currentHighlightedButton = itemButtons.Count - 1;//0;
 
 			UnhighlightButton();
-			currentSelection = buyButtons[currentHighlightedButton];
+			currentSelection = itemButtons[currentHighlightedButton];
 
 			sv.Scroll(-1.08f);
 
