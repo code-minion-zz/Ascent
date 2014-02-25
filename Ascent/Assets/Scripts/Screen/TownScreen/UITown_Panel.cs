@@ -7,6 +7,26 @@ public class UITown_Panel : UIPlayerMenuPanel
 	protected bool parentConfirming = false;
 	protected bool confirmBoxResult = false;
 	protected UITownWindow townParent;
+	
+	/// <summary>
+	/// Returns item on currently selected item button, Null if not possible
+	/// </summary>
+	/// <value>The current item.</value>
+	protected virtual Item CurrentItem
+	{
+		get
+		{
+			Item retval = null;
+			if (currentSelection)
+			{
+				if (currentSelection is UIItemButton)
+				{
+					retval = (currentSelection as UIItemButton).LinkedItem; 
+				}
+			}
+			return retval;
+		}
+	}
 
 	public override void Initialise() 
 	{
@@ -46,24 +66,5 @@ public class UITown_Panel : UIPlayerMenuPanel
 		
 		return retval;
 	}
-	
-	/// <summary>
-	/// Returns item on currently selected item button, Null if not possible
-	/// </summary>
-	/// <value>The current item.</value>
-	protected virtual Item CurrentItem
-	{
-		get
-		{
-			Item retval = null;
-			if (currentSelection)
-			{
-				if (currentSelection is UIItemButton)
-				{
-					retval = (currentSelection as UIItemButton).LinkedItem; 
-				}
-			}
-			return retval;
-		}
-	}
+
 }

@@ -149,6 +149,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			}
 			else
 			{
+				(buttons[i] as UIItemButton).LinkedItem = null;;
 				NGUITools.SetActive(buttons[i].transform.FindChild("Item").gameObject, false);
 			}
 		}
@@ -384,6 +385,11 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		case 0:
 			if (currentSelection)
 			{
+				if (CurrentItem == null)
+				{
+					// play error sound
+					return;
+				}
 				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
 				int value = itemStat.PurchaseValue;
 				if (playerHero.HeroStats.Gold >= value)
