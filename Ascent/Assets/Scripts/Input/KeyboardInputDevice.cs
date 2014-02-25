@@ -128,7 +128,7 @@ public class KeyboardInputDevice : InputDevice
 		switch (type)
 		{
 			case InputControlType.Action1: { buttonState = (Input.GetKey(KeyCode.D) ? true : false); } break;
-			case InputControlType.Action2: { buttonState = ((Input.GetKey(KeyCode.Backspace) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.Backspace)) ? true : false); } break;
+			case InputControlType.Action2: { buttonState = ((Input.GetKey(KeyCode.Backspace) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.F)) ? true : false); } break;
 			case InputControlType.Action3: { buttonState = (Input.GetKey(KeyCode.A) ? true : false); } break;
 			case InputControlType.Action4: { buttonState = (Input.GetKey(KeyCode.S) ? true : false); } break;
 
