@@ -347,26 +347,23 @@ public abstract class Hero : Character
             );
     }
 	
-	public IEnumerable<AccessoryItem> GetRepairable()
+	public IEnumerable<Item> GetRepairable()
 	{
-		IEnumerable<Item> backpackAccessories = backpack.AccessoryItems;
+		IEnumerable<Item> backpackAccessories = backpack.AccessoryItems.Where(acc => acc != null).Cast<Item>();
 		IEnumerable<Item> inventoryAccessories = inventory.Items.Where(item => item.GetType() == typeof(AccessoryItem));
-		
-		IEnumerable<AccessoryItem> allAccessories = backpackAccessories.Cast<AccessoryItem>().Union(inventoryAccessories.Cast<AccessoryItem>());
-		
-		IEnumerable<AccessoryItem> damagedAccessories = allAccessories.Where(acc => acc.Durability < acc.DurabilityMax);
+
+		IEnumerable<Item> allAccessories = backpackAccessories.Union(inventoryAccessories);
+
+		IEnumerable<Item> damagedAccessories = allAccessories.Where(acc => (acc as AccessoryItem).Durability < (acc as AccessoryItem).DurabilityMax);
 		
 		return damagedAccessories;
 	}
 
 	public IEnumerable<Item> GetUnappraised()
 	{
-		IEnumerable<Item> backpackItems = backpack.AllItems;
-		IEnumerable<Item> inventoryItems = inventory.Items;
-		
-		IEnumerable<Item> allItems = backpackItems.Union(inventoryItems);
-		
-		IEnumerable<Item> unappraisedItems = allItems.Where(item => item.IsAppraised == true);
+		IEnumerable<Item> inventoryItems = inventory.Items.Where(item => item != null);
+				
+		IEnumerable<Item> unappraisedItems = inventoryItems.Where(item => item.IsAppraised == false);
 		
 		return unappraisedItems;
 	}
