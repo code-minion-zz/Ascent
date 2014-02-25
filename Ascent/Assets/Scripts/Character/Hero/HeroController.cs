@@ -14,6 +14,12 @@ public class HeroController : MonoBehaviour
 	private MoveableBlock grabbedObject;
 	private bool vertGrab;
 
+	private Vector3 moveDirection;
+	public Vector3 MoveDirection
+	{
+		get { return moveDirection; }
+	}
+
 	public bool GrabbingObject
 	{
 		get { return grabbedObject != null; }
@@ -230,6 +236,7 @@ public class HeroController : MonoBehaviour
 	{
 		// Reset movement speed
 		bool newMovementThisFrame = false;
+		moveDirection = Vector3.zero;
 
 		// The Hero can move if there is no action being performed and the Hero does not have a status effect impeding movement.
 		// If the action allows it, the action can also be interrupted to allow movement.
@@ -238,7 +245,7 @@ public class HeroController : MonoBehaviour
 			// L Stick
 			if ((device.LeftStickX.IsNotNull || device.LeftStickY.IsNotNull))
 			{
-				Vector3 moveDirection = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value);
+				moveDirection = new Vector3(inputDevice.LeftStickX.Value, 0, inputDevice.LeftStickY.Value);
 
 				// Check that substantial movement has been made (hopefully greater than deadzone)
 				newMovementThisFrame = (moveDirection.sqrMagnitude > 0.001f);
