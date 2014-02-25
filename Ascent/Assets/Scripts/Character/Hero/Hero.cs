@@ -279,16 +279,20 @@ public abstract class Hero : Character
         FloorStatistics.TotalDamageDealt += damage;
     }
 
-	public void Equip(int destinationSlot, Item toEquip)
+	public bool Equip(int destinationSlot, Item toEquip)
 	{
-		if (!ValidSlot(destinationSlot)) return;
+		if (!ValidSlot(destinationSlot)) return false;
 
 		if (toEquip != null)
 		{
 			Item returnItem = Backpack.ReplaceItem(destinationSlot, toEquip);
 			HeroInventory.Items.Remove(toEquip);
 			HeroInventory.AddItem(returnItem);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	bool ValidSlot(int slot)
