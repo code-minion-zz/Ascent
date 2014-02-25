@@ -107,9 +107,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 			updatePointer = false;
 		}
 
-		if (confirmSell == null)
+		if (confirmSell != null)
 		{
-			Sell (false);
+			Sell (1);
 		}
 	}
 	#endregion
@@ -376,12 +376,12 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	}
 
 	
-	protected virtual void Sell(bool init)
+	protected virtual void Sell(int step)
 	{
 		Hero playerHero = townParent.Player.Hero;
-		switch (init)
+		switch (step)
 		{
-		case true:
+		case 0:
 			if (currentSelection)
 			{
 				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
@@ -397,21 +397,31 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 					}
 					else 
 					{
-						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+						Debug.Log("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
 					}					
 				}
 			}
 			break;
-		case false:
+		case 1:
 			if (parentConfirming) return;
 			
 			if (confirmBoxResult == true)
 			{
-				playerHero.HeroStats.Gold -= confirmSell.ItemStats.SellValue;
-				playerHero.HeroInventory.AddItem(confirmSell);
-				Debug.Log("Sold " + confirmSell.ItemStats.Name + ". Current gold:" + playerHero.HeroStats.Gold);
+				playerHero.HeroStats.Gold += confirmSell.ItemStats.SellValue;
 
 				// TODO: remove item from respective list here
+				if (activeTab == EMode.BACKPACK)
+				{
+					playerHero.Backpack.RemoveItem(confirmSell);
+					UpdateBackpack();
+				}
+				else
+				{
+					playerHero.HeroInventory.Items.Remove(confirmSell);
+					UpdateInventory();
+				}
+				
+				Debug.Log("Sold " + confirmSell.ItemStats.Name + ". Current gold:" + playerHero.HeroStats.Gold);
 
 				townParent.RequestNoticeBox("Sold " + confirmSell.ItemStats.Name + " for " + confirmSell.ItemStats.SellValue);
 				confirmSell = null;
@@ -544,7 +554,7 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 		}
 		if (button)
 		{
-			Sell (true);
+			Sell (0);
 //			string name = null;
 //			confirmSell = button.LinkedItem;
 //			if (!confirmSell.IsAppraised)

@@ -272,7 +272,7 @@ public class UITown_Shop : UITown_RadialPanel
 			
 			if (confirmBoxResult == true)
 			{
-				playerHero.HeroStats.Gold -= confirmItem.ItemStats.SellValue;
+				playerHero.HeroStats.Gold -= confirmItem.ItemStats.PurchaseValue;
 				playerHero.HeroInventory.AddItem(confirmItem);
 				Debug.Log("Purchased " + confirmItem.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
 				shopInventory.Remove(confirmItem);
