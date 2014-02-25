@@ -273,26 +273,23 @@ public class Room : MonoBehaviour
     /// <param name="parent">The parent to get components from children.</param>
     private void PopulateListOfObjects<T>(ref List<T> populateList, GameObject parent) where T: Component
     {
-        if (populateList == null)
+        T[] foundObjects = parent.GetComponentsInChildren<T>();
+
+        if (foundObjects != null && foundObjects.Length > 0)
         {
-            T[] foundObjects = parent.GetComponentsInChildren<T>();
+            populateList = new List<T>();
 
-            if (foundObjects != null && foundObjects.Length > 0)
+            foreach (T type in foundObjects)
             {
-                populateList = new List<T>();
-
-                foreach (T type in foundObjects)
+                if (!populateList.Contains(type))
                 {
-                    if (!populateList.Contains(type))
+                    if (type.GetType() == typeof(Enemy))
                     {
-                        if (type.GetType() == typeof(Enemy))
-                        {
-                            Enemy enemy = type as Enemy;
-                            enemy.ContainedRoom = this;
-                        }
-
-                        populateList.Add(type);
+                        Enemy enemy = type as Enemy;
+                        enemy.ContainedRoom = this;
                     }
+
+                    populateList.Add(type);
                 }
             }
         }
@@ -545,40 +542,34 @@ public class Room : MonoBehaviour
         {
             case Shape2D.EType.Circle:
                 {
-                    if (breakables != null && breakables.Count > 0)
+                    foreach (BreakableEnvObject b in breakables)
                     {
-                        foreach (BreakableEnvObject b in breakables)
+                        if (b.IsDestroyed)
                         {
-                            if (b.IsDestroyed)
-                            {
-                                continue;
-                            }
+                            continue;
+                        }
 
-                            if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
-                            {
-                                // Destroy the breakable.
-                                b.Explode();
-                            }
+                        if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
                         }
                     }
                 }
                 break;
             case Shape2D.EType.Arc:
                 {
-                    if (breakables != null && breakables.Count > 0)
+                    foreach (BreakableEnvObject b in breakables)
                     {
-                        foreach (BreakableEnvObject b in breakables)
+                        if (b.IsDestroyed)
                         {
-                            if (b.IsDestroyed)
-                            {
-                                continue;
-                            }
+                            continue;
+                        }
 
-                            if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
-                            {
-                                // Destroy the breakable.
-                                b.Explode();
-                            }
+                        if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
+                        {
+                            // Destroy the breakable.
+                            b.Explode();
                         }
                     }
                 }
