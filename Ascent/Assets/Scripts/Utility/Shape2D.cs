@@ -11,4 +11,8 @@ public class Shape2D
 	}
 
 	public EType type;
+
+	public virtual void DebugDraw()
+	{
+	}
 }

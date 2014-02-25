@@ -26,7 +26,7 @@ public class Rect2D : Shape2D
 	}
 
 #if UNITY_EDITOR
-	public void DebugDraw()
+	public override void DebugDraw()
 	{
 		//Vector3 pos = transform.position;
 		//pos.y = 0.1f;

@@ -62,7 +62,8 @@ public class WarriorHeavyStrike : Ability
 
 				if (Game.Singleton.InTower)
 				{
-					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
+					Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+					if (curRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 					{
 						foreach (Enemy e in enemies)
 						{
@@ -75,6 +76,8 @@ public class WarriorHeavyStrike : Ability
 							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform, 2.0f);
 						}
 					}
+
+					curRoom.ProcessCollisionBreakables(swingArc);
 				}
 
                 performed = true;

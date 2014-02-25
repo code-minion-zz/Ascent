@@ -175,7 +175,8 @@ public class WarriorCharge : Ability
 
 		if (Game.Singleton.InTower)
 		{
-			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
+			Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+			if (curRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref enemies))
 			{
 				if (enemiesFoundLastCount != enemies.Count)
 				{
@@ -197,6 +198,8 @@ public class WarriorCharge : Ability
 				}
 
 				collisionsFound = true;
+
+				curRoom.ProcessCollisionBreakables(circle);
 			}
 		}
 

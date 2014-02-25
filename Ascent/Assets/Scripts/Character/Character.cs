@@ -221,15 +221,17 @@ public abstract class Character : BaseCharacter
 
 	public IEnumerator SetHitTaken()
 	{
-		//Renderer[] renderers = GetComponentsInChildren<Renderer>();
-		Renderer[] renderers = Renderers;
-		foreach (Renderer render in renderers)
+		if (this is Hero)
 		{
-			foreach (Material mat in render.materials)
+			Renderer[] renderers = Renderers;
+			foreach (Renderer render in renderers)
 			{
-				mat.shader = Shader.Find("Outlined/Diffuse");
-				mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
-				mat.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+				foreach (Material mat in render.materials)
+				{
+					mat.shader = Shader.Find("Outlined/Diffuse");
+					mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+					mat.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+				}
 			}
 		}
 
@@ -237,11 +239,15 @@ public abstract class Character : BaseCharacter
 		yield return new WaitForSeconds(0.1f);
 		hitTaken = false;
 
-		foreach (Renderer render in renderers)
+		if (this is Hero)
 		{
-			foreach (Material mat in render.materials)
+			Renderer[] renderers = Renderers;
+			foreach (Renderer render in renderers)
 			{
-				mat.shader = Shader.Find("Diffuse");
+				foreach (Material mat in render.materials)
+				{
+					mat.shader = Shader.Find("Diffuse");
+				}
 			}
 		}
 	} 

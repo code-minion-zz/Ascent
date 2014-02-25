@@ -584,8 +584,6 @@ public class Room : MonoBehaviour
 
 	public bool CheckCollisionArea(Shape2D shape, Character.EScope scope, ref List<Character> charactersColliding)
 	{
-        ProcessCollisionBreakables(shape);
-
 		Shape2D.EType type = shape.type;
 
 		List<Character> characters = GetCharacterList(scope);
@@ -838,6 +836,64 @@ public class Room : MonoBehaviour
 
         return inside;
     }
+
+	public GameObject FindHeroTarget(Hero hero, Shape2D shape)
+	{
+		GameObject target = FindTargetsInFront(hero, shape);
+		//protected List<Character> enemies = new List<Character>();
+		//protected List<TreasureChest> chests = new List<TreasureChest>();
+		//protected List<LootDrop> lootDrops = new List<LootDrop>();
+		//protected List<MoveableBlock> moveables = new List<MoveableBlock>();
+		//protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
+
+		// Check enemies in front first.
+
+
+		
+		//hero.transform.forward
+		
+		// Check objects in front.
+
+		// Check enemies in area.
+
+		// Check objects in area.
+
+		return target;
+	}
+
+	private GameObject FindTargetsInFront(Hero hero, Shape2D shape)
+	{
+		GameObject target = null;
+		List<Character> enemyTargets = new List<Character>();
+
+		Character closestCharacter = null;
+
+		//if (CheckCollisionArea(circa, Character.EScope.Enemy, ref enemyTargets))
+		if (CheckCollisionArea(shape, Character.EScope.Enemy, ref enemyTargets))
+		//if (CheckCollisionArea(new Arc(hero.transform, 10.0f, 30.0f, -(hero.transform.forward * 2.5f)), Character.EScope.Enemy, ref enemyTargets))
+		//if (CheckCollisionArea(new Circle(hero.transform, 3.0f, new Vector3(0.0f, 0.0f, 3.0f)), Character.EScope.Enemy, ref enemyTargets))
+		{
+			float closestDistance = 1000000.0f;
+			foreach (Character e in enemyTargets)
+			{
+				float distance = (hero.transform.position - e.transform.position).sqrMagnitude;
+
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestCharacter = e;
+				}
+			}
+		}
+	
+
+		if (closestCharacter != null)
+		{
+			target = closestCharacter.gameObject;	
+		}
+
+		return target;
+	}
 
 	[ContextMenu("Go to Room")]
 	public void Reposition()

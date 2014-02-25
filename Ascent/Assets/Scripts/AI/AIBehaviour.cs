@@ -49,7 +49,7 @@ public class AIBehaviour
     }
 
 #if UNITY_EDITOR
-    public void OnGizmosDraw()
+	public void OnDrawGizmos()
     {
         DebugDraw();
     }

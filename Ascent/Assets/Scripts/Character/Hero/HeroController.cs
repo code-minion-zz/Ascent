@@ -14,6 +14,13 @@ public class HeroController : MonoBehaviour
 	private MoveableBlock grabbedObject;
 	private bool vertGrab;
 
+	private GameObject targetObject;
+	public GameObject TargetObject
+	{
+		get { return targetObject; }
+		set { targetObject = value; }
+	}
+
 	private Vector3 moveDirection;
 	public Vector3 MoveDirection
 	{
@@ -31,6 +38,10 @@ public class HeroController : MonoBehaviour
 		set;
 	}
 
+	Shape2D shapeA;
+	Shape2D shapeB;
+	Shape2D shapeC;
+
 	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor, HeroAbilityLoadout loadout)
 	{
 		this.hero = hero;
@@ -40,11 +51,15 @@ public class HeroController : MonoBehaviour
         this.loadout = loadout;
 
 		CanUseInput = true;
+
+		//shape = new Circle(hero.transform, 1.5f, new Vector3(0.0f, 0.0f, 1.7f));
+		shapeA = new Arc(hero.transform, 3.5f, 80.0f, transform.forward * -0.5f);
+		shapeB = new Arc(hero.transform, 10.0f, 30.0f, Vector3.zero);
+		shapeC = new Circle(hero.transform, 1.5f, Vector3.zero);
 	}
 
     void Update()
     {
-
 		if (CanUseInput && InputManager.IsPolling)
 		{
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
@@ -69,7 +84,6 @@ public class HeroController : MonoBehaviour
             // Process stun only
             else if(!hero.CanAct && !hero.CanAttack && ! hero.CanMove)
             {
-
                 if (hero.Loadout.CanInterruptActiveAbility)
                 {
                     hero.Loadout.StopAbility();
@@ -108,11 +122,47 @@ public class HeroController : MonoBehaviour
 				}
 			}
 
+			// Targetting system
+			// Select closest object in front of Hero
+			Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+			GameObject newTarget = curRoom.FindHeroTarget(hero, shapeA);
+			if (newTarget == null)
+			{
+				newTarget = curRoom.FindHeroTarget(hero, shapeB);
+			}
+			if (newTarget == null)
+			{
+				newTarget = curRoom.FindHeroTarget(hero, shapeC);
+			}
+
+			if (targetObject != null)
+			{
+				targetObject.GetComponent<Enemy>().StopHighlight();
+			}
+
+			if (newTarget != null)
+			{
+				targetObject = newTarget;
+				targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
+			}
+			else
+			{
+				targetObject = null;
+			}
+
 #if UNITY_EDITOR
    DebugKeys();
 #endif
 		}
     }
+
+	void RotateToTarget()
+	{
+		if (targetObject != null)
+		{
+			transform.LookAt(targetObject.transform);
+		}
+	}
 
 #if UNITY_EDITOR
     void DebugKeys()
@@ -144,6 +194,13 @@ public class HeroController : MonoBehaviour
 		//    Hero.Test_DrawHeroStats(hero);
 		//}
     }
+
+	public void OnDrawGizmos()
+	{
+		shapeA.DebugDraw();
+		shapeB.DebugDraw();
+		shapeC.DebugDraw();
+	}
 #endif
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
@@ -394,6 +451,7 @@ public class HeroController : MonoBehaviour
 		// TODO: Remove X or A depending on what people think is more intuitive
 		if (device.X.WasPressed || device.A.WasPressed) 
 		{
+			RotateToTarget();
 			hero.Loadout.UseAbility((int)EHeroAction.Strike);
 		}
 

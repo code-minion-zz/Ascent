@@ -56,7 +56,7 @@ public class Arc : Shape2D
 	}
 
 #if UNITY_EDITOR
-	public void DebugDraw()
+	public override void DebugDraw()
 	{
 		Debug.DrawLine(Position, Position + Line1); // To the rotated arc
 		Debug.DrawLine(Position, Position + Line2); // To the rotated arc

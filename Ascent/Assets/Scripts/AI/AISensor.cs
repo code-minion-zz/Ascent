@@ -182,7 +182,7 @@ public abstract class AISensor
     }
 
 #if UNITY_EDITOR
-    public virtual void OnGizmosDraw()
+	public virtual void OnDrawGizmos()
     {
     }
 

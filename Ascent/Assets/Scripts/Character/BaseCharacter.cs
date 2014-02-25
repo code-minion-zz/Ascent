@@ -39,6 +39,12 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
+	private bool highlighted;
+	public bool Highlighted
+	{
+		get { return highlighted; }
+	}
+
 	public virtual void Initialise()
 	{
 		renderers = GetComponentsInChildren<Renderer>();
@@ -78,6 +84,32 @@ public abstract class BaseCharacter : MonoBehaviour
 			foreach (Renderer render in renderers)
 			{
 				render.material.color = originalColour;
+			}
+		}
+	}
+
+	public void EnableHighlight(Color color)
+	{
+		Renderer[] renderers = Renderers;
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Outlined/Diffuse");
+				mat.SetColor("_OutlineColor", color);
+				//mat.SetColor("_Color", color);
+			}
+		}
+	}
+
+	public void StopHighlight()
+	{
+		Renderer[] renderers = Renderers;
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Diffuse");
 			}
 		}
 	}

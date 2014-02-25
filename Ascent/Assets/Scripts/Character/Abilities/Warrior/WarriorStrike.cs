@@ -63,7 +63,8 @@ public class WarriorStrike : Ability
 
 				if (Game.Singleton.InTower)
 				{
-					if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
+					Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+					if (curRoom.CheckCollisionArea(swingArc, Character.EScope.Enemy, ref enemies))
 					{
 						foreach (Enemy e in enemies)
 						{
@@ -79,6 +80,8 @@ public class WarriorStrike : Ability
                             owner.Stats.CurrentSpecial += (int)((Hero)owner).HeroStats.SpecialPerStrike;
 						}
 					}
+					
+					curRoom.ProcessCollisionBreakables(swingArc);
 				}
 
 				performed = true;
