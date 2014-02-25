@@ -71,6 +71,7 @@ public abstract class Item
 
 	protected virtual int BuyCost
 	{
+		// KIT : Should take into account durability?
 		// To be overriden
 		get { return 0; }
 	}
@@ -83,6 +84,7 @@ public abstract class Item
 
 	protected virtual int RepairCost
 	{
+		// KIT : Account for isAppraised state?
 		// To be overriden
 		get { return 0; }
 	}

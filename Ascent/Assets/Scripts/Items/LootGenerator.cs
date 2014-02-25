@@ -354,6 +354,12 @@ public static class LootGenerator
 				break;
 		}
 
+		if (newItem != null)
+		{
+			newItem.Type = consumableType;
+			newItem.ItemStats = stats;
+		}
+
 		return newItem;
 	}
 

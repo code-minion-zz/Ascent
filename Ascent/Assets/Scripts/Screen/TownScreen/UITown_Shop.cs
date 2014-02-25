@@ -112,7 +112,7 @@ public class UITown_Shop : UITown_RadialPanel
 			buyButtons.Add(uib);
 		}
 
-		UpdateInventory();
+		UpdateItemButtons();
 	}
 	#endregion
 		
@@ -145,7 +145,7 @@ public class UITown_Shop : UITown_RadialPanel
 	/// <summary>
 	/// Updates the shop's item buttons
 	/// </summary>
-	protected virtual void UpdateInventory()
+	protected virtual void UpdateItemButtons()
 	{
 		int buttonCount = 0;
 		foreach (Item item in shopInventory)
@@ -163,6 +163,9 @@ public class UITown_Shop : UITown_RadialPanel
 			buyButtons[buttonCount].LinkedItem = null;
 			NGUITools.SetActive(buyButtons[buttonCount].gameObject, false);
 		}
+		
+		NGUITools.FindInParents<UIScrollView>(buyButtonGrid).Scroll(1f);
+		//NGUITools.FindInParents<UIScrollView>(buyButtonGrid).enabled = true;
 	}
 
 	protected virtual void SetInfoLabel()
@@ -199,10 +202,12 @@ public class UITown_Shop : UITown_RadialPanel
 	{
 		base.OnEnable();
 
-		updateHighlight = true;
-		shopMode = EMode.BUY;
-		ChangeTab();
-		
+		if (initialised)
+		{
+			updateHighlight = true;
+			shopMode = EMode.BUY;
+			ChangeTab();
+		}
 //		if (shopMode == EMode.APPRAISE)
 //		{
 //			(parent as UITownWindow).SetTitle("Appraise");
@@ -219,6 +224,7 @@ public class UITown_Shop : UITown_RadialPanel
 		{
 		case EMode.BUY:
 			NGUITools.SetActive(buyButtonGrid, true);
+			UpdateItemButtons();
 			break;
 		case EMode.REPAIR:
 			NGUITools.SetActive(buyButtonGrid, false);
@@ -243,7 +249,8 @@ public class UITown_Shop : UITown_RadialPanel
 	#region Input Handling	
 	public override void OnMenuUp(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,0)) return;
 
@@ -266,7 +273,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuDown(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,2)) return;
 
@@ -290,7 +298,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuLeft(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,1)) return;
 
@@ -303,7 +312,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuRight(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		if (!SatisfiesDeadzone(device,3)) return;
 
@@ -316,7 +326,8 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuOK(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
 		switch (shopMode)
 		{
@@ -357,11 +368,10 @@ public class UITown_Shop : UITown_RadialPanel
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
-		if (parentConfirming) return;
+		// reject input if these conditions are not met
+		if (!IsAcceptingInput()) return;
 
-		if ((parent as UITownWindow).Confirming) return;
-
-
+		// quit to main menu
 		(parent as UITownWindow).RequestTransitionToPanel(0);
 //		if (activeTab == EMode.INVENTORY)
 //		{
@@ -371,6 +381,16 @@ public class UITown_Shop : UITown_RadialPanel
 //		{
 //			ReturnToTown();
 //		}		
+	}
+
+	bool IsAcceptingInput()
+	{
+		bool retval = true;
+		if (parentConfirming) retval = false;
+		
+		if ((parent as UITownWindow).Confirming) retval = false;
+
+		return retval;
 	}
 	#endregion 
 }

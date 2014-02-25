@@ -153,20 +153,19 @@ public class AbilityLoadout
             // Make sure the cooldown is off otherwise we cannot use the ability
             if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
             {
-
                 if (interupt)
                 {
                     StopAbility();
                 }
 
+                motor.StopMotion();
+				motor.IsHaltingMovementToPerformAction = true;
+
                 // TODO: Check if we are not in a state that denies abilities to perform.
                 ability.StartAbility();
                 activeAbility = ability;
 
-                stats.CurrentSpecial -= ability.SpecialCost;
-
-                motor.StopMotion();
-                motor.IsHaltingMovementToPerformAction = true;
+				stats.CurrentSpecial -= ability.SpecialCost;
 
                 return true;
             }

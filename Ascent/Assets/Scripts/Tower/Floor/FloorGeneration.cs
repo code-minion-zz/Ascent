@@ -128,6 +128,10 @@ public class FloorGeneration
             // See if we can add a new room through the chosen door.
             GenerateNewRoom(width, height, roomToMake, fromRoom, door);
         }
+        else
+        {
+            roomsPlaced--;
+        }
     }
 
     private void HandleRandomRoomPlacement(RoomProperties fromRoom)
