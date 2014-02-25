@@ -563,7 +563,7 @@ public class HeroController : MonoBehaviour
 
 		// Is there a block?
 		List<MoveableBlock> moveables = curRoom.Moveables;
-		if (moveables != null)
+		if (moveables.Count != 0)
 		{
 			// Find the closest block
 			MoveableBlock closestBlock = null;

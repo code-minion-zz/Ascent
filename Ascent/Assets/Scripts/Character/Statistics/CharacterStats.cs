@@ -229,7 +229,7 @@ public abstract class CharacterStats
     public float BaseCritalHitMultiplier
     {
         // BaseCritMutlipler + (CritMultiplierPerFIN * FIN)
-        get { return secondaryStats.criticalHitChance + (secondaryStatsGrowth.critMultPerFin * (float)Finesse); }
+        get { return secondaryStats.criticalHitMultiplier + (secondaryStatsGrowth.critMultPerFin * (float)Finesse); }
     }
 
     public float BaseDodgeChance

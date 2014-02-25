@@ -130,7 +130,7 @@ public class PhysicalDamageProperty : DamageProperty
 			float unmitigatedDamage = (source.Stats.Attack * addMultiplerDamage) + addFixedDamage;
 
 			// Add crit damage if there was a crit!
-			unmitigatedDamage = (criticalStrike ? unmitigatedDamage * source.Stats.CritalHitMultiplier : unmitigatedDamage);
+			unmitigatedDamage = (criticalStrike ? unmitigatedDamage * ((source.Stats.CritalHitMultiplier * 0.01f) + 1.0f) : unmitigatedDamage);
 
 			// Work out final damage
 			finalDamage = Mathf.Max(Mathf.RoundToInt((float)source.Stats.Level * ((float)(source.Stats.Level * unmitigatedDamage)) / (float)(target.Stats.Level * target.Stats.PhysicalDefense)), 1);
