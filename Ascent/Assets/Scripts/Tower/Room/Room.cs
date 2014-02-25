@@ -36,6 +36,8 @@ public class Room : MonoBehaviour
     #region Fields
 
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
+    private int numberOfTilesX;
+    private int numberOfTilesY;
 
 	[HideInInspector]
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
@@ -54,6 +56,24 @@ public class Room : MonoBehaviour
 	[HideInInspector]
     public bool startRoom = false;
 
+    protected List<Character> enemies = new List<Character>();
+    protected List<TreasureChest> chests = new List<TreasureChest>();
+    protected List<LootDrop> lootDrops = new List<LootDrop>();
+    protected List<MoveableBlock> moveables = new List<MoveableBlock>();
+    protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
+
+    public int NumberOfTilesX
+    {
+        get { return numberOfTilesX; }
+        set { numberOfTilesX = value; }
+    }
+
+    public int NumberOfTilesY
+    {
+        get { return numberOfTilesY; }
+        set { numberOfTilesY = value; }
+    }
+
     public Doors Doors
     {
         get { return doors; }
@@ -67,32 +87,26 @@ public class Room : MonoBehaviour
         set { entryDoor = value; }
     }
 
-    protected List<Character> enemies;
     public List<Character> Enemies
     {
         get { return enemies; }
     }
 
-	protected List<TreasureChest> chests;
 	public List<TreasureChest> Chests
 	{
 		get { return chests; }
 	}
 
-	protected List<LootDrop> lootDrops;
 	public List<LootDrop> LootDrops
 	{
 		get { return lootDrops; }
 	}
 
-
-	protected List<MoveableBlock> moveables;
 	public List<MoveableBlock> Moveables
 	{
 		get { return moveables; }
 	}
 
-    protected List<BreakableEnvObject> breakables;
     public List<BreakableEnvObject> Breakables
     {
         get { return breakables; }
@@ -531,34 +545,40 @@ public class Room : MonoBehaviour
         {
             case Shape2D.EType.Circle:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    if (breakables != null && breakables.Count > 0)
                     {
-                        if (b.IsDestroyed)
+                        foreach (BreakableEnvObject b in breakables)
                         {
-                            continue;
-                        }
+                            if (b.IsDestroyed)
+                            {
+                                continue;
+                            }
 
-                        if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
-                        {
-                            // Destroy the breakable.
-                            b.Explode();
+                            if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
+                            {
+                                // Destroy the breakable.
+                                b.Explode();
+                            }
                         }
                     }
                 }
                 break;
             case Shape2D.EType.Arc:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    if (breakables != null && breakables.Count > 0)
                     {
-                        if (b.IsDestroyed)
+                        foreach (BreakableEnvObject b in breakables)
                         {
-                            continue;
-                        }
+                            if (b.IsDestroyed)
+                            {
+                                continue;
+                            }
 
-                        if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
-                        {
-                            // Destroy the breakable.
-                            b.Explode();
+                            if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
+                            {
+                                // Destroy the breakable.
+                                b.Explode();
+                            }
                         }
                     }
                 }

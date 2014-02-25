@@ -41,12 +41,16 @@ public class FloorGeneration
     private Vector3 locationVector = Vector3.zero;
     private int roomsPlaced = 0;
 
+    public List<RoomProperties> Rooms
+    {
+        get { return rooms; }
+    }
+
     public void GenerateFloor()
     {
         roomDimensions.Add(18);
         roomDimensions.Add(14);
         roomDimensions.Add(10);
-        //roomDimensions.Add(6);
 
         //Random.seed = (int)System.DateTime.Today.Millisecond;
         UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
@@ -61,7 +65,7 @@ public class FloorGeneration
         SaveRooms saver = new SaveRooms();
 
         // Generate the first room in the game.
-        RoomProperties firstRoom = saver.LoadRoom("Maps/NewRoom", true);
+        RoomProperties firstRoom = saver.LoadRoom("Maps/ArrowShooter", true);
         roomGeneration.ReconstructRoom(firstRoom);
         rooms.Add(firstRoom);
     }

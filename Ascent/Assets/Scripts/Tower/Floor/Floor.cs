@@ -21,6 +21,7 @@ public class Floor : MonoBehaviour
 	private FadePlane fadePlane;
     private FloorInstanceReward floorInstanceReward;
 	private bool randomFloor;
+    private FloorGeneration floorGenerator;
 
 	public Enemy floorBoss;
 	private bool bossKilled = false;
@@ -79,7 +80,7 @@ public class Floor : MonoBehaviour
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
 
-		FloorGeneration floorGenerator = new FloorGeneration();
+		floorGenerator = new FloorGeneration();
         floorGenerator.dungeonLevel = 1;
         floorGenerator.monsterRarity = Rarity.many;
 
@@ -147,7 +148,8 @@ public class Floor : MonoBehaviour
 
         // Finds all the rooms
 		Room[] allRooms = GameObject.FindObjectsOfType<Room>() as Room[];
-		currentRoom = GameObject.Find("Room 0: Start").GetComponent<Room>();
+        currentRoom = floorGenerator.Rooms[0].Room;
+
 
 		// Put start rooms in first room so that it is tidy
 		foreach (GameObject startPoint in startPoints)

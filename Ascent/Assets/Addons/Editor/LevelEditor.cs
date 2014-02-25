@@ -128,7 +128,7 @@ namespace Ascent
             room.FindAllNodes();
 
             RoomProperties roomProperties = new RoomProperties(room);
-            roomProperties.InitialiseTiles(7, 7);
+            roomProperties.InitialiseTiles(room.NumberOfTilesX, room.NumberOfTilesY);
             roomProperties.Name = selectedRoom.name;
 
             GameObject env = room.GetNodeByLayer("Environment");
@@ -139,10 +139,11 @@ namespace Ascent
                 {
                     if (t.tag == "RoomTile")
                     {
-                        // Bit ugly but extracts the x,y component from the name of the tile.
-                        int x = Int32.Parse(t.name[5].ToString());
-                        int y = Int32.Parse(t.name[8].ToString());
-                        roomProperties.Tiles[x, y].GameObject = t.gameObject;
+                        // Make sure the tiles are correctly label
+                        string[] parts = t.name.Split("Tile[], ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        int XCoord = Int32.Parse(parts[0]);
+                        int YCoord = Int32.Parse(parts[1]);
+                        roomProperties.Tiles[XCoord, YCoord].GameObject = t.gameObject;
                        
                         foreach (Transform child in t)
                         {
@@ -152,7 +153,7 @@ namespace Ascent
                                 TileAttribute att = new TileAttribute();
                                 att.Type = id.TileAttributeType;
                                 att.Angle = child.eulerAngles.y;
-                                roomProperties.Tiles[x, y].TileAttributes.Add(att);
+                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
 
                                 if (att.Type == TileType.door)
                                 {
@@ -183,7 +184,13 @@ namespace Ascent
                 {
                     go.transform.parent = selectedTile.transform;
                     go.transform.position = selectedTile.transform.position;
+                    Selection.activeGameObject = go;
                 }
+            }
+
+            if (GUILayout.Button("Rotate 90", GUILayout.Width(buttonSize)))
+            {
+                Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
             }
         }
 

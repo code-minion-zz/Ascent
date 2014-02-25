@@ -9,17 +9,11 @@ public enum TileType
     groundTile = 1,
     door = 2,
     standardWall = 3,
-    northWestCorner = 4,
-    northEastCorner = 5,
-    southEastCorner = 6,
-    southWestCorner = 7,
-    cornerWallTile,
-    chest,
-    lockedDoor,
-    miscObj,
-    brazier,
-    trap,
-    monster,
+    cornerWallTile = 8,
+    randMisc = 11,
+    brazier = 12,
+    arrowShooter = 13,
+    monster = 14,
 }
 
 [Serializable]
