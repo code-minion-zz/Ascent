@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class UITown_MainPanel : UITown_RadialPanel
 {
 	public GameObject ButtonPrefab;
+	static float ANGLE_OFFSET = 0f;
+	static float BUTTON_SCALE = 0.3f;
 
 	public override void Initialise()
 	{
@@ -14,7 +16,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 		Transform button;
 		int i;
 		Vector3 heading;
-		float angle = 360f/7f;
+		float angle = 20f;//360f/8;
 		for (i = 0; i < 7; ++i)
 		{
 			GameObject buttonGO = NGUITools.AddChild(gameObject, ButtonPrefab);
@@ -22,31 +24,62 @@ public class UITown_MainPanel : UITown_RadialPanel
 			AngleIndex.Add(i, i * angle);
 		}
 
-
+		i = 0;
 		// Setting individual button values
-		buttons[0].gameObject.name += " Tower";
-		button = buttons[0].transform;
+		buttons[i].gameObject.name += " Tower";
+		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(AngleIndex[0] + 45f);
-		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
+
+		++i;
+		buttons[i].gameObject.name += " AccShop";
+		button = buttons[i].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
+
+		++i;
+		buttons[i].gameObject.name += " ConShop";
+		button = buttons[i].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
 		
-		buttons[1].gameObject.name += " Tower";
-		button = buttons[1].transform;
+		++i;
+		buttons[i].gameObject.name += " Tavern";
+		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(AngleIndex[1] + 45f);
-		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
+
+		++i;
+		buttons[i].gameObject.name += " Backpack";
+		button = buttons[i].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_BackPackIcon_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
 		
-		buttons[2].gameObject.name += " Tower";
-		button = buttons[2].transform;
-		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(AngleIndex[2] + 45f);
-		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		++i;
+		buttons[i].gameObject.name += " Skills";
+		button = buttons[i].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
 		
-		buttons[3].gameObject.name += " Tower";
-		button = buttons[3].transform;
-		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(AngleIndex[3] + 45f);
-		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		++i;
+		buttons[i].gameObject.name += " Chapel";
+		button = buttons[i].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[i] + ANGLE_OFFSET);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		Debug.Log(heading);
 
 //		buttons[1].gameObject.name += " Backpack";
 //		button = buttons[1].transform;
@@ -212,19 +245,19 @@ public class UITown_MainPanel : UITown_RadialPanel
 		switch (currentHighlightedButton)
 		{
 		case 0: // tower
-			townWindow.SetInfo("Enter the Tower");
+			townWindow.SetInfo("Enter the Tower" + AngleIndex[currentHighlightedButton]);
 			break;
 		case 1: // conshop
-			townWindow.SetInfo("Visit the Item Shop");
+			townWindow.SetInfo("Visit the Item Shop" + AngleIndex[currentHighlightedButton]);
 			break;
 		case 2: // quit
-			townWindow.SetInfo("Quit to Main Menu");
+			townWindow.SetInfo("Quit to Main Menu" + AngleIndex[currentHighlightedButton]);
 			break;
 		case 3: // backpack
-			townWindow.SetInfo("Manage your Equipment");
+			townWindow.SetInfo("Manage your Equipment" + AngleIndex[currentHighlightedButton]);
 			break;
 		case 4: // accshop
-			townWindow.SetInfo("Visit the Gem shop");
+			townWindow.SetInfo("Visit the Gem shop" + AngleIndex[currentHighlightedButton]);
 			break;
 		default:
 			townWindow.SetInfo("");
