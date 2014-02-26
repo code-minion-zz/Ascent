@@ -3,39 +3,79 @@ using System.Collections.Generic;
 
 public class UITown_MainPanel : UITown_RadialPanel
 {
-	const float TOWER = 0f;
-    const float BACKPACK = 270f;
-    const float QUIT = 90f;
+	public GameObject ButtonPrefab;
 
 	public override void Initialise()
 	{
 		base.Initialise();
 
-		buttons = new UIButton[8];
-		
-		buttons[0] = transform.Find("Button Tower").GetComponent<UIButton>();
-		AngleIndex.Add(0f, 0);
+		buttons = new UIButton[7];
 
-		buttons[1] = transform.Find("Button ConShop").GetComponent<UIButton>();
-		AngleIndex.Add(45f, 1);
+		Transform button;
+		int i;
+		Vector3 heading;
+		float angle = 360f/7f;
+		for (i = 0; i < 7; ++i)
+		{
+			GameObject buttonGO = NGUITools.AddChild(gameObject, ButtonPrefab);
+			buttons[i] = buttonGO.GetComponent<UIButton>();
+			AngleIndex.Add(i, i * angle);
+		}
 
-		buttons[2] = transform.Find("Button Quit").GetComponent<UIButton>();
-		AngleIndex.Add(90f, 2);
-		
-		buttons[3] = transform.Find("Button Backpack").GetComponent<UIButton>();
-		AngleIndex.Add(-90f, 3);
-		
-		buttons[4] = transform.Find("Button AccShop").GetComponent<UIButton>();
-		AngleIndex.Add(-45f, 4);
-		
-		buttons[5] = transform.Find("Button Skilltree").GetComponent<UIButton>();
-		AngleIndex.Add(-135f, 5);
-		
-		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
-		AngleIndex.Add(-215f, 6);
 
-		buttons[7] = transform.Find("Button Chapel").GetComponent<UIButton>();
-		AngleIndex.Add(-180f, 7);
+		// Setting individual button values
+		buttons[0].gameObject.name += " Tower";
+		button = buttons[0].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[0] + 45f);
+		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		
+		buttons[1].gameObject.name += " Tower";
+		button = buttons[1].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[1] + 45f);
+		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		
+		buttons[2].gameObject.name += " Tower";
+		button = buttons[2].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[2] + 45f);
+		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+		
+		buttons[3].gameObject.name += " Tower";
+		button = buttons[3].transform;
+		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(AngleIndex[3] + 45f);
+		button.position = townParent.pointerTransform.position + (heading * 0.4f);
+
+//		buttons[1].gameObject.name += " Backpack";
+//		button = buttons[1].transform;
+//		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_BackPackIcon_64";
+//		ray.origin = new Vector2(transform.position.x, transform.position.y);
+//		rot = Quaternion.AngleAxis(AngleIndex[1],Vector3.up);
+//		Vector3 heading = MathUtility.ConvertHeadingToVector(AngleIndex[1]);
+//		tempDirection = rot * transform.forward;
+//		ray.direction = new Vector2(tempDirection.x, tempDirection.y);
+//		tempPos = ray.GetPoint(0.5f);
+//		button.position = new Vector3(tempPos.x, tempPos.y, 0f);
+//
+//		buttons[1] = transform.Find("Button ConShop").GetComponent<UIButton>();
+//		AngleIndex.Add(45f, 1);
+//
+//		buttons[3] = transform.Find("Button Backpack").GetComponent<UIButton>();
+//		AngleIndex.Add(-90f, 3);
+//		
+//		buttons[4] = transform.Find("Button AccShop").GetComponent<UIButton>();
+//		AngleIndex.Add(-45f, 4);
+//		
+//		buttons[5] = transform.Find("Button Skilltree").GetComponent<UIButton>();
+//		AngleIndex.Add(-135f, 5);
+//		
+//		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
+//		AngleIndex.Add(-215f, 6);
+//
+//		buttons[7] = transform.Find("Button Chapel").GetComponent<UIButton>();
+//		AngleIndex.Add(-180f, 7);
 
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;

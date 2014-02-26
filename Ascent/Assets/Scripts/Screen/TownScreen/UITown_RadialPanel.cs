@@ -15,14 +15,14 @@ using System.Collections.Generic;
 /// </summary>
 public class UITown_RadialPanel : UITown_Panel
 {
-	protected Dictionary<float, int> AngleIndex;
+	protected Dictionary<int, float> AngleIndex;
 	protected bool updatePointer = false;
 
 	public override void Initialise ()
 	{
 		base.Initialise ();
 		
-		AngleIndex = new Dictionary<float, int>();
+		AngleIndex = new Dictionary<int, float>();
 
 	}
 
@@ -36,19 +36,19 @@ public class UITown_RadialPanel : UITown_Panel
 
 		bool hit = false; // True if at least one match is made
 
-		foreach (KeyValuePair<float,int> p in AngleIndex)
+		foreach (KeyValuePair<int, float> p in AngleIndex)
 		{
-			if (Utilities.CloseTo(angle,p.Key, 20f))
+			if (Utilities.CloseTo(angle,p.Value, 20f))
 			{
 				hit = true;
-				if (buttons[p.Value] != currentSelection)
+				if (buttons[p.Key] != currentSelection)
 				{
 					if (currentSelection)
 					{
 						UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 					}
-					currentSelection = buttons[p.Value];
-					currentHighlightedButton = p.Value;
+					currentSelection = buttons[p.Key];
+					currentHighlightedButton = p.Key;
 					//Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 				}
 				UICamera.Notify(currentSelection.gameObject, "OnHover", true);

@@ -78,7 +78,8 @@ public class MathUtility
 		Vector3 vHeading = new Vector3();
 
 		vHeading.x = (Mathf.Cos(heading));
-		vHeading.z = (Mathf.Sin(heading));
+		vHeading.y = (Mathf.Sin(heading));
+		vHeading.z = 0f;
 		vHeading.Normalize();
 
 		return (vHeading);
