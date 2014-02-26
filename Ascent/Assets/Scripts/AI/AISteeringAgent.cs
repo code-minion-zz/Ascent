@@ -69,7 +69,7 @@ public class AISteeringAgent
         set { canRotate = value; }
     }
 
-	protected float distanceToKeepFromTarget = 1.5f;
+	protected float distanceToKeepFromTarget = 1.75f;
 	public float DistanceToKeepFromTarget
 	{
 		get { return distanceToKeepFromTarget; }

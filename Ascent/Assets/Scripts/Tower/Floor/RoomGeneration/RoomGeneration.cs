@@ -174,6 +174,8 @@ public class RoomGeneration
         // Generate number of monsters.
         // TODO: make this better haha.
         int numberOfMonsters = (int)rarity * UnityEngine.Random.Range(1, 5);
+		numberOfMonsters = Mathf.Clamp(numberOfMonsters, 1, 7);
+
         int monstersPlaced = 0;
 
         for (monstersPlaced = 0; monstersPlaced < numberOfMonsters; ++monstersPlaced)
