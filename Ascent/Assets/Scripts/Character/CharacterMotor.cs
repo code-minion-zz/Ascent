@@ -274,6 +274,11 @@ public class CharacterMotor : MonoBehaviour
         }
 	}
 
+	public virtual void LookAt(Vector3 curDirection)
+	{
+		transform.LookAt(curDirection, Vector3.up);
+	}
+
 	public virtual void SetKnockback(Vector3 direction, float mag)
 	{
 		knockbackDirection = new Vector3(direction.x, 0.0f, direction.z);

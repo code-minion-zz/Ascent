@@ -64,6 +64,11 @@ namespace Ascent
                 RoomCreationWindow roomCreationWnd = EditorWindow.GetWindow<RoomCreationWindow>("Create Room");
                 roomCreationWnd.Initialise(roomGen);
             }
+			if (GUILayout.Button("Create New Room From Template", GUILayout.Width(buttonSize)))
+			{
+				RoomTemplateWindow roomCreationWnd = EditorWindow.GetWindow<RoomTemplateWindow>("Create Room");
+				roomCreationWnd.Initialise(roomGen);
+			}
 
             SelectRoomGUI();
 

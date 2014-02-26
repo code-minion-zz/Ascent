@@ -45,16 +45,16 @@ public class Slime : Enemy
         // Defensive behaviour
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
-            // OnAttacked, Triggers if attacked
-            OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            OnAttackedTrigger.AddCondition(new AICondition_Attacked(this));
-            OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[replicateActionID]), AITrigger.EConditional.And);
-            OnAttackedTrigger.OnTriggered += OnAttacked;
+			//// OnAttacked, Triggers if attacked
+			//OnAttackedTrigger = behaviour.AddTrigger();
+			//OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
+			//OnAttackedTrigger.AddCondition(new AICondition_Attacked(this));
+			//OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[replicateActionID]), AITrigger.EConditional.And);
+			//OnAttackedTrigger.OnTriggered += OnAttacked;
 
-            OnReplicateTrigger = behaviour.AddTrigger();
-            OnReplicateTrigger.AddCondition(new AICondition_Timer(5.5f, 2.0f, 10.0f));
-            OnReplicateTrigger.OnTriggered += OnAttacked;
+			//OnReplicateTrigger = behaviour.AddTrigger();
+			//OnReplicateTrigger.AddCondition(new AICondition_Timer(5.5f, 2.0f, 10.0f));
+			//OnReplicateTrigger.OnTriggered += OnAttacked;
 
             // OnWanderEnd, Triggers if time exceeds 2s or target reached.
             OnWanderEndTrigger = behaviour.AddTrigger();
