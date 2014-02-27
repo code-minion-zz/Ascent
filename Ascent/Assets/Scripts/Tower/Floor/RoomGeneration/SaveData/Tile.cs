@@ -33,10 +33,7 @@ public class Tile
     public float PosZ { get; set; }
 
     public Directions FacingDirection { get; set; }
-    
 
-    // TODO: Get rid of this as this tile is just a place holder.
-    public TileType TileType { get; set; }
 
     // These attributes could be any objects in the game.
     public List<TileAttribute> TileAttributes { get; set; }

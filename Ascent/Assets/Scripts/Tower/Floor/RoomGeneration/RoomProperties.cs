@@ -25,7 +25,7 @@ public class RoomProperties
     [NonSerialized]
     private Room room;
     [NonSerialized]
-    private List<Door> doors;
+    private List<Door> doors = new List<Door>();
 
     // Tiles represent the grid of the room. Every tile has a list of objects it is holding.
     public Tile[,] Tiles { get; set; }
@@ -119,60 +119,25 @@ public class RoomProperties
                 float zPos = -(tilesY) + (TileSize * 0.5f) + (j * TileSize);
 
                 Tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
-                Tiles[i, j].TileType = TileType.none;// This needs to be removed later.
 
                 // Assign each tile with a list of attributes.
                 Tiles[i, j].TileAttributes = new List<TileAttribute>();
+                TileAttribute att = new TileAttribute();
+                att.Angle = 0.0f;
+                att.Type = TileType.none;
+                Tiles[i, j].TileAttributes.Add(att);
             }
         }
     }
 
-    /// <summary>
-    /// Sets and initializes the room tiles.
-    /// </summary>
-    /// <param name="width">Width.</param>
-    /// <param name="height">Height.</param>
-    /// 
-    public void SetRoomTiles(int width, int height)
-    {
-        Width = (width * TileSize);
-        Height = (height * TileSize);
-
-        NumberOfTilesX = width;
-        NumberOfTilesY = height;
-
-        Tiles = new Tile[width, height];
-
-        for (int i = 0; i < NumberOfTilesX; ++i)
-        {
-            for (int j = 0; j < NumberOfTilesY; ++j)
-            {
-                // Create and assign the position of the tile.
-                Tiles[i, j] = new Tile();
-                float xPos = -(width) + (TileSize * 0.5f) + (i * TileSize);
-                float zPos = -(height) + (TileSize * 0.5f) + (j * TileSize);
-
-                Tiles[i, j].Position = new Vector3(xPos, 0.0f, zPos);
-                Tiles[i, j].TileType = TileType.none;// This needs to be removed later.
-
-                // Assign each tile with a list of attributes.
-                Tiles[i, j].TileAttributes = new List<TileAttribute>();
-
-                // TODO: Make sure the room object exists.
-                GameObject tile = new GameObject();
-                tile.transform.parent = room.GetNodeByLayer("Environment").transform;
-                tile.transform.localPosition = Tiles[i, j].Position;
-                tile.name = "Tile[" + i + ", " + j + "]";
-                tile.tag = "RoomTile";
-                Tiles[i, j].GameObject = tile;
-            }
-        }
-    }
-
-    public void CreateBaseTiles()
+    public void InitializeNonSerializable(Room room)
     {
         doors = new List<Door>();
+        this.room = room;
+    }
 
+    public void CreateTileParentNodes()
+    {
         for (int i = 0; i < NumberOfTilesX; ++i)
         {
             for (int j = 0; j < NumberOfTilesY; ++j)

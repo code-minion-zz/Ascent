@@ -76,7 +76,8 @@ public class RoomGeneration
 		// Handle creation of the ground tiles.
 		RoomProperties newRoom = new RoomProperties(room);
         newRoom.Name = name;
-		newRoom.SetRoomTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        newRoom.CreateTileParentNodes();
         room.NumberOfTilesX = newRoom.NumberOfTilesX;
         room.NumberOfTilesY = newRoom.NumberOfTilesY;
 		PlaceGroundTiles(newRoom);
@@ -88,27 +89,80 @@ public class RoomGeneration
 		return newRoom;
 	}
 
+    /// <summary>
+    /// Reconstructs a room.
+    /// </summary>
+    /// <param name="room">The room data.</param>
+    public void ReconstructRoom(RoomProperties room)
+    {
+        // Reconstruct the object.
+        room.InitializeNonSerializable(CreateRoomObject(room.Name));
+        room.CreateTileParentNodes();
+
+        // Construct all the tiles.
+        for (int x = 0; x < room.NumberOfTilesX; ++x)
+        {
+            for (int y = 0; y < room.NumberOfTilesY; ++y)
+            {
+                ConstructBaseTiles(room, room.Tiles[x, y], x, y);
+            }
+        }
+
+        room.Room.NumberOfTilesX = room.NumberOfTilesX;
+        room.Room.NumberOfTilesY = room.NumberOfTilesY;
+
+        SetupCamera(room);
+
+        room.IsPreloaded = true;
+        room.WallsPlaced = true;
+    }
+
+    private void ConstructBaseTiles(RoomProperties room, Tile tile, int x, int y)
+    {
+        // Loop through the individual attributes for this tile.
+        foreach (TileAttribute att in tile.TileAttributes)
+        {
+            // Place each attribute on the tile position.
+            GameObject go = GetGameObjectByType(att.Type);
+
+            if (go != null)
+            {
+                go.transform.parent = room.Tiles[x, y].GameObject.transform;
+                go.transform.position = room.Tiles[x, y].Position;
+                go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
+                go.name = "[" + x + ", " + y + "]" + go.name;
+
+                if (att.Type == TileType.door)
+                {
+                    Door door = go.GetComponent<Door>();
+                    door.direction = GetDirectionFromRot(go.transform.eulerAngles.y);
+                    room.Doors.Add(door);
+                }
+            }
+        }
+    }
+
     private void SetupCamera(RoomProperties room)
     {
         float cameraOffsetX = 1.0f;
         float cameraOffsetMinZ = 1.0f;
 		float cameraOffsetMaxZ = 1.0f;
 
-		if (Game.Singleton.IsWideScreen)
-		{
-			switch (room.Width)
-			{
-				case 10: cameraOffsetX = 0.0f; break;
-				case 14: cameraOffsetX = 0.0f; break;
-				case 18: cameraOffsetX = 1.0f; break;
-				case 22: cameraOffsetX = 3.0f; break;
-                case 24: cameraOffsetX = 4.0f; break;
+        //if (Game.Singleton.IsWideScreen)
+        //{
+        //    switch (room.Width)
+        //    {
+        //        case 10: cameraOffsetX = 0.0f; break;
+        //        case 14: cameraOffsetX = 0.0f; break;
+        //        case 18: cameraOffsetX = 1.0f; break;
+        //        case 22: cameraOffsetX = 3.0f; break;
+        //        case 24: cameraOffsetX = 4.0f; break;
 
-				default: Debug.LogError("Unhandled case: " + room.Width); break;
-			}
-		}
-		else
-		{
+        //        default: Debug.LogError("Unhandled case: " + room.Width); break;
+        //    }
+        //}
+        //else
+        //{
 			switch (room.Width)
 			{
 				case 10: cameraOffsetX = 0.0f; break;
@@ -120,7 +174,7 @@ public class RoomGeneration
 				default: Debug.LogError("Unhandled case: " + room.Width); break;
 			}
 
-		}
+		//}
 
 		switch (room.Height)
 		{
@@ -164,7 +218,8 @@ public class RoomGeneration
             for (int j = 0; j < room.NumberOfTilesY; ++j)
             {
                 // Search for tiles that are available.
-                if (room.Tiles[i, j].TileType == TileType.monster || room.Tiles[i, j].TileType == TileType.none)
+                if (room.Tiles[i, j].ContainsAttribute(TileType.monster) || 
+                    room.Tiles[i, j].ContainsAttribute(TileType.none))
                 {
                     tempAvailablePosition.Add(room.Tiles[i, j]);
                 }
@@ -228,9 +283,18 @@ public class RoomGeneration
             go.transform.localPosition = tempAvailablePosition[randomTile].Position;
             go.transform.parent = room.Room.MonsterParent;
 
+            float angle = 0.0f;
+
+            // Add the attribute of this object.
+            TileAttribute att = new TileAttribute();
+            att.Angle = angle;
+            att.Type = TileType.monster;
+
             // Apply configurations to the tile of this room and remove
             // the tile from our temp list so that a monster is not placed here again.
-            tempAvailablePosition[randomTile].TileType = TileType.monster;
+            tempAvailablePosition[randomTile].TileAttributes.Add(att);
+            tempAvailablePosition[randomTile].IsOccupied = true;
+
             tempAvailablePosition.Remove(tempAvailablePosition[randomTile]);
         }
     }
@@ -241,7 +305,11 @@ public class RoomGeneration
         int centreX = (int)(room.NumberOfTilesX * 0.7f);
         int centreY = (int)(room.NumberOfTilesY * 0.7f);
 
-        room.Tiles[centreX, centreY].TileType = TileType.monster;
+        TileAttribute att = new TileAttribute();
+        att.Angle = 0.0f;
+        att.Type = TileType.monster;
+
+        room.Tiles[centreX, centreY].TileAttributes.Add(att);
         room.Tiles[centreX, centreY].IsOccupied = true;
         go.transform.localPosition = room.Tiles[centreX, centreY].Position;
         go.transform.parent = room.Room.MonsterParent;
@@ -382,59 +450,6 @@ public class RoomGeneration
 		}
 	}
 
-    /// <summary>
-    /// Reconstructs a room.
-    /// </summary>
-    /// <param name="room">The room data.</param>
-    public void ReconstructRoom(RoomProperties room)
-    {
-        // Reconstruct the object.
-        room.Room = CreateRoomObject(room.Name);
-        room.CreateBaseTiles();
-
-        // Construct all the tiles.
-        for (int x = 0; x < room.NumberOfTilesX; ++x)
-        {
-            for (int y = 0; y < room.NumberOfTilesY; ++y)
-            {
-                ConstructBaseTiles(room, room.Tiles[x, y], x, y);
-            }
-        }
-
-        room.Room.NumberOfTilesX = room.NumberOfTilesX;
-        room.Room.NumberOfTilesY = room.NumberOfTilesY;
-
-        SetupCamera(room);
-
-        room.IsPreloaded = true;
-        room.WallsPlaced = true;
-    }
-
-    private void ConstructBaseTiles(RoomProperties room, Tile tile, int x, int y)
-	{
-        // Loop through the individual attributes for this tile.
-        foreach (TileAttribute att in tile.TileAttributes)
-        {
-            // Place each attribute on the tile position.
-            GameObject go = GetGameObjectByType(att.Type);
-
-            if (go != null)
-            {
-                go.transform.parent = room.Tiles[x, y].GameObject.transform;
-                go.transform.position = room.Tiles[x, y].Position;
-                go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
-                go.name = "[" + x + ", " + y + "]" + go.name;
-
-                if (att.Type == TileType.door)
-                {
-                    Door door = go.GetComponent<Door>();
-                    door.direction = GetDirectionFromRot(go.transform.eulerAngles.y);
-                    room.Doors.Add(door);
-                }
-            }
-        }
-    }
-
     private Floor.TransitionDirection GetDirectionFromRot(float angle)
     {
         Floor.TransitionDirection dir = Floor.TransitionDirection.North;
@@ -537,13 +552,12 @@ public class RoomGeneration
                     doorGo.transform.localPosition = fromRoom.Tiles[midXTile, lastTileY].Position;
                     doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
                     doorGo.name = "North Door";
-                    fromRoom.Tiles[midXTile, lastTileY].TileType = TileType.door;
-                    fromRoom.Tiles[midXTile, lastTileY].IsOccupied = true;
 
                     att = new TileAttribute();
                     att.Angle = 90.0f;
                     att.Type = TileType.door;
                     fromRoom.Tiles[midXTile, lastTileY].TileAttributes.Add(att);
+                    fromRoom.Tiles[midXTile, lastTileY].IsOccupied = true;
                 }
                 break;
 
@@ -552,13 +566,12 @@ public class RoomGeneration
                     doorGo.transform.localPosition = fromRoom.Tiles[lastTileX, midYTile].Position;
                     doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
                     doorGo.name = "East Door";
-                    fromRoom.Tiles[lastTileX, midYTile].TileType = TileType.door;
-                    fromRoom.Tiles[lastTileX, midYTile].IsOccupied = true;
 
                     att = new TileAttribute();
                     att.Angle = 180.0f;
                     att.Type = TileType.door;
                     fromRoom.Tiles[lastTileX, midYTile].TileAttributes.Add(att);
+                    fromRoom.Tiles[lastTileX, midYTile].IsOccupied = true;
                 }
                 break;
 
@@ -567,13 +580,12 @@ public class RoomGeneration
                     doorGo.transform.localPosition = fromRoom.Tiles[midXTile, 0].Position;
                     doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
                     doorGo.name = "South Door";
-                    fromRoom.Tiles[midXTile, 0].TileType = TileType.door;
-                    fromRoom.Tiles[midXTile, 0].IsOccupied = true;
 
                     att = new TileAttribute();
                     att.Angle = 270.0f;
                     att.Type = TileType.door;
                     fromRoom.Tiles[midXTile, 0].TileAttributes.Add(att);
+                    fromRoom.Tiles[midXTile, 0].IsOccupied = true;
                 }
                 break;
 
@@ -582,13 +594,12 @@ public class RoomGeneration
                     doorGo.transform.localPosition = fromRoom.Tiles[0, midYTile].Position;
                     doorGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
                     doorGo.name = "West Door";
-                    fromRoom.Tiles[0, midYTile].TileType = TileType.door;
-                    fromRoom.Tiles[0, midYTile].IsOccupied = true;
 
                     att = new TileAttribute();
                     att.Angle = 0.0f;
                     att.Type = TileType.door;
                     fromRoom.Tiles[0, midYTile].TileAttributes.Add(att);
+                    fromRoom.Tiles[0, midYTile].IsOccupied = true;
                 }
                 break;
 		}
@@ -619,9 +630,6 @@ public class RoomGeneration
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
 		wallCornerGo.name = "CornerNE";
 		wallCornerGo.transform.parent = walls.transform;
-        // Make this tile a wall tile. 
-        // TODO: Remove this later.
-        room.Tiles[room.NumberOfTilesX-1, room.NumberOfTilesY-1].TileType = TileType.cornerWallTile;
 		
 		// South east corner
         // Assign the attribute.
@@ -635,8 +643,6 @@ public class RoomGeneration
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
 		wallCornerGo.name = "CornerSE";
 		wallCornerGo.transform.parent = walls.transform;
-        // Make this tile a wall tile.
-        room.Tiles[room.NumberOfTilesX - 1, 0].TileType = TileType.cornerWallTile;
 		
         // North west corner
         // Assign the attribute.
@@ -650,8 +656,6 @@ public class RoomGeneration
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
 		wallCornerGo.name = "CornerNW";
 		wallCornerGo.transform.parent = walls.transform;
-        // Make this tile a wall tile.
-        room.Tiles[0, (int)room.NumberOfTilesY - 1].TileType = TileType.cornerWallTile;
 		
 		// South west corner
         // Assign the attribute.
@@ -665,8 +669,6 @@ public class RoomGeneration
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
 		wallCornerGo.name = "CornerSW";
 		wallCornerGo.transform.parent = walls.transform;
-        // Make this tile a wall tile.
-        room.Tiles[0, 0].TileType = TileType.cornerWallTile;
         
         // Variables used for placing walls.
         int lastTileX = room.NumberOfTilesX;

@@ -267,6 +267,11 @@ public class Room : MonoBehaviour
 		}
     }
 
+    public void RotateFacingDirection(float angle)
+    {
+        transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), angle);
+    }
+
     /// <summary>
     /// Pass in a list to populate it with found objects of that type in the parent.
     /// </summary>
