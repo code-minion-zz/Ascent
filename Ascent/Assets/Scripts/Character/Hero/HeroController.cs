@@ -211,29 +211,29 @@ public class HeroController : MonoBehaviour
 		// Left Trigger
 		if (device.LeftTrigger.WasPressed)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device);
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.LeftTrigger);
 		}
 
         // Left Bump
         else if (device.LeftBumper.WasPressed)
         {
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device);
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.LeftBumper);
         }
 
 		// Right bump
 		else if (device.RightBumper.WasPressed)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device);
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device.RightBumper);
 		}
 
 		// Right Trigger
 		else if (device.RightTrigger.WasPressed)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device);
+            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device.RightTrigger);
 		}
 	}
 
-    private bool ProcessAbility(Ability ability, InputDevice device)
+    private bool ProcessAbility(Ability ability, InputControl control)
     {
         // If an action is an instant cast, it will be perform as soon as the button is pressed.
         // If it has a cast component then the cast will occur when the button is pressed...
@@ -255,7 +255,7 @@ public class HeroController : MonoBehaviour
                 if (hero.Loadout.UseCastAbility(abilityID))
                 {
                     actionButtonPair.action = ability;
-                    actionButtonPair.control = device.LeftBumper;
+                    actionButtonPair.control = control;
 
                     usedAbility = true;
                 }
