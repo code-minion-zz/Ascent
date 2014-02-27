@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
-  m_Layer: 14
+  m_Layer: 30
   m_Name: BaseHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,12 +39,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b39420815e428294cbeb96a9380f4bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  root: {fileID: 0}
   hudCamera: {fileID: 0}
   TextDriver: {fileID: 0}
-  Player1: {fileID: 0}
-  Player2: {fileID: 0}
-  Player3: {fileID: 0}
-  anchor: {fileID: 0}
+  playerHUD: {fileID: 0}
+  enemyStatBar: {fileID: 0}
+  enemHealthBars: {fileID: 0}
+  mainPanel: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

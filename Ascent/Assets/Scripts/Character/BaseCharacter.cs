@@ -16,6 +16,13 @@ public abstract class BaseCharacter : MonoBehaviour
 		protected set { motor = value; }
 	}
 
+	protected Transform model;
+	public Transform Model
+	{
+		get { return model; }
+		protected set { model = value; }
+	}
+
 	protected CharacterAnimator animator;
 	public CharacterAnimator Animator
 	{
@@ -39,11 +46,11 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
-	private bool highlighted;
-	public bool Highlighted
-	{
-		get { return highlighted; }
-	}
+	//private bool highlighted;
+	//public bool Highlighted
+	//{
+	//    get { return highlighted; }
+	//}
 
 	public virtual void Initialise()
 	{
@@ -62,6 +69,12 @@ public abstract class BaseCharacter : MonoBehaviour
 			Debug.LogError("No motor attached to " + name, this);
 		}
 		motor.Initialise();
+
+		model = transform.FindChild("Model");
+		if (motor == null)
+		{
+			Debug.LogError("No model attached to " + name, this);
+		}
 
 		SetColor(OriginalColor);
 	}

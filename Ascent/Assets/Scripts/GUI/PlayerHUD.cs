@@ -72,7 +72,7 @@ public class PlayerHUD : MonoBehaviour
 		}
 
 		// Set broken accessories
-		AccessoryItem[] accessories = owner.Backpack.AccessoryItems;
+		//AccessoryItem[] accessories = owner.Backpack.AccessoryItems;
 
 		for (int i = 0; i < accessoryIcons.Length; ++i)
 		{

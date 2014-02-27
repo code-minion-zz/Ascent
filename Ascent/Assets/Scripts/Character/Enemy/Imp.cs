@@ -31,8 +31,8 @@ public class Imp : Enemy
     {
         AIAgent.Initialise(transform);
 
-		AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.25f;
+		AIAgent.SteeringAgent.RotationSpeed = 25.0f;
+		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
 		motor.MaxSpeed = 3.0f;
 		motor.MinSpeed = 0.5f;
 		motor.Acceleration = 1.0f;
@@ -81,7 +81,7 @@ public class Imp : Enemy
 
 			trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_HP(enemyStats, AICondition.EType.Percentage, AICondition.ESign.EqualOrLess, 0.25f));
+            trigger.AddCondition(new AICondition_HP(enemyStats, AICondition.EType.Percentage, AICondition.ESign.EqualOrLess, 0.15f));
             trigger.OnTriggered += OnLowHP;
         }
 
@@ -112,6 +112,7 @@ public class Imp : Enemy
     public void OnAttacked()
     {
         AIAgent.TargetCharacter = lastDamagedBy;
+		motor.LookAt(lastDamagedBy.transform.position);
     }
 
     public void OnCanUseCharge()
@@ -126,6 +127,9 @@ public class Imp : Enemy
     {
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Evasive);
         AIAgent.SteeringAgent.IsRunningAway = true;
+		AIAgent.SteeringAgent.RotationSpeed = 30.0f;
+		Motor.MaxSpeed = 7.5f;
+		Motor.Acceleration = 7.5f;
     }
 
     public override void OnDisable()

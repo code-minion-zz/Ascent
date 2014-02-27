@@ -97,7 +97,7 @@ public class WarriorCharge : Ability
 		}
 		else
 		{
-			int layerMask = ((1 << 17) | (1 << 18) | (1 << 8));
+			int layerMask = ((1 << (int)Layer.Environment));
 			RaycastHit hitInfo;
 			//if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
 			//{
@@ -182,8 +182,6 @@ public class WarriorCharge : Ability
 				{
 					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
 					{
-						int damage = owner.DamageFormulaA(0.0f, 1.5f);
-
 						// Apply damage, knockback and stun to the enemy.
 						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
 						combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));

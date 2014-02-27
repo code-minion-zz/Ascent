@@ -12,7 +12,7 @@ public class ImpStrike : Ability
     {
         base.Initialise(owner);
 
-        animationLength = 1.0f;
+        animationLength = 1.5f;
         animationSpeed = 1.0f;
         animationTrigger = "Strike";
         cooldownFullDuration = 2.0f;
@@ -38,6 +38,15 @@ public class ImpStrike : Ability
     public override void UpdateAbility()
     {
         base.UpdateAbility();
+
+		if (timeElapsedSinceStarting <= animationLength * 0.45f && !executedDamage)
+		{
+			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, Mathf.PingPong(timeElapsedSinceStarting, animationLength * 0.075f) * 20.0f, owner.Model.transform.position.z);
+		}
+		else
+		{
+			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
+		}
 
         if (timeElapsedSinceStarting >= animationLength * 1.0f)
         {
@@ -68,6 +77,7 @@ public class ImpStrike : Ability
                 }
 
                 executedDamage = true;
+				owner.ResetColor();
             }
         }
         else if (timeElapsedSinceStarting >= animationLength * 0.25f)

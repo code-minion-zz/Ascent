@@ -13,7 +13,7 @@ public class RatTackle : Ability
     {
         base.Initialise(owner);
 
-		animationLength = 0.5f;
+		animationLength = 1.5f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Tackle";
 		cooldownFullDuration = 2.0f;
@@ -31,7 +31,7 @@ public class RatTackle : Ability
         owner.SetColor(Color.red);
 
 		prevSpeed = owner.Motor.MaxSpeed;
-        prevAccel = owner.Motor.Acceleration;
+		prevAccel = owner.Motor.Acceleration;
 
 		executedDamage = false;
 	}
@@ -39,6 +39,17 @@ public class RatTackle : Ability
     public override void UpdateAbility()
     {
 		base.UpdateAbility();
+
+		// This will make the rat jump three times.
+		if (timeElapsedSinceStarting <= animationLength * 0.45f && !executedDamage)
+		{
+			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, Mathf.PingPong(timeElapsedSinceStarting, animationLength * 0.075f) * 10.0f, owner.Model.transform.position.z);
+		}
+		else
+		{
+			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
+		}
+
 
 		if (timeElapsedSinceStarting >= animationLength * 1.0f)
 		{
@@ -50,7 +61,7 @@ public class RatTackle : Ability
 			owner.Motor.StopMotion();
 			owner.Motor.EnableStandardMovement(false);
 			owner.Motor.MaxSpeed = prevSpeed;
-            owner.Motor.Acceleration = prevAccel;
+			owner.Motor.Acceleration = prevAccel;
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
 		{
@@ -75,15 +86,17 @@ public class RatTackle : Ability
 		}
 		else if (timeElapsedSinceStarting >= animationLength * 0.25f)
 		{
+			owner.Motor.Move(owner.transform.forward);
 			owner.Motor.EnableStandardMovement(true);
 			owner.Motor.MaxSpeed = 10.0f;
-            owner.Motor.Acceleration = 10.0f;
+			owner.Motor.Acceleration = 10.0f;
 		}
     }
 
     public override void EndAbility()
     {
         base.EndAbility();
+		owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
         owner.Motor.EnableStandardMovement(true);
         owner.ResetColor();
     }

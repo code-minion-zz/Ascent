@@ -191,6 +191,7 @@ public class Floor : MonoBehaviour
 
                 if (thisEnemy != null)
                 {
+					thisEnemy.ContainedRoom = thisEnemy.transform.parent.parent.GetComponent<Room>();
                     thisEnemy.Initialise();
                     thisEnemy.InitiliseHealthbar();
                     thisEnemy.onDeath += OnEnemyDeath;

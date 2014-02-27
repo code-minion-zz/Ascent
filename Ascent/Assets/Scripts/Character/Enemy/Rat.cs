@@ -8,6 +8,8 @@ using System;
 
 public class Rat : Enemy 
 {
+	private int tackleAbilityID;
+
    public override void Initialise()
     {
         EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
@@ -18,7 +20,8 @@ public class Rat : Enemy
         loadout.SetSize(1);
 
 		Ability tackle = new RatTackle();
-        loadout.SetAbility(tackle, 0);
+		tackleAbilityID = 0;
+		loadout.SetAbility(tackle, tackleAbilityID);
 
 		InitialiseAI();
 	}
@@ -28,7 +31,7 @@ public class Rat : Enemy
 	   AIAgent.Initialise(transform);
 
        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.25f;
+	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
        motor.MaxSpeed = 3.0f;
        motor.MinSpeed = 0.5f;
        motor.Acceleration = 1.0f;
@@ -51,6 +54,11 @@ public class Rat : Enemy
 		   trigger.AddCondition(new AICondition_Timer(2.0f));
 		   trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
 		   trigger.OnTriggered += OnWanderEnd;
+
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f,  Vector3.zero)));
+		   trigger.OnTriggered += OnAttacked;
 	   }
 
        // Aggressive
@@ -65,9 +73,14 @@ public class Rat : Enemy
            // OnCanUseTackle, triggers if target in range and action off cooldown
            trigger = behaviour.AddTrigger();
            trigger.Priority = AITrigger.EConditionalExit.Stop;
-           trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[0]));
+		   trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
            trigger.OnTriggered += OnCanUseTackle;
+
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[tackleAbilityID]));
+		   trigger.OnTriggered += OnAggressiveEnd;
 
            trigger = behaviour.AddTrigger();
            trigger.Priority = AITrigger.EConditionalExit.Stop;
@@ -91,27 +104,39 @@ public class Rat : Enemy
 
    public void OnAggressiveEnd()
    {
+	   motor.MaxSpeed = 3.0f;
+	   motor.MinSpeed = 0.5f;
+	   motor.Acceleration = 1.0f;
+
 	   AIAgent.SteeringAgent.RemoveTarget();
 	   motor.StopMotion();
 
 	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
 	   OnWanderEnd();
-
-	   motor.MaxSpeed = 3.0f;
    }
 
    public void OnAttacked()
    {
 	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   AIAgent.TargetCharacter = lastDamagedBy;
-	   motor.MaxSpeed = 5.0f;
+
+	   if (lastDamagedBy != null)
+	   {
+		   AIAgent.TargetCharacter = lastDamagedBy;
+	   }
+	   else if(AIAgent.SensedCharacters != null && AIAgent.SensedCharacters.Count > 0)
+	   {
+		   AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+	   }
    }
 
    public void OnCanUseTackle()
    {
-	   loadout.UseAbility(0);
+	   motor.LookAt(AIAgent.TargetCharacter.transform.position);
+	   AIAgent.SteeringAgent.RemoveTarget();
+	   motor.StopMotion();
+	   loadout.UseAbility(tackleAbilityID);
    }
 
    public override void OnDisable()
@@ -121,6 +146,5 @@ public class Rat : Enemy
        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
        AIAgent.SteeringAgent.RemoveTarget();
        OnWanderEnd();
-       motor.MaxSpeed = 3.0f;
    }
 }

@@ -49,9 +49,9 @@ namespace Ascent
             UpdateSelectedRoom();
             UpdateSelectedTile();
 
-            Event e = Event.current;
-            Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
-            Vector3 mousePos = r.origin;
+            //Event e = Event.current;
+            //Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
+            //Vector3 mousePos = r.origin;
         }
 
         void OnGUI()
@@ -64,6 +64,11 @@ namespace Ascent
                 RoomCreationWindow roomCreationWnd = EditorWindow.GetWindow<RoomCreationWindow>("Create Room");
                 roomCreationWnd.Initialise(roomGen);
             }
+			if (GUILayout.Button("Create New Room From Template", GUILayout.Width(buttonSize)))
+			{
+				RoomTemplateWindow roomCreationWnd = EditorWindow.GetWindow<RoomTemplateWindow>("Create Room");
+				roomCreationWnd.Initialise(roomGen);
+			}
 
             SelectRoomGUI();
 

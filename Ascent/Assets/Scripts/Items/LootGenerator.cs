@@ -116,6 +116,7 @@ public static class LootGenerator
 	    "Kitch",
 	};
 
+#pragma warning disable 0414 // The private field `LootGenerator.gradeEAdjectives' is assigned but its value is never used
 	private const int maxGradeE_Adjectives = 1;
 	static string[] gradeEAdjectives = new string[maxBrandNames] 
 	{

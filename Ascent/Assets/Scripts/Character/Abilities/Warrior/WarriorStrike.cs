@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorStrike : Ability
+public class WarriorStrike : BaseHeroAbility
 {
 	public float radius = 2.5f;
 	public float arcAngle = 85.0f;
