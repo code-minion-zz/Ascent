@@ -72,11 +72,31 @@ public class HeroController : MonoBehaviour
 					motor.StopMovingAlongGrid();
 				}
 
-				// Action's that cannot be interrupted will not cause this to happen.
-				if (hero.Loadout.CanInterruptActiveAbility)
-				{
-                    hero.Loadout.StopAbility();
+				//// Action's that cannot be interrupted will not cause this to happen.
+				//if (hero.Loadout.CanInterruptActiveAbility)
+				//{
+				//    hero.Loadout.StopAbility();
 
+				//    animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
+				//}
+
+
+				if (actionButtonPair.control != null && actionButtonPair.control.WasReleased)
+				{
+					int abilityID = hero.Loadout.GetAbilityID(actionButtonPair.action);
+
+					if (abilityID == -1)
+					{
+						Debug.Log(actionButtonPair.action);
+					}
+
+					hero.Loadout.UseAbility(abilityID);
+					actionButtonPair.action = null;
+					actionButtonPair.control = null;
+				}
+
+				if (!hero.Loadout.IsAbilityActive)
+				{
 					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
 				}
 			}
@@ -131,9 +151,14 @@ public class HeroController : MonoBehaviour
 						targetObject = null;
 					}
 
-					ProcessFaceButtons(inputDevice);
-					ProcessTriggersAndBumpers(inputDevice);
-					ProcessDPad(inputDevice);
+					if (!hero.Loadout.IsAbilityActive ||
+						((hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility) ||
+						(hero.Loadout.IsAbilityActive && !hero.Loadout.CanInterruptActiveAbility && hero.Loadout.ActiveAbility is BaseHeroAbility)))
+					{
+						ProcessFaceButtons(inputDevice);
+						ProcessTriggersAndBumpers(inputDevice);
+						ProcessDPad(inputDevice);
+					}
 				}
 			}
 
@@ -148,6 +173,7 @@ public class HeroController : MonoBehaviour
 				{
 					hero.Loadout.UseAbility(hero.Loadout.GetAbilityID(actionButtonPair.action));
 					actionButtonPair.action = null;
+					actionButtonPair.control = null;
 				}
 			}
 
@@ -209,25 +235,25 @@ public class HeroController : MonoBehaviour
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
 		// Left Trigger
-		if (device.LeftTrigger.WasPressed)
+		if (device.LeftTrigger)
 		{
             ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.LeftTrigger);
 		}
 
         // Left Bump
-        else if (device.LeftBumper.WasPressed)
+        else if (device.LeftBumper)
         {
             ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.LeftBumper);
         }
 
 		// Right bump
-		else if (device.RightBumper.WasPressed)
+		else if (device.RightBumper)
 		{
             ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device.RightBumper);
 		}
 
 		// Right Trigger
-		else if (device.RightTrigger.WasPressed)
+		else if (device.RightTrigger)
 		{
             ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device.RightTrigger);
 		}
@@ -254,6 +280,7 @@ public class HeroController : MonoBehaviour
             {
                 if (hero.Loadout.UseCastAbility(abilityID))
                 {
+					RotateToTarget();
                     actionButtonPair.action = ability;
                     actionButtonPair.control = control;
 
@@ -452,10 +479,13 @@ public class HeroController : MonoBehaviour
 		}
 
 		// TODO: Remove X or A depending on what people think is more intuitive
-		if (device.X.WasPressed || device.A.WasPressed) 
+		if (!hero.Loadout.IsAbilityActive || (hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility))
 		{
-			RotateToTarget();
-			hero.Loadout.UseAbility((int)EHeroAction.Strike);
+			if (device.X || device.A)
+			{
+				RotateToTarget();
+				hero.Loadout.UseAbility((int)EHeroAction.Strike);
+			}
 		}
 
 		if (device.Y.WasPressed)

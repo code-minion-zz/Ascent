@@ -37,6 +37,6 @@ public class Warrior : Hero
         loadout.SetAbility(new WarriorWarStomp(), (int)HeroController.EHeroAction.Action3);
         loadout.SetAbility(new WarriorWarCry(), (int)HeroController.EHeroAction.Action4);
 
-		vulnerabilities = EStatus.None;
+		vulnerabilities = EStatus.All;
 	}
 }

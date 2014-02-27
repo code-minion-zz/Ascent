@@ -114,6 +114,11 @@ public abstract class Ability
         // To be derived
     }
 
+	public virtual void UpdateCast()
+	{
+		// To be derived
+	}
+
 	/// <summary>
 	/// Updates time, updates action then checks for time expiration
 	/// 

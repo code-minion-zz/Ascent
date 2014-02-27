@@ -8,9 +8,9 @@ using System;
 
 public class Slime : Enemy
 {
-    private AITrigger OnAttackedTrigger;
+    //private AITrigger OnAttackedTrigger;
     private AITrigger OnWanderEndTrigger;
-    private AITrigger OnReplicateTrigger;
+    //private AITrigger OnReplicateTrigger;
 
     private int replicateActionID;
 
@@ -82,8 +82,8 @@ public class Slime : Enemy
     public void OnAttacked()
     {
         loadout.UseAbility(replicateActionID);
-        OnAttackedTrigger.Reset();
-        OnReplicateTrigger.Reset();
+        //OnAttackedTrigger.Reset();
+        //OnReplicateTrigger.Reset();
     }
 
     public void OnCollisionEnter(Collision other)

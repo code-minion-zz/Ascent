@@ -7,6 +7,7 @@ public class Fireball :  Projectile
 
     private Character owner;
     private Vector3 velocity;
+	private Vector3 curVelocity;
 
     public void Initialise(Vector3 startPos, Vector3 velocity, Character owner)
     {
@@ -18,36 +19,40 @@ public class Fireball :  Projectile
 
     public void Update()
     {
-		
-		projectile.rigidbody.AddForce(velocity, ForceMode.Acceleration);
+		projectile.rigidbody.AddForce(velocity, ForceMode.Force);
 		//projectile.transform.position += velocity * Time.deltaTime;
     }
 
 	public void OnCollisionEnter(Collision collision)
 	{
-		// Check what it has collided with
-		Layer layer = (Layer)collision.gameObject.layer;
+		//// Check what it has collided with
+		//Layer layer = (Layer)collision.gameObject.layer;
 
-		switch (layer)
-		{
-			case Layer.Environment:
-				{
-					// Blow up
-					Debug.Log("Hit Environment");
-				}
-				break;
-			case Layer.Hero:
-			case Layer.Monster:
-				{
-					// Blow up and deal damage to this unit
-					Debug.Log("Hit Character");
-				}
-				break;
-			default:
-				{
-					Debug.LogError("Unhandled case, " + layer.ToString());
-				}
-				break;
-		}
+		//switch (layer)
+		//{
+		//    case Layer.Environment:
+		//        {
+		//            // Blow up
+		//            Debug.Log("Hit Environment");
+		//        }
+		//        break;
+		//    case Layer.Hero:
+		//    case Layer.Monster:
+		//        {
+		//            // Blow up and deal damage to this unit
+		//            Debug.Log("Hit Character");
+		//        }
+		//        break;
+		//    default:
+		//        {
+		//            Debug.LogError("Unhandled case, " + layer.ToString());
+		//        }
+		//        break;
+		//}
+
+		GameObject explosion = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FireballExplosion")) as GameObject;
+		explosion.GetComponent<FireballExplosion>().Initialise(transform.position, owner);
+
+		GameObject.Destroy(this.gameObject);
 	}
 }

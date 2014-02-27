@@ -13,4 +13,5 @@ public enum Layer
 	Floor = 11,
 	Block = 12,
 	Item = 13,
+	Projectile = 14,
 }

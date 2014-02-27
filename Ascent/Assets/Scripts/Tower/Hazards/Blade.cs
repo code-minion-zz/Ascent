@@ -3,11 +3,9 @@ using System.Collections;
 
 public class Blade : MonoBehaviour 
 {
-	private int damage;
-
 	public void Initialise(int damage)
 	{
-		this.damage = damage;
+
 	}
 
 	void OnCollisionEnter(Collision collision)

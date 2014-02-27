@@ -30,8 +30,8 @@ public class RatTackle : Ability
 		owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 
-		//prevSpeed = owner.Motor.MaxSpeed;
-		//prevAccel = owner.Motor.Acceleration;
+		prevSpeed = owner.Motor.MaxSpeed;
+		prevAccel = owner.Motor.Acceleration;
 
 		executedDamage = false;
 	}

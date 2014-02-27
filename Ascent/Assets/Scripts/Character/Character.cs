@@ -191,6 +191,12 @@ public abstract class Character : BaseCharacter
 
 			// Tell this character how much damage it has done.
 			OnDamageTaken(finalDamage);
+
+			// Do knockback
+			if (result.knockbackMagnitute != 0.0f)
+			{
+				motor.SetKnockback(result.knockbackDirection, result.knockbackMagnitute);
+			}
 		}
 
 
@@ -387,21 +393,6 @@ public abstract class Character : BaseCharacter
     public virtual void RemoveStatusEffect(StatusEffect effect)
 	{
         effect.ToBeRemoved = true;
-	}
-
-	public virtual int DamageFormulaA(float addFixedDamage, float addMultiplier)
-	{
-		float damage = 0.0f;
-		if (this is Hero)
-		{
-			damage = (((Hero)this).HeroStats.Attack * addMultiplier) + addFixedDamage;
-		}
-		else
-		{
-			damage = (Stats.Attack* addMultiplier) + addFixedDamage;
-		}
-
-		return (int)damage;
 	}
 
 #if UNITY_EDITOR

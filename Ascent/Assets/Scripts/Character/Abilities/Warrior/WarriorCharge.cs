@@ -182,8 +182,6 @@ public class WarriorCharge : Ability
 				{
 					for (int i = enemiesFoundLastCount; i < enemies.Count; ++i)
 					{
-						int damage = owner.DamageFormulaA(0.0f, 1.5f);
-
 						// Apply damage, knockback and stun to the enemy.
 						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
 						combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));

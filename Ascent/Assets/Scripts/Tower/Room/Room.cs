@@ -43,8 +43,6 @@ public class Room : MonoBehaviour
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
 	[HideInInspector]
 	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
-	private Vector3 curMinCamera = new Vector3(-3.0f, 24.0f, -8.0f);
-	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 	
 	[HideInInspector]
 	public float cameraHeight = 20.0f;
