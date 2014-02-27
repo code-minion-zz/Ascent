@@ -70,7 +70,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		ACCSHOP,
 		CONSHOP,
 		TAVERN,
-		QUIT,
+		CHAPEL,
 		MAX
 	}
 
@@ -86,9 +86,9 @@ public class UITownWindow : UIPlayerMenuWindow
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
 
-		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
-		//player.Input.LeftStickX.
-		HandleOnMenuLeftStickMove(player.Input);
+//		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
+//		HandleOnMenuLeftStickMove(player.Input);
+
 		base.Initialise ();
 	}
 
@@ -116,14 +116,20 @@ public class UITownWindow : UIPlayerMenuWindow
 	{
 		//if (activePanel != null)
 	}
-
-	void HandleOnMenuLeftStickMove (InputDevice device)
+	
+	public void UpdatePointer (float angle)
 	{		
 		if (!pointerTransform.gameObject.activeInHierarchy) return;
 		
-		//pointerAngle = Utilities.VectorToAngleInDegrees(player.Input.LeftStickX.Value, player.Input.LeftStickY.Value);
-		pointerTransform.rotation = Quaternion.Euler(0f,0f,PointerAngle - 90f);
+		pointerTransform.rotation = Quaternion.Euler(0f,0f,angle);
 	}
+	
+//	public void HandleOnMenuLeftStickMove (InputDevice device)
+//	{		
+//		if (!pointerTransform.gameObject.activeInHierarchy) return;
+//		
+//		pointerTransform.rotation = Quaternion.Euler(0f,0f,PointerAngle - 90);
+//	}
 
 	/// <summary> Return item to inventory if space permits. </summary>
 	public bool Unequip(int slot)
@@ -158,6 +164,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		panels[(int)EBackpackPanels.CONSHOP] = transform.FindChild("ConsumableShop").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.SKILLS] = transform.FindChild("Skills").GetComponent<UIPlayerMenuPanel>();
 		panels[(int)EBackpackPanels.TAVERN] = transform.FindChild("Tavern").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)EBackpackPanels.CHAPEL] = transform.FindChild("Chapel").GetComponent<UIPlayerMenuPanel>();
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
@@ -353,14 +360,14 @@ public class UITownWindow : UIPlayerMenuWindow
 	protected override void HandleInputEvents()
 	{
 		// disallow input while flip animation is playing
-		if (flipState > 0) return;
+		if (PopupActive) return;
 
 		base.HandleInputEvents();
 	}
 
 	void OnDestroy()
 	{
-		OnMenuLeftStickMove -= HandleOnMenuLeftStickMove;
+//		OnMenuLeftStickMove -= HandleOnMenuLeftStickMove;
 	}
 }
 

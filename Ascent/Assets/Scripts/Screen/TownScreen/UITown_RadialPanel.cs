@@ -15,14 +15,15 @@ using System.Collections.Generic;
 /// </summary>
 public class UITown_RadialPanel : UITown_Panel
 {
-	protected Dictionary<float, int> AngleIndex;
+	protected Dictionary<int, float> AngleIndex;
 	protected bool updatePointer = false;
+	public static float Angular_Tolerance = 10f;
 
 	public override void Initialise ()
 	{
 		base.Initialise ();
 		
-		AngleIndex = new Dictionary<float, int>();
+		AngleIndex = new Dictionary<int, float>();
 
 	}
 
@@ -33,27 +34,31 @@ public class UITown_RadialPanel : UITown_Panel
 	protected virtual bool HighlightButton ()
 	{
 		float angle = (parent as UITownWindow).PointerAngle - 90f;
+		float snapAngle = angle;
 
 		bool hit = false; // True if at least one match is made
 
-		foreach (KeyValuePair<float,int> p in AngleIndex)
+		foreach (KeyValuePair<int, float> p in AngleIndex)
 		{
-			if (Utilities.CloseTo(angle,p.Key, 20f))
+			if (Utilities.CloseTo(angle,p.Value, Angular_Tolerance))
 			{
 				hit = true;
-				if (buttons[p.Value] != currentSelection)
+				if (buttons[p.Key] != currentSelection)
 				{
 					if (currentSelection)
 					{
 						UICamera.Notify(currentSelection.gameObject, "OnHover", false);
 					}
-					currentSelection = buttons[p.Value];
-					currentHighlightedButton = p.Value;
+					currentSelection = buttons[p.Key];
+					currentHighlightedButton = p.Key;
 					//Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 				}
-				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+				UICamera.Notify(currentSelection.gameObject, "OnHover", true);	
+				snapAngle = p.Value;
 			}
 		}
+		
+		townParent.UpdatePointer(snapAngle);
 
 		// comment out next line for 'sticky selection' behaviour
 		if (!hit) // Removes button selection if no longer in range
