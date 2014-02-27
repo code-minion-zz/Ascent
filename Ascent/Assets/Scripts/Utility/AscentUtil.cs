@@ -20,6 +20,14 @@ public class Utilities
 
 	public static bool CloseTo(float a, float b, float tolerance)
 	{
+		bool aLowerSpill = false;
+		bool aUpperSpill = false;
+		bool bLowerSpill = false;
+		bool bUpperSpill = false;
+		float rangeMinA;
+		float rangeMaxA;
+		float rangeMinB;
+		float rangeMaxB;
 		return (Mathf.Abs(AbsoluteAngle(a) - AbsoluteAngle(b)) <= tolerance);
 	}
 

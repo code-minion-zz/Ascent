@@ -17,6 +17,7 @@ public class UITown_RadialPanel : UITown_Panel
 {
 	protected Dictionary<int, float> AngleIndex;
 	protected bool updatePointer = false;
+	public static float Angular_Tolerance = 10f;
 
 	public override void Initialise ()
 	{
@@ -38,7 +39,7 @@ public class UITown_RadialPanel : UITown_Panel
 
 		foreach (KeyValuePair<int, float> p in AngleIndex)
 		{
-			if (Utilities.CloseTo(angle,p.Value, 20f))
+			if (Utilities.CloseTo(angle,p.Value, Angular_Tolerance))
 			{
 				hit = true;
 				if (buttons[p.Key] != currentSelection)
