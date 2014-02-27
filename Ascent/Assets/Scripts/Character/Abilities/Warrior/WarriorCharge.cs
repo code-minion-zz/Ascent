@@ -97,7 +97,7 @@ public class WarriorCharge : Ability
 		}
 		else
 		{
-			int layerMask = ((1 << 17) | (1 << 18) | (1 << 8));
+			int layerMask = ((1 << (int)Layer.Environment));
 			RaycastHit hitInfo;
 			//if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
 			//{
