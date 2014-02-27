@@ -34,6 +34,7 @@ public class UITown_RadialPanel : UITown_Panel
 	protected virtual bool HighlightButton ()
 	{
 		float angle = (parent as UITownWindow).PointerAngle - 90f;
+		float snapAngle = angle;
 
 		bool hit = false; // True if at least one match is made
 
@@ -52,9 +53,12 @@ public class UITown_RadialPanel : UITown_Panel
 					currentHighlightedButton = p.Key;
 					//Debug.Log("Button Highlighted :" + currentSelection.gameObject + " Angle:" + angle + " against:" + p.Key);
 				}
-				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+				UICamera.Notify(currentSelection.gameObject, "OnHover", true);	
+				snapAngle = p.Value;
 			}
 		}
+		
+		townParent.UpdatePointer(snapAngle);
 
 		// comment out next line for 'sticky selection' behaviour
 		if (!hit) // Removes button selection if no longer in range

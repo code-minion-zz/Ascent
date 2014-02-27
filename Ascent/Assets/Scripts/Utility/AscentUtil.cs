@@ -18,25 +18,39 @@ public class Utilities
 		return retval;
 	}
 
-	public static bool CloseTo(float a, float b, float tolerance)
+	public static bool CloseTo(float pointerAngle, float buttonAngle, float tolerance)
 	{
-		bool aLowerSpill = false;
-		bool aUpperSpill = false;
-		bool bLowerSpill = false;
-		bool bUpperSpill = false;
-		float rangeMinA;
-		float rangeMaxA;
-		float rangeMinB;
-		float rangeMaxB;
-		return (Mathf.Abs(AbsoluteAngle(a) - AbsoluteAngle(b)) <= tolerance);
+		bool returnValue = false;
+
+		float diff = Mathf.Abs(AdjustAngle(pointerAngle) - AdjustAngle(buttonAngle)) % 360;
+
+		if (diff < tolerance)
+		{
+			returnValue = true;
+		}
+		if (buttonAngle == 315)
+		{
+			Debug.Log (diff + " " + pointerAngle );
+		}
+
+		return returnValue;
 	}
 
-	public static float AbsoluteAngle(float f)
+	public static float AdjustAngle(float f)
 	{
-		if (f < 0)
+		float retVal = 0f;
+		if (f < 270)
 		{
-			return f += 360f;
+			f += 360f;
 		}
-		return f;
+
+		if (f > 90)
+		{
+			f -= 360;
+		}
+
+		retVal = f;
+
+		return retVal;
 	}
 }

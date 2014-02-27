@@ -6,6 +6,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 	public GameObject ButtonPrefab;
 	static float ANGLE_CORRECTION = 90f * Mathf.Deg2Rad;
 	static float BUTTON_SCALE = 0.3f;
+	static int ANGLE_DIVISION = 8;
 
 	public override void Initialise()
 	{
@@ -13,21 +14,28 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 		buttons = new UIButton[7];
 
+		// Create and position buttons for the main menu in a circle
 		Transform button;
 		int i;
 		Vector3 heading;
-		float angle = 360f/7;
+		float angle = 360f/8;
 		float radians = angle * Mathf.Deg2Rad;
 		List<float> radianList = new List<float>();
 		Angular_Tolerance = angle/2;
 		for (i = 0; i < 7; ++i)
 		{
+			int mod = 0;
 			GameObject buttonGO = NGUITools.AddChild(gameObject, ButtonPrefab);
 			buttons[i] = buttonGO.GetComponent<UIButton>();
-			AngleIndex.Add(i, i * angle);
-			radianList.Add(i * radians);
-		}
 
+			if (i > 3)
+			{
+				mod = 1;
+			}
+			AngleIndex.Add(i, (i+mod) * angle);
+			radianList.Add((i+mod) * radians);
+		}
+		radianList.Add(i*radians);
 
 		i = 0;
 		// Setting individual button values
@@ -79,39 +87,11 @@ public class UITown_MainPanel : UITown_RadialPanel
 		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
 		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
-//		buttons[1].gameObject.name += " Backpack";
-//		button = buttons[1].transform;
-//		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_BackPackIcon_64";
-//		ray.origin = new Vector2(transform.position.x, transform.position.y);
-//		rot = Quaternion.AngleAxis(AngleIndex[1],Vector3.up);
-//		Vector3 heading = MathUtility.ConvertHeadingToVector(AngleIndex[1]);
-//		tempDirection = rot * transform.forward;
-//		ray.direction = new Vector2(tempDirection.x, tempDirection.y);
-//		tempPos = ray.GetPoint(0.5f);
-//		button.position = new Vector3(tempPos.x, tempPos.y, 0f);
-//
-//		buttons[1] = transform.Find("Button ConShop").GetComponent<UIButton>();
-//		AngleIndex.Add(45f, 1);
-//
-//		buttons[3] = transform.Find("Button Backpack").GetComponent<UIButton>();
-//		AngleIndex.Add(-90f, 3);
-//		
-//		buttons[4] = transform.Find("Button AccShop").GetComponent<UIButton>();
-//		AngleIndex.Add(-45f, 4);
-//		
-//		buttons[5] = transform.Find("Button Skilltree").GetComponent<UIButton>();
-//		AngleIndex.Add(-135f, 5);
-//		
-//		buttons[6] = transform.Find("Button Tavern").GetComponent<UIButton>();
-//		AngleIndex.Add(-215f, 6);
-//
-//		buttons[7] = transform.Find("Button Chapel").GetComponent<UIButton>();
-//		AngleIndex.Add(-180f, 7);
-
+		// set current selection to first button
 		currentSelection = buttons[0];
 		currentHighlightedButton = 0;
 
-		//justInitialized = true;
+		// set flags
 		initialised = true;
 		updatePointer = true;
 	}
@@ -219,23 +199,23 @@ public class UITown_MainPanel : UITown_RadialPanel
 		case 0 : // tower
 			(parent as UITownWindow).RequestTransitionToPanel(2);
 			break;
-		case 1 : // conshop
+		case 1 : // accshop
+			(parent as UITownWindow).RequestTransitionToPanel(4);
+			break;
+		case 2 : // conshop
 			(parent as UITownWindow).RequestTransitionToPanel(5);
 			break;
-		case 2 : // quit
-			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+		case 3 : // tavern
+			(parent as UITownWindow).RequestTransitionToPanel(6);
 			break;
-		case 3 : // backpack
-			(parent as UITownWindow).RequestTransitionToPanel(1);
-			break;
-		case 4 : // accshop
-			(parent as UITownWindow).RequestTransitionToPanel(4);
+		case 4 : // backpack
+			(parent as UITownWindow).RequestTransitionToPanel(5);
 			break;
 		case 5 : // skills
 			(parent as UITownWindow).RequestTransitionToPanel(3);
 			break;
-		case 6 : // tavern
-			(parent as UITownWindow).RequestTransitionToPanel(6);
+		case 6 : // chapel
+			(parent as UITownWindow).RequestTransitionToPanel(7);
 			break;
 		default : // nothing meaningful is highlighted
 			break;
@@ -252,16 +232,22 @@ public class UITown_MainPanel : UITown_RadialPanel
 			townWindow.SetInfo("Enter the Tower");
 			break;
 		case 1: // conshop
-			townWindow.SetInfo("Visit the Item Shop");
+			townWindow.SetInfo("Shop in the Gem Shop");
 			break;
-		case 2: // quit
-			townWindow.SetInfo("Quit to Main Menu");
+		case 2: // accshop
+			townWindow.SetInfo("Shop in the Item Shop");
 			break;
-		case 3: // backpack
+		case 3: // tavern
+			townWindow.SetInfo("Go to the Tavern");
+			break;
+		case 4: // backpack
 			townWindow.SetInfo("Manage your Equipment");
 			break;
-		case 4: // accshop
-			townWindow.SetInfo("Visit the Gem shop");
+		case 5: // skills
+			townWindow.SetInfo("Manage your Skills");
+			break;
+		case 6: // chapel
+			townWindow.SetInfo("Visit the Chapel");
 			break;
 		default:
 			townWindow.SetInfo("");
