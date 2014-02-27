@@ -43,8 +43,6 @@ public class Room : MonoBehaviour
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
 	[HideInInspector]
 	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
-	private Vector3 curMinCamera = new Vector3(-3.0f, 24.0f, -8.0f);
-	private Vector3 curMaxCamera = new Vector3(3.0f, 24.0f, 0.0f);
 	
 	[HideInInspector]
 	public float cameraHeight = 20.0f;
@@ -147,7 +145,8 @@ public class Room : MonoBehaviour
                 }
                 else
                 {
-                    monstersNode = AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+                    monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster);
+					Debug.Log(monstersNode.layer);
                     return monstersNode.transform;
                 }
             }
@@ -172,7 +171,7 @@ public class Room : MonoBehaviour
                 }
                 else
                 {
-                    environmentNode = AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment")).transform;
+					environmentNode = AddNewParentCategory("Environment", (int)Layer.Environment).transform;
                     return environmentNode;
                 }
             }
@@ -196,7 +195,7 @@ public class Room : MonoBehaviour
         if (monstersNode == null)
         {
             // Obviously it does not exist so we can create one.
-            monstersNode = AddNewParentCategory("Monsters", LayerMask.NameToLayer("Monster"));
+			monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster);
             Debug.LogWarning("Could not find Monsters GameObject in Room. Creating one now.", gameObject);
         }
 

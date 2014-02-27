@@ -46,11 +46,11 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
-	private bool highlighted;
-	public bool Highlighted
-	{
-		get { return highlighted; }
-	}
+	//private bool highlighted;
+	//public bool Highlighted
+	//{
+	//    get { return highlighted; }
+	//}
 
 	public virtual void Initialise()
 	{

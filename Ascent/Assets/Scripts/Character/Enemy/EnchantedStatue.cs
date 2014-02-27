@@ -47,7 +47,8 @@ public class EnchantedStatue : Enemy
 
     public void InitialiseAI()
     {
-        motor.MaxSpeed = 1.5f;
+		motor.MinSpeed = 0.1f;
+        motor.MaxSpeed = 0.1f;
         AIAgent.Initialise(transform);
 		AIAgent.SteeringAgent.RotationSpeed = 1.5f;
 		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;

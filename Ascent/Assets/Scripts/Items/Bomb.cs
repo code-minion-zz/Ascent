@@ -19,9 +19,8 @@ public class Bomb : MonoBehaviour
 		this.radius = radius;
 		fuseTimeMax = fuseTime;
 
-
 		// Defines the collision shape and properties of this ability.
-		damageArea = new Circle(transform, radius, new Vector3(0.0f, 0.0f, 0.0f));
+		damageArea = new Circle(transform, this.radius, new Vector3(0.0f, 0.0f, 0.0f));
 
 		transform.position = owner.transform.position + (owner.transform.forward * 0.25f) + Vector3.up;
 		rigidbody.AddForce((owner.transform.forward * 25.0f) + (Vector3.up * 25.0f), ForceMode.Impulse);

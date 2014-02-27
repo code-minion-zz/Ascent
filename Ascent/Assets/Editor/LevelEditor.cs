@@ -49,9 +49,9 @@ namespace Ascent
             UpdateSelectedRoom();
             UpdateSelectedTile();
 
-            Event e = Event.current;
-            Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
-            Vector3 mousePos = r.origin;
+            //Event e = Event.current;
+            //Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
+            //Vector3 mousePos = r.origin;
         }
 
         void OnGUI()

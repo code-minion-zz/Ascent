@@ -44,7 +44,8 @@ public class Circle : Shape2D
 #if UNITY_EDITOR
 	public override void DebugDraw()
 	{
-        Handles.CircleCap(0, transform.position + Offset, Quaternion.LookRotation(Vector3.down, Vector3.up), radius);
+		Vector3 groundedPos = new Vector3(transform.position.x, 0.1f, transform.position.z);
+		Handles.CircleCap(0, groundedPos + Offset, Quaternion.LookRotation(Vector3.down, Vector3.up), radius);
 		//Gizmos.DrawWireSphere(Position, radius);
 	}
 #endif

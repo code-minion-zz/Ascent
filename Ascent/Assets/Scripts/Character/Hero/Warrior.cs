@@ -31,11 +31,12 @@ public class Warrior : Hero
         // Add abilities (TODO: Save/Load/Create this.)
         loadout.SetAbility(new WarriorStrike(), (int)HeroController.EHeroAction.Strike);
 
-        loadout.SetAbility(new WarriorHeavyStrike(), (int)HeroController.EHeroAction.Action1);
+        loadout.SetAbility(new WarriorFireball(), (int)HeroController.EHeroAction.Action1);
+       // loadout.SetAbility(new WarriorHeavyStrike(), (int)HeroController.EHeroAction.Action1);
         loadout.SetAbility(new WarriorCharge(), (int)HeroController.EHeroAction.Action2);
         loadout.SetAbility(new WarriorWarStomp(), (int)HeroController.EHeroAction.Action3);
         loadout.SetAbility(new WarriorWarCry(), (int)HeroController.EHeroAction.Action4);
 
-		vulnerabilities = EStatus.None;
+		vulnerabilities = EStatus.All;
 	}
 }

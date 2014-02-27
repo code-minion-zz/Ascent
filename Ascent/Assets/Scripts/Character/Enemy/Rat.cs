@@ -54,6 +54,11 @@ public class Rat : Enemy
 		   trigger.AddCondition(new AICondition_Timer(2.0f));
 		   trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
 		   trigger.OnTriggered += OnWanderEnd;
+
+		   trigger = behaviour.AddTrigger();
+		   trigger.Priority = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f,  Vector3.zero)));
+		   trigger.OnTriggered += OnAttacked;
 	   }
 
        // Aggressive
@@ -115,7 +120,15 @@ public class Rat : Enemy
    {
 	   AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 	   AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-	   AIAgent.TargetCharacter = lastDamagedBy;
+
+	   if (lastDamagedBy != null)
+	   {
+		   AIAgent.TargetCharacter = lastDamagedBy;
+	   }
+	   else if(AIAgent.SensedCharacters != null && AIAgent.SensedCharacters.Count > 0)
+	   {
+		   AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+	   }
    }
 
    public void OnCanUseTackle()

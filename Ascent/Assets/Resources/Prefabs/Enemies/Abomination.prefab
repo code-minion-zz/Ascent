@@ -15,7 +15,7 @@ GameObject:
   - 65: {fileID: 6500000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400010}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Abomination
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400002}
   - 65: {fileID: 6500002}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 65: {fileID: 6500004}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400006}
   - 114: {fileID: 11400006}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Tilt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400008}
   - 65: {fileID: 6500006}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: LeftHindLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400010}
   - 65: {fileID: 6500008}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: RightHindLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - 4: {fileID: 400012}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Model
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400014}
   - 65: {fileID: 6500010}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400016}
   - 114: {fileID: 11400002}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400018}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,12 +426,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100000}
-  currentSpeed: 0
-  acceleration: 1
-  minSpeed: 5.5
-  maxVelocityChange: 1.5
-  canMove: 1
-  moving: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -454,7 +448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc70b3a54ea56342b17c0961b46a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 800
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

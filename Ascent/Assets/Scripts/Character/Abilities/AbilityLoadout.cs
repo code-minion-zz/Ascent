@@ -15,6 +15,11 @@ public class AbilityLoadout
     protected CharacterMotor motor;
     private Ability activeAbility;
 
+	public Ability ActiveAbility
+	{
+		get { return activeAbility; }
+	}
+
     public bool IsAbilityActive
     {
         get
@@ -127,7 +132,7 @@ public class AbilityLoadout
     public virtual bool UseAbility(int abilityID)
     {
         // If there no active ability then we can use a new one
-        bool canUse = (activeAbility == null);
+		bool canUse = (activeAbility == null);
 
         // Or if there is an active one we can use a new one if the old one can be interupted
         bool interupt = false;
@@ -135,6 +140,12 @@ public class AbilityLoadout
         {
             interupt = activeAbility.CanBeInterrupted;
             canUse = interupt;
+
+			if (activeAbility is BaseHeroAbility)
+			{
+				canUse = true;
+				interupt = true;
+			}
         }
 
         if (canUse)
