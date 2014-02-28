@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class WarriorFireball : Ability
+public class WarriorFreezeField : Ability
 {
     public override void Initialise(Character owner)
     {
@@ -22,12 +22,12 @@ public class WarriorFireball : Ability
     {
         base.StartAbility();
 
-		CanBeInterrupted = false;
+        CanBeInterrupted = false;
 
-        GameObject fireballGO =  GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Fireball")) as GameObject;
-		fireballGO.GetComponent<Fireball>().Initialise(owner.transform.position + (owner.transform.forward), owner.transform.forward * 10.0f, owner);
+        GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
+        fireballGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position, owner);
 
-		((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
+        ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
     }
 
     public override void StartCast()
@@ -37,7 +37,7 @@ public class WarriorFireball : Ability
 
     public override void UpdateAbility()
     {
-		if (timeElapsedSinceStarting >= animationLength * 0.75f)
+        if (timeElapsedSinceStarting >= animationLength * 0.75f)
         {
             CanBeInterrupted = true;
         }
@@ -50,11 +50,4 @@ public class WarriorFireball : Ability
         ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }
-
-#if UNITY_EDITOR
-    public override void DebugDraw()
-    {
-       
-    }
-#endif
 }

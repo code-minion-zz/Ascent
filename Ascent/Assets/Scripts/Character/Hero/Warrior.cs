@@ -34,8 +34,10 @@ public class Warrior : Hero
         loadout.SetAbility(new WarriorFireball(), (int)HeroController.EHeroAction.Action1);
        // loadout.SetAbility(new WarriorHeavyStrike(), (int)HeroController.EHeroAction.Action1);
         loadout.SetAbility(new WarriorCharge(), (int)HeroController.EHeroAction.Action2);
-        loadout.SetAbility(new WarriorWarStomp(), (int)HeroController.EHeroAction.Action3);
-        loadout.SetAbility(new WarriorWarCry(), (int)HeroController.EHeroAction.Action4);
+        //loadout.SetAbility(new WarriorWarStomp(), (int)HeroController.EHeroAction.Action3);
+        loadout.SetAbility(new WarriorFreezeField(), (int)HeroController.EHeroAction.Action3);
+        //loadout.SetAbility(new WarriorWarCry(), (int)HeroController.EHeroAction.Action4);
+        loadout.SetAbility(new WarriorLightning(), (int)HeroController.EHeroAction.Action4);
 
 		vulnerabilities = EStatus.All;
 	}
