@@ -15,6 +15,7 @@ public class Fireball :  Projectile
         this.velocity = velocity;
 		projectile.transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
 		projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+        projectile.rigidbody.AddTorque(new Vector3(Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f)));
     }
 
     public void Update()

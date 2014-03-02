@@ -9,7 +9,7 @@ public class WarriorFireball : Ability
         base.Initialise(owner);
 
         animationSpeed = 1.00f;
-        animationLength = 0.05f;
+        animationLength = 0.5f;
         cooldownFullDuration = 0.0f;
         animationTrigger = "Strike";
         specialCost = 0;
