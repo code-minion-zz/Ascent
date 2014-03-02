@@ -8,7 +8,7 @@ public class FireballExplosion : Projectile
 	private Character owner;
 
 	private float timeElapsed;
-	private float lifeSpan = 0.25f;
+	private float lifeSpan = 0.35f;
 	private bool damageDone = false;
 
 	private Circle circle;
@@ -59,8 +59,13 @@ public class FireballExplosion : Projectile
 		}
 	}
 
+#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
-		circle.DebugDraw();
+        if (circle != null)
+        {
+            circle.DebugDraw();
+        }
 	}
+#endif
 }

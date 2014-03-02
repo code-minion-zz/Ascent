@@ -117,7 +117,15 @@ public class HeroController : MonoBehaviour
 			{
 				if (grabbedObject != null)
 				{
-					ProcessPushableBlockMovement();
+						// Release the object if the button is released
+					if (inputDevice.A.WasReleased)
+					{
+						ReleaseGrabbedObject();
+					}
+					else
+					{
+						ProcessPushableBlockMovement();
+					}
 				}
 				else
 				{
@@ -224,7 +232,7 @@ public class HeroController : MonoBehaviour
 		//}
     }
 
-	public void OnDrawGizmos()
+	public void OnDrawGizmosSelected()
 	{
 		shapeA.DebugDraw();
 		shapeB.DebugDraw();
@@ -468,33 +476,26 @@ public class HeroController : MonoBehaviour
 
 	public void ProcessFaceButtons(InputDevice device)
 	{
-		// If an object is grabbed...
-		if (grabbedObject != null)
-		{
-			// Release the object if the button is released
-			if (device.Y.WasReleased)
-			{
-				ReleaseGrabbedObject();
-			}
-		}
-
 		// TODO: Remove X or A depending on what people think is more intuitive
 		if (!hero.Loadout.IsAbilityActive || (hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility))
 		{
-			if (device.X || device.A)
+			if (device.X.WasPressed || device.A.WasPressed)
 			{
-				RotateToTarget();
-				hero.Loadout.UseAbility((int)EHeroAction.Strike);
+				if (!ProcessInteractions())
+				{
+					RotateToTarget();
+					hero.Loadout.UseAbility((int)EHeroAction.Strike);
+				}
 			}
 		}
 
-		if (device.Y.WasPressed)
-		{
-			ProcessInteractions();
-		}
+		//if (device.Y.WasPressed)
+		//{
+		//	ProcessInteractions();
+		//}
 	}
 
-	public void ProcessInteractions()
+	public bool ProcessInteractions()
 	{
 		// NOTE: Only one of these may occur each time the button is pressed
 
@@ -503,7 +504,7 @@ public class HeroController : MonoBehaviour
 
 		// Is there a chest to open?
 		List<TreasureChest> chests = curRoom.Chests;
-		if (chests != null)
+		if (chests != null && chests.Count > 0)
 		{
 			// Are we in range of it?
 			foreach (TreasureChest c in chests)
@@ -515,8 +516,8 @@ public class HeroController : MonoBehaviour
 					{
 						c.OpenChest(); // I open the chest. No one else can.
                         hero.FloorStatistics.NumberOfChestsOpened++;
-						
-						return; // An interaction has occured. Exit function now.
+
+						return true; // An interaction has occured. Exit function now.
 					}
 				}
 			}
@@ -524,7 +525,7 @@ public class HeroController : MonoBehaviour
 
 		// Is there an item?
 		List<LootDrop> loot = curRoom.LootDrops;
-		if (loot != null)
+		if (loot != null && loot.Count > 0)
 		{
 			// Find the closest item
 			LootDrop closestDrop = null;
@@ -553,14 +554,14 @@ public class HeroController : MonoBehaviour
 					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
                     hero.FloorStatistics.NumberOfItemsPickedUp++;
 
-					return; // An interaction has occured. Exit function now.
+					return true; // An interaction has occured. Exit function now.
 				}
 			}
 		}
 
 
 		// Is there a door?
-		if (curRoom.Doors.lockedDoorCount > 0)
+		if (curRoom.Doors != null && curRoom.Doors.lockedDoorCount > 0)
 		{
 			// Do we have a key?
 			ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
@@ -586,7 +587,7 @@ public class HeroController : MonoBehaviour
 					{
 						key.UseItem(hero);
 						door.Open();
-						return;
+						return true;
 					}
 				}
 			}
@@ -596,7 +597,7 @@ public class HeroController : MonoBehaviour
 
 		// Is there a block?
 		List<MoveableBlock> moveables = curRoom.Moveables;
-		if (moveables.Count != 0)
+		if (moveables != null && moveables.Count != 0)
 		{
 			// Find the closest block
 			MoveableBlock closestBlock = null;
@@ -638,11 +639,13 @@ public class HeroController : MonoBehaviour
 						vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
 
 						
-						return;
+						return true;
 					}
 				}
 			}
 		}
+
+		return false;
 	}
 
 	public void ReleaseGrabbedObject()

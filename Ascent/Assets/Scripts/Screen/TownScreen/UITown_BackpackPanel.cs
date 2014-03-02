@@ -77,25 +77,25 @@ public class UITown_BackpackPanel : UITown_RadialPanel
         // TODO : Replace button-adding with button-instantiation and positioning code
 		buttons[0] = backpack.FindChild("Accessory 1").GetComponent<UIItemButton>() as UIButton;
 		(buttons[0] as UIItemButton).Type = UIItemButton.EType.ACCESSORY;
-		AngleIndex.Add(-225f, 0);
+		AngleIndex.Add(0, -225f);
 		buttons[1] = backpack.FindChild("Accessory 2").GetComponent<UIItemButton>() as UIButton;
 		(buttons[1] as UIItemButton).Type = UIItemButton.EType.ACCESSORY;
-		AngleIndex.Add(90f, 1);
+		AngleIndex.Add(1, 90f);
 		buttons[2] = backpack.FindChild("Accessory 3").GetComponent<UIItemButton>() as UIButton;
 		(buttons[2] as UIItemButton).Type = UIItemButton.EType.ACCESSORY;
-		AngleIndex.Add(45f, 2);
+		AngleIndex.Add(2, 45f);
 		buttons[3] = backpack.FindChild("Accessory 4").GetComponent<UIItemButton>() as UIButton;
 		(buttons[3] as UIItemButton).Type = UIItemButton.EType.ACCESSORY;
-		AngleIndex.Add(0f, 3);
+		AngleIndex.Add(3, 0f);
 		buttons[4] = backpack.FindChild("Consumable 1").GetComponent<UIItemButton>() as UIButton;
 		(buttons[4] as UIItemButton).Type = UIItemButton.EType.CONSUMABLE;
-		AngleIndex.Add(-45f, 4);
+		AngleIndex.Add(4, -45f);
 		buttons[5] = backpack.FindChild("Consumable 2").GetComponent<UIItemButton>() as UIButton;
 		(buttons[5] as UIItemButton).Type = UIItemButton.EType.CONSUMABLE;
-		AngleIndex.Add(-90f, 5);
+		AngleIndex.Add(5, -90f);
 		buttons[6] = backpack.FindChild("Consumable 3").GetComponent<UIItemButton>() as UIButton;
 		(buttons[6] as UIItemButton).Type = UIItemButton.EType.CONSUMABLE;
-		AngleIndex.Add(-135f, 6);
+		AngleIndex.Add(6, -135f);
 
 
 		// Pool Inventory buttons

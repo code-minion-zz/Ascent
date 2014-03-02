@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Utilities
 {
-	public static float ANGLETOLERANCE = 20f;
 
 	/// <summary>
 	/// Vectors to angle in degrees. Note that the returned angle is oriented 90 degrees 
@@ -18,17 +17,50 @@ public class Utilities
 		return retval;
 	}
 
-	public static bool CloseTo(float a, float b, float tolerance)
+	public static bool CloseTo(float pointerAngle, float buttonAngle, float tolerance)
 	{
-		return (Mathf.Abs(AbsoluteAngle(a) - AbsoluteAngle(b)) <= tolerance);
+		bool returnValue = false;
+
+		float diff = Mathf.Abs(AdjustAngle(pointerAngle) - AdjustAngle(buttonAngle)) % 360;
+		
+		if (buttonAngle == 0)
+		{
+			if (pointerAngle < 0)
+			{
+				diff = Mathf.Abs(pointerAngle);
+			}
+		}
+
+		if (diff < tolerance)
+		{
+			returnValue = true;
+		}
+
+
+		return returnValue;
 	}
 
-	public static float AbsoluteAngle(float f)
+	public static float AdjustAngle(float f)
 	{
+		float retVal = 0f;
+		
+//		if (f > 90)
+//		{
+//			f -= 270;
+//		}
 		if (f < 0)
 		{
-			return f += 360f;
+			f += 360f;
 		}
-		return f;
+
+		retVal = f;
+
+		return retVal;
 	}
+
+//	public static bool TresholdAngle(float f)
+//	{
+//
+//	}
+
 }
