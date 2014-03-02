@@ -34,7 +34,6 @@ public class Tile
 
     public Directions FacingDirection { get; set; }
 
-
     // These attributes could be any objects in the game.
     public List<TileAttribute> TileAttributes { get; set; }
 
