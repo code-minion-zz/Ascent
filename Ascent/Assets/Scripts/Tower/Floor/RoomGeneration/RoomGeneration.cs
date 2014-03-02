@@ -89,6 +89,17 @@ public class RoomGeneration
 		return newRoom;
 	}
 
+    public RoomProperties CreateEmptyRoom(int width, int height, string name)
+    {
+        RoomProperties newRoom = new RoomProperties();
+        newRoom.Name = name;
+        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        newRoom.IsPreloaded = false;
+        newRoom.WallsPlaced = false;
+
+        return newRoom;
+    }
+
     /// <summary>
     /// Reconstructs a room.
     /// </summary>
@@ -134,9 +145,20 @@ public class RoomGeneration
 
                 if (att.Type == TileType.door)
                 {
+                    //DoorTile doorTile = att as DoorTile;
                     Door door = go.GetComponent<Door>();
-                    door.direction = GetDirectionFromRot(go.transform.eulerAngles.y);
+
+                    door.direction = GetDirectionFromRot(att.Angle);
                     room.Doors.Add(door);
+                    //door.direction = doorTile.Direction;
+                    //door.isEntryDoor = doorTile.IsEntryDoor;
+
+                    //// Extract the data.
+                    //DoorData data = new DoorData();
+                    //data.Direction = door.direction;
+                    //data.IsEntryDoor = door.isEntryDoor;
+                    //data.DoorObject = door;
+                    //room.Doors.Add(data);
                 }
             }
         }

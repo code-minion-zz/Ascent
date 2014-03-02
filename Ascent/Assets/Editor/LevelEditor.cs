@@ -158,12 +158,20 @@ namespace Ascent
                                 TileAttribute att = new TileAttribute();
                                 att.Type = id.TileAttributeType;
                                 att.Angle = child.eulerAngles.y;
-                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
 
                                 if (att.Type == TileType.door)
                                 {
-
+                                    att = new DoorTile();
+                                    att.Type = id.TileAttributeType;
+                                    att.Angle = child.eulerAngles.y;
+                                    Door door = child.GetComponent<Door>();
+                                    DoorTile tile = att as DoorTile;
+                                    tile.IsConnected = door.isConnected;
+                                    tile.IsEntryDoor = door.isEntryDoor;
+                                    tile.Direction = door.direction;
                                 }
+
+                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
                             }
                             else
                             {
