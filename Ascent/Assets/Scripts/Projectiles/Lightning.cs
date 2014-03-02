@@ -33,8 +33,95 @@ public class Lightning : Projectile
 
     public void Update()
     {
-        projectile.rigidbody.AddForce(velocity, ForceMode.Force);
+		projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
     }
+
+	public void OnTriggerEnter(Collider collision)
+	{
+		bool lightningExpired = false;
+
+		if (!hitSomething)
+		{
+			switch ((Layer)collision.gameObject.layer)
+			{
+				case Layer.Monster:
+					{
+						Character hitCharacter = collision.gameObject.GetComponent<Character>();
+
+						if (!charactersHit.Contains(hitCharacter))
+						{
+							hitSomething = true;
+							charactersHit.Add(hitCharacter);
+
+							// Apply damage and knockback to the enemey
+							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, hitCharacter);
+							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+							combatEvaluator.Apply();
+
+							// Create a blood splatter effect on the enemy.
+							Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
+
+							// Find next target
+							if (charactersHit.Count < targets)
+							{
+								List<Character> characters = new List<Character>();
+								Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+
+								Character nextTarget = null;
+								if (curRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref characters))
+								{
+									foreach (Character c in characters)
+									{
+										if (!charactersHit.Contains(c))
+										{
+											nextTarget = c;
+											break;
+										}
+									}
+
+									if (nextTarget != null)
+									{
+										// Move to next target
+										//projectile.transform.position = collision.gameObject.transform.position;
+										projectile.rigidbody.velocity = Vector3.zero;
+										velocity = nextTarget.transform.position - projectile.transform.position;
+										projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+										hitSomething = false;
+									}
+									else
+									{
+										// No targets around to just expire
+										lightningExpired = true;
+									}
+								}
+							}
+							else
+							{
+								// No targets around to just expire
+								lightningExpired = true;
+							}
+						}
+						else
+						{
+							lightningExpired = true;
+						}
+
+					}
+					break;
+				default:
+					{
+						lightningExpired = true;
+					}
+					break;
+			}
+		}
+
+
+		if (lightningExpired)
+		{
+			GameObject.Destroy(this.gameObject);
+		}
+	}
 
 
     public void OnCollisionEnter(Collision collision)

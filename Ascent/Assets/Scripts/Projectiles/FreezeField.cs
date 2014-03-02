@@ -24,8 +24,10 @@ public class FreezeField : Projectile
     {
         this.targets = targets;
         this.owner = owner;
+		transform.position = owner.transform.position;
+		transform.rotation = owner.transform.rotation;
 
-        circle = new Circle(owner.transform, 3.0f, new Vector3(0.0f, 0.0f, 1.5f));
+        circle = new Circle(transform, 3.0f, new Vector3(0.0f, 0.0f, 1.5f));
 
         List<Character> characters = new List<Character>();
         Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
@@ -48,16 +50,17 @@ public class FreezeField : Projectile
 
     public void Update()
     {
-        time += Time.time;
-        if(time < 1.0f)
-        {
+        time += Time.deltaTime;
+        if(time > 0.5f)
+		{
             Destroy(gameObject);
         }
     }
 
 #if UNITY_EDITOR
-    public void DebugDraw()
+    public void OnDrawGizmos()
     {
+
         circle.DebugDraw();
     }
 #endif

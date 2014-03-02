@@ -136,15 +136,6 @@ public abstract class Enemy : Character
         {
             deathSequenceTime += Time.deltaTime;
 
-            // When the rat dies we want to make him kinematic and disabled the collider
-            // this is so we can walk over the dead body.
-            //if (this.transform.rigidbody.isKinematic == false)
-            //{
-            //    this.collider.enabled = false;
-            //    this.transform.rigidbody.isKinematic = true;
-            //    this.transform.collider.enabled = false;
-            //}
-
             // Death sequence end
             if (deathSequenceTime >= deathSequenceEnd)
             {
@@ -157,7 +148,9 @@ public abstract class Enemy : Character
             {
                 // During death sequence we can do some thing in here
                 // For now we will rotate the rat on the z axis.
-                this.transform.eulerAngles = Vector3.Lerp(this.transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+                //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
+				transform.Rotate(Vector3.up, Time.deltaTime * 10000.0f);
+				transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, deathSequenceTime / deathSequenceEnd);
 
                 // If the rotation is done early we can end the sequence.
                 if (this.transform.eulerAngles == deathRotation)

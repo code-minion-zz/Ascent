@@ -70,7 +70,7 @@ public class AbominationCharge : Ability
 
 		targetPos.y = startPos.y;
 
-		owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
+		//owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
     }
 
     public override void UpdateAbility()
@@ -98,7 +98,7 @@ public class AbominationCharge : Ability
 					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
 					combatEvaluator.Add(new PhysicalDamageProperty(5.0f, 1.0f));
 					combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, 1000000.0f));
-					combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.5f)));
+					//combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.5f)));
 					combatEvaluator.Apply();
 
                     // Create a blood splatter effect on the enemy.
@@ -113,10 +113,10 @@ public class AbominationCharge : Ability
             {
                 Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(0.05f, 0.02f);
             }
-            if (hitWall)
-            {
-				owner.ApplyStatusEffect(new StunnedDebuff(owner, owner, 2.5f));
-            }
+			//if (hitWall)
+			//{
+			//    owner.ApplyStatusEffect(new StunnedDebuff(owner, owner, 2.5f));
+			//}
 
             owner.Loadout.StopAbility();
         }
