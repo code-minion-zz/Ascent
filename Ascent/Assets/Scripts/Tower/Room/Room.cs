@@ -760,7 +760,7 @@ public class Room : MonoBehaviour
         Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
         inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 #if UNITY_EDITOR
-        Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, extents.z), Color.white, 0.2f);
+        Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, extents.z), Color.white);
 #endif
 
         // T
@@ -770,7 +770,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, extents.z), Color.white);
 #endif
         }
 
@@ -781,7 +781,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + extents, Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + extents, Color.white);
 #endif
         }
 
@@ -792,7 +792,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -803,7 +803,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -814,7 +814,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -825,7 +825,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, 0.0f), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, 0.0f), Color.white);
 #endif
         }
 
@@ -836,7 +836,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, 0.0f), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, 0.0f), Color.white);
 #endif
         }
 

@@ -178,7 +178,8 @@ public abstract class Character : BaseCharacter
 		{
 			HitTaken = true;
 
-			lastDamagedBy = result.source;
+            // Don't set this to self
+            lastDamagedBy = (result.source == this) ? lastDamagedBy : result.source;
 
 			// Let the owner know of the amount of damage done.
 			if (result.source != null)

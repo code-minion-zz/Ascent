@@ -36,95 +36,7 @@ public class Lightning : Projectile
 		projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
     }
 
-	public void OnTriggerEnter(Collider collision)
-	{
-		bool lightningExpired = false;
-
-		if (!hitSomething)
-		{
-			switch ((Layer)collision.gameObject.layer)
-			{
-				case Layer.Monster:
-					{
-						Character hitCharacter = collision.gameObject.GetComponent<Character>();
-
-						if (!charactersHit.Contains(hitCharacter))
-						{
-							hitSomething = true;
-							charactersHit.Add(hitCharacter);
-
-							// Apply damage and knockback to the enemey
-							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, hitCharacter);
-							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
-							combatEvaluator.Apply();
-
-							// Create a blood splatter effect on the enemy.
-							Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
-
-							// Find next target
-							if (charactersHit.Count < targets)
-							{
-								List<Character> characters = new List<Character>();
-								Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
-
-								Character nextTarget = null;
-								if (curRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref characters))
-								{
-									foreach (Character c in characters)
-									{
-										if (!charactersHit.Contains(c))
-										{
-											nextTarget = c;
-											break;
-										}
-									}
-
-									if (nextTarget != null)
-									{
-										// Move to next target
-										//projectile.transform.position = collision.gameObject.transform.position;
-										projectile.rigidbody.velocity = Vector3.zero;
-										velocity = nextTarget.transform.position - projectile.transform.position;
-										projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
-										hitSomething = false;
-									}
-									else
-									{
-										// No targets around to just expire
-										lightningExpired = true;
-									}
-								}
-							}
-							else
-							{
-								// No targets around to just expire
-								lightningExpired = true;
-							}
-						}
-						else
-						{
-							lightningExpired = true;
-						}
-
-					}
-					break;
-				default:
-					{
-						lightningExpired = true;
-					}
-					break;
-			}
-		}
-
-
-		if (lightningExpired)
-		{
-			GameObject.Destroy(this.gameObject);
-		}
-	}
-
-
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collision)
     {
         bool lightningExpired = false;
 
@@ -133,8 +45,19 @@ public class Lightning : Projectile
             switch ((Layer)collision.gameObject.layer)
             {
                 case Layer.Monster:
+                case Layer.Hero:
                     {
+                        Character.EScope scope = owner is Enemy ? Character.EScope.Hero : Character.EScope.Enemy;
+
                         Character hitCharacter = collision.gameObject.GetComponent<Character>();
+
+                        bool isOnSameTeam = false;
+
+                        if ((owner is Enemy && hitCharacter is Enemy) ||
+                            (owner is Hero && hitCharacter is Hero))
+                        {
+                            isOnSameTeam = true;
+                        }
 
                         if (!charactersHit.Contains(hitCharacter))
                         {
@@ -143,11 +66,16 @@ public class Lightning : Projectile
 
                             // Apply damage and knockback to the enemey
                             CombatEvaluator combatEvaluator = new CombatEvaluator(owner, hitCharacter);
-                            combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
-                            combatEvaluator.Apply();
 
-                            // Create a blood splatter effect on the enemy.
-                            Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
+                            if (!isOnSameTeam)
+                            {
+                                combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+
+                                // Create a blood splatter effect on the enemy.
+                                Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
+                            }
+
+                            combatEvaluator.Apply();
 
                             // Find next target
                             if (charactersHit.Count < targets)
@@ -156,7 +84,8 @@ public class Lightning : Projectile
                                 Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
 
                                 Character nextTarget = null;
-                                if (curRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref characters))
+
+                                if (curRoom.CheckCollisionArea(circle, scope, ref characters))
                                 {
                                     foreach (Character c in characters)
                                     {
@@ -171,6 +100,7 @@ public class Lightning : Projectile
                                     {
                                         // Move to next target
                                         //projectile.transform.position = collision.gameObject.transform.position;
+                                        projectile.rigidbody.velocity = Vector3.zero;
                                         velocity = nextTarget.transform.position - projectile.transform.position;
                                         projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
                                         hitSomething = false;

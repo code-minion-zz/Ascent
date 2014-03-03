@@ -49,7 +49,8 @@ public class Abomination : Enemy
     {
         motor.MaxSpeed = 1.5f;
         AIAgent.Initialise(transform);
-        AIAgent.SteeringAgent.RotationSpeed = 2.5f;
+        AIAgent.SteeringAgent.RotationSpeed = 7.5f;
+        //AIAgent.SteeringAgent.DistanceToKeepFromTarget = 3.5f;
 
         AIBehaviour behaviour = null;
 
@@ -101,7 +102,10 @@ public class Abomination : Enemy
 
     public void OnInitialCharge()
     {
-        loadout.UseAbility(chargeActionID);
+        if (loadout.UseAbility(chargeActionID))
+        {
+            AIAgent.TargetCharacter = null;
+        }
     }
 
     public void OnInitialChargeEnd()

@@ -32,7 +32,9 @@ public class FreezeField : Projectile
         List<Character> characters = new List<Character>();
         Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
 
-        if (curRoom.CheckCollisionArea(circle, Character.EScope.Enemy, ref characters))
+        Character.EScope scope = owner is Enemy ? Character.EScope.Hero : Character.EScope.Enemy;
+
+        if (curRoom.CheckCollisionArea(circle, scope, ref characters))
         {
             foreach (Character c in characters)
             {

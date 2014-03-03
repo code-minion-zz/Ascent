@@ -243,9 +243,12 @@ public abstract class Enemy : Character
         if (lastDamagedBy != null)
         {
             // TODO: This might need to move.
-            Hero hero = lastDamagedBy as Hero;
+            if (lastDamagedBy is Hero)
+            {
+                Hero hero = lastDamagedBy as Hero;
 
-			hero.FloorStatistics.TotalDamageDealt += result.finalDamage;
+			    hero.FloorStatistics.TotalDamageDealt += result.finalDamage;
+            }
         }
 
 		base.ApplyCombatEffects(result);
