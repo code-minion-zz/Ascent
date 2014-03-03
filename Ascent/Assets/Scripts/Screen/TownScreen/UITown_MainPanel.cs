@@ -124,34 +124,13 @@ public class UITown_MainPanel : UITown_RadialPanel
 		}
 	}
 
+#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
 		if (!initialised) return;
 		Gizmos.DrawWireSphere(townParent.pointerTransform.position, 0.3f);
 	}
-	
-//	void HighlightButton ()
-//	{
-//		float angle = (parent as UITownWindow).PointerAngle - 90f;
-//
-//		foreach (KeyValuePair<float,int> p in AngleIndex)
-//		{
-//			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
-//			if (CloseTo(angle,p.Key))
-//			{
-//				//Debug.Log("WIN!! Angle:" + angle + " against:" + p.Key);
-//				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
-//				currentSelection = buttons[p.Value];
-//				currentHighlightedButton = p.Value;
-//				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
-//				SetInfoLabel();
-//			}
-//			else
-//			{
-//				//Debug.Log("FAIL!! Angle:" + angle + " against:" + p.Key);
-//			}
-//		}
-//	}
+#endif
 
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
@@ -163,6 +142,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	public override void OnMenuOK(InputDevice device)
 	{
+		if (currentSelection == null) return;
 		if (currentSelection.gameObject.activeInHierarchy)	ButtonAction();
 	}
 	
@@ -172,22 +152,18 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	public override void OnMenuUp(InputDevice device)
 	{
-		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuDown(InputDevice device)
 	{
-		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuLeft(InputDevice device)
 	{
-		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuRight(InputDevice device)
 	{
-		// TODO: Change character's equipment
 		
 	}
 	#endregion 
@@ -224,33 +200,33 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	void SetInfoLabel()
 	{
-		UITownWindow townWindow = (parent as UITownWindow);
+		//UITownWindow townParent = (parent as UITownWindow);
 
 		switch (currentHighlightedButton)
 		{
 		case 0: // tower
-			townWindow.SetInfo("Enter the Tower");
+			townParent.SetInfo("Enter the Tower");
 			break;
 		case 1: // conshop
-			townWindow.SetInfo("Shop in the Gem Shop");
+			townParent.SetInfo("Shop in the Gem Shop");
 			break;
 		case 2: // accshop
-			townWindow.SetInfo("Shop in the Item Shop");
+			townParent.SetInfo("Shop in the Item Shop");
 			break;
 		case 3: // tavern
-			townWindow.SetInfo("Go to the Tavern");
+			townParent.SetInfo("Go to the Tavern");
 			break;
 		case 4: // backpack
-			townWindow.SetInfo("Manage your Equipment");
+			townParent.SetInfo("Manage your Equipment");
 			break;
 		case 5: // skills
-			townWindow.SetInfo("Manage your Skills");
+			townParent.SetInfo("Manage your Skills");
 			break;
 		case 6: // chapel
-			townWindow.SetInfo("Visit the Chapel");
+			townParent.SetInfo("Visit the Chapel");
 			break;
 		default:
-			townWindow.SetInfo("");
+			townParent.SetInfo("");
 			break;
 		}
 	}

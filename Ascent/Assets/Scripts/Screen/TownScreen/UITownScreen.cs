@@ -106,4 +106,12 @@ public class UITownScreen : UIPlayerMenuScreen
 			Game.Singleton.LoadLevel(Game.EGameState.Tower);
 		}
 	}
+
+	public void RequestQuit()
+	{ // If 'back' is pressed with no active players, return to main menu
+		if (Game.Singleton.NumberOfPlayers == 0)
+		{ 
+			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+		}
+	}
 }

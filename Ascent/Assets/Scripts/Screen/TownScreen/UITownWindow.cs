@@ -51,6 +51,9 @@ public class UITownWindow : UIPlayerMenuWindow
 	int flipState = 0; 
 	int confirmState = 0;
 	int noticeState = 0;
+	
+	protected UITownScreen townScreen;
+
 
 	public bool PopupActive
 	{
@@ -86,8 +89,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
 
-//		OnMenuLeftStickMove += HandleOnMenuLeftStickMove;
-//		HandleOnMenuLeftStickMove(player.Input);
+		townScreen = parentScreen as UITownScreen;
 
 		base.Initialise ();
 	}
@@ -123,13 +125,6 @@ public class UITownWindow : UIPlayerMenuWindow
 		
 		pointerTransform.rotation = Quaternion.Euler(0f,0f,angle);
 	}
-	
-//	public void HandleOnMenuLeftStickMove (InputDevice device)
-//	{		
-//		if (!pointerTransform.gameObject.activeInHierarchy) return;
-//		
-//		pointerTransform.rotation = Quaternion.Euler(0f,0f,PointerAngle - 90);
-//	}
 
 	/// <summary> Return item to inventory if space permits. </summary>
 	public bool Unequip(int slot)
@@ -174,12 +169,20 @@ public class UITownWindow : UIPlayerMenuWindow
 			panels[i].gameObject.SetActive(false);
 		}
 		
-		activePanel = panels[(int)EBackpackPanels.TOWN];
+		activePanel = panels[(int)EBackpackPanels.TAVERN];
 		player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
 		activePanel.OnEnable();
 	}
-	
+
+	/// <summary>
+	/// Initialize all panels with the values of the player.
+	/// </summary>
+	public void PanelPlayerSetup()
+	{
+
+	}
+
 	public void ShowArrow(bool state)
 	{
 		GameObject temp = pointerTransform.gameObject;
@@ -192,6 +195,11 @@ public class UITownWindow : UIPlayerMenuWindow
 	public void ShowArrow()
 	{
 		ShowArrow(!pointerTransform.gameObject.activeSelf);
+	}
+
+	public void ShowSharedElements(bool yayOrNay)
+	{
+		NGUITools.SetActive(sharedEle.gameObject, yayOrNay);
 	}
 
 	public void ShowInfo(bool state)
@@ -228,7 +236,8 @@ public class UITownWindow : UIPlayerMenuWindow
 		
 		noticeState = 1;
 	}
-	
+
+	#region Processes
 	public void ProcessConfirmBox()
 	{
 		switch (confirmState)
@@ -317,7 +326,6 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 	}
 
-
 	protected void ProcessFlip()
 	{
 		switch (flipState)
@@ -356,7 +364,8 @@ public class UITownWindow : UIPlayerMenuWindow
 			break;
 		}
 	}
-	
+	#endregion
+
 	protected override void HandleInputEvents()
 	{
 		// disallow input while flip animation is playing
@@ -365,9 +374,13 @@ public class UITownWindow : UIPlayerMenuWindow
 		base.HandleInputEvents();
 	}
 
+	public void RequestQuit()
+	{
+		townScreen.RequestQuit();
+	}
+
 	void OnDestroy()
 	{
-//		OnMenuLeftStickMove -= HandleOnMenuLeftStickMove;
 	}
 }
 
