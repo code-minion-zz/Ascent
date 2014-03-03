@@ -72,12 +72,14 @@ public class FloorCamera : MonoBehaviour
     public void UpdateCameraPosition()
     {
         Vector3 newVector = CalculateAverageHeroPosition();
-        if (newVector == Vector3.zero)
-        {
-            newVector = transform.position;
-        }
+		//if (newVector == Vector3.zero)
+		//{
+		//    newVector = transform.position;
+		//}
         newVector.y = transform.position.y;
 		newVector.z += offsetZ;
+
+		//Debug.Log(newVector);
 
         Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, Time.deltaTime * 2.0f);
 
@@ -117,13 +119,13 @@ public class FloorCamera : MonoBehaviour
 			// Calculate camera position based off Heros
 			if (heroCount != 0)
 			{
-				float x = totalVector.x / Heroes.Count;
+				float x = totalVector.x / (float)Heroes.Count;
 				float z = (totalVector.z / (float)heroCount);
-
+				
 				return new Vector3(x, 0.0f, z);
 			}
 		}
-
+		
 		return Vector3.zero;
 	}
 

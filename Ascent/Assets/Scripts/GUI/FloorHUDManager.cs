@@ -69,7 +69,7 @@ public class FloorHUDManager : MonoBehaviour
             return;
         }
         Game game = Game.Singleton;
-
+		
         // Create HUD container for number of players
         int iPlayers = game.Players.Count;
         playerHUDs = new PlayerHUD[iPlayers];
@@ -158,6 +158,14 @@ public class FloorHUDManager : MonoBehaviour
 
         // Create a list of health bars for the enemies.
         enemyBars = new List<StatBar>();
+
+		foreach (Player p in game.Players)
+		{
+			if (p != null)
+			{
+				p.Hero.HeroController.InitialiseControllerIndicators();
+			}
+		}
     }
 	
 	public StatBar AddEnemyLifeBar(Vector3 characterScale)

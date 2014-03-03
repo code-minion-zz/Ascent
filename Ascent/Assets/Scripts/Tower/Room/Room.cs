@@ -203,6 +203,7 @@ public class Room : MonoBehaviour
 
         // Find the doors for this room
         doors = EnvironmentParent.GetComponentInChildren<Doors>();
+		doors = (GameObject.Find("Doors") as GameObject).GetComponent<Doors>();
 
         if (doors == null)
         {
