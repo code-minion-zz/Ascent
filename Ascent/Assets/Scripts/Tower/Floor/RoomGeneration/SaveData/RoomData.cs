@@ -11,6 +11,5 @@ public class RoomData
     public DoorData DoorData { get; set; }
     public Tile[,] Tiles { get; set; }
     public FeatureType RoomType { get; set; }
-    public int NumberOfTilesX { get; set; }
-    public int NumberOfTilesY { get; set; }
+    public string Name { get; set; }
 }

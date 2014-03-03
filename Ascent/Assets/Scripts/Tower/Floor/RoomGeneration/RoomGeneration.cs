@@ -6,6 +6,18 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+public enum RoomConnectionType
+{
+    Right,
+    Left,
+    Plus,
+    Empty,
+    Straight,
+    BothSides,
+    LeftUp,
+    RightUp
+}
+
 /// <summary>
 /// Handles generation of a room for use in the floor generation.
 /// </summary>
@@ -41,29 +53,9 @@ public class RoomGeneration
         arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
 	}
 
-    private Room CreateRoomObject(string name)
-    {
-        GameObject roomGo = new GameObject(name);
-        Room room = roomGo.AddComponent<Room>();
-
-        // Add necessary nodes.
-        room.tag = "RoomRoot";
-        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
-        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
-        doorGo.AddComponent<Doors>();
-        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
-
-        room.AddNewParentCategory("Monsters", (int)Layer.Monster);
-		room.AddNewParentCategory("Items", (int)Layer.Item);
-		room.AddNewParentCategory("Lights", (int)Layer.Default);
-
-        room.Initialise();
-
-        return room;
-    }
-
     /// <summary>
     /// Creates a new room and intializes variables.
+    /// TODO: This will be swapped out for the new createroom function.
     /// </summary>
     /// <returns>The new room.</returns>
     /// <param name="width">Width.</param>
@@ -71,31 +63,37 @@ public class RoomGeneration
     /// <param name="name">Name.</param>
     public RoomProperties CreateNewRoom(int width, int height, string name)
 	{
-        Room room = CreateRoomObject(name);
-		
-		// Handle creation of the ground tiles.
-		RoomProperties newRoom = new RoomProperties(room);
+		// Initialise and construct the new room.
+		RoomProperties newRoom = new RoomProperties();
         newRoom.Name = name;
         newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
-        newRoom.CreateTileParentNodes();
-        room.NumberOfTilesX = newRoom.NumberOfTilesX;
-        room.NumberOfTilesY = newRoom.NumberOfTilesY;
+        newRoom.ConstructRoom();
+
+        newRoom.Room.NumberOfTilesX = newRoom.Tiles.GetLength(0);
+        newRoom.Room.NumberOfTilesY = newRoom.Tiles.GetLength(1);
+
 		PlaceGroundTiles(newRoom);
         SetupCamera(newRoom);
 		
 		// Apply the new dimensions to the navMesh.
-		room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
+		newRoom.Room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
 
 		return newRoom;
 	}
 
-    public RoomProperties CreateEmptyRoom(int width, int height, string name)
+    /// <summary>
+    /// Creates the data structure for a new room. Which can be used to reconstruct a room.
+    /// </summary>
+    /// <param name="shape"></param>
+    /// <param name="tilesX"></param>
+    /// <param name="tilesY"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY, string name)
     {
         RoomProperties newRoom = new RoomProperties();
         newRoom.Name = name;
-        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
-        newRoom.IsPreloaded = false;
-        newRoom.WallsPlaced = false;
+        newRoom.InitialiseTiles(tilesX, tilesY);
 
         return newRoom;
     }
@@ -107,20 +105,19 @@ public class RoomGeneration
     public void ReconstructRoom(RoomProperties room)
     {
         // Reconstruct the object.
-        room.InitializeNonSerializable(CreateRoomObject(room.Name));
-        room.CreateTileParentNodes();
+        room.ConstructRoom();
 
         // Construct all the tiles.
-        for (int x = 0; x < room.NumberOfTilesX; ++x)
+        for (int x = 0; x < room.Tiles.GetLength(0); ++x)
         {
-            for (int y = 0; y < room.NumberOfTilesY; ++y)
+            for (int y = 0; y < room.Tiles.GetLength(1); ++y)
             {
                 ConstructBaseTiles(room, room.Tiles[x, y], x, y);
             }
         }
 
-        room.Room.NumberOfTilesX = room.NumberOfTilesX;
-        room.Room.NumberOfTilesY = room.NumberOfTilesY;
+        room.Room.NumberOfTilesX = room.Tiles.GetLength(0);
+        room.Room.NumberOfTilesY = room.Tiles.GetLength(1);
 
         SetupCamera(room);
 
@@ -453,9 +450,9 @@ public class RoomGeneration
 		// Create the floor tiles and positions.
 
 		// where necessary.
-		for (int x = 0; x < room.NumberOfTilesX; ++x)
+		for (int x = 0; x < room.Tiles.GetLength(0); ++x)
 		{
-			for (int y = 0; y < room.NumberOfTilesY; ++y)
+			for (int y = 0; y < room.Tiles.GetLength(1); ++y)
 			{
                 // Populate the whole room with a ground tile attribute.
                 TileAttribute att = new TileAttribute();
@@ -465,7 +462,6 @@ public class RoomGeneration
 
                 // Create the ground tile.
                 GameObject groundTile = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-                //groundTile.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
                 groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";

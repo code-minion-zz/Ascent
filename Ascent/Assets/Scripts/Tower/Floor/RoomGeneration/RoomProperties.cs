@@ -83,7 +83,7 @@ public class RoomProperties
 
     public RoomProperties()
     {
-
+        DirectionsFilled = new bool[4];
     }
 
     public RoomProperties(Room room)
@@ -122,6 +122,7 @@ public class RoomProperties
 
                 // Assign each tile with a list of attributes.
                 Tiles[i, j].TileAttributes = new List<TileAttribute>();
+                // Add a default none tile attribute.
                 TileAttribute att = new TileAttribute();
                 att.Angle = 0.0f;
                 att.Type = TileType.none;
@@ -130,26 +131,67 @@ public class RoomProperties
         }
     }
 
-    public void InitializeNonSerializable(Room room)
+    /// <summary>
+    /// Construct the room from the data.
+    /// </summary>
+    public void ConstructRoom()
     {
         doors = new List<Door>();
-        this.room = room;
-    }
+        room = CreateRoomObject(Name);
 
-    public void CreateTileParentNodes()
-    {
-        for (int i = 0; i < NumberOfTilesX; ++i)
+        if (room == null)
         {
-            for (int j = 0; j < NumberOfTilesY; ++j)
+            Debug.LogError("The room object has not been created or found, Cannot construct room.");
+            return;
+        }
+
+        Transform envNode = room.GetNodeByLayer("Environment").transform;
+
+        for (int x = 0; x < Tiles.GetLength(0); ++x)
+        {
+            for (int y = 0; y < Tiles.GetLength(1); ++y)
             {
-                GameObject tile = new GameObject();
-                tile.transform.parent = room.GetNodeByLayer("Environment").transform;
-                tile.transform.localPosition = Tiles[i, j].Position;
-                tile.name = "Tile[" + i + ", " + j + "]";
-                tile.tag = "RoomTile";
-                Tiles[i, j].GameObject = tile;
+                // Create the parent tile.
+                CreateTileNodeObject(x, y, envNode);
             }
         }
+    }
+
+    private Room CreateRoomObject(string name)
+    {
+        GameObject roomGo = new GameObject(name);
+        Room room = roomGo.AddComponent<Room>();
+
+        // Add necessary nodes.
+        room.tag = "RoomRoot";
+        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
+        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
+        doorGo.AddComponent<Doors>();
+        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
+
+        room.AddNewParentCategory("Monsters", (int)Layer.Monster);
+        room.AddNewParentCategory("Items", (int)Layer.Item);
+        room.AddNewParentCategory("Lights", (int)Layer.Default);
+
+        room.Initialise();
+
+        return room;
+    }
+
+    /// <summary>
+    /// Creates the parent node transform for this tile.
+    /// </summary>
+    /// <param name="tile"></param>
+    private GameObject CreateTileNodeObject(int x, int y, Transform parent)
+    {
+        GameObject go = new GameObject();
+        go.transform.parent = parent;
+        go.transform.localPosition = Tiles[x, y].Position;
+        go.name = "Tile[" + x + ", " + y + "]";
+        go.tag = "RoomTile";
+        Tiles[x, y].GameObject = go;
+
+        return go;
     }
 
     public void FillDirection(Floor.TransitionDirection direction)
