@@ -151,8 +151,14 @@ public class Floor : MonoBehaviour
 
 		if (!randomFloor)
 		{
-			//currentRoom = allRooms[0];
-            currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
+			currentRoom = allRooms[0];
+            GameObject startRoomGO = GameObject.Find("StartRoom") as GameObject;
+            if(startRoomGO == null)
+            {
+                Debug.LogError("StartRoom does not exist. Call the starting room StartRoom");
+            }
+
+            currentRoom = startRoomGO.GetComponent<Room>();
 		}
 		else
 		{
