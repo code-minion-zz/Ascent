@@ -13,6 +13,7 @@ namespace Ascent
 
         private GameObject selectedRoom = null;
         private GameObject selectedTile = null;
+        private List<Door> selectedDoors = new List<Door>();
 
         private SaveRooms roomSaver = new SaveRooms();
         private RoomGeneration roomGen = new RoomGeneration();
@@ -48,10 +49,7 @@ namespace Ascent
         {
             UpdateSelectedRoom();
             UpdateSelectedTile();
-
-            //Event e = Event.current;
-            //Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
-            //Vector3 mousePos = r.origin;
+            UpdateSelectedDoors();
         }
 
         void OnGUI()
@@ -113,6 +111,11 @@ namespace Ascent
             {
                 GUILayout.Label("Selected Tile: " + selectedTile.name);
                 TilePlacementGUI();
+            }
+
+            if (selectedDoors.Count > 1)
+            {
+                ConnectDoorsGUI();
             }
         }
 
@@ -184,6 +187,27 @@ namespace Ascent
             }
 
             roomSaver.SaveRoom(roomProperties, directory);
+        }
+
+        private void ConnectDoorsGUI()
+        {
+            if (GUILayout.Button("Connect Doors", GUILayout.Width(buttonSize)))
+            {
+                Door firstDoor = selectedDoors[0];
+
+                // This will link the doors to the first door if there are more than one doors.
+                foreach (Door door in selectedDoors)
+                {
+                    firstDoor.targetDoor = door;
+                    door.targetDoor = firstDoor;
+
+                    door.targetDoor.isConnected = true;
+                    firstDoor.targetDoor.isConnected = true;
+
+                    EditorUtility.SetDirty(firstDoor.targetDoor);
+                    EditorUtility.SetDirty(door.targetDoor);
+                }
+            }
         }
 
         private void TilePlacementGUI()
@@ -264,6 +288,27 @@ namespace Ascent
             }
 
             return go;
+        }
+
+        private void UpdateSelectedDoors()
+        {
+            GameObject[] selectedObjects = Selection.gameObjects;
+
+            selectedDoors.Clear();
+
+            foreach (GameObject go in selectedObjects)
+            {
+                if (go != null)
+                {
+                    Transform T = go.transform;
+
+                    Door door = T.GetComponent<Door>();
+                    if (door != null)
+                    {
+                        selectedDoors.Add(door);
+                    }
+                }
+            }
         }
 
         private void UpdateSelectedTile()
