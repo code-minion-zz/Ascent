@@ -24,8 +24,10 @@ public class RoomCreationWindow : EditorWindow
 
         if (GUILayout.Button("Create"))
         {
-            //RoomProperties roomProperties = roomGenRef.CreateNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
-			roomGenRef.ConstructNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
+			//roomGenRef.ConstructNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
+            RoomProperties room = roomGenRef.CreateNewRoom(RoomConnectionType.Empty, numberOfTilesX, numberOfTilesY);
+            roomGenRef.PlaceGroundTiles(room);
+            roomGenRef.PlaceWalls(room);
             this.Close();
         }
     }
