@@ -192,7 +192,7 @@ namespace Ascent
 
             if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
             {
-                GameObject go = EnvironmentFactory.CreateGameObjectByType(tileType);
+                UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
 
                 if (go != null)
                 {
@@ -201,9 +201,11 @@ namespace Ascent
                     {
                         parent = selectedTile.transform;
                     }
-                    go.transform.parent = parent;
-                    go.transform.position = selectedTile.transform.position;
-                    Selection.activeGameObject = go;
+
+                    GameObject instantiatedGo = go as GameObject;
+                    instantiatedGo.transform.parent = parent;
+                    instantiatedGo.transform.position = selectedTile.transform.position;
+                    Selection.activeGameObject = instantiatedGo;
                 }
             }
 
