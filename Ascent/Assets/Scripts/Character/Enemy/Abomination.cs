@@ -8,7 +8,8 @@ using System;
 
 public class Abomination : Enemy
 {
-    private AITrigger ChangeTargetTrigger;
+    private AITrigger changeTargetTrigger;
+	private AITrigger chargeTrigger;
 
     private int strikeActionID;
     private int stompActionID;
@@ -49,97 +50,91 @@ public class Abomination : Enemy
     {
         motor.MaxSpeed = 1.5f;
         AIAgent.Initialise(transform);
-        AIAgent.SteeringAgent.RotationSpeed = 7.5f;
+        AIAgent.SteeringAgent.RotationSpeed = 17.5f;
         //AIAgent.SteeringAgent.DistanceToKeepFromTarget = 3.5f;
+		//motor.EnableStandardMovement(false);
+		AIAgent.SteeringAgent.CanMove = false;
 
         AIBehaviour behaviour = null;
 
+		// Charge straight into facing (hopefully hitting something).
+		// Immediately switch to other behaviour.
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             AITrigger trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Continue;
-            trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
-            trigger.OnTriggered += OnInitialCharge;
-
-            trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
-            trigger.OnTriggered += OnInitialChargeEnd;
+			trigger.OnTriggered += OnChargeEnd;
+
+			trigger = behaviour.AddTrigger();
+			trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
+			trigger.OnTriggered += OnCanUseCharge;
         }
 
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
-            ChangeTargetTrigger = behaviour.AddTrigger();
-            ChangeTargetTrigger.Priority = AITrigger.EConditionalExit.Stop;
-            ChangeTargetTrigger.AddCondition(new AICondition_Timer(6.0f, 0.0f, 5.0f, true));
-            ChangeTargetTrigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]), AITrigger.EConditional.Or);
-            //ChangeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
-            ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
-            ChangeTargetTrigger.OnTriggered += OnCanChangeTarget;
+			AITrigger trigger = null;
 
-            AITrigger trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 15.0f, 25.0f, Vector3.back * 3.0f)));
-            trigger.OnTriggered += OnTargetInSight;
+			// Back out from the collision point.
+			trigger = behaviour.AddTrigger();
+			trigger.Priority = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
+			trigger.OnTriggered += OnChargeEnd;
 
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
-            trigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 3.5f, Vector3.zero)));
-            trigger.OnTriggered += OnSurrounded;
+			//// Do the stomp first to bring boulders down from the roof.
+			//trigger = behaviour.AddTrigger();
+			//trigger.Priority = AITrigger.EConditionalExit.Stop;
+			//trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
+			//trigger.OnTriggered += OnCanUseStomp;
 
-            trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[strikeActionID]));
-            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, 80.0f, Vector3.back * 1.5f)));
-            trigger.OnTriggered += OnCanUseStrike;
+			// Attempt to rotate to a Hero. 
+			changeTargetTrigger = behaviour.AddTrigger();
+			changeTargetTrigger.Priority = AITrigger.EConditionalExit.Continue;
+			changeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
+			//ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
+			changeTargetTrigger.OnTriggered += OnCanChangeTarget;
+
+			// Charge at the hero.
+			chargeTrigger = behaviour.AddTrigger();
+			chargeTrigger.Priority = AITrigger.EConditionalExit.Stop;
+			chargeTrigger.AddCondition(new AICondition_Timer(0.5f, 1.0f, 2.0f), AITrigger.EConditional.And);
+			chargeTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
+			chargeTrigger.OnTriggered += OnCanUseCharge;
         }
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
     }
 
-    public void OnInitialCharge()
-    {
-        if (loadout.UseAbility(chargeActionID))
-        {
-            AIAgent.TargetCharacter = null;
-        }
-    }
+	public void OnCanUseStomp()
+	{
+		loadout.UseAbility(stompActionID);
+	}
 
-    public void OnInitialChargeEnd()
-    {
-        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
-        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-    }
+	public void OnCanUseCharge()
+	{
+		if (loadout.UseAbility(chargeActionID))
+		{
+			AIAgent.SteeringAgent.CanRotate = false;
+			chargeTrigger.Reset();
+		}
+	}
 
-    public void OnCanChangeTarget()
-    {
-        AIAgent.TargetCharacter = lastDamagedBy;
-        //agent.TargetCharacter = agent.SensedCharacters[0];
-    }
+	public void OnChargeEnd()
+	{
+		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+		AIAgent.SteeringAgent.CanRotate = true;
+	}
 
-    public void OnSurrounded()
-    {
-        loadout.UseAbility(stompActionID);
-    }
+	public void OnCanChangeTarget()
+	{
+		AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+	}
 
-    public void OnTargetInSight()
-    {
-        loadout.UseAbility(chargeActionID);
-    }
-
-    public void OnCanUseStrike()
-    {
-        loadout.UseAbility(strikeActionID);
-    }
 
     public override void OnDisable()
     {
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        //AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
-        //AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
         AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
     }

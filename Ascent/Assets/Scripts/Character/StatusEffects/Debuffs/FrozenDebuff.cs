@@ -29,6 +29,10 @@ public class FrozenDebuff : StatusEffect
 
 			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(target.gameObject, "Frozen!", Color.blue);
 		}
+		else
+		{
+            ProcessImmuneEffect(target);
+		}
 	}
 
 	protected override void EndEffect()

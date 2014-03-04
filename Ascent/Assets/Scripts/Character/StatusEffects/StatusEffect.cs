@@ -3,6 +3,7 @@
 // Dependencies
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StatusEffect 
 {
@@ -117,11 +118,56 @@ public class StatusEffect
 
     protected virtual void ApplyStatusEffect(Character caster, Character target, float duration)
     {
-        if (duration > 0.0f)
-        {
-            timed = true;
-            this.duration = duration;
-        }
+		// First check if there is a status effect of the time type
+
+		List<StatusEffect> statusEffects = target.StatusEffects;
+
+		if (overridePrevious)
+		{
+			bool overrideSuccesful = false;
+
+			// Check if the effect already exists
+			for (int i = 0; i < statusEffects.Count; ++i)
+			{
+				// Override the existing effect if the new one is more powerful
+				// TODO: write comparison function in base class and have derived classes override it.
+				if (statusEffects[i].ToString() == this.ToString())
+				{
+					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > this.FullDuration;
+					if (isDurationLonger)
+					{
+						statusEffects[i] = this;
+					}
+					else
+					{
+						// Extend the life of the existing buff
+						statusEffects[i].TimeElapsed -= this.FullDuration;
+					}
+
+					overrideSuccesful = true;
+					break;
+				}
+			}
+
+			if (!overrideSuccesful)
+			{
+				statusEffects.Add(this);
+			}
+		}
+		else
+		{
+			statusEffects.Add(this);
+		}
+
+		if (duration > 0.0f)
+		{
+			timed = true;
+			this.duration = duration;
+		}
+		else
+		{
+			timed = false;
+		}
 
         this.caster = caster;
         this.target = target;
