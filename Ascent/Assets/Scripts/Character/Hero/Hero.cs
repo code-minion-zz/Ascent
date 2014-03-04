@@ -105,6 +105,9 @@ public abstract class Hero : Character
 			Create(this);
 		}
 
+        // TODO: Move this later.
+        lives = 3;
+
 		// Attach a light to it
 		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
 		light.transform.parent = gameObject.transform;

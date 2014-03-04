@@ -248,8 +248,9 @@ public class Floor : MonoBehaviour
 
         if (hero != null)
         {
-            //--hero.stats.Lives;
+            // Remove hero lives.
             hero.FloorStatistics.NumberOfDeaths++;
+            hero.Lives--;
 
             if (hero.Lives > 0)
             {
