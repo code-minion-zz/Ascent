@@ -56,42 +56,43 @@ public static class EnvironmentFactory
         switch (type)
         {
             case TileType.groundTile:
-                go = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(floorObject) as GameObject;
                 go.name = floorObject.name;
                 break;
 
             case TileType.standardWall:
-                go = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(wallObject) as GameObject;
                 go.name = wallObject.name;
                 break;
 
             case TileType.cornerWallTile:
-                go = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(wallCorner) as GameObject;
                 go.name = wallCorner.name;
                 break;
 
             case TileType.brazier:
-                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(brazierObject) as GameObject;
                 go.name = brazierObject.name;
                 break;
 
             case TileType.pillar:
-                go = GameObject.Instantiate(pillarObject, Vector3.zero, pillarObject.transform.rotation) as GameObject;
+                //go = GameObject.Instantiate(pillarObject, Vector3.zero, pillarObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(pillarObject) as GameObject;
                 go.name = pillarObject.name;
                 break;
 
             case TileType.door:
-                go = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(doorObject) as GameObject;
                 go.name = doorObject.name;
                 break;
 
             case TileType.arrowShooter:
-                go = GameObject.Instantiate(arrowShooter, Vector3.zero, arrowShooter.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(arrowShooter) as GameObject;
                 go.name = arrowShooter.name;
                 break;
 
             case TileType.spinningBlade:
-                go = GameObject.Instantiate(spinningBlade, Vector3.zero, spinningBlade.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(spinningBlade) as GameObject;
                 go.name = spinningBlade.name;
                 break;
         }
