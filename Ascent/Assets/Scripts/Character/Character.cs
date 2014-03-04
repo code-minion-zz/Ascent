@@ -273,7 +273,7 @@ public abstract class Character : BaseCharacter
 	/// When the character needs to respawn into the game.
 	/// </summary>
 	/// <param name="position">The position to spawn the character.</param>
-	protected virtual void Respawn(Vector3 position)
+	public virtual void Respawn(Vector3 position)
 	{
 		isDead = false;
 
@@ -335,10 +335,13 @@ public abstract class Character : BaseCharacter
 			stats.CurrentHealth = stats.MaxHealth;
 			stats.CurrentSpecial = stats.MaxSpecial;
 
-			if (isDead)
-			{
-				Respawn(transform.position);
-			}
+            if (isDead)
+            {
+                motor.IsHaltingMovementToPerformAction = false;
+                Animator.Dying = false;
+                collider.enabled = true;
+                isDead = false;
+            }
 		}
     }
 

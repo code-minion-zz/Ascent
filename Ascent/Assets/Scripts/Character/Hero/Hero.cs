@@ -202,7 +202,7 @@ public abstract class Hero : Character
         }
     }
 
-    protected override void Respawn(Vector3 position)
+    public override void Respawn(Vector3 position)
     {
         // Reset the health
 		RefreshEverything();

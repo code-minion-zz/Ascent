@@ -7,7 +7,7 @@ public class Arrow : MonoBehaviour
     private bool toDestroy = false;
     private Vector3 direction;
     private float speed;
-
+    private float damage;
 
     public void Initialise(float life, Vector3 direction, float speed, int damage)
     {
@@ -16,6 +16,7 @@ public class Arrow : MonoBehaviour
         toDestroy = false;
         this.direction = direction;
         this.speed = speed;
+        this.damage = damage;
     }
 	
 	// Update is called once per frame
@@ -64,7 +65,7 @@ public class Arrow : MonoBehaviour
 		// Apply damage to the hero
 		// Apply damage and knockback to the enemey.
 		CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
-		combatEvaluator.Add(new TrapDamageProperty(1.0f, 1.0f));
+		combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
 		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1000000.0f));
 		combatEvaluator.Apply();
 	}

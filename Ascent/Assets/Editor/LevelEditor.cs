@@ -214,18 +214,19 @@ namespace Ascent
         {
             tileType = (TileType)EditorGUILayout.EnumPopup("Choose Environment Piece", (Enum)tileType);
 
-            if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
+            Transform parent = GetParentByType(selectedRoom, tileType);
+
+            if (parent == null)
+            {
+                parent = selectedTile.transform;
+            }
+
+            if (GUILayout.Button("Insert to " + parent.name, GUILayout.Width(buttonSize)))
             {
                 UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
 
                 if (go != null)
                 {
-                    Transform parent = GetParentByType(selectedRoom, tileType);
-                    if (parent == null)
-                    {
-                        parent = selectedTile.transform;
-                    }
-
                     GameObject instantiatedGo = go as GameObject;
                     instantiatedGo.transform.parent = parent;
                     instantiatedGo.transform.position = selectedTile.transform.position;
@@ -319,7 +320,8 @@ namespace Ascent
             {
                 Transform T = go.transform;
 
-                while (T.parent != null && (T.gameObject.layer != LayerMask.NameToLayer("Environment")))
+                // Get the top heirachy
+                while (T.parent != null && T.tag != "RoomTile")
                 {
                     T = T.parent;
                 }

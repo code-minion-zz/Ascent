@@ -16,6 +16,7 @@ public class Floor : MonoBehaviour
 
 	private GameObject[] startPoints;
 	private FloorCamera floorCamera;
+    private Room startRoom;
 	private Room currentRoom;
 	private Room targetRoom;
 	private FadePlane fadePlane;
@@ -127,6 +128,7 @@ public class Floor : MonoBehaviour
 			heroes[i].gameObject.SetActive(true);
 
             heroes[i].onDeath += OnPlayerDeath;
+            heroes[i].onSpawn += OnPlayerSpawn;
 
             // Reset individual hero floor records.
             heroes[i].FloorStatistics = new FloorStats();
@@ -158,7 +160,8 @@ public class Floor : MonoBehaviour
                 Debug.LogError("StartRoom does not exist. Call the starting room StartRoom");
             }
 
-            currentRoom = startRoomGO.GetComponent<Room>();
+            startRoom = startRoomGO.GetComponent<Room>();
+            currentRoom = startRoom;
 		}
 		else
 		{
@@ -245,27 +248,57 @@ public class Floor : MonoBehaviour
 
         if (hero != null)
         {
+            //--hero.stats.Lives;
+            hero.FloorStatistics.NumberOfDeaths++;
+
             if (hero.Lives > 0)
             {
-                if (currentRoom.startRoom)
+                if (currentRoom == startRoom)
                 {
-                    //hero.Respawn(startPoints[0].transform.position);
+                    hero.Respawn(startPoints[0].transform.position);
                 }
                 else
                 {
-                    //hero.Respawn(currentRoom.EntryDoor.transform.position);
-                    //hero.Respawn(startPoints[0].transform.position);
+                    // Respawn the hero here.
+                    hero.Respawn(currentRoom.EntryDoor.transform.position);
                 }
-
-                //--hero.stats.Lives;
-                hero.FloorStatistics.NumberOfDeaths++;
             }
             else
             {
-                hero.gameObject.SetActive(false);
-                hero.onDeath -= OnPlayerDeath;
+                // Check if all the players are dead as well.
+                if (IsAllHeroesDead() == true)
+                {
+                    // Take to summary screen
+                    EndFloor();
+                }
+                else
+                {
+                    // Otherwise make the hero innactive.
+                    //hero.gameObject.SetActive(false);
+                    //hero.onDeath -= OnPlayerDeath;
+
+                    // We want the animation death to play and the character to remain dead on the floor.
+                }
             }
         }
+    }
+
+    private void OnPlayerSpawn(Character character)
+    {
+        Debug.Log("Spawning player");
+    }
+
+    private bool IsAllHeroesDead()
+    {
+        foreach (Hero hero in heroes)
+        {
+            if (hero.IsDead == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

@@ -42607,6 +42607,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e82ad93ae47c94e4191dffe2dfac3320, type: 2}
+      propertyPath: projectileDamage
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e82ad93ae47c94e4191dffe2dfac3320, type: 2}
   m_RootGameObject: {fileID: 856564398}
@@ -50547,7 +50551,7 @@ MonoBehaviour:
   projectilePoolCount: 10
   frequency: .5
   projectileSpeed: 5
-  projectileDamage: 2
+  projectileDamage: 10
   arrowLifeSpan: 2
 --- !u!1 &857131180
 GameObject:
@@ -54758,6 +54762,10 @@ Prefab:
     - target: {fileID: 400002, guid: e82ad93ae47c94e4191dffe2dfac3320, type: 2}
       propertyPath: m_LocalRotation.w
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e82ad93ae47c94e4191dffe2dfac3320, type: 2}
+      propertyPath: projectileDamage
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e82ad93ae47c94e4191dffe2dfac3320, type: 2}
@@ -69102,11 +69110,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1735441730}
-  - {fileID: 838894294}
   - {fileID: 893893045}
-  - {fileID: 1708246753}
+  - {fileID: 838894294}
   - {fileID: 862200774}
   - {fileID: 866938204}
+  - {fileID: 1708246753}
   - {fileID: 1232219171}
   - {fileID: 2041384519}
   - {fileID: 1266850047}
@@ -114007,7 +114015,7 @@ MonoBehaviour:
   projectilePoolCount: 10
   frequency: .5
   projectileSpeed: 5
-  projectileDamage: 2
+  projectileDamage: 10
   arrowLifeSpan: 2
 --- !u!1 &1734957981
 GameObject:
