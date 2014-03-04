@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class Doors : MonoBehaviour 
 {
 	private const int maxDoors = 4;
-	public Door[] doors = new Door[maxDoors];
+    private List<Door> roomDoors = new List<Door>();
+
+    public List<Door> RoomDoors
+    {
+        get { return roomDoors; }
+        set { roomDoors = value; }
+    }
 
 	[HideInInspector]
 	public int hiddenDoorCount;
@@ -17,7 +25,7 @@ public class Doors : MonoBehaviour
 
 		foreach (Door d in foundDoors)
 		{
-			doors[(int)d.direction] = d;
+            RoomDoors.Add(d);
 
 			if (d is HiddenDoor)
 			{
@@ -41,11 +49,11 @@ public class Doors : MonoBehaviour
 				int doorCount = 0;
 				for(int i = 0; i < maxDoors; ++i)
 				{
-					if (doors[i] != null)
+					if (RoomDoors[i] != null)
 					{
-						if (doors[i] is HiddenDoor)
+						if (RoomDoors[i] is HiddenDoor)
 						{
-							hiddenDoors[doorCount] = (HiddenDoor)doors[i];
+							hiddenDoors[doorCount] = (HiddenDoor)RoomDoors[i];
 							++doorCount;
 
 							if (doorCount == hiddenDoorCount)
@@ -73,11 +81,11 @@ public class Doors : MonoBehaviour
 
 				for (int i = 0; i < maxDoors; ++i)
 				{
-					if (doors[i] != null)
+					if (RoomDoors[i] != null)
 					{
-						if (doors[i] is LockedDoor)
+						if (RoomDoors[i] is LockedDoor)
 						{
-							lockedDoors[doorCount] = (LockedDoor)doors[i];
+							lockedDoors[doorCount] = (LockedDoor)RoomDoors[i];
 							++doorCount;
 
 							if (doorCount == lockedDoorCount)

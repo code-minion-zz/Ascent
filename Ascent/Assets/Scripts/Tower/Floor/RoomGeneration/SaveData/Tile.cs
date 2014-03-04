@@ -10,10 +10,12 @@ public enum TileType
     door = 2,
     standardWall = 3,
     cornerWallTile = 8,
+    pillar = 9,
     randMisc = 11,
     brazier = 12,
     arrowShooter = 13,
     monster = 14,
+    spinningBlade = 15,
 }
 
 [Serializable]
@@ -33,7 +35,6 @@ public class Tile
     public float PosZ { get; set; }
 
     public Directions FacingDirection { get; set; }
-
 
     // These attributes could be any objects in the game.
     public List<TileAttribute> TileAttributes { get; set; }

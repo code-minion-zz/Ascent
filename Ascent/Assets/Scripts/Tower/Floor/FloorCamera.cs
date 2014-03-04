@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class FloorCamera : MonoBehaviour
 {
-    private List<Hero> Heros;
+    public static List<Hero> Heroes;
     private Transform myTransform;
     private Camera mainCamera;
 
@@ -37,7 +37,7 @@ public class FloorCamera : MonoBehaviour
 
 	public void Initialise()
 	{
-		Heros = Game.Singleton.Tower.CurrentFloor.Heroes;
+		Heroes = Game.Singleton.Tower.CurrentFloor.Heroes;
 		myTransform = transform;
 		mainCamera = GetComponent<Camera>();
         cameraShake = GetComponent<CameraShake>();
@@ -72,7 +72,14 @@ public class FloorCamera : MonoBehaviour
     public void UpdateCameraPosition()
     {
         Vector3 newVector = CalculateAverageHeroPosition();
+		//if (newVector == Vector3.zero)
+		//{
+		//    newVector = transform.position;
+		//}
+        newVector.y = transform.position.y;
 		newVector.z += offsetZ;
+
+		//Debug.Log(newVector);
 
         Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, Time.deltaTime * 2.0f);
 
@@ -88,16 +95,16 @@ public class FloorCamera : MonoBehaviour
 		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
-	public Vector3 CalculateAverageHeroPosition()
+	public static Vector3 CalculateAverageHeroPosition()
 	{
-		if (Heros.Count > 0)
+		if (Heroes.Count > 0)
 		{
 			// Ulter position of the camera to center on the Heros
 			Vector3 totalVector = Vector3.zero;
 
 			// Add up all the vectors
 			int heroCount = 0;
-			foreach (Hero hero in Heros)
+			foreach (Hero hero in Heroes)
 			{
 				if (hero != null)
 				{
@@ -112,15 +119,14 @@ public class FloorCamera : MonoBehaviour
 			// Calculate camera position based off Heros
 			if (heroCount != 0)
 			{
-				float x = totalVector.x / Heros.Count;
-				float y = myTransform.position.y;
+				float x = totalVector.x / (float)Heroes.Count;
 				float z = (totalVector.z / (float)heroCount);
-
-				return new Vector3(x, y, z);
+				
+				return new Vector3(x, 0.0f, z);
 			}
 		}
-
-		return myTransform.position;
+		
+		return Vector3.zero;
 	}
 
 	public void TransitionToRoom(Floor.TransitionDirection direction, float roomTransitionTime)

@@ -206,6 +206,8 @@ public abstract class Enemy : Character
 	protected virtual void PositionHpBar()
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
+		screenPos.y += 0.075f;
+		screenPos.x -= 0.025f;
 		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x,barPos.y);
 		hpBar.transform.position = barPos;
@@ -243,9 +245,12 @@ public abstract class Enemy : Character
         if (lastDamagedBy != null)
         {
             // TODO: This might need to move.
-            Hero hero = lastDamagedBy as Hero;
+            if (lastDamagedBy is Hero)
+            {
+                Hero hero = lastDamagedBy as Hero;
 
-			hero.FloorStatistics.TotalDamageDealt += result.finalDamage;
+			    hero.FloorStatistics.TotalDamageDealt += result.finalDamage;
+            }
         }
 
 		base.ApplyCombatEffects(result);

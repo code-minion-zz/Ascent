@@ -152,6 +152,13 @@ public class Floor : MonoBehaviour
 		if (!randomFloor)
 		{
 			currentRoom = allRooms[0];
+            GameObject startRoomGO = GameObject.Find("StartRoom") as GameObject;
+            if(startRoomGO == null)
+            {
+                Debug.LogError("StartRoom does not exist. Call the starting room StartRoom");
+            }
+
+            currentRoom = startRoomGO.GetComponent<Room>();
 		}
 		else
 		{
@@ -272,8 +279,11 @@ public class Floor : MonoBehaviour
 		if (enemy.LastDamagedBy != null)
         {
             // This may break if the enemy was killed by something else such as a trap with no owner maybe?
-            Hero hero = character.LastDamagedBy as Hero;
-            hero.FloorStatistics.NumberOfMonstersKilled++;
+            if (character is Hero)
+            {
+                Hero hero = character.LastDamagedBy as Hero;
+                hero.FloorStatistics.NumberOfMonstersKilled++;
+            }
         }
 
         // Give all heroes in the room the bounty.
@@ -311,7 +321,7 @@ public class Floor : MonoBehaviour
 
         // Travel North, South, East or West
 
-        Door[] roomDoors = currentRoom.Doors.doors;
+        List<Door> roomDoors = currentRoom.Doors.RoomDoors;
 
         // North
         if (Input.GetKeyUp(KeyCode.Keypad8)) 

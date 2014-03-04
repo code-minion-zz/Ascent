@@ -28,6 +28,7 @@ public class SaveRooms
 
                 if (room != null)
                 {
+                    room.IsPreloaded = true;
                     rooms.Add(room);
                 }
             }

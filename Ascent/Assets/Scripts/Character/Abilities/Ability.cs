@@ -7,6 +7,9 @@ using System.Collections;
 [System.Xml.Serialization.XmlInclude(typeof(WarriorCharge))]
 [System.Xml.Serialization.XmlInclude(typeof(WarriorWarCry))]
 [System.Xml.Serialization.XmlInclude(typeof(WarriorWarStomp))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorFireball))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorLightning))]
+[System.Xml.Serialization.XmlInclude(typeof(WarriorFreezeField))]
 public abstract class Ability
 {
     protected float animationLength = 0.0f;

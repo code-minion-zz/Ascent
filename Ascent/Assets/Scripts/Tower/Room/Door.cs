@@ -9,13 +9,18 @@ using UnityEditor;
 public class Door : MonoBehaviour 
 {
 	public Floor.TransitionDirection direction;
+
 	public Door targetDoor;
     public bool isConnected;
+
     public bool isEntryDoor = false;
+
     public Collider immediateArea;
 
     private float standingOnDoorTimer = 0.0f;
+
 	private bool[] playersLeftDoor;
+
 	private bool startDoor = false;
 
 	public bool StartDoor

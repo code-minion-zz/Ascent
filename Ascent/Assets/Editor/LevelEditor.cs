@@ -90,7 +90,8 @@ namespace Ascent
 
                     if (room != null)
                     {
-                        roomGen.ReconstructRoom(room);
+                        // Construct the newly loaded room.
+                        room.ConstructRoom();
                     }
                 }
             }
@@ -158,12 +159,20 @@ namespace Ascent
                                 TileAttribute att = new TileAttribute();
                                 att.Type = id.TileAttributeType;
                                 att.Angle = child.eulerAngles.y;
-                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
 
                                 if (att.Type == TileType.door)
                                 {
-
+                                    att = new DoorTile();
+                                    att.Type = id.TileAttributeType;
+                                    att.Angle = child.eulerAngles.y;
+                                    Door door = child.GetComponent<Door>();
+                                    DoorTile tile = att as DoorTile;
+                                    tile.IsConnected = door.isConnected;
+                                    tile.IsEntryDoor = door.isEntryDoor;
+                                    tile.Direction = door.direction;
                                 }
+
+                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
                             }
                             else
                             {
@@ -183,11 +192,16 @@ namespace Ascent
 
             if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
             {
-                GameObject go = roomGen.GetGameObjectByType(tileType);
+                GameObject go = EnvironmentFactory.CreateGameObjectByType(tileType);
 
                 if (go != null)
                 {
-                    go.transform.parent = selectedTile.transform;
+                    Transform parent = GetParentByType(selectedRoom, tileType);
+                    if (parent == null)
+                    {
+                        parent = selectedTile.transform;
+                    }
+                    go.transform.parent = parent;
                     go.transform.position = selectedTile.transform.position;
                     Selection.activeGameObject = go;
                 }
@@ -197,6 +211,27 @@ namespace Ascent
             {
                 Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
             }
+        }
+
+        private Transform GetParentByType(GameObject roomObject, TileType type)
+        {
+            Transform parent = null;
+
+            Room room = roomObject.GetComponent<Room>();
+
+            if (room != null)
+            {
+                switch (type)
+                {
+                    case TileType.door:
+                        parent = room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                        break;
+                }
+
+                return parent;
+            }
+
+            return parent;
         }
 
         /// <summary>

@@ -6,206 +6,65 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
+public enum RoomConnectionType
+{
+    Right,
+    Left,
+    Plus,
+    Empty,
+    Straight,
+    BothSides,
+    LeftUp,
+    RightUp
+}
+
 /// <summary>
 /// Handles generation of a room for use in the floor generation.
 /// </summary>
 /// 
 public class RoomGeneration 
 {
-#pragma warning disable 0414 // Room.Generation.wallWindow is assigned but never used
-
-	private GameObject floorObject;
-	private GameObject wallObject;
-	private GameObject wallCorner;
-	private GameObject wallWindow;
-	private GameObject doorObject;
-
-	private GameObject barrelObject;
-    private GameObject barrelCluster;
-    private GameObject brazierObject;
-    private GameObject arrowShooter;
-
     private Rarity miscObjects = Rarity.few;
 
-	public RoomGeneration()
-	{
-		floorObject = Resources.Load("Prefabs/RoomWalls/GroundTile_2x2") as GameObject;
-		wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
-		wallCorner = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
-		wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
-		doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
-
-		barrelObject = Resources.Load("Prefabs/RoomPieces/Barrel") as GameObject;
-        barrelCluster = Resources.Load("Prefabs/RoomPieces/BarrelCluster") as GameObject;
-        brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
-        arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
-	}
-
-    private Room CreateRoomObject(string name)
-    {
-        GameObject roomGo = new GameObject(name);
-        Room room = roomGo.AddComponent<Room>();
-
-        // Add necessary nodes.
-        room.tag = "RoomRoot";
-        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
-        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
-        doorGo.AddComponent<Doors>();
-        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
-
-        room.AddNewParentCategory("Monsters", (int)Layer.Monster);
-		room.AddNewParentCategory("Items", (int)Layer.Item);
-		room.AddNewParentCategory("Lights", (int)Layer.Default);
-
-        room.Initialise();
-
-        return room;
-    }
 
     /// <summary>
     /// Creates a new room and intializes variables.
+    /// TODO: This will be swapped out for the new createroom function.
     /// </summary>
     /// <returns>The new room.</returns>
     /// <param name="width">Width.</param>
     /// <param name="height">Height.</param>
     /// <param name="name">Name.</param>
-    public RoomProperties CreateNewRoom(int width, int height, string name)
+    public RoomProperties ConstructNewRoom(int width, int height, string name)
 	{
-        Room room = CreateRoomObject(name);
-		
-		// Handle creation of the ground tiles.
-		RoomProperties newRoom = new RoomProperties(room);
+		// Initialise and construct the new room.
+		RoomProperties newRoom = new RoomProperties();
         newRoom.Name = name;
         newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
-        newRoom.CreateTileParentNodes();
-        room.NumberOfTilesX = newRoom.NumberOfTilesX;
-        room.NumberOfTilesY = newRoom.NumberOfTilesY;
+
+
+        newRoom.ConstructRoom();
 		PlaceGroundTiles(newRoom);
-        SetupCamera(newRoom);
-		
-		// Apply the new dimensions to the navMesh.
-		room.NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
+
+        newRoom.IsConstructed = false;
 
 		return newRoom;
 	}
 
     /// <summary>
-    /// Reconstructs a room.
+    /// Creates the data structure for a new room. Which can be used to reconstruct a room.
     /// </summary>
-    /// <param name="room">The room data.</param>
-    public void ReconstructRoom(RoomProperties room)
+    /// <param name="shape"></param>
+    /// <param name="tilesX"></param>
+    /// <param name="tilesY"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY)
     {
-        // Reconstruct the object.
-        room.InitializeNonSerializable(CreateRoomObject(room.Name));
-        room.CreateTileParentNodes();
+        RoomProperties newRoom = new RoomProperties();
+        newRoom.InitialiseTiles(tilesX, tilesY);
 
-        // Construct all the tiles.
-        for (int x = 0; x < room.NumberOfTilesX; ++x)
-        {
-            for (int y = 0; y < room.NumberOfTilesY; ++y)
-            {
-                ConstructBaseTiles(room, room.Tiles[x, y], x, y);
-            }
-        }
-
-        room.Room.NumberOfTilesX = room.NumberOfTilesX;
-        room.Room.NumberOfTilesY = room.NumberOfTilesY;
-
-        SetupCamera(room);
-
-        room.IsPreloaded = true;
-        room.WallsPlaced = true;
-    }
-
-    private void ConstructBaseTiles(RoomProperties room, Tile tile, int x, int y)
-    {
-        // Loop through the individual attributes for this tile.
-        foreach (TileAttribute att in tile.TileAttributes)
-        {
-            // Place each attribute on the tile position.
-            GameObject go = GetGameObjectByType(att.Type);
-
-            if (go != null)
-            {
-                go.transform.parent = room.Tiles[x, y].GameObject.transform;
-                go.transform.position = room.Tiles[x, y].Position;
-                go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
-                go.name = "[" + x + ", " + y + "]" + go.name;
-
-                if (att.Type == TileType.door)
-                {
-                    Door door = go.GetComponent<Door>();
-                    door.direction = GetDirectionFromRot(go.transform.eulerAngles.y);
-                    room.Doors.Add(door);
-                }
-            }
-        }
-    }
-
-    private void SetupCamera(RoomProperties room)
-    {
-        float cameraOffsetX = 1.0f;
-        float cameraOffsetMinZ = 1.0f;
-		float cameraOffsetMaxZ = 1.0f;
-
-        //if (Game.Singleton.IsWideScreen)
-        //{
-        //    switch (room.Width)
-        //    {
-        //        case 10: cameraOffsetX = 0.0f; break;
-        //        case 14: cameraOffsetX = 0.0f; break;
-        //        case 18: cameraOffsetX = 1.0f; break;
-        //        case 22: cameraOffsetX = 3.0f; break;
-        //        case 24: cameraOffsetX = 4.0f; break;
-
-        //        default: Debug.LogError("Unhandled case: " + room.Width); break;
-        //    }
-        //}
-        //else
-        //{
-			switch (room.Width)
-			{
-				case 10: cameraOffsetX = 0.0f; break;
-				case 14: cameraOffsetX = 1.0f; break;
-				case 18: cameraOffsetX = 3.0f; break;
-				case 22: cameraOffsetX = 5.0f; break;
-                case 24: cameraOffsetX = 4.0f; break;
-
-				default: Debug.LogError("Unhandled case: " + room.Width); break;
-			}
-
-		//}
-
-		switch (room.Height)
-		{
-			case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
-			case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
-			case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
-			case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
-            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
-
-			default: Debug.LogError("Unhandled case: " + room.Height); break;
-		}
-
-		room.Room.minCamera.x = -cameraOffsetX;
-		room.Room.maxCamera.x = cameraOffsetX;
-
-		room.Room.minCamera.z = cameraOffsetMinZ;
-		room.Room.maxCamera.z = cameraOffsetMaxZ;
-
-		//room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
-		//room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
-
-		//room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
-		//room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
-
-		//room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + (room.Height * 0.48f)) * cameraOffsetZ) : -5.0f;
-		//room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - (room.Height * 1.17f)) * cameraOffsetZ) : -5.0f;
-
-        //room.Room.minCamera.z = Math.Max(room.Room.minCamera.z, -9.25f);
-        //room.Room.maxCamera.z = Math.Min(room.Room.maxCamera.z, 0.0f);
-
-        //room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
+        return newRoom;
     }
 
     public void PopulateMonsters(int dungeonLevel, RoomProperties room, Rarity rarity)
@@ -213,13 +72,14 @@ public class RoomGeneration
         List<Tile> tempAvailablePosition = new List<Tile>();
 
         // Find all the available positions that a misc object can be placed.
-        for (int i = 0; i < room.NumberOfTilesX; ++i)
+        for (int i = 0; i < room.Tiles.GetLength(0); ++i)
         {
-            for (int j = 0; j < room.NumberOfTilesY; ++j)
+            for (int j = 0; j < room.Tiles.GetLength(1); ++j)
             {
                 // Search for tiles that are available.
                 if (room.Tiles[i, j].ContainsAttribute(TileType.monster) || 
-                    room.Tiles[i, j].ContainsAttribute(TileType.none))
+                    room.Tiles[i, j].ContainsAttribute(TileType.none) &&
+                    room.Tiles[i, j].ContainsAttribute(TileType.groundTile))
                 {
                     tempAvailablePosition.Add(room.Tiles[i, j]);
                 }
@@ -304,8 +164,8 @@ public class RoomGeneration
     public void PopulateBossRoom(int dungeonLevel, RoomProperties room)
     {
         GameObject go = room.Room.InstantiateGameObject(Room.ERoomObjects.Enemy, "Abomination");
-        int centreX = (int)(room.NumberOfTilesX * 0.7f);
-        int centreY = (int)(room.NumberOfTilesY * 0.7f);
+        int centreX = (int)(room.Tiles.GetLength(0) * 0.7f);
+        int centreY = (int)(room.Tiles.GetLength(1) * 0.7f);
 
         TileAttribute att = new TileAttribute();
         att.Angle = 0.0f;
@@ -328,17 +188,17 @@ public class RoomGeneration
 	public void PopulateMiscObjects(RoomProperties room)
 	{
         // Since the room is preloaded we don't need to randomly place things.
-        if (room.IsPreloaded == true)
-        {
-            return;
-        }
+        //if (room.IsPreloaded == true)
+        //{
+        //    return;
+        //}
 
         List<Tile> tempAvailableTiles = new List<Tile>();
 
         // Find all the available positions that a misc object can be placed.
-		for (int i = 0; i < room.NumberOfTilesX; ++i)
+		for (int i = 0; i < room.Tiles.GetLength(0); ++i)
 		{
-			for (int j = 0; j < room.NumberOfTilesY; ++j)
+			for (int j = 0; j < room.Tiles.GetLength(1); ++j)
 			{
                 // Populate random misc objects.
                 if (room.Tiles[i, j].ContainsAttribute(TileType.randMisc) ||
@@ -346,7 +206,8 @@ public class RoomGeneration
                     room.Tiles[i, j].ContainsAttribute(TileType.cornerWallTile) ||
                     room.Tiles[i, j].ContainsAttribute(TileType.brazier))
                 {
-                    if (room.Tiles[i, j].IsOccupied == false)
+                    // There must be a ground tile here otherwise it does not make sense.
+                    if (room.Tiles[i, j].IsOccupied == false && room.Tiles[i, j].ContainsAttribute(TileType.groundTile))
                     {
                         tempAvailableTiles.Add(room.Tiles[i, j]);
                     }
@@ -361,7 +222,7 @@ public class RoomGeneration
         { 
             if (tile.ContainsAttribute(TileType.cornerWallTile))
             {
-                go = GetGameObjectByType(TileType.brazier);
+                go = EnvironmentFactory.CreateGameObjectByType(TileType.brazier);
                 go.transform.parent = room.Room.EnvironmentParent;
                 go.transform.localPosition = tile.Position;
 
@@ -394,13 +255,13 @@ public class RoomGeneration
                 switch (random)
                 {
                     case 0:
-                        go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                        go = EnvironmentFactory.CreateMiscObject(MiscObjectType.barrel);
                         break;
 
                     case 1:
                         float rotationY = UnityEngine.Random.Range(0.0f, 270.0f);
                         angle = rotationY;
-                        go = GameObject.Instantiate(barrelCluster, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                        go = EnvironmentFactory.CreateMiscObject(MiscObjectType.barrelCluster);
                         go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x, rotationY, go.transform.eulerAngles.z);
                         break;
                 }
@@ -431,9 +292,9 @@ public class RoomGeneration
 		// Create the floor tiles and positions.
 
 		// where necessary.
-		for (int x = 0; x < room.NumberOfTilesX; ++x)
+		for (int x = 0; x < room.Tiles.GetLength(0); ++x)
 		{
-			for (int y = 0; y < room.NumberOfTilesY; ++y)
+			for (int y = 0; y < room.Tiles.GetLength(1); ++y)
 			{
                 // Populate the whole room with a ground tile attribute.
                 TileAttribute att = new TileAttribute();
@@ -442,8 +303,7 @@ public class RoomGeneration
                 room.Tiles[x, y].TileAttributes.Add(att);
 
                 // Create the ground tile.
-                GameObject groundTile = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-                //groundTile.transform.parent = room.Room.GetNodeByLayer("Environment").transform;
+                GameObject groundTile = EnvironmentFactory.CreateGameObjectByType(TileType.groundTile);
                 groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
@@ -476,51 +336,6 @@ public class RoomGeneration
         return dir;
     }
 
-    /// <summary>
-    /// Returns a newly created object based on the type.
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public GameObject GetGameObjectByType(TileType type)
-    {
-        GameObject go = null;
-
-        switch (type)
-        {
-            case TileType.groundTile:
-                go = GameObject.Instantiate(floorObject, Vector3.zero, floorObject.transform.rotation) as GameObject;
-                go.name = floorObject.name;
-                break;
-
-            case TileType.standardWall:
-                go = GameObject.Instantiate(wallObject, Vector3.zero, wallObject.transform.rotation) as GameObject;
-                go.name = wallObject.name;
-                break;
-
-            case TileType.cornerWallTile:
-                go = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
-                go.name = wallCorner.name;
-                break;
-
-            case TileType.brazier:
-                go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
-                go.name = brazierObject.name;
-                break;
-
-            case TileType.door:
-                go = GameObject.Instantiate(doorObject, Vector3.zero, doorObject.transform.rotation) as GameObject;
-                go.name = doorObject.name;
-                break;
-
-            case TileType.arrowShooter:
-                go = GameObject.Instantiate(arrowShooter, Vector3.zero, arrowShooter.transform.rotation) as GameObject;
-                go.name = arrowShooter.name;
-                break;
-        }
-
-        return go;
-    }
-
 	/// <summary>
 	/// Creates a door in the direction specified at the room specified.
 	/// </summary>
@@ -530,17 +345,17 @@ public class RoomGeneration
 	/// <param name="direction">Direction.</param>
 	public Door CreateDoor(GameObject doors, RoomProperties fromRoom, Floor.TransitionDirection direction)
 	{
-        GameObject doorGo = GetGameObjectByType(TileType.door);
+        GameObject doorGo = EnvironmentFactory.CreateGameObjectByType(TileType.door);
 		doorGo.transform.parent = doors.transform;
 		
 		// Attach the doors to their rightful component.
 		Doors doorsScript = doors.GetComponent<Doors>();
 		
-		doorsScript.doors[(int)direction] = doorGo.GetComponent<Door>();
-		Door returnDoor = doorsScript.doors[(int)direction];
-		
-		int lastTileX = fromRoom.NumberOfTilesX-1;
-		int lastTileY = fromRoom.NumberOfTilesY-1;
+		doorsScript.RoomDoors[(int)direction] = doorGo.GetComponent<Door>();
+		Door returnDoor = doorsScript.RoomDoors[(int)direction];
+
+        int lastTileX = fromRoom.Tiles.GetLength(0)- 1;
+		int lastTileY = fromRoom.Tiles.GetLength(1)-1;
 
         int midXTile = (int)(lastTileX * 0.5f);
         int midYTile = (int)(lastTileY * 0.5f);
@@ -624,10 +439,10 @@ public class RoomGeneration
         TileAttribute att = new TileAttribute();
         att.Type = TileType.cornerWallTile;
         att.Angle = 270.0f;
-        room.Tiles[room.NumberOfTilesX - 1, room.NumberOfTilesY - 1].TileAttributes.Add(att);
+        room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
         // Create the corner piece.
-		wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
 		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
 		wallCornerGo.name = "CornerNE";
@@ -638,9 +453,9 @@ public class RoomGeneration
         att = new TileAttribute();
         att.Type = TileType.cornerWallTile;
         att.Angle = 0.0f;
-        room.Tiles[room.NumberOfTilesX - 1, 0].TileAttributes.Add(att);
+        room.Tiles[room.Tiles.GetLength(0) - 1, 0].TileAttributes.Add(att);
 
-		wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
 		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
 		wallCornerGo.name = "CornerSE";
@@ -651,9 +466,9 @@ public class RoomGeneration
         att = new TileAttribute();
         att.Type = TileType.cornerWallTile;
         att.Angle = 180.0f;
-        room.Tiles[0, (int)room.NumberOfTilesY - 1].TileAttributes.Add(att);
+        room.Tiles[0, (int)room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
-		wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
 		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
 		wallCornerGo.name = "CornerNW";
@@ -666,15 +481,15 @@ public class RoomGeneration
         att.Angle = 90.0f;
         room.Tiles[0, 0].TileAttributes.Add(att);
 
-		wallCornerGo = GameObject.Instantiate(wallCorner, Vector3.zero, wallCorner.transform.rotation) as GameObject;
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
 		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
 		wallCornerGo.name = "CornerSW";
 		wallCornerGo.transform.parent = walls.transform;
         
         // Variables used for placing walls.
-        int lastTileX = room.NumberOfTilesX;
-		int lastTileY = room.NumberOfTilesY;
+        int lastTileX = room.Tiles.GetLength(0);
+        int lastTileY = room.Tiles.GetLength(1);
 
         // Place north walls
 		for (int i = 0; i < lastTileX; ++i)
@@ -683,7 +498,7 @@ public class RoomGeneration
             if (!room.Tiles[i, lastTileY-1].ContainsAttribute(TileType.door) &&
                 !room.Tiles[i, lastTileY-1].ContainsAttribute(TileType.cornerWallTile))
             {
-                GameObject wallGo = GetGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[i, lastTileY-1].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
@@ -703,7 +518,7 @@ public class RoomGeneration
             if (!room.Tiles[i, 0].ContainsAttribute(TileType.door) &&
                 !room.Tiles[i, 0].ContainsAttribute(TileType.cornerWallTile))
             {
-                GameObject wallGo = GetGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[i, 0].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
@@ -723,7 +538,7 @@ public class RoomGeneration
             if (!room.Tiles[lastTileX-1, i].ContainsAttribute(TileType.door) &&
                 !room.Tiles[lastTileX-1, i].ContainsAttribute(TileType.cornerWallTile))
             {
-                GameObject wallGo = GetGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[lastTileX-1, i].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
@@ -743,7 +558,7 @@ public class RoomGeneration
             if (!room.Tiles[0, i].ContainsAttribute(TileType.door) &&
                 !room.Tiles[0, i].ContainsAttribute(TileType.cornerWallTile))
             {
-                GameObject wallGo = GetGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[0, i].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
@@ -757,6 +572,6 @@ public class RoomGeneration
             }
         }
 		
-        room.WallsPlaced = true;
+        room.IsConstructed = true;
 	}
 }

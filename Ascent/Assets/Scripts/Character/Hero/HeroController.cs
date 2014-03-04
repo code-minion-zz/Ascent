@@ -14,6 +14,8 @@ public class HeroController : MonoBehaviour
 	private MoveableBlock grabbedObject;
 	private bool vertGrab;
 
+	private HeroButtonIndicator buttonIndicator;
+
 	private GameObject targetObject;
 	public GameObject TargetObject
 	{
@@ -38,6 +40,8 @@ public class HeroController : MonoBehaviour
 		set;
 	}
 
+	private bool wasInInteractionArea;
+
 	Shape2D shapeA;
 	Shape2D shapeB;
 	Shape2D shapeC;
@@ -56,6 +60,16 @@ public class HeroController : MonoBehaviour
 		shapeA = new Arc(hero.transform, 3.5f, 80.0f, transform.forward * -0.5f);
 		shapeB = new Arc(hero.transform, 10.0f, 30.0f, Vector3.zero);
 		shapeC = new Circle(hero.transform, 1.5f, Vector3.zero);
+	}
+
+	public void InitialiseControllerIndicators()
+	{
+		GameObject buttonIndicatorGO = NGUITools.AddChild(FloorHUDManager.Singleton.mainPanel.gameObject, Resources.Load("Prefabs/UI/HeroButtonIndicator") as GameObject);
+		buttonIndicator = buttonIndicatorGO.GetComponent<HeroButtonIndicator>();
+		buttonIndicator.Initialise(hero);
+
+		// Set scale similar to the character size
+		buttonIndicator.transform.localScale = Vector3.one * 2.5f;
 	}
 
     void Update()
@@ -479,13 +493,13 @@ public class HeroController : MonoBehaviour
 		// TODO: Remove X or A depending on what people think is more intuitive
 		if (!hero.Loadout.IsAbilityActive || (hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility))
 		{
-			if (device.X.WasPressed || device.A.WasPressed)
+			bool faceButtonPressed = device.X.WasPressed || device.A.WasPressed;
+			bool interactionOccured = ProcessInteractions(faceButtonPressed);
+
+			if (faceButtonPressed && !interactionOccured)
 			{
-				if (!ProcessInteractions())
-				{
-					RotateToTarget();
-					hero.Loadout.UseAbility((int)EHeroAction.Strike);
-				}
+				RotateToTarget();
+				hero.Loadout.UseAbility((int)EHeroAction.Strike);
 			}
 		}
 
@@ -495,7 +509,7 @@ public class HeroController : MonoBehaviour
 		//}
 	}
 
-	public bool ProcessInteractions()
+	public bool ProcessInteractions(bool wasButtonPressed)
 	{
 		// NOTE: Only one of these may occur each time the button is pressed
 
@@ -514,8 +528,15 @@ public class HeroController : MonoBehaviour
 					// Can it be opened?
 					if (c.IsClosed)
 					{
-						c.OpenChest(); // I open the chest. No one else can.
-                        hero.FloorStatistics.NumberOfChestsOpened++;
+						if (wasButtonPressed)
+						{
+							c.OpenChest(); // I open the chest. No one else can.
+							hero.FloorStatistics.NumberOfChestsOpened++;
+						}
+						else
+						{
+							buttonIndicator.Enable(true);
+						}
 
 						return true; // An interaction has occured. Exit function now.
 					}
@@ -551,8 +572,15 @@ public class HeroController : MonoBehaviour
 				// Am I within range of the item?
 				if (closestDrop.TriggerRegion.IsInside(position))
 				{
-					closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
-                    hero.FloorStatistics.NumberOfItemsPickedUp++;
+					if (wasButtonPressed)
+					{
+						closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+						hero.FloorStatistics.NumberOfItemsPickedUp++;
+					}
+					else
+					{
+						buttonIndicator.Enable(true);
+					}
 
 					return true; // An interaction has occured. Exit function now.
 				}
@@ -583,11 +611,22 @@ public class HeroController : MonoBehaviour
 				//Debug.Log(lockedDoors.Length);
 				foreach (LockedDoor door in lockedDoors)
 				{
-					if (door.triggerRegion.IsInside(position))
+					if (!door.opened)
 					{
-						key.UseItem(hero);
-						door.Open();
-						return true;
+						if (door.triggerRegion.IsInside(position))
+						{
+							if (wasButtonPressed)
+							{
+								key.UseItem(hero);
+								door.Open();
+							}
+							else
+							{
+								buttonIndicator.Enable(true);
+							}
+
+							return true;
+						}
 					}
 				}
 			}
@@ -627,23 +666,37 @@ public class HeroController : MonoBehaviour
 				Vector3 direction = (transform.position - pos).normalized;
 				float dot = Vector3.Dot(direction, transform.forward);
 
-				if (dot < -0.8f)
+				if (dot < -0.9f)
 				{
 					// Has it been grabbed yet?
 					if (!closestBlock.grabbed)
 					{
-						// Grab it
-						grabbedObject = closestBlock;
-						closestBlock.grabbed = true;
+						Debug.Log(closestBlock.grabbed);
+						if (wasButtonPressed)
+						{
+							// Grab it
+							grabbedObject = closestBlock;
+							closestBlock.grabbed = true;
 
-						vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
+							//vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
+							vertGrab = Mathf.Abs(transform.forward.x) < 0.2f;
 
+							motor.StopMotion();
+							animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
+							buttonIndicator.Enable(false);
+						}
+						else
+						{
+							buttonIndicator.Enable(true);
+						}
 						
 						return true;
 					}
 				}
 			}
 		}
+
+		buttonIndicator.Enable(false);
 
 		return false;
 	}

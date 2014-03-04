@@ -317,15 +317,22 @@ public class Room : MonoBehaviour
 		//}
 	}
 
+    public void SetNavMeshDimensions(float width, float height)
+    {
+        NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
+    }
+
 	void CheckDoors()
 	{
         if (doors == null)
         {
+            Debug.Log("Doors null");
             return;
         }
 
-		Door[] roomDoors = doors.doors;
-		for (int i = 0; i < roomDoors.Length; ++i)
+		List<Door> roomDoors = doors.RoomDoors;
+
+		for (int i = 0; i < roomDoors.Count; ++i)
 		{
 			if (roomDoors[i] != null)
 			{
@@ -760,7 +767,7 @@ public class Room : MonoBehaviour
         Vector3 point = new Vector3(pos.x - extents.x, pos.y, pos.z + extents.z);
         inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 #if UNITY_EDITOR
-        Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, extents.z), Color.white, 0.2f);
+        Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, extents.z), Color.white);
 #endif
 
         // T
@@ -770,7 +777,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, extents.z), Color.white);
 #endif
         }
 
@@ -781,7 +788,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + extents, Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + extents, Color.white);
 #endif
         }
 
@@ -792,7 +799,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -803,7 +810,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(0.0f, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -814,7 +821,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, -extents.z), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, -extents.z), Color.white);
 #endif
         }
 
@@ -825,7 +832,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, 0.0f), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(-extents.x, extents.y, 0.0f), Color.white);
 #endif
         }
 
@@ -836,7 +843,7 @@ public class Room : MonoBehaviour
             inside = MathUtility.IsWithinCircleArc(point, arc.Position, arc.Line1, arc.Line2, arc.radius);
 
 #if UNITY_EDITOR
-            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, 0.0f), Color.white, 0.2f);
+            Debug.DrawLine(col.transform.position, col.transform.position + new Vector3(extents.x, extents.y, 0.0f), Color.white);
 #endif
         }
 
@@ -920,9 +927,9 @@ public class Room : MonoBehaviour
 		// Try north
 		if (heading >= -0.45f && heading <= 45.0f)
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
 		}
@@ -930,9 +937,9 @@ public class Room : MonoBehaviour
 		// Try East
 		if (!transitioned && (heading >= 0.45f && heading <= 135.0f))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
 		}
@@ -940,9 +947,9 @@ public class Room : MonoBehaviour
 		// Try South
 		if (!transitioned && ((heading >= 135.0f && heading <= 180.0f) || (heading <= -135.0f)))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
 		}
@@ -950,9 +957,9 @@ public class Room : MonoBehaviour
 		// Try West
 		if (!transitioned && (heading <= -0.45f && heading >= -135.0f))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 		}
@@ -961,24 +968,24 @@ public class Room : MonoBehaviour
 		{
 			// Try any door :<
 
-			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 
