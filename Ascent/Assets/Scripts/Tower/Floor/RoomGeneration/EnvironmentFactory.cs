@@ -20,6 +20,7 @@ public static class EnvironmentFactory
     private static GameObject barrelObject = Resources.Load("Prefabs/RoomPieces/Barrel") as GameObject;
     private static GameObject barrelCluster = Resources.Load("Prefabs/RoomPieces/BarrelCluster") as GameObject;
     private static GameObject brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
+    private static GameObject pillarObject = Resources.Load("Prefabs/RoomPieces/Pillar") as GameObject;
     private static GameObject arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
     private static GameObject spinningBlade = Resources.Load("Prefabs/Hazards/SpinningBlade") as GameObject;
 
@@ -72,6 +73,11 @@ public static class EnvironmentFactory
             case TileType.brazier:
                 go = GameObject.Instantiate(brazierObject, Vector3.zero, brazierObject.transform.rotation) as GameObject;
                 go.name = brazierObject.name;
+                break;
+
+            case TileType.pillar:
+                go = GameObject.Instantiate(pillarObject, Vector3.zero, pillarObject.transform.rotation) as GameObject;
+                go.name = pillarObject.name;
                 break;
 
             case TileType.door:

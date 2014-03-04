@@ -197,6 +197,10 @@ namespace Ascent
                 if (go != null)
                 {
                     Transform parent = GetParentByType(selectedRoom, tileType);
+                    if (parent == null)
+                    {
+                        parent = selectedTile.transform;
+                    }
                     go.transform.parent = parent;
                     go.transform.position = selectedTile.transform.position;
                     Selection.activeGameObject = go;
