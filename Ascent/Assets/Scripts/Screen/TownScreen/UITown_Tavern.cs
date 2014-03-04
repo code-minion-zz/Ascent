@@ -6,9 +6,9 @@ public class UITown_Tavern : UITown_RadialPanel {
 	enum ETavernMode
 	{
 		Invalid = -1,
-		Empty,
-		CreateOrLoad,
-		Create,
+		NoPlayer,
+		NewOrLoad,
+		New,
 		Load,
 		CharacterSheet,
 		Max
@@ -23,7 +23,7 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		base.Initialise();
 
-		mode = ETavernMode.Empty;
+		mode = ETavernMode.NoPlayer;
 
 		initialised = true;
 
@@ -59,10 +59,10 @@ public class UITown_Tavern : UITown_RadialPanel {
 		if (currentSelection == null) return;
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			// TODO: Add player and bind panel to it
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			// TODO: 
 			break;
 		}
@@ -72,7 +72,7 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NewOrLoad:
 			townParent.RequestQuit();
 			break;
 		}
@@ -82,17 +82,17 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			ShowSharedElements(false);
 			NGUITools.SetActive(TavernElements[0], true);
 			NGUITools.SetActive(TavernElements[1], false);
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			ShowSharedElements(true);
 			NGUITools.SetActive(TavernElements[0], false);
 			NGUITools.SetActive(TavernElements[1], true);
 			break;
-		case ETavernMode.Create:
+		case ETavernMode.New:
 			break;
 		}
 	}
@@ -108,16 +108,33 @@ public class UITown_Tavern : UITown_RadialPanel {
 		}
 	}
 
+	public void ActivatePanel()
+	{
+		mode = ETavernMode.NewOrLoad;
+		ProcessModeSwitch();
+		parent.Initialise();
+	}
+
+	public void DeactivatePanel()
+	{
+		mode = ETavernMode.NoPlayer;
+		ProcessModeSwitch();
+	}
+
 	#region Input Handling
 	public override void OnMenuLeft(InputDevice device)
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			break;
-		case ETavernMode.Create:
+		case ETavernMode.New:
+			break;
+		case ETavernMode.Load:
+			break;
+		case ETavernMode.CharacterSheet:
 			break;
 		}
 	}
@@ -126,11 +143,15 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			break;
-		case ETavernMode.Create:
+		case ETavernMode.New:
+			break;
+		case ETavernMode.Load:
+			break;
+		case ETavernMode.CharacterSheet:
 			break;
 		}
 	}
@@ -139,11 +160,15 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			break;
-		case ETavernMode.Create:
+		case ETavernMode.New:
+			break;
+		case ETavernMode.Load:
+			break;
+		case ETavernMode.CharacterSheet:
 			break;
 		}
 	}
@@ -152,18 +177,22 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.Empty:
+		case ETavernMode.NoPlayer:
 			break;
-		case ETavernMode.CreateOrLoad:
+		case ETavernMode.NewOrLoad:
 			break;
-		case ETavernMode.Create:
+		case ETavernMode.New:
+			break;
+		case ETavernMode.Load:
+			break;
+		case ETavernMode.CharacterSheet:
 			break;
 		}
 	}
 	
 	public override void OnMenuOK(InputDevice device)
 	{
-		
+		ProcessOK();
 	}
 	
 	public override void OnMenuCancel(InputDevice device)

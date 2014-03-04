@@ -15,8 +15,8 @@ public class UITownScreen : UIPlayerMenuScreen
 #pragma warning disable 0649
     private	int readyPlayers = 0;
 
-#pragma warning disable 0414 // UITownScreen.devices assigned but never used.
 	List<InputDevice> devices;
+	bool allReady = false;
 
 	void OnDestroy()
 	{
@@ -28,10 +28,9 @@ public class UITownScreen : UIPlayerMenuScreen
 	{
 		base.Start();
 
+
 		InputManager.OnDeviceAttached += OnDeviceAttached;
 		InputManager.OnDeviceDetached += OnDeviceDetached;
-
-		devices = InputManager.Devices;
 
 		players = Game.Singleton.Players;
 
@@ -44,17 +43,100 @@ public class UITownScreen : UIPlayerMenuScreen
 			windows[i].Initialise();
 			windows[i].OnEnable();
 		}
+
+		devices = InputManager.Devices;
 	}
 
 	public void Update () 
 	{
+		// Remove players that wish to leave
+		if (playersToRemove.Count > 0)
+		{
+			foreach (Player p in playersToRemove)
+			{
+				RemovePlayer(p);
+			}
+			
+			playersToRemove.Clear();
+		}
+		
+		// Check if all players are ready
+		int activePlayers = 0;
+		int readiedPlayers = 0;
+		foreach (UIPlayerMenuWindow win in windows)
+		{
+			if (win.gameObject.activeSelf)
+			{
+				++activePlayers;
+				if (win.Ready)
+				{
+					++readiedPlayers;
+				}
+			}
+		}
+		if (activePlayers > 0)
+		{
+			if (activePlayers == readiedPlayers)
+			{
+				allReady = true;
+			}
+			else
+			{
+				allReady = false;
+			}
+		}
+		else
+		{
+			allReady = false;
+		}
+
+		// Check if any players want to enter the game
+		if (players.Count < 3)
+		{
+			AddNewPlayers();
+		}
 	}
 
+	public void AddNewPlayers()
+	{
+		// Check if any players want to enter the game
+		if (players.Count < maxPlayers)
+		{
+			foreach (InputDevice device in devices)
+			{
+				if (!device.InUse)
+				{
+					if (device.A.WasPressed)
+					//if (device.Start.WasPressed || device.A.WasPressed)
+					{
+						device.InUse = true;
+						int i;
+						for (i = 0; i < windows.Count; ++i)
+						{
+							if (windows[i].HasPlayer)
+							{
+								continue;
+							}
+							
+							GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+							go.transform.parent = Game.Singleton.transform;
+
+							Player newPlayer = go.GetComponent<Player>() as Player;
+							newPlayer.PlayerID = i;
+							newPlayer.name = "Player" + i;
+							//windows[i].
+							newPlayer.BindInputDevice(device);
+							windows[i].SetPlayer(newPlayer);
+							players.Add(newPlayer);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	public void OnDeviceAttached(InputDevice device)
 	{
-		// Repoll all the devices
-		devices = InputManager.Devices;
 	}
 
 	public void OnDeviceDetached(InputDevice device)
@@ -70,7 +152,7 @@ public class UITownScreen : UIPlayerMenuScreen
                     {
                         if(win.Player == p)
                         {
-                            win.CloseWindow();
+                            //win.CloseWindow();
                         }
                     }
 					continue;
@@ -78,8 +160,6 @@ public class UITownScreen : UIPlayerMenuScreen
 			}
 		}
 
-		// Repoll all the devices
-		devices = InputManager.Devices;
 	}
 
 	public void RemovePlayer(Player p)

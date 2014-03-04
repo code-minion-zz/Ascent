@@ -14,6 +14,22 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 		set { player = value; }
 	}
 
+	public bool HasPlayer
+	{
+		get { return (player == null)? false : true; }
+	}
+
+	public bool CharacterLoaded
+	{
+		get 
+		{
+			if (HasPlayer)
+				return (player.Hero == null)? false : true; 
+			else
+				return false;
+		}
+	}
+
 	protected Dictionary<int, UIPlayerMenuPanel> panels;
 	public Dictionary<int, UIPlayerMenuPanel> Panels
 	{

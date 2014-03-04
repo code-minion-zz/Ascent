@@ -43,7 +43,7 @@ public class UIPlayerMenuScreen : MonoBehaviour
 		{
 			windows[i].transform.position = new Vector3(offsetX + (offsetX * -i), prefabWindow.transform.position.y, prefabWindow.transform.position.z);
 			//windows[i].Initialise();
-			windows[i].gameObject.SetActive(false);
+			//windows[i].gameObject.SetActive(false);
 		}
 	}
 

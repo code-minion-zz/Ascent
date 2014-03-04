@@ -174,12 +174,10 @@ public class UITownWindow : UIPlayerMenuWindow
 		activePanel.OnEnable();
 	}
 
-	/// <summary>
-	/// Initialize all panels with the values of the player.
-	/// </summary>
-	public void PanelPlayerSetup()
+	public void ActivateWindow()
 	{
-
+		UITown_Tavern tavern = panels[(int)EBackpackPanels.TAVERN] as UITown_Tavern;
+		tavern.ActivatePanel();
 	}
 
 	public void ShowArrow(bool state)
