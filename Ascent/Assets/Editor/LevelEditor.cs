@@ -319,18 +319,23 @@ namespace Ascent
             {
                 Transform T = go.transform;
 
-                while (T.parent != null && T.tag != "RoomTile")
+                while (T.parent != null && (T.gameObject.layer != LayerMask.NameToLayer("Environment")))
                 {
                     T = T.parent;
                 }
 
-                if (T.tag != "RoomTile")
+                // Check if the object is an environment piece.
+                if (T.tag == "EnvObject" || T.gameObject.layer == LayerMask.NameToLayer("Environment"))
                 {
-                    selectedTile = null;
+                    selectedTile = T.gameObject;
+                }
+                else if (T.tag == "RoomTile")
+                {
+                    selectedTile = T.gameObject;
                 }
                 else
                 {
-                    selectedTile = T.gameObject;
+                    selectedTile = null;
                 }
             }
         }
