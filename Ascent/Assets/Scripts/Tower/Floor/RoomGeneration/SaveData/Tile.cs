@@ -14,6 +14,7 @@ public enum TileType
     brazier = 12,
     arrowShooter = 13,
     monster = 14,
+    spinningBlade = 15,
 }
 
 [Serializable]

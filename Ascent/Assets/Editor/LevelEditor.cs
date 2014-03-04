@@ -90,7 +90,8 @@ namespace Ascent
 
                     if (room != null)
                     {
-                        roomGen.ReconstructRoom(room);
+                        // Construct the newly loaded room.
+                        room.ConstructRoom();
                     }
                 }
             }
@@ -191,7 +192,7 @@ namespace Ascent
 
             if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
             {
-                GameObject go = roomGen.GetGameObjectByType(tileType);
+                GameObject go = EnvironmentFactory.CreateGameObjectByType(tileType);
 
                 if (go != null)
                 {

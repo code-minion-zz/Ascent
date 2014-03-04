@@ -17,11 +17,11 @@ public enum FeatureType
 public class RoomProperties
 {
     [NonSerialized]
-    private Vector3 position;
+    private Vector3 position = Vector3.zero;
     [NonSerialized]
-    private bool wallsPlaced;
+    private bool wallsPlaced = false;
     [NonSerialized]
-    private bool isPreloaded;
+    private bool isPreloaded = false;
     [NonSerialized]
     private Room room;
     [NonSerialized]
@@ -33,8 +33,6 @@ public class RoomProperties
     public bool[] DirectionsFilled { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    public int NumberOfTilesX { get; set; }
-    public int NumberOfTilesY { get; set; }
     public string Name { get; set; }
     public FeatureType RoomType { get; set; }
 
@@ -46,7 +44,7 @@ public class RoomProperties
         set { position = value; }
     }
 
-    public bool WallsPlaced
+    public bool IsConstructed
     {
         get { return wallsPlaced; }
         set { wallsPlaced = value; }
@@ -88,15 +86,8 @@ public class RoomProperties
 
     public RoomProperties(Room room)
     {
-        position = Vector3.zero;
         DirectionsFilled = new bool[4];
         this.room = room;
-        wallsPlaced = false;
-
-        for (int i = 0; i < 4; ++i)
-        {
-            DirectionsFilled[i] = false;
-        }
     }
 
     public void InitialiseTiles(int tilesX, int tilesY)
@@ -104,14 +95,11 @@ public class RoomProperties
         Width = (tilesX * TileSize);
         Height = (tilesY * TileSize);
 
-        NumberOfTilesX = tilesX;
-        NumberOfTilesY = tilesY;
-
         Tiles = new Tile[tilesX, tilesY];
 
-        for (int i = 0; i < NumberOfTilesX; ++i)
+        for (int i = 0; i < Tiles.GetLength(0); ++i)
         {
-            for (int j = 0; j < NumberOfTilesY; ++j)
+            for (int j = 0; j < Tiles.GetLength(1); ++j)
             {
                 // Create and assign the position of the tile.
                 Tiles[i, j] = new Tile();
@@ -153,8 +141,53 @@ public class RoomProperties
             {
                 // Create the parent tile.
                 CreateTileNodeObject(x, y, envNode);
+
+                // Go through and create / hook up the tile objects.
+                foreach (TileAttribute att in Tiles[x, y].TileAttributes)
+                {
+                    // Place each attribute on the tile position.
+                    GameObject go = EnvironmentFactory.CreateGameObjectByType(att.Type);
+
+                    if (go != null)
+                    {
+                        go.transform.parent = Tiles[x, y].GameObject.transform;
+                        go.transform.position = Tiles[x, y].Position;
+                        go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
+                        go.name = "[" + x + ", " + y + "]" + go.name;
+
+                        if (att.Type == TileType.door)
+                        {
+                            DoorTile doorTile = att as DoorTile;
+                            Door door = go.GetComponent<Door>();
+                            if (doorTile != null)
+                            {
+                                door.direction = doorTile.Direction;
+                                Doors.Add(door);
+                            }
+                            else
+                            {
+                                Debug.Log("For some reason the door tile attribute is null.");
+                            }
+                        }
+
+                        if (att.Type == TileType.arrowShooter)
+                        {
+                            // We do not want to be able to place objects on top of an arrow shooter.
+                            Tiles[x, y].IsOccupied = true;
+                        }
+                    }
+                }
             }
         }
+
+        room.NumberOfTilesX = Tiles.GetLength(0);
+        room.NumberOfTilesY = Tiles.GetLength(1);
+
+        // Apply the new dimensions to the navMesh.
+        room.SetNavMeshDimensions(Width, Height);
+        SetupCamera();
+
+        IsConstructed = true;
     }
 
     private Room CreateRoomObject(string name)
@@ -192,6 +225,78 @@ public class RoomProperties
         Tiles[x, y].GameObject = go;
 
         return go;
+    }
+
+    private void SetupCamera()
+    {
+        if (room == null)
+        {
+            Debug.LogError("Room object has not been created yet, cannot setup the camera range.");
+            return;
+        }
+
+        float cameraOffsetX = 1.0f;
+        float cameraOffsetMinZ = 1.0f;
+        float cameraOffsetMaxZ = 1.0f;
+
+        //if (Game.Singleton.IsWideScreen)
+        //{
+        //    switch (room.Width)
+        //    {
+        //        case 10: cameraOffsetX = 0.0f; break;
+        //        case 14: cameraOffsetX = 0.0f; break;
+        //        case 18: cameraOffsetX = 1.0f; break;
+        //        case 22: cameraOffsetX = 3.0f; break;
+        //        case 24: cameraOffsetX = 4.0f; break;
+
+        //        default: Debug.LogError("Unhandled case: " + room.Width); break;
+        //    }
+        //}
+        //else
+        //{
+        switch (Width)
+        {
+            case 10: cameraOffsetX = 0.0f; break;
+            case 14: cameraOffsetX = 1.0f; break;
+            case 18: cameraOffsetX = 3.0f; break;
+            case 22: cameraOffsetX = 5.0f; break;
+            case 24: cameraOffsetX = 4.0f; break;
+
+            default: Debug.LogError("Unhandled case: " + Width); break;
+        }
+
+        //}
+
+        switch (Height)
+        {
+            case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
+            case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
+            case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
+            case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
+            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
+
+            default: Debug.LogError("Unhandled case: " + Height); break;
+        }
+
+        room.minCamera.x = -cameraOffsetX;
+        room.maxCamera.x = cameraOffsetX;
+
+        room.minCamera.z = cameraOffsetMinZ;
+        room.maxCamera.z = cameraOffsetMaxZ;
+
+        //room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
+        //room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
+
+        //room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
+        //room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
+
+        //room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + (room.Height * 0.48f)) * cameraOffsetZ) : -5.0f;
+        //room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - (room.Height * 1.17f)) * cameraOffsetZ) : -5.0f;
+
+        //room.Room.minCamera.z = Math.Max(room.Room.minCamera.z, -9.25f);
+        //room.Room.maxCamera.z = Math.Min(room.Room.maxCamera.z, 0.0f);
+
+        //room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
     }
 
     public void FillDirection(Floor.TransitionDirection direction)

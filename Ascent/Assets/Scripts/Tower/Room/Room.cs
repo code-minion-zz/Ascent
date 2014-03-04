@@ -317,6 +317,11 @@ public class Room : MonoBehaviour
 		//}
 	}
 
+    public void SetNavMeshDimensions(float width, float height)
+    {
+        NavMesh.transform.localScale = new Vector3(width - 1.0f, height - 1.0f, 0.0f);
+    }
+
 	void CheckDoors()
 	{
         if (doors == null)

@@ -67,7 +67,7 @@ public class FloorGeneration
 
         // Generate the first room in the game.
         RoomProperties firstRoom = saver.LoadRoom("Maps/ArrowShooter", true);
-        roomGeneration.ReconstructRoom(firstRoom);
+        firstRoom.ConstructRoom();
         placedRooms.Add(firstRoom);
         loadedRooms = saver.LoadAllRooms("Assets/Resources/Maps");
     }
@@ -91,23 +91,48 @@ public class FloorGeneration
             }
         }
 
+
+        // Todo later tell each room to construct itself.
         GenerateWalls();
     }
 
     private Door ChooseDoor(RoomProperties room)
     {
-        if (room.IsPreloaded)
+        foreach (Door door in room.Doors)
         {
-            foreach (Door door in room.Doors)
+            if (!door.isConnected)
             {
-                if (!door.isConnected)
-                {
-                    return door;
-                }
+                return door;
             }
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Choose an available door tile.
+    /// </summary>
+    /// <param name="room"></param>
+    /// <returns></returns>
+    private DoorTile ChooseAvailableDoor(RoomProperties room)
+    {
+        DoorTile doorTile = null;
+
+        for (int x = 0; x < room.Tiles.GetLength(0); ++x)
+        {
+            for (int y = 0; y < room.Tiles.GetLength(1); ++y)
+            {
+                foreach (DoorTile door in room.Tiles[x, y].TileAttributes)
+                {
+                    if (!door.IsConnected)
+                    {
+                        return door;
+                    }
+                }
+            }
+        }
+
+        return doorTile;
     }
 
     private RoomProperties SelectRandomRoom()
@@ -119,29 +144,88 @@ public class FloorGeneration
         return fromRoom;
     }
 
+    //private void HandleCustomRoomPlacement(RoomProperties fromRoom)
+    //{
+    //    // Check the room for a door that is required.
+    //    Door door = ChooseDoor(fromRoom);
+
+    //    if (door != null)
+    //    {
+    //        // Choose a width and height for the new room to build off.
+    //        int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+    //        int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+
+    //        // Choose a random feature
+    //        FeatureType roomToMake = ChooseFeatureRoom();
+
+    //        // See if we can add a new room through the chosen door.
+    //        GenerateNewRoom(width, height, roomToMake, fromRoom, door);
+    //    }
+    //    else
+    //    {
+    //        roomsPlaced--;
+    //    }
+    //}
+
     private void HandleCustomRoomPlacement(RoomProperties fromRoom)
     {
-        // Check the room for a door that is required.
-        Door door = ChooseDoor(fromRoom);
-
-        if (door != null)
+        if (GenerateRoomFromConnection(fromRoom) == false)
         {
-
-            // Choose a width and height for the new room to build off.
-            int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
-            int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
-
-            // Choose a random feature
-            FeatureType roomToMake = ChooseFeatureRoom();
-
-            // See if we can add a new room through the chosen door.
-            GenerateNewRoom(width, height, roomToMake, fromRoom, door);
-        }
-        else
-        {
+            // Otherwise there is no available doors to make connections from,
+            // so we will go back and try to place another room.
             roomsPlaced--;
         }
     }
+
+    /// <summary>
+    /// TODO Make this function return some generation flags.
+    /// </summary>
+    /// <param name="fromRoom"></param>
+    /// <returns></returns>
+    public bool GenerateRoomFromConnection(RoomProperties fromRoom)
+    {
+        bool success = false;
+
+        // Choose an available door from this room.
+        DoorTile doorTile = ChooseAvailableDoor(fromRoom);
+
+        // If the doorTile is null it means there is none available to make a connection from.
+        if (doorTile == null)
+        {
+            return false;
+        }
+
+        // Now we will go and pick a connection to make from this door.
+        // We can also check things like if it is on a critical path for later.
+
+        // For now lets generate something random.
+
+        // Choose a width and height
+        int width = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+        int height = roomDimensions[UnityEngine.Random.Range(0, roomDimensions.Count)];
+        RoomConnectionType connectionType = RoomConnectionType.Left;
+
+        if (TestRoomPlacement(doorTile, width, height) == false)
+        {
+            // TODO return some flag that it couldnt fit.
+            return false;
+        }
+
+        // Create a new room data structure from the room generator.
+        RoomProperties newRoom = roomGeneration.CreateNewRoom(connectionType, (int)(width * 0.5f), (int)(height * 0.5f));
+
+        // We then need to connect the door to the door that this created room will connect to.
+
+        return success;
+    }
+
+    private bool TestRoomPlacement(DoorTile fromDoor, float width, float height)
+    {
+        // Test to see if we there is an intersection from the door.
+
+        return false;
+    }
+
 
     private void HandleRandomRoomPlacement(RoomProperties fromRoom)
     {
@@ -220,7 +304,7 @@ public class FloorGeneration
     {
         foreach (RoomProperties room in placedRooms)
         {
-            if (room.WallsPlaced == false)
+            if (room.IsConstructed == false)
             {
 				roomGeneration.PlaceWalls(room);
             }
@@ -384,7 +468,7 @@ public class FloorGeneration
         }
 
         // TODO: If we know the feature to create we can choose the right one to create here.
-        RoomProperties newRoom = roomGeneration.CreateNewRoom((int)width, (int)height, name);
+        RoomProperties newRoom = roomGeneration.ConstructNewRoom((int)width, (int)height, name);
         newRoom.Room.transform.position = locationVector;
         newRoom.RoomType = roomType;
 
@@ -503,7 +587,7 @@ public class FloorGeneration
         }
 
         // TODO: If we know the feature to create we can choose the right one to create here.
-        RoomProperties newRoom = roomGeneration.CreateNewRoom((int)width, (int)height, name);
+        RoomProperties newRoom = roomGeneration.ConstructNewRoom((int)width, (int)height, name);
         newRoom.Room.transform.position = locationVector;
         newRoom.RoomType = roomType;
 
@@ -658,12 +742,11 @@ public class FloorGeneration
 
     private void LinkRooms(RoomProperties room, RoomProperties from, Floor.TransitionDirection dir)
     {
-        roomGeneration.ReconstructRoom(room);
+        room.ConstructRoom();
         room.Room.transform.position = locationVector;
 
         string name = "Room " + roomsPlaced + "[F]: " + room.Name + " [" + room.Width + ", " + room.Height + "]";
         room.Room.name = name;
-
 
         from.FillDirection(dir);
         Transform doors = from.Room.GetNodeByLayer("Environment").transform.FindChild("Doors");

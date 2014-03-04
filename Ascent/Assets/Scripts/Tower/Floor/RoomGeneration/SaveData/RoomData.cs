@@ -8,7 +8,6 @@ using System.Collections.Generic;
 /// </summary>
 public class RoomData
 {
-    public DoorData DoorData { get; set; }
     public Tile[,] Tiles { get; set; }
     public FeatureType RoomType { get; set; }
     public string Name { get; set; }
