@@ -166,4 +166,5 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		
 	}
+	#endregion
 }
