@@ -226,7 +226,17 @@ namespace Ascent
                 switch (type)
                 {
                     case TileType.door:
-                        parent = room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                        {
+                            GameObject t = room.GetNodeByLayer("Environment");
+
+                            if (t == null)
+                            {
+                                room.FindAllNodes();
+                                t = room.EnvironmentParent.gameObject;
+                            }
+
+                            parent = t.transform.FindChild("Doors");
+                        }
                         break;
                 }
 
