@@ -96,7 +96,7 @@ public class UITown_Shop : UITown_RadialPanel
 
 		if (confirmItem != null)
 		{
-			Buy (1);
+			ProcessBuy (1);
 		}
 	}
 	#endregion
@@ -255,12 +255,114 @@ public class UITown_Shop : UITown_RadialPanel
 	{
 		// override me
 	}
-
+	
 	/// <summary>
 	/// Manages the stages of a 'Buy' process.
 	/// </summary>
 	/// <param name="step">Determines whether to initiate, confirm or cancel a transaction</param>
-	protected virtual void Buy(int step)
+	protected virtual void ProcessBuy(int step)
+	{
+		switch (step)
+		{
+		case 0:
+			if (currentSelection)
+			{
+				ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
+				int value = itemStat.PurchaseValue;
+				if (playerHero.HeroStats.Gold >= value)
+				{
+					if (playerHero.HeroInventory.Items.Count >= playerHero.HeroInventory.MAX_INVENTORY_SLOTS)
+					{
+						Debug.Log("Inventory Full");
+						townParent.RequestNoticeBox("Inventory Full");
+						break;
+					}
+					
+					confirmItem = CurrentItem;
+					// can afford
+					if (confirmItem != null)
+					{
+						OpenConfirmBox("Are you sure you want to purchase " + itemStat.Name + "?\n");
+					}
+					else 
+					{
+						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+					}
+					
+				}
+			}
+			break;
+		case 1:
+			if (parentConfirming) return;
+			
+			if (confirmBoxResult == true)
+			{
+				playerHero.HeroStats.Gold -= confirmItem.ItemStats.PurchaseValue;
+				playerHero.HeroInventory.AddItem(confirmItem);
+				Debug.Log("Purchased " + confirmItem.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
+				shopInventory.Remove(confirmItem);
+				townParent.RequestNoticeBox("Thanks for buying " + confirmItem.ItemStats.Name + "!");
+				confirmItem = null;
+				UpdateButtons(shopInventory);
+				// TODO: play sounds, fx, etc
+			}
+			break;
+		}
+	}
+	
+	/// <summary>
+	/// Manages the stages of a 'Buy' process.
+	/// </summary>
+	/// <param name="step">Determines whether to initiate, confirm or cancel a transaction</param>
+	protected virtual void ProcessRepair(int step)
+	{
+		if (CurrentItem == null) return;
+		AccessoryItem item = CurrentItem as AccessoryItem;
+		switch (step)
+		{
+		case 0:
+			if (currentSelection)
+			{
+				//ItemStats itemStat = (currentSelection as UIItemButton).LinkedItem.ItemStats;
+				int value = item.RepairCost;
+				if (playerHero.HeroStats.Gold >= value)
+				{					
+					confirmItem = item;
+					// can afford
+					if (confirmItem != null)
+					{
+						OpenConfirmBox("Are you sure you want to repair " + item.ItemStats.Name + " for " + value + "?\n");
+					}
+					else 
+					{
+						Debug.LogError("Could not get Item. currentSelection is not UIItemButton, or does not have LinkedItem");
+					}
+					
+				}
+			}
+			break;
+		case 1:
+			if (parentConfirming) return;
+			
+			if (confirmBoxResult == true)
+			{
+				playerHero.HeroStats.Gold -= item.RepairCost;
+				item.Repair();
+				Debug.Log("Repaired " + item.ItemStats.Name + ". Gold remaining:" + playerHero.HeroStats.Gold);
+				townParent.RequestNoticeBox("Repaired " + confirmItem.ItemStats.Name + "!");
+				confirmItem = null;
+				UpdateButtons(shopInventory);
+				// TODO: play sounds, fx, etc
+			}
+			break;
+		}
+	}
+	
+	/// <summary>
+	/// Manages the stages of a 'Buy' process.
+	/// </summary>
+	/// <param name="step">Determines whether to initiate, confirm or cancel a transaction</param>
+	protected virtual void ProcessAppraise(int step)
 	{
 		switch (step)
 		{
@@ -449,14 +551,19 @@ public class UITown_Shop : UITown_RadialPanel
 		// reject input if these conditions are not met
 		if (!IsAcceptingInput()) return;
 
+		if (CurrentItem == null) return;
+
 		switch (shopMode)
 		{
 		case EMode.BUY:
-			Buy (0);
+			ProcessBuy (0);
 			break;
 		case EMode.REPAIR:
 			break;
 		case EMode.APPRAISE:
+			List<Item> test = new List<Item>();
+			test.Add(CurrentItem);
+			ProcessAppraise(0);
 			break;
 		}
 	}

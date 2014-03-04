@@ -63,33 +63,33 @@ public abstract class Item
         set { stats.Grade = (int)value; }
     }
 
-    protected virtual int SellCost
+    public virtual int SellCost
     {
 		// To be overriden
 		get { return 0; }
     }
 
-	protected virtual int BuyCost
+	public virtual int BuyCost
 	{
 		// KIT : Should take into account durability?
 		// To be overriden
 		get { return 0; }
 	}
 
-	protected virtual int AppraisalCost
+	public virtual int AppraisalCost
 	{
 		// To be overriden
 		get { return 0; }
 	}
 
-	protected virtual int RepairCost
+	public virtual int RepairCost
 	{
 		// KIT : Account for isAppraised state?
 		// To be overriden
 		get { return 0; }
 	}
 
-	protected virtual int SellCostUnAppraised()
+	public virtual int SellCostUnAppraised()
 	{
 		return Mathf.RoundToInt((float)BuyCost * 0.075f);
 	}

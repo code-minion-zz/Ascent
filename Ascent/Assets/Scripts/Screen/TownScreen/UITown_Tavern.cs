@@ -27,7 +27,7 @@ public class UITown_Tavern : UITown_RadialPanel {
 
 		initialised = true;
 
-		ProcessModeSwitch();
+		//ProcessModeSwitch();
 	}
 	
 	// Update is called once per frame
@@ -164,7 +164,7 @@ public class UITown_Tavern : UITown_RadialPanel {
 	
 	public override void OnMenuCancel(InputDevice device)
 	{
-		
+		ProcessCancel();	
 	}
 	#endregion
 }

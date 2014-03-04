@@ -64,7 +64,7 @@ public class ConsumableItem : Item
 		get { return charges > 0 && cooldown == 0.0f; }
 	}
 
-	protected override int SellCost
+	public override int SellCost
 	{
 		get
 		{
@@ -83,7 +83,7 @@ public class ConsumableItem : Item
 		}
 	}
 
-	protected override int BuyCost
+	public override int BuyCost
 	{
 		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=0
 
@@ -95,7 +95,7 @@ public class ConsumableItem : Item
 		}
 	}
 
-	protected override int AppraisalCost
+	public override int AppraisalCost
 	{
 		get
 		{

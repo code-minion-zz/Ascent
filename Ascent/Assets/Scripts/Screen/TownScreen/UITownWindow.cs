@@ -89,9 +89,8 @@ public class UITownWindow : UIPlayerMenuWindow
 		InfoLabel = sharedEle.Find("Information Box").transform.Find("Scroll View").transform.Find("Item Properties").GetComponent<UILabel>();
 		InstructLabel = sharedEle.Find("Instructions").GetComponent<UILabel>();
 
-		townScreen = parentScreen as UITownScreen;
-
 		base.Initialise ();
+		townScreen = parentScreen as UITownScreen;
 	}
 
 	public override void Update()
@@ -169,7 +168,7 @@ public class UITownWindow : UIPlayerMenuWindow
 			panels[i].gameObject.SetActive(false);
 		}
 		
-		activePanel = panels[(int)EBackpackPanels.TAVERN];
+		activePanel = panels[(int)EBackpackPanels.TOWN];
 		player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
 		activePanel.OnEnable();

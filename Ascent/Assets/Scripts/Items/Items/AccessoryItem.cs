@@ -145,7 +145,7 @@ public class AccessoryItem : Item
         }
     }
 
-	protected override int SellCost
+	public override int SellCost
 	{
 		get 
 		{
@@ -164,7 +164,7 @@ public class AccessoryItem : Item
 		}
 	}
 
-	protected override int BuyCost
+	public override int BuyCost
 	{
 		// https://docs.google.com/spreadsheet/ccc?key=0ApF1sRIB-wxQdHpVaEE0OGdRd0FYTlQwWngtTFpkeHc&usp=drive_web#gid=0
 
@@ -176,7 +176,7 @@ public class AccessoryItem : Item
 		}
 	}
 
-	protected override int AppraisalCost
+	public override int AppraisalCost
 	{
 		get
 		{
@@ -185,13 +185,18 @@ public class AccessoryItem : Item
 		}
 	}
 
-	protected override int RepairCost
+	public override int RepairCost
 	{
 		get
 		{
             float repairCost = ((float)durabilityMax - (float)durability) * (AppraisalCost * 0.1f);
 			return Mathf.RoundToInt(repairCost);
 		}
+	}
+
+	public void Repair()
+	{
+		durability = durabilityMax;
 	}
 
     public void ApplyDurabilityDamage(int unmitigatedDamage, bool crit, Character owner, Character source)

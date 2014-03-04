@@ -185,7 +185,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 			(parent as UITownWindow).RequestTransitionToPanel(6);
 			break;
 		case 4 : // backpack
-			(parent as UITownWindow).RequestTransitionToPanel(5);
+			(parent as UITownWindow).RequestTransitionToPanel(1);
 			break;
 		case 5 : // skills
 			(parent as UITownWindow).RequestTransitionToPanel(3);
