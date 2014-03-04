@@ -18,6 +18,7 @@ public class AICondition_Timer : AICondition
 
     public AICondition_Timer(float time, float randMin, float randMax)
     {
+        this.timeMax = time;
         this.randMin = randMin;
         this.randMax = randMax;
 

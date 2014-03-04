@@ -9,7 +9,7 @@ public class Arrow : MonoBehaviour
     private float speed;
 
 
-    public void Initialise(float life, Vector3 direction, float speed, int damage, Player _owner= null)
+    public void Initialise(float life, Vector3 direction, float speed, int damage)
     {
 		//owner = _owner;
         lifeSpan = life;
@@ -44,16 +44,14 @@ public class Arrow : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-
-		if (collision.transform.tag == "Hero")
-		{
-			CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
-		}
-		else
-		{
-			toDestroy = true;
-		}
-
+        if (collision.transform.tag == "Hero")
+        {
+            CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
+        }
+        else
+        {
+            toDestroy = true;
+        }
     }
 
 	/// <summary>
