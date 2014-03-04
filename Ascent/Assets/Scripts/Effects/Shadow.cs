@@ -14,7 +14,7 @@ public class Shadow : MonoBehaviour
 	{
         if (shadow == null)
         {
-            shadow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Shadow")) as GameObject;
+            shadow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/CharacterShadow")) as GameObject;
 			shadow.transform.parent = this.transform;
 
 			shadowTransform = shadow.transform;

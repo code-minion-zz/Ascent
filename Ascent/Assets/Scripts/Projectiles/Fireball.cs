@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Fireball :  Projectile
 {
-    public Projectile projectile;
-
     private Character owner;
     private Vector3 velocity;
 	private Vector3 curVelocity;

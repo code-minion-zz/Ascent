@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class FireballExplosion : Projectile
 {
-	public Projectile projectile;
 	private Character owner;
 
 	private float timeElapsed;
