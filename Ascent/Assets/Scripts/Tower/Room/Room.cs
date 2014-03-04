@@ -203,7 +203,7 @@ public class Room : MonoBehaviour
 
         // Find the doors for this room
         doors = EnvironmentParent.GetComponentInChildren<Doors>();
-		doors = (GameObject.Find("Doors") as GameObject).GetComponent<Doors>();
+		//doors = (GameObject.Find("Doors") as GameObject).GetComponent<Doors>();
 
         if (doors == null)
         {
@@ -327,11 +327,13 @@ public class Room : MonoBehaviour
 	{
         if (doors == null)
         {
+            Debug.Log("Doors null");
             return;
         }
 
-		Door[] roomDoors = doors.doors;
-		for (int i = 0; i < roomDoors.Length; ++i)
+		List<Door> roomDoors = doors.RoomDoors;
+
+		for (int i = 0; i < roomDoors.Count; ++i)
 		{
 			if (roomDoors[i] != null)
 			{
@@ -926,9 +928,9 @@ public class Room : MonoBehaviour
 		// Try north
 		if (heading >= -0.45f && heading <= 45.0f)
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
 		}
@@ -936,9 +938,9 @@ public class Room : MonoBehaviour
 		// Try East
 		if (!transitioned && (heading >= 0.45f && heading <= 135.0f))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
 		}
@@ -946,9 +948,9 @@ public class Room : MonoBehaviour
 		// Try South
 		if (!transitioned && ((heading >= 135.0f && heading <= 180.0f) || (heading <= -135.0f)))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
 		}
@@ -956,9 +958,9 @@ public class Room : MonoBehaviour
 		// Try West
 		if (!transitioned && (heading <= -0.45f && heading >= -135.0f))
 		{
-			if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 		}
@@ -967,24 +969,24 @@ public class Room : MonoBehaviour
 		{
 			// Try any door :<
 
-			if (doors.doors[(int)Floor.TransitionDirection.South] != null)
+			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.South]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.West] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.West]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.North] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.North]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
-			else if (doors.doors[(int)Floor.TransitionDirection.East] != null)
+			else if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.doors[(int)Floor.TransitionDirection.East]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 

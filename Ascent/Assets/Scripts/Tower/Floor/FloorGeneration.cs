@@ -598,7 +598,7 @@ public class FloorGeneration
         entryDoor.transform.parent = doors;
 
         Doors doorsScript = doors.GetComponent<Doors>();
-        doorsScript.doors[(int)dir] = entryDoor;
+        doorsScript.RoomDoors[(int)dir] = entryDoor;
 
         entryDoor.direction = dir;
         entryDoor.isConnected = true;

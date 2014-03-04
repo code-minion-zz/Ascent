@@ -351,8 +351,8 @@ public class RoomGeneration
 		// Attach the doors to their rightful component.
 		Doors doorsScript = doors.GetComponent<Doors>();
 		
-		doorsScript.doors[(int)direction] = doorGo.GetComponent<Door>();
-		Door returnDoor = doorsScript.doors[(int)direction];
+		doorsScript.RoomDoors[(int)direction] = doorGo.GetComponent<Door>();
+		Door returnDoor = doorsScript.RoomDoors[(int)direction];
 
         int lastTileX = fromRoom.Tiles.GetLength(0)- 1;
 		int lastTileY = fromRoom.Tiles.GetLength(1)-1;

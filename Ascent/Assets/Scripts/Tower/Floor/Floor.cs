@@ -151,7 +151,8 @@ public class Floor : MonoBehaviour
 
 		if (!randomFloor)
 		{
-			currentRoom = allRooms[1];
+			//currentRoom = allRooms[0];
+            currentRoom = GameObject.Find("StartRoom").GetComponent<Room>();
 		}
 		else
 		{
@@ -314,7 +315,7 @@ public class Floor : MonoBehaviour
 
         // Travel North, South, East or West
 
-        Door[] roomDoors = currentRoom.Doors.doors;
+        List<Door> roomDoors = currentRoom.Doors.RoomDoors;
 
         // North
         if (Input.GetKeyUp(KeyCode.Keypad8)) 

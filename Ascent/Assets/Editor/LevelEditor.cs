@@ -196,7 +196,8 @@ namespace Ascent
 
                 if (go != null)
                 {
-                    go.transform.parent = selectedTile.transform;
+                    Transform parent = GetParentByType(selectedRoom, tileType);
+                    go.transform.parent = parent;
                     go.transform.position = selectedTile.transform.position;
                     Selection.activeGameObject = go;
                 }
@@ -206,6 +207,27 @@ namespace Ascent
             {
                 Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
             }
+        }
+
+        private Transform GetParentByType(GameObject roomObject, TileType type)
+        {
+            Transform parent = null;
+
+            Room room = roomObject.GetComponent<Room>();
+
+            if (room != null)
+            {
+                switch (type)
+                {
+                    case TileType.door:
+                        parent = room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                        break;
+                }
+
+                return parent;
+            }
+
+            return parent;
         }
 
         /// <summary>
