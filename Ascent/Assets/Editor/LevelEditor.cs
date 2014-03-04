@@ -192,14 +192,20 @@ namespace Ascent
 
             if (GUILayout.Button("Insert at tile", GUILayout.Width(buttonSize)))
             {
-                GameObject go = EnvironmentFactory.CreateGameObjectByType(tileType);
+                UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
 
                 if (go != null)
                 {
                     Transform parent = GetParentByType(selectedRoom, tileType);
-                    go.transform.parent = parent;
-                    go.transform.position = selectedTile.transform.position;
-                    Selection.activeGameObject = go;
+                    if (parent == null)
+                    {
+                        parent = selectedTile.transform;
+                    }
+
+                    GameObject instantiatedGo = go as GameObject;
+                    instantiatedGo.transform.parent = parent;
+                    instantiatedGo.transform.position = selectedTile.transform.position;
+                    Selection.activeGameObject = instantiatedGo;
                 }
             }
 
@@ -220,7 +226,17 @@ namespace Ascent
                 switch (type)
                 {
                     case TileType.door:
-                        parent = room.GetNodeByLayer("Environment").transform.FindChild("Doors");
+                        {
+                            GameObject t = room.GetNodeByLayer("Environment");
+
+                            if (t == null)
+                            {
+                                room.FindAllNodes();
+                                t = room.EnvironmentParent.gameObject;
+                            }
+
+                            parent = t.transform.FindChild("Doors");
+                        }
                         break;
                 }
 
