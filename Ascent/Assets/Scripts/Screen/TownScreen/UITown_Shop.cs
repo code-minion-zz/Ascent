@@ -46,6 +46,8 @@ public class UITown_Shop : UITown_RadialPanel
 	#region Initialization/Setup
 	public override void Initialise()
 	{
+		if (parent.Player == null) return;
+
 		base.Initialise();
 
 		quantityItems = Random.Range(15,20);

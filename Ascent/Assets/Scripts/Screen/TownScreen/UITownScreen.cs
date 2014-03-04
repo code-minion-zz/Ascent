@@ -10,6 +10,7 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	private const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
+	private List<Player> playersToRemove = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
 #pragma warning disable 0649
     private	int readyPlayers = 0;
@@ -39,7 +40,7 @@ public class UITownScreen : UIPlayerMenuScreen
 		for (int i = 0; i < players.Count; ++i)
 		{
 			windows[i].gameObject.SetActive(true);
-			windows[i].SetPlayer(players[i]);
+			//windows[i].SetPlayer(players[i]);
 			windows[i].Initialise();
 			windows[i].OnEnable();
 		}
@@ -88,6 +89,15 @@ public class UITownScreen : UIPlayerMenuScreen
 		players.Remove(p);
 		Destroy(p.gameObject);
 	}
+
+//	public void CloseWindow(UIPlayerMenuWindow window)
+//	{
+//		window.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.Main);
+//		window.ReadyWindow(false);
+//		window.Player.Input.InUse = false;
+//		window.Player.UnbindInputDevice();
+//		playersToRemove.Add(window.Player);
+//	}
 
 	public void Ready(bool state)
 	{

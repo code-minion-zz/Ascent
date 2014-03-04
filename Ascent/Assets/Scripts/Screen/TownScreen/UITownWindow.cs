@@ -169,7 +169,7 @@ public class UITownWindow : UIPlayerMenuWindow
 		}
 		
 		activePanel = panels[(int)EBackpackPanels.TAVERN];
-		player.ActivePlayerPanel = activePanel;
+		//player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
 		activePanel.OnEnable();
 	}
@@ -376,6 +376,11 @@ public class UITownWindow : UIPlayerMenuWindow
 	public void RequestQuit()
 	{
 		townScreen.RequestQuit();
+	}
+
+	public override void ReadyWindow (bool ready)
+	{
+		base.ReadyWindow (ready);
 	}
 
 	void OnDestroy()

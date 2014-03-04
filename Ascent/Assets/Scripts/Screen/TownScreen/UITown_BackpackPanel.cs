@@ -61,6 +61,9 @@ public class UITown_BackpackPanel : UITown_RadialPanel
 	#region Initialization
 	public override void Initialise()
 	{
+		// If no player, skip initialization
+		if (parent.Player == null) return;
+
 		base.Initialise();
 
 		buttons = new UIButton[7];
