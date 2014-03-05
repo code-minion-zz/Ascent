@@ -17,6 +17,9 @@ public class Door : MonoBehaviour
 
     public Collider immediateArea;
 
+    public GameObject openedDoor;
+    public GameObject sealedDoor;
+
     private float standingOnDoorTimer = 0.0f;
 
 	private bool[] playersLeftDoor;
@@ -83,6 +86,7 @@ public class Door : MonoBehaviour
             //direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
+            sealedDoor.SetActive(false);
         }
 	}
 
