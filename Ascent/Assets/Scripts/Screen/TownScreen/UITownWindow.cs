@@ -173,11 +173,17 @@ public class UITownWindow : UIPlayerMenuWindow
 		NGUITools.SetActive(activePanel.gameObject,true);
 		activePanel.OnEnable();
 	}
-
-	public void ActivateWindow()
+	
+	public override void ActivateWindow()
 	{
 		UITown_Tavern tavern = panels[(int)EBackpackPanels.TAVERN] as UITown_Tavern;
 		tavern.ActivatePanel();
+	}
+	
+	public override void DeactivateWindow()
+	{
+		UITown_Tavern tavern = panels[(int)EBackpackPanels.TAVERN] as UITown_Tavern;
+		player = null;
 	}
 
 	public void ShowArrow(bool state)

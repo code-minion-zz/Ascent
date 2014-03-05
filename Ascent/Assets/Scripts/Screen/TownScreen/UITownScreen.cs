@@ -8,7 +8,7 @@ public class UITownScreen : UIPlayerMenuScreen
 	//public GameObject PlayerGrid;
 	public delegate void ReadyHandler();
 
-	private const int maxPlayers = 3;
+	public const int maxPlayers = 3;
 	private List<Player> players = new List<Player>();
 	private List<Player> playersToRemove = new List<Player>();
 	private int nextEmptyPlayerSlot = 0;
@@ -36,7 +36,7 @@ public class UITownScreen : UIPlayerMenuScreen
 
 
 		// Activate windows for number of players
-		for (int i = 0; i < players.Count; ++i)
+		for (int i = 0; i < maxPlayers; ++i)
 		{
 			windows[i].gameObject.SetActive(true);
 			//windows[i].SetPlayer(players[i]);
@@ -127,7 +127,9 @@ public class UITownScreen : UIPlayerMenuScreen
 							//windows[i].
 							newPlayer.BindInputDevice(device);
 							windows[i].SetPlayer(newPlayer);
+							windows[i].ActivateWindow();
 							players.Add(newPlayer);
+							break;
 						}
 					}
 				}

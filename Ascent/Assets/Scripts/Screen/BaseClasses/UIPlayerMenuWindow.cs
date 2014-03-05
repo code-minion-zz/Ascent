@@ -88,7 +88,6 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
         parentScreen = transform.parent.parent.GetComponent<UIPlayerMenuScreen>();
 
         AddAllMenuPanels();
-
     }
 
 	public virtual void SetPlayer(Player player)
@@ -96,6 +95,14 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 		this.player = player;
 
 		//activePanel.gameObject.SetActive(true);
+	}
+	
+	public virtual void ActivateWindow()
+	{
+	}
+	
+	public virtual void DeactivateWindow()
+	{
 	}
 
 	public virtual void Update()

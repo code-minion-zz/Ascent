@@ -21,13 +21,12 @@ public class UITown_Tavern : UITown_RadialPanel {
 
 	public override void Initialise()
 	{
-		base.Initialise();
-
-		mode = ETavernMode.NoPlayer;
+		if (!initialised)
+		{
+			base.Initialise();
+		}
 
 		initialised = true;
-
-		ProcessModeSwitch();
 	}
 	
 	// Update is called once per frame
@@ -72,8 +71,11 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		switch (mode)
 		{
-		case ETavernMode.NewOrLoad:
+		case ETavernMode.NoPlayer:
 			townParent.RequestQuit();
+			break;
+		case ETavernMode.NewOrLoad:
+			DeactivatePanel();
 			break;
 		}
 	}
@@ -107,21 +109,40 @@ public class UITown_Tavern : UITown_RadialPanel {
 			ProcessModeSwitch();
 		}
 	}
+	
+	void NewHero()
+	{
+		parent.Player.CreateHero(Character.EHeroClass.Warrior);
+		parent.Initialise();
+	}
+
+	void LoadHero()
+	{
+		// Get data from selected save file and set
+		Hero loadedHero = AscentGameSaver.LoadHero(new HeroSaveData());
+		parent.Initialise();
+	}
 
 	public void ActivatePanel()
 	{
 		mode = ETavernMode.NewOrLoad;
 		ProcessModeSwitch();
-		parent.Initialise();
+//		parent.Initialise();
 	}
 
 	public void DeactivatePanel()
 	{
 		mode = ETavernMode.NoPlayer;
 		ProcessModeSwitch();
+		parent.DeactivateWindow();
 	}
 
 	#region Input Handling
+	public override void OnMenuLeftStickMove(InputDevice device)
+	{
+		HighlightButton();
+	}
+
 	public override void OnMenuLeft(InputDevice device)
 	{
 		switch (mode)
