@@ -287,7 +287,7 @@ public class Room : MonoBehaviour
 
             default:
                 {
-                    Debug.LogError("Unhandled case: " + width);
+                    Debug.LogWarning("Unhandled case: " + width);
                     cameraOffsetX = 5.0f;
                 }
                 break;
@@ -304,7 +304,7 @@ public class Room : MonoBehaviour
 
             default:
                 {
-                    Debug.LogError("Unhandled case: " + height);
+                    Debug.LogWarning("Unhandled case: " + height);
                     cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f;
                 } 
                 break;
