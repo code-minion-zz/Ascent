@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class BreakableEnvObject : MonoBehaviour
 {
     private bool isDestroyed;
+    private Barrel barrel;
 
     public bool IsDestroyed
     {
@@ -13,6 +14,14 @@ public class BreakableEnvObject : MonoBehaviour
 
     public void Explode()
     {
+        barrel = GetComponent<Barrel>();
+
+        if (barrel != null)
+        {
+            isDestroyed = true;
+            barrel.IsDestroyed = true;
+            return;
+        }
         isDestroyed = true;
         gameObject.SetActive(false);
     }

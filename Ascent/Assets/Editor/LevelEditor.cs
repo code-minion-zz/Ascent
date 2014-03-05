@@ -327,11 +327,7 @@ namespace Ascent
                 }
 
                 // Check if the object is an environment piece.
-                if (T.tag == "EnvObject" || T.gameObject.layer == LayerMask.NameToLayer("Environment"))
-                {
-                    selectedTile = T.gameObject;
-                }
-                else if (T.tag == "RoomTile")
+                if (T.tag == "RoomTile")
                 {
                     selectedTile = T.gameObject;
                 }

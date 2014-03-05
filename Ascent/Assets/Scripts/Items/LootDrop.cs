@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public class LootDrop : MonoBehaviour 
 {
-	private bool falling = false;
+	public bool falling = false;
 	private Vector3 startPos;
 	private Vector3 targetPos;
 	private float fallTime = 1.5f;
 	private float timeAccum = 0.0f;
-	private bool picked = false;
+	public bool picked = false;
 	private Room containedRoom;
 
 	protected TriggerRegion triggerRegion;
@@ -48,7 +48,14 @@ public class LootDrop : MonoBehaviour
 		startPos = transform.position;
 		targetPos = containedRoom.NavMesh.GetRandomPositionOutsideRect(transform.position, new Vector3(3.5f, 0.0f, 3.5f));
 
-		rigidbody.AddTorque(new Vector3(100.0f, 100.0f, 100.0f));
+        if (rigidbody != null)
+        {
+            rigidbody.AddTorque(new Vector3(100.0f, 100.0f, 100.0f));
+        }
+        else
+        {
+            GetComponentInChildren<Rigidbody>().AddTorque(new Vector3(100.0f, 100.0f, 100.0f));
+        }
 	}
 
 	public void Update()
