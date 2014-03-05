@@ -4,7 +4,6 @@ using System.Collections;
 public class HiddenDoor : Door
 {
 	public GameObject blockedDoor;
-	public GameObject openedDoor;
 
 	[HideInInspector]
 	public bool opened;

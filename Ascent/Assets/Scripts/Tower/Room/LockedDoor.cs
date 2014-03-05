@@ -4,7 +4,6 @@ using System.Collections;
 public class LockedDoor : Door
 {
 	public GameObject lockedDoor;
-	public GameObject openedDoor;
 	public TriggerRegion triggerRegion;
 
 	[HideInInspector]
