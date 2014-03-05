@@ -103,7 +103,7 @@ public class UITownScreen : UIPlayerMenuScreen
 		if (readyPlayers == Game.Singleton.NumberOfPlayers)
 		{
 			// load next level
-			Game.Singleton.LoadLevel(Game.EGameState.Tower);
+            Game.Singleton.LoadLevel(Game.EGameState.Tower);
 		}
 	}
 }
