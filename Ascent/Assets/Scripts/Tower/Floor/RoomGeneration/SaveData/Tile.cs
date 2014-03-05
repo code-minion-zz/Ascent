@@ -11,6 +11,7 @@ public enum TileType
     standardWall = 3,
     cornerWallTile = 8,
     pillar = 9,
+    chest = 10,
     randMisc = 11,
     brazier = 12,
     arrowShooter = 13,
