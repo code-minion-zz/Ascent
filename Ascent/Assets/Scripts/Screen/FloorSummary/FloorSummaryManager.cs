@@ -58,7 +58,7 @@ public class FloorSummaryManager : MonoBehaviour {
 				}
 				else
 				{
-					Game.Singleton.LoadLevel(Game.EGameState.Tower);
+                    Game.Singleton.LoadLevel(Game.EGameState.Tower);
 				}
 			}
 		}
