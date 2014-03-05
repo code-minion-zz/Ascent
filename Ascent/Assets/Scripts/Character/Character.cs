@@ -103,11 +103,7 @@ public abstract class Character : BaseCharacter
 		set 
 		{
 			// If this is a new colour flag it for updating.
-			if ((statusColour & value) != value)
-			{
-				colourHasChanged = true;
-			}
-
+			colourHasChanged = true;
 			statusColour = value; 
 		}
 	}	 
@@ -147,10 +143,11 @@ public abstract class Character : BaseCharacter
 		if (colourHasChanged)
 		{
 			SetColor(StatusEffectUtility.GetColour(StatusColour));
+			colourHasChanged = false;
 		}
 
         // Remove any expired buffs
-        for (int i = statusEffects.Count - 1; i > -1; i--)
+        for (int i = statusEffects.Count - 1; i >= 0; --i)
         {
             if (statusEffects[i].ToBeRemoved)
             {
@@ -276,7 +273,7 @@ public abstract class Character : BaseCharacter
 	/// When the character needs to respawn into the game.
 	/// </summary>
 	/// <param name="position">The position to spawn the character.</param>
-	protected virtual void Respawn(Vector3 position)
+	public virtual void Respawn(Vector3 position)
 	{
 		isDead = false;
 
@@ -338,10 +335,13 @@ public abstract class Character : BaseCharacter
 			stats.CurrentHealth = stats.MaxHealth;
 			stats.CurrentSpecial = stats.MaxSpecial;
 
-			if (isDead)
-			{
-				Respawn(transform.position);
-			}
+            if (isDead)
+            {
+                motor.IsHaltingMovementToPerformAction = false;
+                Animator.Dying = false;
+                collider.enabled = true;
+                isDead = false;
+            }
 		}
     }
 
@@ -357,38 +357,7 @@ public abstract class Character : BaseCharacter
 
 	public virtual void ApplyStatusEffect(StatusEffect effect)
 	{
-		bool overridePrevious = effect.OverridePrevious;
-		bool overrideSuccesful = false;
-		
-		if (overridePrevious)
-		{
-			// Check if the effect already exists
-			for (int i = 0; i < statusEffects.Count; ++i)
-			{
-				// Override the existing effect if the new one is more powerful
-				// TODO: write comparison function in base class and have derived classes override it.
-				if (statusEffects[i].Type == effect.Type)
-				{
-					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > effect.FullDuration;
-					if (isDurationLonger)
-					{
-						statusEffects[i] = effect;
-					}
-					else
-					{
-						// Extend the life of the existing buff
-						statusEffects[i].TimeElapsed -= effect.FullDuration;
-					}
-
-					overrideSuccesful = true;
-				}
-			}
-		}
-
-		if (!overrideSuccesful)
-		{
-			statusEffects.Add(effect);
-		}
+		statusEffects.Add(effect);
 	}
 
     public virtual void RemoveStatusEffect(StatusEffect effect)

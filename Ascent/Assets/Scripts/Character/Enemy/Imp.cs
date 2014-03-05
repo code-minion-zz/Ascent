@@ -31,7 +31,7 @@ public class Imp : Enemy
     {
         AIAgent.Initialise(transform);
 
-		AIAgent.SteeringAgent.RotationSpeed = 25.0f;
+		AIAgent.SteeringAgent.RotationSpeed = 15.0f;
 		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
 		motor.MaxSpeed = 3.0f;
 		motor.MinSpeed = 0.5f;
@@ -94,9 +94,9 @@ public class Imp : Enemy
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
         AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomPositionWithinRadius(transform.position, 7.5f));
-        AIAgent.SteeringAgent.RotationSpeed = 5.0f;
-        AIAgent.SteeringAgent.CloseEnoughRange = .5f;
-        motor.MaxSpeed = 2.0f;
+        //AIAgent.SteeringAgent.RotationSpeed = 5.0f;
+       // AIAgent.SteeringAgent.CloseEnoughRange = .5f;
+        //motor.MaxSpeed = 2.0f;
     }
 
     public void OnWanderEnd()

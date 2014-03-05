@@ -290,7 +290,6 @@ public class RoomGeneration
 	public void PlaceGroundTiles(RoomProperties room)
 	{
 		// Create the floor tiles and positions.
-
 		// where necessary.
 		for (int x = 0; x < room.Tiles.GetLength(0); ++x)
 		{

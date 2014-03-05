@@ -49,6 +49,7 @@ public class Archer : Enemy
 
             trigger = behaviour.AddTrigger();
             trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.AddCondition(new AICondition_Timer(0.0f, 0.0f, 3.0f));
             trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[shootArrowID]));
             trigger.OnTriggered += OnShootEnd;
 

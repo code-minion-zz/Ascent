@@ -44,7 +44,10 @@ public class RoomTemplateWindow : EditorWindow
 	private void CreateRoom(int numberOfTilesX, int numberOfTilesY)
 	{
 		//RoomProperties roomProperties = roomGenRef.CreateNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
-		roomGenRef.ConstructNewRoom(numberOfTilesX * 2, numberOfTilesY * 2, roomName);
+        RoomProperties room = roomGenRef.CreateNewRoom(RoomConnectionType.Empty, numberOfTilesX, numberOfTilesY);
+        room.ConstructRoom();
+        roomGenRef.PlaceGroundTiles(room);
+        roomGenRef.PlaceWalls(room);
 		this.Close();
 	}
 }

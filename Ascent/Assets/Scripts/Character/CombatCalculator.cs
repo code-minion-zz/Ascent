@@ -103,7 +103,7 @@ public class PhysicalDamageProperty : DamageProperty
 		// Check for Dodge
 		bool dodged = false;
 		float maxDodgeChance = 100.0f;
-		float dodgeChance = Mathf.Min(source.Stats.DodgeChance, maxDodgeChance);
+        float dodgeChance = Mathf.Min(target.Stats.DodgeChance, maxDodgeChance);
 
 		if (Random.Range(0.0f, maxDodgeChance) <= dodgeChance)
 		{

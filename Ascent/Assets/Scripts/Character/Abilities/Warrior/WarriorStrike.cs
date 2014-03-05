@@ -16,6 +16,9 @@ public class WarriorStrike : BaseHeroAbility
 	private Warrior.ECombatAnimation curStrikeAnim = Warrior.ECombatAnimation.Strike1;
 	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike3;
 
+    // Sound
+    private AudioClip strikeSound;
+
 	public override void Initialise(Character owner)
     {
 		base.Initialise(owner);
@@ -25,6 +28,8 @@ public class WarriorStrike : BaseHeroAbility
         cooldownFullDuration = 0.0f;
 		animationTrigger = "Strike";
 		specialCost = 0;
+
+        strikeSound = Resources.Load("Sounds/warriorStrike_snd01") as AudioClip;
 
         // Defines the collision shape and properties of this ability.
 		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.0f));
@@ -49,6 +54,11 @@ public class WarriorStrike : BaseHeroAbility
         CanBeInterrupted = false;
 
 		owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
+
+        if (strikeSound != null)
+        {
+            AudioSource.PlayClipAtPoint(strikeSound, owner.transform.position);
+        }
 	}
 
 	public override void UpdateAbility()

@@ -671,7 +671,6 @@ public class HeroController : MonoBehaviour
 					// Has it been grabbed yet?
 					if (!closestBlock.grabbed)
 					{
-						Debug.Log(closestBlock.grabbed);
 						if (wasButtonPressed)
 						{
 							// Grab it

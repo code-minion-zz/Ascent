@@ -60,7 +60,7 @@ public class Game : MonoBehaviour
 
 	public bool InTower
 	{
-		get { return gameState == EGameState.TestTower || gameState == EGameState.Tower; }
+		get { return gameState == EGameState.Tower || gameState == EGameState.TestTower; }
 	}
 
 	private EGameState gameStateToLoad;
@@ -420,7 +420,7 @@ public class Game : MonoBehaviour
 							p.Hero.gameObject.SetActive(true);
 						}
 					}
-					tower.InitialiseFloor();
+                    tower.InitialiseTestFloor();
 				}
 				break;
 			case EGameState.FloorSummary: // Fall

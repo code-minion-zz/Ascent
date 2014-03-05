@@ -105,6 +105,9 @@ public abstract class Hero : Character
 			Create(this);
 		}
 
+        // TODO: Move this later.
+        lives = 3;
+
 		// Attach a light to it
 		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
 		light.transform.parent = gameObject.transform;
@@ -202,7 +205,7 @@ public abstract class Hero : Character
         }
     }
 
-    protected override void Respawn(Vector3 position)
+    public override void Respawn(Vector3 position)
     {
         // Reset the health
 		RefreshEverything();

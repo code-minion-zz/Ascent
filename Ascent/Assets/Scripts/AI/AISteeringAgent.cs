@@ -8,6 +8,20 @@ using UnityEditor;
 
 public class AISteeringAgent  
 {
+	private bool enabled = true;
+	public bool Enabled
+	{
+		get { return enabled; }
+		set { enabled = value; }
+	}
+
+	private bool canMove = true;
+	public bool CanMove
+	{
+		get { return canMove; }
+		set { canMove = value; }
+	}
+
     private Vector3 startPos;
     public Vector3 StartPosition
     {
@@ -98,66 +112,69 @@ public class AISteeringAgent
 
     public void Process()
     {
-		bool moveThisFrame = true;
-        if (hasTarget)
-        {
-            if (targetCharacter != null)
-            {
-				if (motor.IsUsingMovementForce)
-				{
-                    if (canRotate)
-                    {
-                        if (IsRunningAway)
-                        {
-                            motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
-                        }
-                        else
-                        {
-                            //motor.transform.LookAt(targetCharacter.transform.position);
-                            motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
-
-							// If you are too close to the target. Do not get any closer!
-							if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
-							{
-								moveThisFrame = false;
-								motor.StopMotion();
-							}
-                        }
-
-						
-                    }
-				}
-
-                if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
-                {
-                    if (OnTargetReached != null)
-                    {
-                        OnTargetReached.Invoke();
-                    }
-                }
-            }
-            else
-            {
-				if (motor.IsUsingMovementForce)
-				{
-					//motor.transform.LookAt(targetPos);
-                    motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
-				}
-
-                if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
-                {
-                    if (OnTargetReached != null)
-                    {
-                        OnTargetReached.Invoke();
-                    }
-                }
-            }
-			
-			if (moveThisFrame)
+		if (enabled)
+		{
+			bool moveThisFrame = true;
+			if (hasTarget)
 			{
-				motor.Move(motor.transform.forward);
+				if (targetCharacter != null)
+				{
+					if (motor.IsUsingMovementForce)
+					{
+						if (canRotate)
+						{
+							if (IsRunningAway)
+							{
+								motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
+							}
+							else
+							{
+								//motor.transform.LookAt(targetCharacter.transform.position);
+								motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+
+								// If you are too close to the target. Do not get any closer!
+								if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
+								{
+									moveThisFrame = false;
+									motor.StopMotion();
+								}
+							}
+
+
+						}
+					}
+
+					if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
+					{
+						if (OnTargetReached != null)
+						{
+							OnTargetReached.Invoke();
+						}
+					}
+				}
+				else
+				{
+					if (motor.IsUsingMovementForce)
+					{
+						//motor.transform.LookAt(targetPos);
+						motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
+					}
+
+					if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
+					{
+						if (OnTargetReached != null)
+						{
+							OnTargetReached.Invoke();
+						}
+					}
+				}
+
+				if (moveThisFrame && canMove)
+				{
+					motor.Move(motor.transform.forward);
+				}
 			}
-        }
+		}
     }
 
 	public void RemoveTarget()

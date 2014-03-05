@@ -72,6 +72,9 @@ public class Room : MonoBehaviour
         set { numberOfTilesY = value; }
     }
 
+    public int width;
+    public int height;
+
     public Doors Doors
     {
         get { return doors; }
@@ -208,6 +211,8 @@ public class Room : MonoBehaviour
         {
             Debug.LogWarning("Could not find any doors for this room");
         }
+
+        SetupCamera();
 	}
 
     public void OnEnable()
@@ -264,6 +269,52 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
+    }
+
+    private void SetupCamera()
+    {
+        float cameraOffsetX = 1.0f;
+        float cameraOffsetMinZ = 1.0f;
+        float cameraOffsetMaxZ = 1.0f;
+
+        switch (width)
+        {
+            case 10: cameraOffsetX = 0.0f; break;
+            case 14: cameraOffsetX = 1.0f; break;
+            case 18: cameraOffsetX = 3.0f; break;
+            case 22: cameraOffsetX = 4.0f; break;
+            case 24: cameraOffsetX = 5.0f; break;
+
+            default:
+                {
+                    Debug.LogWarning("Unhandled case: " + width);
+                    cameraOffsetX = 5.0f;
+                }
+                break;
+        }
+
+
+        switch (height)
+        {
+            case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
+            case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
+            case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
+            case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
+            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
+
+            default:
+                {
+                    Debug.LogWarning("Unhandled case: " + height);
+                    cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f;
+                } 
+                break;
+        }
+
+        minCamera.x = -cameraOffsetX;
+        maxCamera.x = cameraOffsetX;
+
+        minCamera.z = cameraOffsetMinZ;
+        maxCamera.z = cameraOffsetMaxZ;
     }
 
     public void RotateFacingDirection(float angle)

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class Lightning : Projectile
 {
-    public Projectile projectile;
-
     private Character owner;
 
     private int targets;
