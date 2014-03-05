@@ -122,6 +122,7 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 	public event PlayerWindowEventHandler OnMenuY;
 	public event PlayerWindowEventHandler OnMenuA;
 	public event PlayerWindowEventHandler OnMenuB;
+	public event PlayerWindowEventHandler OnMenuReleaseB;
 	public event PlayerWindowEventHandler OnMenuStart;
 	public event PlayerWindowEventHandler OnMenuBack;
 
@@ -152,6 +153,13 @@ public abstract class UIPlayerMenuWindow : MonoBehaviour
 					if (OnMenuA != null)
 					{
 						OnMenuA.Invoke(player.Input);
+					}
+				}
+				if (device.B.WasReleased)
+				{
+					if (OnMenuReleaseB != null)
+					{
+						OnMenuReleaseB.Invoke(player.Input);
 					}
 				}
 				if (device.B.WasPressed)

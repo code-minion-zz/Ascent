@@ -83,7 +83,7 @@ public class InputControl
 		get { return thisState.State; }
 	}
 
-
+	// WasPressed (Last Frame)
 	public bool WasPressed
 	{
 		get { return thisState && !lastState; }

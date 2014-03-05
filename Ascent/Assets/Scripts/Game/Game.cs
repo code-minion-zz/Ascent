@@ -172,6 +172,10 @@ public class Game : MonoBehaviour
 
 	private void Initialise()
 	{
+		if (players == null)
+		{
+			players = new List<Player>();
+		}
 		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 
 		float aspectRatio = ((float)Screen.width / (float)Screen.height);

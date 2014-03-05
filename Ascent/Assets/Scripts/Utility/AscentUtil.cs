@@ -43,11 +43,7 @@ public class Utilities
 	public static float AdjustAngle(float f)
 	{
 		float retVal = 0f;
-		
-//		if (f > 90)
-//		{
-//			f -= 270;
-//		}
+
 		if (f < 0)
 		{
 			f += 360f;
@@ -57,10 +53,5 @@ public class Utilities
 
 		return retVal;
 	}
-
-//	public static bool TresholdAngle(float f)
-//	{
-//
-//	}
 
 }

@@ -22,6 +22,7 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuStart += OnMenuOK;
 		parent.OnMenuA += OnMenuOK;
 		parent.OnMenuB += OnMenuCancel;
+		parent.OnMenuReleaseB += OnMenuCancelRelease;
 		parent.OnMenuY += OnMenuSpecial;
 		parent.OnMenuLeftStickMove += OnMenuLeftStickMove;
 	}
@@ -35,7 +36,8 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 		parent.OnMenuStart -= OnMenuOK;
 		parent.OnMenuA -= OnMenuOK;
 		parent.OnMenuB -= OnMenuCancel;
-		//parent.OnMenuY -= OnMenuHax;
+		parent.OnMenuReleaseB += OnMenuCancelRelease;
+		parent.OnMenuY += OnMenuSpecial;
 		parent.OnMenuLeftStickMove -= OnMenuLeftStickMove;
 	}
 
@@ -109,6 +111,8 @@ public abstract class UIPlayerMenuPanel : MonoBehaviour
 	{
 		
 	}
+
+	public virtual void OnMenuCancelRelease(InputDevice DeviceType) {}
 
 	public virtual void OnMenuSpecial (InputDevice device)
 	{

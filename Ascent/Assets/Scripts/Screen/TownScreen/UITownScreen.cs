@@ -17,6 +17,7 @@ public class UITownScreen : UIPlayerMenuScreen
 
 	List<InputDevice> devices;
 	bool allReady = false;
+	bool blockQuit = false;
 
 	void OnDestroy()
 	{
@@ -95,6 +96,15 @@ public class UITownScreen : UIPlayerMenuScreen
 		{
 			AddNewPlayers();
 		}
+
+		if (!blockQuit)
+		{
+			RequestQuit();
+		}
+		else
+		{
+			blockQuit = false;
+		}
 	}
 
 	public void AddNewPlayers()
@@ -124,7 +134,6 @@ public class UITownScreen : UIPlayerMenuScreen
 							Player newPlayer = go.GetComponent<Player>() as Player;
 							newPlayer.PlayerID = i;
 							newPlayer.name = "Player" + i;
-							//windows[i].
 							newPlayer.BindInputDevice(device);
 							windows[i].SetPlayer(newPlayer);
 							windows[i].ActivateWindow();
@@ -154,38 +163,36 @@ public class UITownScreen : UIPlayerMenuScreen
                     {
                         if(win.Player == p)
                         {
-                            //win.CloseWindow();
+                            (win as UITownWindow).DeactivateWindow();
                         }
                     }
 					continue;
 				}
 			}
 		}
-
 	}
 
 	public void RemovePlayer(Player p)
 	{
-		nextEmptyPlayerSlot = Mathf.Min(nextEmptyPlayerSlot, p.PlayerID);
-
 		players.Remove(p);
 		Destroy(p.gameObject);
 	}
 
-//	public void CloseWindow(UIPlayerMenuWindow window)
-//	{
-//		window.TransitionToPanel((int)UIHeroSelect_Window.EHeroSelectPanels.Main);
-//		window.ReadyWindow(false);
-//		window.Player.Input.InUse = false;
-//		window.Player.UnbindInputDevice();
-//		playersToRemove.Add(window.Player);
-//	}
+	public void ProcessPlayerQuit(Player p)
+	{
+//		p.Input.B.UpdateWithState(false);
+//		p.Input.B.UpdateWithState(false);
+		p.Input.InUse = false;
+		p.UnbindInputDevice();
+		playersToRemove.Add(p);
+		blockQuit = true;
+		StartCoroutine(QuitDelay());
+	}
+
 
 	public void Ready(bool state)
 	{
-		//Debug.Log(readyPlayers);
 		readyPlayers += state ? 1 : -1;
-		//Debug.Log(readyPlayers);
 		ReadyTracker();
 	}
 
@@ -200,10 +207,27 @@ public class UITownScreen : UIPlayerMenuScreen
 	}
 
 	public void RequestQuit()
-	{ // If 'back' is pressed with no active players, return to main menu
+	{ 
+		// If 'back' is pressed with no active players, return to main menu
 		if (Game.Singleton.NumberOfPlayers == 0)
 		{ 
-			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+			foreach (InputDevice device in devices)
+			{
+				if (!device.InUse)
+				{
+					if (device.B.WasPressed && device.B.HasChanged)
+					{
+						StopCoroutine("QuitDelay");
+						Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+					}
+				}
+			}
 		}
+	}
+
+	IEnumerator QuitDelay()
+	{
+		yield return new WaitForSeconds(1f);
+		blockQuit = false;
 	}
 }

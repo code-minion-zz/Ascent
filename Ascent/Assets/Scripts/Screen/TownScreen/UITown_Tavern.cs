@@ -72,7 +72,7 @@ public class UITown_Tavern : UITown_RadialPanel {
 		switch (mode)
 		{
 		case ETavernMode.NoPlayer:
-			townParent.RequestQuit();
+//			townParent.RequestQuit();
 			break;
 		case ETavernMode.NewOrLoad:
 			DeactivatePanel();
@@ -134,7 +134,11 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		mode = ETavernMode.NoPlayer;
 		ProcessModeSwitch();
-		parent.DeactivateWindow();
+
+		if (parent.Ready)
+		{
+			parent.DeactivateWindow();
+		}
 	}
 
 	#region Input Handling
@@ -220,5 +224,6 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		ProcessCancel();	
 	}
+
 	#endregion
 }

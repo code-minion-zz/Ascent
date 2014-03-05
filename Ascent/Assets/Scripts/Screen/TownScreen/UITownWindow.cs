@@ -64,7 +64,7 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	}
 
-	public enum EBackpackPanels
+	public enum ETownPanels
 	{
 		TOWN,
 		BACKPACK,
@@ -79,6 +79,7 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public override void Initialise ()
 	{
+
 		spinScript = GetComponent<Spin>();
 		sharedEle = transform.Find("Shared Elements");
 		
@@ -151,14 +152,14 @@ public class UITownWindow : UIPlayerMenuWindow
 
 	public override void AddAllMenuPanels()
 	{
-		panels[(int)EBackpackPanels.BACKPACK] = transform.FindChild("BackpackMenu").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.TOWN] = transform.FindChild("TownMenu").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.TOWER] = transform.FindChild("TowerConfirm").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.ACCSHOP] = transform.FindChild("AccessoryShop").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.CONSHOP] = transform.FindChild("ConsumableShop").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.SKILLS] = transform.FindChild("Skills").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.TAVERN] = transform.FindChild("Tavern").GetComponent<UIPlayerMenuPanel>();
-		panels[(int)EBackpackPanels.CHAPEL] = transform.FindChild("Chapel").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.BACKPACK] = transform.FindChild("BackpackMenu").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.TOWN] = transform.FindChild("TownMenu").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.TOWER] = transform.FindChild("TowerConfirm").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.ACCSHOP] = transform.FindChild("AccessoryShop").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.CONSHOP] = transform.FindChild("ConsumableShop").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.SKILLS] = transform.FindChild("Skills").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.TAVERN] = transform.FindChild("Tavern").GetComponent<UIPlayerMenuPanel>();
+		panels[(int)ETownPanels.CHAPEL] = transform.FindChild("Chapel").GetComponent<UIPlayerMenuPanel>();
 
 		for (int i = 0; i < panels.Count; ++i)
 		{
@@ -168,22 +169,10 @@ public class UITownWindow : UIPlayerMenuWindow
 			panels[i].gameObject.SetActive(false);
 		}
 		
-		activePanel = panels[(int)EBackpackPanels.TAVERN];
+		activePanel = panels[(int)ETownPanels.TAVERN];
 		//player.ActivePlayerPanel = activePanel;
 		NGUITools.SetActive(activePanel.gameObject,true);
 		activePanel.OnEnable();
-	}
-	
-	public override void ActivateWindow()
-	{
-		UITown_Tavern tavern = panels[(int)EBackpackPanels.TAVERN] as UITown_Tavern;
-		tavern.ActivatePanel();
-	}
-	
-	public override void DeactivateWindow()
-	{
-		UITown_Tavern tavern = panels[(int)EBackpackPanels.TAVERN] as UITown_Tavern;
-		player = null;
 	}
 
 	public void ShowArrow(bool state)
@@ -377,14 +366,31 @@ public class UITownWindow : UIPlayerMenuWindow
 		base.HandleInputEvents();
 	}
 
-	public void RequestQuit()
-	{
-		townScreen.RequestQuit();
-	}
+//	public void RequestQuit()
+//	{
+//		if (player)
+//		townScreen.RequestQuit();
+//	}
 
 	public override void ReadyWindow (bool ready)
 	{
 		base.ReadyWindow (ready);
+	}
+	
+	public override void ActivateWindow()
+	{
+		UITown_Tavern tavern = panels[(int)ETownPanels.TAVERN] as UITown_Tavern;
+		tavern.ActivatePanel();
+		ReadyWindow(true);
+	}
+	
+	public override void DeactivateWindow()
+	{
+		ReadyWindow(false);
+		townScreen.ProcessPlayerQuit(player);
+		TransitionToPanel((int)ETownPanels.TAVERN);
+		(panels[(int)ETownPanels.TAVERN] as UITown_Tavern).DeactivatePanel();
+		player = null;
 	}
 
 	void OnDestroy()
