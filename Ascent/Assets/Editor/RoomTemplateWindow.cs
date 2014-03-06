@@ -11,6 +11,8 @@ public class RoomTemplateWindow : EditorWindow
 	private int numberOfTilesY;
 	private RoomGeneration roomGenRef;
 
+    bool rotated;
+
 	public void Initialise(RoomGeneration generator)
 	{
 		roomGenRef = generator;
@@ -19,26 +21,128 @@ public class RoomTemplateWindow : EditorWindow
 	void OnGUI()
 	{
 		roomName = EditorGUILayout.TextField("Room Name", roomName);
+        rotated = EditorGUILayout.Toggle(rotated);
 
-		if (GUILayout.Button("11x11 (22x22)")) CreateRoom(11, 11);
-		if (GUILayout.Button("11x9 (22x18)")) CreateRoom(11, 9);
-		if (GUILayout.Button("11x7 (22x14)")) CreateRoom(11, 7);
-		if (GUILayout.Button("11x5 (22x10)")) CreateRoom(11, 5);
-		if (GUILayout.Button("11x3 (22x6)")) CreateRoom(11, 3);
+        bool createRoom = false;
+        int width = 0;
+        int height = 0;
 
-		if (GUILayout.Button("9x9 (18x18)")) CreateRoom(9, 9);
-		if (GUILayout.Button("9x7 (18x14) Standard")) CreateRoom(9, 7);
-		if (GUILayout.Button("9x5 (18x10)")) CreateRoom(9, 5);
-		if (GUILayout.Button("9x3 (18x6)")) CreateRoom(9, 3);
+        if (GUILayout.Button("11x11 (22x22)"))
+        {
+            width = 11;
+            height = 11;
+            createRoom = true;
+        }
 
-		if (GUILayout.Button("7x7 (14x14)")) CreateRoom(7, 7);
-		if (GUILayout.Button("7x5 (14x10)")) CreateRoom(7, 5);
-		if (GUILayout.Button("7x3 (14x6)")) CreateRoom(7, 3);
+        if (GUILayout.Button("11x9 (22x18)"))
+        {
+            width = 11;
+            height = 9;
+            createRoom = true;
+        }
 
-		if (GUILayout.Button("5x5 (10x10)")) CreateRoom(5, 5);
-		if (GUILayout.Button("5x3 (10x6)")) CreateRoom(5, 3);
+        if (GUILayout.Button("11x7 (22x14)"))
+        {
+            width = 11;
+            height = 7;
+            createRoom = true;
+        }
 
-		if (GUILayout.Button("3x3 (6x6)")) CreateRoom(3, 3);
+        if (GUILayout.Button("11x5 (22x10)"))
+        {
+            width = 11;
+            height = 5;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("11x3 (22x6)"))
+        {
+            width = 11;
+            height = 3;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("9x9 (18x18)"))
+        {
+            width = 9;
+            height = 9;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("9x7 (18x14) Standard"))
+        {
+            width = 9;
+            height = 7;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("9x5 (18x10)"))
+        {
+            width = 9;
+            height = 5;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("9x3 (18x6)"))
+        {
+            width = 9;
+            height = 3;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("7x7 (14x14)"))
+        {
+            width = 7;
+            height = 7;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("7x5 (14x10)"))
+        {
+            width = 7;
+            height = 5;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("7x3 (14x6)"))
+        {
+            width = 7;
+            height = 3;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("5x5 (10x10)"))
+        {
+            width = 5;
+            height = 5;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("5x3 (10x6)"))
+        {
+            width = 5;
+            height = 3;
+            createRoom = true;
+        }
+
+        if (GUILayout.Button("3x3 (6x6)"))
+        {
+            width = 3;
+            height = 3;
+            createRoom = true;
+        }
+
+        if (createRoom)
+        {
+            if (rotated)
+            {
+                int temp = height;
+                height = width;
+                width = temp;
+            }
+
+            CreateRoom(width, height);
+        }
 	}
 
 	private void CreateRoom(int numberOfTilesX, int numberOfTilesY)
