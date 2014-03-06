@@ -9,6 +9,20 @@ using XInputDotNetPure;
 
 public class XInputDevice : InputDevice
 {
+	public enum EVibrationCurve
+	{
+		None,
+		Bell,
+		Descending,
+		Ascending,
+		Constant
+	}
+	
+	public float VibrationDuration;
+	public float VibrationElapsed;
+	public float VibrationPowerMod;
+	public EVibrationCurve VibrationMode;
+
 	public const string xboxName = "XInput ";
 	private PlayerIndex gamePadID;
 
@@ -23,12 +37,16 @@ public class XInputDevice : InputDevice
 		name = xboxName + id;
 
 		Initialise();
+		//EndVibration();
+		StartVibration(EVibrationCurve.Constant, 1f, 10f);
 	}
 
 	// Update is called once per frame
 	public override void Update()
 	{
+		VibrationElapsed += Time.deltaTime;
 		state = GamePad.GetState(gamePadID);
+		if (VibrationMode > EVibrationCurve.None) ProcessVibration();
 
 		base.Update();
 	}
@@ -128,5 +146,62 @@ public class XInputDevice : InputDevice
 		}
 
 		return buttonState;
+	}
+	
+	public override void SendDisconnectionEvent()
+	{
+		base.SendDisconnectionEvent();
+
+		EndVibration();
+	}
+
+	protected void EndVibration()
+	{
+		VibrationDuration = 0f;
+		VibrationMode = EVibrationCurve.None;
+		Vibrate (0f,0f);
+	}
+
+	protected void StartVibration(EVibrationCurve curve, float power, float duration)
+	{
+		VibrationMode = curve;
+		VibrationPowerMod = power;
+		VibrationDuration = duration;
+	}
+
+	protected void ProcessVibration()
+	{
+		float power = 0f;
+
+		switch (VibrationMode)
+		{
+		case EVibrationCurve.Ascending:
+			power = Mathf.Sin(VibrationElapsed/VibrationDuration);
+			break;
+		case EVibrationCurve.Constant:
+			power = 1f;
+			break;
+		}
+//		float left;
+//		float right;
+//		left = Mathf.Abs(Mathf.Cos(Time.time));
+//		right = Mathf.Abs(Mathf.Sin(Time.time));
+//		left = 0;
+//		right = 0;
+		if (VibrationElapsed > VibrationDuration)
+		{
+			power = 0f;
+			VibrationElapsed = 0f;
+			VibrationDuration = 0f;
+			VibrationMode = EVibrationCurve.None;
+		}
+		power *= VibrationPowerMod;
+		Debug.Log(VibrationElapsed/VibrationDuration + " " + power);
+		Vibrate(power,power);
+	}
+
+	protected void Vibrate(float left, float right)
+	{
+		GamePad.SetVibration(gamePadID,left,right);
 	}
 }

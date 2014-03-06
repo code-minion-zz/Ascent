@@ -18,6 +18,7 @@ public class UITown_RadialPanel : UITown_Panel
 	protected Dictionary<int, float> AngleIndex;
 	protected bool updatePointer = false;
 	public static float Angular_Tolerance = 10f;
+	protected static float ANGLE_CORRECTION = 90f * Mathf.Deg2Rad;
 
 	public override void Initialise ()
 	{
@@ -25,6 +26,31 @@ public class UITown_RadialPanel : UITown_Panel
 		
 		AngleIndex = new Dictionary<int, float>();
 
+	}
+
+	public virtual void SetRadialButtons(float angleDifference)
+	{		
+		// Create and position buttons for the main menu in a circle
+		Transform button;
+		int i;
+		Vector3 heading;
+		float angle = angleDifference;
+		float radians = angle * Mathf.Deg2Rad;
+		List<float> radianList = new List<float>();
+		Angular_Tolerance = angle/2;
+		for (i = 0; i < 7; ++i)
+		{
+			int mod = 0;
+			
+			if (i > 3)
+			{
+				mod = 1;
+			}
+			AngleIndex.Add(i, (i+mod) * angle);
+			button = buttons[i].transform;
+			heading = MathUtility.ConvertHeadingToVector((i + mod) * radians + ANGLE_CORRECTION);
+			button.position = townParent.pointerTransform.position + (heading * 0.3f);
+		}
 	}
 
 	/// <summary>
@@ -55,6 +81,7 @@ public class UITown_RadialPanel : UITown_Panel
 				}
 				UICamera.Notify(currentSelection.gameObject, "OnHover", true);	
 				snapAngle = p.Value;
+				Debug.Log(p.Value);
 			}
 		}
 		

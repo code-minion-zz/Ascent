@@ -266,7 +266,7 @@ public class InputDevice
 	public event InputDeviceEventHandler OnRightTrigger_up;
 	public event InputDeviceEventHandler OnRightBumper_up;
 
-	public void SendDisconnectionEvent()
+	public virtual void SendDisconnectionEvent()
 	{
 		if (OnDisconnected != null)
 		{

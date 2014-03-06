@@ -15,6 +15,11 @@ public class UITown_Tavern : UITown_RadialPanel {
 	}
 
 	[SerializeField]
+	// 0 NoPlayer
+	// 1 NewOrLoad
+	// 2 New Button
+	// 3 Load button
+	// 4 SaveList
 	public GameObject[] TavernElements;
 
 	ETavernMode mode = ETavernMode.Invalid;
@@ -25,6 +30,14 @@ public class UITown_Tavern : UITown_RadialPanel {
 		{
 			base.Initialise();
 		}
+		
+		AngleIndex.Add(0, 0f);
+		AngleIndex.Add(1, 180f);
+
+		buttons = new UIButton[2];
+		buttons[0] = TavernElements[2].GetComponent<UIButton>();
+		buttons[1] = TavernElements[3].GetComponent<UIButton>();
+		currentSelection = buttons[0];
 
 		initialised = true;
 	}
@@ -53,32 +66,6 @@ public class UITown_Tavern : UITown_RadialPanel {
 		townParent.ShowSharedElements(yayOrNay);
 	}
 
-	void ProcessOK()
-	{
-		if (currentSelection == null) return;
-		switch (mode)
-		{
-		case ETavernMode.NoPlayer:
-			// TODO: Add player and bind panel to it
-			break;
-		case ETavernMode.NewOrLoad:
-			// TODO: 
-			break;
-		}
-	}
-
-	void ProcessCancel()
-	{
-		switch (mode)
-		{
-		case ETavernMode.NoPlayer:
-//			townParent.RequestQuit();
-			break;
-		case ETavernMode.NewOrLoad:
-			DeactivatePanel();
-			break;
-		}
-	}
 
 	void ProcessModeSwitch()
 	{
@@ -127,7 +114,6 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		mode = ETavernMode.NewOrLoad;
 		ProcessModeSwitch();
-//		parent.Initialise();
 	}
 
 	public void DeactivatePanel()
@@ -138,6 +124,34 @@ public class UITown_Tavern : UITown_RadialPanel {
 		if (parent.Ready)
 		{
 			parent.DeactivateWindow();
+		}
+	}
+	
+	void ProcessOK()
+	{
+		townParent.RequestTransitionToPanel(0);
+		if (currentSelection == null) return;
+		switch (mode)
+		{
+		case ETavernMode.NoPlayer:
+			// TODO: Add player and bind panel to it
+			break;
+		case ETavernMode.NewOrLoad:
+			// TODO: 
+			break;
+		}
+	}
+	
+	void ProcessCancel()
+	{
+		switch (mode)
+		{
+		case ETavernMode.NoPlayer:
+			//			townParent.RequestQuit();
+			break;
+		case ETavernMode.NewOrLoad:
+			DeactivatePanel();
+			break;
 		}
 	}
 

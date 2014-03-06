@@ -126,4 +126,5 @@ public class XBox360InputDevice : InputDevice
 
 		return buttonState;
 	}
+
 }

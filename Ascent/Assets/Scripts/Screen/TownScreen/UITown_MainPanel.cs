@@ -4,8 +4,7 @@ using System.Collections.Generic;
 public class UITown_MainPanel : UITown_RadialPanel
 {
 	public GameObject ButtonPrefab;
-	static float ANGLE_CORRECTION = 90f * Mathf.Deg2Rad;
-	static float BUTTON_SCALE = 0.3f;
+	static float IMG_BUTTON_SCALE = 0.3f;
 	static int ANGLE_DIVISION = 8;
 
 	public override void Initialise()
@@ -27,65 +26,45 @@ public class UITown_MainPanel : UITown_RadialPanel
 			int mod = 0;
 			GameObject buttonGO = NGUITools.AddChild(gameObject, ButtonPrefab);
 			buttons[i] = buttonGO.GetComponent<UIButton>();
-
-			if (i > 3)
-			{
-				mod = 1;
-			}
-			AngleIndex.Add(i, (i+mod) * angle);
-			radianList.Add((i+mod) * radians);
 		}
-		radianList.Add(i*radians);
+
+		SetRadialButtons(angle);
 
 		i = 0;
 		// Setting individual button values
-		buttons[i].gameObject.name += " Tower";
 		button = buttons[i].transform;
+		button.gameObject.name += " Tower";
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " AccShop";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " ConShop";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Tavern";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " Backpack";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_BackPackIcon_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Skills";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Chapel";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
-		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
-		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		// set current selection to first button
 		currentSelection = buttons[0];
