@@ -37,8 +37,6 @@ public class XInputDevice : InputDevice
 		name = xboxName + id;
 
 		Initialise();
-		//EndVibration();
-		StartVibration(EVibrationCurve.Constant, 1f, 10f);
 	}
 
 	// Update is called once per frame
@@ -155,14 +153,14 @@ public class XInputDevice : InputDevice
 		EndVibration();
 	}
 
-	protected void EndVibration()
+	public void EndVibration()
 	{
 		VibrationDuration = 0f;
 		VibrationMode = EVibrationCurve.None;
 		Vibrate (0f,0f);
 	}
 
-	protected void StartVibration(EVibrationCurve curve, float power, float duration)
+	public void StartVibration(EVibrationCurve curve, float power, float duration)
 	{
 		VibrationMode = curve;
 		VibrationPowerMod = power;
@@ -180,6 +178,9 @@ public class XInputDevice : InputDevice
 			break;
 		case EVibrationCurve.Constant:
 			power = 1f;
+			break;
+		case EVibrationCurve.Descending:
+			power = 1 - Mathf.Sin(VibrationElapsed/VibrationDuration);
 			break;
 		}
 //		float left;
