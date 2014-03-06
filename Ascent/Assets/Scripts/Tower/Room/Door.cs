@@ -8,7 +8,6 @@ using UnityEditor;
 
 public class Door : MonoBehaviour 
 {
-    [HideInInspector]
 	public Floor.TransitionDirection direction;
 
 	public Door targetDoor;
