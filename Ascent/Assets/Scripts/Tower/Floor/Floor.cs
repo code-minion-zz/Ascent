@@ -347,67 +347,6 @@ public class Floor : MonoBehaviour
         {
             EndFloor();
         }
-
-        if (currentRoom.Doors == null)
-        {
-            return;
-        }
-
-        // Travel North, South, East or West
-
-        List<Door> roomDoors = currentRoom.Doors.RoomDoors;
-
-        // North
-        if (Input.GetKeyUp(KeyCode.Keypad8)) 
-        {
-            foreach (Door d in roomDoors)
-            {
-                if (d == null) continue;
-                if (d.targetDoor != null && d.direction == TransitionDirection.North)
-                {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
-                }
-            }
-        }
-
-        // South
-        else if (Input.GetKeyUp(KeyCode.Keypad2))
-        {
-            foreach (Door d in roomDoors)
-            {
-                if (d == null) continue;
-                if (d.targetDoor != null && d.direction == TransitionDirection.South)
-                {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
-                }
-            };
-        }
-
-        // West
-        else if (Input.GetKeyUp(KeyCode.Keypad4))
-        {
-            foreach (Door d in roomDoors)
-            {
-                if (d == null) continue;
-                if (d.targetDoor != null && d.direction == TransitionDirection.West)
-                {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
-                }
-            }
-        }
-
-        // East
-        else if (Input.GetKeyUp(KeyCode.Keypad6))
-        {
-            foreach (Door d in roomDoors)
-            {
-                if (d == null) continue;
-                if (d.targetDoor != null && d.direction == TransitionDirection.East)
-                {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
-                }
-            }
-        }
     }
 
 	void EndFloor()

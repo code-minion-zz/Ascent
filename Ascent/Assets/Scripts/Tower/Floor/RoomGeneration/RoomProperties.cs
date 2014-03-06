@@ -161,7 +161,6 @@ public class RoomProperties
                             Door door = go.GetComponent<Door>();
                             if (doorTile != null)
                             {
-                                door.direction = doorTile.Direction;
                                 Doors.Add(door);
                             }
                             else

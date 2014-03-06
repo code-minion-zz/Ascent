@@ -86,6 +86,7 @@ public class EnchantedStatue : Enemy
     {
         List<Character> characters = AIAgent.SensedCharacters;
         AIAgent.TargetCharacter = characters[0];
+        SoundManager.PlaySound(AudioClipType.statueAwaken, this.transform.position, 1.0f);
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 
