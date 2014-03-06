@@ -23,6 +23,7 @@ public static class EnvironmentFactory
     private static GameObject pillarObject = Resources.Load("Prefabs/RoomPieces/Pillar") as GameObject;
     private static GameObject arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
     private static GameObject spinningBlade = Resources.Load("Prefabs/Hazards/SpinningBlade") as GameObject;
+    private static GameObject chest = Resources.Load("Prefabs/RoomPieces/Chest") as GameObject;
 
     public static GameObject CreateMiscObject(MiscObjectType type)
     {
@@ -73,6 +74,11 @@ public static class EnvironmentFactory
             case TileType.brazier:
                 go = UnityEditor.PrefabUtility.InstantiatePrefab(brazierObject) as GameObject;
                 go.name = brazierObject.name;
+                break;
+
+            case TileType.chest:
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(chest) as GameObject;
+                go.name = chest.name;
                 break;
 
             case TileType.pillar:
