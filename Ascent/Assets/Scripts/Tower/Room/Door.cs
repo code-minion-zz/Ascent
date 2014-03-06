@@ -170,7 +170,6 @@ public class Door : MonoBehaviour
 					{
 						if (p.Hero.collider.bounds.Intersects(immediateArea.bounds))
 						{
-							Debug.Log("inside it!");
 							Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
 							walkedOutOfTheDoor = true;
 						}
@@ -189,4 +188,18 @@ public class Door : MonoBehaviour
 		startDoor = true;
 		walkedOutOfTheDoor = true;
 	}
+
+    [ContextMenu("OpenDoor")]
+    public void OpenDoor()
+    {
+        openedDoor.SetActive(true);
+        sealedDoor.SetActive(false);
+    }
+
+    [ContextMenu("CloseDoor")]
+    public void CloseDoor()
+    {
+        openedDoor.SetActive(false);
+        sealedDoor.SetActive(true);
+    }
 }
