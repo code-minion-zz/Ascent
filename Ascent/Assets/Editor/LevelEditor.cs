@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace Ascent 
 {
-    [Serializable]
     public class LevelEditor : EditorWindow
 	{
         private Vector2 scrollPosition;
@@ -18,6 +17,7 @@ namespace Ascent
         private SaveRooms roomSaver = new SaveRooms();
         private RoomGeneration roomGen = new RoomGeneration();
         private TileType tileType;
+        private GameObject selectedObject;
         private string directory;
 
         [MenuItem("Ascent/Level Editor %h")]
@@ -34,22 +34,16 @@ namespace Ascent
 
         void OnEnable()
         {
-            SceneView.onSceneGUIDelegate = GridUpdate;
+
         }
 
         void Update()
         {
             UpdateSelectedRoom();
             UpdateSelectedTile();
+            UpdateSelectedDoors();
 
             this.Repaint();
-        }
-
-        void GridUpdate(SceneView sceneView)
-        {
-            UpdateSelectedRoom();
-            UpdateSelectedTile();
-            UpdateSelectedDoors();
         }
 
         void OnGUI()
@@ -77,29 +71,29 @@ namespace Ascent
 
         private void SelectRoomGUI()
         {
-            if (GUILayout.Button("Load Room", GUILayout.Width(buttonSize)))
-            {
-                directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "txt");
+            //if (GUILayout.Button("Load Room", GUILayout.Width(buttonSize)))
+            //{
+            //    directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "txt");
 
-                if (directory != "")
-                {
-                    // Load and add the room to the list of rooms.
-                    RoomProperties room = roomSaver.LoadRoom(directory, false);
+            //    if (directory != "")
+            //    {
+            //        // Load and add the room to the list of rooms.
+            //        RoomProperties room = roomSaver.LoadRoom(directory, false);
 
-                    if (room != null)
-                    {
-                        // Construct the newly loaded room.
-                        room.ConstructRoom();
-                    }
-                }
-            }
+            //        if (room != null)
+            //        {
+            //            // Construct the newly loaded room.
+            //            room.ConstructRoom();
+            //        }
+            //    }
+            //}
 
             if (roomSaver != null)
             {
-                if (GUILayout.Button("Save Room", GUILayout.Width(buttonSize)))
-                {
-                    SaveSelected();
-                }
+                //if (GUILayout.Button("Save Room", GUILayout.Width(buttonSize)))
+                //{
+                //    SaveSelected();
+                //}
             }
 
             if (selectedRoom != null)
@@ -110,7 +104,13 @@ namespace Ascent
             if (selectedTile != null)
             {
                 GUILayout.Label("Selected Tile: " + selectedTile.name);
+
                 TilePlacementGUI();
+
+                if (GUILayout.Button("Rotate 90", GUILayout.Width(buttonSize)))
+                {
+                    Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f, Space.World);
+                }
             }
 
             if (selectedDoors.Count > 1)
@@ -212,9 +212,24 @@ namespace Ascent
 
         private void TilePlacementGUI()
         {
-            tileType = (TileType)EditorGUILayout.EnumPopup("Choose Environment Piece", (Enum)tileType);
+            //tileType = (TileType)EditorGUILayout.EnumPopup("Choose Environment Piece", (Enum)tileType);
 
-            Transform parent = GetParentByType(selectedRoom, tileType);
+            selectedObject = EditorGUILayout.ObjectField("Select Object", selectedObject, typeof(GameObject), false) as GameObject;
+
+            if (selectedObject == null)
+            {
+                return;
+            }
+
+            EnvIdentifier envIdentifier = selectedObject.GetComponent<EnvIdentifier>();
+
+            //Transform parent = GetParentByType(selectedRoom, tileType);
+            Transform parent = null;
+
+            if (envIdentifier != null)
+            {
+                parent = GetParentByType(selectedRoom, envIdentifier.TileAttributeType);
+            }
 
             if (parent == null)
             {
@@ -223,8 +238,8 @@ namespace Ascent
 
             if (GUILayout.Button("Insert to " + parent.name, GUILayout.Width(buttonSize)))
             {
-                UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
-
+                //UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
+                UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
                 if (go != null)
                 {
                     GameObject instantiatedGo = go as GameObject;
@@ -232,11 +247,6 @@ namespace Ascent
                     instantiatedGo.transform.position = selectedTile.transform.position;
                     Selection.activeGameObject = instantiatedGo;
                 }
-            }
-
-            if (GUILayout.Button("Rotate 90", GUILayout.Width(buttonSize)))
-            {
-                Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
             }
         }
 
@@ -333,7 +343,7 @@ namespace Ascent
                 }
                 else
                 {
-                    selectedTile = null;
+                    selectedTile = go;
                 }
             }
         }
