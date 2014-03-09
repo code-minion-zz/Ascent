@@ -21,8 +21,8 @@ public static class SoundManager
 
         if (clip != null)
         {
-            AudioListener.volume = volume;
-            AudioSource.PlayClipAtPoint(clip, position);
+            position += new Vector3(0.0f, 10.0f);
+            AudioSource.PlayClipAtPoint(clip, position, volume);
         }
         else
         {
