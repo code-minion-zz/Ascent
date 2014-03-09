@@ -96,13 +96,10 @@ namespace Ascent
                 //}
             }
 
-            if (selectedRoom != null)
+
+            if (selectedTile != null && selectedRoom != null)
             {
                 GUILayout.Label("Selected Room: " + selectedRoom.name);
-            }
-
-            if (selectedTile != null)
-            {
                 GUILayout.Label("Selected Tile: " + selectedTile.name);
 
                 TilePlacementGUI();
@@ -212,8 +209,6 @@ namespace Ascent
 
         private void TilePlacementGUI()
         {
-            //tileType = (TileType)EditorGUILayout.EnumPopup("Choose Environment Piece", (Enum)tileType);
-
             selectedObject = EditorGUILayout.ObjectField("Select Object", selectedObject, typeof(GameObject), false) as GameObject;
 
             if (selectedObject == null)
@@ -271,6 +266,20 @@ namespace Ascent
                             }
 
                             parent = t.transform.FindChild("Doors");
+                        }
+                        break;
+
+                    case TileType.monster:
+                        {
+                            GameObject t = room.GetNodeByLayer("Monster");
+
+                            if (t == null)
+                            {
+                                room.FindAllNodes();
+                                t = room.MonsterParent.gameObject;
+                            }
+
+                            parent = t.transform;
                         }
                         break;
                 }

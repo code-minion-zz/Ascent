@@ -48,6 +48,7 @@ GameObject:
   - 65: {fileID: 6500000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400010}
   m_Layer: 9
   m_Name: Wizard
   m_TagString: Monster
@@ -218,6 +219,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2badd0daa01460347b7f4b6019289bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileAttributeType: 14
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
