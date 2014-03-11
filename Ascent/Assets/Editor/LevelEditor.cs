@@ -355,6 +355,14 @@ namespace Ascent
                     selectedTile = go;
                 }
             }
+            else if (go == selectedTile)
+            {
+                return;
+            }
+            else
+            {
+                selectedTile = null;
+            }
         }
 
         /// <summary>
@@ -381,6 +389,14 @@ namespace Ascent
                 {
                     selectedRoom = T.gameObject;
                 }
+            }
+            else if (go == selectedRoom)
+            {
+                return;
+            }
+            else
+            {
+                selectedRoom = null;
             }
         }
 
