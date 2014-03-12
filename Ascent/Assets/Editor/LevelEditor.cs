@@ -134,7 +134,7 @@ namespace Ascent
             room.FindAllNodes();
 
             RoomProperties roomProperties = new RoomProperties(room);
-            roomProperties.InitialiseTiles(room.NumberOfTilesX, room.NumberOfTilesY);
+            roomProperties.InitialiseTiles(room.NumberOfTilesX, room.NumberOfTilesY, 2);
             roomProperties.Name = selectedRoom.name;
 
             GameObject env = room.GetNodeByLayer("Environment");

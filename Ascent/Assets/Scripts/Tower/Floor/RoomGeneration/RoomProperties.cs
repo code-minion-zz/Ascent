@@ -36,7 +36,12 @@ public class RoomProperties
     public string Name { get; set; }
     public FeatureType RoomType { get; set; }
 
-    public const int TileSize = 2;
+    private int tileSize = 2;
+
+    public int TileSize
+    {
+        get { return tileSize; }
+    }
 
     public Vector3 Position
     {
@@ -90,8 +95,10 @@ public class RoomProperties
         this.room = room;
     }
 
-    public void InitialiseTiles(int tilesX, int tilesY)
+    public void InitialiseTiles(int tilesX, int tilesY, int tileSize)
     {
+        this.tileSize = tileSize;
+
         Width = (tilesX * TileSize);
         Height = (tilesY * TileSize);
 

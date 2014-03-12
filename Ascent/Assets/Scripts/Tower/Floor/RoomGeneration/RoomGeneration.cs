@@ -40,7 +40,7 @@ public class RoomGeneration
 		// Initialise and construct the new room.
 		RoomProperties newRoom = new RoomProperties();
         newRoom.Name = name;
-        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f), 2);
 
 
         newRoom.ConstructRoom();
@@ -59,10 +59,10 @@ public class RoomGeneration
     /// <param name="tilesY"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY)
+    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY, int tileSize)
     {
         RoomProperties newRoom = new RoomProperties();
-        newRoom.InitialiseTiles(tilesX, tilesY);
+        newRoom.InitialiseTiles(tilesX, tilesY, tileSize);
 
         return newRoom;
     }
@@ -305,6 +305,7 @@ public class RoomGeneration
                 GameObject groundTile = EnvironmentFactory.CreateGameObjectByType(TileType.groundTile);
                 groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
+                groundTile.transform.localScale= new Vector3(room.TileSize * 0.5f, 1.0f, room.TileSize * 0.5f);
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
                 room.Tiles[x, y].GameObject = groundTile;
 			}
@@ -442,10 +443,10 @@ public class RoomGeneration
 
         // Create the corner piece.
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
 		wallCornerGo.name = "CornerNE";
-		wallCornerGo.transform.parent = walls.transform;
 		
 		// South east corner
         // Assign the attribute.
@@ -455,23 +456,23 @@ public class RoomGeneration
         room.Tiles[room.Tiles.GetLength(0) - 1, 0].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, 0].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
 		wallCornerGo.name = "CornerSE";
-		wallCornerGo.transform.parent = walls.transform;
 		
         // North west corner
         // Assign the attribute.
         att = new TileAttribute();
         att.Type = TileType.cornerWallTile;
         att.Angle = 180.0f;
-        room.Tiles[0, (int)room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
+        room.Tiles[0, room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[0, room.Tiles.GetLength(1) - 1].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
 		wallCornerGo.name = "CornerNW";
-		wallCornerGo.transform.parent = walls.transform;
 		
 		// South west corner
         // Assign the attribute.
@@ -481,10 +482,10 @@ public class RoomGeneration
         room.Tiles[0, 0].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[0, 0].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
 		wallCornerGo.name = "CornerSW";
-		wallCornerGo.transform.parent = walls.transform;
         
         // Variables used for placing walls.
         int lastTileX = room.Tiles.GetLength(0);

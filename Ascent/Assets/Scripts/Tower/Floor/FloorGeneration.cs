@@ -212,7 +212,7 @@ public class FloorGeneration
         }
 
         // Create a new room data structure from the room generator.
-        RoomProperties newRoom = roomGeneration.CreateNewRoom(connectionType, (int)(width * 0.5f), (int)(height * 0.5f));
+        RoomProperties newRoom = roomGeneration.CreateNewRoom(connectionType, (int)(width * 0.5f), (int)(height * 0.5f), 2);
 
         // We then need to connect the door to the door that this created room will connect to.
 
