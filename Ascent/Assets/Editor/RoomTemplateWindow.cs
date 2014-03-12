@@ -14,6 +14,8 @@ public class RoomTemplateWindow : EditorWindow
     private static List<string> templateSizes = new List<string>();
     private bool rotated;
     private bool buildWalls;
+    private bool populateRandomMisc;
+    private bool populateMonsters;
     private int tileSize;
     private int selectedTemplate;
 
@@ -46,6 +48,8 @@ public class RoomTemplateWindow : EditorWindow
 		roomName = EditorGUILayout.TextField("Room name", roomName);
         rotated = EditorGUILayout.Toggle("Flip width/height", rotated);
         buildWalls = EditorGUILayout.Toggle("Build walls", buildWalls);
+        populateRandomMisc = EditorGUILayout.Toggle("Populate misc objects", populateRandomMisc);
+        populateMonsters = EditorGUILayout.Toggle("Populate monsters", populateMonsters);
         tileSize = EditorGUILayout.IntField("Tile size", tileSize);
 
         bool createRoom = false;
@@ -104,6 +108,16 @@ public class RoomTemplateWindow : EditorWindow
         if (buildWalls == true)
         {
             roomGenRef.PlaceWalls(room);
+        }
+
+        if (populateRandomMisc == true)
+        {
+            roomGenRef.PopulateMiscObjects(room);
+        }
+
+        if (populateMonsters == true)
+        {
+            roomGenRef.PopulateMonsters(1, room, Rarity.many);
         }
 
 		this.Close();

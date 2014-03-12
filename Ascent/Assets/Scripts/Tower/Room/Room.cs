@@ -511,7 +511,7 @@ public class Room : MonoBehaviour
 		{
 			case ERoomObjects.Chest:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
                     if (chests == null)
                     {
@@ -526,7 +526,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Loot:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
 					if(lootDrops == null)
 					{
@@ -538,7 +538,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
 
                     if (enemies == null)
                     {
@@ -550,14 +550,18 @@ public class Room : MonoBehaviour
                     enemy.transform.parent = monstersNode.transform;
                     enemy.transform.localPosition = Vector3.zero;
                     enemy.ContainedRoom = this;
-                    enemy.Initialise();
-					enemy.InitiliseHealthbar();
+
+                    if (Game.Singleton != null)
+                    {
+                        enemy.Initialise();
+                        enemy.InitiliseHealthbar();
+                    }
 				}
 				break;
 
             case ERoomObjects.Barrel:
                 {
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
                     newObject.transform.parent = EnvironmentParent;
                 }
                 break;
