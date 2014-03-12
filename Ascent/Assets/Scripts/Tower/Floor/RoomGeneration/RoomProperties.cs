@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -186,12 +187,13 @@ public class RoomProperties
             }
         }
 
-        room.NumberOfTilesX = Tiles.GetLength(0);
-        room.NumberOfTilesY = Tiles.GetLength(1);
+        room.width = Width;
+        room.height = Height;
+        EditorUtility.SetDirty(room);
 
+        room.Initialise();
         // Apply the new dimensions to the navMesh.
         room.SetNavMeshDimensions(Width, Height);
-        SetupCamera();
 
         IsConstructed = true;
     }
@@ -212,8 +214,6 @@ public class RoomProperties
         room.AddNewParentCategory("Items", (int)Layer.Item);
         room.AddNewParentCategory("Lights", (int)Layer.Default);
 
-        room.Initialise();
-
         return room;
     }
 
@@ -231,78 +231,6 @@ public class RoomProperties
         Tiles[x, y].GameObject = go;
 
         return go;
-    }
-
-    private void SetupCamera()
-    {
-        if (room == null)
-        {
-            Debug.LogError("Room object has not been created yet, cannot setup the camera range.");
-            return;
-        }
-
-        float cameraOffsetX = 1.0f;
-        float cameraOffsetMinZ = 1.0f;
-        float cameraOffsetMaxZ = 1.0f;
-
-        //if (Game.Singleton.IsWideScreen)
-        //{
-        //    switch (room.Width)
-        //    {
-        //        case 10: cameraOffsetX = 0.0f; break;
-        //        case 14: cameraOffsetX = 0.0f; break;
-        //        case 18: cameraOffsetX = 1.0f; break;
-        //        case 22: cameraOffsetX = 3.0f; break;
-        //        case 24: cameraOffsetX = 4.0f; break;
-
-        //        default: Debug.LogError("Unhandled case: " + room.Width); break;
-        //    }
-        //}
-        //else
-        //{
-        switch (Width)
-        {
-            case 10: cameraOffsetX = 0.0f; break;
-            case 14: cameraOffsetX = 1.0f; break;
-            case 18: cameraOffsetX = 3.0f; break;
-            case 22: cameraOffsetX = 5.0f; break;
-            case 24: cameraOffsetX = 4.0f; break;
-
-            default: Debug.LogError("Unhandled case: " + Width); break;
-        }
-
-        //}
-
-        switch (Height)
-        {
-            case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
-            case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
-            case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
-            case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
-            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
-
-            default: Debug.LogError("Unhandled case: " + Height); break;
-        }
-
-        room.minCamera.x = -cameraOffsetX;
-        room.maxCamera.x = cameraOffsetX;
-
-        room.minCamera.z = cameraOffsetMinZ;
-        room.maxCamera.z = cameraOffsetMaxZ;
-
-        //room.Room.minCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * -cameraOffsetX) : 0.0f;
-        //room.Room.maxCamera.x = (room.Width >= 14.0f) ? ((room.Width - 15.0f) * cameraOffsetX) : 0.0f;
-
-        //room.Room.minCamera.x = Math.Abs(room.Room.minCamera.x) * -1.0f;
-        //room.Room.maxCamera.x = Math.Abs(room.Room.minCamera.x);
-
-        //room.Room.minCamera.z = (room.Height > 10.0f) ? ((-room.Height + (room.Height * 0.48f)) * cameraOffsetZ) : -5.0f;
-        //room.Room.maxCamera.z = (room.Height > 10.0f) ? ((room.Height - (room.Height * 1.17f)) * cameraOffsetZ) : -5.0f;
-
-        //room.Room.minCamera.z = Math.Max(room.Room.minCamera.z, -9.25f);
-        //room.Room.maxCamera.z = Math.Min(room.Room.maxCamera.z, 0.0f);
-
-        //room.Room.maxCamera.z = room.Room.maxCamera.x < room.Room.minCamera.z ? room.Room.minCamera.z : room.Room.maxCamera.z;
     }
 
     public void FillDirection(Floor.TransitionDirection direction)
