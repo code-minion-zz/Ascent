@@ -123,7 +123,6 @@ GameObject:
   - 4: {fileID: 400014}
   - 114: {fileID: 11400002}
   - 65: {fileID: 6500008}
-  - 114: {fileID: 11400000}
   m_Layer: 10
   m_Name: HiddenDoor
   m_TagString: WallTile
@@ -466,18 +465,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: .300000012, y: 6, z: 2}
   m_Center: {x: -1, y: 3, z: 0}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileAttributeType: 2
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -489,13 +476,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bf92c93d2ac2a498c08ef4837aeb11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  environmentID: 2
+  isDestroyed: 0
+  isBreakable: 1
   direction: 2
   targetDoor: {fileID: 0}
   isConnected: 0
   isEntryDoor: 0
   immediateArea: {fileID: 6500000}
-  blockedDoor: {fileID: 100020}
   openedDoor: {fileID: 100016}
+  sealedDoor: {fileID: 0}
+  blockedDoor: {fileID: 100020}
   opened: 0
 --- !u!1001 &100100000
 Prefab:

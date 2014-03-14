@@ -58,7 +58,7 @@ public class Room : MonoBehaviour
     protected List<TreasureChest> chests = new List<TreasureChest>();
     protected List<LootDrop> lootDrops = new List<LootDrop>();
     protected List<MoveableBlock> moveables = new List<MoveableBlock>();
-    protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
+    protected List<EnvironmentBreakable> breakables = new List<EnvironmentBreakable>();
 
     public int NumberOfTilesX
     {
@@ -108,7 +108,7 @@ public class Room : MonoBehaviour
 		get { return moveables; }
 	}
 
-    public List<BreakableEnvObject> Breakables
+    public List<EnvironmentBreakable> Breakables
     {
         get { return breakables; }
     }
@@ -610,9 +610,9 @@ public class Room : MonoBehaviour
         {
             case Shape2D.EType.Circle:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    foreach (EnvironmentBreakable b in breakables)
                     {
-                        if (b.IsDestroyed)
+                        if (b.IsDestroyed || b.IsBreakable == false)
                         {
                             continue;
                         }
@@ -627,7 +627,7 @@ public class Room : MonoBehaviour
                 break;
             case Shape2D.EType.Arc:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    foreach (EnvironmentBreakable b in breakables)
                     {
                         if (b.IsDestroyed)
                         {

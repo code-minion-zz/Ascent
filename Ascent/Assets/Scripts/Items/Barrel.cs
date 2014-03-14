@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Barrel : BreakableEnvObject
+public class Barrel : EnvironmentBreakable
 {
     protected List<Item> loot;
     protected Room containedRoom;

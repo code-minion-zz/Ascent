@@ -6,11 +6,17 @@ public class EnvironmentTrigger : MonoBehaviour
     public enum ECondition
     {
         collision,
-        activatebutton,
+        activate,
         destroyed,
     }
 
-    public Environment target;
+    public enum ETriggerEffect
+    {
+        destroyObject,
+        activateObject,
+    }
+
+    public EnvironmentObj triggerTarget;
 
 	// Use this for initialization
 	void Start () 

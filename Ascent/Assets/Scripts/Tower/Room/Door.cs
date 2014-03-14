@@ -6,7 +6,7 @@ using System;
 using UnityEditor;
 #endif
 
-public class Door : MonoBehaviour 
+public class Door : EnvironmentBreakable
 {
 	public Floor.TransitionDirection direction;
 

@@ -153,7 +153,7 @@ namespace Ascent
                        
                         foreach (Transform child in t)
                         {
-                            Environment id = child.GetComponent<Environment>();
+                            EnvironmentObj id = child.GetComponent<EnvironmentObj>();
                             if (id != null)
                             {
                                 TileAttribute att = new TileAttribute();
@@ -216,7 +216,7 @@ namespace Ascent
                 return;
             }
 
-            Environment envIdentifier = selectedObject.GetComponent<Environment>();
+            EnvironmentObj envIdentifier = selectedObject.GetComponent<EnvironmentObj>();
 
             //Transform parent = GetParentByType(selectedRoom, tileType);
             Transform parent = null;
