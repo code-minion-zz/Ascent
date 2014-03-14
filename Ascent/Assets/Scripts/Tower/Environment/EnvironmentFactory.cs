@@ -66,12 +66,12 @@ public static class EnvironmentFactory
         switch (type)
         {
             case MiscObjectType.barrel:
-                go = GameObject.Instantiate(barrelObject, Vector3.zero, barrelObject.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(barrelObject) as GameObject;
                 go.name = barrelObject.name;
                 break;
 
             case MiscObjectType.barrelCluster:
-                go = GameObject.Instantiate(barrelCluster, Vector3.zero, barrelCluster.transform.rotation) as GameObject;
+                go = UnityEditor.PrefabUtility.InstantiatePrefab(barrelCluster) as GameObject;
                 go.name = barrelCluster.name;
                 break;
         }
