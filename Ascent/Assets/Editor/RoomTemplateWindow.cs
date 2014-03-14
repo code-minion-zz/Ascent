@@ -11,11 +11,12 @@ public class RoomTemplateWindow : EditorWindow
 	private int numberOfTilesX;
 	private int numberOfTilesY;
 	private RoomGeneration roomGenRef;
-    private static List<string> templateSizes = new List<string>();
+    private List<string> templateSizes = new List<string>();
     private bool rotated;
     private bool buildWalls;
     private bool populateRandomMisc;
     private bool populateMonsters;
+    private Rarity monsterRarity;
     private int tileSize;
     private int selectedTemplate;
 
@@ -50,6 +51,12 @@ public class RoomTemplateWindow : EditorWindow
         buildWalls = EditorGUILayout.Toggle("Build walls", buildWalls);
         populateRandomMisc = EditorGUILayout.Toggle("Populate misc objects", populateRandomMisc);
         populateMonsters = EditorGUILayout.Toggle("Populate monsters", populateMonsters);
+
+        if (populateMonsters == true)
+        {
+            monsterRarity = (Rarity)EditorGUILayout.EnumPopup("Monster rarity", monsterRarity);
+        }
+
         tileSize = EditorGUILayout.IntField("Tile size", tileSize);
 
         bool createRoom = false;
@@ -76,6 +83,9 @@ public class RoomTemplateWindow : EditorWindow
                 buttonText = "Create Room " + tilesY + "x" + tilesX + " (" + tilesY * tileSize +
                 "x" + tilesX * tileSize + ")";
             }
+
+
+            GUI.backgroundColor = Color.green;
 
             if (GUILayout.Button(buttonText))
             {
@@ -117,7 +127,7 @@ public class RoomTemplateWindow : EditorWindow
 
         if (populateMonsters == true)
         {
-            roomGenRef.PopulateMonsters(1, room, Rarity.many);
+            roomGenRef.PopulateMonsters(1, room, monsterRarity);
         }
 
 		this.Close();

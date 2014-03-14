@@ -3,22 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum TileType
-{
-    none = 0,
-    groundTile = 1,
-    door = 2,
-    standardWall = 3,
-    cornerWallTile = 8,
-    pillar = 9,
-    chest = 10,
-    randMisc = 11,
-    brazier = 12,
-    arrowShooter = 13,
-    monster = 14,
-    spinningBlade = 15,
-}
-
 [Serializable]
 public class Tile
 {
@@ -68,7 +52,7 @@ public class Tile
         set { isOccupied = value; }
     }
 
-    public bool ContainsAttribute(TileType type)
+    public bool ContainsAttribute(EnvironmentID type)
     {
         foreach (TileAttribute att in TileAttributes)
         {

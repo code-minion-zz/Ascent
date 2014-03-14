@@ -16,7 +16,7 @@ namespace Ascent
 
         private SaveRooms roomSaver = new SaveRooms();
         private RoomGeneration roomGen = new RoomGeneration();
-        private TileType tileType;
+        private EnvironmentID tileType;
         private GameObject selectedObject;
         private string directory;
 
@@ -153,14 +153,14 @@ namespace Ascent
                        
                         foreach (Transform child in t)
                         {
-                            EnvIdentifier id = child.GetComponent<EnvIdentifier>();
+                            Environment id = child.GetComponent<Environment>();
                             if (id != null)
                             {
                                 TileAttribute att = new TileAttribute();
                                 att.Type = id.TileAttributeType;
                                 att.Angle = child.eulerAngles.y;
 
-                                if (att.Type == TileType.door)
+                                if (att.Type == EnvironmentID.door)
                                 {
                                     att = new DoorTile();
                                     att.Type = id.TileAttributeType;
@@ -216,7 +216,7 @@ namespace Ascent
                 return;
             }
 
-            EnvIdentifier envIdentifier = selectedObject.GetComponent<EnvIdentifier>();
+            Environment envIdentifier = selectedObject.GetComponent<Environment>();
 
             //Transform parent = GetParentByType(selectedRoom, tileType);
             Transform parent = null;
@@ -245,7 +245,7 @@ namespace Ascent
             }
         }
 
-        private Transform GetParentByType(GameObject roomObject, TileType type)
+        private Transform GetParentByType(GameObject roomObject, EnvironmentID type)
         {
             Transform parent = null;
 
@@ -255,7 +255,7 @@ namespace Ascent
             {
                 switch (type)
                 {
-                    case TileType.door:
+                    case EnvironmentID.door:
                         {
                             GameObject t = room.GetNodeByLayer("Environment");
 
@@ -269,7 +269,7 @@ namespace Ascent
                         }
                         break;
 
-                    case TileType.monster:
+                    case EnvironmentID.monster:
                         {
                             GameObject t = room.GetNodeByLayer("Monster");
 

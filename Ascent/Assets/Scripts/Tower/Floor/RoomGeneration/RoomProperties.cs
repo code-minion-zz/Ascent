@@ -121,7 +121,7 @@ public class RoomProperties
                 // Add a default none tile attribute.
                 TileAttribute att = new TileAttribute();
                 att.Angle = 0.0f;
-                att.Type = TileType.none;
+                att.Type = EnvironmentID.none;
                 Tiles[i, j].TileAttributes.Add(att);
             }
         }
@@ -163,7 +163,7 @@ public class RoomProperties
                         go.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), att.Angle);
                         go.name = "[" + x + ", " + y + "]" + go.name;
 
-                        if (att.Type == TileType.door)
+                        if (att.Type == EnvironmentID.door)
                         {
                             DoorTile doorTile = att as DoorTile;
                             Door door = go.GetComponent<Door>();
@@ -177,7 +177,7 @@ public class RoomProperties
                             }
                         }
 
-                        if (att.Type == TileType.arrowShooter)
+                        if (att.Type == EnvironmentID.arrowShooter)
                         {
                             // We do not want to be able to place objects on top of an arrow shooter.
                             Tiles[x, y].IsOccupied = true;

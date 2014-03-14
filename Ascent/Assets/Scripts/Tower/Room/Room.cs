@@ -620,7 +620,7 @@ public class Room : MonoBehaviour
                         if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
                         {
                             // Destroy the breakable.
-                            b.Explode();
+                            b.BreakObject();
                         }
                     }
                 }
@@ -637,7 +637,7 @@ public class Room : MonoBehaviour
                         if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
                         {
                             // Destroy the breakable.
-                            b.Explode();
+                            b.BreakObject();
                         }
                     }
                 }
