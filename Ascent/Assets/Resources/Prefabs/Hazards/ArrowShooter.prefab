@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 33: {fileID: 3300000}
-  - 65: {fileID: 6500000}
   - 23: {fileID: 2300000}
   m_Layer: 10
   m_Name: Shooter
@@ -26,7 +25,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400002}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
   m_Layer: 10
   m_Name: ArrowShooter
@@ -143,35 +141,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6500000
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7048f13d15e41fc4fac4d23c35a9fc8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
-  projectilePoolCount: 10
-  frequency: .5
-  projectileSpeed: 5
-  projectileDamage: 2
-  arrowLifeSpan: 2
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -180,10 +149,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Script: {fileID: 11500000, guid: a097e04c24a1d8543ad957b01b16f1fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAttributeType: 13
+  projectile: {fileID: 100000, guid: 20515247d533ad547a8bc2d6dbdc1c35, type: 2}
+  projectilePoolCount: 5
+  frequency: 1
+  projectileSpeed: 6
+  projectileDamage: 2
+  arrowLifeSpan: 3
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
