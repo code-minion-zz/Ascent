@@ -58,6 +58,7 @@ public class Room : MonoBehaviour
     protected List<TreasureChest> chests = new List<TreasureChest>();
     protected List<LootDrop> lootDrops = new List<LootDrop>();
     protected List<MoveableBlock> moveables = new List<MoveableBlock>();
+    protected List<Shrine> shrines = new List<Shrine>();
     protected List<EnvironmentBreakable> breakables = new List<EnvironmentBreakable>();
 
     public int NumberOfTilesX
@@ -107,6 +108,11 @@ public class Room : MonoBehaviour
 	{
 		get { return moveables; }
 	}
+
+    public List<Shrine> Shrines
+    {
+        get { return shrines; }
+    }
 
     public List<EnvironmentBreakable> Breakables
     {
@@ -234,6 +240,7 @@ public class Room : MonoBehaviour
         PopulateListOfObjects(ref breakables, gameObject);
         PopulateListOfObjects(ref moveables, gameObject);
         PopulateListOfObjects(ref chests, gameObject);
+        PopulateListOfObjects(ref shrines, gameObject);
 
 		if (chests != null)
 		{

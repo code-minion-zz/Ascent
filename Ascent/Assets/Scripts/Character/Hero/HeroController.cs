@@ -632,6 +632,32 @@ public class HeroController : MonoBehaviour
 			}
 		}
 
+        List<Shrine> shrines = curRoom.Shrines;
+
+        if (shrines != null && shrines.Count != 0)
+        {
+            foreach (Shrine shrine in shrines)
+            {
+                if (shrine.Activated == false)
+                {
+                    if (shrine.TriggerRegion.IsInside(position))
+                    {
+                        if (wasButtonPressed)
+                        {
+                            shrine.Activate(hero);
+                        }
+                        else
+                        {
+                            buttonIndicator.Enable(true);
+                        }
+
+                        return true;
+                    }
+                }
+            }
+
+        }
+
 		// Has it already been opened?
 
 		// Is there a block?
