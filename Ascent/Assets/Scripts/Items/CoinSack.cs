@@ -7,7 +7,14 @@ using System.Text;
 
 public class CoinSack : MonoBehaviour
 {
-    Rigidbody rigidBody;
+    private Rigidbody rigidBody;
+    private int goldValue;
+
+    public int GoldValue
+    {
+        get { return goldValue; }
+        set { goldValue = value; }
+    }
 
     void Awake()
     {

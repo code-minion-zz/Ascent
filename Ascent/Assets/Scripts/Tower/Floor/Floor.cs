@@ -358,7 +358,7 @@ public class Floor : MonoBehaviour
         List<Door> roomDoors = currentRoom.Doors.RoomDoors;
 
         // North
-        if (Input.GetKeyUp(KeyCode.Keypad8)) 
+        if (Input.GetKeyUp(KeyCode.Keypad8))
         {
             foreach (Door d in roomDoors)
             {

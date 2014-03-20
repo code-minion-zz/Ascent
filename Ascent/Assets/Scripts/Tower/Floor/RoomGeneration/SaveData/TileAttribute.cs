@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 [Serializable]
 public class TileAttribute
 {
-    public TileType Type { get; set; }
+    public EnvironmentID Type { get; set; }
     public float Angle { get; set; }
     public Tile TileRef { get; set; }
 }

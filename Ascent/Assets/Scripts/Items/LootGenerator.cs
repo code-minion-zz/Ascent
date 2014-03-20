@@ -10,6 +10,7 @@ public static class LootGenerator
 	{
 		Accessory = 0,
 		Consumable,
+        Gold,
 		Any,
 	}
 
@@ -196,10 +197,27 @@ public static class LootGenerator
 					brandSpankingNewItem = RandomlyGenerateConsumable(floorNum, identified);
 				}
 				break;
+
+            case ELootType.Gold:
+                {
+                    brandSpankingNewItem = RandomlyGenerateGold(floorNum);
+                }
+                break;
 		}
 
 		return brandSpankingNewItem;
 	}
+
+    public static Item RandomlyGenerateGold(int floorNum)
+    {
+        Item newItem = new GoldItem();
+
+        GoldItem goldItem = newItem as GoldItem;
+        // TODO: Design an algorithm here.
+        goldItem.GoldValue = Random.Range(1, 100);
+
+        return newItem;
+    }
 
 	public static Item RandomlyGenerateAccessory(int floorNum, bool identified)
 	{

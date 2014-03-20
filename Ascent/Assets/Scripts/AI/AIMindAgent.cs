@@ -133,8 +133,14 @@ public class AIMindAgent
 		{
 			return;
 		}
+
+        if (Game.Singleton == null)
+        {
+            return;
+        }
 		
 		Floor floor = Game.Singleton.Tower.CurrentFloor;
+
 		if (floor != null)
 		{
 			if (drawLabels)
