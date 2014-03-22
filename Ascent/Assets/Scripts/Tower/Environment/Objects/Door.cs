@@ -87,7 +87,11 @@ public class Door : EnvironmentBreakable
             //direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
-            sealedDoor.SetActive(false);
+			if (sealedDoor) sealedDoor.SetActive(false);
+			else
+			{
+				Debug.Log("sealedDoor == null");
+			}
         }
 	}
 

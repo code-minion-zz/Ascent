@@ -29,12 +29,10 @@ public class UITownScreen : UIPlayerMenuScreen
 	{
 		base.Start();
 
-
 		InputManager.OnDeviceAttached += OnDeviceAttached;
 		InputManager.OnDeviceDetached += OnDeviceDetached;
 
 		players = Game.Singleton.Players;
-
 
 		// Activate windows for number of players
 		for (int i = 0; i < maxPlayers; ++i)
@@ -138,6 +136,7 @@ public class UITownScreen : UIPlayerMenuScreen
 							windows[i].SetPlayer(newPlayer);
 							windows[i].ActivateWindow();
 							players.Add(newPlayer);
+							Debug.Log("Player Joined, Players Remaining:" + players.Count);
 							break;
 						}
 					}
@@ -145,9 +144,22 @@ public class UITownScreen : UIPlayerMenuScreen
 			}
 		}
 	}
+	
+	public void NewHero(Player player, Character.EHeroClass heroClass)
+	{
+		player.CreateHero(heroClass);
+	}
+
+	public void LoadHero(Player player, HeroSaveData save)
+	{
+		Hero hero = AscentGameSaver.LoadHero(save);
+		hero.Initialise(player.Input, save);
+		hero.transform.parent = player.transform;
+	}
 
 	public void OnDeviceAttached(InputDevice device)
 	{
+		devices = InputManager.Devices;
 	}
 
 	public void OnDeviceDetached(InputDevice device)
@@ -170,12 +182,15 @@ public class UITownScreen : UIPlayerMenuScreen
 				}
 			}
 		}
+
+		devices = InputManager.Devices;
 	}
 
 	public void RemovePlayer(Player p)
 	{
 		players.Remove(p);
 		Destroy(p.gameObject);
+		Debug.Log("Player Left, Players Remaining:" + players.Count);
 	}
 
 	public void ProcessPlayerQuit(Player p)

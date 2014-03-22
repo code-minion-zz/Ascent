@@ -29,15 +29,16 @@ public class UITown_Tavern : UITown_RadialPanel {
 		if (!initialised)
 		{
 			base.Initialise();
-		}
-		
-		AngleIndex.Add(0, 0f);
-		AngleIndex.Add(1, 180f);
 
-		buttons = new UIButton[2];
-		buttons[0] = TavernElements[2].GetComponent<UIButton>();
-		buttons[1] = TavernElements[3].GetComponent<UIButton>();
-		currentSelection = buttons[0];
+			AngleIndex.Add(0, 0f);
+			AngleIndex.Add(1, 180f);
+			
+			buttons = new UIButton[2];
+			buttons[0] = TavernElements[2].GetComponent<UIButton>();
+			buttons[1] = TavernElements[3].GetComponent<UIButton>();
+			currentSelection = buttons[0];
+		}
+
 
 		initialised = true;
 	}
@@ -101,6 +102,8 @@ public class UITown_Tavern : UITown_RadialPanel {
 	{
 		parent.Player.CreateHero(Character.EHeroClass.Warrior);
 		parent.Initialise();
+
+		parent.Player.Hero.gameObject.SetActive(false);
 	}
 
 	void LoadHero()
@@ -129,7 +132,6 @@ public class UITown_Tavern : UITown_RadialPanel {
 	
 	void ProcessOK()
 	{
-		townParent.RequestTransitionToPanel(0);
 		if (currentSelection == null) return;
 		switch (mode)
 		{
@@ -137,9 +139,19 @@ public class UITown_Tavern : UITown_RadialPanel {
 			// TODO: Add player and bind panel to it
 			break;
 		case ETavernMode.NewOrLoad:
+			if (currentSelection.name == "New Button")
+			{
+				NewHero();
+			}
+			else
+			{
+				LoadHero();
+			}
 			// TODO: 
 			break;
 		}
+		currentSelection = null;
+		townParent.RequestTransitionToPanel(0);
 	}
 	
 	void ProcessCancel()
