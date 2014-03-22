@@ -58,7 +58,8 @@ public class Room : MonoBehaviour
     protected List<TreasureChest> chests = new List<TreasureChest>();
     protected List<LootDrop> lootDrops = new List<LootDrop>();
     protected List<MoveableBlock> moveables = new List<MoveableBlock>();
-    protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
+    protected List<Shrine> shrines = new List<Shrine>();
+    protected List<EnvironmentBreakable> breakables = new List<EnvironmentBreakable>();
 
     public int NumberOfTilesX
     {
@@ -108,7 +109,12 @@ public class Room : MonoBehaviour
 		get { return moveables; }
 	}
 
-    public List<BreakableEnvObject> Breakables
+    public List<Shrine> Shrines
+    {
+        get { return shrines; }
+    }
+
+    public List<EnvironmentBreakable> Breakables
     {
         get { return breakables; }
     }
@@ -234,6 +240,7 @@ public class Room : MonoBehaviour
         PopulateListOfObjects(ref breakables, gameObject);
         PopulateListOfObjects(ref moveables, gameObject);
         PopulateListOfObjects(ref chests, gameObject);
+        PopulateListOfObjects(ref shrines, gameObject);
 
 		if (chests != null)
 		{
@@ -511,7 +518,7 @@ public class Room : MonoBehaviour
 		{
 			case ERoomObjects.Chest:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
                     if (chests == null)
                     {
@@ -526,7 +533,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Loot:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
 					if(lootDrops == null)
 					{
@@ -538,7 +545,7 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name), Vector3.zero, Quaternion.identity) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
 
                     if (enemies == null)
                     {
@@ -550,14 +557,18 @@ public class Room : MonoBehaviour
                     enemy.transform.parent = monstersNode.transform;
                     enemy.transform.localPosition = Vector3.zero;
                     enemy.ContainedRoom = this;
-                    enemy.Initialise();
-					enemy.InitiliseHealthbar();
+
+                    if (Game.Singleton != null)
+                    {
+                        enemy.Initialise();
+                        enemy.InitiliseHealthbar();
+                    }
 				}
 				break;
 
             case ERoomObjects.Barrel:
                 {
-                    newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
                     newObject.transform.parent = EnvironmentParent;
                 }
                 break;
@@ -606,9 +617,9 @@ public class Room : MonoBehaviour
         {
             case Shape2D.EType.Circle:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    foreach (EnvironmentBreakable b in breakables)
                     {
-                        if (b.IsDestroyed)
+                        if (b.IsDestroyed || b.IsBreakable == false)
                         {
                             continue;
                         }
@@ -616,14 +627,14 @@ public class Room : MonoBehaviour
                         if (CheckCircle(shape as Circle, b.GetComponentInChildren<Collider>()))
                         {
                             // Destroy the breakable.
-                            b.Explode();
+                            b.BreakObject();
                         }
                     }
                 }
                 break;
             case Shape2D.EType.Arc:
                 {
-                    foreach (BreakableEnvObject b in breakables)
+                    foreach (EnvironmentBreakable b in breakables)
                     {
                         if (b.IsDestroyed)
                         {
@@ -633,7 +644,7 @@ public class Room : MonoBehaviour
                         if (CheckArc(shape as Arc, b.GetComponentInChildren<Collider>()))
                         {
                             // Destroy the breakable.
-                            b.Explode();
+                            b.BreakObject();
                         }
                     }
                 }

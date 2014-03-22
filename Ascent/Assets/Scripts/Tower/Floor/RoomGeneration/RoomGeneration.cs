@@ -40,7 +40,7 @@ public class RoomGeneration
 		// Initialise and construct the new room.
 		RoomProperties newRoom = new RoomProperties();
         newRoom.Name = name;
-        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f));
+        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f), 2);
 
 
         newRoom.ConstructRoom();
@@ -59,10 +59,10 @@ public class RoomGeneration
     /// <param name="tilesY"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY)
+    public RoomProperties CreateNewRoom(RoomConnectionType shape, int tilesX, int tilesY, int tileSize)
     {
         RoomProperties newRoom = new RoomProperties();
-        newRoom.InitialiseTiles(tilesX, tilesY);
+        newRoom.InitialiseTiles(tilesX, tilesY, tileSize);
 
         return newRoom;
     }
@@ -77,9 +77,9 @@ public class RoomGeneration
             for (int j = 0; j < room.Tiles.GetLength(1); ++j)
             {
                 // Search for tiles that are available.
-                if (room.Tiles[i, j].ContainsAttribute(TileType.monster) || 
-                    room.Tiles[i, j].ContainsAttribute(TileType.none) &&
-                    room.Tiles[i, j].ContainsAttribute(TileType.groundTile))
+                if (room.Tiles[i, j].ContainsAttribute(EnvironmentID.monster) || 
+                    room.Tiles[i, j].ContainsAttribute(EnvironmentID.none) &&
+                    room.Tiles[i, j].ContainsAttribute(EnvironmentID.groundTile))
                 {
                     tempAvailablePosition.Add(room.Tiles[i, j]);
                 }
@@ -150,7 +150,7 @@ public class RoomGeneration
             // Add the attribute of this object.
             TileAttribute att = new TileAttribute();
             att.Angle = angle;
-            att.Type = TileType.monster;
+            att.Type = EnvironmentID.monster;
 
             // Apply configurations to the tile of this room and remove
             // the tile from our temp list so that a monster is not placed here again.
@@ -169,7 +169,7 @@ public class RoomGeneration
 
         TileAttribute att = new TileAttribute();
         att.Angle = 0.0f;
-        att.Type = TileType.monster;
+        att.Type = EnvironmentID.monster;
 
         room.Tiles[centreX, centreY].TileAttributes.Add(att);
         room.Tiles[centreX, centreY].IsOccupied = true;
@@ -201,13 +201,13 @@ public class RoomGeneration
 			for (int j = 0; j < room.Tiles.GetLength(1); ++j)
 			{
                 // Populate random misc objects.
-                if (room.Tiles[i, j].ContainsAttribute(TileType.randMisc) ||
-                    room.Tiles[i, j].ContainsAttribute(TileType.standardWall) ||
-                    room.Tiles[i, j].ContainsAttribute(TileType.cornerWallTile) ||
-                    room.Tiles[i, j].ContainsAttribute(TileType.brazier))
+                if (room.Tiles[i, j].ContainsAttribute(EnvironmentID.randMisc) ||
+                    room.Tiles[i, j].ContainsAttribute(EnvironmentID.standardWall) ||
+                    room.Tiles[i, j].ContainsAttribute(EnvironmentID.cornerWallTile) ||
+                    room.Tiles[i, j].ContainsAttribute(EnvironmentID.brazier))
                 {
                     // There must be a ground tile here otherwise it does not make sense.
-                    if (room.Tiles[i, j].IsOccupied == false && room.Tiles[i, j].ContainsAttribute(TileType.groundTile))
+                    if (room.Tiles[i, j].IsOccupied == false && room.Tiles[i, j].ContainsAttribute(EnvironmentID.groundTile))
                     {
                         tempAvailableTiles.Add(room.Tiles[i, j]);
                     }
@@ -220,9 +220,9 @@ public class RoomGeneration
         // For each corner place the braziers.
         foreach (Tile tile in tempAvailableTiles)
         { 
-            if (tile.ContainsAttribute(TileType.cornerWallTile))
+            if (tile.ContainsAttribute(EnvironmentID.cornerWallTile))
             {
-                go = EnvironmentFactory.CreateGameObjectByType(TileType.brazier);
+                go = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.brazier);
                 go.transform.parent = room.Room.EnvironmentParent;
                 go.transform.localPosition = tile.Position;
 
@@ -248,7 +248,7 @@ public class RoomGeneration
             int randomTile = UnityEngine.Random.Range(0, tempAvailableTiles.Count);
 
             // Check to see if the tile type is a wall tile to be sure.
-            if (tempAvailableTiles[randomTile].ContainsAttribute(TileType.standardWall))
+            if (tempAvailableTiles[randomTile].ContainsAttribute(EnvironmentID.standardWall))
             {
                 int random = UnityEngine.Random.Range(0, 2);
 
@@ -279,7 +279,7 @@ public class RoomGeneration
             // Add the attribute of this object.
             TileAttribute att = new TileAttribute();
             att.Angle = angle;
-            att.Type = TileType.randMisc;
+            att.Type = EnvironmentID.randMisc;
 
             tempAvailableTiles[randomTile].TileAttributes.Add(att);
             tempAvailableTiles[randomTile].IsOccupied = true;
@@ -297,14 +297,15 @@ public class RoomGeneration
 			{
                 // Populate the whole room with a ground tile attribute.
                 TileAttribute att = new TileAttribute();
-                att.Type = TileType.groundTile;
+                att.Type = EnvironmentID.groundTile;
                 att.Angle = 0.0f;
                 room.Tiles[x, y].TileAttributes.Add(att);
 
                 // Create the ground tile.
-                GameObject groundTile = EnvironmentFactory.CreateGameObjectByType(TileType.groundTile);
+                GameObject groundTile = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.groundTile);
                 groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
+                groundTile.transform.localScale= new Vector3(room.TileSize * 0.5f, 1.0f, room.TileSize * 0.5f);
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
                 room.Tiles[x, y].GameObject = groundTile;
 			}
@@ -344,7 +345,7 @@ public class RoomGeneration
 	/// <param name="direction">Direction.</param>
 	public Door CreateDoor(GameObject doors, RoomProperties fromRoom, Floor.TransitionDirection direction)
 	{
-        GameObject doorGo = EnvironmentFactory.CreateGameObjectByType(TileType.door);
+        GameObject doorGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.door);
 		doorGo.transform.parent = doors.transform;
 		
 		// Attach the doors to their rightful component.
@@ -371,7 +372,7 @@ public class RoomGeneration
 
                     att = new TileAttribute();
                     att.Angle = 90.0f;
-                    att.Type = TileType.door;
+                    att.Type = EnvironmentID.door;
                     fromRoom.Tiles[midXTile, lastTileY].TileAttributes.Add(att);
                     fromRoom.Tiles[midXTile, lastTileY].IsOccupied = true;
                 }
@@ -385,7 +386,7 @@ public class RoomGeneration
 
                     att = new TileAttribute();
                     att.Angle = 180.0f;
-                    att.Type = TileType.door;
+                    att.Type = EnvironmentID.door;
                     fromRoom.Tiles[lastTileX, midYTile].TileAttributes.Add(att);
                     fromRoom.Tiles[lastTileX, midYTile].IsOccupied = true;
                 }
@@ -399,7 +400,7 @@ public class RoomGeneration
 
                     att = new TileAttribute();
                     att.Angle = 270.0f;
-                    att.Type = TileType.door;
+                    att.Type = EnvironmentID.door;
                     fromRoom.Tiles[midXTile, 0].TileAttributes.Add(att);
                     fromRoom.Tiles[midXTile, 0].IsOccupied = true;
                 }
@@ -413,7 +414,7 @@ public class RoomGeneration
 
                     att = new TileAttribute();
                     att.Angle = 0.0f;
-                    att.Type = TileType.door;
+                    att.Type = EnvironmentID.door;
                     fromRoom.Tiles[0, midYTile].TileAttributes.Add(att);
                     fromRoom.Tiles[0, midYTile].IsOccupied = true;
                 }
@@ -436,55 +437,55 @@ public class RoomGeneration
 		// North east corner
         // Assign the attribute.
         TileAttribute att = new TileAttribute();
-        att.Type = TileType.cornerWallTile;
+        att.Type = EnvironmentID.cornerWallTile;
         att.Angle = 270.0f;
         room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
         // Create the corner piece.
-        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
 		wallCornerGo.name = "CornerNE";
-		wallCornerGo.transform.parent = walls.transform;
 		
 		// South east corner
         // Assign the attribute.
         att = new TileAttribute();
-        att.Type = TileType.cornerWallTile;
+        att.Type = EnvironmentID.cornerWallTile;
         att.Angle = 0.0f;
         room.Tiles[room.Tiles.GetLength(0) - 1, 0].TileAttributes.Add(att);
 
-        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x + (room.Width * 0.5f) - 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, 0].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
 		wallCornerGo.name = "CornerSE";
-		wallCornerGo.transform.parent = walls.transform;
 		
         // North west corner
         // Assign the attribute.
         att = new TileAttribute();
-        att.Type = TileType.cornerWallTile;
+        att.Type = EnvironmentID.cornerWallTile;
         att.Angle = 180.0f;
-        room.Tiles[0, (int)room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
+        room.Tiles[0, room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
-        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z + (room.Height * 0.5f) - 1.0f);
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[0, room.Tiles.GetLength(1) - 1].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
 		wallCornerGo.name = "CornerNW";
-		wallCornerGo.transform.parent = walls.transform;
 		
 		// South west corner
         // Assign the attribute.
         att = new TileAttribute();
-        att.Type = TileType.cornerWallTile;
+        att.Type = EnvironmentID.cornerWallTile;
         att.Angle = 90.0f;
         room.Tiles[0, 0].TileAttributes.Add(att);
 
-        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(TileType.cornerWallTile);
-		wallCornerGo.transform.position = new Vector3(room.Position.x - (room.Width * 0.5f) + 1.0f, wallCornerGo.transform.position.y, room.Position.z - (room.Height * 0.5f) + 1.0f);
+        wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
+        wallCornerGo.transform.parent = walls.transform;
+        wallCornerGo.transform.localPosition = room.Tiles[0, 0].Position;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
 		wallCornerGo.name = "CornerSW";
-		wallCornerGo.transform.parent = walls.transform;
         
         // Variables used for placing walls.
         int lastTileX = room.Tiles.GetLength(0);
@@ -494,17 +495,17 @@ public class RoomGeneration
 		for (int i = 0; i < lastTileX; ++i)
 		{
             // If there is no door or corner piece here.
-            if (!room.Tiles[i, lastTileY-1].ContainsAttribute(TileType.door) &&
-                !room.Tiles[i, lastTileY-1].ContainsAttribute(TileType.cornerWallTile))
+            if (!room.Tiles[i, lastTileY-1].ContainsAttribute(EnvironmentID.door) &&
+                !room.Tiles[i, lastTileY-1].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
-                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[i, lastTileY-1].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
                 wallGo.name = "Wall";
 
                 att = new TileAttribute();
-                att.Type = TileType.standardWall;
+                att.Type = EnvironmentID.standardWall;
                 att.Angle = 90.0f;
 
                 room.Tiles[i, lastTileY-1].TileAttributes.Add(att);
@@ -514,17 +515,17 @@ public class RoomGeneration
 		// Place south walls
         for (int i = 0; i < lastTileX; ++i)
         {
-            if (!room.Tiles[i, 0].ContainsAttribute(TileType.door) &&
-                !room.Tiles[i, 0].ContainsAttribute(TileType.cornerWallTile))
+            if (!room.Tiles[i, 0].ContainsAttribute(EnvironmentID.door) &&
+                !room.Tiles[i, 0].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
-                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[i, 0].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
                 wallGo.name = "Wall";
 
                 att = new TileAttribute();
-                att.Type = TileType.standardWall;
+                att.Type = EnvironmentID.standardWall;
                 att.Angle = 270.0f;
 
                 room.Tiles[i, 0].TileAttributes.Add(att);
@@ -534,17 +535,17 @@ public class RoomGeneration
         // Place east walls
         for (int i = 0; i < lastTileY; ++i)
         {
-            if (!room.Tiles[lastTileX-1, i].ContainsAttribute(TileType.door) &&
-                !room.Tiles[lastTileX-1, i].ContainsAttribute(TileType.cornerWallTile))
+            if (!room.Tiles[lastTileX-1, i].ContainsAttribute(EnvironmentID.door) &&
+                !room.Tiles[lastTileX-1, i].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
-                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[lastTileX-1, i].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
                 wallGo.name = "Wall";
 
                 att = new TileAttribute();
-                att.Type = TileType.standardWall;
+                att.Type = EnvironmentID.standardWall;
                 att.Angle = 180.0f;
 
                 room.Tiles[lastTileX-1, i].TileAttributes.Add(att);
@@ -554,17 +555,17 @@ public class RoomGeneration
         // Place west walls
         for (int i = 0; i < lastTileY; ++i)
         {
-            if (!room.Tiles[0, i].ContainsAttribute(TileType.door) &&
-                !room.Tiles[0, i].ContainsAttribute(TileType.cornerWallTile))
+            if (!room.Tiles[0, i].ContainsAttribute(EnvironmentID.door) &&
+                !room.Tiles[0, i].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
-                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(TileType.standardWall);
+                GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
                 wallGo.transform.parent = walls.transform;
                 wallGo.transform.localPosition = room.Tiles[0, i].Position;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
                 wallGo.name = "Wall";
 
                 att = new TileAttribute();
-                att.Type = TileType.standardWall;
+                att.Type = EnvironmentID.standardWall;
                 att.Angle = 0.0f;
 
                 room.Tiles[0, i].TileAttributes.Add(att);

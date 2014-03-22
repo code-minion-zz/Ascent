@@ -27,8 +27,6 @@ GameObject:
   - 4: {fileID: 400002}
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400004}
-  - 114: {fileID: 11400006}
   - 114: {fileID: 11400000}
   m_Layer: 10
   m_Name: Barrel
@@ -111,6 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c2f5f8e228cd01458d233333cf3d1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  environmentID: 0
+  isDestroyed: 0
+  isBreakable: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,29 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 1.20000005
   offsetZ: -.200000003
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileAttributeType: 11
---- !u!114 &11400006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7daadbb56d8101478b87654347441b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

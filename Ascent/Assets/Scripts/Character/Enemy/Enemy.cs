@@ -108,9 +108,16 @@ public abstract class Enemy : Character
 
 	public virtual void InitiliseHealthbar()
 	{
-		hpBar = FloorHUDManager.Singleton.AddEnemyLifeBar(transform.localScale);
-		hpBar.Init(StatBar.eStat.HP, this);
-        hpBar.gameObject.SetActive(false);
+        if (FloorHUDManager.Singleton != null)
+        {
+            hpBar = FloorHUDManager.Singleton.AddEnemyLifeBar(transform.localScale);
+
+            if (hpBar != null)
+            {
+                hpBar.Init(StatBar.eStat.HP, this);
+                hpBar.gameObject.SetActive(false);
+            }
+        }
 
 		//PositionHpBar();
 	}
