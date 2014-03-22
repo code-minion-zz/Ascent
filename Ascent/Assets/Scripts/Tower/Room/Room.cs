@@ -521,13 +521,16 @@ public class Room : MonoBehaviour
 	{
 		GameObject newObject = null;
 
-		#if UNITY_EDITOR
+
 		switch (type)
 		{
 			case ERoomObjects.Chest:
 				{
-                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
-
+#if UNITY_EDITOR
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+#else
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+#endif
                     if (chests == null)
                     {
                         chests = new List<TreasureChest>();
@@ -541,8 +544,12 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Loot:
 				{
-                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
 
+#if UNITY_EDITOR
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+#else
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+#endif
 					if(lootDrops == null)
 					{
 						lootDrops = new List<LootDrop>();
@@ -553,8 +560,11 @@ public class Room : MonoBehaviour
 				break;
 			case ERoomObjects.Enemy:
 				{
-                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
-
+#if UNITY_EDITOR
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+#else
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+#endif
                     if (enemies == null)
                     {
                         enemies = new List<Character>();
@@ -576,12 +586,15 @@ public class Room : MonoBehaviour
 
             case ERoomObjects.Barrel:
                 {
-                    newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+#if UNITY_EDITOR
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+#else
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Enemies/" + name)) as GameObject;
+#endif
                     newObject.transform.parent = EnvironmentParent;
                 }
                 break;
 		}
-#endif
 
 		return newObject;
 	}
