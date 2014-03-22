@@ -332,7 +332,7 @@ public class Game : MonoBehaviour
 				break;
 			case EGameState.Tower:
 				{
-					Application.LoadLevel("Tower");
+					Application.LoadLevel("TestFloor0");
 				}
 				break;
 			case EGameState.TestTower:
