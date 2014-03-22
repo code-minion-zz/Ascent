@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,7 +44,9 @@ public static class EnvironmentFactory
         {
             if (asInstance)
             {
+				#if UNITY_EDITOR
                 go = PrefabUtility.InstantiatePrefab(go) as GameObject;
+#endif
             }
             else
             {
@@ -63,6 +67,7 @@ public static class EnvironmentFactory
     {
         GameObject go = null;
 
+		#if UNITY_EDITOR
         switch (type)
         {
             case MiscObjectType.barrel:
@@ -75,7 +80,7 @@ public static class EnvironmentFactory
                 go.name = barrelCluster.name;
                 break;
         }
-
+#endif
         return go;
     }
 
@@ -86,8 +91,9 @@ public static class EnvironmentFactory
     /// <returns></returns>
     public static GameObject CreateGameObjectByType(EnvironmentID type)
     {
-        GameObject go = null;
 
+        GameObject go = null;
+		#if UNITY_EDITOR
         switch (type)
         {
             case EnvironmentID.groundTile:
@@ -136,7 +142,7 @@ public static class EnvironmentFactory
                 go.name = spinningBlade.name;
                 break;
         }
-
+#endif
         return go;
     }
 }

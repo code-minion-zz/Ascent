@@ -22,7 +22,6 @@ public class Doors : MonoBehaviour
 	public void Start () 
 	{
 		Door[] foundDoors = GetComponentsInChildren<Door>() as Door[];
-
 		foreach (Door d in foundDoors)
 		{
             RoomDoors.Add(d);

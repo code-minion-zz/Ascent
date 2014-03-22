@@ -126,11 +126,18 @@ public class Room : MonoBehaviour
         {
             if (navMesh == null)
             {
-                GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
-                go.transform.position = transform.position + go.transform.position;
-                go.transform.parent = transform;
+				navMesh = gameObject.GetComponentInChildren<RoomFloorNav>();
 
-                navMesh = go.GetComponent<RoomFloorNav>();
+				if (navMesh == null)
+				{
+
+					GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
+					go.transform.position = transform.position + go.transform.position;
+					go.transform.parent = transform;
+
+					navMesh = go.GetComponent<RoomFloorNav>();
+				}
+                
             }
             return navMesh; 
         }
@@ -514,6 +521,7 @@ public class Room : MonoBehaviour
 	{
 		GameObject newObject = null;
 
+		#if UNITY_EDITOR
 		switch (type)
 		{
 			case ERoomObjects.Chest:
@@ -573,6 +581,7 @@ public class Room : MonoBehaviour
                 }
                 break;
 		}
+#endif
 
 		return newObject;
 	}
