@@ -43,6 +43,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 10
   m_Name: SpinningBlade
   m_TagString: EnvObject
@@ -121,15 +122,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93af834efd294dd43ba322c8710c4e3e, type: 3}
+  m_Script: {fileID: 11500000, guid: aaaf5640793e7ca4bbd1e183def12215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blade: {fileID: 100000, guid: c366fea2e4d986143ba4afa4a0bcc6e4, type: 2}
-  bladeCount: 4
-  bladeDirection: -1
-  rotationSpeed: 3.49000001
-  bladeDamage: 2
-  bladeLength: -3
+  bladeCount: 2
+  bladeDirection: 1
+  rotationSpeed: 1
+  bladeDamage: 10
+  bladeLength: 2
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,10 +139,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478e4d3a0a5251348950c3f9ee3c8158, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f51e1c2695adf4409284806dffc155f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAttributeType: 15
+  environmentID: 15
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d166255cacf07b4292b8402b3ddefc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  method: 0
+  style: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  ignoreTimeScale: 1
+  delay: 0
+  duration: 1
+  steeperCurves: 0
+  tweenGroup: 0
+  onFinished: []
+  eventReceiver: {fileID: 0}
+  callWhenFinished: 
+  from: {x: -5.08397675, y: 1, z: 2}
+  to: {x: -5.08397675, y: 1, z: 2}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
