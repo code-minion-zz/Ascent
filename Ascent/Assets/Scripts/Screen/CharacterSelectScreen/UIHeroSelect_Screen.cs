@@ -180,6 +180,6 @@ public class UIHeroSelect_Screen : UIPlayerMenuScreen
 		Game.Singleton.SetPlayers(players);
 
         // Load the Tower Scene
-        Game.Singleton.LoadLevel(Game.EGameState.Tower);
+        Game.Singleton.LoadLevel(Game.EGameState.City);
     }
 }
