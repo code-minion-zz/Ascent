@@ -18,10 +18,15 @@ public class Tower : MonoBehaviour
 
 
     public void InitialiseTestFloor()
-    {
+	{
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.InitialiseTestFloor();
+		currentFloor.InitialiseTestFloor();
+		Debug.Log("Before");
+		AscentSoundManager soundMan = GameObject.Find("SoundManager").GetComponent<AscentSoundManager>();
+		soundMan.SetSound("Sounds/music/tower");
+		soundMan.PlaySound();
+		Debug.Log("After");
     }
 
 	public void InitialiseFloor()

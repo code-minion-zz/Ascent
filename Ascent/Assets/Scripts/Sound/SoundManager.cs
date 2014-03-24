@@ -10,9 +10,9 @@ public enum AudioClipType
 
 public static class SoundManager
 {
-    private static AudioClip explosionClip = Resources.Load("Sounds/explosion") as AudioClip;
-    private static AudioClip swordSlash = Resources.Load("Sounds/warriorStrike_snd01") as AudioClip;
-    private static AudioClip statueAwaken = Resources.Load("Sounds/statueAwaken") as AudioClip;
+    private static AudioClip explosionClip = Resources.Load("Sounds/effects/explosion") as AudioClip;
+    private static AudioClip swordSlash = Resources.Load("Sounds/effects/warriorStrike_snd01") as AudioClip;
+    private static AudioClip statueAwaken = Resources.Load("Sounds/effects/statueAwaken") as AudioClip;
 
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
