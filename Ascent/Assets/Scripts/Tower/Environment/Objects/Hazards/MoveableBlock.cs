@@ -72,4 +72,15 @@ public class MoveableBlock : Interactable
 			targetPos = startPos + direction.normalized * offset;
 		}
 	}
+
+	public void Move(Vector3 direction)
+	{
+		if (!IsInMotion)
+		{
+			IsInMotion = true;
+			timeAccum = 0.0f;
+			startPos = transform.position;
+			targetPos = startPos + direction.normalized * offset;
+		}
+	}
 }

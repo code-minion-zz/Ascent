@@ -3,30 +3,52 @@ using System.Collections;
 
 public class EnvironmentTrigger : MonoBehaviour 
 {
-    public enum ECondition
-    {
-        collision,
-        activate,
-        destroyed,
-    }
+	protected bool activated;
+	public bool repeatable;
+	public EnvironmentAction action;
+	public EnvironmentAction falseAction;
 
-    public enum ETriggerEffect
-    {
-        destroyObject,
-        activateObject,
-    }
+	public virtual void Update()
+	{
+		// Has trigger been met AND it hasn't been met yet (OR it has been met before but it can be repeated)
+		bool met = HasTriggerBeenMet();
 
-    public EnvironmentObj triggerTarget;
-
-	// Use this for initialization
-	void Start () 
-    {
-	
+		if (met && (!activated || (activated && repeatable)))
+		{
+			PerformAction();
+		}
+		else if(!met)
+		{
+			PerformFalseAction();
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-	
+
+	protected virtual bool HasTriggerBeenMet()
+	{
+		// To be derived
+		return false;
+	}
+
+	protected void PerformAction()
+	{
+		activated = true;
+
+		if (action != null)
+		{
+			action.ExecuteAction();
+		}
+		else
+		{
+			Debug.LogError("No action assigned to this environment trigger.");
+		}
+	}
+
+	protected void PerformFalseAction()
+	{
+		if (falseAction != null)
+		{
+			activated = false;
+			falseAction.ExecuteAction();
+		}
 	}
 }
