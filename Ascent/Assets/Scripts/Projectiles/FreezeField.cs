@@ -48,20 +48,11 @@ public class FreezeField : Projectile
         }
     }
 
-    public void Update()
-    {
-        time += Time.deltaTime;
-        if(time > 0.5f)
-		{
-            Destroy(gameObject);
-        }
-    }
-
 #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
 
-        circle.DebugDraw();
+        //circle.DebugDraw();
     }
 #endif
 }

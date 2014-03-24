@@ -27,6 +27,9 @@ public class WarriorFreezeField : Ability
         GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
         fireballGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position, owner);
 
+        // Destroy after 5 seconds allowing plenty of time for the animation.
+        GameObject.Destroy(fireballGO, 5.0f);
+
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
     }
 
