@@ -35,7 +35,7 @@ public class WarriorFreezeField : Ability
 
     public override void StartCast()
     {
-
+		SoundManager.PlaySound(AudioClipType.freezeBlast, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()
