@@ -245,7 +245,6 @@ public class Floor : MonoBehaviour
     private void OnPlayerDeath(Character character)
     {
         Hero hero = character as Hero;
-
         if (hero != null)
         {
             // Remove hero lives.
@@ -271,14 +270,17 @@ public class Floor : MonoBehaviour
                 {
                     // Take to summary screen
                     EndFloor();
+                    // Restart the floor
                 }
                 else
                 {
                     // Otherwise make the hero innactive.
-                    //hero.gameObject.SetActive(false);
-                    //hero.onDeath -= OnPlayerDeath;
+                    hero.gameObject.SetActive(false);
+                    //hero.HeroController.enabled = false;
+                    hero.onDeath -= OnPlayerDeath;
 
                     // We want the animation death to play and the character to remain dead on the floor.
+                    //((HeroAnimator)hero.Animator).PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
                 }
             }
         }

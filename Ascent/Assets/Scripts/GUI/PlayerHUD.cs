@@ -104,24 +104,24 @@ public class PlayerHUD : MonoBehaviour
 			}
 		}
 
-		// Do Items
-		ConsumableItem[] consumables = owner.Backpack.ConsumableItems;
+        //// Do Items
+        //ConsumableItem[] consumables = owner.Backpack.ConsumableItems;
 
-		for (int i = 0; i < itemIcons.Length; ++i )
-		{
-			if (consumables[i] != null)
-			{
-				Color color = itemIcons[i].color;
-				color.a = 1.0f - (consumables[i].Cooldown / consumables[i].CooldownMax);
-				itemIcons[i].color = color;
+        //for (int i = 0; i < itemIcons.Length; ++i )
+        //{
+        //    if (consumables[i] != null)
+        //    {
+        //        Color color = itemIcons[i].color;
+        //        color.a = 1.0f - (consumables[i].Cooldown / consumables[i].CooldownMax);
+        //        itemIcons[i].color = color;
 
-				itemQuantityLabels[i].text = consumables[i].Charges.ToString();
-			}
-			else
-			{
-				itemIcons[i].gameObject.SetActive(false);
-			}
-		}
+        //        itemQuantityLabels[i].text = consumables[i].Charges.ToString();
+        //    }
+        //    else
+        //    {
+        //        itemIcons[i].gameObject.SetActive(false);
+        //    }
+        //}
 
 		// Health indicators
 		float healthRatio = ((float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth);
@@ -150,31 +150,31 @@ public class PlayerHUD : MonoBehaviour
 		}
 
 		// Do lives
-		livesLabel.text = (owner.Lives + 1).ToString();
+		livesLabel.text = (owner.Lives).ToString();
 
 
 		// Do Buffs
-		List<StatusEffect> statusEffects = owner.StatusEffects;
+        //List<StatusEffect> statusEffects = owner.StatusEffects;
 
-		int statusEffectIconSize = statusEffectIcons.Length;
-		for (int i = 0; i < statusEffectIconSize; ++i)
-		{
-			// If there is a status effect that can go into this slot then put it in
-			if (i < statusEffects.Count)
-			{
-				statusEffectIcons[i].gameObject.SetActive(true);
-				statusEffectIcons[i].Initialise(statusEffects[statusEffects.Count - (i + 1)]);
-			}
-			else // Deactivate the icon so it is not renderered or sorted.
-			{
-				statusEffectIcons[i].gameObject.SetActive(false);
-			}
-		}
-		statusEffectGrid.Reposition();
+        //int statusEffectIconSize = statusEffectIcons.Length;
+        //for (int i = 0; i < statusEffectIconSize; ++i)
+        //{
+        //    // If there is a status effect that can go into this slot then put it in
+        //    if (i < statusEffects.Count)
+        //    {
+        //        statusEffectIcons[i].gameObject.SetActive(true);
+        //        statusEffectIcons[i].Initialise(statusEffects[statusEffects.Count - (i + 1)]);
+        //    }
+        //    else // Deactivate the icon so it is not renderered or sorted.
+        //    {
+        //        statusEffectIcons[i].gameObject.SetActive(false);
+        //    }
+        //}
+        //statusEffectGrid.Reposition();
 
 
 		// Set broken accessories
-		ProcessBrokenAccessories();
+		//ProcessBrokenAccessories();
 	}
 
 	private void ProcessBrokenAccessories()

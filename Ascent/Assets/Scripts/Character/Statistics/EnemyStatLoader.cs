@@ -21,14 +21,14 @@ public static class EnemyStatLoader
 
 					stats.PrimaryStatsGrowthRates = new PrimaryStatsGrowthRates()
 					{
-						minPower = 25,
-						maxPower = 80,
-						minFinesse = 5,
-						maxFinesse = 34,
-						minVitality = 1,
-						maxVitality = 39,
-						minSpirit = 5,
-						maxSpirit = 34
+						minPower = 0,
+						maxPower = 0,
+						minFinesse =0 ,
+						maxFinesse = 0,
+						minVitality = 0,
+						maxVitality = 0,
+						minSpirit = 0,
+						maxSpirit = 0
 					};
 
 					stats.PrimaryStats = new PrimaryStats()

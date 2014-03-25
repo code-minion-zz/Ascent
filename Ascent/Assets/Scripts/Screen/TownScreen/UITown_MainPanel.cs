@@ -5,8 +5,8 @@ public class UITown_MainPanel : UITown_RadialPanel
 {
 	public GameObject ButtonPrefab;
 	static float ANGLE_CORRECTION = 90f * Mathf.Deg2Rad;
-	static float BUTTON_SCALE = 0.3f;
-	static int ANGLE_DIVISION = 8;
+	//static float BUTTON_SCALE = 0.3f;
+	//static int ANGLE_DIVISION = 8;
 
 	public override void Initialise()
 	{

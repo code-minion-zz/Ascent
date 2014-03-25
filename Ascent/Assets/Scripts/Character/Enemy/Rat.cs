@@ -11,20 +11,18 @@ public class Rat : Enemy
 	private int tackleAbilityID;
 
    public override void Initialise()
-    {
-        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+    {      
+       base.Initialise();
+       
+       // Add abilities
+       loadout.SetSize(1);
 
-        base.Initialise();
-
-		// Add abilities
-        loadout.SetSize(1);
-
-		Ability tackle = new RatTackle();
-		tackleAbilityID = 0;
-		loadout.SetAbility(tackle, tackleAbilityID);
-
-		InitialiseAI();
-	}
+       Ability tackle = new RatTackle();
+       tackleAbilityID = 0;
+       loadout.SetAbility(tackle, tackleAbilityID);
+       
+       InitialiseAI();
+    }
 
    public void InitialiseAI()
    {

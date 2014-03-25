@@ -58,7 +58,7 @@ public class AbominationStrike : Ability
                 {
                     // Apply damage and knockback to the enemey.
 					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-					combatEvaluator.Add(new PhysicalDamageProperty(3.0f, 0.7f));
+                    combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 0.7f));
 					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 100.0f));
 					combatEvaluator.Apply();
 

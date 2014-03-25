@@ -47,4 +47,6 @@ public class Tower : MonoBehaviour
     {
         get { return goldGainBonus; }
     }
+
+    public int keys;
 }

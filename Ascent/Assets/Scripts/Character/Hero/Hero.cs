@@ -106,7 +106,7 @@ public abstract class Hero : Character
 		}
 
         // TODO: Move this later.
-        lives = 3;
+        lives = 1;
 
 		// Attach a light to it
 		GameObject light = Instantiate(Resources.Load("Prefabs/Tower/HeroPointLight")) as GameObject;
@@ -140,7 +140,7 @@ public abstract class Hero : Character
         hero.loadout = new HeroAbilityLoadout();
         hero.loadout.Initialise(hero);
 
-		Test_PopulateInventoryAndBackpack(hero);
+		///Test_PopulateInventoryAndBackpack(hero);
 		Test_DrawHeroStats(hero);
 	}
 

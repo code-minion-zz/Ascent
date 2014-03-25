@@ -21,7 +21,7 @@ public class WarriorHeavyStrike : Ability
         cooldownFullDuration = 1.0f;
         timeElapsedSinceStarting = 0.0f;
         animationTrigger = "HeavyStrike";
-        specialCost = 2;
+        specialCost = 3;
 
 		swingArc = new Arc(owner.transform, radius, arcAngle, Vector3.zero);
 
@@ -68,7 +68,7 @@ public class WarriorHeavyStrike : Ability
 						foreach (Enemy e in enemies)
 						{
 							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
-							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));
+							combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.5f));
 							combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, 10000000.0f));
 							combatEvaluator.Apply();
 

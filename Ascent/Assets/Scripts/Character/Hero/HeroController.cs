@@ -640,66 +640,66 @@ public class HeroController : MonoBehaviour
 			}
 		}
 
-		// Is there an item?
-		List<LootDrop> loot = curRoom.LootDrops;
-		if (loot != null && loot.Count > 0)
-		{
-			// Find the closest item
-			LootDrop closestDrop = null;
-			float closestDistance = 10000.0f;
-			foreach (LootDrop l in loot)
-			{
-				if (!l.CanBePickedUp)
-				{
-					continue;
-				}
+        //// Is there an item?
+        //List<LootDrop> loot = curRoom.LootDrops;
+        //if (loot != null && loot.Count > 0)
+        //{
+        //    // Find the closest item
+        //    LootDrop closestDrop = null;
+        //    float closestDistance = 10000.0f;
+        //    foreach (LootDrop l in loot)
+        //    {
+        //        if (!l.CanBePickedUp)
+        //        {
+        //            continue;
+        //        }
 
-				float distance = (position - l.transform.position).sqrMagnitude;
+        //        float distance = (position - l.transform.position).sqrMagnitude;
 
-				if (distance < closestDistance)
-				{
-					closestDistance = distance;
-					closestDrop = l;
-				}
-			}
+        //        if (distance < closestDistance)
+        //        {
+        //            closestDistance = distance;
+        //            closestDrop = l;
+        //        }
+        //    }
 
-			if (closestDrop != null)
-			{
-				// Am I within range of the item?
-				if (closestDrop.TriggerRegion.IsInside(position))
-				{
-					if (wasButtonPressed)
-					{
-						closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
-						hero.FloorStatistics.NumberOfItemsPickedUp++;
-					}
-					else
-					{
-						buttonIndicator.Enable(true);
-					}
+        //    if (closestDrop != null)
+        //    {
+        //        // Am I within range of the item?
+        //        if (closestDrop.TriggerRegion.IsInside(position))
+        //        {
+        //            if (wasButtonPressed)
+        //            {
+        //                closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+        //                hero.FloorStatistics.NumberOfItemsPickedUp++;
+        //            }
+        //            else
+        //            {
+        //                buttonIndicator.Enable(true);
+        //            }
 
-					return true; // An interaction has occured. Exit function now.
-				}
-			}
-		}
+        //            return true; // An interaction has occured. Exit function now.
+        //        }
+        //    }
+        //}
 
 
 		// Is there a door?
 		if (curRoom.Doors != null && curRoom.Doors.lockedDoorCount > 0)
 		{
-			// Do we have a key?
-			ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
-			KeyItem key = null;
-			foreach(ConsumableItem item in consumables)
-			{
-				if (item is KeyItem)
-				{					
-					key = (KeyItem)item;
-					break;
-				}
-			}
+            //// Do we have a key?
+            //ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
+            //KeyItem key = null;
+            //foreach(ConsumableItem item in consumables)
+            //{
+            //    if (item is KeyItem)
+            //    {					
+            //        key = (KeyItem)item;
+            //        break;
+            //    }
+            //}
 
-			if (key != null)
+            if (Game.Singleton.Tower.keys > 0)
 			{
 				// Find closest door
 				LockedDoor[] lockedDoors = curRoom.Doors.LockedDoors;
@@ -713,8 +713,8 @@ public class HeroController : MonoBehaviour
 						{
 							if (wasButtonPressed)
 							{
-								key.UseItem(hero);
 								door.Open();
+                                Game.Singleton.Tower.keys--;
 							}
 							else
 							{
@@ -779,8 +779,10 @@ public class HeroController : MonoBehaviour
 					closestBlock = m;
 				}
 			}
+
 			// Are we in range of it?
-			if (closestBlock.TriggerRegion.IsInside(position))
+
+            if (closestBlock != null && closestBlock.TriggerRegion.IsInside(position))
 			{
 				// Is it in front?
 				Vector3 pos = closestBlock.transform.position;
