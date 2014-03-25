@@ -131,9 +131,14 @@ public class Abomination : Enemy
 		AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
 	}
 
+	public override void OnEnable()
+	{
+		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
+	}
 
     public override void OnDisable()
     {
+		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
         AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
