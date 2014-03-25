@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Tower : MonoBehaviour 
@@ -23,9 +23,9 @@ public class Tower : MonoBehaviour
         currentFloor = gameObject.AddComponent<Floor>();
 		currentFloor.InitialiseTestFloor();
 		Debug.Log("Before");
-		AscentSoundManager soundMan = GameObject.Find("SoundManager").GetComponent<AscentSoundManager>();
-		soundMan.SetSound("Sounds/music/tower");
-		soundMan.PlaySound();
+		MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
+		soundMan.SwapMusic(MusicManager.MusicSelections.Tower);
+		soundMan.PlayMusic();
 		Debug.Log("After");
     }
 
