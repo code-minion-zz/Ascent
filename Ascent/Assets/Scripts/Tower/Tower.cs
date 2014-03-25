@@ -46,5 +46,9 @@ public class Tower : MonoBehaviour
         get { return goldGainBonus; }
     }
 
+    public int players;
+    public int floor;
     public int keys;
+    public int lives;
+    
 }
