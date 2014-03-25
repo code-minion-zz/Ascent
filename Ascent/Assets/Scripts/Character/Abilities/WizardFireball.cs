@@ -17,13 +17,13 @@ public class WizardFireball : Ability
     }
 
     public override void StartAbility()
-    {
+	{
         base.StartAbility();
 
         owner.Motor.StopMotion();
-        owner.Motor.EnableStandardMovement(false);
+		owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
-        performed = false;
+		performed = false;
     }
 
     public override void UpdateAbility()
@@ -44,4 +44,8 @@ public class WizardFireball : Ability
         base.EndAbility();
         owner.Motor.EnableStandardMovement(true);
     }
+
+	public override void StartCast()
+	{		
+	}
 }

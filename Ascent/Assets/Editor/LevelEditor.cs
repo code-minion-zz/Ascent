@@ -13,6 +13,7 @@ namespace Ascent
         private GameObject selectedRoom = null;
         private GameObject selectedTile = null;
         private List<Door> selectedDoors = new List<Door>();
+        private bool multipleSelected;
 
         private SaveRooms roomSaver = new SaveRooms();
         private RoomGeneration roomGen = new RoomGeneration();
@@ -71,32 +72,6 @@ namespace Ascent
 
         private void SelectRoomGUI()
         {
-            //if (GUILayout.Button("Load Room", GUILayout.Width(buttonSize)))
-            //{
-            //    directory = EditorUtility.OpenFilePanel("Open file", "Assets/Resources/Maps", "txt");
-
-            //    if (directory != "")
-            //    {
-            //        // Load and add the room to the list of rooms.
-            //        RoomProperties room = roomSaver.LoadRoom(directory, false);
-
-            //        if (room != null)
-            //        {
-            //            // Construct the newly loaded room.
-            //            room.ConstructRoom();
-            //        }
-            //    }
-            //}
-
-            if (roomSaver != null)
-            {
-                //if (GUILayout.Button("Save Room", GUILayout.Width(buttonSize)))
-                //{
-                //    SaveSelected();
-                //}
-            }
-
-
             if (selectedTile != null && selectedRoom != null)
             {
                 GUILayout.Label("Selected Room: " + selectedRoom.name);
@@ -106,7 +81,10 @@ namespace Ascent
 
                 if (GUILayout.Button("Rotate 90", GUILayout.Width(buttonSize)))
                 {
-                    Selection.activeGameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f, Space.World);
+                    foreach (GameObject selection in Selection.gameObjects)
+                    {
+                        selection.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f, Space.World);
+                    }
                 }
             }
 
@@ -217,9 +195,8 @@ namespace Ascent
             }
 
             EnvironmentObj envIdentifier = selectedObject.GetComponent<EnvironmentObj>();
-
-            //Transform parent = GetParentByType(selectedRoom, tileType);
             Transform parent = null;
+            List<GameObject> newSelection = new List<GameObject>();
 
             if (envIdentifier != null)
             {
@@ -231,16 +208,38 @@ namespace Ascent
                 parent = selectedTile.transform;
             }
 
-            if (GUILayout.Button("Insert to " + parent.name, GUILayout.Width(buttonSize)))
+            if (multipleSelected == true)
             {
-                //UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
-                UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
-                if (go != null)
+                if (GUILayout.Button("Insert to selected objects", GUILayout.Width(buttonSize)))
                 {
-                    GameObject instantiatedGo = go as GameObject;
-                    instantiatedGo.transform.parent = parent;
-                    instantiatedGo.transform.position = selectedTile.transform.position;
-                    Selection.activeGameObject = instantiatedGo;
+                    foreach (GameObject selection in Selection.gameObjects)
+                    {
+                        UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
+                        if (go != null)
+                        {
+                            GameObject instantiatedGo = go as GameObject;
+                            instantiatedGo.transform.parent = selection.transform;
+                            instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selection.transform.position;
+                            newSelection.Add(instantiatedGo);
+                        }
+                    }
+
+                    Selection.objects = newSelection.ToArray();
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Insert to " + parent.name, GUILayout.Width(buttonSize)))
+                {
+                    //UnityEngine.Object go = EnvironmentFactory.CreateGameObjectByType(tileType) as UnityEngine.Object;
+                    UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
+                    if (go != null)
+                    {
+                        GameObject instantiatedGo = go as GameObject;
+                        instantiatedGo.transform.parent = parent;
+                        instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selectedTile.transform.position;
+                        Selection.activeGameObject = instantiatedGo;
+                    }
                 }
             }
         }
@@ -333,6 +332,15 @@ namespace Ascent
 
         private void UpdateSelectedTile()
         {
+            if (Selection.gameObjects.Length > 1)
+            {
+                multipleSelected = true;
+            }
+            else
+            {
+                multipleSelected = false;
+            }
+
             GameObject go = Selection.activeGameObject;
 
             if (go != null && go != selectedTile)

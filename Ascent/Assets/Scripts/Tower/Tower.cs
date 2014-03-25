@@ -22,11 +22,9 @@ public class Tower : MonoBehaviour
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
 		currentFloor.InitialiseTestFloor();
-		Debug.Log("Before");
 		MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
 		soundMan.SwapMusic(MusicManager.MusicSelections.Tower);
 		soundMan.PlayMusic();
-		Debug.Log("After");
     }
 
 	public void InitialiseFloor()

@@ -22,7 +22,7 @@ public class FreezeField : Projectile
     {
         this.targets = targets;
         this.owner = owner;
-		transform.position = owner.transform.position;
+		transform.position = startPos;
 		transform.rotation = owner.transform.rotation;
 
         circle = new Circle(transform, 3.0f, new Vector3(0.0f, 0.0f, 1.5f));
