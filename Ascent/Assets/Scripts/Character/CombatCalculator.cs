@@ -100,47 +100,49 @@ public class PhysicalDamageProperty : DamageProperty
 
 	public override DamageResult Evaluate(DamageResult result, Character target, Character source)
 	{
-		// Check for Dodge
-		bool dodged = false;
-		float maxDodgeChance = 100.0f;
-        float dodgeChance = Mathf.Min(target.Stats.DodgeChance, maxDodgeChance);
+		//// Check for Dodge
+        //bool dodged = false;
+        //float maxDodgeChance = 100.0f;
+        //float dodgeChance = Mathf.Min(target.Stats.DodgeChance, maxDodgeChance);
 
-		if (Random.Range(0.0f, maxDodgeChance) <= dodgeChance)
-		{
-			// Dodged success
-			dodged = true;
-		}
+        //if (Random.Range(0.0f, maxDodgeChance) <= dodgeChance)
+        //{
+        //    // Dodged success
+        //    dodged = true;
+        //}
 
-		float finalDamage = 0.0f;
-		bool criticalStrike = false;
+		//float finalDamage = 0.0f;
+		//bool criticalStrike = false;
 
-		if (!dodged)
-		{
-			// Check for critical strike
-			float maxCritChance = 100.0f;
-			float critChance = Mathf.Min(source.Stats.CriticalHitChance, maxCritChance);
+		//if (!dodged)
+		//{
+            //// Check for critical strike
+            //float maxCritChance = 100.0f;
+            //float critChance = Mathf.Min(source.Stats.CriticalHitChance, maxCritChance);
 
-			if (Random.Range(0.0f, maxCritChance) <= critChance)
-			{
-				// Dodged success
-				criticalStrike = true;
-			}
+            //if (Random.Range(0.0f, maxCritChance) <= critChance)
+            //{
+            //    // Dodged success
+            //    criticalStrike = true;
+            //}
 
 			// Evaluate unmitigated damage
-			float unmitigatedDamage = (source.Stats.Attack * addMultiplerDamage) + addFixedDamage;
+			//float unmitigatedDamage = (source.Stats.Attack * addMultiplerDamage) + addFixedDamage;
 
 			// Add crit damage if there was a crit!
-			unmitigatedDamage = (criticalStrike ? unmitigatedDamage * ((source.Stats.CritalHitMultiplier * 0.01f) + 1.0f) : unmitigatedDamage);
+			//unmitigatedDamage = (criticalStrike ? unmitigatedDamage * ((source.Stats.CritalHitMultiplier * 0.01f) + 1.0f) : unmitigatedDamage);
 
 			// Work out final damage
-			finalDamage = Mathf.Max(Mathf.RoundToInt((float)source.Stats.Level * ((float)(source.Stats.Level * unmitigatedDamage)) / (float)(target.Stats.Level * target.Stats.PhysicalDefense)), 1);
+			//finalDamage = Mathf.Max(Mathf.RoundToInt((float)source.Stats.Level * ((float)(source.Stats.Level * unmitigatedDamage)) / (float)(target.Stats.Level * target.Stats.PhysicalDefense)), 1);
 
-		}
+		//}
 
-		result.damageType = Character.EDamageType.Physical;
-		result.criticalHit = criticalStrike;
-		result.dodged = dodged;
-		result.finalDamage = (int)finalDamage;
+		//result.damageType = Character.EDamageType.Physical;
+		//result.criticalHit = criticalStrike;
+		//result.dodged = dodged;
+		//result.finalDamage = (int)finalDamage;
+
+        result.finalDamage = (int)addFixedDamage;
 
 		return result;
 	}
@@ -175,18 +177,19 @@ public class TrapDamageProperty : DamageProperty
 
 	public override DamageResult Evaluate(DamageResult result, Character target, Character source)
 	{
-		// Evaluate unmitigated damage
-		float unmitigatedDamage = addFixedDamage;
+        //// Evaluate unmitigated damage
+        //float unmitigatedDamage = addFixedDamage;
 
-		// Work out final damage
-		float finalDamage = unmitigatedDamage;
+        //// Work out final damage
+        //float finalDamage = unmitigatedDamage;
 
 
-		result.damageType = Character.EDamageType.Trap;
-		result.criticalHit = false;
-		result.dodged = false;
-		result.finalDamage = (int)finalDamage;
+        //result.damageType = Character.EDamageType.Trap;
+        //result.criticalHit = false;
+        //result.dodged = false;
+        //result.finalDamage = (int)finalDamage;
 
+        result.finalDamage = (int)addFixedDamage;
 		return result;
 	}
 }

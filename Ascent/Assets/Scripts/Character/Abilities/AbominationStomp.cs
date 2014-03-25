@@ -69,7 +69,7 @@ public class AbominationStomp : Ability
                     foreach (Character c in characters)
                     {
 						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-						combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 0.75f));
+                        combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 0.75f));
 						combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, knockBack));
 						combatEvaluator.Apply();
 

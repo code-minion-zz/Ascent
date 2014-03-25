@@ -36,7 +36,7 @@ public class WarriorCharge : Ability
 
         cooldownFullDuration = 2.0f;
         animationTrigger = "Charge";
-        specialCost = 5;
+        specialCost = 3;
 
 		animationLength = 0.35f;
 		originalAnimationTime = animationLength;
@@ -97,7 +97,7 @@ public class WarriorCharge : Ability
 		}
 		else
 		{
-			int layerMask = ((1 << (int)Layer.Environment));
+			int layerMask = ((1 << (int)Layer.Environment)) | ((1 << (int)Layer.Block));
 			RaycastHit hitInfo;
 			//if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
 			//{
@@ -184,7 +184,7 @@ public class WarriorCharge : Ability
 					{
 						// Apply damage, knockback and stun to the enemy.
 						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
-						combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));
+						combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.5f));
 						combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, enemies[i], 1.5f)));
 						combatEvaluator.Apply();
 

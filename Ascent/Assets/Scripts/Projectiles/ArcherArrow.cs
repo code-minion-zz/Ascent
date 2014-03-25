@@ -27,7 +27,7 @@ public class ArcherArrow : Projectile
         if (collision.transform.tag == "Hero")
         {
             CombatEvaluator combatEvaluator = new CombatEvaluator(owner, collision.gameObject.GetComponent<Character>());
-            combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+            combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
             combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 10000.0f));
             combatEvaluator.Apply();
         }

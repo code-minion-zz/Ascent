@@ -52,4 +52,11 @@ public class Barrel : EnvironmentBreakable
             }
         }
     }
+
+	public override void BreakObject ()
+	{
+		SoundManager.PlaySound(AudioClipType.woodHit, transform.position, 2f);
+
+		base.BreakObject ();
+	}
 }

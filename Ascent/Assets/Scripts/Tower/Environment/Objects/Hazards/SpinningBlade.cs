@@ -3,12 +3,6 @@ using System.Collections;
 
 public class SpinningBlade : MonoBehaviour 
 {
-    public enum EBladeDirection
-    {
-        left = -1,
-        right = 1
-    }
-
 	struct TBlade
 	{
 		public GameObject go;
@@ -17,8 +11,8 @@ public class SpinningBlade : MonoBehaviour
 
     public GameObject blade;
     public int bladeCount;
-    public EBladeDirection bladeDirection;
     public float rotationSpeed;
+    public float initialRotationOffset;
     public int bladeDamage;
 	public float bladeLength;
 
@@ -57,12 +51,15 @@ public class SpinningBlade : MonoBehaviour
 
 			newBlade.transform.localScale = new Vector3(newBlade.transform.localScale.x + bladeLength, newBlade.transform.localScale.y, newBlade.transform.localScale.z);
 
-			Vector3 offset = new Vector3(0.0f, 1.0f, 3.0f + bladeLength * 0.5f);
+			Vector3 offset = new Vector3(0.0f, 1.0f, 1.0f + bladeLength * 0.5f);
 			newBlade.transform.position += offset + new Vector3(transform.position.x, 0.0f, transform.position.z);
 
-			float angle = (360.0f / bladeCount) * (float)bladeDirection;
+			float angle = (360.0f / bladeCount);
 			transform.Rotate(Vector3.up, angle);
 		}
+
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(Vector3.up, initialRotationOffset);
 	}
 
 	void Shutdown()
@@ -77,11 +74,11 @@ public class SpinningBlade : MonoBehaviour
     {
 		if (!blocked)
 		{
-			gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
+			gameObject.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f) * rotationSpeed * Time.deltaTime * 25.0f);
 		}
 		else
 		{
-			gameObject.transform.Rotate(new Vector3(0.0f, Mathf.PingPong(Time.time * rotationSpeed, -0.05f), 0.0f) * rotationSpeed * (float)bladeDirection * Time.deltaTime * 25.0f);
+			gameObject.transform.Rotate(new Vector3(0.0f, Mathf.PingPong(Time.time * rotationSpeed, -0.05f), 0.0f) * rotationSpeed * Time.deltaTime * 25.0f);
 		}
 
 		// TODO: Remove this for optimisation

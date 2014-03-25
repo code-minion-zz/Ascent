@@ -43,7 +43,7 @@ public class DebrisExplosion : Projectile
                     }
                     // Apply damage and knockback to the enemey
                     CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-                    combatEvaluator.Add(new TrapDamageProperty(10.0f, 1.0f));
+                    combatEvaluator.Add(new TrapDamageProperty(2.0f, 1.0f));
                     combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - transform.position, 100.0f));
                     combatEvaluator.Apply();
 

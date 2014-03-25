@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Upperbody_AO
-  m_Shader: {fileID: 4, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 7aa7028b274d268439ac35e089300afd, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -32,6 +32,14 @@ Material:
         first:
           name: _Shininess
         second: .078125
+      data:
+        first:
+          name: _EdgeLength
+        second: 50
+      data:
+        first:
+          name: _Phong
+        second: 1
     m_Colors:
       data:
         first:

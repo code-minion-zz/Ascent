@@ -72,7 +72,7 @@ public class WarriorStrike : BaseHeroAbility
 						{
 							// Apply damage and knockback to the enemey
 							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
-							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+							combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.0f));
 							combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, knockBackValue));
 							combatEvaluator.Apply();
 

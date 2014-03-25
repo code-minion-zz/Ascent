@@ -10,9 +10,9 @@ public class WarriorLightning : Ability
 
         animationSpeed = 1.00f;
         animationLength = 0.5f;
-        cooldownFullDuration = 0.0f;
+        cooldownFullDuration = 2.0f;
         animationTrigger = "Strike";
-        specialCost = 0;
+        specialCost = 3;
 
 
         isInstantCast = false;

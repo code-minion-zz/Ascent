@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Arrow : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Arrow : MonoBehaviour
     private float damage;
     private GameObject owner;
 
+    private List<Hero> heroesHit;
+    bool hitYet;
+
     public void Initialise(float life, GameObject owner, Vector3 direction, float speed, int damage)
     {
 		//owner = _owner;
@@ -19,6 +23,9 @@ public class Arrow : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
         this.owner = owner;
+
+        heroesHit = new List<Hero>();
+        hitYet = false;
     }
 	
 	// Update is called once per frame
@@ -51,12 +58,16 @@ public class Arrow : MonoBehaviour
         {
             CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
         }
+        //else if (collision.transform.tag == "Monster")
+        //{
+        //}
         // The arrows should collide with everything except for its owner.
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
         {
             toDestroy = true;
         }
     }
+
 
 	/// <summary>
 	/// When the arrow collides with a hero.
@@ -65,10 +76,17 @@ public class Arrow : MonoBehaviour
 	/// <param name="collision">Collision.</param>
 	private void CollideWithHero(Hero hero, Collision collision)
 	{
+        
 		// Apply damage to the hero
 		// Apply damage and knockback to the enemey.
 		CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
-		combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
+
+         if(!hitYet)
+         {
+            combatEvaluator.Add(new TrapDamageProperty(2.0f, 1.0f));
+            hitYet = true;
+         }
+
 		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1000000.0f));
 		combatEvaluator.Apply();
 	}

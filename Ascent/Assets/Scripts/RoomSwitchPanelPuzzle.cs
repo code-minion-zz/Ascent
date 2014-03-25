@@ -6,22 +6,22 @@ public class RoomSwitchPanelPuzzle : MonoBehaviour
 	public Doors doors;
 	public SwitchPanel[] switches;
 
-	bool enabled = false;
+	bool initialised = false;
 
 	void OnEnable()
 	{
-		enabled = true;
+        initialised = true;
 	}
 
 	void Update()
 	{
-		if (enabled)
+        if (initialised)
 		{
 			foreach (Door d in doors.RoomDoors)
 			{
 				d.CloseDoor();
 			}
-			enabled = false;
+            initialised = false;
 		}
 
 		int total = switches.Length;

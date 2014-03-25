@@ -38,7 +38,7 @@ public class FreezeField : Projectile
             {
                 // Apply damage and knockback to the enemey
                 CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-                combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+                combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
                 combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, 3.0f)));
                 combatEvaluator.Apply();
 
@@ -48,20 +48,11 @@ public class FreezeField : Projectile
         }
     }
 
-    public void Update()
-    {
-        time += Time.deltaTime;
-        if(time > 0.5f)
-		{
-            Destroy(gameObject);
-        }
-    }
-
 #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
 
-        circle.DebugDraw();
+        //circle.DebugDraw();
     }
 #endif
 }

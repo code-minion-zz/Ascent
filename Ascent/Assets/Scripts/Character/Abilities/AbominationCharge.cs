@@ -242,7 +242,7 @@ public class AbominationCharge : Ability
                     {
                         // Apply damage, knockback and stun to the enemy.
                         CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
-                        combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.5f));
+                        combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
                         combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, enemies[i], 1.5f)));
                         combatEvaluator.Apply();
 

@@ -46,6 +46,8 @@ public class HeroController : MonoBehaviour
 	Shape2D shapeB;
 	Shape2D shapeC;
 
+	private EBlockDirection blockDirection;
+
 	public void Initialise(Hero hero, InputDevice inputDevice, HeroAnimator animator, CharacterMotor motor, HeroAbilityLoadout loadout)
 	{
 		this.hero = hero;
@@ -460,24 +462,118 @@ public class HeroController : MonoBehaviour
 			{
 				moveDirection = new Vector3(0, 0, inputDevice.LeftStickY.Value);
 
+				Vector3 rayDirection = Vector3.left;
+
 				if (Mathf.Abs(inputDevice.LeftStickY.Value) > 0.1f)
 				{
-					grabbedObject.MoveAlongGrid(moveDirection);
-					motor.MoveAlongGrid(moveDirection);
+					switch (blockDirection)
+					{
+						case EBlockDirection.North:
+							{
+								rayDirection = Vector3.forward;
 
-					// TODO: Play push/pull animation
+								if (inputDevice.LeftStickY.Value < 0.0f)
+								{
+									rayDirection *= -1.0f;
+								}
+								else
+								{
+									rayDirection *= 2.0f;
+								}
+							} 
+							break;
+						case EBlockDirection.South:
+							{
+								rayDirection = Vector3.forward;
+
+								if (inputDevice.LeftStickY.Value < 0.0f)
+								{
+									rayDirection *= -2.0f;
+								}
+								else
+								{
+									rayDirection *= 1.0f;
+								}
+
+							}
+							break;
+					}
+
+
+					Vector3 pos = transform.position;
+					pos.y = 0.5f;
+
+					Debug.Log(rayDirection);
+
+					RaycastHit hit;
+					int layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
+					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs( rayDirection.z), layerMask))
+					{
+						grabbedObject.MoveAlongGrid(moveDirection);
+						motor.MoveAlongGrid(moveDirection);
+					}
+					//else
+					//{
+					//    Debug.Log(hit.transform);
+					//}
 				}
 			}
 			else // horizonal movement
 			{
 				moveDirection = new Vector3(inputDevice.LeftStickX.Value, 0, 0);
 
+				Vector3 rayDirection = Vector3.left;
+
 				if (Mathf.Abs(inputDevice.LeftStickX.Value) > 0.1f)
 				{
-					grabbedObject.MoveAlongGrid(moveDirection);
-					GetComponent<CharacterMotor>().MoveAlongGrid(moveDirection);
+					switch (blockDirection)
+					{
+						case EBlockDirection.East:
+							{
+								rayDirection = Vector3.left;
 
-					// TODO: Play push/pull animation
+								if (inputDevice.LeftStickX.Value < 0.0f)
+								{
+									rayDirection *= 1.0f;
+								}
+								else
+								{
+									rayDirection *= -2.0f;
+								}
+							}
+							break;
+						case EBlockDirection.West:
+							{
+								rayDirection = Vector3.left;
+
+								if (inputDevice.LeftStickX.Value < 0.0f)
+								{
+									rayDirection *= 2.0f;
+								}
+								else
+								{
+									rayDirection *= -1.0f;
+								}
+
+							}
+							break;
+					}
+
+
+					Vector3 pos = transform.position;
+					pos.y = 0.5f;
+
+					RaycastHit hit;
+					int layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
+					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs(rayDirection.x), layerMask))
+					{
+						grabbedObject.MoveAlongGrid(moveDirection);
+						motor.MoveAlongGrid(moveDirection);
+					}
+					//else
+					//{
+					//    Debug.Log(hit.transform);
+					//}
 				}
 			}
 		}
@@ -544,66 +640,66 @@ public class HeroController : MonoBehaviour
 			}
 		}
 
-		// Is there an item?
-		List<LootDrop> loot = curRoom.LootDrops;
-		if (loot != null && loot.Count > 0)
-		{
-			// Find the closest item
-			LootDrop closestDrop = null;
-			float closestDistance = 10000.0f;
-			foreach (LootDrop l in loot)
-			{
-				if (!l.CanBePickedUp)
-				{
-					continue;
-				}
+        //// Is there an item?
+        //List<LootDrop> loot = curRoom.LootDrops;
+        //if (loot != null && loot.Count > 0)
+        //{
+        //    // Find the closest item
+        //    LootDrop closestDrop = null;
+        //    float closestDistance = 10000.0f;
+        //    foreach (LootDrop l in loot)
+        //    {
+        //        if (!l.CanBePickedUp)
+        //        {
+        //            continue;
+        //        }
 
-				float distance = (position - l.transform.position).sqrMagnitude;
+        //        float distance = (position - l.transform.position).sqrMagnitude;
 
-				if (distance < closestDistance)
-				{
-					closestDistance = distance;
-					closestDrop = l;
-				}
-			}
+        //        if (distance < closestDistance)
+        //        {
+        //            closestDistance = distance;
+        //            closestDrop = l;
+        //        }
+        //    }
 
-			if (closestDrop != null)
-			{
-				// Am I within range of the item?
-				if (closestDrop.TriggerRegion.IsInside(position))
-				{
-					if (wasButtonPressed)
-					{
-						closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
-						hero.FloorStatistics.NumberOfItemsPickedUp++;
-					}
-					else
-					{
-						buttonIndicator.Enable(true);
-					}
+        //    if (closestDrop != null)
+        //    {
+        //        // Am I within range of the item?
+        //        if (closestDrop.TriggerRegion.IsInside(position))
+        //        {
+        //            if (wasButtonPressed)
+        //            {
+        //                closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
+        //                hero.FloorStatistics.NumberOfItemsPickedUp++;
+        //            }
+        //            else
+        //            {
+        //                buttonIndicator.Enable(true);
+        //            }
 
-					return true; // An interaction has occured. Exit function now.
-				}
-			}
-		}
+        //            return true; // An interaction has occured. Exit function now.
+        //        }
+        //    }
+        //}
 
 
 		// Is there a door?
 		if (curRoom.Doors != null && curRoom.Doors.lockedDoorCount > 0)
 		{
-			// Do we have a key?
-			ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
-			KeyItem key = null;
-			foreach(ConsumableItem item in consumables)
-			{
-				if (item is KeyItem)
-				{					
-					key = (KeyItem)item;
-					break;
-				}
-			}
+            //// Do we have a key?
+            //ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
+            //KeyItem key = null;
+            //foreach(ConsumableItem item in consumables)
+            //{
+            //    if (item is KeyItem)
+            //    {					
+            //        key = (KeyItem)item;
+            //        break;
+            //    }
+            //}
 
-			if (key != null)
+            if (Game.Singleton.Tower.keys > 0)
 			{
 				// Find closest door
 				LockedDoor[] lockedDoors = curRoom.Doors.LockedDoors;
@@ -617,8 +713,8 @@ public class HeroController : MonoBehaviour
 						{
 							if (wasButtonPressed)
 							{
-								key.UseItem(hero);
 								door.Open();
+                                Game.Singleton.Tower.keys--;
 							}
 							else
 							{
@@ -683,8 +779,10 @@ public class HeroController : MonoBehaviour
 					closestBlock = m;
 				}
 			}
+
 			// Are we in range of it?
-			if (closestBlock.TriggerRegion.IsInside(position))
+
+            if (closestBlock != null && closestBlock.TriggerRegion.IsInside(position))
 			{
 				// Is it in front?
 				Vector3 pos = closestBlock.transform.position;
@@ -713,6 +811,32 @@ public class HeroController : MonoBehaviour
 						else
 						{
 							buttonIndicator.Enable(true);
+						}
+
+						// figure out direction
+						if (vertGrab)
+						{
+							if (direction.z > 0.0f)
+							{
+								blockDirection = EBlockDirection.South;
+							}
+							else
+							{
+								blockDirection = EBlockDirection.North;
+								
+							}
+						}
+						else
+						{
+							if (direction.x > 0.0f)
+							{
+								blockDirection = EBlockDirection.West;
+								
+							}
+							else
+							{
+								blockDirection = EBlockDirection.East;
+							}
 						}
 						
 						return true;
@@ -752,6 +876,14 @@ public class HeroController : MonoBehaviour
 		Consumable2 = 1,
 		Consumable3 = 2,
 		Consumable4 = 3,
+	}
+
+	private enum EBlockDirection
+	{
+		North,
+		South,
+		East,
+		West
 	}
 
 	private struct THeroActionButtonPair

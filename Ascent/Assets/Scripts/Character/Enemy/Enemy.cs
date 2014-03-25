@@ -47,6 +47,9 @@ public abstract class Enemy : Character
 		}
 	}
 
+    public int health;
+    public int attack;
+
     private Player targetPlayer;
     private Vector3 originalScale;
 
@@ -77,6 +80,11 @@ public abstract class Enemy : Character
 
 	public override void Initialise()
 	{
+        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+        EnemyStats.SecondaryStats.health = health;
+        EnemyStats.SecondaryStats.attack = attack;
+        EnemyStats.Reset();
+
 		animator = GetComponentInChildren<CharacterAnimator>();
 		if (animator == null)
 		{

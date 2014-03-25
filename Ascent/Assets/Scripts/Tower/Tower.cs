@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Tower : MonoBehaviour 
@@ -18,10 +18,13 @@ public class Tower : MonoBehaviour
 
 
     public void InitialiseTestFloor()
-    {
+	{
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.InitialiseTestFloor();
+		currentFloor.InitialiseTestFloor();
+		MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
+		soundMan.SwapMusic(MusicManager.MusicSelections.Tower);
+		soundMan.PlayMusic();
     }
 
 	public void InitialiseFloor()
@@ -42,4 +45,6 @@ public class Tower : MonoBehaviour
     {
         get { return goldGainBonus; }
     }
+
+    public int keys;
 }

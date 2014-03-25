@@ -10,9 +10,9 @@ public class WarriorFireball : Ability
 
         animationSpeed = 1.00f;
         animationLength = 0.5f;
-        cooldownFullDuration = 0.0f;
+        cooldownFullDuration = 2.0f;
         animationTrigger = "Strike";
-        specialCost = 0;
+        specialCost = 3;
 
 
         isInstantCast = false;
@@ -31,8 +31,8 @@ public class WarriorFireball : Ability
     }
 
     public override void StartCast()
-    {
-
+	{
+		SoundManager.PlaySound(AudioClipType.shootFire, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()

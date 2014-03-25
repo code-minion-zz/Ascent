@@ -10,9 +10,9 @@ public class WarriorFreezeField : Ability
 
         animationSpeed = 1.00f;
         animationLength = 0.5f;
-        cooldownFullDuration = 0.0f;
+        cooldownFullDuration = 2.0f;
         animationTrigger = "Strike";
-        specialCost = 0;
+        specialCost = 3;
 
 
         isInstantCast = false;
@@ -27,12 +27,15 @@ public class WarriorFreezeField : Ability
         GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
         fireballGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position, owner);
 
+        // Destroy after 5 seconds allowing plenty of time for the animation.
+        GameObject.Destroy(fireballGO, 5.0f);
+
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
     }
 
     public override void StartCast()
     {
-
+		SoundManager.PlaySound(AudioClipType.freezeBlast, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()

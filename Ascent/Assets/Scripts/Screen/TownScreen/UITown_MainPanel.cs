@@ -4,8 +4,9 @@ using System.Collections.Generic;
 public class UITown_MainPanel : UITown_RadialPanel
 {
 	public GameObject ButtonPrefab;
-	static float IMG_BUTTON_SCALE = 0.3f;
-	static int ANGLE_DIVISION = 8;
+	static float ANGLE_CORRECTION = 90f * Mathf.Deg2Rad;
+	//static float BUTTON_SCALE = 0.3f;
+	//static int ANGLE_DIVISION = 8;
 
 	public override void Initialise()
 	{
@@ -26,45 +27,65 @@ public class UITown_MainPanel : UITown_RadialPanel
 			int mod = 0;
 			GameObject buttonGO = NGUITools.AddChild(gameObject, ButtonPrefab);
 			buttons[i] = buttonGO.GetComponent<UIButton>();
-		}
 
-		SetRadialButtons(angle);
+			if (i > 3)
+			{
+				mod = 1;
+			}
+			AngleIndex.Add(i, (i+mod) * angle);
+			radianList.Add((i+mod) * radians);
+		}
+		radianList.Add(i*radians);
 
 		i = 0;
 		// Setting individual button values
+		buttons[i].gameObject.name += " Tower";
 		button = buttons[i].transform;
-		button.gameObject.name += " Tower";
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " AccShop";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " ConShop";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "JewelryShop_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Tavern";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Quit_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		++i;
 		buttons[i].gameObject.name += " Backpack";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_BackPackIcon_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Skills";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 		
 		++i;
 		buttons[i].gameObject.name += " Chapel";
 		button = buttons[i].transform;
 		button.Find("Icon").GetComponent<UISprite>().spriteName = "Ascent_Skill_Icon_64";
+		heading = MathUtility.ConvertHeadingToVector(radianList[i] + ANGLE_CORRECTION);
+		button.position = townParent.pointerTransform.position + (heading * 0.3f);
 
 		// set current selection to first button
 		currentSelection = buttons[0];
@@ -103,13 +124,34 @@ public class UITown_MainPanel : UITown_RadialPanel
 		}
 	}
 
-#if UNITY_EDITOR
 	void OnDrawGizmos()
 	{
 		if (!initialised) return;
 		Gizmos.DrawWireSphere(townParent.pointerTransform.position, 0.3f);
 	}
-#endif
+	
+//	void HighlightButton ()
+//	{
+//		float angle = (parent as UITownWindow).PointerAngle - 90f;
+//
+//		foreach (KeyValuePair<float,int> p in AngleIndex)
+//		{
+//			//Debug.Log("Testing Angle:" + angle + " against:" + p.Key);
+//			if (CloseTo(angle,p.Key))
+//			{
+//				//Debug.Log("WIN!! Angle:" + angle + " against:" + p.Key);
+//				UICamera.Notify(currentSelection.gameObject, "OnHover", false);
+//				currentSelection = buttons[p.Value];
+//				currentHighlightedButton = p.Value;
+//				UICamera.Notify(currentSelection.gameObject, "OnHover", true);
+//				SetInfoLabel();
+//			}
+//			else
+//			{
+//				//Debug.Log("FAIL!! Angle:" + angle + " against:" + p.Key);
+//			}
+//		}
+//	}
 
 	#region Input Handling
 	public override void OnMenuLeftStickMove(InputDevice device)
@@ -121,7 +163,6 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	public override void OnMenuOK(InputDevice device)
 	{
-		if (currentSelection == null) return;
 		if (currentSelection.gameObject.activeInHierarchy)	ButtonAction();
 	}
 	
@@ -131,18 +172,22 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	public override void OnMenuUp(InputDevice device)
 	{
+		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuDown(InputDevice device)
 	{
+		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuLeft(InputDevice device)
 	{
+		// TODO: Change character's equipment
 		
 	}
 	public override void OnMenuRight(InputDevice device)
 	{
+		// TODO: Change character's equipment
 		
 	}
 	#endregion 
@@ -164,7 +209,7 @@ public class UITown_MainPanel : UITown_RadialPanel
 			(parent as UITownWindow).RequestTransitionToPanel(6);
 			break;
 		case 4 : // backpack
-			(parent as UITownWindow).RequestTransitionToPanel(1);
+			(parent as UITownWindow).RequestTransitionToPanel(5);
 			break;
 		case 5 : // skills
 			(parent as UITownWindow).RequestTransitionToPanel(3);
@@ -179,33 +224,33 @@ public class UITown_MainPanel : UITown_RadialPanel
 
 	void SetInfoLabel()
 	{
-		//UITownWindow townParent = (parent as UITownWindow);
+		UITownWindow townWindow = (parent as UITownWindow);
 
 		switch (currentHighlightedButton)
 		{
 		case 0: // tower
-			townParent.SetInfo("Enter the Tower");
+			townWindow.SetInfo("Enter the Tower");
 			break;
 		case 1: // conshop
-			townParent.SetInfo("Shop in the Gem Shop");
+			townWindow.SetInfo("Shop in the Gem Shop");
 			break;
 		case 2: // accshop
-			townParent.SetInfo("Shop in the Item Shop");
+			townWindow.SetInfo("Shop in the Item Shop");
 			break;
 		case 3: // tavern
-			townParent.SetInfo("Go to the Tavern");
+			townWindow.SetInfo("Go to the Tavern");
 			break;
 		case 4: // backpack
-			townParent.SetInfo("Manage your Equipment");
+			townWindow.SetInfo("Manage your Equipment");
 			break;
 		case 5: // skills
-			townParent.SetInfo("Manage your Skills");
+			townWindow.SetInfo("Manage your Skills");
 			break;
 		case 6: // chapel
-			townParent.SetInfo("Visit the Chapel");
+			townWindow.SetInfo("Visit the Chapel");
 			break;
 		default:
-			townParent.SetInfo("");
+			townWindow.SetInfo("");
 			break;
 		}
 	}

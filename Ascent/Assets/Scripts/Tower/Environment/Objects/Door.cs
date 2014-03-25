@@ -22,7 +22,7 @@ public class Door : EnvironmentBreakable
 
     private float standingOnDoorTimer = 0.0f;
 
-	private bool[] playersLeftDoor;
+	protected bool[] playersLeftDoor;
 
 	private bool startDoor = false;
 
@@ -32,7 +32,7 @@ public class Door : EnvironmentBreakable
 		set { startDoor = value; }
 	}
 
-	bool walkedOutOfTheDoor;
+	protected bool walkedOutOfTheDoor;
 
 #if UNITY_EDITOR 
 	public void OnDrawGizmos()
@@ -80,7 +80,7 @@ public class Door : EnvironmentBreakable
 #endif
 
 
-	public void OnEnable()
+	public virtual void OnEnable()
 	{
         if (Game.Singleton.Tower.CurrentFloor != null)
         {

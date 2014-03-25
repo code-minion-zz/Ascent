@@ -37,16 +37,20 @@ public class FireballExplosion : Projectile
 			{
 				foreach (Character c in characters)
 				{
-					// Apply damage and knockback to the enemey
-					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-					combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
-					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - transform.position, 100.0f));
-					combatEvaluator.Apply();
+                    if (c != owner)
+                    {
+                        // Apply damage and knockback to the enemey
+                        CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+                        combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
+                        combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - transform.position, 100.0f));
+                        combatEvaluator.Apply();
 
-					// Create a blood splatter effect on the enemy.
-					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+                        // Create a blood splatter effect on the enemy.
+                        Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+                    }
 				}
 			}
+
 
 			damageDone = true;
 		}

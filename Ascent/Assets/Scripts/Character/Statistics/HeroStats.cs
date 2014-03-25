@@ -380,10 +380,10 @@ public class HeroStats : CharacterStats
 				{
 					primaryStats = new PrimaryStats()
 					{
-						power = 10,
-						finesse = 5,
-						vitality = 10,
-						spirit = 5
+						power = 0,
+						finesse = 0,
+						vitality = 0,
+						spirit = 0
 					};
 
 					primaryStatsGrowth = new PrimaryStatsGrowthRates()
@@ -400,9 +400,9 @@ public class HeroStats : CharacterStats
 
 					secondaryStats = new SecondaryStats()
 					{
-						health = 20.0f,
+						health = 15.0f,
 						special = 15.0f,
-						attack = 0.0f,
+						attack = 1.0f,
 						physicalDefense = 1.0f,
 						magicalDefense = 1.0f,
 						criticalHitChance = 5.0f,
