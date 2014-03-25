@@ -31,8 +31,8 @@ public class WarriorFireball : Ability
     }
 
     public override void StartCast()
-    {
-
+	{
+		SoundManager.PlaySound(AudioClipType.shootFire, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()

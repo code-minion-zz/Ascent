@@ -8,6 +8,8 @@ public enum AudioClipType
     statueAwaken,
 	woodHit,
 	freezeBlast,
+	shootFire,
+	pop,
 }
 
 public static class SoundManager
@@ -17,6 +19,8 @@ public static class SoundManager
 	private static AudioClip statueAwaken = Resources.Load("Sounds/effects/statueAwaken") as AudioClip;
 	private static AudioClip woodHit = Resources.Load("Sounds/effects/woodenhit") as AudioClip;
 	private static AudioClip freezeBlast = Resources.Load("Sounds/effects/freezeblast") as AudioClip;
+	private static AudioClip shootFire = Resources.Load("Sounds/effects/shootFire") as AudioClip;
+	private static AudioClip pop = Resources.Load("Sounds/effects/pop") as AudioClip;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
@@ -53,13 +57,21 @@ public static class SoundManager
 				
 			case AudioClipType.woodHit:
 				clip = woodHit;
-				break;
-				
+			break;
+			
 			case AudioClipType.freezeBlast:
 				clip = freezeBlast;
+			break;
+			
+			case AudioClipType.shootFire:
+				clip = shootFire;
 				break;
-        }
-
+				
+			case AudioClipType.pop:
+				clip = pop;
+				break;
+		}
+		
         return clip;
     }
 }
