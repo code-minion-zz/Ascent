@@ -239,7 +239,7 @@ namespace Ascent
                 {
                     GameObject instantiatedGo = go as GameObject;
                     instantiatedGo.transform.parent = parent;
-                    instantiatedGo.transform.position = selectedTile.transform.position;
+                    instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selectedTile.transform.position;
                     Selection.activeGameObject = instantiatedGo;
                 }
             }
