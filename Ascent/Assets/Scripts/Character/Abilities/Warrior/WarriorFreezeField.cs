@@ -24,11 +24,11 @@ public class WarriorFreezeField : Ability
 
         CanBeInterrupted = false;
 
-        GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
-        fireballGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position, owner);
+        GameObject frostFieldGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
+        frostFieldGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position + new Vector3(0.0f, 1.0f, 0.0f), owner);
 
         // Destroy after 5 seconds allowing plenty of time for the animation.
-        GameObject.Destroy(fireballGO, 5.0f);
+        GameObject.Destroy(frostFieldGO, 5.0f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
     }
