@@ -198,21 +198,21 @@ public abstract class Character : BaseCharacter
 		}
 
 
-		string damageText = (result.dodged ? "Dodged!" : (finalDamage > 0) ? finalDamage.ToString() : "No Damage!");
+        //string damageText = (result.dodged ? "Dodged!" : (finalDamage > 0) ? finalDamage.ToString() : "No Damage!");
 
-		if (this is Hero)
-		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.red);
-		}
-		else
-		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.cyan);
-		}
+        //if (this is Hero)
+        //{
+        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.red);
+        //}
+        //else
+        //{
+        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.cyan);
+        //}
 
-		if (result.criticalHit)
-		{
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, "Critical Hit!", Color.yellow);
-		}
+        //if (result.criticalHit)
+        //{
+        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, "Critical Hit!", Color.yellow);
+        //}
 
 		// If the character is dead
 		if (stats.CurrentHealth <= 0 && !isDead)

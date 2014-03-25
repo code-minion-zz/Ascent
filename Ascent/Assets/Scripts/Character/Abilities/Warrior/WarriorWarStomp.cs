@@ -24,7 +24,7 @@ public class WarriorWarStomp : Ability
         animationSpeed = 1.5f;
         animationTrigger = "WarStomp";
         cooldownFullDuration = 2.0f;
-        specialCost = 5;
+        specialCost = 3;
 
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
@@ -72,7 +72,7 @@ public class WarriorWarStomp : Ability
 						foreach (Enemy e in enemies)
 						{
 							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
-							combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 0.5f));
+							combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 0.5f));
 							combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.0f)));
 							combatEvaluator.Apply();
 

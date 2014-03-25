@@ -42,6 +42,8 @@ public class TreasureChest : Interactable
 
 	protected Room containedRoom;
 
+    public int keysReward = 1;
+
 
 	public bool IsClosed
 	{
@@ -57,14 +59,14 @@ public class TreasureChest : Interactable
 
 		//RandomlySetChestType();
 
-		if (chestType == EChestType.Trap)
-		{
-			RandomlySetTrapProperties();
-		}
-		else
-		{
-			RandomlyGenerateLootDrops();
-		}
+        //if (chestType == EChestType.Trap)
+        //{
+        //    RandomlySetTrapProperties();
+        //}
+        //else
+        //{
+        //    RandomlyGenerateLootDrops();
+        //}
 	}
 	
 	// Update is called once per frame
@@ -98,43 +100,44 @@ public class TreasureChest : Interactable
 				break;
 			case EChestState.DroppingLoot:
 				{
-					if (chestType != EChestType.Trap)
-					{
-						if (timeAccum >= stateTimes[(int)EChestState.DroppingLoot])
-						{
-							// TODO: Change this to be the correct representation for this item.
-							GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject(Room.ERoomObjects.Loot, "CoinSack");
-							go.transform.parent = this.transform;
-							Vector3 pos = this.transform.position;
-							pos.y = 5.0f;
-							go.transform.position = pos;
+                    if (chestType != EChestType.Trap)
+                    {
+                        Game.Singleton.Tower.keys += keysReward;
+                        ChangeState(EChestState.NEXT);
+                    }
+                    //    if (timeAccum >= stateTimes[(int)EChestState.DroppingLoot])
+                    //    {
+                    //        // TODO: Change this to be the correct representation for this item.
+                    //        GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject(Room.ERoomObjects.Loot, "CoinSack");
+                    //        go.transform.parent = this.transform;
+                    //        Vector3 pos = this.transform.position;
+                    //        pos.y = 5.0f;
+                    //        go.transform.position = pos;
 
 
-							LootDrop lootDrop = go.GetComponent<LootDrop>();
+                    //        LootDrop lootDrop = go.GetComponent<LootDrop>();
 
-							// Assign this drop the randomly generated item
-							lootDrop.Item = loot[0];
+                    //        // Assign this drop the randomly generated item
+                    //        lootDrop.Item = loot[0];
 
-							lootDrop.StartFalling(containedRoom);
+                    //        lootDrop.StartFalling(containedRoom);
 
-							loot.RemoveAt(0);
+                    //        loot.RemoveAt(0);
 
-							timeAccum = 0.0f;
+                    //        timeAccum = 0.0f;
 
-							if (loot.Count == 0)
-							{
-								ChangeState(EChestState.NEXT);
-							}
-						}
-					}
-					else
-					{
-						// TODO: Make the trap things happen here...
+                    //        if (loot.Count == 0)
+                    //        {
+                    //            ChangeState(EChestState.NEXT);
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    // TODO: Make the trap things happen here...
 						
-						ChangeState(EChestState.NEXT);
-					}
-
-
+                    //    ChangeState(EChestState.NEXT);
+                    //}
 				}
 				break;
 			case EChestState.Openned:

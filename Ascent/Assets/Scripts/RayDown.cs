@@ -3,12 +3,10 @@ using System.Collections;
 
 public class RayDown : MonoBehaviour 
 {
-    float originalSize;
     float largestSize = 4.0f;
 
     void Start()
     {
-        originalSize = 1.0f;
     }
 
     void Update () 

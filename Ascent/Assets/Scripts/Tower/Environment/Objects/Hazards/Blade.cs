@@ -47,7 +47,7 @@ public class Blade : MonoBehaviour
 	{
 		// Apply damage to the hero
 		CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
-		combatEvaluator.Add(new TrapDamageProperty(1.0f, 1.0f));
+		combatEvaluator.Add(new TrapDamageProperty(2.0f, 1.0f));
 		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1.0f));
 		combatEvaluator.Apply();
 

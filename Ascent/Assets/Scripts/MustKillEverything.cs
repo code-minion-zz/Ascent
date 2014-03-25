@@ -7,22 +7,22 @@ public class MustKillEverything : MonoBehaviour
 	public Doors doors;
 	public Enemy[] enemies;
 
-	bool enabled = false;
+	bool initialised = false;
 
 	void OnEnable()
 	{
-		enabled = true;
+		initialised = true;
 	}
 
 	void Update()
 	{
-		if (enabled)
+		if (initialised)
 		{
 			foreach (Door d in doors.RoomDoors)
 			{
 				d.CloseDoor();
 			}
-			enabled = false;
+			initialised = false;
 		}
 
 		int total = enemies.Length;

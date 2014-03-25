@@ -69,7 +69,7 @@ public class ImpStrike : Ability
                 {
 					// Apply damage and knockback to the enemey.
 					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-					combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.1f));
+                    combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.1f));
 					combatEvaluator.Apply();
 
                     // Create a blood splatter effect on the enemy.

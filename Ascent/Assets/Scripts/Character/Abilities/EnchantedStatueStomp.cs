@@ -69,7 +69,7 @@ public class EnchantedStatueStomp : Ability
 					foreach (Character c in characters)
 					{
 						CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-						combatEvaluator.Add(new PhysicalDamageProperty(0.0f, 1.0f));
+                        combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
 						combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, knockBack));
 						combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, c, 1.0f)));
 						combatEvaluator.Apply();
