@@ -3,9 +3,14 @@ using System.Collections;
 
 public class MusicManager : MonoBehaviour 
 {	
+	public static MusicManager Instance;
 	private static AudioClip towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
 	private static AudioClip bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
-	
+
+	public delegate void MusicEvent();
+
+	public event MusicEvent musicEnd;
+
 	public enum MusicSelections
 	{
 		Tower,
@@ -13,12 +18,14 @@ public class MusicManager : MonoBehaviour
 	}
 
 	void Start()
-	{		
+	{
+		if (Instance == null) Instance = this;
 		audio.clip = towerMusic;
 	}
 
 	public void SwapMusic(MusicSelections choice)
 	{
+		audio.clip = ParseEnum(choice);
 	}
 
 	AudioClip ParseEnum(MusicSelections choice)
@@ -52,8 +59,16 @@ public class MusicManager : MonoBehaviour
 	{
 		while (audio.volume > 0)
 		{
-			audio.volume -= Time.deltaTime * 0.5f;
+			float decrement = Time.deltaTime / seconds;
+			Debug.Log(decrement + " " + audio.volume);
+			audio.volume -= decrement;
 			yield return null;
 		}
+		audio.Stop();
+	}
+
+	void OnMusicEnd()
+	{
+
 	}
 }
