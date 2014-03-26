@@ -7,15 +7,27 @@ public class MusicManager : MonoBehaviour
 	private static AudioClip towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
 	private static AudioClip bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
 
-	public delegate void MusicEvent();
+	private MusicSelections nextMusic;
 
-	public event MusicEvent musicEnd;
+	public float FadeDuration = 1f;
+	float elapsedTime;
+
+	public enum State
+	{
+		Stop,
+		In,
+		Play,
+		Out
+	}
 
 	public enum MusicSelections
 	{
+		None,
 		Tower,
 		Boss
 	}
+	
+	State musicState = State.Stop;
 
 	void Start()
 	{
@@ -23,11 +35,98 @@ public class MusicManager : MonoBehaviour
 		audio.clip = towerMusic;
 	}
 
-	public void SwapMusic(MusicSelections choice)
+	void Update()
+	{
+		elapsedTime += Time.deltaTime;
+		switch (musicState)
+		{
+		case State.In:
+			Debug.Log("FADING IN" + elapsedTime);
+			FadeInMusic();
+			break;
+		case State.Out:
+			Debug.Log("FADING OUT" + elapsedTime);
+			FadeOutMusic();
+			break;
+		}
+	}
+
+	public void PlayMusic(MusicSelections choice, bool immediate = false)
+	{
+		if (immediate)
+		{
+			SwapMusic(choice);
+			audio.Stop();
+			audio.volume = 1f;
+			musicState = State.Play;
+		}
+		else
+		{
+			switch(musicState)
+			{
+			case State.Play:
+				elapsedTime = 0f;
+				musicState = State.Out;
+				break;
+			case State.In:
+				elapsedTime = 0f;
+				musicState = State.Out;
+				break;
+			case State.Stop:
+				elapsedTime = 0f;
+				audio.volume = 0f;
+				SwapMusic(choice);
+				musicState = State.In;
+				break;
+			}
+			audio.Play();
+			nextMusic = choice;
+		}
+	}
+
+	public void SetVolume(float val)
+	{
+		audio.volume = val;
+	}
+
+	public void StopMusic()
+	{
+		musicState = State.Stop;
+		audio.Stop();
+		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
+	}
+
+	void FadeOutMusic()
+	{
+		audio.volume = Mathf.Lerp(1f, 0f, elapsedTime/FadeDuration);
+		if (audio.volume <= 0f)
+		{
+			musicState = State.Stop;
+			StopMusic();
+		}
+	}
+	
+	void FadeInMusic()
+	{
+
+		audio.volume = Mathf.Lerp(0f, 1f, elapsedTime/FadeDuration);
+		if (audio.volume >= 1f)
+		{
+			musicState = State.Play;
+		}
+	}
+
+	void OnMusicEnd()
+	{
+		SwapMusic(nextMusic);
+		audio.Play();
+	}
+	
+	void SwapMusic(MusicSelections choice)
 	{
 		audio.clip = ParseEnum(choice);
 	}
-
+	
 	AudioClip ParseEnum(MusicSelections choice)
 	{		
 		AudioClip retval = null;
@@ -41,34 +140,5 @@ public class MusicManager : MonoBehaviour
 			break;
 		}
 		return retval;
-	}
-
-	public void PlayMusic()
-	{
-		StopCoroutine("FadeOutMusic");
-		audio.volume = 1f;
-		audio.Play();
-	}
-
-	public void StopMusic(float seconds)
-	{
-		StartCoroutine(FadeOutMusic(seconds));
-	}
-
-	IEnumerator FadeOutMusic(float seconds)
-	{
-		while (audio.volume > 0)
-		{
-			float decrement = Time.deltaTime / seconds;
-			Debug.Log(decrement + " " + audio.volume);
-			audio.volume -= decrement;
-			yield return null;
-		}
-		audio.Stop();
-	}
-
-	void OnMusicEnd()
-	{
-
 	}
 }
