@@ -228,10 +228,10 @@ public abstract class Hero : Character
 
     public override void RefreshEverything()
     {
-		if(!Game.Singleton.InTower)
-		{
-			transform.position = Vector3.zero;
-		}
+        //if(!Game.Singleton.InTower)
+        //{
+        //    transform.position = Vector3.zero;
+        //}
 
         // Resets hp and sp
         base.RefreshEverything();

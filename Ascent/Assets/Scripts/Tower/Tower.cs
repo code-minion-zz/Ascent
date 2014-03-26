@@ -45,7 +45,7 @@ public class Tower : MonoBehaviour
                     newPlayer.CreateHero(Character.EHeroClass.Warrior);
                     newPlayer.Hero.gameObject.SetActive(true);
                 }
-
+              
                 Game.Singleton.SetPlayers(players);
             }
 
@@ -61,11 +61,40 @@ public class Tower : MonoBehaviour
     public void LoadNextFloor()
     {
         ++currentFloorNumber;
-        Application.LoadLevel("P" + numberOfPlayers + "Floor" + currentFloorNumber);
+        Destroy(currentFloor);
+
+        Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
+
+        if (currentFloorNumber > 5)
+        {
+            Destroy(currentFloor);
+            Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+        }
+        else
+        {
+            Application.LoadLevel("P" + numberOfPlayers + "Floor" + currentFloorNumber);
+        }
+    }
+
+    [ContextMenu("GameOver")]
+    public void GameOver()
+    {
+        initialised = false;
+
+        foreach (Player p in players)
+        {
+            Destroy(p.gameObject);
+            Destroy(p);
+        }
+
+        Game.Singleton.Players = null;
+        currentFloorNumber = 0;
+        Destroy(currentFloor);
+        Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
     }
 
     public void InitialiseTestFloor()
-	{
+    {
         currentFloor = gameObject.AddComponent<Floor>();
 		currentFloor.InitialiseTestFloor();
         MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();

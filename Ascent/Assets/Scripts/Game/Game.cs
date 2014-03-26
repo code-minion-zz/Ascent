@@ -66,7 +66,7 @@ public class Game : MonoBehaviour
 		get { return gameState == EGameState.Tower || gameState == EGameState.TestTower; }
 	}
 
-	private EGameState gameStateToLoad;
+	public EGameState gameStateToLoad;
 
     private EffectFactory effectFactory;
 
@@ -96,6 +96,7 @@ public class Game : MonoBehaviour
     public List<Player> Players
     {
         get { return players; }
+        set { players = value; }
     }
 
     public int AlivePlayerCount
@@ -407,30 +408,22 @@ public class Game : MonoBehaviour
 				}
 				break;
 			case EGameState.TestTower:
+            case EGameState.Tower:
             case EGameState.TowerPlayer1:
             case EGameState.TowerPlayer2:
             case EGameState.TowerPlayer3:
 				{
-					foreach (Player p in players)
-					{
-						if (p != null)
-						{
-							p.Hero.gameObject.SetActive(true);
-						}
-					}
+                    if (players != null)
+                    {
+                        foreach (Player p in players)
+                        {
+                            if (p != null)
+                            {
+                                p.Hero.gameObject.SetActive(true);
+                            }
+                        }
+                    }
 					tower.InitialiseTower();
-				}
-				break;
-			case EGameState.Tower:
-				{
-					foreach (Player p in players)
-					{
-						if (p != null)
-						{
-							p.Hero.gameObject.SetActive(true);
-						}
-					}
-                    tower.InitialiseTestFloor();
 				}
 				break;
 			case EGameState.FloorSummary: // Fall

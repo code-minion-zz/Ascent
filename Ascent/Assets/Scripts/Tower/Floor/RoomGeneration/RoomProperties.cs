@@ -217,6 +217,8 @@ public class RoomProperties
         room.AddNewParentCategory("Monsters", (int)Layer.Monster);
         room.AddNewParentCategory("Items", (int)Layer.Item);
         room.AddNewParentCategory("Lights", (int)Layer.Default);
+        room.AddNewParentCategory("Actions", (int)Layer.Default);
+        room.AddNewParentCategory("Triggers", (int)Layer.Default);
 
         return room;
     }
