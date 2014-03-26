@@ -133,12 +133,12 @@ public class Abomination : Enemy
 
 	public override void OnEnable()
 	{
-		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
+		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
 	}
 
     public override void OnDisable()
     {
-		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
+		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
         AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();

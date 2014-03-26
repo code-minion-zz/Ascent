@@ -141,7 +141,7 @@ public abstract class Hero : Character
         hero.loadout.Initialise(hero);
 
 		///Test_PopulateInventoryAndBackpack(hero);
-		Test_DrawHeroStats(hero);
+		//Test_DrawHeroStats(hero);
 	}
 
     public static void Load(Hero hero, HeroSaveData data)
@@ -158,7 +158,7 @@ public abstract class Hero : Character
         hero.loadout = data.loadout;
         hero.loadout.Initialise(hero);
 
-        Test_DrawHeroStats(hero);
+        //Test_DrawHeroStats(hero);
     }
 
     public override void Update()
@@ -228,10 +228,10 @@ public abstract class Hero : Character
 
     public override void RefreshEverything()
     {
-		if(!Game.Singleton.InTower)
-		{
-			transform.position = Vector3.zero;
-		}
+        //if(!Game.Singleton.InTower)
+        //{
+        //    transform.position = Vector3.zero;
+        //}
 
         // Resets hp and sp
         base.RefreshEverything();

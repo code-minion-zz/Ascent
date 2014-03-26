@@ -503,8 +503,6 @@ public class HeroController : MonoBehaviour
 					Vector3 pos = transform.position;
 					pos.y = 0.5f;
 
-					Debug.Log(rayDirection);
-
 					RaycastHit hit;
 					int layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs( rayDirection.z), layerMask))
