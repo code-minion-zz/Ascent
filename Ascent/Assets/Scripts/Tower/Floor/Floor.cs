@@ -48,7 +48,7 @@ public class Floor : MonoBehaviour
 
 	public FloorCamera FloorCamera
 	{
-		get { return floorCamera.GetComponent<FloorCamera>(); }
+		get { return floorCamera; }
 	}
 
 	public GameObject[] StartPoints
@@ -96,6 +96,7 @@ public class Floor : MonoBehaviour
 
 	private void Initialise()
 	{
+        initialised = false;
 		// Initialise the heroes onto the start points
 
 		startPoints = GameObject.FindGameObjectsWithTag("StartPoint");

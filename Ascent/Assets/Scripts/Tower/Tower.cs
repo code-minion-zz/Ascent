@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Tower : MonoBehaviour 
 {
+    private List<Player> players;
+
 	private Floor currentFloor;
 	public Floor CurrentFloor
 	{
@@ -10,20 +13,92 @@ public class Tower : MonoBehaviour
 		set { currentFloor = value; }
 	}
 
-	private int currentFloorNumber;
-	public int CurrentFloorNumber
-	{
-		get { return currentFloorNumber; }
-	}
+	public int currentFloorNumber;
+    public int numberOfPlayers;
+    public int keys;
+    public int lives;
 
+    public bool initialised;
+
+    public void InitialiseTower()
+    {
+        if (!initialised)
+        {
+            if( Game.Singleton.Players == null || Game.Singleton.Players.Count == 0)
+            {
+                players = new List<Player>();
+                for (int i = 0; i < numberOfPlayers; ++i)
+                {
+                    GameObject go = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+                    go.transform.parent = Game.Singleton.transform;
+                    Player newPlayer = go.GetComponent<Player>() as Player;
+
+                    newPlayer.PlayerID = i;
+                    newPlayer.name = "Player" + i;
+
+                    InputDevice device = InputManager.GetNextUnusedDevice();
+                    newPlayer.BindInputDevice(device);
+                    device.InUse = true;
+
+                    players.Add(newPlayer);
+
+                    newPlayer.CreateHero(Character.EHeroClass.Warrior);
+                    newPlayer.Hero.gameObject.SetActive(true);
+                }
+              
+                Game.Singleton.SetPlayers(players);
+            }
+
+
+
+            initialised = true;
+        }
+
+        InitialiseTestFloor();
+    }
+
+    [ContextMenu("NextFloor")]
+    public void LoadNextFloor()
+    {
+        ++currentFloorNumber;
+        Destroy(currentFloor);
+
+        Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
+
+        if (currentFloorNumber > 5)
+        {
+            Destroy(currentFloor);
+            Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+        }
+        else
+        {
+            Application.LoadLevel("P" + numberOfPlayers + "Floor" + currentFloorNumber);
+        }
+    }
+
+    [ContextMenu("GameOver")]
+    public void GameOver()
+    {
+        initialised = false;
+
+        foreach (Player p in players)
+        {
+            Destroy(p.gameObject);
+            Destroy(p);
+        }
+
+        Game.Singleton.Players = null;
+        currentFloorNumber = 0;
+        Destroy(currentFloor);
+        Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+    }
 
     public void InitialiseTestFloor()
-	{
-        currentFloorNumber = 1;
+    {
         currentFloor = gameObject.AddComponent<Floor>();
 		currentFloor.InitialiseTestFloor();
-		MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
-		soundMan.PlayMusic(MusicManager.MusicSelections.Tower);
+        MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
+        soundMan.PlayMusic(MusicManager.MusicSelections.Tower);
     }
 
 	public void InitialiseFloor()
@@ -44,6 +119,5 @@ public class Tower : MonoBehaviour
     {
         get { return goldGainBonus; }
     }
-
-    public int keys;
+    
 }

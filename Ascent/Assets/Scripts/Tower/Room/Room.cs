@@ -232,8 +232,11 @@ public class Room : MonoBehaviour
         if (Game.Singleton.Tower.CurrentFloor != null && Game.Singleton.Tower.CurrentFloor.initialised)
 		{
 			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
-			camera.minCamera = transform.position + minCamera;
-			camera.maxCamera = transform.position + maxCamera;
+            if (camera != null)
+            {
+                camera.minCamera = transform.position + minCamera;
+                camera.maxCamera = transform.position + maxCamera;
+            }
 			//curMinCamera = minCamera;
 			//curMaxCamera = maxCamera;
 
@@ -272,16 +275,16 @@ public class Room : MonoBehaviour
 			}
 		}
 
-		if (enemies != null)
-		{
-			foreach (Enemy e in enemies)
-			{
-				if (!navMesh.IsWithinBounds(e.transform.position))
-				{
-					e.transform.position = transform.position;
-				}
-			}
-		}
+        //if (enemies != null)
+        //{
+        //    foreach (Enemy e in enemies)
+        //    {
+        //        if (!navMesh.IsWithinBounds(e.transform.position))
+        //        {
+        //            e.transform.position = transform.position;
+        //        }
+        //    }
+        //}
     }
 
     private void SetupCamera()

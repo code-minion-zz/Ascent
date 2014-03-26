@@ -11,6 +11,7 @@ public class MusicManager : MonoBehaviour
 
 	public float FadeDuration = 1f;
 	float elapsedTime;
+	public float MusicVolume = .05f;
 
 	public enum State
 	{
@@ -35,20 +36,19 @@ public class MusicManager : MonoBehaviour
 		audio.clip = towerMusic;
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
-		elapsedTime += Time.deltaTime;
+		elapsedTime += Time.fixedDeltaTime;
 		switch (musicState)
 		{
 		case State.In:
-			//Debug.Log("FADING IN" + elapsedTime);
 			FadeInMusic();
 			break;
 		case State.Out:
-			//Debug.Log("FADING OUT" + elapsedTime);
 			FadeOutMusic();
 			break;
 		}
+//		Debug.Log(audio.volume);
 	}
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
@@ -57,7 +57,7 @@ public class MusicManager : MonoBehaviour
 		{
 			SwapMusic(choice);
 			audio.Stop();
-			audio.volume = 1f;
+			audio.volume = MusicVolume;
 			musicState = State.Play;
 		}
 		else
@@ -98,7 +98,7 @@ public class MusicManager : MonoBehaviour
 
 	void FadeOutMusic()
 	{
-		audio.volume = Mathf.Lerp(1f, 0f, elapsedTime/FadeDuration);
+		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
 			musicState = State.Stop;
@@ -108,9 +108,8 @@ public class MusicManager : MonoBehaviour
 	
 	void FadeInMusic()
 	{
-
-		audio.volume = Mathf.Lerp(0f, 1f, elapsedTime/FadeDuration);
-		if (audio.volume >= 1f)
+		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
+		if (audio.volume >= MusicVolume)
 		{
 			musicState = State.Play;
 		}

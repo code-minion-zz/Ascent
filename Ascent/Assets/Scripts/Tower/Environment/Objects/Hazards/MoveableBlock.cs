@@ -66,6 +66,7 @@ public class MoveableBlock : Interactable
 	{
 		if (!IsInMotion)
 		{
+			SoundManager.PlaySound(AudioClipType.stonedrag, transform.position, 1f);
 			IsInMotion = true;
 			timeAccum = 0.0f;
 			startPos = transform.position;

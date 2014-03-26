@@ -10,6 +10,9 @@ public enum AudioClipType
 	freezeBlast,
 	shootFire,
 	pop,
+	wethit,
+	dooropen,
+	stonedrag
 }
 
 public static class SoundManager
@@ -21,6 +24,13 @@ public static class SoundManager
 	private static AudioClip freezeBlast = Resources.Load("Sounds/effects/freezeblast") as AudioClip;
 	private static AudioClip shootFire = Resources.Load("Sounds/effects/shootFire") as AudioClip;
 	private static AudioClip pop = Resources.Load("Sounds/effects/pop") as AudioClip;
+	private static AudioClip wethit1 = Resources.Load("Sounds/effects/wethit1") as AudioClip;
+	private static AudioClip wethit2 = Resources.Load("Sounds/effects/wethit2") as AudioClip;
+	private static AudioClip wethit3 = Resources.Load("Sounds/effects/wethit3") as AudioClip;
+	private static AudioClip wethit4 = Resources.Load("Sounds/effects/wethit4") as AudioClip;
+	private static AudioClip dooropen = Resources.Load("Sounds/effects/dooropen") as AudioClip;
+	private static AudioClip stonedrag = Resources.Load("Sounds/effects/stonedrag") as AudioClip;
+	private static AudioClip stonedrag2 = Resources.Load("Sounds/effects/stonedrag2") as AudioClip;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
@@ -69,8 +79,49 @@ public static class SoundManager
 				
 			case AudioClipType.pop:
 				clip = pop;
+			break;
+
+			case AudioClipType.wethit:
+			{
+				int result = Random.Range(1,4);
+				switch (result)
+				{
+				case 1:
+					clip = wethit1;
+					break;
+				case 2:
+					clip = wethit2;
+					break;
+				case 3:
+					clip = wethit3;
+					break;
+				case 4:
+					clip = wethit4;
+					break;
+				}
+			break;
+			}
+
+			case AudioClipType.dooropen:
+				clip = dooropen;
 				break;
+
+			case AudioClipType.stonedrag:
+			{
+				int result = Random.Range(1,4);
+				switch (result)
+				{
+				case 1:
+					clip = stonedrag;
+					break;
+				case 2:
+					clip = stonedrag2;
+					break;
+				}
+			break;
+			}
 		}
+		Debug.Log(clip);
 		
         return clip;
     }
