@@ -419,7 +419,10 @@ public class Room : MonoBehaviour
         go.tag = "RoomNode";
         go.layer = layer;
 
-        parentRootNodes.Add(layer, go);
+        if (!parentRootNodes.ContainsKey(layer))
+        {
+            parentRootNodes.Add(layer, go);
+        }
 
         return go;
     }
