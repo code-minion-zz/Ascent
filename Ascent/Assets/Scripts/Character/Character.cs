@@ -31,7 +31,7 @@ public abstract class Character : BaseCharacter
 
 
 	// The event delegate handler we will use to take in the character.
-	public delegate void CharacterEventHandler(Character charater);
+	public delegate void CharacterEventHandler(Character character);
 	public event CharacterEventHandler onDeath;
 	public event CharacterEventHandler onSpawn;
 
@@ -321,7 +321,8 @@ public abstract class Character : BaseCharacter
     /// </summary>
     /// <param name="damage">The amount of damage taken.</param>
     protected virtual void OnDamageTaken(int damage)
-    {
+	{
+		SoundManager.PlaySound(AudioClipType.wethit, transform.position, 1f);
         if (onDamageTaken != null)
         {
             onDamageTaken(damage);
