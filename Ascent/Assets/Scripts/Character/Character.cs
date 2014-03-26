@@ -35,6 +35,8 @@ public abstract class Character : BaseCharacter
 	public event CharacterEventHandler onDeath;
 	public event CharacterEventHandler onSpawn;
 
+    public bool spawnOnLoad = true;
+
 	// The event delegate handler we will use for damage taken.
 	public delegate void Damage(int amount);
 	public event Damage onDamageTaken;

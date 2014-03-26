@@ -145,7 +145,7 @@ public class Room : MonoBehaviour
 	}
 
     private Transform environmentNode;
-    private GameObject monstersNode;
+    private Transform monstersNode;
 
     public Transform MonsterParent
     {
@@ -153,7 +153,7 @@ public class Room : MonoBehaviour
         {
             if (monstersNode == null)
             {
-                monstersNode = GetNodeByLayer("Monster");
+                monstersNode = GetNodeByLayer("Monster").transform;
 
                 if (monstersNode != null)
                 {
@@ -161,14 +161,13 @@ public class Room : MonoBehaviour
                 }
                 else
                 {
-                    monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster);
-					Debug.Log(monstersNode.layer);
-                    return monstersNode.transform;
+                    monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster).transform;
+                    return monstersNode;
                 }
             }
             else
             {
-                return monstersNode.transform;
+                return monstersNode;
             }
         }
     }
@@ -206,12 +205,12 @@ public class Room : MonoBehaviour
 		FindAllNodes();
 
         // Find the monsters for this room
-        monstersNode = GetNodeByLayer("Monster");
+        monstersNode = GetNodeByLayer("Monster").transform;
 
         if (monstersNode == null)
         {
             // Obviously it does not exist so we can create one.
-			monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster);
+			monstersNode = AddNewParentCategory("Monsters", (int)Layer.Monster).transform;
             Debug.LogWarning("Could not find Monsters GameObject in Room. Creating one now.", gameObject);
         }
 
@@ -354,10 +353,16 @@ public class Room : MonoBehaviour
             {
                 if (!populateList.Contains(type))
                 {
-                    if (type.GetType() == typeof(Enemy))
+                    Enemy enemy = type as Enemy;
+
+                    if (enemy != null)
                     {
-                        Enemy enemy = type as Enemy;
                         enemy.ContainedRoom = this;
+
+                        if (enemy.spawnOnLoad == false)
+                        {
+                            enemy.gameObject.SetActive(false);
+                        }
                     }
 
                     populateList.Add(type);

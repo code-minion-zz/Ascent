@@ -94,76 +94,6 @@ namespace Ascent
             }
         }
 
-        private void SaveSelected()
-        {
-            if (selectedRoom == null)
-            {
-                return;
-            }
-
-            directory = EditorUtility.SaveFilePanel("Save Room", "Assets/Resources/Maps", "NewRoom", "txt");
-
-            if (directory == "")
-            {
-                return;
-            }
-
-            Room room = selectedRoom.GetComponent<Room>();
-            room.FindAllNodes();
-
-            RoomProperties roomProperties = new RoomProperties(room);
-            roomProperties.InitialiseTiles(room.NumberOfTilesX, room.NumberOfTilesY, 2);
-            roomProperties.Name = selectedRoom.name;
-
-            GameObject env = room.GetNodeByLayer("Environment");
-
-            if (env != null)
-            {
-                foreach (Transform t in env.transform)
-                {
-                    if (t.tag == "RoomTile")
-                    {
-                        // Make sure the tiles are correctly label
-                        string[] parts = t.name.Split("Tile[], ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        int XCoord = Int32.Parse(parts[0]);
-                        int YCoord = Int32.Parse(parts[1]);
-                        roomProperties.Tiles[XCoord, YCoord].GameObject = t.gameObject;
-                       
-                        foreach (Transform child in t)
-                        {
-                            EnvironmentObj id = child.GetComponent<EnvironmentObj>();
-                            if (id != null)
-                            {
-                                TileAttribute att = new TileAttribute();
-                                att.Type = id.TileAttributeType;
-                                att.Angle = child.eulerAngles.y;
-
-                                if (att.Type == EnvironmentID.door)
-                                {
-                                    att = new DoorTile();
-                                    att.Type = id.TileAttributeType;
-                                    att.Angle = child.eulerAngles.y;
-                                    Door door = child.GetComponent<Door>();
-                                    DoorTile tile = att as DoorTile;
-                                    tile.IsConnected = door.isConnected;
-                                    tile.IsEntryDoor = door.isEntryDoor;
-                                    tile.Direction = door.direction;
-                                }
-
-                                roomProperties.Tiles[XCoord, YCoord].TileAttributes.Add(att);
-                            }
-                            else
-                            {
-                                Debug.Log("Unrecognized object attached to tile. Did you forget to add an EnvEdentifier to the object?");
-                            }
-                        }
-                    }
-                }
-            }
-
-            roomSaver.SaveRoom(roomProperties, directory);
-        }
-
         private void ConnectDoorsGUI()
         {
             if (GUILayout.Button("Connect Doors", GUILayout.Width(buttonSize)))
@@ -214,14 +144,48 @@ namespace Ascent
                 {
                     foreach (GameObject selection in Selection.gameObjects)
                     {
+                        if (envIdentifier == null)
+                        {
+                            parent = selection.transform;
+                        }
+
                         UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
+
                         if (go != null)
                         {
                             GameObject instantiatedGo = go as GameObject;
-                            instantiatedGo.transform.parent = selection.transform;
+                            instantiatedGo.transform.parent = parent;
                             instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selection.transform.position;
                             newSelection.Add(instantiatedGo);
                         }
+                    }
+
+                    Selection.objects = newSelection.ToArray();
+                }
+
+                if (GUILayout.Button("Replace objects with " + selectedObject.name, GUILayout.Width(buttonSize)))
+                {
+                    foreach (GameObject selection in Selection.gameObjects)
+                    {
+                        parent = selection.transform.parent;
+
+                        UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
+
+                        if (go != null)
+                        {
+                            GameObject instantiatedGo = go as GameObject;
+                            instantiatedGo.transform.parent = parent;
+                            instantiatedGo.name = selection.name;
+                            instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selection.transform.position;
+                            newSelection.Add(instantiatedGo);
+
+                            foreach (Transform t in selection.GetComponentInChildren<Transform>())
+                            {
+                                t.parent = instantiatedGo.transform;
+                            }
+                        }
+
+                        GameObject.DestroyImmediate(selection);
                     }
 
                     Selection.objects = newSelection.ToArray();

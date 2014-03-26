@@ -41,11 +41,11 @@ public class MusicManager : MonoBehaviour
 		switch (musicState)
 		{
 		case State.In:
-			Debug.Log("FADING IN" + elapsedTime);
+			//Debug.Log("FADING IN" + elapsedTime);
 			FadeInMusic();
 			break;
 		case State.Out:
-			Debug.Log("FADING OUT" + elapsedTime);
+			//Debug.Log("FADING OUT" + elapsedTime);
 			FadeOutMusic();
 			break;
 		}
