@@ -212,11 +212,12 @@ public class RoomProperties
         GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
         GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
         doorGo.AddComponent<Doors>();
-        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
 
         room.AddNewParentCategory("Monsters", (int)Layer.Monster);
         room.AddNewParentCategory("Items", (int)Layer.Item);
         room.AddNewParentCategory("Lights", (int)Layer.Default);
+        room.AddNewParentCategory("Actions", (int)Layer.Default);
+        room.AddNewParentCategory("Triggers", (int)Layer.Default);
 
         return room;
     }
