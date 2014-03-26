@@ -21,6 +21,7 @@ public class XInputDevice : InputDevice
 	{
 		gamePadID = (PlayerIndex)id;
 		name = xboxName + id;
+        isJoystick = true;
 
 		Initialise();
 	}

@@ -214,6 +214,33 @@ public class InputManager : MonoBehaviour
 		return null;
 	}
 
+    public static InputDevice GetNextUnusedDevice()
+    {
+        foreach (InputDevice d in devices)
+        {
+            if (!d.isJoystick)
+            {
+                continue;
+            }
+
+            if (d.InUse)
+            {
+                continue;
+            }
+            else
+            {
+                return d;
+            }
+        }
+
+        if (!KeyBoard.InUse)
+        {
+            return KeyBoard;
+        }
+
+        return null;
+    }
+
 	static void AttachDevice(InputDevice inputDevice)
 	{
 		devices.Add(inputDevice);

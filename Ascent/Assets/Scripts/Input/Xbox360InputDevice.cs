@@ -20,6 +20,7 @@ public class XBox360InputDevice : InputDevice
 	{
 		gamePadID = (PlayerIndex)id;
 		name = xboxName + id;
+        isJoystick = true;
 
 		Initialise();
 	}

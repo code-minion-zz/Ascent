@@ -16,7 +16,7 @@ public class Barrel : EnvironmentBreakable
 
         for (int i = 0; i < quantityOfLoot; ++i)
         {
-            Item newItem = LootGenerator.RandomlyGenerateItem(Game.Singleton.Tower.CurrentFloorNumber, LootGenerator.ELootType.Gold, true);
+            Item newItem = LootGenerator.RandomlyGenerateItem(Game.Singleton.Tower.currentFloorNumber, LootGenerator.ELootType.Gold, true);
             loot.Add(newItem);
         }
     }

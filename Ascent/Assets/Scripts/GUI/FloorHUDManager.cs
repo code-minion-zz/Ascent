@@ -72,6 +72,7 @@ public class FloorHUDManager : MonoBehaviour
 		
         // Create HUD container for number of players
         int iPlayers = game.Players.Count;
+        Debug.Log(game.Players);
         playerHUDs = new PlayerHUD[iPlayers];
 
         // If Player1 is missing, the default PlayerHUD needs to be removed.

@@ -273,16 +273,16 @@ public class Room : MonoBehaviour
 			}
 		}
 
-		if (enemies != null)
-		{
-			foreach (Enemy e in enemies)
-			{
-				if (!navMesh.IsWithinBounds(e.transform.position))
-				{
-					e.transform.position = transform.position;
-				}
-			}
-		}
+        //if (enemies != null)
+        //{
+        //    foreach (Enemy e in enemies)
+        //    {
+        //        if (!navMesh.IsWithinBounds(e.transform.position))
+        //        {
+        //            e.transform.position = transform.position;
+        //        }
+        //    }
+        //}
     }
 
     private void SetupCamera()

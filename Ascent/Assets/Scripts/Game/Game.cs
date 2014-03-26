@@ -22,7 +22,10 @@ public class Game : MonoBehaviour
 		FloorSummary,
         TestTower,
 		Loading,
-		Tower
+        Tower,
+		TowerPlayer1,
+        TowerPlayer2,
+        TowerPlayer3
     }
 
 	#region Fields
@@ -332,9 +335,24 @@ public class Game : MonoBehaviour
 				break;
 			case EGameState.Tower:
 				{
-					Application.LoadLevel("Tower");
+                    Application.LoadLevel("TestTower");
 				}
 				break;
+            case EGameState.TowerPlayer1:
+                {
+                    Application.LoadLevel("P1Floor1");
+                }
+                break;
+            case EGameState.TowerPlayer2:
+                {
+                    Application.LoadLevel("P1Floor2");
+                }
+                break;
+            case EGameState.TowerPlayer3:
+                {
+                    Application.LoadLevel("P1Floor3");
+                }
+                break;
 			case EGameState.TestTower:
 				{
 					Application.LoadLevel("TestTower");
@@ -362,13 +380,6 @@ public class Game : MonoBehaviour
 
 	public void OnLevelWasLoaded(int iLevelID)
 	{
-		//if (firstState)
-		//{
-		//    Debug.Log("FIRST");
-		//    firstState = false;
-		//    return;
-		//}
-
 		if(gameStateToLoad != EGameState.None)
 		{
 			InitialiseState();
@@ -396,6 +407,9 @@ public class Game : MonoBehaviour
 				}
 				break;
 			case EGameState.TestTower:
+            case EGameState.TowerPlayer1:
+            case EGameState.TowerPlayer2:
+            case EGameState.TowerPlayer3:
 				{
 					foreach (Player p in players)
 					{
@@ -404,7 +418,7 @@ public class Game : MonoBehaviour
 							p.Hero.gameObject.SetActive(true);
 						}
 					}
-					tower.InitialiseTestFloor();
+					tower.InitialiseTower();
 				}
 				break;
 			case EGameState.Tower:
@@ -438,7 +452,7 @@ public class Game : MonoBehaviour
 				break;
 			default:
 				{
-					Debug.LogError("Unhandled case");
+					//Debug.LogError("Unhandled case");
 				}
 				break;
 		}
