@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArrowShooter : MonoBehaviour 
+public class ArrowShooter : EnvironmentHazard
 {
     public GameObject projectile;
     public int projectilePoolCount = 5;
@@ -14,6 +14,7 @@ public class ArrowShooter : MonoBehaviour
     private ObjectPool arrowPool;
     private Vector3 spawnPoint;
     private float timeElapsed = 0.0f;
+    private bool activateArrows;
    
 
 	// Use this for initialization
@@ -26,10 +27,20 @@ public class ArrowShooter : MonoBehaviour
 		spawnPoint = transform.FindChild("Shooter").transform.position + direction* 0.5f;
 		
 	}
+
+    public override void ActivateHazard()
+    {
+        activateArrows = true;
+    }
 	
 	// Update is called once per frame
 	void Update () 
     {
+        if (activateArrows == false)
+        {
+            return;
+        }
+
         timeElapsed += Time.deltaTime;
         if (timeElapsed > frequency)
         {

@@ -20,9 +20,6 @@ public enum EnvironmentID
 
 public class EnvironmentObj : MonoBehaviour
 {
-    public delegate void TriggerEvent(EnvironmentObj targetObject);
-    protected TriggerEvent onCollision;
-
     public EnvironmentID environmentID;
 
     public EnvironmentID TileAttributeType
