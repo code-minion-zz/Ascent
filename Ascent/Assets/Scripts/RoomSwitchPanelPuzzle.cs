@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class RoomSwitchPanelPuzzle : MonoBehaviour 
@@ -29,7 +29,7 @@ public class RoomSwitchPanelPuzzle : MonoBehaviour
 
 		for (int i = 0; i < total; ++i)
 		{
-			if (switches[i].isDown)
+			if (switches[i].IsDown)
 			{
 				accum++;
 			}

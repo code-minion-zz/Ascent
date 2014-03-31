@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SwitchTrigger : EnvironmentTrigger
@@ -14,7 +14,7 @@ public class SwitchTrigger : EnvironmentTrigger
 
 		for (int i = 0; i < total; ++i)
 		{
-			if (switches[i].isDown)
+			if (switches[i].IsDown)
 			{
 				accum++;
 			}
