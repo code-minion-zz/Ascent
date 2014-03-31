@@ -121,7 +121,6 @@ public static class SoundManager
 			break;
 			}
 		}
-		Debug.Log(clip);
 		
         return clip;
     }
