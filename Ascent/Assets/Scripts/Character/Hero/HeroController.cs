@@ -780,67 +780,70 @@ public class HeroController : MonoBehaviour
 
 			// Are we in range of it?
 
-            if (closestBlock != null && closestBlock.TriggerRegion.IsInside(position))
-			{
-				// Is it in front?
-				Vector3 pos = closestBlock.transform.position;
-				pos.y = transform.position.y;
-				Vector3 direction = (transform.position - pos).normalized;
-				float dot = Vector3.Dot(direction, transform.forward);
+            if (closestBlock != null)
+            {
+                if (closestBlock.TriggerRegion.IsInside(position))
+                {
+                    // Is it in front?
+                    Vector3 pos = closestBlock.transform.position;
+                    pos.y = transform.position.y;
+                    Vector3 direction = (transform.position - pos).normalized;
+                    float dot = Vector3.Dot(direction, transform.forward);
 
-				if (dot < -0.9f)
-				{
-					// Has it been grabbed yet?
-					if (!closestBlock.grabbed)
-					{
-						if (wasButtonPressed)
-						{
-							// Grab it
-							grabbedObject = closestBlock;
-							closestBlock.grabbed = true;
+                    if (dot < -0.9f)
+                    {
+                        // Has it been grabbed yet?
+                        if (!closestBlock.grabbed)
+                        {
+                            if (wasButtonPressed)
+                            {
+                                // Grab it
+                                grabbedObject = closestBlock;
+                                closestBlock.grabbed = true;
 
-							//vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
-							vertGrab = Mathf.Abs(transform.forward.x) < 0.2f;
+                                //vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
+                                vertGrab = Mathf.Abs(transform.forward.x) < 0.2f;
 
-							motor.StopMotion();
-							animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
-							buttonIndicator.Enable(false);
-						}
-						else
-						{
-							buttonIndicator.Enable(true);
-						}
+                                motor.StopMotion();
+                                animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
+                                buttonIndicator.Enable(false);
+                            }
+                            else
+                            {
+                                buttonIndicator.Enable(true);
+                            }
 
-						// figure out direction
-						if (vertGrab)
-						{
-							if (direction.z > 0.0f)
-							{
-								blockDirection = EBlockDirection.South;
-							}
-							else
-							{
-								blockDirection = EBlockDirection.North;
-								
-							}
-						}
-						else
-						{
-							if (direction.x > 0.0f)
-							{
-								blockDirection = EBlockDirection.West;
-								
-							}
-							else
-							{
-								blockDirection = EBlockDirection.East;
-							}
-						}
-						
-						return true;
-					}
-				}
-			}
+                            // figure out direction
+                            if (vertGrab)
+                            {
+                                if (direction.z > 0.0f)
+                                {
+                                    blockDirection = EBlockDirection.South;
+                                }
+                                else
+                                {
+                                    blockDirection = EBlockDirection.North;
+
+                                }
+                            }
+                            else
+                            {
+                                if (direction.x > 0.0f)
+                                {
+                                    blockDirection = EBlockDirection.West;
+
+                                }
+                                else
+                                {
+                                    blockDirection = EBlockDirection.East;
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            }
 		}
 
 		buttonIndicator.Enable(false);
