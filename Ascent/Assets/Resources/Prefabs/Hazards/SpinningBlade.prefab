@@ -8,7 +8,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: Blades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,8 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blade: {fileID: 100000, guid: c366fea2e4d986143ba4afa4a0bcc6e4, type: 2}
   bladeCount: 3
-  bladeDirection: -1
   rotationSpeed: 5
+  initialRotationOffset: 0
   bladeDamage: 2
   bladeLength: 3
 --- !u!114 &11400002
