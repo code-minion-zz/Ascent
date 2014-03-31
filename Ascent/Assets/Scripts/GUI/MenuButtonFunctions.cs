@@ -4,52 +4,56 @@ using System.Collections.Generic;
 
 public class MenuButtonFunctions : MonoBehaviour 
 {
-//    public GameObject defaultSelection;
-//    InputDevice[] devices;
-	
-//    void OnEnable()
-//    {
-//        UICamera.fallThrough = this.gameObject;
-//    }
-	
-//    void Awake()
-//    {
-//    }
-	
-//    public void GoToLevel()
-//    {
-//        if (enabled)
-//        {
-//            Game.Singleton.LoadLevel(Game.EGameState.HeroSelect);
-//        }
-//    }	
-	
-//    void Update()
-//    {
-//        foreach (InputDevice id in InputManager.Devices)
-//        {
-//            if(id.Start.IsPressed)
-//            {
-//                GoToLevel();
-//                return;
-//            }
-//        }
-////		if (UICamera.selectedObject == null)
-////		{
-////			UICamera.selectedObject = this.gameObject;
-////		}
-//    }
-	
-//    void OnKey (KeyCode key)
-//    {
-////		if (UICamera.selectedObject == this.gameObject)
-////		{
-////			UICamera.selectedObject = defaultSelection;
-////			UICamera.Notify(defaultSelection,"OnHover",false);
-////		}
-//    }
+    public UIButton[] playButtons;
 
+    public void Update()
+    {
+        int playerCount = 0;
+        for (int i = 0; i < InputManager.Devices.Count; ++i)
+        {
+            if (i > 2)
+            {
+                break;
+            }
 
+            playButtons[i].enabled = true;
+            ++playerCount;
+        }
+        
+        if (playerCount == 3)
+        {
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[1].GetComponent<UIButtonKeys>();
+
+            playButtons[1].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
+            playButtons[1].GetComponent<UIButtonKeys>().selectOnDown = playButtons[2].GetComponent<UIButtonKeys>();
+
+            playButtons[2].GetComponent<UIButtonKeys>().selectOnUp = playButtons[1].GetComponent<UIButtonKeys>();
+            playButtons[2].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
+
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[2].GetComponent<UIButtonKeys>();
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+        }
+        else if (playerCount == 2)
+        {
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[1].GetComponent<UIButtonKeys>();
+
+            playButtons[1].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
+            playButtons[1].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
+
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[1].GetComponent<UIButtonKeys>();
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+        }
+        else if (playerCount <= 1)
+        {
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
+            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
+
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
+            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+        }
+    }
 
     public void OnPlayerOnePressed()
     {
