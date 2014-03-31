@@ -24,6 +24,8 @@ public class Blade : MonoBehaviour
 				}
 				break;
 		}
+
+        Debug.Log(collision);
 	}
 
 	void OnCollisionExit(Collision collision)
