@@ -70,7 +70,7 @@ public class Lightning : Projectile
                                 combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
 
                                 // Create a blood splatter effect on the enemy.
-                                Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
+                                //Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
                             }
 
                             combatEvaluator.Apply();
@@ -102,6 +102,7 @@ public class Lightning : Projectile
                                         velocity = nextTarget.transform.position - projectile.transform.position;
                                         projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
                                         hitSomething = false;
+										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f);
                                     }
                                     else
                                     {

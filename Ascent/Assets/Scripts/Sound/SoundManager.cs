@@ -13,7 +13,8 @@ public enum AudioClipType
 	wethit,
 	dooropen,
 	stonedrag,
-	switchclick
+	switchclick,
+	lightning
 }
 
 public static class SoundManager
@@ -33,6 +34,7 @@ public static class SoundManager
 	private static AudioClip stonedrag = Resources.Load("Sounds/effects/stonedrag") as AudioClip;
 	private static AudioClip stonedrag2 = Resources.Load("Sounds/effects/stonedrag2") as AudioClip;
 	private static AudioClip switchclick = Resources.Load("Sounds/effects/switchclick") as AudioClip;
+	private static AudioClip lightning = Resources.Load("Sounds/effects/lightning") as AudioClip;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
@@ -125,6 +127,10 @@ public static class SoundManager
 
 			case AudioClipType.switchclick:
 				clip = switchclick;
+			break;
+
+			case AudioClipType.lightning:
+				clip = lightning;
 				break;
 		}
 		

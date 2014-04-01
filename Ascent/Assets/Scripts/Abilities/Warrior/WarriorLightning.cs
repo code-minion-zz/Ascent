@@ -32,7 +32,7 @@ public class WarriorLightning : Ability
 
     public override void StartCast()
     {
-
+		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()
