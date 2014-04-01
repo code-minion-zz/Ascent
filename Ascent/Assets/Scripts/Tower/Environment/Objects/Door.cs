@@ -12,6 +12,7 @@ public class Door : EnvironmentBreakable
 
 	public Door targetDoor;
     public bool isConnected;
+    public bool isFinalDoor;
 
     public bool isEntryDoor = false;
 
@@ -44,27 +45,6 @@ public class Door : EnvironmentBreakable
 			Vector3 a = transform.position + dir * 7.5f;
 			Vector3 b = targetDoor.transform.position - dir * 9.0f;
 
-            //if (direction == Floor.TransitionDirection.North)
-            //{
-            //    a.x = a.x - 1.5f;
-            //    b.x = b.x - 1.5f;
-            //}
-            //else if (direction == Floor.TransitionDirection.South)
-            //{
-            //    a.x = a.x + 1.5f;
-            //    b.x = b.x + 1.5f; 
-            //}
-            //else if (direction == Floor.TransitionDirection.East)
-            //{
-            //    a.z = a.z - 1.5f;
-            //    b.z = b.z - 1.5f;
-            //}
-            //else if (direction == Floor.TransitionDirection.West)
-            //{
-            //    a.z = a.z + 1.5f;
-            //    b.z = b.z + 1.5f;
-            //}
-
 			a.y = 2.5f;
 			b.y = 2.5f;
 
@@ -73,8 +53,6 @@ public class Door : EnvironmentBreakable
 
 			a = transform.position;
 			a.y = 5.0f;
-			//Handles.ArrowCap(0, a, Quaternion.LookRotation(FloorCamera.GetDirectionVector(direction), Vector3.up), 1.5f);
-            //Handles.ArrowCap(0, a, Quaternion.LookRotation(Vector3.zero, Vector3.up), 1.5f);
 		}
 	}
 #endif
@@ -84,7 +62,6 @@ public class Door : EnvironmentBreakable
 	{
         if (Game.Singleton.Tower.CurrentFloor != null)
         {
-            //direction = (Floor.TransitionDirection)Enum.Parse(typeof(Floor.TransitionDirection), gameObject.name);
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
             sealedDoor.SetActive(false);
@@ -120,7 +97,7 @@ public class Door : EnvironmentBreakable
 			}
 		}
 
-        if (targetDoor != null)
+        if (targetDoor != null || isFinalDoor)
         {
 			int playerCount = Game.Singleton.AlivePlayerCount;
 
@@ -133,7 +110,17 @@ public class Door : EnvironmentBreakable
                     {
                        if(p.Hero.collider.bounds.Intersects(immediateArea.bounds))
                        {
-                           Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                           if (isFinalDoor)
+                           {
+                               Game.Singleton.Tower.LoadNextFloor();
+                           }
+                           else
+                           {
+                               if (targetDoor != null)
+                               {
+                                   Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                               }
+                           }
                        }
                     }
                 }
@@ -158,7 +145,18 @@ public class Door : EnvironmentBreakable
 					standingOnDoorTimer += Time.deltaTime;
 					if (standingOnDoorTimer >= 0.5f)
 					{
-						Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                        if (isFinalDoor)
+                        {
+                            Game.Singleton.Tower.LoadNextFloor();
+                        }
+                        else
+                        {
+                            if (targetDoor != null)
+                            {
+                                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                            }
+                        }
+
 						walkedOutOfTheDoor = true;
 					}
 				}
@@ -169,7 +167,17 @@ public class Door : EnvironmentBreakable
 					{
 						if (p.Hero.collider.bounds.Intersects(immediateArea.bounds))
 						{
-							Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                            if (isFinalDoor)
+                            {
+                                Game.Singleton.Tower.LoadNextFloor();
+                            }
+                            else
+                            {
+                                if (targetDoor != null)
+                                {
+                                    Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                                }
+                            }
 							walkedOutOfTheDoor = true;
 						}
 					}
