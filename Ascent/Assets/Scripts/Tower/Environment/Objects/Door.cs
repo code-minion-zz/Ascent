@@ -12,6 +12,7 @@ public class Door : EnvironmentBreakable
 
 	public Door targetDoor;
     public bool isConnected;
+    public bool isFinalDoor;
 
     public bool isEntryDoor = false;
 
@@ -120,7 +121,7 @@ public class Door : EnvironmentBreakable
 			}
 		}
 
-        if (targetDoor != null)
+        if (targetDoor != null || isFinalDoor)
         {
 			int playerCount = Game.Singleton.AlivePlayerCount;
 
@@ -133,7 +134,17 @@ public class Door : EnvironmentBreakable
                     {
                        if(p.Hero.collider.bounds.Intersects(immediateArea.bounds))
                        {
-                           Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                           if (isFinalDoor)
+                           {
+                               Game.Singleton.Tower.LoadNextFloor();
+                           }
+                           else
+                           {
+                               if (targetDoor != null)
+                               {
+                                   Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                               }
+                           }
                        }
                     }
                 }
@@ -158,7 +169,18 @@ public class Door : EnvironmentBreakable
 					standingOnDoorTimer += Time.deltaTime;
 					if (standingOnDoorTimer >= 0.5f)
 					{
-						Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                        if (isFinalDoor)
+                        {
+                            Game.Singleton.Tower.LoadNextFloor();
+                        }
+                        else
+                        {
+                            if (targetDoor != null)
+                            {
+                                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                            }
+                        }
+
 						walkedOutOfTheDoor = true;
 					}
 				}
@@ -169,7 +191,17 @@ public class Door : EnvironmentBreakable
 					{
 						if (p.Hero.collider.bounds.Intersects(immediateArea.bounds))
 						{
-							Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                            if (isFinalDoor)
+                            {
+                                Game.Singleton.Tower.LoadNextFloor();
+                            }
+                            else
+                            {
+                                if (targetDoor != null)
+                                {
+                                    Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                                }
+                            }
 							walkedOutOfTheDoor = true;
 						}
 					}
