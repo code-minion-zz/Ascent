@@ -56,7 +56,6 @@ public static class StatHelper
 	{
 		// Get character base statistics
 		int finesse = character.Stats.Finesse;
-
 		if (character is Hero)
 		{
 			// Go through the list of items and add power
@@ -65,8 +64,7 @@ public static class StatHelper
 
 			if (itemCount > 0)
 			{
-				int i;
-				for (i = 0; i < itemCount; ++i)
+				for (int i = 0; i < itemCount; ++i)
 				{
 					Item item = backPack.AllItems[i];
 					if (item is ConsumableItem)
@@ -79,26 +77,27 @@ public static class StatHelper
 			}
 		}
 
-		// Add status buff modifiers
-		//character.}
+		return AddStatusBuffMods(character, finesse);
+	}
+
+    private static int AddStatusBuffMods(Character character, int finesse)
+    {
         List<StatusEffect> buffList = character.StatusEffects;
 
         int buffCount = buffList.Count;
+        if (buffCount == 0)
+            return finesse;
 
-		if (buffCount > 0)
-		{
-			int i;
-			for (i = 0; i < buffCount; ++i)
-			{
-				if (buffList[i] is PrimaryStatModifierEffect)
-				{
-					finesse += (int)((PrimaryStatModifierEffect)buffList[i]).Finesse;
-				}
-			}
-		}
+        for (int i = 0; i < buffCount; ++i)
+        {
+            if (buffList[i] is PrimaryStatModifierEffect)
+            {
+                finesse += (int)((PrimaryStatModifierEffect)buffList[i]).Finesse;
+            }
+        }
 
-		return finesse;
-	}
+        return finesse;
+    }
 
 	public static int Vitality(Character character)
 	{

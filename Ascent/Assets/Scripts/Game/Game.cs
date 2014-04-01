@@ -63,7 +63,11 @@ public class Game : MonoBehaviour
 
 	public bool InTower
 	{
-		get { return gameState == EGameState.Tower || gameState == EGameState.TestTower; }
+        get { return gameState == EGameState.Tower || 
+                    gameState == EGameState.TestTower || 
+                    gameState == EGameState.TowerPlayer1 ||
+                    gameState == EGameState.TowerPlayer2 ||
+                    gameState == EGameState.TowerPlayer3; }
 	}
 
 	public EGameState gameStateToLoad;
