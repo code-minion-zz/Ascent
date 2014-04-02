@@ -61,27 +61,8 @@ public class WarriorCharge : Ability
 		Vector3 rayStart = startPos;
 		rayStart.y = 1.0f;
 
-		//// Find the closest character
+		// Find the closest character
 		Character closestCharacter = null;
-		//enemies = new List<Character>();
-		//if (Game.Singleton.InTower)
-		//{
-		//    if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(arc, Character.EScope.Enemy, ref enemies))
-		//    {
-		//        float closestDistance = 1000000.0f;
-
-		//        foreach (Character e in enemies)
-		//        {
-		//            float distance = (owner.transform.position - e.transform.position).sqrMagnitude;
-
-		//            if (distance < closestDistance)
-		//            {
-		//                closestDistance = distance;
-		//                closestCharacter = e;
-		//            }
-		//        }
-		//    }
-		//}
 
 		// Charge to the closest character
 		if (closestCharacter != null)
@@ -99,16 +80,9 @@ public class WarriorCharge : Ability
 		{
 			int layerMask = ((1 << (int)Layer.Environment)) | ((1 << (int)Layer.Block));
 			RaycastHit hitInfo;
-			//if (Physics.Raycast(new Ray(rayStart, owner.transform.forward), out hitInfo, distanceMax))
-			//{
-			//    targetPos = hitInfo.point - (owner.transform.forward);
 
-			//    travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
-			//    animationLength = travelTime;
-			//}
 			if (Physics.SphereCast(new Ray(rayStart, owner.transform.forward), 0.1f, out hitInfo, distanceMax, layerMask))
 			{
-				//targetPos = hitInfo.point - (owner.transform.forward);
 				targetPos = rayStart + (owner.transform.forward * hitInfo.distance);
 
 				travelTime = (hitInfo.distance / distanceMax) * originalAnimationTime;
@@ -127,7 +101,7 @@ public class WarriorCharge : Ability
 
 		frameCount = checkAtFrame;
 
-        owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
+        //owner.ApplyStatusEffect(new InvulnerabilityBuff(owner, owner, animationLength));
 
 		enemies = new List<Character>();
 		enemiesFoundLastCount = 0;

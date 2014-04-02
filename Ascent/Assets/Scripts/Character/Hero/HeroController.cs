@@ -88,6 +88,8 @@ public class HeroController : MonoBehaviour
 					motor.StopMovingAlongGrid();
 				}
 
+                hero.Loadout.StopAbility();
+
 				//// Action's that cannot be interrupted will not cause this to happen.
 				//if (hero.Loadout.CanInterruptActiveAbility)
 				//{

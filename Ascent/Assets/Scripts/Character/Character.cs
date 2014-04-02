@@ -190,7 +190,10 @@ public abstract class Character : BaseCharacter
 			stats.CurrentHealth -= finalDamage;
 
 			// Tell this character how much damage it has done.
-			OnDamageTaken(finalDamage);
+            if (finalDamage > 0)
+            {
+                OnDamageTaken(finalDamage);
+            }
 
 			// Do knockback
 			if (result.knockbackMagnitute != 0.0f)
@@ -198,23 +201,6 @@ public abstract class Character : BaseCharacter
 				motor.SetKnockback(result.knockbackDirection, result.knockbackMagnitute);
 			}
 		}
-
-
-        //string damageText = (result.dodged ? "Dodged!" : (finalDamage > 0) ? finalDamage.ToString() : "No Damage!");
-
-        //if (this is Hero)
-        //{
-        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.red);
-        //}
-        //else
-        //{
-        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, damageText, Color.cyan);
-        //}
-
-        //if (result.criticalHit)
-        //{
-        //    FloorHUDManager.Singleton.TextDriver.SpawnDamageText(result.target.gameObject, "Critical Hit!", Color.yellow);
-        //}
 
 		// If the character is dead
 		if (stats.CurrentHealth <= 0 && !isDead)

@@ -12,8 +12,13 @@ public class SwitchPanel : MonoBehaviour
 		}
 		set
 		{
+            if (isDown != value)
+            {
+                SoundManager.PlaySound(AudioClipType.switchclick, transform.position, 1f);
+            }
+
 			isDown = value;
-			SoundManager.PlaySound(AudioClipType.switchclick, transform.position, 1f);
+			
 		}
 	}
 
