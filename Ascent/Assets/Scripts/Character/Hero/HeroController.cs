@@ -463,6 +463,7 @@ public class HeroController : MonoBehaviour
 				moveDirection = new Vector3(0, 0, inputDevice.LeftStickY.Value);
 
 				Vector3 rayDirection = Vector3.left;
+                int layerMask = 1;
 
 				if (Mathf.Abs(inputDevice.LeftStickY.Value) > 0.1f)
 				{
@@ -475,10 +476,12 @@ public class HeroController : MonoBehaviour
 								if (inputDevice.LeftStickY.Value < 0.0f)
 								{
 									rayDirection *= -1.0f;
+                                    layerMask = ~(1 << (int)Layer.Floor);
 								}
 								else
 								{
 									rayDirection *= 2.0f;
+                                    layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 								}
 							} 
 							break;
@@ -489,10 +492,12 @@ public class HeroController : MonoBehaviour
 								if (inputDevice.LeftStickY.Value < 0.0f)
 								{
 									rayDirection *= -2.0f;
+                                    layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 								}
 								else
 								{
 									rayDirection *= 1.0f;
+                                    layerMask = ~(1 << (int)Layer.Floor);
 								}
 
 							}
@@ -504,16 +509,11 @@ public class HeroController : MonoBehaviour
 					pos.y = 0.5f;
 
 					RaycastHit hit;
-					int layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs( rayDirection.z), layerMask))
 					{
 						grabbedObject.MoveAlongGrid(moveDirection);
 						motor.MoveAlongGrid(moveDirection);
 					}
-					//else
-					//{
-					//    Debug.Log(hit.transform);
-					//}
 				}
 			}
 			else // horizonal movement
@@ -521,6 +521,7 @@ public class HeroController : MonoBehaviour
 				moveDirection = new Vector3(inputDevice.LeftStickX.Value, 0, 0);
 
 				Vector3 rayDirection = Vector3.left;
+                int layerMask = 1;
 
 				if (Mathf.Abs(inputDevice.LeftStickX.Value) > 0.1f)
 				{
@@ -533,10 +534,12 @@ public class HeroController : MonoBehaviour
 								if (inputDevice.LeftStickX.Value < 0.0f)
 								{
 									rayDirection *= 1.0f;
+                                    layerMask = ~(1 << (int)Layer.Floor);
 								}
 								else
 								{
 									rayDirection *= -2.0f;
+                                    layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 								}
 							}
 							break;
@@ -547,10 +550,12 @@ public class HeroController : MonoBehaviour
 								if (inputDevice.LeftStickX.Value < 0.0f)
 								{
 									rayDirection *= 2.0f;
+                                    layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 								}
 								else
 								{
 									rayDirection *= -1.0f;
+                                    layerMask = ~(1 << (int)Layer.Floor);
 								}
 
 							}
@@ -562,16 +567,11 @@ public class HeroController : MonoBehaviour
 					pos.y = 0.5f;
 
 					RaycastHit hit;
-					int layerMask = ~(1 << (int)Layer.Block | 1 << (int)Layer.Floor);
 					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs(rayDirection.x), layerMask))
 					{
 						grabbedObject.MoveAlongGrid(moveDirection);
 						motor.MoveAlongGrid(moveDirection);
 					}
-					//else
-					//{
-					//    Debug.Log(hit.transform);
-					//}
 				}
 			}
 		}
@@ -638,64 +638,10 @@ public class HeroController : MonoBehaviour
 			}
 		}
 
-        //// Is there an item?
-        //List<LootDrop> loot = curRoom.LootDrops;
-        //if (loot != null && loot.Count > 0)
-        //{
-        //    // Find the closest item
-        //    LootDrop closestDrop = null;
-        //    float closestDistance = 10000.0f;
-        //    foreach (LootDrop l in loot)
-        //    {
-        //        if (!l.CanBePickedUp)
-        //        {
-        //            continue;
-        //        }
-
-        //        float distance = (position - l.transform.position).sqrMagnitude;
-
-        //        if (distance < closestDistance)
-        //        {
-        //            closestDistance = distance;
-        //            closestDrop = l;
-        //        }
-        //    }
-
-        //    if (closestDrop != null)
-        //    {
-        //        // Am I within range of the item?
-        //        if (closestDrop.TriggerRegion.IsInside(position))
-        //        {
-        //            if (wasButtonPressed)
-        //            {
-        //                closestDrop.PickUp(hero.HeroInventory); // I pick it up. No one else can!
-        //                hero.FloorStatistics.NumberOfItemsPickedUp++;
-        //            }
-        //            else
-        //            {
-        //                buttonIndicator.Enable(true);
-        //            }
-
-        //            return true; // An interaction has occured. Exit function now.
-        //        }
-        //    }
-        //}
-
 
 		// Is there a door?
 		if (curRoom.Doors != null && curRoom.Doors.lockedDoorCount > 0)
 		{
-            //// Do we have a key?
-            //ConsumableItem[] consumables = hero.Backpack.ConsumableItems;
-            //KeyItem key = null;
-            //foreach(ConsumableItem item in consumables)
-            //{
-            //    if (item is KeyItem)
-            //    {					
-            //        key = (KeyItem)item;
-            //        break;
-            //    }
-            //}
 
             if (Game.Singleton.Tower.keys > 0)
 			{
@@ -779,8 +725,7 @@ public class HeroController : MonoBehaviour
 			}
 
 			// Are we in range of it?
-
-            if (closestBlock != null)
+            if (closestBlock != null && closestBlock.TriggerRegion != null)
             {
                 if (closestBlock.TriggerRegion.IsInside(position))
                 {
@@ -790,7 +735,7 @@ public class HeroController : MonoBehaviour
                     Vector3 direction = (transform.position - pos).normalized;
                     float dot = Vector3.Dot(direction, transform.forward);
 
-                    if (dot < -0.9f)
+                    if (dot < -0.75f)
                     {
                         // Has it been grabbed yet?
                         if (!closestBlock.grabbed)
@@ -819,10 +764,12 @@ public class HeroController : MonoBehaviour
                                 if (direction.z > 0.0f)
                                 {
                                     blockDirection = EBlockDirection.South;
+                                    //transform.forward = new Vector3(0.0f, 0.0f, -1.0f);
                                 }
                                 else
                                 {
                                     blockDirection = EBlockDirection.North;
+                                    //transform.forward = new Vector3(0.0f, 0.0f, 1.0f);
 
                                 }
                             }
