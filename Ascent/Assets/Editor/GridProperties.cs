@@ -71,16 +71,16 @@ public class GridProperties : EditorWindow
                 GUILayout.BeginHorizontal();
                 {
                     GUILayout.Label(" Spacing width ");
-                    grid.width = EditorGUILayout.FloatField(grid.width, GUILayout.Width(50));
+                    grid.tileWidth = EditorGUILayout.FloatField(grid.tileWidth, GUILayout.Width(50));
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(" Spacing length ");
-                    grid.length = EditorGUILayout.FloatField(grid.length, GUILayout.Width(50));
+                    grid.tileLength = EditorGUILayout.FloatField(grid.tileLength, GUILayout.Width(50));
                     GUILayout.EndHorizontal();
 
-                    grid.width = Mathf.Clamp(grid.width, 0.1f, Mathf.Infinity);
-                    grid.length = Mathf.Clamp(grid.length, 0.1f, Mathf.Infinity);
+                    grid.tileWidth = Mathf.Clamp(grid.tileWidth, 0.1f, Mathf.Infinity);
+                    grid.tileLength = Mathf.Clamp(grid.tileLength, 0.1f, Mathf.Infinity);
 
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(" Grid Width ");
