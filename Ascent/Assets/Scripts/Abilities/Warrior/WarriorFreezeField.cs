@@ -31,11 +31,12 @@ public class WarriorFreezeField : Ability
         GameObject.Destroy(frostFieldGO, 5.0f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
+
+		SoundManager.PlaySound(AudioClipType.freezeBlast, owner.transform.position, 1f);
     }
 
     public override void StartCast()
     {
-		SoundManager.PlaySound(AudioClipType.freezeBlast, owner.transform.position, 1f);
     }
 
     public override void UpdateAbility()

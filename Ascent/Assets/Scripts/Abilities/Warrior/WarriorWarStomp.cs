@@ -8,6 +8,7 @@ public class WarriorWarStomp : Ability
     private GameObject stompObject;
     private GameObject prefab;
     private bool performed;
+	private bool soundPlayed;
 
     public float radius = 3.0f;
     public float knockBack = 10.0f;
@@ -35,8 +36,7 @@ public class WarriorWarStomp : Ability
     public override void StartAbility()
     {
         base.StartAbility();
-		
-		SoundManager.PlaySound(AudioClipType.earthshock, owner.transform.position, 1f);
+
         // Creation of the stomp visual appearence.
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
@@ -44,6 +44,7 @@ public class WarriorWarStomp : Ability
         GameObject.Destroy(stompObject, animationLength / animationSpeed);
 
         performed = false;
+		soundPlayed = false;
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.WarStromp, Warrior.ECombatAnimation.WarStromp.ToString());
     }
@@ -60,6 +61,15 @@ public class WarriorWarStomp : Ability
 
         if (!performed)
         {
+			if (timeElapsedSinceStarting >= animationLength * 0.3f)
+			{
+				if (!soundPlayed)
+				{
+					soundPlayed = true;
+					SoundManager.PlaySound(AudioClipType.earthshock, owner.transform.position, 1f);
+				}
+			}
+
             if (timeElapsedSinceStarting >= animationLength * 0.5f)
             {
                 List<Character> enemies = new List<Character>();

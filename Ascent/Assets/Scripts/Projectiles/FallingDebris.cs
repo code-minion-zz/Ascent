@@ -51,7 +51,7 @@ public class FallingDebris : Projectile
         GameObject explosion = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/DebrisExplosion")) as GameObject;
         explosion.GetComponent<DebrisExplosion>().Initialise(transform.position, owner);
 
-        SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, 1f);
+        SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, .5f);
 
         GameObject.Destroy(this.gameObject);
     }
