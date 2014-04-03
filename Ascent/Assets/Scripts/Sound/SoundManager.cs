@@ -14,7 +14,8 @@ public enum AudioClipType
 	dooropen,
 	stonedrag,
 	switchclick,
-	lightning
+	lightning,
+	earthshock,
 }
 
 public static class SoundManager
@@ -35,6 +36,7 @@ public static class SoundManager
 	private static AudioClip stonedrag2 = Resources.Load("Sounds/effects/stonedrag2") as AudioClip;
 	private static AudioClip switchclick = Resources.Load("Sounds/effects/switchclick") as AudioClip;
 	private static AudioClip lightning = Resources.Load("Sounds/effects/lightning") as AudioClip;
+	private static AudioClip earthshock = Resources.Load("Sounds/effects/earthshock") as AudioClip;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
@@ -117,10 +119,10 @@ public static class SoundManager
 				{
 				case 1:
 					clip = stonedrag;
-					break;
+				break;
 				case 2:
 					clip = stonedrag2;
-					break;
+				break;
 				}
 			break;
 			}
@@ -131,7 +133,11 @@ public static class SoundManager
 
 			case AudioClipType.lightning:
 				clip = lightning;
-				break;
+			break;
+
+			case AudioClipType.earthshock:
+				clip = earthshock;
+			break;
 		}
 		
         return clip;
