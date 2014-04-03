@@ -29,14 +29,14 @@ public class WarriorWarStomp : Ability
         prefab = Resources.Load("Prefabs/Effects/WarStompEffect") as GameObject;
 
         collisionShape = new Circle(owner.transform, radius, new Vector3(0.0f,0.0f,0.0f));
-
-		
+				
     }
 
     public override void StartAbility()
     {
         base.StartAbility();
-
+		
+		SoundManager.PlaySound(AudioClipType.earthshock, owner.transform.position, 1f);
         // Creation of the stomp visual appearence.
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
@@ -94,6 +94,12 @@ public class WarriorWarStomp : Ability
         ((HeroAnimator)Owner.Animator).CombatAnimationEnd();
         base.EndAbility();
     }
+
+	public override void StartCast()
+	{
+		base.StartCast ();
+	}
+
 
 #if UNITY_EDITOR
     public override void DebugDraw()
