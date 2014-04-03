@@ -36,6 +36,8 @@ public class WarriorHeavyStrike : Ability
         timeElapsedSinceStarting = 0.0f;
         performed = false;
 
+		SoundManager.PlaySound(AudioClipType.heavyhit, owner.transform.position, 1f);
+
         animationLength = 1.167f / animationSpeed;
 		//owner.Animator.PlayAnimation(animationTrigger);
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.HeavyStrike, Warrior.ECombatAnimation.HeavyStrike.ToString());
