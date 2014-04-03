@@ -170,7 +170,8 @@ namespace Ascent
                             GameObject instantiatedGo = go as GameObject;
                             instantiatedGo.transform.parent = parent;
                             instantiatedGo.name = selection.name;
-                            instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selection.transform.position;
+                            instantiatedGo.transform.position = selection.transform.position;
+                            instantiatedGo.transform.rotation = selection.transform.rotation;
                             newSelection.Add(instantiatedGo);
 
                             foreach (Transform t in selection.GetComponentInChildren<Transform>())
@@ -198,6 +199,33 @@ namespace Ascent
                         instantiatedGo.transform.position = new Vector3(0.0f, selectedObject.transform.position.y, 0.0f) + selectedTile.transform.position;
                         Selection.activeGameObject = instantiatedGo;
                     }
+                }
+
+                if (GUILayout.Button("Replace object with " + selectedObject.name, GUILayout.Width(buttonSize)))
+                {
+                    Transform activeTransform = Selection.activeTransform;
+                    parent = activeTransform.parent;
+
+                    UnityEngine.Object go = PrefabUtility.InstantiatePrefab(selectedObject);
+
+                    if (go != null)
+                    {
+                        GameObject instantiatedGo = go as GameObject;
+                        instantiatedGo.transform.parent = parent;
+                        instantiatedGo.name = activeTransform.name;
+                        instantiatedGo.transform.position = activeTransform.position;
+                        instantiatedGo.transform.rotation = activeTransform.rotation;
+                        newSelection.Add(instantiatedGo);
+
+                        // For every child of the object move it to the new object.
+                        foreach (Transform t in activeTransform.GetComponentInChildren<Transform>())
+                        {
+                            t.parent = instantiatedGo.transform;
+                        }
+                    }
+
+                    GameObject.DestroyImmediate(activeTransform.gameObject);
+                    Selection.objects = newSelection.ToArray();
                 }
             }
         }

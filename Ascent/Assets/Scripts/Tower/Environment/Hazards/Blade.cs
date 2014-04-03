@@ -53,6 +53,6 @@ public class Blade : MonoBehaviour
 		combatEvaluator.Add(new TrapDamageProperty(2.0f, 1.0f));
 		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1.0f));
 		combatEvaluator.Apply();
-        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, collision.transform.rotation, hero.transform, 3.0f);
+        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, collision.transform.rotation, hero.transform);
 	}
 }

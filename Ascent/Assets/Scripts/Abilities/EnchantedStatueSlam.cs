@@ -71,7 +71,7 @@ public class EnchantedStatueSlam : Ability
 					combatEvaluator.Apply();
 
 					// Create a blood splatter effect on the enemy.
-					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+					Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform);
 
 					// Tell the hud manager to spawn text.
 					FloorHUDManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);

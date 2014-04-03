@@ -115,7 +115,7 @@ public class Slime : Enemy
         Vector3 direction = (collision.transform.position - transform.position).normalized;
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
 
-        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform, 3.0f);
+        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform);
 
 		CombatEvaluator combatEvaluator = new CombatEvaluator(this, hero);
         combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.0f));
