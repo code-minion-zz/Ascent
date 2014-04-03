@@ -94,12 +94,6 @@ public abstract class Ability
        //this.name = this.GetType().ToString();
     }
 
-	public virtual void Validate()
-	{
-#if UNITY_EDITOR
-		owner.Animator.DoesStateExist(animationTrigger);
-#endif
-	}
 
     /// <summary>
     /// Handles resetting values for starting the ability. This includes cooldown times,
