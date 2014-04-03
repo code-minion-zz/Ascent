@@ -11,8 +11,8 @@ public class EffectFactory : MonoBehaviour
         bloodSplatter.LoadResources();
     }
 
-    public void CreateBloodSplatter(Vector3 position, Quaternion rotation, Transform parent, float length)
+    public void CreateBloodSplatter(Vector3 position, Quaternion rotation, Transform parent)
     {
-        bloodSplatter.CreateBloodSplatter(position, rotation, parent, length);
+        bloodSplatter.CreateBloodSplatter(position, rotation, parent, 3.0f);
     }
 }

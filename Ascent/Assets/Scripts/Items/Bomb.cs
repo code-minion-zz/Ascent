@@ -53,7 +53,7 @@ public class Bomb : MonoBehaviour
 							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
-							Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+							Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform);
 						}
 					}
 

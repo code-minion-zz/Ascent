@@ -5,6 +5,7 @@ using System.Collections;
 
 public class SplitMeshIntoTriangles : MonoBehaviour
 {
+    public bool splitMesh = false;
     IEnumerator SplitMesh()
     {
         MeshFilter MF = GetComponent<MeshFilter>();
@@ -55,6 +56,12 @@ public class SplitMeshIntoTriangles : MonoBehaviour
     }
     void Update()
     {
+        if (splitMesh == true)
+        {
+            StartCoroutine("SplitMesh");
+            splitMesh = false;
+        }
+
         if (Input.GetMouseButtonUp(0))
         {
             StartCoroutine(SplitMesh());

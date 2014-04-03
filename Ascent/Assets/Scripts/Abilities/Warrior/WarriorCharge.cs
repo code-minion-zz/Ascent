@@ -163,7 +163,7 @@ public class WarriorCharge : Ability
 						combatEvaluator.Apply();
 
 						// Create a blood splatter effect on the enemy.
-						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform, 3.0f);
+						Game.Singleton.EffectFactory.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation, enemies[i].transform);
 					}
 
 					enemiesFoundLastCount = enemies.Count;
