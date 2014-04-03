@@ -16,6 +16,9 @@ public enum AudioClipType
 	switchclick,
 	lightning,
 	earthshock,
+	arrowwoosh,
+	heavyhit,
+
 }
 
 public static class SoundManager
@@ -37,6 +40,8 @@ public static class SoundManager
 	private static AudioClip switchclick = Resources.Load("Sounds/effects/switchclick") as AudioClip;
 	private static AudioClip lightning = Resources.Load("Sounds/effects/lightning") as AudioClip;
 	private static AudioClip earthshock = Resources.Load("Sounds/effects/earthshock") as AudioClip;
+	private static AudioClip arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
+	private static AudioClip heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
@@ -138,6 +143,13 @@ public static class SoundManager
 			case AudioClipType.earthshock:
 				clip = earthshock;
 			break;
+			case AudioClipType.arrowwoosh:
+				clip = arrowwoosh;
+			break;
+			case AudioClipType.heavyhit:
+				clip = heavyhit;
+			break;
+
 		}
 		
         return clip;

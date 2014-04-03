@@ -50,6 +50,7 @@ public class ArrowShooter : EnvironmentHazard
             ObjectPool.PoolObject po = arrowPool.GetInactive();
             if (po != null)
             {
+				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.3f);
                 Arrow newArrow = po.script as Arrow;
                 newArrow.Initialise(arrowLifeSpan, this.gameObject, direction, projectileSpeed, projectileDamage);
 				po.go.transform.position = spawnPoint;
