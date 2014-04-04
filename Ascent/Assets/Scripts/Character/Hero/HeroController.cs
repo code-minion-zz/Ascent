@@ -227,27 +227,6 @@ public class HeroController : MonoBehaviour
         {
             hero.RefreshEverything();
         }
-
-		//if(Input.GetKeyUp(KeyCode.Alpha1))
-		//{
-		//    hero.Backpack.AccessoryItems[0].Durability -= 10;
-		//}
-		//if (Input.GetKeyUp(KeyCode.Alpha2))
-		//{
-		//    hero.Backpack.AccessoryItems[1].Durability -= 10;
-		//}
-		//if (Input.GetKeyUp(KeyCode.Alpha3))
-		//{
-		//    hero.Backpack.AccessoryItems[2].Durability -= 10;
-		//}
-		//if (Input.GetKeyUp(KeyCode.Alpha4))
-		//{
-		//    hero.Backpack.AccessoryItems[3].Durability -= 10;
-		//}
-		//if (Input.GetKeyUp(KeyCode.Alpha5))
-		//{
-		//    Hero.Test_DrawHeroStats(hero);
-		//}
     }
 
 	public void OnDrawGizmosSelected()

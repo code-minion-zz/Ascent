@@ -44,7 +44,6 @@ public class CharacterAnimator : MonoBehaviour
 
     public virtual void PlayAnimation(string anim)
     {
-		currentAnim = anim;
         if (hasAnimations)
         {
             animator.SetBool(anim, true);

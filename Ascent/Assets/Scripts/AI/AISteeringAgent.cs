@@ -83,6 +83,13 @@ public class AISteeringAgent
         set { canRotate = value; }
     }
 
+    protected bool runIfTooClose = false;
+    public bool RunIfTooClose
+    {
+        get { return runIfTooClose; }
+        set { runIfTooClose = value; }
+    }
+
 	protected float distanceToKeepFromTarget = 1.75f;
 	public float DistanceToKeepFromTarget
 	{
@@ -115,6 +122,7 @@ public class AISteeringAgent
 		if (enabled)
 		{
 			bool moveThisFrame = true;
+            bool moveBack = false;
 			if (hasTarget)
 			{
 				if (targetCharacter != null)
@@ -123,24 +131,33 @@ public class AISteeringAgent
 					{
 						if (canRotate)
 						{
-							if (IsRunningAway)
+                            if (IsRunningAway)
 							{
+                                // Rotate away
 								motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
 							}
 							else
 							{
-								//motor.transform.LookAt(targetCharacter.transform.position);
-								motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
-
 								// If you are too close to the target. Do not get any closer!
-								if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
-								{
-									moveThisFrame = false;
-									motor.StopMotion();
-								}
+                                if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
+                                {
+                                    if (runIfTooClose)
+                                    {
+                                        moveBack = true;
+                                        //motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
+                                    }
+                                    else
+                                    {
+                                        moveThisFrame = false;
+                                        motor.StopMotion();
+                                    }
+                                }
+                                //else
+                                {
+                                    // Rotate toward
+                                    motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
+                                }
 							}
-
-
 						}
 					}
 
@@ -156,7 +173,6 @@ public class AISteeringAgent
 				{
 					if (motor.IsUsingMovementForce)
 					{
-						//motor.transform.LookAt(targetPos);
 						motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
 					}
 
@@ -171,7 +187,15 @@ public class AISteeringAgent
 
 				if (moveThisFrame && canMove)
 				{
-					motor.Move(motor.transform.forward);
+                    if (moveBack)
+                    {
+                        motor.Move(-motor.transform.forward);
+                    }
+                    else
+                    {
+                        motor.Move(motor.transform.forward);
+                        
+                    }
 				}
 			}
 		}

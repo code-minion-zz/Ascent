@@ -3,6 +3,7 @@ using System.Collections;
 
 public class EnemyAnimator : CharacterAnimator 
 {
+
     public override void PlayAnimation(int animationID)
     {
         animator.SetBool("NewAnimation", true);

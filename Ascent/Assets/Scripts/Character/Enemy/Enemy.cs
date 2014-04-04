@@ -67,6 +67,11 @@ public abstract class Enemy : Character
 		 set { containedRoom = value; }
     }
 
+    public EnemyAnimator EnemyAnimator
+    {
+        get { return Animator.GetComponent<EnemyAnimator>(); }
+    }
+
    protected float deathSequenceTime = 0.0f;
    protected float deathSequenceEnd = 1.0f;
    protected Vector3 deathRotation = Vector3.zero;
@@ -85,7 +90,7 @@ public abstract class Enemy : Character
         EnemyStats.SecondaryStats.attack = attack;
         EnemyStats.Reset();
 
-		animator = GetComponentInChildren<CharacterAnimator>();
+		animator = GetComponentInChildren<EnemyAnimator>();
 		if (animator == null)
 		{
 			Debug.LogError("No animator attached to " + name, this);
@@ -178,6 +183,11 @@ public abstract class Enemy : Character
         {
             base.Update();
 
+            if (HitTaken)
+            {
+                EnemyAnimator.PlayAnimation(3);
+            }
+
             if (CanMove && CanAct)
             {
                 if (!loadout.IsAbilityActive)
@@ -186,6 +196,7 @@ public abstract class Enemy : Character
                 }
 
                 AIAgent.SteeringAgent.Process();
+                EnemyAnimator.PlayAnimation(1);
             }
 
             if (hpBar != null)
