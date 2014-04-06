@@ -115,8 +115,6 @@ public abstract class Enemy : Character
         loadout.Initialise(this);
 
         deathRotation = new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90.0f);
-
-        animator.hasAnimations = false;
 	}
 
 	public virtual void InitiliseHealthbar()
@@ -183,10 +181,14 @@ public abstract class Enemy : Character
         {
             base.Update();
 
-            if (HitTaken)
-            {
-                EnemyAnimator.PlayAnimation(3);
-            }
+			if (HitTaken)
+			{
+				Animator.PlayAnimation("Hit", true);
+			}
+			else
+			{
+				Animator.PlayAnimation("Hit", false);
+			}
 
             if (CanMove && CanAct)
             {
@@ -196,7 +198,6 @@ public abstract class Enemy : Character
                 }
 
                 AIAgent.SteeringAgent.Process();
-                EnemyAnimator.PlayAnimation(1);
             }
 
             if (hpBar != null)

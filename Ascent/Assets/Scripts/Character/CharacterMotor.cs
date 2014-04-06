@@ -12,7 +12,7 @@ public class CharacterMotor : MonoBehaviour
 	private Vector3 targetVelocity;
 	private Vector3 knockbackDirection;
 
-	private float currentSpeed = 0.0f;
+	protected float currentSpeed = 0.0f;
 	private float originalSpeed = 6.0f;
 	private float buffBonusSpeed;
 
@@ -139,7 +139,7 @@ public class CharacterMotor : MonoBehaviour
 		}
 	}
 
-	protected void ProcessMovement()
+	protected virtual void ProcessMovement()
 	{
 		// Reset the targets
 		targetVelocity = Vector3.zero;
@@ -256,8 +256,6 @@ public class CharacterMotor : MonoBehaviour
 	{
 		movementForce = motion;
         movementForce.y = 0.0f;
-
-		//FixRotationOrthogonally(motion);
 	}
 
 	public virtual void FixRotationOrthogonally(Vector3 curDirection)

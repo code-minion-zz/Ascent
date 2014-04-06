@@ -194,7 +194,6 @@ public class AISteeringAgent
                     else
                     {
                         motor.Move(motor.transform.forward);
-                        
                     }
 				}
 			}

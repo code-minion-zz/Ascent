@@ -228,7 +228,7 @@ public abstract class Character : BaseCharacter
 		}
 
 		hitTaken = true;
-		yield return new WaitForSeconds(0.1f);
+		yield return new WaitForSeconds(0.15f);
 		hitTaken = false;
 
 		if (this is Hero)
