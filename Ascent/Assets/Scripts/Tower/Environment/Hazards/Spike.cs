@@ -4,16 +4,26 @@ using System.Collections;
 public class Spike : MonoBehaviour
 {
     private float damage;
+    public Vector3 originalPos;
+    public float startTime;
+    public float distance;
 
     public void Initialise(float damage)
     {
         this.damage = damage;
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider trigger)
     {
-        // TODO: Deal damage to other object if it is a character
-        damage = damage + damage - damage; // suppress the warning;
-        Debug.Log("hello spike");
+
+        if (trigger.transform.tag == "Hero")
+        {
+            Hero hero = trigger.transform.GetComponent<Hero>();
+            // Apply damage to the hero
+            CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
+            combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
+            combatEvaluator.Apply();
+            Game.Singleton.EffectFactory.CreateBloodSplatter(trigger.transform.position, trigger.transform.rotation, hero.transform);
+        }
     }
 }

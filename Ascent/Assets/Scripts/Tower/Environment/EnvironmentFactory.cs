@@ -20,13 +20,13 @@ public static class EnvironmentFactory
     private static GameObject wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
     private static GameObject doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
 
-    private static GameObject barrelObject = Resources.Load("Prefabs/RoomPieces/Barrel") as GameObject;
-    private static GameObject barrelCluster = Resources.Load("Prefabs/RoomPieces/BarrelCluster") as GameObject;
-    private static GameObject brazierObject = Resources.Load("Prefabs/RoomPieces/Brazier") as GameObject;
-    private static GameObject pillarObject = Resources.Load("Prefabs/RoomPieces/Pillar") as GameObject;
+    private static GameObject barrelObject = Resources.Load("Prefabs/Environment/Barrel") as GameObject;
+    private static GameObject barrelCluster = Resources.Load("Prefabs/Environment/BarrelCluster") as GameObject;
+    private static GameObject brazierObject = Resources.Load("Prefabs/Environment/Brazier") as GameObject;
+    private static GameObject pillarObject = Resources.Load("Prefabs/Environment/Pillar") as GameObject;
     private static GameObject arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
     private static GameObject spinningBlade = Resources.Load("Prefabs/Hazards/SpinningBlade") as GameObject;
-    private static GameObject chest = Resources.Load("Prefabs/RoomPieces/Chest") as GameObject;
+    private static GameObject chest = Resources.Load("Prefabs/Environment/Chest") as GameObject;
 
     /// <summary>
     /// Loads and instantiates prefab from the prefab folder in resources.
