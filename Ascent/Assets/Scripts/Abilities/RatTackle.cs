@@ -15,8 +15,8 @@ public class RatTackle : Ability
 
 		animationLength = 1.5f;
 		animationSpeed = 1.0f;
-		animationTrigger = "Tackle";
-		cooldownFullDuration = 2.0f;
+		animationTrigger = "Strike";
+		cooldownFullDuration = 7.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 0.25f));
@@ -34,6 +34,8 @@ public class RatTackle : Ability
 		prevAccel = owner.Motor.Acceleration;
 
 		executedDamage = false;
+
+		owner.Animator.PlayAnimation(animationTrigger, true);
 	}
 
     public override void UpdateAbility()
@@ -99,6 +101,7 @@ public class RatTackle : Ability
 		owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
         owner.Motor.EnableStandardMovement(true);
         owner.ResetColor();
+		owner.Animator.PlayAnimation(animationTrigger, false);
     }
 
 #if UNITY_EDITOR

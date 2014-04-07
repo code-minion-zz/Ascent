@@ -1003,7 +1003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
-  health: 2
+  health: 3
   attack: 1
 --- !u!114 &11400006
 MonoBehaviour:
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 1.25
   offsetZ: 0
+  shadow: {fileID: 0}
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1038,7 +1039,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0b0a60a9ab6564295096e3455a6cfe, type: 3}
+  m_Script: {fileID: 11500000, guid: 91592f3adeaa54941ba78b59b6279965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100002}

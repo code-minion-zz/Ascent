@@ -8,7 +8,12 @@ public class Shadow : MonoBehaviour
 
 	private Transform shadowTransform;
 
-	GameObject shadow;
+	public GameObject shadow;
+
+	private Vector3 startScale;
+	private float startAlpha;
+
+	private bool fading;
 
 	public void Initialise()
 	{
@@ -20,18 +25,30 @@ public class Shadow : MonoBehaviour
 			shadowTransform = shadow.transform;
 			shadowTransform.localPosition = new Vector3(0.0f, 0.1f, 0.0f);
 			shadowTransform.localScale = new Vector3(size, size, size);
+
+			startScale = shadowTransform.localScale;
+			startAlpha = shadow.renderer.material.color.a;
         }
 	}
 
-#if UNITY_EDITOR
+	public void FadeOut(float t)
+	{
+		fading = true;
+
+		Color color = shadow.renderer.material.color;
+		color.a = Mathf.Lerp(startAlpha, 0.0f, t);
+		shadow.renderer.material.color = color;
+	}
+
+//#if UNITY_EDITOR
 	public void LateUpdate()
 	{
-		if (shadow != null)
+		if (shadow != null && !fading)
 		{
 			shadowTransform.localScale = new Vector3(size, size, size);
 			shadowTransform.position = new Vector3(shadowTransform.parent.position.x, 0.1f, shadowTransform.parent.position.z + offsetZ);
 			shadowTransform.rotation = new Quaternion(0.7f, 0.0f, 0.0f, 0.7f);
 		}
 	}
-#endif
+//#endif
 }

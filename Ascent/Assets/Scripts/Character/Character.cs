@@ -53,6 +53,9 @@ public abstract class Character : BaseCharacter
 	protected EStatusColour statusColour = EStatusColour.White;
 	protected bool colourHasChanged = false;
 
+	protected float hitDuration = 0.3f;
+	protected float hitTimerElapsed;
+
     public AbilityLoadout Loadout
     {
         get { return loadout; }
@@ -162,6 +165,18 @@ public abstract class Character : BaseCharacter
 		{
 			b.Process();
 		}
+
+		if (hitTimerElapsed > 0.0f)
+		{
+			hitTimerElapsed -= Time.deltaTime;
+			if (hitTimerElapsed < 0.0f)
+			{
+				hitTimerElapsed = 0.0f;
+				hitTaken = false;
+				Animator.PlayAnimation("Hit", false);
+				motor.EnableStandardMovement(true);
+			}
+		}
 	}
 
 	/// <summary>
@@ -176,6 +191,22 @@ public abstract class Character : BaseCharacter
 		if (!result.dodged)
 		{
 			HitTaken = true;
+
+			if (this is Enemy)
+			{
+				if (loadout.CanInterruptActiveAbility)
+				{
+					loadout.StopAbility();
+				}
+				if (loadout.ActiveAbility == null)
+				{
+					motor.StopMotion();
+					motor.EnableStandardMovement(false);
+				}
+
+				Animator.PlayAnimation("Hit", true);
+				hitTimerElapsed = hitDuration;
+			}
 
             // Don't set this to self
             lastDamagedBy = (result.source == this) ? lastDamagedBy : result.source;
@@ -229,7 +260,6 @@ public abstract class Character : BaseCharacter
 
 		hitTaken = true;
 		yield return new WaitForSeconds(0.15f);
-		hitTaken = false;
 
 		if (this is Hero)
 		{
@@ -241,6 +271,8 @@ public abstract class Character : BaseCharacter
 					mat.shader = Shader.Find("Diffuse");
 				}
 			}
+
+			hitTaken = false;
 		}
 	} 
 
@@ -272,6 +304,7 @@ public abstract class Character : BaseCharacter
 
     protected virtual void OnDeath()
 	{
+
 		// We may internally tell this character that they are dead.
 		// The reason we do this is when we pool objects we will re-use 
 		// this character.

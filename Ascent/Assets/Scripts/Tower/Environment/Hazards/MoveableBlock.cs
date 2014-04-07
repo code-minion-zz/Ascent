@@ -26,26 +26,6 @@ public class MoveableBlock : Interactable
 	// Update is called once per frame
 	void Update () 
 	{
-		if(!IsInMotion)
-		{
-			if(Input.GetKeyUp(KeyCode.UpArrow))
-			{
-				MoveAlongGrid(new Vector3(0, 0.0f, offset));
-			}
-			else if (Input.GetKeyUp(KeyCode.DownArrow))
-			{
-				MoveAlongGrid(new Vector3(0, 0.0f, -offset));
-			}
-			else if (Input.GetKeyUp(KeyCode.RightArrow))
-			{
-				MoveAlongGrid(new Vector3(offset, 0.0f, 0));
-			}
-			else if (Input.GetKeyUp(KeyCode.LeftArrow))
-			{
-				MoveAlongGrid(new Vector3(-offset, 0.0f, 0));
-			}
-		}
-
 		if (IsInMotion)
 		{
 			timeAccum += Time.deltaTime;

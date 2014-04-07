@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc70b3a54ea56342b17c0961b46a437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnOnLoad: 1
   health: 35
   attack: 3
 --- !u!114 &11400006
@@ -475,6 +476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: .75
   offsetZ: 0
+  shadow: {fileID: 0}
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -483,7 +485,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b67de6a393238c4ea1c0fda3fa3b617, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a0fee14b3dc544997ddb08711146ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimations: 0

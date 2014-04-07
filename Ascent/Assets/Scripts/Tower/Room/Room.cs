@@ -60,6 +60,7 @@ public class Room : MonoBehaviour
     protected List<MoveableBlock> moveables = new List<MoveableBlock>();
     protected List<Shrine> shrines = new List<Shrine>();
     protected List<EnvironmentBreakable> breakables = new List<EnvironmentBreakable>();
+	protected List<Interactable> interactables = new List<Interactable>();
 
     public int NumberOfTilesX
     {
@@ -251,6 +252,24 @@ public class Room : MonoBehaviour
         PopulateListOfObjects(ref chests, gameObject);
         PopulateListOfObjects(ref shrines, gameObject);
 
+		// Add Blocks
+		foreach (Interactable i in moveables)
+		{
+			interactables.Add(i);
+		}
+
+		// Add Shrines
+		foreach (Interactable i in shrines)
+		{
+			interactables.Add(i);
+		}
+
+		// Add Chests
+		foreach (Interactable i in chests)
+		{
+			interactables.Add(i);
+		}
+
 		if (chests != null)
 		{
 			if (lootDrops == null)
@@ -274,17 +293,6 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
-
-        //if (enemies != null)
-        //{
-        //    foreach (Enemy e in enemies)
-        //    {
-        //        if (!navMesh.IsWithinBounds(e.transform.position))
-        //        {
-        //            e.transform.position = transform.position;
-        //        }
-        //    }
-        //}
     }
 
     private void SetupCamera()
@@ -377,17 +385,6 @@ public class Room : MonoBehaviour
 	void Update()
 	{
 		CheckDoors();
-
-		////if (minCamera != curMinCamera)
-		//{
-		//    curMinCamera = minCamera;
-		//    Game.Singleton.Tower.CurrentFloor.FloorCamera.minCamera = transform.position + minCamera;
-		//}
-		////if (maxCamera != curMaxCamera)
-		//{
-		//    curMaxCamera = maxCamera;
-		//    Game.Singleton.Tower.CurrentFloor.FloorCamera.maxCamera = transform.position + maxCamera;
-		//}
 	}
 
     public void SetNavMeshDimensions(float width, float height)
@@ -712,7 +709,7 @@ public class Room : MonoBehaviour
                             continue;
                         }
 
-						if (CheckCircle(shape as Circle, c))
+						if (CheckCircle(shape as Circle, c.gameObject))
                         {
 							if (!charactersColliding.Contains(c))
 							{
@@ -731,7 +728,7 @@ public class Room : MonoBehaviour
 							continue;
 						}					
 
-						if(CheckArc(shape as Arc, c))
+						if(CheckArc(shape as Arc, c.gameObject))
 						{
 							if (!charactersColliding.Contains(c))
 							{
@@ -750,6 +747,56 @@ public class Room : MonoBehaviour
 
 
 		return charactersColliding.Count > 0;
+	}
+
+	public bool CheckCollisionArea(Shape2D shape, ref List<Interactable> interactablesInArea)
+	{
+		Shape2D.EType type = shape.type;
+
+		if (interactables == null || interactables.Count == 0)
+		{
+			return false;
+		}
+
+		switch (type)
+		{
+			case Shape2D.EType.Circle:
+				{
+					foreach (Interactable i in interactables)
+					{
+						if (CheckCircle(shape as Circle, i.gameObject))
+						{
+							if (!interactablesInArea.Contains(i))
+							{
+								interactablesInArea.Add(i);
+							}
+						}
+					}
+				}
+				break;
+			case Shape2D.EType.Arc:
+				{
+					foreach (Interactable i in interactables)
+					{
+						if (CheckArc(shape as Arc, i.gameObject))
+						{
+							if (!interactablesInArea.Contains(i))
+							{
+								interactablesInArea.Add(i);
+							}
+						}
+					}
+				}
+				break;
+			default:
+				{
+					Debug.LogError("Unhandled case");
+				}
+				break;
+		}
+
+
+		return interactablesInArea.Count > 0;
 	}
 
 	public List<Character> GetCharacterList(Character.EScope scope)
@@ -813,11 +860,11 @@ public class Room : MonoBehaviour
 		return characters;
 	}
 
-	public bool CheckCircle(Circle circle, Character c)
+	public bool CheckCircle(Circle circle, GameObject go)
 	{
 		// Check the radius of the circle shape against the extents of the enemy.
-		Vector3 extents = new Vector3(c.collider.bounds.extents.x, 0.5f, c.collider.bounds.extents.z);
-		Vector3 pos = new Vector3(c.transform.position.x, 0.5f, c.transform.position.z);
+		Vector3 extents = new Vector3(go.collider.bounds.extents.x, 0.5f, go.collider.bounds.extents.z);
+		Vector3 pos = new Vector3(go.transform.position.x, 0.5f, go.transform.position.z);
 
 		return (MathUtility.IsCircleCircle(circle.Position, circle.radius, pos, (extents.x + extents.z * 0.5f)));
 	}
@@ -831,7 +878,7 @@ public class Room : MonoBehaviour
     }
 
 
-	public bool CheckArc(Arc arc, Character c)
+	public bool CheckArc(Arc arc, GameObject c)
 	{
         Transform xform = c.transform.FindChild("Colliders");
         if (xform != null)
@@ -947,26 +994,7 @@ public class Room : MonoBehaviour
 
 	public GameObject FindHeroTarget(Hero hero, Shape2D shape)
 	{
-		GameObject target = FindTargetsInFront(hero, shape);
-		//protected List<Character> enemies = new List<Character>();
-		//protected List<TreasureChest> chests = new List<TreasureChest>();
-		//protected List<LootDrop> lootDrops = new List<LootDrop>();
-		//protected List<MoveableBlock> moveables = new List<MoveableBlock>();
-		//protected List<BreakableEnvObject> breakables = new List<BreakableEnvObject>();
-
-		// Check enemies in front first.
-
-
-		
-		//hero.transform.forward
-		
-		// Check objects in front.
-
-		// Check enemies in area.
-
-		// Check objects in area.
-
-		return target;
+		return FindTargetsInFront(hero, shape);
 	}
 
 	private GameObject FindTargetsInFront(Hero hero, Shape2D shape)
@@ -976,10 +1004,9 @@ public class Room : MonoBehaviour
 
 		Character closestCharacter = null;
 
-		//if (CheckCollisionArea(circa, Character.EScope.Enemy, ref enemyTargets))
+		float enemyDistance = 10000000.0f;
+
 		if (CheckCollisionArea(shape, Character.EScope.Enemy, ref enemyTargets))
-		//if (CheckCollisionArea(new Arc(hero.transform, 10.0f, 30.0f, -(hero.transform.forward * 2.5f)), Character.EScope.Enemy, ref enemyTargets))
-		//if (CheckCollisionArea(new Circle(hero.transform, 3.0f, new Vector3(0.0f, 0.0f, 3.0f)), Character.EScope.Enemy, ref enemyTargets))
 		{
 			float closestDistance = 1000000.0f;
 			foreach (Character e in enemyTargets)
@@ -988,19 +1015,54 @@ public class Room : MonoBehaviour
 
 				if (distance < closestDistance)
 				{
+					enemyDistance = distance;
 					closestDistance = distance;
 					closestCharacter = e;
 				}
 			}
 		}
-	
 
 		if (closestCharacter != null)
 		{
 			target = closestCharacter.gameObject;	
 		}
 
-		return target;
+		// Check interactables.
+		Interactable closestInteractable = null;
+
+		List<Interactable> interactables = new List<Interactable>();
+
+		float interactDistance = 10000000.0f;
+
+		if (CheckCollisionArea(shape, ref interactables))
+		{
+			float closestDistance = 1000000.0f;
+			foreach (Interactable i in interactables)
+			{
+				float distance = (hero.transform.position - i.transform.position).sqrMagnitude;
+
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closestInteractable = i;
+				}
+			}
+		}
+
+		if (target == null && closestInteractable != null)
+		{
+			return closestInteractable.gameObject;
+		}
+		else if (target != null && closestInteractable == null)
+		{
+			return target;
+		}
+		else if (target == null && closestInteractable == null)
+		{
+			return null;
+		}
+
+		return interactDistance > enemyDistance ? target : closestInteractable.gameObject;
 	}
 
 	[ContextMenu("Go to Room")]

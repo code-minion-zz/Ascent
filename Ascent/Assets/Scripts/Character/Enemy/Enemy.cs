@@ -73,7 +73,10 @@ public abstract class Enemy : Character
     }
 
    protected float deathSequenceTime = 0.0f;
-   protected float deathSequenceEnd = 1.0f;
+   protected float deathSequenceEnd = 2.0f;
+   protected float deathSinkTime = 0.0f;
+   protected float deathSinkEnd = 1.0f;
+   protected Vector3 deathPosition;
    protected Vector3 deathRotation = Vector3.zero;
    protected float deathSpeed = 5.0f;
 
@@ -129,8 +132,6 @@ public abstract class Enemy : Character
                 hpBar.gameObject.SetActive(false);
             }
         }
-
-		//PositionHpBar();
 	}
 
     public virtual void OnEnable()
@@ -152,43 +153,38 @@ public abstract class Enemy : Character
     {
         if (isDead)
         {
-            deathSequenceTime += Time.deltaTime;
+			ResetColor();
+			animator.PlayAnimation("Death", true);
+			if (deathSequenceTime != deathSequenceEnd)
+			{
+				deathSequenceTime += Time.deltaTime;
+				if (deathSequenceTime > deathSequenceEnd)
+				{
+					deathSequenceTime = deathSequenceEnd;
+					deathPosition = transform.position;
+				}
 
-            // Death sequence end
-            if (deathSequenceTime >= deathSequenceEnd)
-            {
-                // When the death sequence has finished we want to make this object not active
-                // This ensures that he will dissapear and not be visible in the game but we can still re-use him later.
-                deathSequenceTime = 0.0f;
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                // During death sequence we can do some thing in here
-                // For now we will rotate the rat on the z axis.
-                //transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, deathRotation, Time.deltaTime * deathSpeed);
-				transform.Rotate(Vector3.up, Time.deltaTime * 10000.0f);
-				transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, deathSequenceTime / deathSequenceEnd);
 
-                // If the rotation is done early we can end the sequence.
-                if (this.transform.eulerAngles == deathRotation)
-                {
-                    deathSequenceTime = deathSequenceEnd;
-                }
-            }
+				shadow.FadeOut(deathSequenceTime / deathSequenceEnd);
+			}
+			else if (deathSequenceTime == deathSequenceEnd)
+			{
+				deathSinkTime += Time.deltaTime;
+
+				Vector3 targetPos = deathPosition;
+				targetPos.y -= 2.0f;
+				transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
+
+				if (deathSinkTime > deathSinkEnd)
+				{
+					deathSinkTime = deathSinkEnd;
+					this.gameObject.SetActive(false);
+				}
+			}
         }
         else
         {
             base.Update();
-
-			if (HitTaken)
-			{
-				Animator.PlayAnimation("Hit", true);
-			}
-			else
-			{
-				Animator.PlayAnimation("Hit", false);
-			}
 
             if (CanMove && CanAct)
             {

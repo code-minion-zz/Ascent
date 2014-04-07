@@ -179,7 +179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b67de6a393238c4ea1c0fda3fa3b617, type: 3}
+  m_Script: {fileID: 11500000, guid: 65a0fee14b3dc544997ddb08711146ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimations: 1
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: .75
   offsetZ: 0
+  shadow: {fileID: 0}
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,6 +220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2badd0daa01460347b7f4b6019289bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnOnLoad: 1
+  health: 0
+  attack: 0
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1

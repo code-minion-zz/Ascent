@@ -122,9 +122,9 @@ public class CharacterMotor : MonoBehaviour
 	public virtual void Initialise()
 	{
 		// Physics is mostly disabled and handled by code.
-		rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-		rigidbody.freezeRotation = true;
-		rigidbody.useGravity = false;
+		//rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+		//rigidbody.freezeRotation = true;
+		//rigidbody.useGravity = false;
 	}
 
 	public virtual void FixedUpdate()
