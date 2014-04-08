@@ -11,7 +11,7 @@ public class Rat : Enemy
 	private int tackleAbilityID;
 
    public override void Initialise()
-    {      
+   {      
        base.Initialise();
        
        // Add abilities
@@ -29,7 +29,7 @@ public class Rat : Enemy
 	   AIAgent.Initialise(transform);
 
        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
+	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
        motor.MaxSpeed = 3.0f;
        motor.MinSpeed = 0.5f;
        motor.Acceleration = 1.0f;

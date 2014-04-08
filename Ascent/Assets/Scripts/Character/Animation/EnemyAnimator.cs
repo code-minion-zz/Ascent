@@ -12,10 +12,10 @@ public class EnemyAnimator : CharacterAnimator
 
     public override void Update()
     {
-        if (animator.IsInTransition(0))
-        {
-            animator.SetBool("NewAnimation", false);
-        }
+		//if (animator.IsInTransition(0))
+		//{
+		//    animator.SetBool("NewAnimation", false);
+		//}
 
         DebugKeys();
     }

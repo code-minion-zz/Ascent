@@ -46,17 +46,13 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
-	//private bool highlighted;
-	//public bool Highlighted
-	//{
-	//    get { return highlighted; }
-	//}
+	protected Shadow shadow;
 
 	public virtual void Initialise()
 	{
 		renderers = GetComponentsInChildren<Renderer>();
 		
-		Shadow shadow = GetComponentInChildren<Shadow>();
+		shadow = GetComponentInChildren<Shadow>();
 		if (shadow == null)
 		{
 			Debug.LogError("No Shadow attached to " + name, this);

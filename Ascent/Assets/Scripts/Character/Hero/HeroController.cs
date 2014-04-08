@@ -72,6 +72,8 @@ public class HeroController : MonoBehaviour
 
 		// Set scale similar to the character size
 		buttonIndicator.transform.localScale = Vector3.one * 2.5f;
+
+		//buttonIndicator.Enable(false);
 	}
 
     void Update()
@@ -136,7 +138,7 @@ public class HeroController : MonoBehaviour
 				if (grabbedObject != null)
 				{
 						// Release the object if the button is released
-					if (inputDevice.A.WasReleased)
+					if (inputDevice.Y.WasReleased)
 					{
 						ReleaseGrabbedObject();
 					}
@@ -164,13 +166,30 @@ public class HeroController : MonoBehaviour
 
 					if (targetObject != null)
 					{
-						targetObject.GetComponent<Enemy>().StopHighlight();
+						Enemy enemy = targetObject.GetComponent<Enemy>();
+						if (enemy != null)
+						{
+							enemy.StopHighlight();
+						}
+						else
+						{
+							targetObject.GetComponent<Interactable>().StopHighlight();
+						}
 					}
 
 					if (newTarget != null)
 					{
 						targetObject = newTarget;
-						targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
+
+						Enemy enemy = targetObject.GetComponent<Enemy>();
+						if (enemy != null)
+						{
+							targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
+						}
+						else
+						{
+							targetObject.GetComponent<Interactable>().EnableHighlight(Color.white);
+						}
 					}
 					else
 					{
@@ -565,23 +584,17 @@ public class HeroController : MonoBehaviour
 
 	public void ProcessFaceButtons(InputDevice device)
 	{
-		// TODO: Remove X or A depending on what people think is more intuitive
 		if (!hero.Loadout.IsAbilityActive || (hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility))
 		{
-			bool faceButtonPressed = device.X.WasPressed || device.A.WasPressed;
-			bool interactionOccured = ProcessInteractions(faceButtonPressed);
+			bool somethingInteractedWith =  ProcessInteractions(device.Y.WasPressed);
 
-			if (faceButtonPressed && !interactionOccured)
+			if(!somethingInteractedWith && inputDevice.A.WasPressed)
 			{
 				RotateToTarget();
 				hero.Loadout.UseAbility((int)EHeroAction.Strike);
 			}
 		}
 
-		//if (device.Y.WasPressed)
-		//{
-		//	ProcessInteractions();
-		//}
 	}
 
 	public bool ProcessInteractions(bool wasButtonPressed)
@@ -590,6 +603,8 @@ public class HeroController : MonoBehaviour
 
 		Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
 		Vector3 position = transform.position;
+
+		bool inRange = false;
 
 		// Is there a chest to open?
 		List<TreasureChest> chests = curRoom.Chests;
@@ -607,13 +622,10 @@ public class HeroController : MonoBehaviour
 						{
 							c.OpenChest(); // I open the chest. No one else can.
 							hero.FloorStatistics.NumberOfChestsOpened++;
-						}
-						else
-						{
-							buttonIndicator.Enable(true);
+							return true; // An interaction has occured. Exit function now.
 						}
 
-						return true; // An interaction has occured. Exit function now.
+						inRange = true;
 					}
 				}
 			}
@@ -640,13 +652,10 @@ public class HeroController : MonoBehaviour
 							{
 								door.Open();
                                 Game.Singleton.Tower.keys--;
-							}
-							else
-							{
-								buttonIndicator.Enable(true);
+								return true;
 							}
 
-							return true;
+							inRange = true;
 						}
 					}
 				}
@@ -666,13 +675,10 @@ public class HeroController : MonoBehaviour
                         if (wasButtonPressed)
                         {
                             shrine.Activate(hero);
-                        }
-                        else
-                        {
-                            buttonIndicator.Enable(true);
+							return true;
                         }
 
-                        return true;
+						inRange = true;
                     }
                 }
             }
@@ -733,48 +739,46 @@ public class HeroController : MonoBehaviour
                                 motor.StopMotion();
                                 animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
                                 buttonIndicator.Enable(false);
-                            }
-                            else
-                            {
-                                buttonIndicator.Enable(true);
-                            }
 
-                            // figure out direction
-                            if (vertGrab)
-                            {
-                                if (direction.z > 0.0f)
-                                {
-                                    blockDirection = EBlockDirection.South;
-                                    //transform.forward = new Vector3(0.0f, 0.0f, -1.0f);
-                                }
-                                else
-                                {
-                                    blockDirection = EBlockDirection.North;
-                                    //transform.forward = new Vector3(0.0f, 0.0f, 1.0f);
+								// figure out direction
+								if (vertGrab)
+								{
+									if (direction.z > 0.0f)
+									{
+										blockDirection = EBlockDirection.South;
+										//transform.forward = new Vector3(0.0f, 0.0f, -1.0f);
+									}
+									else
+									{
+										blockDirection = EBlockDirection.North;
+										//transform.forward = new Vector3(0.0f, 0.0f, 1.0f);
 
-                                }
+									}
+								}
+								else
+								{
+									if (direction.x > 0.0f)
+									{
+										blockDirection = EBlockDirection.West;
+
+									}
+									else
+									{
+										blockDirection = EBlockDirection.East;
+									}
+								}
+
+								return true;
                             }
-                            else
-                            {
-                                if (direction.x > 0.0f)
-                                {
-                                    blockDirection = EBlockDirection.West;
-
-                                }
-                                else
-                                {
-                                    blockDirection = EBlockDirection.East;
-                                }
-                            }
-
-                            return true;
+							
+							inRange = true;
                         }
                     }
                 }
             }
 		}
 
-		buttonIndicator.Enable(false);
+		buttonIndicator.Enable(inRange);
 
 		return false;
 	}
