@@ -15,7 +15,7 @@ public class RatTackle : Ability
 
 		animationLength = 1.5f;
 		animationSpeed = 1.0f;
-		animationTrigger = "Tackle";
+		animationTrigger = "Strike";
 		cooldownFullDuration = 2.0f;
 		specialCost = 0;
 
@@ -34,7 +34,9 @@ public class RatTackle : Ability
 		prevAccel = owner.Motor.Acceleration;
 
 		executedDamage = false;
-	}
+
+        owner.Animator.PlayAnimation(animationTrigger, true);
+    }
 
     public override void UpdateAbility()
     {

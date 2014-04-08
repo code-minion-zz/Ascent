@@ -50,6 +50,14 @@ public class CharacterAnimator : MonoBehaviour
         }
     }
 
+    public virtual void PlayAnimation(string anim, bool b)
+    {
+        if (hasAnimations)
+        {
+            animator.SetBool(anim, b);
+        }
+    }
+
 	public virtual void PlayAnimation(int animHash)
 	{
 		animator.SetBool(animHash, true);
