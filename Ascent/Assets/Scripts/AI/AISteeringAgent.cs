@@ -265,6 +265,33 @@ public class AISteeringAgent
     Vector3 velocity;
     Vector3 maxForce;
 
+    Vector3 position;
+
+    public void Update()
+    {
+        position = motor.transform.position;
+    }
+
+
+    private Vector3 Seek(Vector3 target)
+    {
+        Vector3 desired = target - position;
+        desired.Normalize();
+        desired *= maxSpeed;
+        Vector3 steer = desired - velocity;
+        steer = Vector3.Max(steer, maxForce);
+
+        return steer;
+    }
+
+    private Vector3 Arrive(Vector3 target)
+    {
+        Vector3 desired = target - position;
+
+        return desired;
+    }
+
+
     // Method checks for nearby boids and steers away
     private Vector3 Separate(List<Character> characters)
     {
