@@ -28,17 +28,19 @@ public class ArcherArrow : Projectile
         Character character = collision.gameObject.GetComponent<Character>();
 
         if (collision.transform.tag == "Hero")
-        {
+		{
             CombatEvaluator combatEvaluator = new CombatEvaluator(owner, character);
             combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
             //combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 10000.0f));
             combatEvaluator.Apply();
 
-            SoundManager.PlaySound(AudioClipType.wethit, collision.transform.position, 1.0f);
             Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, 
                 collision.transform.rotation, character.transform);
         }
-
+		else
+		{			
+			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
+		}
         // If the character hit is not the owner and it is not another enemy
         // then it can be destroyed.
         if (character != owner)
