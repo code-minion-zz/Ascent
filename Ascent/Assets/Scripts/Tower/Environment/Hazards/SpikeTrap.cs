@@ -118,6 +118,7 @@ public class SpikeTrap : MonoBehaviour
                         float distCovered = (Time.time - spike.startTime) * rearmSpeed;
                         float fracJourney = distCovered / spike.distance;
                         spike.transform.position = Vector3.Lerp(spike.originalPos, new Vector3(spike.originalPos.x, -spikeHeightMax, spike.originalPos.z), fracJourney);
+                        spike.IsCollided = false;
                     }
 
                     if (listSpikes[0].transform.position.y == -spikeHeightMax)
