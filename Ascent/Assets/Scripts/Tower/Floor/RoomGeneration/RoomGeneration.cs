@@ -307,7 +307,6 @@ public class RoomGeneration
                 groundTile.transform.position = room.Tiles[x, y].Position;
                 groundTile.transform.localScale= new Vector3(room.TileSize * 0.5f, 1.0f, room.TileSize * 0.5f);
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
-                room.Tiles[x, y].GameObject = groundTile;
 			}
 		}
 	}
@@ -443,8 +442,8 @@ public class RoomGeneration
 
         // Create the corner piece.
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
-        wallCornerGo.transform.parent = walls.transform;
-        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].Position;
+        wallCornerGo.transform.parent = room.Tiles[room.Tiles.GetLength(0) - 1, room.Tiles.GetLength(1) - 1].GameObject.transform;
+        wallCornerGo.transform.localPosition = Vector3.zero;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
 		wallCornerGo.name = "CornerNE";
 		
@@ -456,8 +455,8 @@ public class RoomGeneration
         room.Tiles[room.Tiles.GetLength(0) - 1, 0].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
-        wallCornerGo.transform.parent = walls.transform;
-        wallCornerGo.transform.localPosition = room.Tiles[room.Tiles.GetLength(0) - 1, 0].Position;
+        wallCornerGo.transform.parent = room.Tiles[room.Tiles.GetLength(0) - 1, 0].GameObject.transform;
+        wallCornerGo.transform.localPosition = Vector3.zero;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
 		wallCornerGo.name = "CornerSE";
 		
@@ -469,8 +468,8 @@ public class RoomGeneration
         room.Tiles[0, room.Tiles.GetLength(1) - 1].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
-        wallCornerGo.transform.parent = walls.transform;
-        wallCornerGo.transform.localPosition = room.Tiles[0, room.Tiles.GetLength(1) - 1].Position;
+        wallCornerGo.transform.parent = room.Tiles[0, room.Tiles.GetLength(1) - 1].GameObject.transform;
+        wallCornerGo.transform.localPosition = Vector3.zero;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
 		wallCornerGo.name = "CornerNW";
 		
@@ -482,8 +481,8 @@ public class RoomGeneration
         room.Tiles[0, 0].TileAttributes.Add(att);
 
         wallCornerGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.cornerWallTile);
-        wallCornerGo.transform.parent = walls.transform;
-        wallCornerGo.transform.localPosition = room.Tiles[0, 0].Position;
+        wallCornerGo.transform.parent = room.Tiles[0, 0].GameObject.transform;
+        wallCornerGo.transform.localPosition = Vector3.zero;
 		wallCornerGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
 		wallCornerGo.name = "CornerSW";
         
@@ -499,8 +498,8 @@ public class RoomGeneration
                 !room.Tiles[i, lastTileY-1].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
                 GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
-                wallGo.transform.parent = walls.transform;
-                wallGo.transform.localPosition = room.Tiles[i, lastTileY-1].Position;
+                wallGo.transform.parent = room.Tiles[i, lastTileY - 1].GameObject.transform;
+                wallGo.transform.localPosition = Vector3.zero;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 90.0f);
                 wallGo.name = "Wall";
 
@@ -519,8 +518,8 @@ public class RoomGeneration
                 !room.Tiles[i, 0].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
                 GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
-                wallGo.transform.parent = walls.transform;
-                wallGo.transform.localPosition = room.Tiles[i, 0].Position;
+                wallGo.transform.parent = room.Tiles[i, 0].GameObject.transform;
+                wallGo.transform.localPosition = Vector3.zero;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 270.0f);
                 wallGo.name = "Wall";
 
@@ -539,8 +538,8 @@ public class RoomGeneration
                 !room.Tiles[lastTileX-1, i].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
                 GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
-                wallGo.transform.parent = walls.transform;
-                wallGo.transform.localPosition = room.Tiles[lastTileX-1, i].Position;
+                wallGo.transform.parent = room.Tiles[lastTileX - 1, i].GameObject.transform;
+                wallGo.transform.localPosition = Vector3.zero;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 180.0f);
                 wallGo.name = "Wall";
 
@@ -559,8 +558,8 @@ public class RoomGeneration
                 !room.Tiles[0, i].ContainsAttribute(EnvironmentID.cornerWallTile))
             {
                 GameObject wallGo = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.standardWall);
-                wallGo.transform.parent = walls.transform;
-                wallGo.transform.localPosition = room.Tiles[0, i].Position;
+                wallGo.transform.parent = room.Tiles[0, i].GameObject.transform;
+                wallGo.transform.localPosition = Vector3.zero;
                 wallGo.transform.Rotate(new Vector3(0.0f, 1.0f, 0.0f), 0.0f);
                 wallGo.name = "Wall";
 

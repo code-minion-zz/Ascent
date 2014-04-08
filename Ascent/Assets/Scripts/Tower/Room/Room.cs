@@ -132,7 +132,7 @@ public class Room : MonoBehaviour
 				if (navMesh == null)
 				{
 
-					GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/RoomNav")) as GameObject;
+					GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Environment/RoomNav")) as GameObject;
 					go.transform.position = transform.position + go.transform.position;
 					go.transform.parent = transform;
 
@@ -535,9 +535,9 @@ public class Room : MonoBehaviour
 			case ERoomObjects.Chest:
 				{
 #if UNITY_EDITOR
-					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/" + name)) as GameObject;
 #else
-					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Environment/" + name)) as GameObject;
 #endif
                     if (chests == null)
                     {
@@ -554,11 +554,11 @@ public class Room : MonoBehaviour
 				{
 
 #if UNITY_EDITOR
-					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+					newObject = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/" + name)) as GameObject;
 #else
-					newObject = GameObject.Instantiate(Resources.Load("Prefabs/RoomPieces/" + name)) as GameObject;
+					newObject = GameObject.Instantiate(Resources.Load("Prefabs/Environment/" + name)) as GameObject;
 #endif
-					if(lootDrops == null)
+                    if (lootDrops == null)
 					{
 						lootDrops = new List<LootDrop>();
 					}

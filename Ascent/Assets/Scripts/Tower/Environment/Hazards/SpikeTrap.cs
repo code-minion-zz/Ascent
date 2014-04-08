@@ -1,17 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SpikeTrap : MonoBehaviour 
 {
-    struct TSpike
-    {
-        public GameObject go;
-        public Spike script;
-        public Vector3 originalPos;
-        public float startTime;
-        public float distance;
-    }
-
     enum ESpikeTrapState
     {
         Idle,
@@ -28,8 +20,7 @@ public class SpikeTrap : MonoBehaviour
     public float spikeHeightMax = 1.0f;
     public float spikeRiseSpeed = 10.0f;
 
-    private int spikeCount = 25;
-    private TSpike[] spikes;
+    private List<Spike> listSpikes = new List<Spike>();
     private SpikeTrapPlate plate;
     private ESpikeTrapState state = ESpikeTrapState.Idle;
 
@@ -46,31 +37,18 @@ public class SpikeTrap : MonoBehaviour
     void Initialise()
     {
         plate = transform.FindChild("Plate").GetComponent<SpikeTrapPlate>();
-
-        spikes = new TSpike[spikeCount];
-
         Transform spikeParent = transform.FindChild("Spikes");
 
-        Vector3 startPos = new Vector3(-0.6f, -0.2f, 0.6f);
-        float offsetX = 0.3f;
-        float offsetZ = -0.3f;
-        //Vector3 offset = new Vector3(0.2f, 0.0f, 0.2f);
-
-        for (int i = 0; i < 5; ++i)
+        foreach (Transform t in plate.GetComponentsInChildren<Transform>())
         {
-            for (int j = 0; j < 5; ++j)
+            if (t.name == "Stub")
             {
-                int current = (i * 5) + j;
-                GameObject newSpike = GameObject.Instantiate(Resources.Load("Prefabs/Spike")) as GameObject;
-                spikes[current].go = newSpike;
-                spikes[current].script = newSpike.GetComponent<Spike>();
-                spikes[current].script.Initialise(spikeDamage);
-
-                Vector3 offset = new Vector3(offsetX * i, -1.0f, offsetZ * j);
-
-                newSpike.transform.position = transform.position +  startPos + offset;
-
-                newSpike.transform.parent = spikeParent;
+                GameObject newSpike = GameObject.Instantiate(Resources.Load("Prefabs/Hazards/Spike")) as GameObject;
+                Spike spike = newSpike.GetComponent<Spike>();
+                newSpike.transform.parent = t;
+                newSpike.transform.localPosition = new Vector3(0.0f, -9.5f, 0.0f);
+                spike.Initialise(spikeDamage);
+                listSpikes.Add(spike);
             }
         }
     }
@@ -87,34 +65,36 @@ public class SpikeTrap : MonoBehaviour
                         state = ESpikeTrapState.Activated;
                         Debug.Log(state);
 
-                        for (int i = 0; i < spikeCount; ++i)
+                        foreach (Spike spike in listSpikes)
                         {
-                            spikes[i].startTime = Time.time;
-                            spikes[i].originalPos = spikes[i].go.transform.position;
-                            spikes[i].distance = Vector3.Distance(spikes[i].originalPos, new Vector3(spikes[i].originalPos.x, spikeHeightMax, spikes[i].originalPos.z));
+                            spike.startTime = Time.time;
+                            spike.originalPos = spike.transform.position;
+                            spike.distance = Vector3.Distance(spike.originalPos, new Vector3(spike.originalPos.x, spikeHeightMax, spike.originalPos.z));
                         }
                     }
                 }
                 break;
+
             case ESpikeTrapState.Activated:
                 {
                     // Make the trap rise quickly to it's peek then retract/rearm it
-                    for (int i = 0; i < spikeCount; ++i )
+                    foreach (Spike spike in listSpikes)
                     {
-                        float distCovered = (Time.time - spikes[i].startTime) * spikeRiseSpeed;
-                        float fracJourney = distCovered / spikes[i].distance;
-                        spikes[i].go.transform.position = Vector3.Lerp(spikes[i].originalPos, new Vector3(spikes[i].originalPos.x, spikeHeightMax, spikes[i].originalPos.z), fracJourney);
+                        float distCovered = (Time.time - spike.startTime) * spikeRiseSpeed;
+                        float fracJourney = distCovered / spike.distance;
+                        spike.transform.position = Vector3.Lerp(spike.originalPos, new Vector3(spike.originalPos.x, spikeHeightMax, spike.originalPos.z), fracJourney);
                     }
-                    if (spikes[0].go.transform.position.y == spikeHeightMax)
+
+                    if (listSpikes[0].transform.position.y == spikeHeightMax)
                     {
                         state = ESpikeTrapState.Peeked;
                         Debug.Log(state);
 
-                        for (int i = 0; i < spikeCount; ++i)
+                        foreach (Spike spike in listSpikes)
                         {
-                            spikes[i].startTime = Time.time;
-                            spikes[i].originalPos = spikes[i].go.transform.position;
-                            spikes[i].distance = Vector3.Distance(spikes[i].originalPos, new Vector3(spikes[i].originalPos.x, spikeHeightMax, spikes[i].originalPos.z));
+                            spike.startTime = Time.time;
+                            spike.originalPos = spike.transform.position;
+                            spike.distance = Vector3.Distance(spike.originalPos, new Vector3(spike.originalPos.x, spikeHeightMax, spike.originalPos.z));
                         }
                     }
                 }
@@ -133,20 +113,22 @@ public class SpikeTrap : MonoBehaviour
             case ESpikeTrapState.Rearming:
                 {
                     // Retract the trap
-                    for (int i = 0; i < spikeCount; ++i)
+                    foreach (Spike spike in listSpikes)
                     {
-                        float distCovered = (Time.time - spikes[i].startTime) * rearmSpeed;
-                        float fracJourney = distCovered / spikes[i].distance;
-                        spikes[i].go.transform.position = Vector3.Lerp(spikes[i].originalPos, new Vector3(spikes[i].originalPos.x, -spikeHeightMax, spikes[i].originalPos.z), fracJourney);
+                        float distCovered = (Time.time - spike.startTime) * rearmSpeed;
+                        float fracJourney = distCovered / spike.distance;
+                        spike.transform.position = Vector3.Lerp(spike.originalPos, new Vector3(spike.originalPos.x, -spikeHeightMax, spike.originalPos.z), fracJourney);
+                        spike.IsCollided = false;
                     }
-                    if (spikes[0].go.transform.position.y == -spikeHeightMax)
+
+                    if (listSpikes[0].transform.position.y == -spikeHeightMax)
                     {
                         state = ESpikeTrapState.Idle;
                         Debug.Log(state);
 
-                        for (int i = 0; i < spikeCount; ++i)
+                        foreach (Spike spike in listSpikes)
                         {
-                            spikes[i].originalPos = spikes[i].go.transform.position;
+                            spike.originalPos = spike.transform.position;
                         }
                     }
                 }

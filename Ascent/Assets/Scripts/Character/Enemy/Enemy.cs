@@ -94,11 +94,12 @@ public abstract class Enemy : Character
         EnemyStats.Reset();
 
 		animator = GetComponentInChildren<EnemyAnimator>();
-		if (animator == null)
-		{
-			Debug.LogError("No animator attached to " + name, this);
-		}
-		animator.Initialise();
+        if (animator == null)
+        {
+            Debug.LogError("No animator attached to " + name, this);
+        }
+
+        animator.Initialise();
 
 		base.Initialise();
 
