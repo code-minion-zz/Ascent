@@ -263,6 +263,113 @@ public class AISteeringAgent
     float maxSpeed;
     Vector3 velocity;
     Vector3 maxForce;
+	Vector3 position;
+	Vector3 acceleration;
+
+	public void Update()
+	{
+		velocity += acceleration;
+		Vector3.ClampMagnitude(velocity, maxSpeed);
+		position += velocity;
+		acceleration *= 0.0f;
+	}
+
+	private void ApplyForce(Vector3 force)
+	{
+		acceleration += force;
+	}
+
+	private void Seek(Vector3 target)
+	{
+		Vector3 desired = target - motor.transform.position;
+		desired.Normalize();
+		desired *= maxSpeed;
+		Vector3 steer = desired - velocity;
+		steer = Vector3.Max(steer, maxForce);
+
+		ApplyForce(steer);
+	}
+
+	private void Flee(Vector3 target)
+	{
+		Vector3 desired = motor.transform.position - target;
+		desired.Normalize();
+		desired *= maxSpeed;
+		Vector3 steer = desired - velocity;
+		steer = Vector3.Max(steer, maxForce);
+
+		ApplyForce(steer);
+	}
+
+	//private void Pursuit(Vector3 target)
+	//{
+	//    float maxVelocity = 3.0f;
+	//    Vector3 distance = (target - motor.transform.position);
+	//    float updatesAhead = distance.magnitude / maxVelocity;
+	//    Vector3 futurePosition = target + (target.velocity * updatesAhead); // This can be improved by taking previous frames
+	//    Vector3 desired = Seek(futurePosition);
+
+	//    ApplyForce(desired);
+	//}
+
+	//private void Evade(Vector3 target)
+	//{
+	//    float maxVelocity = 3.0f;
+	//    Vector3 distance = (motor.transform.position - target);
+	//    float updatesAhead = distance.magnitude / maxVelocity;
+	//    Vector3 futurePosition = target + (target.velocity * updatesAhead); // This can be improved by taking previous frames
+	//    Vector3 desired = Seek(futurePosition);
+
+	//    ApplyForce(desired);
+	//}
+
+	private void Arrive(Vector3 target)
+	{
+		Vector3 desired = target - motor.transform.position;
+
+		float dist = desired.magnitude;
+		desired.Normalize();
+
+		float closeEnoughRadius = 2.0f;
+
+		if (dist < closeEnoughRadius)
+		{
+			float mag = dist / closeEnoughRadius; // Mag set according to dist
+			desired *= dist;
+		}
+		else
+		{
+			desired *= maxSpeed;
+		}
+
+		Vector3 steer = desired - velocity;
+		steer = Vector3.Max(steer, maxForce);
+		ApplyForce(steer);
+	}
+
+	private void Wander()
+	{
+
+	}
+
+	private void ObstacleAvoidance()
+	{
+	}
+
+	private void Contain()
+	{
+
+	}
+
+	private void WallFollow()
+	{
+
+	}
+
+	private void PathFollow()
+	{
+
+	}
 
     // Method checks for nearby boids and steers away
     private Vector3 Separate(List<Character> characters)
