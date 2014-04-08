@@ -143,14 +143,15 @@ public class RoomProperties
             return;
         }
 
-        Transform envNode = room.GetNodeByLayer("Environment").transform;
+        Transform envNode = room.transform.FindChild("Environment");
+        Transform tilesNode = envNode.FindChild("Tiles");
 
         for (int x = 0; x < Tiles.GetLength(0); ++x)
         {
             for (int y = 0; y < Tiles.GetLength(1); ++y)
             {
                 // Create the parent tile.
-                CreateTileNodeObject(x, y, envNode);
+                Tiles[x, y].GameObject = CreateTileNodeObject(x, y, tilesNode);
 
                 // Go through and create / hook up the tile objects.
                 foreach (TileAttribute att in Tiles[x, y].TileAttributes)
@@ -204,21 +205,10 @@ public class RoomProperties
 
     private Room CreateRoomObject(string name)
     {
-        GameObject roomGo = new GameObject(name);
-        Room room = roomGo.AddComponent<Room>();
-
-        // Add necessary nodes.
-        room.tag = "RoomRoot";
-        GameObject envGo = room.AddNewParentCategory("Environment", LayerMask.NameToLayer("Environment"));
-        GameObject doorGo = room.AddSubParent("Doors", envGo, LayerMask.NameToLayer("Environment")) as GameObject;
-        doorGo.AddComponent<Doors>();
-        room.AddSubParent("Walls", envGo, LayerMask.NameToLayer("Environment"));
-
-        room.AddNewParentCategory("Monsters", (int)Layer.Monster);
-        room.AddNewParentCategory("Items", (int)Layer.Item);
-        room.AddNewParentCategory("Lights", (int)Layer.Default);
-        room.AddNewParentCategory("Actions", (int)Layer.Default);
-        room.AddNewParentCategory("Triggers", (int)Layer.Default);
+        GameObject roomGo = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/Room/Room")) as GameObject;
+        roomGo.name = name;
+        Room room = roomGo.GetComponent<Room>();
+        room.Initialise();
 
         return room;
     }
@@ -229,12 +219,10 @@ public class RoomProperties
     /// <param name="tile"></param>
     private GameObject CreateTileNodeObject(int x, int y, Transform parent)
     {
-        GameObject go = new GameObject();
+        GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/Room/Tile")) as GameObject;
         go.transform.parent = parent;
         go.transform.localPosition = Tiles[x, y].Position;
         go.name = "Tile[" + x + ", " + y + "]";
-        go.tag = "RoomTile";
-        Tiles[x, y].GameObject = go;
 
         return go;
     }
