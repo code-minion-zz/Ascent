@@ -23,7 +23,8 @@ public class ArcherShootArrow : Ability
         owner.Motor.StopMotion();
         owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
-        performed = false;
+		performed = false;
+		SoundManager.PlaySound(AudioClipType.arrowwoosh,owner.transform.position,.1f);
     }
 
     public override void UpdateAbility()

@@ -63,7 +63,8 @@ public class Arrow : MonoBehaviour
         //}
         // The arrows should collide with everything except for its owner.
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
-        {
+		{
+			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
         }
     }
