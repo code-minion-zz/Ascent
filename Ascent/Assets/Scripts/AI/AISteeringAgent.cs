@@ -260,4 +260,124 @@ public class AISteeringAgent
         }
     }
 #endif
+
+    float maxSpeed;
+    Vector3 velocity;
+    Vector3 maxForce;
+
+    // Method checks for nearby boids and steers away
+    private Vector3 Separate(List<Character> characters)
+    {
+        float desiredSeparation = 25.0f;
+        Vector3 steer = Vector3.zero;
+        int count = 0;
+
+        Vector3 position = motor.transform.position;
+
+        // Check if all others are too close
+        foreach(Character c in characters)
+        {
+            Vector3 otherPosition = c.transform.position;
+
+            float d = Vector3.Distance(position, otherPosition);
+
+            // If distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+            if ((d > 0) && (d < desiredSeparation))
+            {
+                // Calculate vector pointing away from neighbor
+                Vector3 diff = position - otherPosition;
+                diff.Normalize();
+                diff /= d; // weight by distance
+                steer += diff;
+                count++;
+            }
+        }
+
+        // Average -- divide by how many 
+        if (count > 0)
+        {
+            steer /= (float)count;
+        }
+
+        // As long as the vector is greater than 0
+        if(steer.magnitude > 0)
+        {
+            steer.Normalize();
+            steer *= maxSpeed; // max speed
+            steer -= velocity; // velocity
+            steer = Vector3.Max(steer, maxForce); // maxforce
+        }
+
+        return steer;
+    }
+
+    // For every nearby boid in the system, calculate the average velocity
+    private Vector3 Allignment(List<Character> characters)
+    {
+        float neighbourDist = 50.0f;
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+
+        Vector3 position = motor.transform.position;
+
+        // Check if all others are too close
+        foreach (Character c in characters)
+        {
+            Vector3 otherPosition = c.transform.position;
+
+            float d = Vector3.Distance(position, otherPosition);
+
+            // If distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+            if ((d > 0) && (d < neighbourDist))
+            {
+                sum += c.Motor.TargetVelocity; // velocity
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            sum /= (float)count;
+
+            sum.Normalize();
+            sum *= maxSpeed; // max speed
+            sum -= velocity; // velocity
+            sum = Vector3.Max(sum, maxForce); // maxforce
+
+            return sum;
+        }
+
+        return Vector3.zero;
+    }
+
+    private Vector3 Cohesion(List<Character> characters)
+    {
+        float neighbourDist = 50.0f;
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+
+        Vector3 position = motor.transform.position;
+
+        foreach (Character c in characters)
+        {
+            Vector3 otherPosition = c.transform.position;
+
+            float d = Vector3.Distance(position, otherPosition);
+
+            // If distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
+            if ((d > 0) && (d < neighbourDist))
+            {
+                sum += c.Motor.TargetVelocity; // velocity
+                count++;
+            }
+        }
+
+        if (count > 0)
+        {
+            sum /= (float)count;
+            return sum; // return Seek(sum);
+        }
+        
+        return Vector3.zero;
+    }
 }
