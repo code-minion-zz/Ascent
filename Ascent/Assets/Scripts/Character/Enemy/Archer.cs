@@ -28,7 +28,6 @@ public class Archer : Enemy
 
     public void InitialiseAI()
     {
-        AIAgent.Initialise(transform);
 
         AIAgent.SteeringAgent.RotationSpeed = 15.0f;
         AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;

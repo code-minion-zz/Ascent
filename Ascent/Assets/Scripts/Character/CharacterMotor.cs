@@ -8,33 +8,33 @@ public class CharacterMotor : MonoBehaviour
 {
 	public GameObject actor;
 
-	private Vector3 movementForce;
-	private Vector3 targetVelocity;
-	private Vector3 knockbackDirection;
+	protected Vector3 movementForce;
+	protected Vector3 targetVelocity;
+	protected Vector3 knockbackDirection;
 
 	protected float currentSpeed = 0.0f;
-	private float originalSpeed = 6.0f;
-	private float buffBonusSpeed;
+    protected float originalSpeed = 6.0f;
+    protected float buffBonusSpeed;
 
-	private float maxSpeed = 6.0f;
-	private float minSpeed = 5.5f;
-	private float acceleration = 1.0f;
-	private float maxVelocityChange = 5.0f;
+	protected float maxSpeed = 6.0f;
+	protected float minSpeed = 5.5f;
+	protected float acceleration = 1.0f;
+	protected float maxVelocityChange = 5.0f;
 	
-	private float knockbackMag;
-	private float knockbackDecel = 0.65f;
+	protected float knockbackMag;
+	protected float knockbackDecel = 0.65f;
 
-	private bool isActionHaltingMovement = false;
-	private bool isActionRotationMovement = false;
-	private bool usingStandardMovement = true;
+    protected bool isActionHaltingMovement = false;
+    protected bool isActionRotationMovement = false;
+    protected bool usingStandardMovement = true;
 	//private bool isRunAttacking = false;
 
-	private bool isMovingAlongGrid;
-	private const float gridUnitOffset = 1.0f;
-	private const float timeToMoveAlongGrid = 0.5f;
-	private float gridMovementTimeAccum;
-	private Vector3 gridStartPos;
-	private Vector3 gridTargetPos;
+	protected bool isMovingAlongGrid;
+	protected const float gridUnitOffset = 1.0f;
+	protected const float timeToMoveAlongGrid = 0.5f;
+	protected float gridMovementTimeAccum;
+	protected Vector3 gridStartPos;
+	protected Vector3 gridTargetPos;
 
 	/// <summary>
 	/// Speed without any buffs applied
@@ -211,7 +211,7 @@ public class CharacterMotor : MonoBehaviour
 		return knockbackVel;
 	}
 
-	protected Vector3 ProcessStandardMovement()
+	protected virtual Vector3 ProcessStandardMovement()
 	{
 		Vector3 movement = Vector3.zero;
 

@@ -6,14 +6,21 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-public class AISteeringAgent  
+public class AISteeringAgent : MonoBehaviour
 {
-	private bool enabled = true;
-	public bool Enabled
-	{
-		get { return enabled; }
-		set { enabled = value; }
-	}
+    public float maxSpeed;
+    private Vector3 velocity;
+    public Vector3 maxForce;
+    private Vector3 acceleration;
+    public float arriveRadius = 3.0f;
+
+    private Vector3 wanderCircleCentre;
+    private float wanderCircleDistance = 1.0f;
+    private float wanderCircleRadius = 2.0f;
+    private float wanderAngle = 0.0f;
+
+    private int forceCount = 0;
+
 
 	private bool canMove = true;
 	public bool CanMove
@@ -34,7 +41,9 @@ public class AISteeringAgent
 #pragma warning disable 0414
     private Vector3 posLastFrame;
 
-	private Character targetCharacter;
+
+    public Character avoidanceCharacter;
+	public Character targetCharacter;
 	public Character TargetCharacter
 	{
 		get { return targetCharacter; }
@@ -102,18 +111,9 @@ public class AISteeringAgent
     public delegate void TargetReached();
     public event TargetReached OnTargetReached;
 
-	protected bool active;
-
-	public void SetActive(bool active)
-	{
-		this.active = active;
-	}
-
     public void Initialise(CharacterMotor motor)
     {
         startPos = motor.transform.position;
-
-		active = true;
         this.motor = motor;
     }
 
@@ -219,7 +219,7 @@ public class AISteeringAgent
 #if UNITY_EDITOR
     public void DebugDraw()
     {
-		if (!active)
+		if (!gameObject.activeInHierarchy)
 		{
 			return;
 		}
@@ -260,23 +260,28 @@ public class AISteeringAgent
     }
 #endif
 
-    float maxSpeed;
-    Vector3 velocity;
-    Vector3 maxForce;
-	Vector3 position;
-	Vector3 acceleration;
-
-	public void Update()
+	public Vector3 Steer()
 	{
-		velocity += acceleration;
-		Vector3.ClampMagnitude(velocity, maxSpeed);
-		position += velocity;
-		acceleration *= 0.0f;
+        velocity = Vector3.zero;
+
+       //Arrive(targetCharacter);
+       ObstacleAvoidance(avoidanceCharacter);
+        Wander();
+
+        velocity += acceleration / (float)forceCount;
+
+        Vector3.ClampMagnitude(velocity, maxSpeed);
+
+        acceleration *= 0.0f;
+        forceCount = 0;
+
+        return velocity;
 	}
 
 	private void ApplyForce(Vector3 force)
 	{
 		acceleration += force;
+        forceCount++;
 	}
 
 	private void Seek(Vector3 target)
@@ -285,10 +290,15 @@ public class AISteeringAgent
 		desired.Normalize();
 		desired *= maxSpeed;
 		Vector3 steer = desired - velocity;
-		steer = Vector3.Max(steer, maxForce);
+		steer = Vector3.Min(steer, maxForce);
 
 		ApplyForce(steer);
 	}
+
+    private void Seek(Character target)
+    {
+        if (target != null) Seek(target.transform.position);
+    }
 
 	private void Flee(Vector3 target)
 	{
@@ -296,46 +306,27 @@ public class AISteeringAgent
 		desired.Normalize();
 		desired *= maxSpeed;
 		Vector3 steer = desired - velocity;
-		steer = Vector3.Max(steer, maxForce);
+        steer = Vector3.Min(steer, maxForce);
 
 		ApplyForce(steer);
 	}
 
-	//private void Pursuit(Vector3 target)
-	//{
-	//    float maxVelocity = 3.0f;
-	//    Vector3 distance = (target - motor.transform.position);
-	//    float updatesAhead = distance.magnitude / maxVelocity;
-	//    Vector3 futurePosition = target + (target.velocity * updatesAhead); // This can be improved by taking previous frames
-	//    Vector3 desired = Seek(futurePosition);
-
-	//    ApplyForce(desired);
-	//}
-
-	//private void Evade(Vector3 target)
-	//{
-	//    float maxVelocity = 3.0f;
-	//    Vector3 distance = (motor.transform.position - target);
-	//    float updatesAhead = distance.magnitude / maxVelocity;
-	//    Vector3 futurePosition = target + (target.velocity * updatesAhead); // This can be improved by taking previous frames
-	//    Vector3 desired = Seek(futurePosition);
-
-	//    ApplyForce(desired);
-	//}
+    private void Flee(Character target)
+    {
+        if (target != null) Flee(target.transform.position);
+    }
 
 	private void Arrive(Vector3 target)
 	{
-		Vector3 desired = target - motor.transform.position;
+		Vector3 desired = target - transform.position;
 
 		float dist = desired.magnitude;
 		desired.Normalize();
 
-		float closeEnoughRadius = 2.0f;
-
-		if (dist < closeEnoughRadius)
+        if (dist < arriveRadius)
 		{
-			float mag = dist / closeEnoughRadius; // Mag set according to dist
-			desired *= dist;
+            float mag = dist / arriveRadius; // Mag set according to dist
+            desired *= mag;
 		}
 		else
 		{
@@ -343,60 +334,89 @@ public class AISteeringAgent
 		}
 
 		Vector3 steer = desired - velocity;
-		steer = Vector3.Max(steer, maxForce);
+        steer = Vector3.Min(steer, maxForce);
 		ApplyForce(steer);
 	}
 
+    private void Arrive(Character target)
+    {
+        if (target != null) Arrive(target.transform.position);
+    }
+
 	private void Wander()
 	{
+        // Calculate centre of circle
+        Vector3 circleCentre = transform.position + (transform.forward * wanderCircleDistance);
+       
+        // Random point on circumference
+        // http://stackoverflow.com/questions/9879258/how-can-i-generate-random-points-on-a-circles-circumference-in-javascript
 
+        // Randomly change the vector direction by making it change its currrent angle
+        //float wanderAngle = Random.Range(0.0f, Mathf.PI * 2.0f);
+        float min = wanderAngle - 0.25f;
+        if(min < 0.0f)
+        {
+            min = (Mathf.PI * 2.0f) - min;
+        }
+
+        float max = wanderAngle + 0.25f;
+        if (max > Mathf.PI * 2.0f)
+        {
+            max = max - (Mathf.PI * 2.0f);
+        }
+
+        wanderAngle = Random.Range(min, max);
+        Vector3 wanderDirection = Vector3.zero;
+        wanderDirection.x = Mathf.Cos(wanderAngle) * wanderCircleRadius;
+        wanderDirection.z = Mathf.Sin(wanderAngle) * wanderCircleRadius;
+
+        Vector3 target = circleCentre + (wanderDirection.normalized * wanderCircleRadius);
+        Vector3 desired = target - transform.position;
+
+        Vector3 steer = desired - velocity;
+        steer = Vector3.Min(steer, maxForce);
+
+        ApplyForce(steer);
 	}
 
-	private void ObstacleAvoidance()
+	private void ObstacleAvoidance(Character target)
 	{
+        if(target == null)
+            return;
+
+        float seeAheadDistance = 3.0f;
+        Vector3 ahead = transform.position + velocity.normalized * seeAheadDistance;
+        Vector3 ahead2 = transform.position + velocity.normalized * seeAheadDistance * 0.5f;
+
+        if(!LineIntersectCircle(ahead, ahead2, target.transform.position, 2.0f))
+            return;
+
+        Vector3 avoidanceForce = ahead - target.transform.position;
+        avoidanceForce = avoidanceForce.normalized * maxSpeed;
+
+        Vector3 steer = avoidanceForce - velocity;
+        steer = Vector3.Min(steer, maxForce);
+
+        ApplyForce(steer);
 	}
 
-	private void Contain()
-	{
-
-	}
+    private bool LineIntersectCircle(Vector3 ahead, Vector3 ahead2, Vector3 obstaclePosition, float obstacleRadius)
+    {
+        return Vector3.Distance(obstaclePosition, ahead) <= obstacleRadius ||
+                Vector3.Distance(obstaclePosition, ahead2) <= obstacleRadius;
+    }
 
 	private void WallFollow()
 	{
-
+        // Ray forward
+        // If collides with wall
+        // Move along wall
 	}
 
 	private void PathFollow()
 	{
 
 	}
-
-    Vector3 position;
-
-    public void Update()
-    {
-        position = motor.transform.position;
-    }
-
-
-    private Vector3 Seek(Vector3 target)
-    {
-        Vector3 desired = target - position;
-        desired.Normalize();
-        desired *= maxSpeed;
-        Vector3 steer = desired - velocity;
-        steer = Vector3.Max(steer, maxForce);
-
-        return steer;
-    }
-
-    private Vector3 Arrive(Vector3 target)
-    {
-        Vector3 desired = target - position;
-
-        return desired;
-    }
-
 
     // Method checks for nearby boids and steers away
     private Vector3 Separate(List<Character> characters)

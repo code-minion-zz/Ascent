@@ -23,7 +23,6 @@ public class Spider : Enemy
 
     public void InitialiseAI()
     {
-        AIAgent.Initialise(transform);
 
         AIAgent.SteeringAgent.RotationSpeed = 15.0f;
         AIAgent.SteeringAgent.DistanceToKeepFromTarget = 4.0f;
