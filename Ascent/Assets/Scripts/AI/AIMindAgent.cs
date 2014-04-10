@@ -87,19 +87,19 @@ public class AIMindAgent : MonoBehaviour
     public void Process()
     {
 		//#if UNITY_EDITOR
-        if (!behaviours.ContainsKey(curBehaviour))
-        {
-            Debug.LogError("Trying to process a behaviour that has not been initialised.");
-        }
-        else
-        {
-            if (drawLabels)
-            {
-                label.gameObject.SetActive(false);
-            }
+        //if (!behaviours.ContainsKey(curBehaviour))
+        //{
+        //    Debug.LogError("Trying to process a behaviour that has not been initialised.");
+        //}
+        //else
+        //{
+        //    if (drawLabels)
+        //    {
+        //        label.gameObject.SetActive(false);
+        //    }
 
-            behaviours[curBehaviour].Process();
-        }
+        //    behaviours[curBehaviour].Process();
+        //}
 		//#endif
 
 		

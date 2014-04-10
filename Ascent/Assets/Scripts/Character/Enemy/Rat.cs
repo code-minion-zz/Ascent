@@ -28,8 +28,15 @@ public class Rat : Enemy
 
     public override void Update()
     {
-        Vector3 velocity = AIAgent.SteeringAgent.Steer();
-        motor.Move(velocity);
+        if(!isDead)
+        {
+            Vector3 velocity = AIAgent.SteeringAgent.Steer();
+            motor.Move(velocity);
+
+            AIAgent.MindAgent.Process();
+        }
+
+        base.Update();
     }
 
    public void InitialiseAI()
