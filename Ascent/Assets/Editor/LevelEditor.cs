@@ -15,7 +15,6 @@ namespace Ascent
         private List<Door> selectedDoors = new List<Door>();
         private bool multipleSelected;
 
-        private SaveRooms roomSaver = new SaveRooms();
         private RoomGeneration roomGen = new RoomGeneration();
         private EnvironmentID tileType;
         private GameObject selectedObject;
@@ -56,6 +55,11 @@ namespace Ascent
 				RoomTemplateWindow roomCreationWnd = EditorWindow.GetWindow<RoomTemplateWindow>("Create Room");
 				roomCreationWnd.Initialise(roomGen);
 			}
+
+            if (GUILayout.Button("Enter tile edit mode", GUILayout.Width(buttonSize)))
+            {
+                EditorWindow.GetWindow<TileEditorWindow>("Tile edit mode");
+            }
 
             SelectRoomGUI();
 

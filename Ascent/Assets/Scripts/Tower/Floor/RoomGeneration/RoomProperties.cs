@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 using UnityEditor;
 #endif
 using System;
@@ -16,30 +16,23 @@ public enum FeatureType
     boss
 }
 
-[Serializable]
 public class RoomProperties
 {
-    [NonSerialized]
     private Vector3 position = Vector3.zero;
-    [NonSerialized]
     private bool wallsPlaced = false;
-    [NonSerialized]
     private bool isPreloaded = false;
-    [NonSerialized]
     private Room room;
-    [NonSerialized]
     private List<Door> doors = new List<Door>();
 
     // Tiles represent the grid of the room. Every tile has a list of objects it is holding.
     public Tile[,] Tiles { get; set; }
 
-    public bool[] DirectionsFilled { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
     public string Name { get; set; }
     public FeatureType RoomType { get; set; }
 
-    private int tileSize = 2;
+    private int tileSize = 5;
 
     public int TileSize
     {
@@ -89,12 +82,10 @@ public class RoomProperties
 
     public RoomProperties()
     {
-        DirectionsFilled = new bool[4];
     }
 
     public RoomProperties(Room room)
     {
-        DirectionsFilled = new bool[4];
         this.room = room;
     }
 
@@ -194,7 +185,7 @@ public class RoomProperties
         room.height = Height;
 		#if UNITY_EDITOR
         EditorUtility.SetDirty(room);
-#endif
+        #endif
 
         room.Initialise();
         // Apply the new dimensions to the navMesh.
@@ -205,7 +196,11 @@ public class RoomProperties
 
     private Room CreateRoomObject(string name)
     {
+        #if UNITY_EDITOR
         GameObject roomGo = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/Room/Room")) as GameObject;
+        #else
+        GameObject roomGo = GameObject.Instantiate(Resources.Load("Prefabs/Environment/Room/Room")) as GameObject;
+        #endif
         roomGo.name = name;
         Room room = roomGo.GetComponent<Room>();
         room.Initialise();
@@ -219,33 +214,15 @@ public class RoomProperties
     /// <param name="tile"></param>
     private GameObject CreateTileNodeObject(int x, int y, Transform parent)
     {
+        #if UNITY_EDITOR
         GameObject go = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/Environment/Room/Tile")) as GameObject;
+        #else
+        GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Environment/Room/Tile")) as GameObject;
+        #endif
         go.transform.parent = parent;
         go.transform.localPosition = Tiles[x, y].Position;
         go.name = "Tile[" + x + ", " + y + "]";
 
         return go;
-    }
-
-    public void FillDirection(Floor.TransitionDirection direction)
-    {
-        switch (direction)
-        {
-            case Floor.TransitionDirection.North:
-                DirectionsFilled[0] = true;
-                break;
-
-            case Floor.TransitionDirection.East:
-                DirectionsFilled[1] = true;
-                break;
-
-            case Floor.TransitionDirection.South:
-                DirectionsFilled[2] = true;
-                break;
-
-            case Floor.TransitionDirection.West:
-                DirectionsFilled[3] = true;
-                break;
-        }
     }
 }

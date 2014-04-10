@@ -20,6 +20,7 @@ public class Door : EnvironmentBreakable
 
     public GameObject openedDoor;
     public GameObject sealedDoor;
+    public Transform spawnLocation;
 
     private float standingOnDoorTimer = 0.0f;
 
@@ -118,7 +119,7 @@ public class Door : EnvironmentBreakable
                            {
                                if (targetDoor != null)
                                {
-                                   Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                                   Game.Singleton.Tower.CurrentFloor.TransitionToRoom(targetDoor);
                                }
                            }
                        }
@@ -153,7 +154,7 @@ public class Door : EnvironmentBreakable
                         {
                             if (targetDoor != null)
                             {
-                                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(targetDoor);
                             }
                         }
 
@@ -175,7 +176,7 @@ public class Door : EnvironmentBreakable
                             {
                                 if (targetDoor != null)
                                 {
-                                    Game.Singleton.Tower.CurrentFloor.TransitionToRoom(direction, targetDoor);
+                                    Game.Singleton.Tower.CurrentFloor.TransitionToRoom(targetDoor);
                                 }
                             }
 							walkedOutOfTheDoor = true;

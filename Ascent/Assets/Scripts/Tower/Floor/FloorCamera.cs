@@ -18,6 +18,7 @@ public class FloorCamera : MonoBehaviour
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
 	private const float verticalIncrement = 25.0f;
 	private const float horizontalIncrement = 25.0f;
+    private const float cameraYOffset = 22.0f;
 
     private CameraShake cameraShake;
 
@@ -76,10 +77,8 @@ public class FloorCamera : MonoBehaviour
 		//{
 		//    newVector = transform.position;
 		//}
-        newVector.y = transform.position.y;
+        newVector.y = newVector.y + cameraYOffset;
 		newVector.z += offsetZ;
-
-		//Debug.Log(newVector);
 
         Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, Time.deltaTime * 2.0f);
 
@@ -89,10 +88,15 @@ public class FloorCamera : MonoBehaviour
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)
 	{
+        //return new Vector3(
+        //Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
+        //22.0f,
+        //Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+
         return new Vector3(
-        Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
-        22.0f,
-		Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
+        Mathf.Clamp(pos.x, -Mathf.Infinity, Mathf.Infinity),
+        pos.y,
+        Mathf.Clamp(pos.z, -Mathf.Infinity, Mathf.Infinity));
 	}
 
 	public static Vector3 CalculateAverageHeroPosition()
@@ -121,15 +125,16 @@ public class FloorCamera : MonoBehaviour
 			{
 				float x = totalVector.x / (float)Heroes.Count;
 				float z = (totalVector.z / (float)heroCount);
+                float y = (totalVector.y / (float)heroCount);
 				
-				return new Vector3(x, 0.0f, z);
+				return new Vector3(x, y, z);
 			}
 		}
 		
 		return Vector3.zero;
 	}
 
-	public void TransitionToRoom(Floor.TransitionDirection direction, float roomTransitionTime)
+    public void TransitionToRoom(float roomTransitionTime)
 	{
 		transitionStartPos = transform.position;
 		transitionTargetPos = CalculateAverageHeroPosition();
@@ -140,37 +145,6 @@ public class FloorCamera : MonoBehaviour
 		this.roomTransitionTime = roomTransitionTime;
 		transitionTimeElapsed = 0.0f;
 		transition = true;
-	}
-
-	static public Vector3 GetDirectionVector(Floor.TransitionDirection direction)
-	{
-		Vector3 vec = Vector3.zero;
-
-		switch (direction)
-		{
-			case Floor.TransitionDirection.North:
-				{
-					vec = new Vector3(0.0f, 0.0f, verticalIncrement);
-				}
-				break;
-			case Floor.TransitionDirection.South:
-				{
-					vec = new Vector3(0.0f, 0.0f, -verticalIncrement);
-				}
-				break;
-			case Floor.TransitionDirection.East:
-				{
-					vec = new Vector3(horizontalIncrement, 0.0f, 0.0f);
-				}
-				break;
-			case Floor.TransitionDirection.West:
-				{
-					vec = new Vector3(-horizontalIncrement, 0.0f, 0.0f);
-				}
-				break;
-		}
-
-		return vec;
 	}
 
     public void ShakeCamera(float intensity, float decay)

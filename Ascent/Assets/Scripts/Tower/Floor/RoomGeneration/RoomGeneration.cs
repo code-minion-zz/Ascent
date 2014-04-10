@@ -18,6 +18,24 @@ public enum RoomConnectionType
     RightUp
 }
 
+public enum Directions
+{
+    north = 1,
+    easth,
+    south,
+    west
+}
+
+public enum Rarity
+{
+    onlyOne,
+    veryRare,
+    rare,
+    few,
+    often,
+    many
+}
+
 /// <summary>
 /// Handles generation of a room for use in the floor generation.
 /// </summary>
@@ -25,31 +43,6 @@ public enum RoomConnectionType
 public class RoomGeneration 
 {
     private Rarity miscObjects = Rarity.few;
-
-
-    /// <summary>
-    /// Creates a new room and intializes variables.
-    /// TODO: This will be swapped out for the new createroom function.
-    /// </summary>
-    /// <returns>The new room.</returns>
-    /// <param name="width">Width.</param>
-    /// <param name="height">Height.</param>
-    /// <param name="name">Name.</param>
-    public RoomProperties ConstructNewRoom(int width, int height, string name)
-	{
-		// Initialise and construct the new room.
-		RoomProperties newRoom = new RoomProperties();
-        newRoom.Name = name;
-        newRoom.InitialiseTiles((int)(width * 0.5f), (int)(height * 0.5f), 2);
-
-
-        newRoom.ConstructRoom();
-		PlaceGroundTiles(newRoom);
-
-        newRoom.IsConstructed = false;
-
-		return newRoom;
-	}
 
     /// <summary>
     /// Creates the data structure for a new room. Which can be used to reconstruct a room.
@@ -305,7 +298,7 @@ public class RoomGeneration
                 GameObject groundTile = EnvironmentFactory.CreateGameObjectByType(EnvironmentID.groundTile);
                 groundTile.transform.parent = room.Tiles[x, y].GameObject.transform;
                 groundTile.transform.position = room.Tiles[x, y].Position;
-                groundTile.transform.localScale= new Vector3(room.TileSize * 0.5f, 1.0f, room.TileSize * 0.5f);
+                //groundTile.transform.localScale= new Vector3(room.TileSize * 0.5f, 1.0f, room.TileSize * 0.5f);
                 groundTile.name = "GroundTile[" + x + ", " + y + "]";
 			}
 		}
@@ -430,7 +423,6 @@ public class RoomGeneration
 	public void PlaceWalls(RoomProperties room)
 	{
 		// Place wall corners
-		GameObject walls = room.Room.GetNodeByLayer("Environment").transform.Find("Walls").gameObject;
 		GameObject wallCornerGo = null;
 		
 		// North east corner

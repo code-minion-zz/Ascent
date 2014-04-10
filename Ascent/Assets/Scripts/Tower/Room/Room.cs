@@ -38,6 +38,7 @@ public class Room : MonoBehaviour
     private Dictionary<int, GameObject> parentRootNodes = new Dictionary<int, GameObject>();
     private int numberOfTilesX;
     private int numberOfTilesY;
+    public bool restrictCamera = false;
 
 	[HideInInspector]
 	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
@@ -1086,7 +1087,7 @@ public class Room : MonoBehaviour
 		{
 			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
 		}
@@ -1096,7 +1097,7 @@ public class Room : MonoBehaviour
 		{
 			if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
 		}
@@ -1106,7 +1107,7 @@ public class Room : MonoBehaviour
 		{
 			if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
 		}
@@ -1116,7 +1117,7 @@ public class Room : MonoBehaviour
 		{
 			if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 		}
@@ -1127,22 +1128,22 @@ public class Room : MonoBehaviour
 
 			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.South]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.South]);
 				transitioned = true;
 			}
 			else if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.West]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.West]);
 				transitioned = true;
 			}
 			else if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.North]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.North]);
 				transitioned = true;
 			}
 			else if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
 			{
-				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(Floor.TransitionDirection.North, doors.RoomDoors[(int)Floor.TransitionDirection.East]);
+                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.East]);
 				transitioned = true;
 			}
 

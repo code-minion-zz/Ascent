@@ -37,7 +37,6 @@ public class SpikeTrap : MonoBehaviour
     void Initialise()
     {
         plate = transform.FindChild("Plate").GetComponent<SpikeTrapPlate>();
-        Transform spikeParent = transform.FindChild("Spikes");
 
         foreach (Transform t in plate.GetComponentsInChildren<Transform>())
         {

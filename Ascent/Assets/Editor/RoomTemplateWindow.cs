@@ -24,8 +24,8 @@ public class RoomTemplateWindow : EditorWindow
 	{
 		roomGenRef = generator;
         roomName = "New Room";
-        buildWalls = true;
-        tileSize = 2;
+        buildWalls = false;
+        tileSize = 5;
 
         templateSizes.Add("11x11");
         templateSizes.Add("11x9");

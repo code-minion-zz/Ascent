@@ -12,9 +12,12 @@ public enum MiscObjectType
     barrel
 }
 
+#if UNITY_EDITOR
+[InitializeOnLoad]
+#endif
 public static class EnvironmentFactory
 {
-    private static GameObject floorObject = Resources.Load("Prefabs/RoomWalls/GroundTile_2x2") as GameObject;
+    private static GameObject floorObject = Resources.Load("Prefabs/RoomModules/GroundTiles/Ground1") as GameObject;
     private static GameObject wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
     private static GameObject wallCorner = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
     private static GameObject wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
@@ -27,6 +30,19 @@ public static class EnvironmentFactory
     private static GameObject arrowShooter = Resources.Load("Prefabs/Hazards/ArrowShooter") as GameObject;
     private static GameObject spinningBlade = Resources.Load("Prefabs/Hazards/SpinningBlade") as GameObject;
     private static GameObject chest = Resources.Load("Prefabs/Environment/Chest") as GameObject;
+
+    private static UnityEngine.Object[] listGroundTiles = new UnityEngine.Object[0];
+
+
+    static EnvironmentFactory()
+    {
+        LoadResources();
+    }
+
+    public static void LoadResources()
+    {
+        listGroundTiles = Resources.LoadAll("Prefabs/RoomModules/GroundTiles");
+    }
 
     /// <summary>
     /// Loads and instantiates prefab from the prefab folder in resources.
@@ -91,14 +107,22 @@ public static class EnvironmentFactory
     /// <returns></returns>
     public static GameObject CreateGameObjectByType(EnvironmentID type)
     {
-
         GameObject go = null;
 		#if UNITY_EDITOR
         switch (type)
         {
             case EnvironmentID.groundTile:
-                go = UnityEditor.PrefabUtility.InstantiatePrefab(floorObject) as GameObject;
-                go.name = floorObject.name;
+                {
+                    LoadResources();
+
+                    if (listGroundTiles != null)
+                    {
+                        int random = UnityEngine.Random.Range(0, listGroundTiles.Length);
+                        UnityEngine.Object floorObj = listGroundTiles[random];
+                        go = UnityEditor.PrefabUtility.InstantiatePrefab(floorObj) as GameObject;
+                        go.name = floorObject.name;
+                    }
+                }
                 break;
 
             case EnvironmentID.standardWall:

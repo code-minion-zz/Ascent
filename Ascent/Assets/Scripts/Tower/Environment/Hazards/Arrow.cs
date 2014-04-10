@@ -84,7 +84,7 @@ public class Arrow : MonoBehaviour
 
          if(!hitYet)
          {
-            combatEvaluator.Add(new TrapDamageProperty(2.0f, 1.0f));
+            combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
             hitYet = true;
          }
 

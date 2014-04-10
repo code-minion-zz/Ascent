@@ -22,7 +22,6 @@ public class Floor : MonoBehaviour
 	private FadePlane fadePlane;
     private FloorInstanceReward floorInstanceReward;
 	private bool randomFloor;
-    private FloorGeneration floorGenerator;
 
 	public Enemy floorBoss;
 	private bool bossKilled = false;
@@ -80,13 +79,6 @@ public class Floor : MonoBehaviour
         // Create HUD
         GameObject hudManagerGO = GameObject.Instantiate(Resources.Load("Prefabs/UI/FloorHUD")) as GameObject;
         hudManagerGO.GetComponent<FloorHUDManager>().Initialise();
-
-		floorGenerator = new FloorGeneration();
-        floorGenerator.dungeonLevel = 1;
-        floorGenerator.monsterRarity = Rarity.many;
-
-		floorGenerator.GenerateFloor();
-        floorGenerator.PopulateRooms();
 
 		randomFloor = true;
 
@@ -166,7 +158,7 @@ public class Floor : MonoBehaviour
 		}
 		else
 		{
-			currentRoom = floorGenerator.Rooms[0].Room;
+			currentRoom = allRooms[0];
 		}
 
 
@@ -368,7 +360,7 @@ public class Floor : MonoBehaviour
                 if (d == null) continue;
                 if (d.targetDoor != null && d.direction == TransitionDirection.North)
                 {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.North, d.targetDoor);
+                    TransitionToRoomImmediately(d.targetDoor);
                 }
             }
         }
@@ -381,7 +373,7 @@ public class Floor : MonoBehaviour
                 if (d == null) continue;
                 if (d.targetDoor != null && d.direction == TransitionDirection.South)
                 {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.South, d.targetDoor);
+                    TransitionToRoomImmediately(d.targetDoor);
                 }
             };
         }
@@ -394,7 +386,7 @@ public class Floor : MonoBehaviour
                 if (d == null) continue;
                 if (d.targetDoor != null && d.direction == TransitionDirection.West)
                 {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.West, d.targetDoor);
+                    TransitionToRoomImmediately(d.targetDoor);
                 }
             }
         }
@@ -407,7 +399,7 @@ public class Floor : MonoBehaviour
                 if (d == null) continue;
                 if (d.targetDoor != null && d.direction == TransitionDirection.East)
                 {
-                    TransitionToRoomImmediately(Floor.TransitionDirection.East, d.targetDoor);
+                    TransitionToRoomImmediately(d.targetDoor);
                 }
             }
         }
@@ -437,7 +429,7 @@ public class Floor : MonoBehaviour
 	}
 
 
-	public void TransitionToRoom(TransitionDirection direction, Door targetDoor)
+    public void TransitionToRoom(Door targetDoor)
 	{
 		// Set old remove inactive and new one active
 		fadePlane.StartFade(roomTransitionTime * 0.5f, currentRoom.transform.position);
@@ -473,14 +465,22 @@ public class Floor : MonoBehaviour
 		// Move heroes to the new room also disable the controller
 		foreach (Hero hero in heroes)
 		{
-			hero.transform.position = targetDoor.transform.position;
+            if (targetDoor.spawnLocation != null)
+            {
+                hero.transform.position = targetDoor.spawnLocation.position;
+            }
+            else
+            {
+                hero.transform.position = targetDoor.transform.position;
+            }
+
 			hero.Loadout.StopAbility();
 			hero.Motor.StopMotion();
 			hero.HeroController.enabled = false;
 		}
 
 		// Move camera over
-		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
+        FloorCamera.TransitionToRoom(roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
@@ -512,7 +512,7 @@ public class Floor : MonoBehaviour
 
 	}
 
-	public void TransitionToRoomImmediately(TransitionDirection direction, Door targetDoor)
+    public void TransitionToRoomImmediately(Door targetDoor)
 	{
 		targetRoom = targetDoor.transform.parent.parent.parent.GetComponent<Room>();
 
@@ -523,11 +523,18 @@ public class Floor : MonoBehaviour
 		// Move heroes to the new room
 		foreach (Hero hero in heroes)
 		{
-            hero.transform.position = targetDoor.transform.position;
+            if (targetDoor.spawnLocation != null)
+            {
+                hero.transform.position = targetDoor.spawnLocation.position;
+            }
+            else
+            {
+                hero.transform.position = targetDoor.transform.position;
+            }
 		}
 
 		// Move camera over
-		FloorCamera.TransitionToRoom(direction, roomTransitionTime);
+        FloorCamera.TransitionToRoom(roomTransitionTime);
 
 		currentRoom.EntryDoor = targetDoor;
 		targetDoor.SetAsStartDoor();
