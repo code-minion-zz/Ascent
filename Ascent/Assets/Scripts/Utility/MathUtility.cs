@@ -124,5 +124,31 @@ public class MathUtility
 	{
 		return -v1.x * v2.z + v1.z * v2.x > 0.0f;
 	}
+
+    public static Vector3 RandomOnUnitCircle(float angleDegrees)
+    {
+        // http://answers.unity3d.com/questions/33193/randomonunitcircle-.html
+
+        float radius = 1.0f;
+
+        // initialize calculation variables
+        float _x = 0;
+        float _y = 0;
+        float angleRadians = 0;
+        Vector2 _returnVector;
+
+        // convert degrees to radians
+        angleRadians = angleDegrees * Mathf.PI / 180.0f;
+
+        // get the 2D dimensional coordinates
+        _x = radius * Mathf.Cos(angleRadians);
+        _y = radius * Mathf.Sin(angleRadians);
+
+        // derive the 2D vector
+        _returnVector = new Vector2(_x, _y);
+
+        // return the vector info
+        return _returnVector;
+    }
 }
 

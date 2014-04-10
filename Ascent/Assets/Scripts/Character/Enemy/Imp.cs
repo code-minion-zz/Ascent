@@ -29,8 +29,6 @@ public class Imp : Enemy
 
     public void InitialiseAI()
     {
-        AIAgent.Initialise(transform);
-
 		AIAgent.SteeringAgent.RotationSpeed = 15.0f;
 		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
 		motor.MaxSpeed = 3.0f;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #pragma warning disable 0162 // hides unreachable code warning
 
-public class AIMindAgent 
+public class AIMindAgent : MonoBehaviour
 {
     public enum EBehaviour
     {
@@ -16,16 +16,7 @@ public class AIMindAgent
 
 	private const bool drawLabels = false;
 
-	protected bool active;
-
     protected Dictionary<EBehaviour, AIBehaviour> behaviours = new Dictionary<EBehaviour, AIBehaviour>();
-
-	protected Transform transform;
-	public Transform Transform
-	{
-		get { return transform; }
-		set { transform = value; }
-	}
 
 	protected EBehaviour curBehaviour;
 	public EBehaviour CurrentBehaviour
@@ -54,9 +45,6 @@ public class AIMindAgent
 
 	public void Initialise(Transform t)
 	{
-		active = true;
-		transform = t;
-
 #if UNITY_EDITOR
 		if (drawLabels)
 		{
@@ -70,12 +58,6 @@ public class AIMindAgent
 		}
 #endif
 	}
-
-	public void SetActive(bool active)
-	{
-		this.active = active;
-	}
-
 
     public void ResetBehaviour(EBehaviour e)
     {
@@ -104,7 +86,7 @@ public class AIMindAgent
 
     public void Process()
     {
-		#if UNITY_EDITOR
+		//#if UNITY_EDITOR
         if (!behaviours.ContainsKey(curBehaviour))
         {
             Debug.LogError("Trying to process a behaviour that has not been initialised.");
@@ -115,10 +97,12 @@ public class AIMindAgent
             {
                 label.gameObject.SetActive(false);
             }
-        }
-		#endif
 
-		behaviours[curBehaviour].Process();
+            behaviours[curBehaviour].Process();
+        }
+		//#endif
+
+		
     }
 
 #if UNITY_EDITOR
