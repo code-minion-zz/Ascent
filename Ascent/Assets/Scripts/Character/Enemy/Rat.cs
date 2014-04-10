@@ -31,6 +31,7 @@ public class Rat : Enemy
         if(!isDead)
         {
             Vector3 velocity = AIAgent.SteeringAgent.Steer();
+
             motor.Move(velocity);
 
             AIAgent.MindAgent.Process();
@@ -41,11 +42,11 @@ public class Rat : Enemy
 
    public void InitialiseAI()
    {
-       AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-	   AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
-       motor.MaxSpeed = 3.0f;
-       motor.MinSpeed = 0.5f;
-       motor.Acceleration = 1.0f;
+       //AIAgent.SteeringAgent.RotationSpeed = 15.0f;
+       //AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
+       //motor.MaxSpeed = 3.0f;
+       //motor.MinSpeed = 0.5f;
+       //motor.Acceleration = 1.0f;
 
        //AIBehaviour behaviour = null;
        //AITrigger trigger = null;

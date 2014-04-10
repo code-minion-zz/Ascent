@@ -47,6 +47,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400014}
+  - 114: {fileID: 11400010}
   m_Layer: 9
   m_Name: AI
   m_TagString: Untagged
@@ -979,6 +981,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb45894ff3b2e346a839abdd5b3573d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mindAgent: {fileID: 11400014}
+  steeringAgent: {fileID: 11400010}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1005,6 +1009,7 @@ MonoBehaviour:
   spawnOnLoad: 1
   health: 3
   attack: 1
+  move: {x: 0, y: 0, z: 0}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1031,6 +1036,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentID: 14
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd47f7427350b64aa545ff21bb2e4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 5
+  maxForce: 2
+  arriveRadius: 3
+  wanderCircleDistance: 5
+  wanderCircleRadius: 3
+  flock: 0
+  wander: 1
+  avoidanceCharacter: {fileID: 0}
+  targetCharacter: {fileID: 0}
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1043,6 +1068,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actor: {fileID: 100002}
+  rotationSpeed: 5
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f800587857ae734d8748c0150e5e7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
