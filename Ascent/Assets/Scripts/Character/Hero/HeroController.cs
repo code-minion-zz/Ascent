@@ -509,7 +509,7 @@ public class HeroController : MonoBehaviour
 					pos.y = 0.5f;
 
 					RaycastHit hit;
-					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs( rayDirection.z), layerMask))
+					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs(rayDirection.z), layerMask))
 					{
 						grabbedObject.MoveAlongGrid(moveDirection);
 						motor.MoveAlongGrid(moveDirection);
