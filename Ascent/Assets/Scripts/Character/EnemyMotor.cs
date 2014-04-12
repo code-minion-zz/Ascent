@@ -15,7 +15,8 @@ public class EnemyMotor : CharacterMotor
 
         // Rotate toward the target
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);
-        
+
+
         // Move forward with the velocity magnitude
 		if(!Mathf.Approximately(velocity.magnitude, 0.0f))
 		{

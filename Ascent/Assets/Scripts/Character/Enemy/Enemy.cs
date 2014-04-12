@@ -150,7 +150,7 @@ public abstract class Enemy : Character
     #region Update
 
     // Update is called once per frame
-	public override void Update () 
+	public override void Update() 
     {
         if (isDead)
         {
@@ -182,6 +182,7 @@ public abstract class Enemy : Character
 					this.gameObject.SetActive(false);
 				}
 			}
+            Debug.Log(transform.forward);
         }
         else
         {
@@ -189,12 +190,12 @@ public abstract class Enemy : Character
 
             if (CanMove && CanAct)
             {
-                if (!loadout.IsAbilityActive)
-                {
-                    AIAgent.MindAgent.Process();
-                }
+                //if (!loadout.IsAbilityActive)
+                //{
+                //    AIAgent.MindAgent.Process();
+                //}
 
-                AIAgent.SteeringAgent.Process();
+                //AIAgent.SteeringAgent.Process();
             }
 
             if (hpBar != null)
