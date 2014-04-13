@@ -38,6 +38,13 @@ public class AIMindAgent : MonoBehaviour
         set { sensedCharacters = value; }
     }
 
+	private Character targetCharacter;
+	public Character TargetCharacter
+	{
+		get { return targetCharacter; }
+		set { targetCharacter = value; }
+	}
+
 #if UNITY_EDITOR
 #pragma warning disable 0414 // unused var 
 	private GUIText label;
@@ -86,27 +93,23 @@ public class AIMindAgent : MonoBehaviour
 
     public void Process()
     {
-		//#if UNITY_EDITOR
-        //if (!behaviours.ContainsKey(curBehaviour))
-        //{
-        //    Debug.LogError("Trying to process a behaviour that has not been initialised.");
-        //}
-        //else
-        //{
-        //    if (drawLabels)
-        //    {
-        //        label.gameObject.SetActive(false);
-        //    }
+		if (!behaviours.ContainsKey(curBehaviour))
+		{
+			Debug.LogError("Trying to process a behaviour that has not been initialised: " + curBehaviour);
+		}
+		else
+		{
+			if (drawLabels)
+			{
+				label.gameObject.SetActive(false);
+			}
 
-        //    behaviours[curBehaviour].Process();
-        //}
-		//#endif
-
-		
+			behaviours[curBehaviour].Process();
+		}
     }
 
 #if UNITY_EDITOR
-    public void DebugDraw()
+	public void OnDrawGizmos()
     {
 		if (behaviours == null)
 		{

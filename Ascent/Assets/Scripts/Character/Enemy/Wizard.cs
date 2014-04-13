@@ -76,26 +76,20 @@ public class Wizard : Enemy
 
     public void InitialiseAI()
     {
-        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-        AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
-        motor.MaxSpeed = 0.0f;
-        motor.MinSpeed = 0.0f;
-        motor.Acceleration = 1.0f;
-
         AIBehaviour behaviour = null;
 
         // Defensive behaviour
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             teleportTrigger = behaviour.AddTrigger();
-            teleportTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            teleportTrigger.Operation = AITrigger.EConditionalExit.Stop;
             teleportTrigger.AddCondition(new AICondition_Attacked(this));
             teleportTrigger.AddCondition(new AICondition_Timer(3.0f, 1.0f, 3.0f), AITrigger.EConditional.Or);
             teleportTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[teleportID]), AITrigger.EConditional.And);
             teleportTrigger.OnTriggered += OnCanUseTeleport;
 
             spellTrigger = behaviour.AddTrigger();
-            spellTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            spellTrigger.Operation = AITrigger.EConditionalExit.Stop;
             spellTrigger.AddCondition(new AICondition_Timer(1.0f, -1.0f, 1.0f));
             spellTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[spellID]), AITrigger.EConditional.And);
             spellTrigger.OnTriggered += OnCanUseSpell;

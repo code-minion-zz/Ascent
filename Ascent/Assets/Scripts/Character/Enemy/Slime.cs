@@ -33,8 +33,6 @@ public class Slime : Enemy
 
     public void InitialiseAI()
     {
-
-        AIAgent.SteeringAgent.RotationSpeed = 50.0f;
         motor.MaxSpeed = 2.0f;
         motor.MinSpeed = 0.3f;
         motor.Acceleration = 0.3f;
@@ -57,7 +55,7 @@ public class Slime : Enemy
 
             // OnWanderEnd, Triggers if time exceeds 2s or target reached.
             OnWanderEndTrigger = behaviour.AddTrigger();
-            OnWanderEndTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            OnWanderEndTrigger.Operation = AITrigger.EConditionalExit.Stop;
             OnWanderEndTrigger.AddCondition(new AICondition_Timer(1.5f, 2.0f, 4.0f));
             OnWanderEndTrigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
             OnWanderEndTrigger.OnTriggered += OnWanderEnd;
@@ -65,13 +63,13 @@ public class Slime : Enemy
         }
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+        //AIAgent.SteeringAgent.TargetPosition = (containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
     }
 
     public void OnWanderEnd()
     {
         // Choose a new target location
-        AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+		//AIAgent.SteeringAgent.TargetPosition = (containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
 
         // Reset behaviour
         OnWanderEndTrigger.Reset();

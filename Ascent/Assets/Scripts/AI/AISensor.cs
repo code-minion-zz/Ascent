@@ -50,7 +50,7 @@ public abstract class AISensor
 
 	public bool SenseTarget(ref List<Character> sensedCharacters)
 	{
-		Character c = agent.TargetCharacter; // Add target
+		Character c = agent.MindAgent.TargetCharacter; // Add target
 
 		bool foundTarget = c != null;
 

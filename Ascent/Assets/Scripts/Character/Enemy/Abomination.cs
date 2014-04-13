@@ -48,12 +48,6 @@ public class Abomination : Enemy
 
     public void InitialiseAI()
     {
-        motor.MaxSpeed = 1.5f;
-
-        AIAgent.SteeringAgent.RotationSpeed = 17.5f;
-        //AIAgent.SteeringAgent.DistanceToKeepFromTarget = 3.5f;
-		//motor.EnableStandardMovement(false);
-		AIAgent.SteeringAgent.CanMove = false;
 
         AIBehaviour behaviour = null;
 
@@ -62,12 +56,12 @@ public class Abomination : Enemy
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             AITrigger trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.Operation = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
 			trigger.OnTriggered += OnChargeEnd;
 
 			trigger = behaviour.AddTrigger();
-			trigger.Priority = AITrigger.EConditionalExit.Stop;
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
 			trigger.OnTriggered += OnCanUseCharge;
         }
@@ -78,7 +72,7 @@ public class Abomination : Enemy
 
 			// Back out from the collision point.
 			trigger = behaviour.AddTrigger();
-			trigger.Priority = AITrigger.EConditionalExit.Stop;
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
 			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
 			trigger.OnTriggered += OnChargeEnd;
 
@@ -90,14 +84,14 @@ public class Abomination : Enemy
 
 			// Attempt to rotate to a Hero. 
 			changeTargetTrigger = behaviour.AddTrigger();
-			changeTargetTrigger.Priority = AITrigger.EConditionalExit.Continue;
+			changeTargetTrigger.Operation = AITrigger.EConditionalExit.Continue;
 			changeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
 			//ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
 			changeTargetTrigger.OnTriggered += OnCanChangeTarget;
 
 			// Charge at the hero.
 			chargeTrigger = behaviour.AddTrigger();
-			chargeTrigger.Priority = AITrigger.EConditionalExit.Stop;
+			chargeTrigger.Operation = AITrigger.EConditionalExit.Stop;
 			chargeTrigger.AddCondition(new AICondition_Timer(0.5f, 1.0f, 2.0f), AITrigger.EConditional.And);
 			chargeTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
 			chargeTrigger.OnTriggered += OnCanUseCharge;
@@ -115,7 +109,6 @@ public class Abomination : Enemy
 	{
 		if (loadout.UseAbility(chargeActionID))
 		{
-			AIAgent.SteeringAgent.CanRotate = false;
 			chargeTrigger.Reset();
 		}
 	}
@@ -123,12 +116,11 @@ public class Abomination : Enemy
 	public void OnChargeEnd()
 	{
 		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-		AIAgent.SteeringAgent.CanRotate = true;
 	}
 
 	public void OnCanChangeTarget()
 	{
-		AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+		AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
 	}
 
 	public override void OnEnable()
@@ -140,7 +132,7 @@ public class Abomination : Enemy
     {
 		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        AIAgent.SteeringAgent.RemoveTarget();
+
         motor.StopMotion();
     }
 }

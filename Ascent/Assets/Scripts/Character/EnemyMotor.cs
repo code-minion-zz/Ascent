@@ -10,17 +10,21 @@ public class EnemyMotor : CharacterMotor
         // Updates buff values
         Vector3 velocity = ProcessStandardMovement();
 
-        // Animate based on current speed
-        GetComponent<CharacterAnimator>().PlayAnimation("Movement", currentSpeed / MaxSpeed);
-
-        // Rotate toward the target
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);
-
-
         // Move forward with the velocity magnitude
-		if(!Mathf.Approximately(velocity.magnitude, 0.0f))
+		if (velocity.magnitude > 0.01f)
 		{
+			// Rotate toward the target
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);
+
+			// Animate based on current speed
+			GetComponent<CharacterAnimator>().PlayAnimation("Movement", currentSpeed / MaxSpeed);
+
+
 			rigidbody.AddForce(transform.forward * velocity.magnitude, ForceMode.VelocityChange);
+		}
+		else
+		{
+			GetComponent<CharacterAnimator>().PlayAnimation("Movement", 0.0f);
 		}
     }
 }

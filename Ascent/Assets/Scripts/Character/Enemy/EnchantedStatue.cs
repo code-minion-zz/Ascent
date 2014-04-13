@@ -50,8 +50,8 @@ public class EnchantedStatue : Enemy
 		motor.MinSpeed = 0.1f;
         motor.MaxSpeed = 0.1f;
 
-		AIAgent.SteeringAgent.RotationSpeed = 1.5f;
-		AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
+		//AIAgent.SteeringAgent.RotationSpeed = 1.5f;
+		//AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
 
         AIBehaviour behaviour = null;
 
@@ -59,7 +59,7 @@ public class EnchantedStatue : Enemy
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
         {
             OnAttackedTrigger = behaviour.AddTrigger();
-            OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
+            OnAttackedTrigger.Operation = AITrigger.EConditionalExit.Stop;
             OnAttackedTrigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 4.0f, Vector3.zero)));
             OnAttackedTrigger.OnTriggered += OnAwaken;
         }
@@ -67,7 +67,7 @@ public class EnchantedStatue : Enemy
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
             OnAttackedTrigger = behaviour.AddTrigger();
-			OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
+			OnAttackedTrigger.Operation = AITrigger.EConditionalExit.Stop;
 			OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
 			OnAttackedTrigger.AddCondition(new AICondition_SurroundedSensor(transform, AIAgent.MindAgent, 2, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
 			OnAttackedTrigger.OnTriggered += OnSurrounded;
@@ -84,8 +84,8 @@ public class EnchantedStatue : Enemy
 
     public void OnAwaken()
     {
-        List<Character> characters = AIAgent.SensedCharacters;
-        AIAgent.TargetCharacter = characters[0];
+        List<Character> characters = AIAgent.MindAgent.SensedCharacters;
+        AIAgent.MindAgent.TargetCharacter = characters[0];
         SoundManager.PlaySound(AudioClipType.statueAwaken, this.transform.position, 1.0f);
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
@@ -108,7 +108,7 @@ public class EnchantedStatue : Enemy
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
-        AIAgent.SteeringAgent.RemoveTarget();
+        //AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
     }
 }

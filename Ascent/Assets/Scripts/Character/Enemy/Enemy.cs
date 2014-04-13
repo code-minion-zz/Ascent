@@ -34,6 +34,9 @@ public abstract class Enemy : Character
         protected set { agent = value; }
     }
 
+	public Vector3 targetPosition;
+	public Character targetCharacter;
+
 	protected EnemyStats enemyStats;
 	public EnemyStats EnemyStats
 	{
@@ -182,7 +185,6 @@ public abstract class Enemy : Character
 					this.gameObject.SetActive(false);
 				}
 			}
-            Debug.Log(transform.forward);
         }
         else
         {
@@ -298,4 +300,29 @@ public abstract class Enemy : Character
 	}
 
     #endregion
+
+	public virtual void StateTransitionToPassive()
+	{
+		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);
+	}
+
+	public virtual void StateTransitionToDefensive()
+	{
+		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+	}
+
+	public virtual void StateTransitionToAggressive()
+	{
+		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	}
+
+	public virtual void StateTransitionToEvasive()
+	{
+		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Evasive);
+	}
+
+	public virtual void ChooseNewWanderTarget()
+	{
+		targetPosition = (containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+	}
 }
