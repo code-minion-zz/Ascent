@@ -15,6 +15,8 @@ public class ArrowShooter : EnvironmentHazard
     private Vector3 spawnPoint;
     private float timeElapsed = 0.0f;
     public bool activateArrows;
+
+    private Vector3 shootLocalPosition;
    
 
 	// Use this for initialization
@@ -24,7 +26,9 @@ public class ArrowShooter : EnvironmentHazard
        // direction = (transform.FindChild("Shooter").transform.position - transform.FindChild("Base").transform.position).normalized;
         //spawnPoint = transform.FindChild("Shooter").transform.position + (direction * 1.0f);
 		direction = transform.forward;
-		spawnPoint = transform.FindChild("Shooter").transform.position + direction* 0.5f;
+
+        shootLocalPosition = transform.FindChild("Shooter").transform.position;
+        spawnPoint = shootLocalPosition + direction * .50f;
 		
 	}
 
@@ -51,6 +55,16 @@ public class ArrowShooter : EnvironmentHazard
             if (po != null)
             {
 				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.1f);
+
+                int layerMask = (((1 << (int)Layer.Block)));
+                RaycastHit hitInfo;
+
+                if (Physics.Raycast(new Ray(shootLocalPosition, direction), out hitInfo, 0.50f, layerMask))
+                {
+                    Debug.Log(hitInfo.collider.gameObject);
+                    return;
+                }
+
                 Arrow newArrow = po.script as Arrow;
                 newArrow.Initialise(arrowLifeSpan, this.gameObject, direction, projectileSpeed, projectileDamage);
 				po.go.transform.position = spawnPoint;
@@ -60,17 +74,6 @@ public class ArrowShooter : EnvironmentHazard
                 po.go.SetActive(true);
 				po.go.rigidbody.angularVelocity = Vector3.zero;
 				po.go.rigidbody.velocity = Vector3.zero;
-
-				//po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
-                //po.go.transform.LookAt(new Vector3(1.0f, 0.0f, 0.0f));
-                //po.go.transform.tra
-                //po.go.rigidbody.velocity = Vector3.zero;
-                //po.go.rigidbody.angularVelocity = Vector3.zero;
-                //po.go.rigidbody.AddForce(direction * 50.0f);
-            }
-            else
-            {
-                //Debug.Log(name + " ran out of " + projectile.ToString() + " to fire.");
             }
         }	
 	}

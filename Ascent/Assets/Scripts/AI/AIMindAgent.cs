@@ -99,10 +99,12 @@ public class AIMindAgent : MonoBehaviour
 		}
 		else
 		{
+            #if UNITY_EDITOR
 			if (drawLabels)
 			{
 				label.gameObject.SetActive(false);
 			}
+            #endif
 
 			behaviours[curBehaviour].Process();
 		}
