@@ -7,6 +7,12 @@ public class Barrel : EnvironmentBreakable
     protected List<Item> loot;
     protected Room containedRoom;
     protected int quantityOfLoot;
+	protected Transform barrelStatic;
+	protected Transform barrelDynamic;
+	protected List<Transform> barrelParts;
+	private float timeDead = 0f;
+	private float physicsTime = 1.5f;
+	private float destroyTime = 10f;
 
     public void Start()
     {
@@ -19,6 +25,18 @@ public class Barrel : EnvironmentBreakable
             Item newItem = LootGenerator.RandomlyGenerateItem(Game.Singleton.Tower.currentFloorNumber, LootGenerator.ELootType.Gold, true);
             loot.Add(newItem);
         }
+
+		Transform model = transform.FindChild("Model");
+		barrelStatic = model.FindChild("barrel_static");
+		barrelDynamic = model.FindChild("barrel_dynamic");
+
+		int j;
+		barrelParts = new List<Transform>();
+		for (j = 0; j < barrelDynamic.childCount; ++j)
+		{
+			barrelParts.Add(barrelDynamic.GetChild(j));
+		}
+		barrelDynamic.gameObject.SetActive(false);
     }
 
     public override void Update()
@@ -27,6 +45,17 @@ public class Barrel : EnvironmentBreakable
 
         if (isDestroyed)
         {
+			if (timeDead > destroyTime) return;
+			timeDead += Time.deltaTime;
+			if (timeDead > destroyTime)
+			{
+				gameObject.SetActive(false);
+			}
+			else if (timeDead > physicsTime)
+			{
+				barrelParts.ForEach(t => t.rigidbody.isKinematic = true);
+			}
+
             if (loot.Count == 0)
             {
                 return;
@@ -48,7 +77,18 @@ public class Barrel : EnvironmentBreakable
 
             if (loot.Count == 0)
             {
-                this.gameObject.SetActive(false);
+				barrelStatic.gameObject.SetActive(false);
+				barrelDynamic.gameObject.SetActive(true);
+				collider.enabled = false;
+
+				foreach(Transform trans in barrelParts)
+				{
+					Vector3 randForce;
+					randForce.x = Random.Range(-200,200);
+					randForce.y = Random.Range(-200,200);
+					randForce.z = Random.Range(-200,200);
+					trans.rigidbody.constantForce.torque = randForce;
+				}
             }
         }
     }
