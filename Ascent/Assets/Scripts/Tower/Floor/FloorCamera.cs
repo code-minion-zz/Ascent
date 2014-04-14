@@ -84,15 +84,10 @@ public class FloorCamera : MonoBehaviour
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)
 	{
-        //return new Vector3(
-        //Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
-        //22.0f,
-        //Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
-
         return new Vector3(
-        Mathf.Clamp(pos.x, -Mathf.Infinity, Mathf.Infinity),
-        pos.y,
-        Mathf.Clamp(pos.z, -Mathf.Infinity, Mathf.Infinity));
+        Mathf.Clamp(pos.x, minCamera.x, maxCamera.x),
+        22.0f,
+        Mathf.Clamp(pos.z, minCamera.z, maxCamera.z));
 	}
 
 	public static Vector3 CalculateAverageHeroPosition()

@@ -8,319 +8,175 @@ using UnityEditor;
 
 public class AISteeringAgent : MonoBehaviour
 {
+	public enum ESteerTypes
+	{
+		None = 0x00000,
+		Seek = 0x00002,
+		Flee = 0x00004,
+		Arrive = 0x00008,
+		Wander = 0x00010,
+		Cohesion = 0x00020,
+		Separation = 0x00040,
+		Allignment = 0x00080,
+		ObstacleAvoidance = 0x00100,
+		WallAvoidance = 0x00200,
+		FollowPath = 0x00400,
+		Pursuit = 0x00800,
+		Evade = 0x01000,
+		Flock = 0x08000,
+		OffsetPursuit = 0x10000,
+	};
+
+	public ESteerTypes steerTypes = 0;
+
     public float maxSpeed;
 	public float maxForce;
+	public float mass;
 
     private Vector3 velocity;
     private Vector3 acceleration;
 
+	private Vector3 position;
+	private Vector3 heading;
+	
     public float arriveRadius = 3.0f;
 
     public float wanderCircleDistance = 5.0f;
     public float wanderCircleRadius = 3.0f;
-    private float wanderAngle = 0.0f;
-	private int wanderFrames;
+	public float wanderJitter = 0.15f;
 
-    private int forceCount = 0;
+	private float wanderAngle;
+	private Vector3 wanderTarget;
 
-	public bool flock;
-	public bool wander;
+	public float fleeDistance = 5.0f;
+	public float closeEnoughRange = 2.0f;
+	public float distanceToKeepFromTarget = 1.75f;
 
+	public Vector2 pursuitOffset;
+	public Character pursuitOffsetLeader;
 
-	private bool canMove = true;
-	public bool CanMove
-	{
-		get { return canMove; }
-		set { canMove = value; }
-	}
+	public AIPath path;
+	private int currentPathNode;
 
-    private Vector3 startPos;
-    public Vector3 StartPosition
-    {
-        get { return startPos; }
-        set { startPos = value; }
-    }
-
-    private Vector3 targetPos;
-
-#pragma warning disable 0414
+//#pragma warning disable 0414
     private Vector3 posLastFrame;
-
-
-    public Character avoidanceCharacter;
-	public Character targetCharacter;
-	public Character TargetCharacter
-	{
-		get { return targetCharacter; }
-		set
-		{
-			targetCharacter = value;
-			startPos = motor.transform.position;
-			hasTarget = true;
-		}
-	}
-
-    private Room containedRoom;
-
-    protected CharacterMotor motor;
-    public CharacterMotor Motor
-    {
-        get { return motor; }
-        set { motor = value; }
-    }
-
-    protected float closeEnoughRange = 1.0f;
-    public float CloseEnoughRange
-    {
-        get { return closeEnoughRange; }
-        set { closeEnoughRange = value; }
-    }
-
-    protected float rotationSpeed = 1.0f;
-    public float RotationSpeed
-    {
-        get { return rotationSpeed; }
-        set { rotationSpeed = value; }
-    }
-
-    protected bool isRunningAway;
-    public bool IsRunningAway
-    {
-        get { return isRunningAway; }
-        set { isRunningAway = value; }
-    }
-
-    protected bool canRotate = true;
-    public bool CanRotate
-    {
-        get { return canRotate; }
-        set { canRotate = value; }
-    }
-
-    protected bool runIfTooClose = false;
-    public bool RunIfTooClose
-    {
-        get { return runIfTooClose; }
-        set { runIfTooClose = value; }
-    }
-
-	protected float distanceToKeepFromTarget = 1.75f;
-	public float DistanceToKeepFromTarget
-	{
-		get { return distanceToKeepFromTarget; }
-		set { distanceToKeepFromTarget = value; }
-	}
-
-    protected bool hasTarget = false;
 
     public delegate void TargetReached();
     public event TargetReached OnTargetReached;
 
-    public void Initialise(CharacterMotor motor)
-    {
-        startPos = motor.transform.position;
-        this.motor = motor;
-    }
+	public delegate void PathCompleted();
+	public event PathCompleted OnPathCompleted;
 
-    public void Process()
-    {
-		if (enabled)
-		{
-			bool moveThisFrame = true;
-            bool moveBack = false;
-			if (hasTarget)
-			{
-				if (targetCharacter != null)
-				{
-					if (motor.IsUsingMovementForce)
-					{
-						if (canRotate)
-						{
-                            if (IsRunningAway)
-							{
-                                // Rotate away
-								motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
-							}
-							else
-							{
-								// If you are too close to the target. Do not get any closer!
-                                if (Vector3.Distance(motor.transform.position, targetCharacter.transform.position) <= distanceToKeepFromTarget)
-                                {
-                                    if (runIfTooClose)
-                                    {
-                                        moveBack = true;
-                                        //motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(motor.transform.position - targetCharacter.transform.position, Vector3.up), rotationSpeed);
-                                    }
-                                    else
-                                    {
-                                        moveThisFrame = false;
-                                        motor.StopMotion();
-                                    }
-                                }
-                                //else
-                                {
-                                    // Rotate toward
-                                    motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetCharacter.transform.position - motor.transform.position, Vector3.up), rotationSpeed);
-                                }
-							}
-						}
-					}
-
-					if (MathUtility.IsWithinCircle(motor.transform.position, targetCharacter.transform.position, closeEnoughRange))
-					{
-						if (OnTargetReached != null)
-						{
-							OnTargetReached.Invoke();
-						}
-					}
-				}
-				else
-				{
-					if (motor.IsUsingMovementForce)
-					{
-						motor.transform.rotation = Quaternion.RotateTowards(motor.transform.rotation, Quaternion.LookRotation(targetPos - motor.transform.position, Vector3.up), rotationSpeed);
-					}
-
-					if (MathUtility.IsWithinCircle(motor.transform.position, targetPos, closeEnoughRange))
-					{
-						if (OnTargetReached != null)
-						{
-							OnTargetReached.Invoke();
-						}
-					}
-				}
-
-				if (moveThisFrame && canMove)
-				{
-                    if (moveBack)
-                    {
-                        motor.Move(-motor.transform.forward);
-                    }
-                    else
-                    {
-                        motor.Move(motor.transform.forward);
-                    }
-				}
-			}
-		}
-    }
-
-	public void RemoveTarget()
+	public Vector3 Steer(Vector3 target)
 	{
-		targetCharacter = null;
-		targetPos = Vector3.zero;
-		hasTarget = false;
-	}
+		posLastFrame = position; 
+		position = transform.position;
 
-    public void SetTargetPosition(Vector3 targetPosition)
-    {
-        startPos = motor.transform.position;
-        targetPos = targetPosition;
-        hasTarget = true;
+		// Calculate the combined force from each steering behaviour
+		Vector3 steeringForce = Calculate(target);
 
-        posLastFrame = startPos;
-    }
+		steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
 
-#if UNITY_EDITOR
-    public void DebugDraw()
-    {
-		if (!gameObject.activeInHierarchy)
-		{
-			return;
-		}
-        if(motor != null)
-        {
-            Color red = new Color(1.0f, 0.0f, 0.0f, 0.35f);
-            Color green = new Color(0.0f, 1.0f, 0.0f, 0.35f);
+		// Acceleration = Force/Mass
+		Vector3 acceleration = steeringForce / mass;
 
-            Color blue = new Color(0.0f, 0.0f, 1.0f, 0.75f);
-            Color yellow = new Color(1.0f, 1.0f, 0.0f, 0.35f);
+		// Update velocity
+		velocity += acceleration * Time.deltaTime;
 
-            if(hasTarget)
-            {
-                Vector3 pos = targetPos;
-                if (targetCharacter != null)
-                {
-                    pos = targetCharacter.transform.position;
+		// Do not allow velocity to exceed max
+		velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 
-                    // From actor to direction of target
-                    Debug.DrawLine(new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), 
-                        new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z) + (new Vector3(pos.x, 0.2f, pos.z) - new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z)).normalized * 1.5f, 
-                        red, 0.01f, false);
-                    Debug.DrawLine(new Vector3(posLastFrame.x, 0.2f, posLastFrame.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.5f, false);
-                }
-                else
-                {
-                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(pos.x, 0.2f, pos.z), red);
-                    Debug.DrawLine(new Vector3(startPos.x, 0.2f, startPos.z), new Vector3(motor.transform.position.x, 0.2f, motor.transform.position.z), green, 0.25f, false);
-                }
-
-                posLastFrame = motor.transform.position;
-            }
-
-            Debug.DrawLine(motor.transform.position, motor.transform.position + motor.TargetVelocity * 1.5f, yellow);
-            Debug.DrawLine(motor.transform.position, motor.transform.position + motor.transform.forward * 1.5f, blue);
-
-        }
-    }
-#endif
-
-	protected Transform transformCache;
-	public void Start()
-	{
-		transformCache = transform;
-		velocity = transform.forward;
-	}
-
-	public Vector3 Steer()
-	{
-		ResetForces();
-
-		if (wander)
-		{
-			ApplyForce(Wander());
-			
-		}
-		else 
-		{
-			Flock(Game.Singleton.Tower.CurrentFloor.CurrentRoom.GetCharacterList(Character.EScope.Enemy));
-		}
-		//ApplyForce(Arrive(targetCharacter.gameObject));
-		//ObstacleAvoidance(avoidanceCharacter);
-		//ApplyForce(PatrolCircle());
-
-		velocity += acceleration / (float)forceCount; // (Mass is not used)
-		Vector3.ClampMagnitude(velocity, maxSpeed);
-
-		// Render Target
-		// Render Heading
-		// Render Desired
+		heading = velocity.normalized;
 
 		return velocity * Time.deltaTime;
 	}
 
-	private void ResetForces()
+	public Vector3 Steer(GameObject target)
 	{
-		forceCount = 0;
-		acceleration *= 0.0f;
-		velocity = Vector3.zero;
+		posLastFrame = position;
+		position = transform.position;
+
+		// Calculate the combined force from each steering behaviour
+		Vector3 steeringForce = Calculate(target);
+
+		steeringForce = Vector3.ClampMagnitude(steeringForce, maxForce);
+
+		// Acceleration = Force/Mass
+		Vector3 acceleration = steeringForce / mass;
+
+		// Update velocity
+		velocity += acceleration * Time.deltaTime;
+
+		// Do not allow velocity to exceed max
+		velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
+
+		heading = velocity.normalized;
+
+		return velocity * Time.deltaTime;
 	}
 
-	private void ApplyForce(Vector3 force)
+	private Vector3 Calculate(Vector3 target)
 	{
-		acceleration += force;
-        forceCount++;
+		Vector3 combinedForces = Vector3.zero;
+
+		if (On(ESteerTypes.Seek))
+		{
+			combinedForces += Seek(target);
+		}
+		if (On(ESteerTypes.Arrive))
+		{
+			combinedForces += Arrive(target, arriveRadius);
+		}
+		if (On(ESteerTypes.Wander))
+		{
+			combinedForces += Wander();
+		}
+		if (On(ESteerTypes.ObstacleAvoidance))
+		{
+			combinedForces += ObstacleAvoidance();
+		}
+
+		return combinedForces;
 	}
 
-	private Vector3 Seek(Vector3 target)
+	private Vector3 Calculate(GameObject target)
 	{
-		Vector3 desired = Vector3.zero;
-		desired = target - transformCache.position;
-		desired.Normalize();
-		desired *= maxSpeed;
-		desired -= velocity;
+		Vector3 combinedForces = Vector3.zero;
 
-		return desired;
+		if (On(ESteerTypes.Seek))
+		{
+			combinedForces += Seek(target);
+		}
+		if (On(ESteerTypes.Arrive))
+		{
+			combinedForces += Arrive(target, arriveRadius);
+		}
+		if (On(ESteerTypes.Wander))
+		{
+			combinedForces += Wander();
+		}
+		if (On(ESteerTypes.ObstacleAvoidance))
+		{
+			combinedForces += ObstacleAvoidance();
+		}
+
+		return combinedForces;
+	}
+
+	private bool On(ESteerTypes steerType)
+	{
+		return (steerTypes & steerType) == steerType;
+	}
+
+	private Vector3 Seek(Vector3 targetPos)
+	{
+		Vector3 desiredVelocity = Vector3.zero;
+		desiredVelocity = targetPos - position;
+		desiredVelocity.Normalize();
+		desiredVelocity *= maxSpeed;
+		desiredVelocity -= velocity;
+
+		return desiredVelocity;
 	}
 
 	private Vector3 Seek(GameObject target)
@@ -333,100 +189,211 @@ public class AISteeringAgent : MonoBehaviour
 
 	private Vector3 Flee(Vector3 target)
 	{
-		Vector3 desired = Vector3.zero;
-		desired = transformCache.position - target;
-		desired.Normalize();
-		desired *= maxSpeed;
-		desired -= velocity;
+		Vector3 desiredVelocity = Vector3.zero;
+		desiredVelocity = position - target;
+		desiredVelocity.Normalize();
+		desiredVelocity *= maxSpeed;
+		desiredVelocity -= velocity;
 
-		return desired;
+		return desiredVelocity;
 	}
 
 	private Vector3 Flee(GameObject target)
 	{
 		if (target != null)
-			return Seek(target.transform.position);
+			return Flee(target.transform.position);
 
 		return Vector3.zero;
 	}
 
-	private Vector3 Arrive(Vector3 target)
+	private Vector3 FleeWithinRange(Vector3 target)
 	{
-		Vector3 desired = Vector3.zero;
-		desired = target - transformCache.position;
+		// Only flee when within a range that is too close
+		if (Vector3.Distance(position, target) > fleeDistance)
+		{
+			return Vector3.zero;
+		}
 
-		float distance = desired.magnitude;
+		Vector3 desiredVelocity = Vector3.zero;
+		desiredVelocity = position - target;
+		desiredVelocity.Normalize();
+		desiredVelocity *= maxSpeed;
+		desiredVelocity -= velocity;
+
+		return desiredVelocity;
+	}
+
+	private Vector3 FleeWithinRange(GameObject target)
+	{
+		if (target != null)
+			return FleeWithinRange(target.transform.position);
+
+		return Vector3.zero;
+	}
+
+	private Vector3 Arrive(Vector3 target, float radius)
+	{
+		Vector3 desired = target - position;
+
+		float distance = Mathf.Abs(desired.magnitude);
+
 		desired.Normalize();
 
-		if (distance < arriveRadius)
+		if (distance <= closeEnoughRange)
 		{
-			float speed = (distance / arriveRadius) * maxSpeed; // Speed set according to dist
-			
-			desired *= speed;
+			velocity = heading * 0.01f;
 
-			// Check if close enough and notify
-			if (distance < closeEnoughRange)
+			if (OnTargetReached != null)
 			{
-				if (OnTargetReached != null)
-				{
-					OnTargetReached.Invoke();
-				}
+				OnTargetReached.Invoke();
 			}
+
+			return velocity;
+		}
+
+		// If outside of the arrival range go at normal speed
+		if (distance < 0.0f && distance > radius)
+		{
+			desired *= velocity.magnitude;
 		}
 		else
 		{
-			desired *= maxSpeed;
+			// slow down because in range of arrival
+			float newSpeed = (distance / radius) * maxSpeed; // Speed set according to dist
+			desired *= newSpeed;
 		}
-
 
 		desired -= velocity;
 
 		return desired;
 	}
 
-	private Vector3 Arrive(GameObject target)
+	private Vector3 Arrive(GameObject target, float radius)
     {
-        if (target != null) 
-			return Arrive(target.transform.position);
+        if (target != null)
+			return Arrive(target.transform.position, radius);
 
 		return Vector3.zero;
     }
 
-	private Vector3 Wander()
+	private Vector3 Pursuit(Vector3 target, Vector3 targetsVelocity, float targetsSpeed)
 	{
-        // Calculate centre of circle
-        Vector3 circlePos = transformCache.position + velocity;
-		circlePos.Normalize();
-		circlePos *= wanderCircleDistance;
+		// If the target is ahead and facing me then just seek it
 
-		// Calculate displacement
-		Vector3 displacement = Vector3.zero;
-		displacement = new Vector3(0.0f, 0.0f, -1.0f);
-		displacement *= wanderCircleRadius;
+		Vector3 toEvader = target - position;
 
-		displacement.x = Mathf.Cos(wanderAngle) * displacement.magnitude;
-		displacement.z = Mathf.Sin(wanderAngle) * displacement.magnitude;
+		Vector3 targetsHeading = targetsVelocity.normalized;
 
-		wanderFrames++;
-		if (wanderFrames >= Random.Range(50, 100))
+		float relativeHeading = Vector3.Dot(heading, targetsHeading);
+
+		if ((Vector3.Dot(toEvader, heading)) > 0 &&
+			(relativeHeading < -0.95f)) // acos(0.95) == 18degs
 		{
-			wanderFrames = 0;
-			float jitter = Random.Range(0.0f, Mathf.PI * 2.0f);
-			wanderAngle += jitter + ((Random.value) * (Mathf.PI / 36.0f));
+			return Seek(target);
 		}
 
-		Vector3 target = circlePos + displacement;
-        Vector3 desired = target - transformCache.position;
-		desired *= maxSpeed;
-        desired -= velocity;
+		// It isn't ahead to predict where it is going
 
-		return desired;
+		// Look ahead based on combined speeds and distance
+		float lookAheadTime = toEvader.magnitude / (maxSpeed + targetsSpeed);
+		lookAheadTime += CalculateTurnAroundTime(target);
+
+
+		// Finally seek the predicted position
+		return Seek(target + (targetsVelocity * lookAheadTime));
+	}
+
+	private Vector3 Pursuit(GameObject target)
+	{
+		AISteeringAgent steer = target.GetComponentInChildren<AISteeringAgent>();
+		if (steer == null)
+			return Vector3.zero;
+
+		return Pursuit(steer.transform.position, steer.velocity, steer.velocity.magnitude);
+	}
+
+	private float CalculateTurnAroundTime(Vector3 target)
+	{
+		Vector3 toTarget = target - position;
+		toTarget.Normalize();
+
+		float dot = Vector3.Dot(heading, toTarget);
+
+		// NOTE: From Matt Buckland's book
+		//change this value to get the desired behavior. The higher the max turn
+		//rate of the vehicle, the higher this value should be. If the vehicle is
+		//heading in the opposite direction to its target position then a value
+		//of 0.5 means that this function will return a time of 1 second for the
+		//vehicle to turn around.
+		const float coefficient = 0.05f;
+
+		//the dot product gives a value of 1 if the target is directly ahead and -1
+		//if it is directly behind. Subtracting 1 and multiplying by the negative of
+		//the coefficient gives a positive value proportional to the rotational
+		//displacement of the vehicle and target.
+		return (dot - 1.0f) * -coefficient;		
+	}
+
+	private Vector3 OffSetPursuit()
+	{
+		AISteeringAgent steering = pursuitOffsetLeader.GetComponentInChildren<AISteeringAgent>();
+		if(steering == null)
+			return Vector3.zero;
+
+		Vector3 offset = new Vector3(pursuitOffset.x, 0.0f, pursuitOffset.y);
+
+		Vector3 leaderOffset = steering.transform.position + offset;
+
+		Vector3 toOffset = leaderOffset - position;
+
+		float lookAhead = toOffset.magnitude / (maxSpeed + steering.velocity.magnitude);
+
+		return Arrive(leaderOffset + steering.velocity * lookAhead, arriveRadius);
+	}
+
+	private Vector3 Evade(Vector3 target, Vector3 targetsVelocity, float targetsSpeed)
+	{
+		Vector3 toPursuer = position - target;
+
+		// Look ahead based on combined speeds and distance
+		float lookAheadTime = toPursuer.magnitude / (maxSpeed + targetsSpeed);
+		lookAheadTime += CalculateTurnAroundTime(target);
+		
+		// Finally seek the predicted position
+		return Flee(target + (targetsVelocity * lookAheadTime));
+	}
+
+	private Vector3 Evade(GameObject target)
+	{
+		AISteeringAgent steer = target.GetComponentInChildren<AISteeringAgent>();
+		if (steer == null)
+			return Vector3.zero;
+
+		return Evade(steer.transform.position, steer.velocity, steer.velocity.magnitude);
+	}
+	
+	private Vector3 Wander()
+	{
+		// Put wander circle infront
+		Vector3 wanderCirclePos = position + heading * wanderCircleDistance;
+		
+		// Random a value on circle
+		//wanderJitter += (Random.value * Mathf.PI * 2.0f) + (Random.value * (Mathf.PI * 36.0f)) * Time.deltaTime;
+		wanderJitter +=  Random.Range(-1.0f, 1.0f);
+		wanderTarget += new Vector3(Mathf.Cos(wanderJitter), 0.0f, Mathf.Sin(wanderJitter));
+		wanderTarget.Normalize();
+
+		// Put point back onto the circle
+		wanderTarget *= wanderCircleRadius;
+		Vector3 target = position + wanderTarget;
+
+		return target - position;
 	}
 
 	private Vector3 PatrolCircle()
 	{
 		// Calculate centre of circle
-		Vector3 circlePos = transformCache.position + velocity;
+		Vector3 circlePos = position + velocity;
 		circlePos.Normalize();
 		circlePos *= wanderCircleDistance;
 
@@ -441,32 +408,37 @@ public class AISteeringAgent : MonoBehaviour
 		wanderAngle += ((Random.value) * (Mathf.PI / 36.0f));
 
 		Vector3 target = circlePos + displacement;
-		Vector3 desired = target - transformCache.position;
+		Vector3 desired = target - position;
 		desired *= maxSpeed;
 		desired -= velocity;
 
 		return desired;
 	}
 
-	private void ObstacleAvoidance(Character target)
+	private Vector3 ObstacleAvoidance()
 	{
-        if(target == null)
-            return;
+		// Detection area is proportional to agent velocity
+		const float minRayLength = 1.5f;
+		float rayLength = minRayLength + ((velocity.magnitude / maxSpeed) * minRayLength);
 
-        float seeAheadDistance = 3.0f;
-        Vector3 ahead = transform.position + velocity.normalized * seeAheadDistance;
-        Vector3 ahead2 = transform.position + velocity.normalized * seeAheadDistance * 0.5f;
+		int layerMask = (1 << (int)Layer.Environment);
+		
+		RaycastHit hitInfo;
 
-        if(!LineIntersectCircle(ahead, ahead2, target.transform.position, 2.0f))
-            return;
+		if (!Physics.SphereCast(new Ray(position - heading * 0.1f, heading), 1.0f, out hitInfo, rayLength, layerMask))
+		{
+			return Vector3.zero;
+		}
+		// Closer I am to the object the more strongly I want to move away
+		float distanceMultiplier = 1.0f + (hitInfo.point - position).magnitude / rayLength;
 
-        Vector3 avoidanceForce = ahead - target.transform.position;
-        avoidanceForce = avoidanceForce.normalized * maxSpeed;
+		Vector3 ahead = position + (heading * rayLength);
 
-        Vector3 steer = avoidanceForce - velocity;
-        //steer = Vector3.Min(steer, maxForce);
+		Vector3 avoidanceForce = Vector3.zero;
+		avoidanceForce.x = hitInfo.collider.transform.position.x - ahead.x;
+		avoidanceForce.z = hitInfo.collider.transform.position.z - ahead.z;
 
-        ApplyForce(steer);
+		return avoidanceForce * distanceMultiplier;
 	}
 
     private bool LineIntersectCircle(Vector3 ahead, Vector3 ahead2, Vector3 obstaclePosition, float obstacleRadius)
@@ -475,16 +447,62 @@ public class AISteeringAgent : MonoBehaviour
                 Vector3.Distance(obstaclePosition, ahead2) <= obstacleRadius;
     }
 
-	private void WallFollow()
+	private Vector3 FollowLeader()
 	{
-        // Ray forward
-        // If collides with wall
-        // Move along wall
+		AISteeringAgent steering = pursuitOffsetLeader.GetComponentInChildren<AISteeringAgent>();
+		if (steering == null)
+			return Vector3.zero;
+
+		const float behindLeader = 1.0f;
+
+
+		Vector3 ahead = steering.transform.position + (steering.heading * behindLeader);
+
+		Vector3 behind = steering.transform.position + (steering.heading * -behindLeader);
+
+		const float leaderSightRadius = 1.0f;
+
+		Vector3 followForce = Vector3.zero;
+
+		if (Vector3.Distance(pursuitOffsetLeader.transform.position, position) <= leaderSightRadius ||
+			Vector3.Distance(ahead, position) <= leaderSightRadius)
+		{
+			followForce += Evade(pursuitOffsetLeader.gameObject);
+		}
+
+		followForce += Arrive(pursuitOffsetLeader.gameObject, 10.0f);
+
+		followForce += Separate(Game.Singleton.Tower.CurrentFloor.CurrentRoom.Enemies);
+
+		return followForce;
 	}
 
-	private void PathFollow()
+	private Vector3 PathFollow()
 	{
-		// Also need pathfinding
+		if (path == null)
+			return Vector3.zero;
+
+		Vector3 targetNode = path.Nodes[currentPathNode];
+
+		if (Vector3.Distance(position, targetNode) <= path.nodeRadius)
+		{
+			currentPathNode++;
+
+			if (currentPathNode >= path.Nodes.Count)
+			{
+				if (currentPathNode == path.Nodes.Count)
+				{
+					if(OnPathCompleted != null)
+					{
+						OnPathCompleted.Invoke();
+					}
+				}
+
+				currentPathNode = path.Nodes.Count - 1;
+			}
+		}
+
+		return Seek(targetNode);
 	}
 
 	private Vector3 Flock(List<Character> flockers)
@@ -494,22 +512,15 @@ public class AISteeringAgent : MonoBehaviour
 		Vector3 cohesion = Cohesion(flockers);
 
 		// Alter weights
-		separation *= maxSpeed * 0.1f;
+		separation *= maxSpeed * 0.5f;
 		alignment *= maxSpeed * 0.5f;
-		cohesion *= maxSpeed * 0.4f;
+		cohesion *= maxSpeed * 0.5f;
 
-		ApplyForce(separation);
-		ApplyForce(alignment);
-		ApplyForce(cohesion);
+		Vector3 flockForce = separation;
+		flockForce += alignment;
+		flockForce += cohesion;
 
-		//Vector3 flockForce = separation + alignment + cohesion;
-
-		//Vector3 desired = flockForce - transformCache.position;
-		//desired.Normalize();
-		//desired *= maxSpeed;
-		//desired -= velocity;
-
-		return Vector3.zero;
+		return flockForce;
 	}
 
     // Method checks for nearby boids and steers away
@@ -624,4 +635,26 @@ public class AISteeringAgent : MonoBehaviour
         
         return Vector3.zero;
     }
+
+#if UNITY_EDITOR
+	public void OnDrawGizmos()
+	{
+		if (!gameObject.activeInHierarchy)
+		{
+			return;
+		}
+
+		Color blue = new Color(0.0f, 0.0f, 1.0f, 0.75f);
+		Color yellow = new Color(1.0f, 1.0f, 0.0f, 0.35f);
+
+		posLastFrame = transform.position;
+
+		Vector3 PosWithY = transform.position;
+		PosWithY.y = 0.5f;
+
+		Debug.DrawLine(PosWithY, PosWithY + velocity.normalized * 2.0f, yellow);
+		Debug.DrawLine(PosWithY, PosWithY + heading * 2.0f, blue);
+
+	}
+#endif
 }

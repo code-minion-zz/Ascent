@@ -9,6 +9,7 @@ public class DesaturateEffect : ImageEffectBase {
 	public float rampOffsetG;
 	public float rampOffsetB;
 
+#pragma warning disable 0618
 	// Called by camera to apply image effect
 	void OnRenderImage (RenderTexture source, RenderTexture destination) {
 		material.SetTexture("_RampTex", textureRamp);

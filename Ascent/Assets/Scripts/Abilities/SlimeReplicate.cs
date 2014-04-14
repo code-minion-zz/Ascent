@@ -46,7 +46,7 @@ public class SlimeReplicate : Ability
             go.transform.position += Vector3.left * 0.1f;
             owner.transform.position += Vector3.right * 0.1f;
 
-            go.GetComponent<Enemy>().AIAgent.SteeringAgent.StartPosition = go.transform.position;
+            //go.GetComponent<Enemy>().AIAgent.SteeringAgent.StartPosition = go.transform.position;
 
             owner.Stats.CurrentHealth = (int)((float)owner.Stats.CurrentHealth * 0.75f);
 

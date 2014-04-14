@@ -30,7 +30,16 @@ public class Rat : Enemy
     {
         if(!isDead)
         {
-            Vector3 velocity = AIAgent.SteeringAgent.Steer();
+			Vector3 velocity = Vector3.zero;
+
+			if (targetCharacter != null)
+			{
+				velocity = AIAgent.SteeringAgent.Steer(velocity);
+			}
+			else if(targetPosition != Vector3.zero)
+			{
+				velocity = AIAgent.SteeringAgent.Steer(targetPosition);
+			}
 
             motor.Move(velocity);
 
@@ -42,66 +51,69 @@ public class Rat : Enemy
 
    public void InitialiseAI()
    {
-       //AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-       //AIAgent.SteeringAgent.DistanceToKeepFromTarget = 2.5f;
-       //motor.MaxSpeed = 3.0f;
-       //motor.MinSpeed = 0.5f;
-       //motor.Acceleration = 1.0f;
+       AIBehaviour behaviour = null;
+       AITrigger trigger = null;
 
-       //AIBehaviour behaviour = null;
-       //AITrigger trigger = null;
+       // Defensive behaviour
+	   behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += StateTransitionToAggressive;
 
-       //// Defensive behaviour
-       //behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-       //{
-       //    // OnAttacked, Triggers if attacked
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_Attacked(this));
-       //    trigger.OnTriggered += OnAttacked;
+		   // OnWanderEnd, Triggers if time exceeds 2s or target reached.
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f));
+		   trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
+		   trigger.OnTriggered += ChooseNewWanderTarget;
 
-       //    // OnWanderEnd, Triggers if time exceeds 2s or target reached.
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_Timer(2.0f));
-       //    trigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
-       //    trigger.OnTriggered += OnWanderEnd;
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
+		   trigger.OnTriggered += StateTransitionToAggressive;
+	   }
 
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f,  Vector3.zero)));
-       //    trigger.OnTriggered += OnAttacked;
-       //}
+	   // Aggressive
+	   behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+	   {
+		   // OnAttacked, Triggers if attacked
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += StateTransitionToAggressive;
 
-       //// Aggressive
-       //behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
-       //{
-       //    // OnAttacked, Triggers if attacked
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_Attacked(this));
-       //    trigger.OnTriggered += OnAttacked;
+		   // OnCanUseTackle, triggers if target in range and action off cooldown
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
+		   trigger.OnTriggered += UseTackle;
+	   }
 
-       //    // OnCanUseTackle, triggers if target in range and action off cooldown
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
-       //    trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)));
-       //    trigger.OnTriggered += OnCanUseTackle;
+	   StateTransitionToPassive();
+   }
 
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[tackleAbilityID]));
-       //    trigger.OnTriggered += OnAggressiveEnd;
+   public override void StateTransitionToPassive()
+   {
+	   AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Wander | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
+	   ChooseNewWanderTarget();
 
-       //    trigger = behaviour.AddTrigger();
-       //    trigger.Priority = AITrigger.EConditionalExit.Stop;
-       //    trigger.AddCondition(new AICondition_Timer(7.0f));
-       //    trigger.OnTriggered += OnAggressiveEnd;
-       //}
+	   base.StateTransitionToPassive();
+   }
 
-       //AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-       //AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+   public override void StateTransitionToAggressive()
+   {
+	   AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
+
+	   base.StateTransitionToAggressive();
+   }
+
+   public void UseTackle()
+   {
+	   loadout.UseAbility(tackleAbilityID);
    }
 
    //public void OnWanderEnd()
@@ -135,17 +147,17 @@ public class Rat : Enemy
 
    //    if (lastDamagedBy != null)
    //    {
-   //        AIAgent.TargetCharacter = lastDamagedBy;
+   //        AIAgent.MindAgent.TargetCharacter = lastDamagedBy;
    //    }
-   //    else if(AIAgent.SensedCharacters != null && AIAgent.SensedCharacters.Count > 0)
+   //    else if(AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
    //    {
-   //        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+   //        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
    //    }
    //}
 
    //public void OnCanUseTackle()
    //{
-   //    motor.LookAt(AIAgent.TargetCharacter.transform.position);
+   //    motor.LookAt(AIAgent.MindAgent.TargetCharacter.transform.position);
    //    AIAgent.SteeringAgent.RemoveTarget();
    //    motor.StopMotion();
    //    loadout.UseAbility(tackleAbilityID);

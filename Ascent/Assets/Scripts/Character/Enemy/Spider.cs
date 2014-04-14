@@ -23,9 +23,6 @@ public class Spider : Enemy
 
     public void InitialiseAI()
     {
-
-        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-        AIAgent.SteeringAgent.DistanceToKeepFromTarget = 4.0f;
         //AIAgent.SteeringAgent.RunIfTooClose = true;
         motor.MaxSpeed = 3.0f;
         motor.MinSpeed = 0.5f;
@@ -39,7 +36,7 @@ public class Spider : Enemy
         {
             // Change target to closest
             trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.Operation = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 4.5f, Vector3.zero)));
             trigger.OnTriggered += ChangeTarget;
 
@@ -64,7 +61,7 @@ public class Spider : Enemy
     {
 
         Debug.Log("SENSE");
-        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
     }
 
     //public void Shoot()
@@ -79,18 +76,18 @@ public class Spider : Enemy
 
     //    if (lastDamagedBy != null)
     //    {
-    //        AIAgent.TargetCharacter = lastDamagedBy;
+    //        AIAgent.MindAgent.TargetCharacter = lastDamagedBy;
     //    }
-    //    else if (AIAgent.SensedCharacters != null && AIAgent.SensedCharacters.Count > 0)
+    //    else if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
     //    {
-    //        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+    //        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
     //    }
     //}
 
     public void OnCanUseTackle()
     {
-        motor.LookAt(AIAgent.TargetCharacter.transform.position);
-        AIAgent.SteeringAgent.RemoveTarget();
+        motor.LookAt(AIAgent.MindAgent.TargetCharacter.transform.position);
+        //AIAgent.SteeringAgent.RemoveTarget();
         motor.StopMotion();
         loadout.UseAbility(shootID);
     }
@@ -99,7 +96,7 @@ public class Spider : Enemy
     {
         motor.StopMotion();
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        AIAgent.TargetCharacter = null;
-        AIAgent.SteeringAgent.RemoveTarget();
+        AIAgent.MindAgent.TargetCharacter = null;
+        //AIAgent.SteeringAgent.RemoveTarget();
     }
 }

@@ -28,9 +28,6 @@ public class Archer : Enemy
 
     public void InitialiseAI()
     {
-
-        AIAgent.SteeringAgent.RotationSpeed = 15.0f;
-        AIAgent.SteeringAgent.DistanceToKeepFromTarget = 1.5f;
         motor.MaxSpeed = 0.0f;
         motor.MinSpeed = 0.0f;
         motor.Acceleration = 1.0f;
@@ -42,12 +39,12 @@ public class Archer : Enemy
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
             trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Continue;
+            trigger.Operation = AITrigger.EConditionalExit.Continue;
             trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 10.0f, Vector3.zero)), AITrigger.EConditional.And);
             trigger.OnTriggered += OnTargetInRange;
 
             trigger = behaviour.AddTrigger();
-            trigger.Priority = AITrigger.EConditionalExit.Stop;
+            trigger.Operation = AITrigger.EConditionalExit.Stop;
             trigger.AddCondition(new AICondition_Timer(0.0f, 0.0f, 3.0f));
             trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[shootArrowID]));
             trigger.OnTriggered += OnShootEnd;
@@ -59,18 +56,18 @@ public class Archer : Enemy
 
     public void OnTargetInRange()
     {
-        AIAgent.TargetCharacter = AIAgent.SensedCharacters[0];
+        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
 
     }
 
     public void OnShootEnd()
     {
-        if (AIAgent.TargetCharacter != null)
+        if (AIAgent.MindAgent.TargetCharacter != null)
         {
-            Motor.LookAt(AIAgent.TargetCharacter.transform.position);
+            Motor.LookAt(AIAgent.MindAgent.TargetCharacter.transform.position);
         }
 
         loadout.UseAbility(shootArrowID);
-        //AIAgent.TargetCharacter = null;
+        //AIAgent.MindAgent.TargetCharacter = null;
     }
 }

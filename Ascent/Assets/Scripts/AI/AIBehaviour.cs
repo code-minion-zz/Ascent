@@ -40,7 +40,7 @@ public class AIBehaviour
         {
             if (t.HasTriggered())
             {
-                if (t.Priority == AITrigger.EConditionalExit.Stop)
+                if (t.Operation == AITrigger.EConditionalExit.Stop)
                 {
                     break;
                 }

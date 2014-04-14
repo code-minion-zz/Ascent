@@ -111,10 +111,6 @@ public class MathUtility
 		relPoint.x = point.x - circlePos.x;
 		relPoint.z = point.z - circlePos.z;
 
-		//Debug.DrawLine(sectorStart, relPoint, Color.green);
-		//Debug.DrawLine(sectorEnd, relPoint, Color.green);
-		//Debug.DrawLine(relPoint, circlePos, Color.green);
-
         return !AreClockwise(sectorEnd, relPoint) &&
                 AreClockwise(sectorStart, relPoint) &&
                 IsWithinCircle(point, circlePos, radius);

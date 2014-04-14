@@ -20,7 +20,7 @@ public class AITrigger
     }
 
     private EConditionalExit priority;
-    public EConditionalExit Priority
+    public EConditionalExit Operation
     {
         get { return priority; }
         set { priority = value; }
