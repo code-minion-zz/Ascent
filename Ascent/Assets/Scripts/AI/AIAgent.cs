@@ -35,8 +35,15 @@ public class AIAgent : MonoBehaviour
 #if UNITY_EDITOR
     public void OnDrawGizmos()
     {
-        steeringAgent.DebugDraw();
-        mindAgent.DebugDraw();
+        if (steeringAgent)
+        {
+            steeringAgent.DebugDraw();
+        }
+
+        if (mindAgent)
+        {
+            mindAgent.DebugDraw();
+        }
     }
 #endif
 }
