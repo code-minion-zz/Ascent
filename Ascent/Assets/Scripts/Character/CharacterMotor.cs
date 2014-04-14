@@ -147,11 +147,14 @@ public class CharacterMotor : MonoBehaviour
 
 		// Calculate knockback velocity
 		Vector3 knockbackVel = ProcessKnockback();
-		//if (knockbackVel != Vector3.zero)
-		//{
-		//    targetVelocity += knockbackVel;
-		//    ++forces;
-		//}
+
+        // We want to make sure the player is always positioned on the ground in the y.
+        // TODO: We may want to reduce the cast to a layer in which case we add a layer there.
+        //RaycastHit hitInfo;
+        //if (Physics.Raycast(transform.position, -transform.up, out hitInfo))
+        //{
+        //    transform.position = new Vector3(transform.position.x, distToGround + hitInfo.point.y + 0.1f, transform.position.z);
+        //}
 
 		// movementForce is fed into the Motor based on user inputs or the SteeringAI
 		Vector3 standardMovement = ProcessStandardMovement(); // Also works out current speed

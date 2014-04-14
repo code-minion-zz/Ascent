@@ -9,6 +9,7 @@ public class FloorCamera : MonoBehaviour
     private Camera mainCamera;
 
     private bool transition = false;
+    private bool cameraSetup = false;
     private Vector3 transitionStartPos;
     private Vector3 transitionTargetPos;
     private float transitionTimeElapsed;
@@ -18,7 +19,7 @@ public class FloorCamera : MonoBehaviour
 	// Default camera is: XYX: 0, 30, -4.8. R: 80x. FOV: 30
 	private const float verticalIncrement = 25.0f;
 	private const float horizontalIncrement = 25.0f;
-    private const float cameraYOffset = 22.0f;
+    public static float cameraYOffset = 22.0f;
 
     private CameraShake cameraShake;
 
@@ -73,11 +74,6 @@ public class FloorCamera : MonoBehaviour
     public void UpdateCameraPosition()
     {
         Vector3 newVector = CalculateAverageHeroPosition();
-		//if (newVector == Vector3.zero)
-		//{
-		//    newVector = transform.position;
-		//}
-        newVector.y = newVector.y + cameraYOffset;
 		newVector.z += offsetZ;
 
         Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, Time.deltaTime * 2.0f);
@@ -121,8 +117,8 @@ public class FloorCamera : MonoBehaviour
 				float x = totalVector.x / (float)Heroes.Count;
 				float z = (totalVector.z / (float)heroCount);
                 float y = (totalVector.y / (float)heroCount);
-				
-				return new Vector3(x, y, z);
+
+                return new Vector3(x, y + cameraYOffset, z);
 			}
 		}
 		
