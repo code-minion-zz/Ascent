@@ -6,16 +6,6 @@ public abstract class Enemy : Character
 {
     #region Enums
 
-    public enum STATE
-    {
-        IDLE,
-        SEEK,
-        ATTACKING,
-        WAIT,
-        DEAD,
-        HIT,
-    }
-
 	public enum EEnemy
 	{
 		None,
@@ -27,15 +17,30 @@ public abstract class Enemy : Character
 
     #region Fields
 
-    protected AIAgent agent;
+	public AIAgent agent;
     public AIAgent AIAgent
     {
         get { return agent; }
         protected set { agent = value; }
     }
 
-	public Vector3 targetPosition;
-	public Character targetCharacter;
+	private Vector3 targetPosition;
+	public Vector3 TargetPosition
+	{
+		get { return targetPosition; }
+		set { targetPosition = value; }
+	}
+
+	private Character targetCharacter;
+	public Character TargetCharacter
+	{
+		get { return targetCharacter; }
+		set 
+		{ 
+			targetCharacter = value;
+			AIAgent.MindAgent.TargetCharacter = value;
+		}
+	}
 
 	protected EnemyStats enemyStats;
 	public EnemyStats EnemyStats
@@ -45,8 +50,6 @@ public abstract class Enemy : Character
 		{
 			enemyStats = value;
 			stats = value;
-           
-
 		}
 	}
 
@@ -105,14 +108,7 @@ public abstract class Enemy : Character
         animator.Initialise();
 
 		base.Initialise();
-
-        Transform AI = transform.FindChild("AI");
-        if(AI == null)
-        {
-            Debug.LogError("Could not find AI. Attach a new AI GameObject as a child of this Enemy. Attach AIAgent component to AI.", this);
-        }
         
-        agent = AI.GetComponent<AIAgent>();
         if (agent == null)
         {
             Debug.LogError("Could not find AIAgent component. Attach one to AI.", this);
@@ -167,9 +163,6 @@ public abstract class Enemy : Character
 					deathSequenceTime = deathSequenceEnd;
 					deathPosition = transform.position;
 				}
-
-
-				shadow.FadeOut(deathSequenceTime / deathSequenceEnd);
 			}
 			else if (deathSequenceTime == deathSequenceEnd)
 			{
@@ -192,43 +185,46 @@ public abstract class Enemy : Character
 
             if (CanMove && CanAct)
             {
-                //if (!loadout.IsAbilityActive)
-                //{
-                //    AIAgent.MindAgent.Process();
-                //}
+				Vector3 velocity = Vector3.zero;
 
-                //AIAgent.SteeringAgent.Process();
+				if (TargetCharacter != null)
+				{
+					velocity = AIAgent.SteeringAgent.Steer(TargetCharacter.gameObject);
+				}
+				else
+				{
+					velocity = AIAgent.SteeringAgent.Steer(TargetPosition);
+				}
+
+				motor.Move(velocity);
+
+				AIAgent.MindAgent.Process();
             }
 
             if (hpBar != null)
             {
-                //if (updateHpBar)
+                if (stats.CurrentHealth != stats.MaxHealth)
                 {
-                    if (stats.CurrentHealth != stats.MaxHealth)
+                    if (!hpBar.gameObject.activeInHierarchy)
                     {
-                        if (!hpBar.gameObject.activeInHierarchy)
-                        {
-                            NGUITools.SetActive(hpBar.gameObject, true);
-                        }
-
-                        PositionHpBar();
+                        NGUITools.SetActive(hpBar.gameObject, true);
                     }
-                    else
+
+                    PositionHpBar();
+                }
+                else
+                {
+                    if (hpBar.gameObject.activeInHierarchy)
                     {
-                        if (hpBar.gameObject.activeInHierarchy)
-                        {
-                            NGUITools.SetActive(hpBar.gameObject, false);
-                        }
-
+                        NGUITools.SetActive(hpBar.gameObject, false);
                     }
+
                 }
             }
         }
 	}
 
     #endregion
-
-    #region Operations
 
 	protected virtual void PositionHpBar()
 	{
@@ -239,19 +235,11 @@ public abstract class Enemy : Character
 		barPos = new Vector3(barPos.x,barPos.y);
 		hpBar.transform.position = barPos;
 	}
-
-    #endregion
-
-
-    #region Collisions on Self
-
 	
 	void OnBecameVisible()
 	{
-		//Debug.Log ("Rat became visible", this);
 		if (hpBar != null)
 		{
-			//hpBar.gameObject.SetActive(true);
 			updateHpBar = true;
 		}
 	}
@@ -298,8 +286,6 @@ public abstract class Enemy : Character
 
 		FloorHUDManager.Singleton.RemoveEnemyLifeBar(hpBar);
 	}
-
-    #endregion
 
 	public virtual void StateTransitionToPassive()
 	{

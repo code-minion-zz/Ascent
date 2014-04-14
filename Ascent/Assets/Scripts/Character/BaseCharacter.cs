@@ -52,12 +52,12 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		renderers = GetComponentsInChildren<Renderer>();
 		
-		shadow = GetComponentInChildren<Shadow>();
-		if (shadow == null)
-		{
-			Debug.LogError("No Shadow attached to " + name, this);
-		}
-		shadow.Initialise();
+		//shadow = GetComponentInChildren<Shadow>();
+		//if (shadow == null)
+		//{
+		//    Debug.LogError("No Shadow attached to " + name, this);
+		//}
+		//shadow.Initialise();
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		if (motor == null)

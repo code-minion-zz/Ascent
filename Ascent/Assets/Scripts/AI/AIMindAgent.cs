@@ -50,7 +50,7 @@ public class AIMindAgent : MonoBehaviour
 	private GUIText label;
 #endif
 
-	public void Initialise(Transform t)
+	public void Start()
 	{
 #if UNITY_EDITOR
 		if (drawLabels)
@@ -59,8 +59,8 @@ public class AIMindAgent : MonoBehaviour
 			{
 				GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/AIDebugText")) as GameObject;
 				label = go.GetComponent<GUIText>();
-				go.SetActive(false);
 				go.transform.parent = transform;
+				go.SetActive(false);
 			}
 		}
 #endif

@@ -59,8 +59,6 @@ public class Spider : Enemy
 
     public void ChangeTarget()
     {
-
-        Debug.Log("SENSE");
         AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
     }
 

@@ -27,7 +27,6 @@ public class CharacterMotor : MonoBehaviour
     protected bool isActionHaltingMovement = false;
     protected bool isActionRotationMovement = false;
     protected bool usingStandardMovement = true;
-	//private bool isRunAttacking = false;
 
 	protected bool isMovingAlongGrid;
 	protected const float gridUnitOffset = 1.0f;

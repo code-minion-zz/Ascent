@@ -31,28 +31,12 @@ GameObject:
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400008}
+  - 114: {fileID: 11400014}
+  - 114: {fileID: 11400010}
+  - 114: {fileID: 11400000}
   m_Layer: 9
   m_Name: Rat
   m_TagString: Monster
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &100004
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400004}
-  - 114: {fileID: 11400000}
-  - 114: {fileID: 11400014}
-  - 114: {fileID: 11400010}
-  - 114: {fileID: 11400016}
-  m_Layer: 9
-  m_Name: AI
-  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -540,24 +524,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 1.99999999e-06}
-  m_LocalPosition: {x: -2.70251894, y: 0, z: -3.02149701}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 1.90737728e-06}
+  m_LocalPosition: {x: -4.00001907, y: 0, z: 4.99997711}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 400004}
   - {fileID: 400066}
   m_Father: {fileID: 0}
---- !u!4 &400004
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 400002}
 --- !u!4 &400006
 Transform:
   m_ObjectHideFlags: 1
@@ -976,14 +948,26 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cb45894ff3b2e346a839abdd5b3573d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cd47f7427350b64aa545ff21bb2e4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MindAgent: {fileID: 11400014}
-  SteeringAgent: {fileID: 11400010}
+  steerTypes: 0
+  maxSpeed: 75
+  maxForce: 35
+  mass: .100000001
+  arriveRadius: 10
+  wanderCircleDistance: 10
+  wanderCircleRadius: 5
+  wanderJitter: 10
+  fleeDistance: 5
+  closeEnoughRange: 1.5
+  distanceToKeepFromTarget: 1.75
+  pursuitOffset: {x: 0, y: 0}
+  pursuitOffsetLeader: {fileID: 0}
+  path: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1008,6 +992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
+  agent: {fileID: 11400014}
   health: 3
   attack: 1
   move: {x: 0, y: 0, z: 0}
@@ -1042,25 +1027,12 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd47f7427350b64aa545ff21bb2e4c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f800587857ae734d8748c0150e5e7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 75
-  maxForce: 35
-  mass: .100000001
-  arriveRadius: 10
-  wanderCircleDistance: 5
-  wanderCircleRadius: 3
-  wanderJitter: .150000006
-  fleeDistance: 5
-  closeEnoughRange: 1.5
-  distanceToKeepFromTarget: 1.75
-  pursuitOffset: {x: 0, y: 0}
-  pursuitOffsetLeader: {fileID: 0}
-  path: {fileID: 11400016}
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1079,28 +1051,14 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
+  m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f800587857ae734d8748c0150e5e7d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cb45894ff3b2e346a839abdd5b3573d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11400016
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8a3333d7655fc428a500beed67ac36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodes:
-  - {x: 0, y: 0, z: 0}
-  - {x: 2, y: 0, z: 0}
-  - {x: -2, y: 0, z: 0}
-  nodeRadius: 1
+  MindAgent: {fileID: 11400010}
+  SteeringAgent: {fileID: 11400000}
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

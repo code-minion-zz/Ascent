@@ -8,115 +8,89 @@ using System;
 
 public class Slime : Enemy
 {
-    //private AITrigger OnAttackedTrigger;
-    private AITrigger OnWanderEndTrigger;
-    //private AITrigger OnReplicateTrigger;
+	private int tackleAbilityID;
 
-    private int replicateActionID;
+	public Vector3 move;
 
-    public override void Initialise()
-    {
-        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
-
+	public override void Initialise()
+	{
 		base.Initialise();
 
-        // Add abilities
-        loadout.SetSize(1);
+		// Add abilities
+		loadout.SetSize(1);
 
-        Ability replicate = new SlimeReplicate();
-        replicate.Initialise(this);
-        replicateActionID = 0;
-        loadout.SetAbility(replicate, replicateActionID);
-       
-        InitialiseAI();
-    }
+		Ability tackle = new SlimeStrike();
+		tackleAbilityID = 0;
+		loadout.SetAbility(tackle, tackleAbilityID);
 
-    public void InitialiseAI()
-    {
-        motor.MaxSpeed = 2.0f;
-        motor.MinSpeed = 0.3f;
-        motor.Acceleration = 0.3f;
+		InitialiseAI();
+	}
 
-        AIBehaviour behaviour = null;
+	public void InitialiseAI()
+	{
+		AIBehaviour behaviour = null;
+		AITrigger trigger = null;
 
-        // Defensive behaviour
-        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-        {
-			//// OnAttacked, Triggers if attacked
-			//OnAttackedTrigger = behaviour.AddTrigger();
-			//OnAttackedTrigger.Priority = AITrigger.EConditionalExit.Stop;
-			//OnAttackedTrigger.AddCondition(new AICondition_Attacked(this));
-			//OnAttackedTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[replicateActionID]), AITrigger.EConditional.And);
-			//OnAttackedTrigger.OnTriggered += OnAttacked;
+		// Defensive behaviour
+		behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+		{
+			// OnAttacked, Triggers if attacked
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_Attacked(this));
+			trigger.OnTriggered += StateTransitionToAggressive;
 
-			//OnReplicateTrigger = behaviour.AddTrigger();
-			//OnReplicateTrigger.AddCondition(new AICondition_Timer(5.5f, 2.0f, 10.0f));
-			//OnReplicateTrigger.OnTriggered += OnAttacked;
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
+			trigger.OnTriggered += StateTransitionToAggressive;
+		}
 
-            // OnWanderEnd, Triggers if time exceeds 2s or target reached.
-            OnWanderEndTrigger = behaviour.AddTrigger();
-            OnWanderEndTrigger.Operation = AITrigger.EConditionalExit.Stop;
-            OnWanderEndTrigger.AddCondition(new AICondition_Timer(1.5f, 2.0f, 4.0f));
-            OnWanderEndTrigger.AddCondition(new AICondition_ReachedTarget(AIAgent.SteeringAgent), AITrigger.EConditional.Or);
-            OnWanderEndTrigger.OnTriggered += OnWanderEnd;
+		// Aggressive
+		behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+		{
+			// OnAttacked, Triggers if attacked
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_Attacked(this));
+			trigger.OnTriggered += StateTransitionToAggressive;
 
-        }
+			// OnCanUseTackle, triggers if target in range and action off cooldown
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
+			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)), AITrigger.EConditional.And);
+			trigger.OnTriggered += UseTackle;
+		}
 
-        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
-        //AIAgent.SteeringAgent.TargetPosition = (containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
-    }
+		StateTransitionToPassive();
+	}
 
-    public void OnWanderEnd()
-    {
-        // Choose a new target location
-		//AIAgent.SteeringAgent.TargetPosition = (containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
+	public override void StateTransitionToPassive()
+	{
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Wander | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
 
-        // Reset behaviour
-        OnWanderEndTrigger.Reset();
+		base.StateTransitionToPassive();
+	}
 
-    }
+	public override void StateTransitionToAggressive()
+	{
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
 
-    public void OnAttacked()
-    {
-        loadout.UseAbility(replicateActionID);
-        //OnAttackedTrigger.Reset();
-        //OnReplicateTrigger.Reset();
-    }
+		if (lastDamagedBy != null)
+		{
+			TargetCharacter = lastDamagedBy;
+		}
+		else if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
+		{
+			TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+		}
 
-    public void OnCollisionEnter(Collision other)
-    {
-        string tag = other.transform.tag;
+		base.StateTransitionToAggressive();
+	}
 
-        switch (tag)
-        {
-            case "Hero":
-                {
-                    Character otherCharacter = other.transform.GetComponent<Character>();
-
-                    if (otherCharacter != null)
-                    {
-                        if (!IsInState(EStatus.Stun) && !otherCharacter.IsInState(EStatus.Invulnerability))
-                        {
-                            CollideWithHero(otherCharacter as Hero, other);
-                        }
-                    }
-                }
-                break;
-        }
-    }
-
-    private void CollideWithHero(Hero hero, Collision collision)
-    {
-        hero.LastDamagedBy = this;
-
-        Vector3 direction = (collision.transform.position - transform.position).normalized;
-        Quaternion rot = Quaternion.FromToRotation(Vector3.up, direction);
-
-        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, rot, hero.transform);
-
-		CombatEvaluator combatEvaluator = new CombatEvaluator(this, hero);
-        combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 1.0f));
-		combatEvaluator.Add(new KnockbackCombatProperty(direction, 10.0f));
-		combatEvaluator.Apply();
-    }
+	public void UseTackle()
+	{
+		loadout.UseAbility(tackleAbilityID);
+	}
 }

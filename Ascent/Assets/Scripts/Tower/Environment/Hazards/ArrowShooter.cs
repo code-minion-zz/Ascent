@@ -23,8 +23,6 @@ public class ArrowShooter : EnvironmentHazard
 	void Start () 
     {
         arrowPool = new ObjectPool(projectile, projectilePoolCount, this.transform, "Arrow");
-       // direction = (transform.FindChild("Shooter").transform.position - transform.FindChild("Base").transform.position).normalized;
-        //spawnPoint = transform.FindChild("Shooter").transform.position + (direction * 1.0f);
 		direction = transform.forward;
 
         shootLocalPosition = transform.FindChild("Shooter").transform.position;
@@ -59,7 +57,7 @@ public class ArrowShooter : EnvironmentHazard
                 int layerMask = (((1 << (int)Layer.Block)));
                 RaycastHit hitInfo;
 
-                if (Physics.Raycast(new Ray(shootLocalPosition, direction), out hitInfo, 0.50f, layerMask))
+				if (Physics.Raycast(new Ray(shootLocalPosition - direction * 0.5f, direction), out hitInfo, 0.25f, layerMask))
                 {
                     Debug.Log(hitInfo.collider.gameObject);
                     return;

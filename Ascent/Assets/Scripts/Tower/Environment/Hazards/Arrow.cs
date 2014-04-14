@@ -54,44 +54,31 @@ public class Arrow : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Hero")
+		Character hitCharacter = null;
+
+        if (collision.transform.gameObject.layer == (int)Layer.Hero ||
+			collision.transform.gameObject.layer == (int)Layer.Monster)
         {
-            CollideWithHero(collision.transform.GetComponent<Character>() as Hero, collision);
+			hitCharacter = collision.transform.GetComponent<Character>();
+
+			CombatEvaluator combatEvaluator = new CombatEvaluator(null, hitCharacter);
+
+			if (!hitYet)
+			{
+				combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
+				hitYet = true;
+			}
+
+			combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1000000.0f));
+			combatEvaluator.Apply();
+			Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, collision.transform.rotation, hitCharacter.transform);
+
+			toDestroy = true;
         }
-        //else if (collision.transform.tag == "Monster")
-        //{
-        //}
-        // The arrows should collide with everything except for its owner.
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
 			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
         }
     }
-
-
-	/// <summary>
-	/// When the arrow collides with a hero.
-	/// </summary>
-	/// <param name="hero">Hero.</param>
-	/// <param name="collision">Collision.</param>
-	private void CollideWithHero(Hero hero, Collision collision)
-	{
-        
-		// Apply damage to the hero
-		// Apply damage and knockback to the enemey.
-		CombatEvaluator combatEvaluator = new CombatEvaluator(null, hero);
-
-         if(!hitYet)
-         {
-            combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
-            hitYet = true;
-         }
-
-		combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1000000.0f));
-		combatEvaluator.Apply();
-        Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, collision.transform.rotation, hero.transform);
-
-        toDestroy = true;
-	}
 }

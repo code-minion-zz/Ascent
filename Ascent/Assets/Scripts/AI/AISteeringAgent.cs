@@ -34,6 +34,11 @@ public class AISteeringAgent : MonoBehaviour
 	public float mass;
 
     private Vector3 velocity;
+	public Vector3 Velocity
+	{
+		get { return velocity; }
+	}
+
     private Vector3 acceleration;
 
 	private Vector3 position;
@@ -58,6 +63,12 @@ public class AISteeringAgent : MonoBehaviour
 	public AIPath path;
 	private int currentPathNode;
 
+	private bool closeEnough = false;
+	public bool CloseEnough
+	{
+		get { return closeEnough; }
+	}
+
 //#pragma warning disable 0414
     private Vector3 posLastFrame;
 
@@ -69,6 +80,7 @@ public class AISteeringAgent : MonoBehaviour
 
 	public Vector3 Steer(Vector3 target)
 	{
+		closeEnough = false;
 		posLastFrame = position; 
 		position = transform.position;
 
@@ -93,6 +105,7 @@ public class AISteeringAgent : MonoBehaviour
 
 	public Vector3 Steer(GameObject target)
 	{
+		closeEnough = false;
 		posLastFrame = position;
 		position = transform.position;
 
@@ -241,13 +254,14 @@ public class AISteeringAgent : MonoBehaviour
 
 		if (distance <= closeEnoughRange)
 		{
-			velocity = heading * 0.01f;
+			velocity = desired * 0.1f;
 
 			if (OnTargetReached != null)
 			{
 				OnTargetReached.Invoke();
 			}
 
+			closeEnough = true;
 			return velocity;
 		}
 
@@ -429,16 +443,22 @@ public class AISteeringAgent : MonoBehaviour
 		{
 			return Vector3.zero;
 		}
+
+		if(hitInfo.collider.CompareTag("WallTile"))
+		{
+			return Vector3.zero;
+		}
+
 		// Closer I am to the object the more strongly I want to move away
 		float distanceMultiplier = 1.0f + (hitInfo.point - position).magnitude / rayLength;
 
 		Vector3 ahead = position + (heading * rayLength);
 
 		Vector3 avoidanceForce = Vector3.zero;
-		avoidanceForce.x = hitInfo.collider.transform.position.x - ahead.x;
-		avoidanceForce.z = hitInfo.collider.transform.position.z - ahead.z;
+		avoidanceForce.x = ahead.x - hitInfo.collider.transform.position.x;
+		avoidanceForce.z = ahead.z - hitInfo.collider.transform.position.z;
 
-		return avoidanceForce * distanceMultiplier;
+		return avoidanceForce;
 	}
 
     private bool LineIntersectCircle(Vector3 ahead, Vector3 ahead2, Vector3 obstaclePosition, float obstacleRadius)
