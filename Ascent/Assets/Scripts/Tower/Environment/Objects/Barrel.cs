@@ -4,38 +4,32 @@ using System.Collections.Generic;
 
 public class Barrel : EnvironmentBreakable
 {
-    protected List<Item> loot;
-    protected Room containedRoom;
-    protected int quantityOfLoot;
 	protected Transform barrelStatic;
 	protected Transform barrelDynamic;
 	protected List<Transform> barrelParts;
 	private float timeDead = 0f;
-	private float physicsTime = 1.5f;
-	private float destroyTime = 10f;
+    private float fadeTime = 3.0f;
+    private bool barrelExploded = false;
+    private bool isDead = false;
 
     public void Start()
     {
-        quantityOfLoot = Random.Range(2, 5); // TODO: include current bonuses to the roll
-
-        loot = new List<Item>(quantityOfLoot);
-
-        for (int i = 0; i < quantityOfLoot; ++i)
-        {
-            Item newItem = LootGenerator.RandomlyGenerateItem(Game.Singleton.Tower.currentFloorNumber, LootGenerator.ELootType.Gold, true);
-            loot.Add(newItem);
-        }
-
 		Transform model = transform.FindChild("Model");
 		barrelStatic = model.FindChild("barrel_static");
 		barrelDynamic = model.FindChild("barrel_dynamic");
 
-		int j;
+        if (barrelStatic == null || barrelDynamic == null)
+        {
+            Debug.LogWarning("Could not find barrel children");
+        }
+
 		barrelParts = new List<Transform>();
-		for (j = 0; j < barrelDynamic.childCount; ++j)
+
+		for (int j = 0; j < barrelDynamic.childCount; ++j)
 		{
 			barrelParts.Add(barrelDynamic.GetChild(j));
 		}
+
 		barrelDynamic.gameObject.SetActive(false);
     }
 
@@ -43,52 +37,49 @@ public class Barrel : EnvironmentBreakable
     {
         base.Update();
 
-        if (isDestroyed)
+        if (barrelStatic == null || barrelDynamic == null)
         {
-			if (timeDead > destroyTime) return;
-			timeDead += Time.deltaTime;
-			if (timeDead > destroyTime)
-			{
-				gameObject.SetActive(false);
-			}
-			else if (timeDead > physicsTime)
-			{
-				barrelParts.ForEach(t => t.rigidbody.isKinematic = true);
-			}
+            return;
+        }
 
-            if (loot.Count == 0)
+        if (isDestroyed && !isDead)
+        {
+			timeDead += Time.deltaTime;
+
+            if (timeDead >= fadeTime)
             {
-                return;
+                foreach (Transform t in barrelParts)
+                {
+                    Material mat = t.GetComponent<Renderer>().material;
+                    Color color = mat.color;
+                    color.a -= 0.1f;
+                    mat.color = color;
+
+                    if (color.a <= 0.0f)
+                    {
+                        isDead = true;
+                        gameObject.SetActive(false);
+                    }
+                }
             }
 
-            containedRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
-            GameObject go = containedRoom.InstantiateGameObject(Room.ERoomObjects.Loot, "Coins");
-            go.transform.parent = containedRoom.EnvironmentParent;
-            Vector3 pos = this.transform.position;
-            pos.y = 1.0f;
-            go.transform.position = pos;
-
-            LootDrop lootDrop = go.GetComponent<LootDrop>();
-            lootDrop.Item = loot[0];
-
-            lootDrop.StartFalling(containedRoom);
-
-			loot.RemoveAt(0);
-
-            if (loot.Count == 0)
+            if (barrelExploded == false)
             {
-				barrelStatic.gameObject.SetActive(false);
-				barrelDynamic.gameObject.SetActive(true);
-				collider.enabled = false;
+                barrelStatic.gameObject.SetActive(false);
+                barrelDynamic.gameObject.SetActive(true);
+                collider.enabled = false;
 
-				foreach(Transform trans in barrelParts)
-				{
-					Vector3 randForce;
-					randForce.x = Random.Range(-200,200);
-					randForce.y = Random.Range(-200,200);
-					randForce.z = Random.Range(-200,200);
-					trans.rigidbody.constantForce.torque = randForce;
-				}
+                foreach (Transform trans in barrelParts)
+                {
+                    Vector3 randForce;
+                    randForce.x = Random.Range(-2000, 2000);
+                    randForce.y = Random.Range(-2000, 20);
+                    randForce.z = Random.Range(-2000, 2000);
+                    trans.rigidbody.AddTorque(randForce);
+                }
+
+                //collider.enabled = false;
+                barrelExploded = true;
             }
         }
     }
