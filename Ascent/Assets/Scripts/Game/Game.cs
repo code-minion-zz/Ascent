@@ -408,6 +408,14 @@ public class Game : MonoBehaviour
 								Destroy(p.gameObject);
 							}
 						}
+
+                        players.Clear();
+                        Tower.currentFloorNumber = 0;
+                        Tower.numberOfPlayers = 0;
+                        Tower.lives = 0;
+                        Tower.keys = 0;
+                        Tower.initialised = false;
+                        Destroy(tower.CurrentFloor);
 					}
 				}
 				break;

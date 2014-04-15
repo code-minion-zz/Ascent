@@ -423,7 +423,7 @@ public class Floor : MonoBehaviour
 
         floorInstanceReward.ApplyFloorInstanceRewards();
 
-		Game.Singleton.LoadLevel(Game.EGameState.FloorSummary);
+		Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
 
 		// Enable input on summary screen
 	}
