@@ -24,7 +24,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400002}
-  - 65: {fileID: 6500000}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   m_Layer: 10
@@ -99,6 +98,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400010}
+  - 54: {fileID: 5400030}
+  - 65: {fileID: 6500000}
   m_Layer: 10
   m_Name: barrel_static
   m_TagString: Untagged
@@ -385,8 +386,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.14010763, y: 0, z: 3.64802551}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 1.8335088e-06}
+  m_LocalPosition: {x: -1.40850008, y: 0, z: .046658121}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -1278,6 +1279,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!54 &5400030
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100010}
+  serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &6400000
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -1478,13 +1494,13 @@ BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
+  m_GameObject: {fileID: 100010}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: .800000012, y: 1, z: .800000012}
+  m_Center: {x: 0, y: .5, z: 0}
 --- !u!95 &9500000
 Animator:
   serializedVersion: 2

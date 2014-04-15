@@ -10,6 +10,12 @@ public class FloorCamera : MonoBehaviour
 
     private bool transition = false;
     private bool cameraSetup = false;
+	private bool restrict = false;
+	public bool Restrict
+	{
+		get{ return restrict; }
+		set{ restrict = value; }
+	}
     private Vector3 transitionStartPos;
     private Vector3 transitionTargetPos;
     private float transitionTimeElapsed;
@@ -79,7 +85,14 @@ public class FloorCamera : MonoBehaviour
         Vector3 lerpVector = Vector3.Lerp(myTransform.position, newVector, Time.deltaTime * 2.0f);
 
 		// Set the position of our camera.
-		myTransform.position = ClampPositionIntoBounds(lerpVector);
+		if (restrict)
+		{
+			myTransform.position = ClampPositionIntoBounds(lerpVector);
+		}
+		else
+		{
+			myTransform.position = lerpVector;
+		}
     }
 
 	private Vector3 ClampPositionIntoBounds(Vector3 pos)

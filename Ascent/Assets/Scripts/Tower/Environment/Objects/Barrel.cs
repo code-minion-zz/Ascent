@@ -8,7 +8,7 @@ public class Barrel : EnvironmentBreakable
 	protected Transform barrelDynamic;
 	protected List<Transform> barrelParts;
 	private float timeDead = 0f;
-    private float fadeTime = 3.0f;
+    private float sleepTime = 3.0f;
     private bool barrelExploded = false;
     private bool isDead = false;
 
@@ -46,41 +46,54 @@ public class Barrel : EnvironmentBreakable
         {
 			timeDead += Time.deltaTime;
 
-            if (timeDead >= fadeTime)
-            {
-                foreach (Transform t in barrelParts)
-                {
-                    Material mat = t.GetComponent<Renderer>().material;
-                    Color color = mat.color;
-                    color.a -= 0.1f;
-                    mat.color = color;
+            if (timeDead >= sleepTime)
+			{
+				Vector3 pos = transform.position;
+				pos += Vector3.down * Time.smoothDeltaTime;
+				transform.position = pos;
+				
+				print (pos.y);
 
-                    if (color.a <= 0.0f)
-                    {
-                        isDead = true;
-                        gameObject.SetActive(false);
-                    }
-                }
+				if (pos.y <= -1f)
+				{
+					gameObject.SetActive(false);
+					isDead = true;
+				}
             }
 
             if (barrelExploded == false)
             {
+				barrelDynamic.rotation = barrelStatic.rotation;
+				barrelDynamic.position = barrelStatic.position;
                 barrelStatic.gameObject.SetActive(false);
                 barrelDynamic.gameObject.SetActive(true);
-                collider.enabled = false;
 
                 foreach (Transform trans in barrelParts)
                 {
                     Vector3 randForce;
                     randForce.x = Random.Range(-2000, 2000);
-                    randForce.y = Random.Range(-2000, 20);
+                    randForce.y = Random.Range(-2000, 200);
                     randForce.z = Random.Range(-2000, 2000);
-                    trans.rigidbody.AddTorque(randForce);
+                    trans.rigidbody.AddTorque(randForce, ForceMode.VelocityChange);
                 }
 
-                //collider.enabled = false;
-                barrelExploded = true;
+				barrelExploded = true;
+				isDestroyed = true;
             }
+						
+			foreach (Transform t in barrelParts)
+			{
+				Material mat = t.GetComponent<Renderer>().material;
+				Color color = mat.color;
+				color.a -= 0.1f;
+				mat.color = color;
+				
+				if (color.a <= 0.0f)
+				{
+					t.rigidbody.isKinematic = true;
+					t.collider.enabled = false;
+				}
+			}
         }
     }
 
