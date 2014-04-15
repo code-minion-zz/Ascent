@@ -8,6 +8,8 @@ public class PlayerIndicator : MonoBehaviour
 
 	private Transform indicatorTransform;
 
+    public float offsetY = 1.0f;
+
 	GameObject indicator;
 
 	public void Initialise(Color color)
@@ -18,7 +20,7 @@ public class PlayerIndicator : MonoBehaviour
 			indicator.transform.parent = this.transform;
 
 			indicatorTransform = indicator.transform;
-			indicatorTransform.localPosition = new Vector3(0.0f, 0.1f, 0.0f);
+            indicatorTransform.localPosition = new Vector3(0.0f, offsetY, 0.0f);
 			indicatorTransform.localScale = new Vector3(size, size, size);
 
 			indicator.renderer.material.color = color;
@@ -31,7 +33,7 @@ public class PlayerIndicator : MonoBehaviour
 		if (indicator != null)
 		{
 			indicatorTransform.localScale = new Vector3(size, size, size);
-			indicatorTransform.position = new Vector3(indicatorTransform.parent.position.x, 0.1f, indicatorTransform.parent.position.z + offsetZ);
+            indicatorTransform.position = new Vector3(indicatorTransform.parent.position.x, offsetY, indicatorTransform.parent.position.z + offsetZ);
 			indicatorTransform.rotation = new Quaternion(0.7f, 0.0f, 0.0f, 0.7f);
 		}
 	}

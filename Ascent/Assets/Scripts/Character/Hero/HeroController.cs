@@ -90,7 +90,7 @@ public class HeroController : MonoBehaviour
 					motor.StopMovingAlongGrid();
 				}
 
-                hero.Loadout.StopAbility();
+                //hero.Loadout.StopAbility();
 
 				//// Action's that cannot be interrupted will not cause this to happen.
 				//if (hero.Loadout.CanInterruptActiveAbility)
@@ -115,10 +115,10 @@ public class HeroController : MonoBehaviour
 					actionButtonPair.control = null;
 				}
 
-				if (!hero.Loadout.IsAbilityActive)
-				{
-					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
-				}
+                //if (!hero.Loadout.IsAbilityActive)
+                //{
+                //    animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
+                //}
 			}
 
             // Process stun only
