@@ -33,12 +33,21 @@ public class WatcherMagicMissile : Ability
             WatcherBoss boss = owner.GetComponent<WatcherBoss>();
             Transform[] eyePositions = boss.eyes;
 
-            foreach (Transform t in eyePositions)
-            {
-                GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/MagicMissile")) as GameObject;
-                arrowGO.GetComponent<MagicMissile>().Initialise(t.position, owner);
-                performed = true;
-            }
+			int randomRandomMissiles = Random.Range(0, 2);
+			for (int i = 0; i < randomRandomMissiles; ++i)
+			{
+				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/HomingMagicMissile")) as GameObject;
+				arrowGO.GetComponent<HomingMagicMissile>().Initialise(eyePositions[i].position, owner);
+				performed = true;
+			}
+
+			int randomHomingMissiles = Random.Range(6, 10);
+			for (int i = 3; i < randomHomingMissiles; ++i)
+			{
+				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/RandomMagicMissile")) as GameObject;
+				arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[i].position, owner);
+				performed = true;
+			}
         }
     }
 
