@@ -51,8 +51,6 @@ public class Barrel : EnvironmentBreakable
 				Vector3 pos = transform.position;
 				pos += Vector3.down * Time.smoothDeltaTime;
 				transform.position = pos;
-				
-				print (pos.y);
 
 				if (pos.y <= -1f)
 				{
@@ -74,7 +72,7 @@ public class Barrel : EnvironmentBreakable
                     randForce.x = Random.Range(-2000, 2000);
                     randForce.y = Random.Range(-2000, 200);
                     randForce.z = Random.Range(-2000, 2000);
-                    trans.rigidbody.AddTorque(randForce, ForceMode.VelocityChange);
+                    trans.rigidbody.AddTorque(randForce, ForceMode.Force);
                 }
 
 				barrelExploded = true;
@@ -85,7 +83,7 @@ public class Barrel : EnvironmentBreakable
 			{
 				Material mat = t.GetComponent<Renderer>().material;
 				Color color = mat.color;
-				color.a -= 0.1f;
+				color.a -= Time.deltaTime;//0.1f;
 				mat.color = color;
 				
 				if (color.a <= 0.0f)

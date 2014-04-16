@@ -16,8 +16,11 @@ public class FloorHUDManager : MonoBehaviour
 	public			Camera		hudCamera;
 	public			TextDriver  TextDriver;
     public          PlayerHUD   playerHUD;
-    public          StatBar     enemyStatBar;
-    public          GameObject  enemHealthBars;
+	public          StatBar     enemyStatBar;
+	public          GameObject  enemHealthBars;
+	public          Transform  	pausePanel;
+	public			UILabel		pauseLabel;
+	private			bool		paused = false;
 
 	public UIPanel mainPanel;
 
@@ -167,6 +170,10 @@ public class FloorHUDManager : MonoBehaviour
 				p.Hero.HeroController.InitialiseControllerIndicators();
 			}
 		}
+
+		pausePanel = transform.Find("Pause Panel");
+		pauseLabel = pausePanel.FindChild("Label").GetComponent<UILabel>();
+		PauseGame();
     }
 	
 	public StatBar AddEnemyLifeBar(Vector3 characterScale)
@@ -186,5 +193,22 @@ public class FloorHUDManager : MonoBehaviour
 	{
         bar.Shutdown();
         enemyBars.Remove(bar);
+	}
+
+	public void PauseGame()
+	{
+		NGUITools.SetActive(pausePanel.gameObject, !pausePanel.gameObject.activeSelf);
+
+		Time.timeScale = pausePanel.gameObject.activeSelf ? 0f : 1f;
+	}
+
+//	public void UnpauseGame()
+//	{
+//		NGUITools.SetActive(pausePanel.gameObject, false);
+//	}
+
+	public void SetPauseText(string text)
+	{
+		pauseLabel.text = text;
 	}
 }
