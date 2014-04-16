@@ -14,7 +14,7 @@ public class FireballExplosion : Projectile
 
 	public void Initialise(Vector3 startPos, Character owner)
 	{
-		projectile.transform.position = startPos;
+		transform.position = startPos;
 		this.owner = owner;
 
 		circle = new Circle(transform, 3.0f, Vector3.zero);

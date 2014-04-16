@@ -72,7 +72,7 @@ public class Tower : MonoBehaviour
             p.Hero.RefreshEverything();
         }
 
-        if (currentFloorNumber > 5)
+        if (currentFloorNumber > 2)
         {
             Destroy(currentFloor);
             Game.Singleton.LoadLevel(Game.EGameState.MainMenu);

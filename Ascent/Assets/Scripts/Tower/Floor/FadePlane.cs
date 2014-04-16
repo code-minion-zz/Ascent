@@ -21,19 +21,19 @@ public class FadePlane : MonoBehaviour
 	
 	void Update () 
 	{
-		if (fadeTime > 0.0f)
-		{
-			fadeTime -= Time.deltaTime;
-			if(fadeTime < 0.0f)
-			{
-                //gameObject.SetActive(false);
-				fadeTime = 0.0f;
-			}
+        //if (fadeTime > 0.0f)
+        //{
+        //    fadeTime -= Time.deltaTime;
+        //    if(fadeTime < 0.0f)
+        //    {
+        //        //gameObject.SetActive(false);
+        //        fadeTime = 0.0f;
+        //    }
 
-			Color col = gameObject.renderer.material.color;
-			col.a = Mathf.Lerp(1.0f, 0.0f, fadeTime / startTime);
+        //    Color col = gameObject.renderer.material.color;
+        //    col.a = Mathf.Lerp(1.0f, 0.0f, fadeTime / startTime);
 
-			gameObject.renderer.material.color = col;
-		}
+        //    gameObject.renderer.material.color = col;
+        //}
 	}
 }

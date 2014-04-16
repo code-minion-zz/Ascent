@@ -11,15 +11,15 @@ public class Fireball :  Projectile
     {
         this.owner = owner;
         this.velocity = velocity;
-		projectile.transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
-        projectile.transform.LookAt(startPos - velocity, Vector3.up);
-		projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+		transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
+        transform.LookAt(startPos - velocity, Vector3.up);
+		rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         //projectile.rigidbody.AddTorque(new Vector3(Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f)));
     }
 
     public void Update()
     {
-		projectile.rigidbody.AddForce(velocity, ForceMode.Force);
+		rigidbody.AddForce(velocity, ForceMode.Force);
 		//projectile.transform.position += velocity * Time.deltaTime;
     }
 

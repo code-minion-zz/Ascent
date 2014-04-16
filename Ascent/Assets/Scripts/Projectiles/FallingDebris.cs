@@ -4,19 +4,19 @@ using System.Collections;
 public class FallingDebris : Projectile
 {
     private Character owner;
-    private RayDown rayDown;
+    private ProjectileShadow rayDown;
 
     public void Initialise(Vector3 startPosition, Character owner)
     {
         startPosition.y = 15.0f;
         transform.position = startPosition;
         this.owner = owner;
-        rayDown = GetComponentInChildren<RayDown>();
+        rayDown = GetComponentInChildren<ProjectileShadow>();
     }
 
     public void Update()
     {
-        rigidbody.AddForce(-Vector3.up * 5.0f, ForceMode.Force);
+        rigidbody.AddForce(-Vector3.up * 10.0f, ForceMode.Acceleration);
     }
 
     public void OnCollisionEnter(Collision collision)
