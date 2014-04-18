@@ -80,6 +80,13 @@ public class HeroController : MonoBehaviour
     {
 		if (CanUseInput && InputManager.IsPolling)
 		{
+			if (inputDevice.Start.WasReleased)
+			{
+				FloorHUDManager hudman = FloorHUDManager.Singleton;
+				hudman.SetPauseText("Paused");
+				hudman.PauseGame();
+			}
+
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
 			if (hero.HitTaken)
 			{
