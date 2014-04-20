@@ -113,7 +113,7 @@ public class HomingMagicMissile : Projectile
 			Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position,
 				collision.transform.rotation, character.transform);
 
-			GameObject.Instantiate(arcaneExplosionPrefab, transform.position, transform.rotation);
+			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 		}
 		else
 		{

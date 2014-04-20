@@ -14,16 +14,23 @@ public class WatcherBoss : Enemy
     public Transform mainEye;
     public Transform[] eyes;
 
+	AICondition_Timer missileTimer;
+	AICondition_Timer lazerTimer;
+
     public override void Initialise()
     {
         base.Initialise();
 
         // Add abilities
-        loadout.SetSize(1);
+        loadout.SetSize(2);
 
         Ability ability = new WatcherMagicMissile();
         magicMissilesID = 0;
         loadout.SetAbility(ability, magicMissilesID);
+
+		ability = new WatcherLazerBeam();
+		lazerID = 1;
+		loadout.SetAbility(ability, lazerID);
 
         InitialiseAI();
     }
@@ -33,30 +40,30 @@ public class WatcherBoss : Enemy
         AIBehaviour behaviour = null;
         AITrigger trigger = null;
 
-        //// Defensive behaviour
-        //behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
-        //{
-        //    // OnAttacked, Triggers if attacked
-        //    trigger = behaviour.AddTrigger();
-        //    trigger.Operation = AITrigger.EConditionalExit.Stop;
-        //    trigger.AddCondition(new AICondition_Attacked(this));
-        //    trigger.OnTriggered += StateTransitionToAggressive;
-
-        //    trigger = behaviour.AddTrigger();
-        //    trigger.Operation = AITrigger.EConditionalExit.Stop;
-        //    trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
-        //    trigger.OnTriggered += StateTransitionToAggressive;
-        //}
-
         // Aggressive
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
-            // OnCanUseTackle, triggers if target in range and action off cooldown
-            trigger = behaviour.AddTrigger();
-            trigger.Operation = AITrigger.EConditionalExit.Continue;
-            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[magicMissilesID]));
-            //trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)), AITrigger.EConditional.And);
-            trigger.OnTriggered += UseTackle;
+			trigger = behaviour.AddTrigger("Reset timer after MagicMissiles ends.");
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[magicMissilesID]));
+			trigger.OnTriggered += delegate() { missileTimer.Reset(); };
+
+			trigger = behaviour.AddTrigger("Use MagicMissiles after random timer.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			missileTimer = new AICondition_Timer(1.5f, 2.5f);
+			trigger.AddCondition(missileTimer);
+			trigger.OnTriggered += UseMagicMissile;
+
+			trigger = behaviour.AddTrigger("Reset timer after Lazer ends.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[lazerID]));
+			trigger.OnTriggered += delegate() { lazerTimer.Reset(); };
+
+			trigger = behaviour.AddTrigger("Use Lazer after random timer.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			lazerTimer = new AICondition_Timer(7.5f, 12.0f);
+			trigger.AddCondition(lazerTimer);
+			trigger.OnTriggered += UseLazer;
         }
 
         StateTransitionToAggressive();
@@ -65,15 +72,22 @@ public class WatcherBoss : Enemy
     public override void StateTransitionToPassive()
     {
         base.StateTransitionToPassive();
+		AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
     }
 
     public override void StateTransitionToAggressive()
     {
         base.StateTransitionToAggressive();
+		AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
     }
 
-    public void UseTackle()
+    public void UseMagicMissile()
     {
         loadout.UseAbility(magicMissilesID);
     }
+
+	public void UseLazer()
+	{
+		loadout.UseAbility(lazerID);
+	}
 }

@@ -84,13 +84,13 @@ public class Wizard : Enemy
             teleportTrigger = behaviour.AddTrigger();
             teleportTrigger.Operation = AITrigger.EConditionalExit.Stop;
             teleportTrigger.AddCondition(new AICondition_Attacked(this));
-            teleportTrigger.AddCondition(new AICondition_Timer(3.0f, 1.0f, 3.0f), AITrigger.EConditional.Or);
+            teleportTrigger.AddCondition(new AICondition_Timer(4.0f, 7.0f), AITrigger.EConditional.Or);
             teleportTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[teleportID]), AITrigger.EConditional.And);
             teleportTrigger.OnTriggered += OnCanUseTeleport;
 
             spellTrigger = behaviour.AddTrigger();
             spellTrigger.Operation = AITrigger.EConditionalExit.Stop;
-            spellTrigger.AddCondition(new AICondition_Timer(1.0f, -1.0f, 1.0f));
+            spellTrigger.AddCondition(new AICondition_Timer(0.0f, 2.0f));
             spellTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[spellID]), AITrigger.EConditional.And);
             spellTrigger.OnTriggered += OnCanUseSpell;
         }

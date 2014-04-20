@@ -19,11 +19,22 @@ public class AITrigger
         Stop,
     }
 
-    private EConditionalExit priority;
+	public AITrigger()
+	{
+	}
+
+	public AITrigger(string name)
+	{
+		this.name = name;
+	}
+
+	public string name;
+
+    private EConditionalExit operation;
     public EConditionalExit Operation
     {
-        get { return priority; }
-        set { priority = value; }
+        get { return operation; }
+        set { operation = value; }
     }
 
     protected List<KeyValuePair<AICondition, EConditional>> conditions = new List<KeyValuePair<AICondition, EConditional>>();

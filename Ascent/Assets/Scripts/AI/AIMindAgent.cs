@@ -14,7 +14,7 @@ public class AIMindAgent : MonoBehaviour
         Defensive,
     }
 
-	private const bool drawLabels = false;
+	private const bool drawLabels = true;
 
     protected Dictionary<EBehaviour, AIBehaviour> behaviours = new Dictionary<EBehaviour, AIBehaviour>();
 
@@ -48,23 +48,9 @@ public class AIMindAgent : MonoBehaviour
 #if UNITY_EDITOR
 #pragma warning disable 0414 // unused var 
 	private GUIText label;
-#endif
 
-	public void Start()
-	{
-#if UNITY_EDITOR
-		if (drawLabels)
-		{
-			if (label == null)
-			{
-				GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/AIDebugText")) as GameObject;
-				label = go.GetComponent<GUIText>();
-				go.transform.parent = transform;
-				go.SetActive(false);
-			}
-		}
+	private bool renderedGizmos;
 #endif
-	}
 
     public void ResetBehaviour(EBehaviour e)
     {
@@ -99,93 +85,84 @@ public class AIMindAgent : MonoBehaviour
 		}
 		else
 		{
-            #if UNITY_EDITOR
-			if (drawLabels)
-			{
-				label.gameObject.SetActive(false);
-			}
-            #endif
-
 			behaviours[curBehaviour].Process();
 		}
+
+#if UNITY_EDITOR
+		if (drawLabels && label != null)
+		{
+			label.gameObject.SetActive(false);
+		}
+#endif
     }
 
 #if UNITY_EDITOR
 	public void OnDrawGizmos()
-    {
-		if (behaviours == null)
+	{
+		if (!drawLabels || behaviours == null || !behaviours.ContainsKey(curBehaviour) || Game.Singleton.Tower.CurrentFloor == null)
 		{
 			return;
 		}
 
-		if (!behaviours.ContainsKey(curBehaviour))
-		{
-			return;
-		}
-
-        if (Game.Singleton == null)
+        if (label == null)
         {
-            return;
+			GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/AIDebugText")) as GameObject;
+			label = go.GetComponent<GUIText>();
+			go.transform.parent = transform;
         }
-		
-		Floor floor = Game.Singleton.Tower.CurrentFloor;
 
-		if (floor != null)
+		label.gameObject.SetActive(true);
+
+		Camera camera = Game.Singleton.Tower.CurrentFloor.MainCamera;
+
+		Vector3 pos = transform.position;
+		pos.x += 0.5f;
+		pos = camera.WorldToViewportPoint(pos);
+
+		label.transform.position = pos;
+
+
+		label.text = "";
+		label.text = curBehaviour.ToString() + "\n";
+
+		int i = 0;
+		List<AITrigger> triggers = behaviours[curBehaviour].Triggers;
+		foreach (AITrigger t in triggers)
 		{
 			if (drawLabels)
 			{
-                if (label == null)
-                {
-                    return;
-                }
-
-				label.gameObject.SetActive(true);
-
-				Camera camera = Game.Singleton.Tower.CurrentFloor.MainCamera;
-
-				Vector3 pos = transform.position;
-				pos.x += 0.5f;
-				pos = camera.WorldToViewportPoint(pos);
-
-				label.transform.position = pos;
-
-
-				label.text = "";
-				label.text = curBehaviour.ToString() + "\n";
+				if (t.name != null)
+				{
+					label.text += " " + t.name + "\n";
+				}
+				else
+				{	
+					label.text += "	Trigger" + i + "\n";
+				}
 			}
 
-			int i = 0;
-			List<AITrigger> triggers = behaviours[curBehaviour].Triggers;
-			foreach (AITrigger t in triggers)
+			List<KeyValuePair<AICondition, AITrigger.EConditional>> conditions = t.Conditions;
+
+			int j = 0;
+			foreach (KeyValuePair<AICondition, AITrigger.EConditional> c in conditions)
 			{
 				if (drawLabels)
 				{
-					label.text += "	Trigger" + i + "\n";
-				}
-
-				List<KeyValuePair<AICondition, AITrigger.EConditional>> conditions = t.Conditions;
-
-				int j = 0;
-				foreach (KeyValuePair<AICondition, AITrigger.EConditional> c in conditions)
-				{
-					if (drawLabels)
+					if (j == 0)
 					{
-						if (j == 0)
-						{
-							label.text += "		" + c.Key.ToString() + "\n";
-						}
-						else
-						{
-							label.text += "		" + c.Value + " " + c.Key.ToString() + "\n";
-						}
+						label.text += "		" + c.Key.ToString() + "\n";
 					}
-
-					c.Key.DebugDraw();
-
-					++j;
+					else
+					{
+						label.text += "		" + c.Value + " " + c.Key.ToString() + "\n";
+					}
 				}
-				++i;
+
+				c.Key.DebugDraw();
+
+				++j;
 			}
+			++i;
 		}
     }
 #endif

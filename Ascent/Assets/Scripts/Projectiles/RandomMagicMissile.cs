@@ -30,6 +30,8 @@ public class RandomMagicMissile : Projectile
 		rotation.y = Random.Range(-360.0f, 360.0f);
 
 		transform.Rotate(rotation);
+
+		transform.parent = EffectFactory.Singleton.transform;
 	}
 
 
@@ -39,7 +41,7 @@ public class RandomMagicMissile : Projectile
 		if (timeElapsed >= 3.5f && !exploded)
 		{
 			exploded = true;
-			GameObject.Instantiate(arcaneExplosionPrefab, transform.position, transform.rotation);
+			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 		}
 		else if (timeElapsed >= lifeSpan)
 		{
@@ -69,7 +71,7 @@ public class RandomMagicMissile : Projectile
 			Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position,
 				collision.transform.rotation, character.transform);
 
-			GameObject.Instantiate(arcaneExplosionPrefab, transform.position, transform.rotation);
+			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 		}
 		else
 		{
@@ -79,7 +81,7 @@ public class RandomMagicMissile : Projectile
 		// then it can be destroyed.
 		if (character != owner)
 		{
-			GameObject.Instantiate(arcaneExplosionPrefab, transform.position, transform.rotation);
+			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 			GameObject.Destroy(gameObject);
 		}
 	}

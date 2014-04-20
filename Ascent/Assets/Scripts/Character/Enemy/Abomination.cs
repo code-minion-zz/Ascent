@@ -47,7 +47,7 @@ public class Abomination : Enemy
     public void InitialiseAI()
     {
 		AIBehaviour behaviour = null;
-		AITrigger trigger = null;
+		//AITrigger trigger = null;
 
 		// Charge straight into facing (hopefully hitting something).
 		// Immediately switch to other behaviour.

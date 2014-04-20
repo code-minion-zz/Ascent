@@ -173,11 +173,6 @@ public class Game : MonoBehaviour
         }
 	}
 
-	public void Start()
-	{
-		
-	}
-
 	private void Initialise()
 	{
 		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
@@ -221,7 +216,7 @@ public class Game : MonoBehaviour
        
 		// Add some necessary components
 		tower = GetComponent<Tower>();
-		effectFactory = gameObject.AddComponent<EffectFactory>();
+		effectFactory = GameObject.Instantiate(Resources.Load("Prefabs/EffectFactory")) as EffectFactory;
 
 		// Set the game state as the test state specified
 		gameState = testState;
@@ -468,5 +463,4 @@ public class Game : MonoBehaviour
 	}
 	
 	#endregion
-
 }

@@ -12,7 +12,7 @@ public class WatcherMagicMissile : Ability
         animationLength = 1.833f;
         animationSpeed = 1.0f;
         animationTrigger = "Spin";
-        cooldownFullDuration = 3.0f;
+        cooldownFullDuration = 0.0f;
         specialCost = 0;
     }
 
@@ -33,19 +33,21 @@ public class WatcherMagicMissile : Ability
             WatcherBoss boss = owner.GetComponent<WatcherBoss>();
             Transform[] eyePositions = boss.eyes;
 
-			int randomRandomMissiles = Random.Range(0, 2);
+			int randomRandomMissiles = Random.Range(1, 3);
 			for (int i = 0; i < randomRandomMissiles; ++i)
 			{
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/HomingMagicMissile")) as GameObject;
 				arrowGO.GetComponent<HomingMagicMissile>().Initialise(eyePositions[i].position, owner);
+				arrowGO.transform.parent = owner.transform;
 				performed = true;
 			}
 
-			int randomHomingMissiles = Random.Range(6, 10);
+			int randomHomingMissiles = Random.Range(8, 10);
 			for (int i = 3; i < randomHomingMissiles; ++i)
 			{
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/RandomMagicMissile")) as GameObject;
 				arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[i].position, owner);
+				arrowGO.transform.parent = owner.transform;
 				performed = true;
 			}
         }

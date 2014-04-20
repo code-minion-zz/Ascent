@@ -43,14 +43,23 @@ public static class SoundManager
 	private static AudioClip arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
 	private static AudioClip heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
 
+	static AudioSource source;
+
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
+		if (source == null)
+		{
+			source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
+		}
+
         AudioClip clip = GetClipFromType(clipType);
 
         if (clip != null)
         {
             position += new Vector3(0.0f, 10.0f);
-            AudioSource.PlayClipAtPoint(clip, position, volume);
+			source.PlayOneShot(clip, volume);
+            //AudioSource.PlayClipAtPoint(clip, position, volume);
+
         }
         else
         {
