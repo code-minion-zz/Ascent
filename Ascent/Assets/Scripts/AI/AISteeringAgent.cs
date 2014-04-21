@@ -14,16 +14,21 @@ public class AISteeringAgent : MonoBehaviour
 		Seek = 0x00002,
 		Flee = 0x00004,
 		Arrive = 0x00008,
+
 		Wander = 0x00010,
-		Cohesion = 0x00020,
-		Separation = 0x00040,
-		Allignment = 0x00080,
+		FleeInRange = 0x00020,
+		Evade = 0x00040,
+		Pursuit = 0x00080,
+
 		ObstacleAvoidance = 0x00100,
 		WallAvoidance = 0x00200,
 		FollowPath = 0x00400,
-		Pursuit = 0x00800,
-		Evade = 0x01000,
+
+		Cohesion = 0x01000,
+		Separation = 0x02000,
+		Allignment = 0x04000,
 		Flock = 0x08000,
+
 		OffsetPursuit = 0x10000,
 	};
 
@@ -54,7 +59,11 @@ public class AISteeringAgent : MonoBehaviour
 	private Vector3 wanderTarget;
 
 	public float fleeDistance = 5.0f;
-	public float closeEnoughRange = 2.0f;
+
+	public bool stopIfCloseEnough;
+	public float closeEnoughDistance = 2.0f;
+	public bool moveAwayIfTooClose;
+	public float tooCloseDistance = 1.0f;
 	public float distanceToKeepFromTarget = 1.75f;
 
 	public Vector2 pursuitOffset;
@@ -144,6 +153,10 @@ public class AISteeringAgent : MonoBehaviour
 		{
 			combinedForces += Wander();
 		}
+		if (On(ESteerTypes.FleeInRange))
+		{
+			combinedForces += FleeWithinRange(target);
+		}
 		if (On(ESteerTypes.ObstacleAvoidance))
 		{
 			combinedForces += ObstacleAvoidance();
@@ -168,6 +181,10 @@ public class AISteeringAgent : MonoBehaviour
 		{
 			combinedForces += Wander();
 		}
+		if (On(ESteerTypes.FleeInRange))
+		{
+			combinedForces += FleeWithinRange(target);
+		}
 		if (On(ESteerTypes.ObstacleAvoidance))
 		{
 			combinedForces += ObstacleAvoidance();
@@ -181,10 +198,28 @@ public class AISteeringAgent : MonoBehaviour
 		return (steerTypes & steerType) == steerType;
 	}
 
-	private Vector3 Seek(Vector3 targetPos)
+	private Vector3 Seek(Vector3 target)
 	{
+		if (IsTooClose(target))
+		{
+			return Flee(target);
+		}
+
+		if (IsCloseEnough(target))
+		{
+			if (OnTargetReached != null)
+			{
+				OnTargetReached.Invoke();
+			}
+
+			closeEnough = true;
+
+			return Stop(target);
+		}
+
+		// Seek as normal
 		Vector3 desiredVelocity = Vector3.zero;
-		desiredVelocity = targetPos - position;
+		desiredVelocity = target - position;
 		desiredVelocity.Normalize();
 		desiredVelocity *= maxSpeed;
 		desiredVelocity -= velocity;
@@ -219,6 +254,49 @@ public class AISteeringAgent : MonoBehaviour
 		return Vector3.zero;
 	}
 
+	private bool IsTooClose(Vector3 target)
+	{
+		if (!moveAwayIfTooClose)
+			return false;
+
+		Vector3 desired = target - position;
+
+		float distance = Mathf.Abs(desired.magnitude);
+
+		desired.Normalize();
+
+		return distance <= tooCloseDistance;
+	}
+
+	private bool IsCloseEnough(Vector3 target)
+	{
+		if (!stopIfCloseEnough)
+			return false;
+
+		Vector3 desired = target - position;
+
+		float distance = Mathf.Abs(desired.magnitude);
+
+		desired.Normalize();
+
+		return distance <= closeEnoughDistance;
+	}
+
+	private Vector3 Stop(Vector3 target)
+	{
+		Vector3 desired = target - position;
+
+		velocity = desired * 0.1f;
+
+		if (OnTargetReached != null)
+		{
+			OnTargetReached.Invoke();
+		}
+
+		closeEnough = true;
+		return velocity;
+	}
+
 	private Vector3 FleeWithinRange(Vector3 target)
 	{
 		// Only flee when within a range that is too close
@@ -246,24 +324,26 @@ public class AISteeringAgent : MonoBehaviour
 
 	private Vector3 Arrive(Vector3 target, float radius)
 	{
-		Vector3 desired = target - position;
-
-		float distance = Mathf.Abs(desired.magnitude);
-
-		desired.Normalize();
-
-		if (distance <= closeEnoughRange)
+		if (IsTooClose(target))
 		{
-			velocity = desired * 0.1f;
+			return Flee(target);
+		}
 
+		if (IsCloseEnough(target))
+		{
 			if (OnTargetReached != null)
 			{
 				OnTargetReached.Invoke();
 			}
 
 			closeEnough = true;
-			return velocity;
+
+			return Stop(target);
 		}
+
+		Vector3 desired = target - position;
+
+		float distance = Mathf.Abs(desired.magnitude);
 
 		// If outside of the arrival range go at normal speed
 		if (distance < 0.0f && distance > radius)

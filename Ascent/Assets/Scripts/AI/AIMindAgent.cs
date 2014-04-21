@@ -99,7 +99,10 @@ public class AIMindAgent : MonoBehaviour
 #if UNITY_EDITOR
 	public void OnDrawGizmos()
 	{
-		if (!drawLabels || behaviours == null || !behaviours.ContainsKey(curBehaviour) || Game.Singleton.Tower.CurrentFloor == null)
+		if (!drawLabels ||
+			behaviours == null ||
+			!behaviours.ContainsKey(curBehaviour) ||
+			Game.Singleton.Tower.CurrentFloor == null)
 		{
 			return;
 		}

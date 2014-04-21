@@ -42,7 +42,7 @@ public class Rat : Enemy
 
 		   trigger = behaviour.AddTrigger();
 		   trigger.Operation = AITrigger.EConditionalExit.Stop;
-		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 2.5f, Vector3.zero)));
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, Vector3.zero)));
 		   trigger.OnTriggered += StateTransitionToAggressive;
 	   }
 

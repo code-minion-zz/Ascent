@@ -9,10 +9,10 @@ public class ArcherShootArrow : Ability
     {
         base.Initialise(owner);
 
-        animationLength = 0.5f;
-        animationSpeed = 1.0f;
+        animationLength = 2.167f;
+        animationSpeed = 2.0f;
         animationTrigger = "Strike";
-        cooldownFullDuration = 2.1f;
+        cooldownFullDuration = 0.0f;
         specialCost = 0;
     }
 
@@ -25,13 +25,15 @@ public class ArcherShootArrow : Ability
         owner.SetColor(Color.red);
 		performed = false;
 		SoundManager.PlaySound(AudioClipType.arrowwoosh,owner.transform.position,.1f);
+
+		owner.Animator.PlayAnimation(animationTrigger, true);
     }
 
     public override void UpdateAbility()
     {
         base.UpdateAbility();
 
-        if (timeElapsedSinceStarting >= animationLength * 0.5f && !performed)
+        if (timeElapsedSinceStarting >= animationLength * 0.75f && !performed)
         {
              GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/ArcherArrow")) as GameObject;
             arrowGO.GetComponent<ArcherArrow>().Initialise(owner.transform.position + owner.transform.forward, owner.transform.forward * 10.0f, owner);
@@ -44,5 +46,6 @@ public class ArcherShootArrow : Ability
     {
         base.EndAbility();
         owner.Motor.EnableStandardMovement(true);
+		owner.Animator.PlayAnimation(animationTrigger, false);
     }
 }

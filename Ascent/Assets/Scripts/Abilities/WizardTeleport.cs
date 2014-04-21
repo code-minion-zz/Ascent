@@ -11,7 +11,7 @@ public class WizardTeleport : Ability
 
         animationLength = 0.5f;
         animationSpeed = 1.0f;
-        animationTrigger = "Strike";
+        animationTrigger = "Beam";
         cooldownFullDuration = 5.0f;
         specialCost = 0;
     }
@@ -35,7 +35,9 @@ public class WizardTeleport : Ability
             Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
 
             owner.transform.position = curRoom.NavMesh.GetRandomPosition();
-            owner.transform.rotation = Quaternion.LookRotation(FloorCamera.CalculateAverageHeroPosition() - owner.transform.position, Vector3.up);
+			Vector3 target = FloorCamera.CalculateAverageHeroPosition();
+			target.y = owner.transform.position.y;
+			owner.transform.rotation = Quaternion.LookRotation(target - owner.transform.position, Vector3.up);
            
             owner.ResetColor();
 

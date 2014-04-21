@@ -92,28 +92,28 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void EnableHighlight(Color color)
 	{
-		//Renderer[] renderers = Renderers;
-		//foreach (Renderer render in renderers)
-		//{
-		//    foreach (Material mat in render.materials)
-		//    {
-		//        mat.shader = Shader.Find("Outlined/Diffuse");
-		//        mat.SetColor("_OutlineColor", color);
-		//        //mat.SetColor("_Color", color);
-		//    }
-		//}
+		Renderer[] renderers = Renderers;
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Outlined/Diffuse");
+				mat.SetColor("_OutlineColor", color);
+				//mat.SetColor("_Color", color);
+			}
+		}
 	}
 
 	public void StopHighlight()
 	{
-		//Renderer[] renderers = Renderers;
-		//foreach (Renderer render in renderers)
-		//{
-		//    foreach (Material mat in render.materials)
-		//    {
-		//        mat.shader = Shader.Find("Diffuse");
-		//    }
-		//}
+		Renderer[] renderers = Renderers;
+		foreach (Renderer render in renderers)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Diffuse");
+			}
+		}
 	}
 
 	public virtual void Update()

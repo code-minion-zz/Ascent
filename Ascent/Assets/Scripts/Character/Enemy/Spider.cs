@@ -1,100 +1,96 @@
-﻿using UnityEngine;
+﻿// Developed by Mana Khamphanpheng 2013
+
+// Dependencies
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
 
 public class Spider : Enemy
 {
-    private int shootID;
+	private int tackleAbilityID;
 
-    public override void Initialise()
-    {
-        base.Initialise();
+	public Vector3 move;
 
-        // Add abilities
-        loadout.SetSize(1);
+	public override void Initialise()
+	{
+		base.Initialise();
 
-        Ability tackle = new RatTackle();
-        shootID = 0;
-        loadout.SetAbility(tackle, shootID);
+		// Add abilities
+		loadout.SetSize(1);
 
-        InitialiseAI();
-    }
+		Ability tackle = new RatTackle();
+		tackleAbilityID = 0;
+		loadout.SetAbility(tackle, tackleAbilityID);
 
-    public void InitialiseAI()
-    {
-        //AIAgent.SteeringAgent.RunIfTooClose = true;
-        motor.MaxSpeed = 3.0f;
-        motor.MinSpeed = 0.5f;
-        motor.Acceleration = 1.0f;
+		InitialiseAI();
+	}
 
-        AIBehaviour behaviour = null;
-        AITrigger trigger = null;
+	public void InitialiseAI()
+	{
+		AIBehaviour behaviour = null;
+		AITrigger trigger = null;
 
-        // Aggressive
-        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        {
-            // Change target to closest
-            trigger = behaviour.AddTrigger();
-            trigger.Operation = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 4.5f, Vector3.zero)));
-            trigger.OnTriggered += ChangeTarget;
+		// Defensive behaviour
+		behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+		{
+			// OnAttacked, Triggers if attacked
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_Attacked(this));
+			trigger.OnTriggered += StateTransitionToAggressive;
 
-            //// Shoot if can shoot
-            //trigger = behaviour.AddTrigger();
-            //trigger.Priority = AITrigger.EConditionalExit.Stop;
-            //trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[shootID]));
-            //trigger.OnTriggered += Shoot;
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 5.0f, Vector3.zero)));
+			trigger.OnTriggered += StateTransitionToAggressive;
+		}
 
-            //// Move close but Keep distance
-            //trigger = behaviour.AddTrigger();
-            //trigger.Priority = AITrigger.EConditionalExit.Stop;
-            //trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[shootID]));
-            //trigger.OnTriggered += Move;
-        }
+		// Aggressive
+		behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
+		{
+			// OnAttacked, Triggers if attacked
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_Attacked(this));
+			trigger.OnTriggered += StateTransitionToAggressive;
 
-        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        //AIAgent.SteeringAgent.SetTargetPosition(containedRoom.NavMesh.GetRandomOrthogonalPositionWithinRadius(transform.position, 7.5f));
-    }
+			// OnCanUseTackle, triggers if target in range and action off cooldown
+			trigger = behaviour.AddTrigger();
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
+			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)), AITrigger.EConditional.And);
+			trigger.OnTriggered += UseTackle;
+		}
 
-    public void ChangeTarget()
-    {
-        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
-    }
+		StateTransitionToPassive();
+	}
 
-    //public void Shoot()
-    //{
-    //    loadout.UseAbility(shootID);
-    //}
+	public override void StateTransitionToPassive()
+	{
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Wander | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
 
-    //public void Move()
-    //{
-    //    AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-    //    AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+		base.StateTransitionToPassive();
+	}
 
-    //    if (lastDamagedBy != null)
-    //    {
-    //        AIAgent.MindAgent.TargetCharacter = lastDamagedBy;
-    //    }
-    //    else if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
-    //    {
-    //        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
-    //    }
-    //}
+	public override void StateTransitionToAggressive()
+	{
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
 
-    public void OnCanUseTackle()
-    {
-        motor.LookAt(AIAgent.MindAgent.TargetCharacter.transform.position);
-        //AIAgent.SteeringAgent.RemoveTarget();
-        motor.StopMotion();
-        loadout.UseAbility(shootID);
-    }
+		if (lastDamagedBy != null)
+		{
+			TargetCharacter = lastDamagedBy;
+		}
+		else if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
+		{
+			TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+		}
 
-    public override void OnDisable()
-    {
-        motor.StopMotion();
-        AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
-        AIAgent.MindAgent.TargetCharacter = null;
-        //AIAgent.SteeringAgent.RemoveTarget();
-    }
+		base.StateTransitionToAggressive();
+	}
+
+	public void UseTackle()
+	{
+		loadout.UseAbility(tackleAbilityID);
+	}
 }

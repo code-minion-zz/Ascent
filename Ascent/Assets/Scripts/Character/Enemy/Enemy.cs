@@ -198,7 +198,10 @@ public abstract class Enemy : Character
 
 				motor.Move(velocity);
 
-				AIAgent.MindAgent.Process();
+				if (loadout.ActiveAbility == null)
+				{
+					AIAgent.MindAgent.Process();
+				}
             }
 
             if (hpBar != null)
