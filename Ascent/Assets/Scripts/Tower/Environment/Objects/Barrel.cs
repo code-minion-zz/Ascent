@@ -78,7 +78,6 @@ public class Barrel : EnvironmentBreakable
                     trans.rigidbody.AddTorque(randForce);
                 }
 
-                //collider.enabled = false;
                 barrelExploded = true;
             }
         }
