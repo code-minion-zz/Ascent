@@ -33,7 +33,7 @@ public class WatcherMagicMissile : Ability
             WatcherBoss boss = owner.GetComponent<WatcherBoss>();
             Transform[] eyePositions = boss.eyes;
 
-			int randomRandomMissiles = Random.Range(1, 3);
+			int randomRandomMissiles = Random.Range(2, 5);
 			for (int i = 0; i < randomRandomMissiles; ++i)
 			{
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/HomingMagicMissile")) as GameObject;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HomingMagicMissile : Projectile
 {
@@ -25,12 +26,8 @@ public class HomingMagicMissile : Projectile
     public void Initialise(Vector3 startPos, Character owner)
     {
         this.owner = owner;
-        transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
+        transform.position = new Vector3(startPos.x, 0.5f, startPos.z);
         transform.forward = owner.transform.forward;
-
-        startPos.y = 1.25f;
-
-        transform.position = startPos;
 
 		maxSpeed = Random.Range(SpeedMinMax.x, SpeedMinMax.y);
 		maxForce = Random.Range(ForceMinMax.x, ForceMinMax.y);
@@ -45,7 +42,11 @@ public class HomingMagicMissile : Projectile
 
     public void SelectTarget()
     {
-        target = Game.Singleton.Players[0].Hero;
+		int playerCount = Game.Singleton.NumberOfPlayers;
+
+		int randomPlayer = Random.Range(0, playerCount);
+
+		target = Game.Singleton.Players[randomPlayer].Hero;
     }
 
     public Vector3 SteerToTarget()

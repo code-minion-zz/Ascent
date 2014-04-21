@@ -97,17 +97,6 @@ public class HeroController : MonoBehaviour
 					motor.StopMovingAlongGrid();
 				}
 
-                //hero.Loadout.StopAbility();
-
-				//// Action's that cannot be interrupted will not cause this to happen.
-				//if (hero.Loadout.CanInterruptActiveAbility)
-				//{
-				//    hero.Loadout.StopAbility();
-
-				//    animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
-				//}
-
-
 				if (actionButtonPair.control != null && actionButtonPair.control.WasReleased)
 				{
 					int abilityID = hero.Loadout.GetAbilityID(actionButtonPair.action);
@@ -121,11 +110,6 @@ public class HeroController : MonoBehaviour
 					actionButtonPair.action = null;
 					actionButtonPair.control = null;
 				}
-
-                //if (!hero.Loadout.IsAbilityActive)
-                //{
-                //    animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
-                //}
 			}
 
             // Process stun only

@@ -19,12 +19,8 @@ public class RandomMagicMissile : Projectile
 	public void Initialise(Vector3 startPos, Character owner)
 	{
 		this.owner = owner;
-		transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
+		transform.position = new Vector3(startPos.x, 0.5f, startPos.z);
 		transform.forward = owner.transform.forward;
-
-		startPos.y = 1.25f;
-
-		transform.position = startPos;
 
 		Vector3 rotation = Vector3.zero;
 		rotation.y = Random.Range(-360.0f, 360.0f);

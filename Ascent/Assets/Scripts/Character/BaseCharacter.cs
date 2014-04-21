@@ -51,13 +51,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void Initialise()
 	{
 		renderers = GetComponentsInChildren<Renderer>();
-		
-		//shadow = GetComponentInChildren<Shadow>();
-		//if (shadow == null)
-		//{
-		//    Debug.LogError("No Shadow attached to " + name, this);
-		//}
-		//shadow.Initialise();
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		if (motor == null)
@@ -77,50 +70,50 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void SetColor(Color color)
 	{
-		if (renderers != null)
-		{
-			foreach (Renderer render in renderers)
-			{
-				render.material.color = color;
-			}
-		}
+		//if (renderers != null)
+		//{
+		//    foreach (Renderer render in renderers)
+		//    {
+		//        render.material.color = color;
+		//    }
+		//}
 	}
 
 	public virtual void ResetColor()
 	{
-		if (renderers != null)
-		{
-			foreach (Renderer render in renderers)
-			{
-				render.material.color = originalColour;
-			}
-		}
+		//if (renderers != null)
+		//{
+		//    foreach (Renderer render in renderers)
+		//    {
+		//        render.material.color = originalColour;
+		//    }
+		//}
 	}
 
 	public void EnableHighlight(Color color)
 	{
-		Renderer[] renderers = Renderers;
-		foreach (Renderer render in renderers)
-		{
-			foreach (Material mat in render.materials)
-			{
-				mat.shader = Shader.Find("Outlined/Diffuse");
-				mat.SetColor("_OutlineColor", color);
-				//mat.SetColor("_Color", color);
-			}
-		}
+		//Renderer[] renderers = Renderers;
+		//foreach (Renderer render in renderers)
+		//{
+		//    foreach (Material mat in render.materials)
+		//    {
+		//        mat.shader = Shader.Find("Outlined/Diffuse");
+		//        mat.SetColor("_OutlineColor", color);
+		//        //mat.SetColor("_Color", color);
+		//    }
+		//}
 	}
 
 	public void StopHighlight()
 	{
-		Renderer[] renderers = Renderers;
-		foreach (Renderer render in renderers)
-		{
-			foreach (Material mat in render.materials)
-			{
-				mat.shader = Shader.Find("Diffuse");
-			}
-		}
+		//Renderer[] renderers = Renderers;
+		//foreach (Renderer render in renderers)
+		//{
+		//    foreach (Material mat in render.materials)
+		//    {
+		//        mat.shader = Shader.Find("Diffuse");
+		//    }
+		//}
 	}
 
 	public virtual void Update()
