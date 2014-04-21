@@ -33,7 +33,7 @@ public class Spike : MonoBehaviour
             combatEvaluator.Add(new TrapDamageProperty(damage, 1.0f));
             combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(null, hero, 3.0f)));
             combatEvaluator.Apply();
-            Game.Singleton.EffectFactory.CreateBloodSplatter(trigger.transform.position, trigger.transform.rotation, hero.transform);
+            EffectFactory.Singleton.CreateBloodSplatter(trigger.transform.position, trigger.transform.rotation);
         }
     }
 }

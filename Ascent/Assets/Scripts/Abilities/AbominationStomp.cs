@@ -74,7 +74,7 @@ public class AbominationStomp : Ability
 						combatEvaluator.Apply();
 
                         // Create a blood splatter effect on the enemy.
-                        Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform);
+                        EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation);
                     }
                 }
 

@@ -70,7 +70,7 @@ public class Lightning : Projectile
                                 combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
 
                                 // Create a blood splatter effect on the enemy.
-                                //Game.Singleton.EffectFactory.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
+                                //EffectFactory.Singleton.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
                             }
 
                             combatEvaluator.Apply();

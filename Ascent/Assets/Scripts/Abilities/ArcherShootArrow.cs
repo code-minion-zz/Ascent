@@ -35,7 +35,7 @@ public class ArcherShootArrow : Ability
 
         if (timeElapsedSinceStarting >= animationLength * 0.75f && !performed)
         {
-             GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/ArcherArrow")) as GameObject;
+            GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Archer/ArcherArrow")) as GameObject;
             arrowGO.GetComponent<ArcherArrow>().Initialise(owner.transform.position + owner.transform.forward, owner.transform.forward * 10.0f, owner);
             performed = true;
             owner.ResetColor();

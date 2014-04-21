@@ -87,7 +87,7 @@ public class WarriorWarStomp : Ability
 							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
-							Game.Singleton.EffectFactory.CreateBloodSplatter(e.transform.position, e.transform.rotation, e.transform);
+                            EffectFactory.Singleton.CreateBloodSplatter(e.transform.position, e.transform.rotation);
 						}
 					}
 
