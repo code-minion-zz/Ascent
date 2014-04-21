@@ -65,7 +65,14 @@ public class Tower : MonoBehaviour
 
         Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
 
-        if (currentFloorNumber > 5)
+        foreach(Player p in Game.Singleton.Players)
+        {
+            p.Hero.Loadout.StopAbility();
+            p.Hero.Motor.StopMotion();
+            p.Hero.RefreshEverything();
+        }
+
+        if (currentFloorNumber > 2)
         {
             Destroy(currentFloor);
             Game.Singleton.LoadLevel(Game.EGameState.MainMenu);

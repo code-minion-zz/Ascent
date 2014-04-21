@@ -12,8 +12,6 @@ public class Archer : Enemy
 
     public override void Initialise()
     {
-        EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
-
         base.Initialise();
 
         // Add abilities
@@ -28,36 +26,47 @@ public class Archer : Enemy
 
     public void InitialiseAI()
     {
-        motor.MaxSpeed = 0.0f;
-        motor.MinSpeed = 0.0f;
-        motor.Acceleration = 1.0f;
-
         AIBehaviour behaviour = null;
         AITrigger trigger = null;
 
         // Defensive behaviour
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
         {
-            trigger = behaviour.AddTrigger();
-            trigger.Operation = AITrigger.EConditionalExit.Continue;
-            trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 10.0f, Vector3.zero)), AITrigger.EConditional.And);
-            trigger.OnTriggered += OnTargetInRange;
+			trigger = behaviour.AddTrigger("Select closest target in range.");
+			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 10.0f, Vector3.zero)), AITrigger.EConditional.And);
+			trigger.OnTriggered += TargetInRange;
 
-            trigger = behaviour.AddTrigger();
-            trigger.Operation = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Timer(0.0f, 0.0f, 3.0f));
-            trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[shootArrowID]));
-            trigger.OnTriggered += OnShootEnd;
-
+			trigger = behaviour.AddTrigger("Fire at target.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_Timer(0.5f, 1.5f));
+			trigger.OnTriggered += OnShootEnd;
         }
 
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.FleeInRange | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
     }
 
-    public void OnTargetInRange()
-    {
-        AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+	public override void Update()
+	{
+		base.Update();
 
+		if (TargetCharacter != null && !isDead)
+		{
+			float speed = 1.5f;
+			Vector3 targetDir = TargetCharacter.transform.position - transform.position;
+			float step = speed * Time.deltaTime;
+			Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
+			transform.rotation = Quaternion.LookRotation(newDir);
+		}
+	}
+
+    public void TargetInRange()
+    {
+        //AIAgent.MindAgent.TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+
+		TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
     }
 
     public void OnShootEnd()
@@ -68,6 +77,7 @@ public class Archer : Enemy
         }
 
         loadout.UseAbility(shootArrowID);
-        //AIAgent.MindAgent.TargetCharacter = null;
+
+		AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Defensive);
     }
 }

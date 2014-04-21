@@ -13,27 +13,22 @@ public class RatTackle : Ability
     {
         base.Initialise(owner);
 
-		animationLength = 1.5f;
+		animationLength = 0.375f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Strike";
-		cooldownFullDuration = 7.0f;
+		cooldownFullDuration = 1.5f;
 		specialCost = 0;
 
-		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 0.25f));
+		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 1.0f));
     }
 
     public override void StartAbility()
     {
 		base.StartAbility();
 
-		//owner.Motor.StopMotion();
-		owner.Motor.EnableStandardMovement(false);
-        owner.SetColor(Color.red);
-
-		prevSpeed = owner.Motor.MaxSpeed;
-		prevAccel = owner.Motor.Acceleration;
-
 		executedDamage = false;
+
+		owner.Motor.IsHaltingMovementToPerformAction = true;
 
 		owner.Animator.PlayAnimation(animationTrigger, true);
 	}
@@ -42,30 +37,7 @@ public class RatTackle : Ability
     {
 		base.UpdateAbility();
 
-		// This will make the rat jump three times.
-		if (timeElapsedSinceStarting <= animationLength * 0.45f && !executedDamage)
-		{
-			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, Mathf.PingPong(timeElapsedSinceStarting, animationLength * 0.075f) * 10.0f, owner.Model.transform.position.z);
-		}
-		else
-		{
-			owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
-		}
-
-
-		if (timeElapsedSinceStarting >= animationLength * 1.0f)
-		{
-			owner.Motor.EnableStandardMovement(true);
-			owner.ResetColor();
-		}
-		else if (timeElapsedSinceStarting >= animationLength * 0.8f)
-		{
-			owner.Motor.StopMotion();
-			owner.Motor.EnableStandardMovement(false);
-			owner.Motor.MaxSpeed = prevSpeed;
-			owner.Motor.Acceleration = prevAccel;
-		}
-		else if (timeElapsedSinceStarting >= animationLength * 0.40f && !executedDamage)
+		if (timeElapsedSinceStarting >= animationLength * 0.45f && !executedDamage)
 		{
 			List<Character> characters = new List<Character>();
 
@@ -75,7 +47,7 @@ public class RatTackle : Ability
 				{
 					// Apply damage and knockback to the enemey.
 					CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
-                    combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
+					combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
 					combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 1.0f));
 					combatEvaluator.Apply();
 
@@ -86,22 +58,13 @@ public class RatTackle : Ability
 				executedDamage = true;
 			}
 		}
-		else if (timeElapsedSinceStarting >= animationLength * 0.25f)
-		{
-			owner.Motor.Move(owner.transform.forward);
-			owner.Motor.EnableStandardMovement(true);
-			owner.Motor.MaxSpeed = 10.0f;
-			owner.Motor.Acceleration = 10.0f;
-		}
     }
 
     public override void EndAbility()
     {
-        base.EndAbility();
-		owner.Model.transform.position = new Vector3(owner.Model.transform.position.x, 0.0f, owner.Model.transform.position.z);
-        owner.Motor.EnableStandardMovement(true);
-        owner.ResetColor();
+		owner.Motor.IsHaltingMovementToPerformAction = false;
 		owner.Animator.PlayAnimation(animationTrigger, false);
+        base.EndAbility();
     }
 
 #if UNITY_EDITOR

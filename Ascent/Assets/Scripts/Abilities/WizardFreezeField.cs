@@ -11,7 +11,7 @@ public class WizardFreezeField : Ability
 
         animationLength = 0.5f;
         animationSpeed = 1.0f;
-        animationTrigger = "Strike";
+        animationTrigger = "Beam";
         cooldownFullDuration = 2.1f;
         specialCost = 0;
     }

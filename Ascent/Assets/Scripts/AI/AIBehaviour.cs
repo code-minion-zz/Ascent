@@ -34,6 +34,13 @@ public class AIBehaviour
         return t;
     }
 
+	public AITrigger AddTrigger(string name)
+	{
+		AITrigger t = new AITrigger(name);
+		triggers.Add(t);
+		return t;
+	}
+
     public void Process()
     {
         foreach (AITrigger t in triggers)

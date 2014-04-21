@@ -236,6 +236,7 @@ public class Room : MonoBehaviour
 			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
             if (camera != null)
             {
+				camera.Restrict = restrictCamera;
                 camera.minCamera = transform.position + minCamera;
                 camera.maxCamera = transform.position + maxCamera;
             }

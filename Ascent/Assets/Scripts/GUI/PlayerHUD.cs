@@ -189,7 +189,7 @@ public class PlayerHUD : MonoBehaviour
 				float durabilityRatio = ((float)accessories[i].Durability / (float)accessories[i].DurabilityMax);
 				if (durabilityRatio <= 0.45f)
 				{
-					Debug.Log(durabilityRatio);
+					//Debug.Log(durabilityRatio);
 					accessoryIcons[accessIconSlot].gameObject.SetActive(true);
 					accessoryIcons[accessIconSlot].spriteName = ("accessory_" + accessories[i].Type + "_" + accessories[i].GradeEnum.ToString()).ToLower();
 					//Debug.Log(accessoryIcons[i].spriteName);

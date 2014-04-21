@@ -304,7 +304,10 @@ public abstract class Character : BaseCharacter
 
     protected virtual void OnDeath()
 	{
-
+		if (loadout.IsAbilityActive)
+		{
+			loadout.StopAbility();
+		}
 		// We may internally tell this character that they are dead.
 		// The reason we do this is when we pool objects we will re-use 
 		// this character.

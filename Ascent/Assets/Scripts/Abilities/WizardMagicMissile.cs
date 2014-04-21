@@ -11,7 +11,7 @@ public class WizardMagicMissile : Ability
 
         animationLength = 0.5f;
         animationSpeed = 1.0f;
-        animationTrigger = "Strike";
+        animationTrigger = "Spin";
         cooldownFullDuration = 2.1f;
         specialCost = 0;
     }

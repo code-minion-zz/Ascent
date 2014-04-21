@@ -33,6 +33,8 @@ public class Floor : MonoBehaviour
 		set { roomTransitionTime = value; }
 	}
 
+	public float deathClock = 0f;
+	public float gameOverDelay = 3f;
     public bool initialised;
 
     public Room CurrentRoom
@@ -243,6 +245,7 @@ public class Floor : MonoBehaviour
             // Remove hero lives.
             hero.FloorStatistics.NumberOfDeaths++;
             hero.Lives--;
+			deathClock = 0f;
 
             if (hero.Lives > 0)
             {
@@ -259,13 +262,7 @@ public class Floor : MonoBehaviour
             else
             {
                 // Check if all the players are dead as well.
-                if (IsAllHeroesDead() == true)
-                {
-                    // Take to summary screen
-                    EndFloor();
-                    // Restart the floor
-                }
-                else
+                if (IsAllHeroesDead() == false)
                 {
                     // Otherwise make the hero innactive.
                     hero.gameObject.SetActive(false);
@@ -333,7 +330,19 @@ public class Floor : MonoBehaviour
 
 	void Update()
 	{
-        ProcessDebugKeys();
+		ProcessDebugKeys();
+
+		// Check if all the players are dead as well.
+		if (IsAllHeroesDead() == true)
+		{
+			// Take to summary screen
+			deathClock += Time.deltaTime;
+			if (deathClock > gameOverDelay)
+			{
+				EndFloor();
+			}
+			// Restart the floor
+		}
 	}
 
     private void ProcessDebugKeys()
@@ -423,7 +432,7 @@ public class Floor : MonoBehaviour
 
         floorInstanceReward.ApplyFloorInstanceRewards();
 
-		Game.Singleton.LoadLevel(Game.EGameState.FloorSummary);
+		Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
 
 		// Enable input on summary screen
 	}

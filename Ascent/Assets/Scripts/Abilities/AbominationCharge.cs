@@ -36,7 +36,7 @@ public class AbominationCharge : Ability
     {
         base.Initialise(owner);
 
-        cooldownFullDuration = 2.0f;
+        cooldownFullDuration = 3.0f;
         animationTrigger = "Charge";
 
 		animationSpeed = 1.0f;
@@ -57,6 +57,9 @@ public class AbominationCharge : Ability
 		started = false;
 		owner.SetColor(Color.red);
 		animationLength = originalAnimationTime;
+
+		owner.Motor.IsHaltingMovementToPerformAction = true;
+		owner.Animator.PlayAnimation(animationTrigger, true);
 
         base.StartAbility();
     }
@@ -264,8 +267,9 @@ public class AbominationCharge : Ability
 
     public override void EndAbility()
     {
-		//owner.ResetColor();
         base.EndAbility();
+		owner.Motor.IsHaltingMovementToPerformAction = false;
+		owner.Animator.PlayAnimation(animationTrigger, false);
     }
 
 #if UNITY_EDITOR

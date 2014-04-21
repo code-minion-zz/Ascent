@@ -16,9 +16,7 @@ public class Abomination : Enemy
     private int chargeActionID;
 
     public override void Initialise()
-    {
-        EnemyStats = EnemyStatLoader.Load(EEnemy.Abomination, this);
-
+{
         base.Initialise();
 
         // Add abilities
@@ -48,57 +46,56 @@ public class Abomination : Enemy
 
     public void InitialiseAI()
     {
-
-        AIBehaviour behaviour = null;
+		AIBehaviour behaviour = null;
+		//AITrigger trigger = null;
 
 		// Charge straight into facing (hopefully hitting something).
 		// Immediately switch to other behaviour.
-        behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Defensive);
-        {
-            AITrigger trigger = behaviour.AddTrigger();
-            trigger.Operation = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
-			trigger.OnTriggered += OnChargeEnd;
-
-			trigger = behaviour.AddTrigger();
-			trigger.Operation = AITrigger.EConditionalExit.Stop;
-            trigger.AddCondition(new AICondition_Timer(1.0f, 0.0f, 0.0f));
-			trigger.OnTriggered += OnCanUseCharge;
-        }
-
+		//behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+		//{
+		//    trigger = behaviour.AddTrigger();
+		//    trigger.Operation = AITrigger.EConditionalExit.Stop;
+		//    trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
+		//    trigger.OnTriggered += StateTransitionToAggressive;
+		//}
+	
         behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Aggressive);
         {
-			AITrigger trigger = null;
-
-			// Back out from the collision point.
-			trigger = behaviour.AddTrigger();
-			trigger.Operation = AITrigger.EConditionalExit.Stop;
-			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[chargeActionID]));
-			trigger.OnTriggered += OnChargeEnd;
-
-			//// Do the stomp first to bring boulders down from the roof.
-			//trigger = behaviour.AddTrigger();
-			//trigger.Priority = AITrigger.EConditionalExit.Stop;
-			//trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[stompActionID]));
-			//trigger.OnTriggered += OnCanUseStomp;
+			// Charge at the hero.
+			chargeTrigger = behaviour.AddTrigger();
+			chargeTrigger.Operation = AITrigger.EConditionalExit.Stop;
+			//chargeTrigger.AddCondition(new AICondition_Timer(0.5f, 1.0f, 2.0f), AITrigger.EConditional.And);
+			chargeTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
+			chargeTrigger.OnTriggered += OnCanUseCharge;
 
 			// Attempt to rotate to a Hero. 
 			changeTargetTrigger = behaviour.AddTrigger();
 			changeTargetTrigger.Operation = AITrigger.EConditionalExit.Continue;
 			changeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
-			//ChangeTargetTrigger.AddCondition(new AICondition_Attacked(this));
-			changeTargetTrigger.OnTriggered += OnCanChangeTarget;
-
-			// Charge at the hero.
-			chargeTrigger = behaviour.AddTrigger();
-			chargeTrigger.Operation = AITrigger.EConditionalExit.Stop;
-			chargeTrigger.AddCondition(new AICondition_Timer(0.5f, 1.0f, 2.0f), AITrigger.EConditional.And);
-			chargeTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
-			chargeTrigger.OnTriggered += OnCanUseCharge;
+			changeTargetTrigger.OnTriggered += StateTransitionToAggressive;
         }
 
-        AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Defensive);
+		StateTransitionToAggressive();
+		loadout.UseAbility(chargeActionID);
     }
+
+	public override void StateTransitionToAggressive()
+	{
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive;
+
+		SetTarget();
+
+		base.StateTransitionToAggressive();
+	}
+
+	public void SetTarget()
+	{
+
+		if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
+		{
+			TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+		}
+	}
 
 	public void OnCanUseStomp()
 	{
@@ -109,6 +106,7 @@ public class Abomination : Enemy
 	{
 		if (loadout.UseAbility(chargeActionID))
 		{
+			TargetCharacter = null;
 			chargeTrigger.Reset();
 		}
 	}
@@ -116,6 +114,7 @@ public class Abomination : Enemy
 	public void OnChargeEnd()
 	{
 		AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Aggressive);
+		TargetCharacter = null;
 	}
 
 	public void OnCanChangeTarget()

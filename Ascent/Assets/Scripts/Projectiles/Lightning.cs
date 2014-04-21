@@ -21,8 +21,8 @@ public class Lightning : Projectile
         this.targets = targets;
         this.owner = owner;
 
-        projectile.transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
-        projectile.rigidbody.AddForce(owner.transform.forward * 10.0f, ForceMode.VelocityChange);
+        transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
+        rigidbody.AddForce(owner.transform.forward * 10.0f, ForceMode.VelocityChange);
 
         velocity = owner.transform.forward * 10.0f;
 
@@ -31,7 +31,7 @@ public class Lightning : Projectile
 
     public void Update()
     {
-		projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+		rigidbody.AddForce(velocity, ForceMode.VelocityChange);
     }
 
     public void OnTriggerEnter(Collider collision)
@@ -98,9 +98,9 @@ public class Lightning : Projectile
                                     {
                                         // Move to next target
                                         //projectile.transform.position = collision.gameObject.transform.position;
-                                        projectile.rigidbody.velocity = Vector3.zero;
-                                        velocity = nextTarget.transform.position - projectile.transform.position;
-                                        projectile.rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+                                        rigidbody.velocity = Vector3.zero;
+                                        velocity = nextTarget.transform.position - transform.position;
+                                        rigidbody.AddForce(velocity, ForceMode.VelocityChange);
                                         hitSomething = false;
 										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f);
                                     }

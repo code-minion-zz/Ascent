@@ -51,13 +51,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void Initialise()
 	{
 		renderers = GetComponentsInChildren<Renderer>();
-		
-		shadow = GetComponentInChildren<Shadow>();
-		if (shadow == null)
-		{
-			Debug.LogError("No Shadow attached to " + name, this);
-		}
-		shadow.Initialise();
 
 		motor = GetComponentInChildren<CharacterMotor>();
 		if (motor == null)
@@ -77,24 +70,24 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void SetColor(Color color)
 	{
-		if (renderers != null)
-		{
-			foreach (Renderer render in renderers)
-			{
-				render.material.color = color;
-			}
-		}
+		//if (renderers != null)
+		//{
+		//    foreach (Renderer render in renderers)
+		//    {
+		//        render.material.color = color;
+		//    }
+		//}
 	}
 
 	public virtual void ResetColor()
 	{
-		if (renderers != null)
-		{
-			foreach (Renderer render in renderers)
-			{
-				render.material.color = originalColour;
-			}
-		}
+		//if (renderers != null)
+		//{
+		//    foreach (Renderer render in renderers)
+		//    {
+		//        render.material.color = originalColour;
+		//    }
+		//}
 	}
 
 	public void EnableHighlight(Color color)

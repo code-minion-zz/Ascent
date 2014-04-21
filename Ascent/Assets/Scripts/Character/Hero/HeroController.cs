@@ -80,6 +80,13 @@ public class HeroController : MonoBehaviour
     {
 		if (CanUseInput && InputManager.IsPolling)
 		{
+			if (inputDevice.Start.WasReleased)
+			{
+				FloorHUDManager hudman = FloorHUDManager.Singleton;
+				hudman.SetPauseText("Paused");
+				hudman.PauseGame();
+			}
+
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
 			if (hero.HitTaken)
 			{
@@ -89,17 +96,6 @@ public class HeroController : MonoBehaviour
 					ReleaseGrabbedObject();
 					motor.StopMovingAlongGrid();
 				}
-
-                hero.Loadout.StopAbility();
-
-				//// Action's that cannot be interrupted will not cause this to happen.
-				//if (hero.Loadout.CanInterruptActiveAbility)
-				//{
-				//    hero.Loadout.StopAbility();
-
-				//    animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
-				//}
-
 
 				if (actionButtonPair.control != null && actionButtonPair.control.WasReleased)
 				{
@@ -113,11 +109,6 @@ public class HeroController : MonoBehaviour
 					hero.Loadout.UseAbility(abilityID);
 					actionButtonPair.action = null;
 					actionButtonPair.control = null;
-				}
-
-				if (!hero.Loadout.IsAbilityActive)
-				{
-					animator.PlayReactionAction(HeroAnimator.EReactionAnimation.TakingHit, 0.5f);
 				}
 			}
 

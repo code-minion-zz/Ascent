@@ -8,19 +8,15 @@ using System.Collections.Generic;
 public class TileEditorWindow : EditorWindow
 {
     public static SceneView sceneV;
-    private static GUISkin editorSkin;
     public static bool enabled = true;
 
     static TileEditorWindow()
     {
-        editorSkin = Resources.Load<GUISkin>("GUISkins/editorGUISkin");
         SceneView.onSceneGUIDelegate += OnSceneGUI;
     }
 
     static void OnSceneGUI(SceneView sceneView)
     {
-        GUI.skin = editorSkin;
-
         // Begin drawing inside the scene view
         Handles.BeginGUI();
 

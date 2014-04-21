@@ -36,23 +36,19 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _LightMap
-        second:
-          m_Texture: {fileID: 2800000, guid: 72ce20839a989054bb0d417aa6090799, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _Illum
         second:
           m_Texture: {fileID: 2800000, guid: de61ee264a579294f9a88158767c2283, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats:
       data:
         first:
-          name: _BumpAmt
-        second: 9.27536201
+          name: _LightMap
+        second:
+          m_Texture: {fileID: 2800000, guid: 72ce20839a989054bb0d417aa6090799, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
       data:
         first:
           name: _Shininess
@@ -61,6 +57,10 @@ Material:
         first:
           name: _EmissionLM
         second: 0
+      data:
+        first:
+          name: _BumpAmt
+        second: 128
     m_Colors:
       data:
         first:

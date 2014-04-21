@@ -277,17 +277,18 @@ ModelImporter:
     3300000: EVIL_WATCHER_middle_eye 1
     4300000: EVIL_WATCHER_middle_eye
     4300002: EVIL_WATCHER_NO_TAIL
-    7400066: idleWatch
-    7400068: idleSleep
-    7400070: wakeUp
-    7400072: flyForward
-    7400074: flyRight
-    7400076: flyLeft
-    7400078: dashForward
-    7400080: attack1
-    7400082: attack2
-    7400084: getHit
-    7400086: death
+    7400066: WatcherIdleWatch
+    7400068: WatcherIdleSleep
+    7400070: WatcherWakeUp
+    7400072: WatcherFlyForward
+    7400074: WatcherFlyRight
+    7400076: WatcherFlyLeft
+    7400078: WatcherDashForward
+    7400080: WatcherAttack1
+    7400082: WatcherAttack2
+    7400084: WatcherGetHit
+    7400086: WatcherDeath
+    9500000: //RootNode
     11100000: //RootNode
     13700000: EVIL_WATCHER_NO_TAIL
   materials:
@@ -298,7 +299,7 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     optimizeGameObjects: 0
-    animationCompression: 0
+    animationCompression: 3
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
@@ -306,7 +307,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: idleWatch
+      name: WatcherIdleWatch
       takeName: 
       firstFrame: 5
       lastFrame: 364
@@ -332,7 +333,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: idleSleep
+      name: WatcherIdleSleep
       takeName: 
       firstFrame: 375
       lastFrame: 494
@@ -358,7 +359,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: wakeUp
+      name: WatcherWakeUp
       takeName: 
       firstFrame: 500
       lastFrame: 529
@@ -384,7 +385,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: flyForward
+      name: WatcherFlyForward
       takeName: 
       firstFrame: 545
       lastFrame: 574
@@ -410,7 +411,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: flyRight
+      name: WatcherFlyRight
       takeName: 
       firstFrame: 585
       lastFrame: 614
@@ -436,7 +437,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: flyLeft
+      name: WatcherFlyLeft
       takeName: 
       firstFrame: 620
       lastFrame: 649
@@ -462,7 +463,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: dashForward
+      name: WatcherDashForward
       takeName: 
       firstFrame: 655
       lastFrame: 684
@@ -488,7 +489,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: attack1
+      name: WatcherAttack1
       takeName: 
       firstFrame: 690
       lastFrame: 730
@@ -497,7 +498,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -514,7 +515,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: attack2
+      name: WatcherAttack2
       takeName: 
       firstFrame: 740
       lastFrame: 795
@@ -540,7 +541,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: getHit
+      name: WatcherGetHit
       takeName: 
       firstFrame: 800
       lastFrame: 830
@@ -566,7 +567,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: death
+      name: WatcherDeath
       takeName: 
       firstFrame: 840
       lastFrame: 920
@@ -626,5 +627,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 1
+  animationType: 2
   userData: 
