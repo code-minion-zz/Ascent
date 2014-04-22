@@ -400,7 +400,7 @@ public class HeroStats : CharacterStats
 
 					secondaryStats = new SecondaryStats()
 					{
-						health = 15.0f,
+						health = 1.0f,
 						special = 15.0f,
 						attack = 1.0f,
 						physicalDefense = 1.0f,

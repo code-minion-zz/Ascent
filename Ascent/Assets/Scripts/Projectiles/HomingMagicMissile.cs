@@ -111,8 +111,7 @@ public class HomingMagicMissile : Projectile
 			//combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 10000.0f));
 			combatEvaluator.Apply();
 
-			Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position,
-				collision.transform.rotation, character.transform);
+            EffectFactory.Singleton.CreateBloodSplatter(collision.transform.position, collision.transform.rotation);
 
 			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 		}

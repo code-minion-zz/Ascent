@@ -71,7 +71,7 @@ public class Arrow : MonoBehaviour
 
 			combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 1000000.0f));
 			combatEvaluator.Apply();
-			Game.Singleton.EffectFactory.CreateBloodSplatter(collision.transform.position, collision.transform.rotation, hitCharacter.transform);
+            EffectFactory.Singleton.CreateBloodSplatter(collision.transform.position, collision.transform.rotation);
 
 			toDestroy = true;
         }

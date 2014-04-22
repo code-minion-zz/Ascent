@@ -87,6 +87,12 @@ public class HeroController : MonoBehaviour
 				hudman.PauseGame();
 			}
 
+            if (hero.IsDead)
+            {
+                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 10.0f);
+                return;
+            }
+
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
 			if (hero.HitTaken)
 			{
@@ -398,7 +404,7 @@ public class HeroController : MonoBehaviour
 		}
 		else // Hero cannot move
 		{
-			if (hero.IsInState(EStatus.Stun))
+            if (hero.IsInState(EStatus.Stun) || hero.IsInState(EStatus.Frozen))
 			{
 				animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
 			}

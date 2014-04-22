@@ -4,9 +4,10 @@ using System.Collections;
 
 public class EffectFactory : MonoBehaviour
 {
-    private BloodSplatter bloodSplatter = new BloodSplatter();
-
+    public GameObject iceBlockEffect;
+    public GameObject largeBloodEffect;
 	public GameObject arcaneExplosion;
+    public GameObject[] hitEffects;
 
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
@@ -31,13 +32,35 @@ public class EffectFactory : MonoBehaviour
     void Awake()
     {
 		singleton = Singleton;
-
-        bloodSplatter.LoadResources();
+        DontDestroyOnLoad(this.gameObject);
     }
 
-    public void CreateBloodSplatter(Vector3 position, Quaternion rotation, Transform parent)
+    public GameObject CreateBloodSplatter(Vector3 position, Quaternion rotation)
     {
-        bloodSplatter.CreateBloodSplatter(position, rotation, parent, 3.0f);
+        GameObject bloodEffect = null;
+
+        if (largeBloodEffect != null)
+        {
+            bloodEffect = GameObject.Instantiate(largeBloodEffect, position, rotation) as GameObject;
+            bloodEffect.transform.parent = transform;
+        }
+
+        return bloodEffect;
+    }
+
+    public GameObject CreateRandHitEffect(Vector3 position, Quaternion rotation)
+    {
+        GameObject hitEffect = null;
+
+        if (hitEffects != null && hitEffects.Length > 0)
+        {
+            int id = UnityEngine.Random.Range(0, hitEffects.Length);
+
+            hitEffect = GameObject.Instantiate(hitEffects[id], position, rotation) as GameObject;
+            hitEffect.transform.parent = transform;
+        }
+
+        return hitEffect;
     }
 
 	public void CreateArcaneExplosion(Vector3 position, Quaternion rotation)
@@ -45,4 +68,25 @@ public class EffectFactory : MonoBehaviour
 		GameObject explosion = GameObject.Instantiate(arcaneExplosion, transform.position, transform.rotation) as GameObject;
 		explosion.transform.parent = transform;
 	}
+
+    public GameObject CreateIceblock(Vector3 position, Quaternion rotation)
+    {
+        GameObject effect = null;
+
+        if (iceBlockEffect != null)
+        {
+
+            effect = GameObject.Instantiate(iceBlockEffect, position, rotation) as GameObject;
+            effect.transform.parent = transform;
+        }
+
+        return effect;
+    }
+
+    public GameObject CreateCastFireballEffect(Vector3 position, Quaternion rotation)
+    {
+        GameObject effect = null;
+
+        return effect;
+    }
 }

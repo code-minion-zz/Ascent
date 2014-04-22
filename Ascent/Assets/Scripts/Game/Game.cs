@@ -71,22 +71,6 @@ public class Game : MonoBehaviour
 	}
 
 	public EGameState gameStateToLoad;
-
-    private EffectFactory effectFactory;
-
-    public EffectFactory EffectFactory
-    {
-        get 
-        {
-            if (effectFactory == null)
-            {
-                effectFactory = this.gameObject.AddComponent<EffectFactory>();
-                return effectFactory;
-            }
-
-            return effectFactory; 
-        }
-    }
 	
 	#endregion	
 	
@@ -216,7 +200,9 @@ public class Game : MonoBehaviour
        
 		// Add some necessary components
 		tower = GetComponent<Tower>();
-		effectFactory = GameObject.Instantiate(Resources.Load("Prefabs/EffectFactory")) as EffectFactory;
+		GameObject effectFactory = GameObject.Instantiate(Resources.Load("Prefabs/EffectFactory")) as GameObject;
+        effectFactory.name = "EffectFactory";
+
 
 		// Set the game state as the test state specified
 		gameState = testState;
@@ -345,12 +331,12 @@ public class Game : MonoBehaviour
                 break;
             case EGameState.TowerPlayer2:
                 {
-                    Application.LoadLevel("P1Floor2");
+                    Application.LoadLevel("P1Floor1");
                 }
                 break;
             case EGameState.TowerPlayer3:
                 {
-                    Application.LoadLevel("P1Floor3");
+                    Application.LoadLevel("P1Floor1");
                 }
                 break;
 			case EGameState.TestTower:

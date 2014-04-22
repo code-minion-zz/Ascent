@@ -115,17 +115,17 @@ public abstract class Character : BaseCharacter
 
 	public bool CanMove
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	public bool CanAct
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	public bool CanAttack
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	/// <summary>
@@ -166,7 +166,7 @@ public abstract class Character : BaseCharacter
 			b.Process();
 		}
 
-		if (hitTimerElapsed > 0.0f)
+		if (!isDead && hitTimerElapsed > 0.0f)
 		{
 			hitTimerElapsed -= Time.deltaTime;
 			if (hitTimerElapsed < 0.0f)

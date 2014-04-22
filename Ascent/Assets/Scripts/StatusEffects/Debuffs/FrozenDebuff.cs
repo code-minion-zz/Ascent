@@ -5,7 +5,7 @@ public class FrozenDebuff : StatusEffect
 {
 	public FrozenDebuff()
 	{
-
+        type = EEffectType.Debuff;
 	}
 
 	public FrozenDebuff(Character caster, Character target, float duration)

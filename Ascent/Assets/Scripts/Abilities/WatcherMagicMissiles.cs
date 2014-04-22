@@ -46,7 +46,7 @@ public class WatcherMagicMissile : Ability
 			for (int i = 3; i < randomHomingMissiles; ++i)
 			{
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/RandomMagicMissile")) as GameObject;
-				arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[i].position, owner);
+                arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[i].position, owner);
 				arrowGO.transform.parent = owner.transform;
 				performed = true;
 			}

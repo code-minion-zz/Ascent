@@ -247,25 +247,25 @@ public class Floor : MonoBehaviour
             hero.Lives--;
 			deathClock = 0f;
 
-            if (hero.Lives > 0)
-            {
-                if (currentRoom == startRoom)
-                {
-                    hero.Respawn(startPoints[0].transform.position);
-                }
-                else
-                {
-                    // Respawn the hero here.
-                    hero.Respawn(currentRoom.EntryDoor.transform.position);
-                }
-            }
-            else
+            //if (hero.Lives > 0)
+            //{
+            //    if (currentRoom == startRoom)
+            //    {
+            //        hero.Respawn(startPoints[0].transform.position);
+            //    }
+            //    else
+            //    {
+            //        // Respawn the hero here.
+            //        hero.Respawn(currentRoom.EntryDoor.transform.position);
+            //    }
+            //}
+            //else
             {
                 // Check if all the players are dead as well.
                 if (IsAllHeroesDead() == false)
                 {
                     // Otherwise make the hero innactive.
-                    hero.gameObject.SetActive(false);
+                    //hero.gameObject.SetActive(false);
                     //hero.HeroController.enabled = false;
                     hero.onDeath -= OnPlayerDeath;
 

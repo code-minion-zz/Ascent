@@ -38,7 +38,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb07592883624594fad8224a4702d235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iceBlockEffect: {fileID: 100002, guid: 62934b8badc38f645bb98348f0a86046, type: 2}
+  largeBloodEffect: {fileID: 100004, guid: 20747cbb589a10f418c2fd1d67647962, type: 2}
   arcaneExplosion: {fileID: 100010, guid: 85f4128c4b1e48e4192ad2341132e74b, type: 2}
+  hitEffects:
+  - {fileID: 100008, guid: 5cd612e83713bde4da6e0a059cac6984, type: 2}
+  - {fileID: 100008, guid: 21a2ef56487e95d4689f016ea1f48889, type: 2}
+  - {fileID: 100008, guid: dd098d0e6933a6d43bc2cf917b0670da, type: 2}
+  - {fileID: 100006, guid: 4449013d34f32224699c29c65836db4e, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

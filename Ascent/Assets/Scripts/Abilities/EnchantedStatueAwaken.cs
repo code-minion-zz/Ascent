@@ -59,7 +59,7 @@ public class EnchantedStatueAwaken : Ability
 		//            c.ApplyKnockback(c.transform.position - owner.transform.position, 1.0f);
 
 		//            // Create a blood splatter effect on the enemy.
-		//            Game.Singleton.EffectFactory.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
+		//            EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation, c.transform, 2.0f);
 
 		//            // Tell the hud manager to spawn text.
 		//            HudManager.Singleton.TextDriver.SpawnDamageText(c.gameObject, 5, Color.red);
