@@ -19,8 +19,12 @@ public class FloorHUDManager : MonoBehaviour
 	public          StatBar     enemyStatBar;
 	public          GameObject  enemHealthBars;
 	public          Transform  	pausePanel;
+	public          Transform  	transitionPanel;
 	public			UILabel		pauseLabel;
+	public			UILabel		transitionLabel;
+	public			UITexture	transitionTexture;
 	private			bool		paused = false;
+	private			float		transitionTimer = 0f;
 
 	public UIPanel mainPanel;
 
@@ -170,11 +174,49 @@ public class FloorHUDManager : MonoBehaviour
 				p.Hero.HeroController.InitialiseControllerIndicators();
 			}
 		}
-
+		
 		pausePanel = transform.Find("Pause Panel");
 		pauseLabel = pausePanel.FindChild("Label").GetComponent<UILabel>();
+		transitionPanel = transform.Find("Transition Panel");
+		transitionLabel = transitionPanel.FindChild("Label").GetComponent<UILabel>();
+		transitionTexture = transitionPanel.FindChild("Texture").GetComponent<UITexture>();
+		ToggleTransition(false);
 		PauseGame();
     }
+
+	void Update()
+	{
+		if (transitionTimer < 0) // level start transition
+		{
+			transitionTimer += Time.deltaTime;
+
+			if (transitionTimer > 0)
+			{
+				transitionTimer = 0;
+			}
+		}
+		else if (transitionTimer > 0) // level end transition
+		{
+			transitionTimer -= Time.deltaTime;
+
+			if (transitionTimer < 0)
+			{
+				transitionTimer = 0;
+			}
+		}
+		
+		if (transitionTimer == 0)
+		{
+			if (transitionPanel.gameObject.activeInHierarchy)
+			{
+				ToggleTransition(false);
+			}
+		}
+		else
+		{
+			transitionPanel.GetComponent<UIPanel>().alpha = (Mathf.Abs(transitionTimer)/3f);
+		}
+	}
 	
 	public StatBar AddEnemyLifeBar(Vector3 characterScale)
 	{
@@ -201,14 +243,30 @@ public class FloorHUDManager : MonoBehaviour
 
 		Time.timeScale = pausePanel.gameObject.activeSelf ? 0f : 1f;
 	}
-
-//	public void UnpauseGame()
-//	{
-//		NGUITools.SetActive(pausePanel.gameObject, false);
-//	}
-
-	public void SetPauseText(string text)
+	
+	public void LevelStartScreen()
 	{
-		pauseLabel.text = text;
+		SetTransitionText("Level Start!");
+		ToggleTransition(true);
+		transitionPanel.GetComponent<UIPanel>().alpha = 1;
+		transitionTimer = -3f;
+	}
+
+	public void LevelEndScreen()
+	{
+		SetTransitionText("Level Complete!");
+		ToggleTransition(true);
+		transitionPanel.GetComponent<UIPanel>().alpha = 1;
+		transitionTimer = 3f;
+	}
+
+	public void ToggleTransition(bool active)
+	{
+		NGUITools.SetActive(transitionPanel.gameObject, active);
+	}
+
+	public void SetTransitionText(string text)
+	{
+		transitionLabel.text = text;
 	}
 }
