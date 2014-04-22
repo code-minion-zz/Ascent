@@ -331,12 +331,12 @@ public class Game : MonoBehaviour
                 break;
             case EGameState.TowerPlayer2:
                 {
-                    Application.LoadLevel("P1Floor2");
+                    Application.LoadLevel("P1Floor1");
                 }
                 break;
             case EGameState.TowerPlayer3:
                 {
-                    Application.LoadLevel("P1Floor3");
+                    Application.LoadLevel("P1Floor1");
                 }
                 break;
 			case EGameState.TestTower:

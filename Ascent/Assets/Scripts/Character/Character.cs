@@ -166,7 +166,7 @@ public abstract class Character : BaseCharacter
 			b.Process();
 		}
 
-		if (hitTimerElapsed > 0.0f)
+		if (!isDead && hitTimerElapsed > 0.0f)
 		{
 			hitTimerElapsed -= Time.deltaTime;
 			if (hitTimerElapsed < 0.0f)
