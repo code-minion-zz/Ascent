@@ -106,6 +106,7 @@ public class Tower : MonoBehaviour
 		currentFloor.InitialiseTestFloor();
         MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
         soundMan.PlayMusic(MusicManager.MusicSelections.Tower);
+		FloorHUDManager.Singleton.LevelStartScreen();
     }
 
 	public void InitialiseFloor()

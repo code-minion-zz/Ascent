@@ -170,7 +170,8 @@ public class Door : EnvironmentBreakable
 						{
                             if (isFinalDoor)
                             {
-                                Game.Singleton.Tower.LoadNextFloor();
+								FloorHUDManager.Singleton.LevelCompleteScreen();
+                                Game.Singleton.Tower.CurrentFloor.gameOver = true;
                             }
                             else
                             {
