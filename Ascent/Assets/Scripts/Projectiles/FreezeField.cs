@@ -47,8 +47,6 @@ public class FreezeField : Projectile
                 combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
                 combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, effectTime.destroyTime)));
                 combatEvaluator.Apply();
-
-                charactersHit.Add(c);
             }
         }
     }
