@@ -104,27 +104,29 @@ public class HomingMagicMissile : Projectile
 
 		Character character = collision.gameObject.GetComponent<Character>();
 
+        if (character == owner)
+        {
+            return;
+        }
+
+        if (collision.transform.tag == "Monster")
+        {
+            return;
+        }
+
 		if (collision.transform.tag == "Hero")
 		{
 			CombatEvaluator combatEvaluator = new CombatEvaluator(owner, character);
 			combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
-			//combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 10000.0f));
 			combatEvaluator.Apply();
-
-            EffectFactory.Singleton.CreateBloodSplatter(collision.transform.position, collision.transform.rotation);
-
-			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
 		}
 		else
 		{
 			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
 		}
-		// If the character hit is not the owner and it is not another enemy
-		// then it can be destroyed.
-		if (character != owner)
-		{
-			GameObject.Instantiate(arcaneExplosionPrefab, transform.position, transform.rotation);
-			GameObject.Destroy(this.gameObject);
-		}
+
+        Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);
+		GameObject.Instantiate(arcaneExplosionPrefab, closestPoint, transform.rotation);
+		GameObject.Destroy(this.gameObject);
     }
 }

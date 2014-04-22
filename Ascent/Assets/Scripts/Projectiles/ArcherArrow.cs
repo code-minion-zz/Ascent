@@ -52,7 +52,8 @@ public class ArcherArrow : Projectile
 
         // If the character hit is not the owner and it is not another enemy
         // then it can be destroyed.
-        GameObject.Instantiate(fireBallExplosionPrefab, transform.position, transform.rotation);
+        Vector3 closestPoint = other.ClosestPointOnBounds(transform.position);
+        GameObject.Instantiate(fireBallExplosionPrefab, closestPoint, transform.rotation);
         GameObject.Destroy(this.gameObject);
     }
 }

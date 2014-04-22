@@ -2080,7 +2080,7 @@ GameObject:
   - 65: {fileID: 6500002}
   m_Layer: 9
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2096,7 +2096,7 @@ GameObject:
   - 65: {fileID: 6500004}
   m_Layer: 9
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2112,7 +2112,7 @@ GameObject:
   - 65: {fileID: 6500006}
   m_Layer: 9
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2128,7 +2128,7 @@ GameObject:
   - 65: {fileID: 6500008}
   m_Layer: 9
   m_Name: Colliders
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3961,7 +3961,10 @@ MonoBehaviour:
   wanderCircleRadius: 5
   wanderJitter: 10
   fleeDistance: 5
-  closeEnoughRange: 1.5
+  stopIfCloseEnough: 0
+  closeEnoughDistance: 2
+  moveAwayIfTooClose: 0
+  tooCloseDistance: 1
   distanceToKeepFromTarget: 1.75
   pursuitOffset: {x: 0, y: 0}
   pursuitOffsetLeader: {fileID: 0}
