@@ -32,6 +32,8 @@ public class FloorCamera : MonoBehaviour
 	public Vector3 minCamera;
 	public Vector3 maxCamera; // Rightside and Bottom
 
+    public static Vector3 positionLastFrame;
+
 	private float offsetZ = -5.25f;
 	public float OffsetZ
 	{
@@ -107,7 +109,7 @@ public class FloorCamera : MonoBehaviour
 	{
 		if (Heroes.Count > 0)
 		{
-			// Ulter position of the camera to center on the Heros
+			// Alter position of the camera to center on the Heros
 			Vector3 totalVector = Vector3.zero;
 
 			// Add up all the vectors
@@ -131,11 +133,15 @@ public class FloorCamera : MonoBehaviour
 				float z = (totalVector.z / (float)heroCount);
                 float y = (totalVector.y / (float)heroCount);
 
-                return new Vector3(x, y + cameraYOffset, z);
+                Vector3 targetPosition = new Vector3(x, y + cameraYOffset, z);
+
+                positionLastFrame = targetPosition;
+
+                return targetPosition;
 			}
 		}
-		
-		return Vector3.zero;
+
+        return positionLastFrame;
 	}
 
     public void TransitionToRoom(float roomTransitionTime)

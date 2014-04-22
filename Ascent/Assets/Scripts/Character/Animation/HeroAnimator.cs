@@ -259,6 +259,11 @@ public class HeroAnimator : CharacterAnimator
             }
         }
 
+        if (playingDeath)
+        {
+            return;
+        }
+
         if(blendTimeElapsed < blendTimeMax)
         {
             blendTimeElapsed += Time.deltaTime;
