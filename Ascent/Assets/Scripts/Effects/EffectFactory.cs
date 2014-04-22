@@ -4,6 +4,7 @@ using System.Collections;
 
 public class EffectFactory : MonoBehaviour
 {
+    public GameObject iceBlockEffect;
     public GameObject largeBloodEffect;
 	public GameObject arcaneExplosion;
     public GameObject[] hitEffects;
@@ -66,6 +67,20 @@ public class EffectFactory : MonoBehaviour
 		GameObject explosion = GameObject.Instantiate(arcaneExplosion, transform.position, transform.rotation) as GameObject;
 		explosion.transform.parent = transform;
 	}
+
+    public GameObject CreateIceblock(Vector3 position, Quaternion rotation)
+    {
+        GameObject effect = null;
+
+        if (iceBlockEffect != null)
+        {
+
+            effect = GameObject.Instantiate(iceBlockEffect, position, rotation) as GameObject;
+            effect.transform.parent = transform;
+        }
+
+        return effect;
+    }
 
     public GameObject CreateCastFireballEffect(Vector3 position, Quaternion rotation)
     {

@@ -115,17 +115,17 @@ public abstract class Character : BaseCharacter
 
 	public bool CanMove
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	public bool CanAct
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	public bool CanAttack
 	{
-		get { return !IsInState(EStatus.Stun); }
+        get { return !IsInState(EStatus.Stun) && !IsInState(EStatus.Frozen); }
 	}
 
 	/// <summary>

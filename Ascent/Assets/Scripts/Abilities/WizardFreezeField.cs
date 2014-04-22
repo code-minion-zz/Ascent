@@ -32,7 +32,7 @@ public class WizardFreezeField : Ability
 
         if (timeElapsedSinceStarting >= animationLength * 0.5f && !performed)
         {
-            GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/FreezeField")) as GameObject;
+            GameObject fireballGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Wizard/FreezeField")) as GameObject;
             fireballGO.GetComponent<FreezeField>().Initialise(0, owner.transform.position, owner);
             performed = true;
             owner.ResetColor();

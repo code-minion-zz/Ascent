@@ -24,29 +24,35 @@ public class ArcherArrow : Projectile
         rigidbody.AddForce(velocity, ForceMode.Force);
     }
 
-
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider other)
     {
-        Character character = collision.gameObject.GetComponent<Character>();
+        Character character = other.gameObject.GetComponent<Character>();
+        Hero hero = character as Hero;
 
-        if (collision.transform.tag == "Hero")
-		{
+        if (character == owner)
+        {
+            return;
+        }
+
+        if (other.tag == "Monster")
+        {
+            return;
+        }
+
+        if (hero != null)
+        {
             CombatEvaluator combatEvaluator = new CombatEvaluator(owner, character);
             combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
-            //combatEvaluator.Add(new KnockbackCombatProperty(-collision.contacts[0].normal, 10000.0f));
             combatEvaluator.Apply();
         }
-		else
-		{			
-			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
-		}
+        else
+        {
+            SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+        }
 
         // If the character hit is not the owner and it is not another enemy
         // then it can be destroyed.
-        if (character != owner)
-        {
-            GameObject.Instantiate(fireBallExplosionPrefab, transform.position, transform.rotation);
-            GameObject.Destroy(this.gameObject);
-        }
+        GameObject.Instantiate(fireBallExplosionPrefab, transform.position, transform.rotation);
+        GameObject.Destroy(this.gameObject);
     }
 }

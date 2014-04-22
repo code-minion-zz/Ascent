@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class FreezeField : Projectile
 {
     private Character owner;
+    private Vector3 velocity;
+    private Vector3 curVelocity;
 
     private int targets;
 
@@ -14,7 +16,6 @@ public class FreezeField : Projectile
 
     private bool hitSomething;
 
-    private Vector3 velocity;
 
     private float time;
 
@@ -22,8 +23,8 @@ public class FreezeField : Projectile
     {
         this.targets = targets;
         this.owner = owner;
-		transform.position = startPos;
-		transform.rotation = owner.transform.rotation;
+        transform.position = startPos;
+        transform.rotation = owner.transform.rotation;
 
         circle = new Circle(transform, 3.0f, new Vector3(0.0f, 0.0f, 1.5f));
 
@@ -36,23 +37,24 @@ public class FreezeField : Projectile
         {
             foreach (Character c in characters)
             {
+                // Create a blood splatter effect on the enemy.
+                GameObject block = EffectFactory.Singleton.CreateIceblock(c.transform.position, c.transform.rotation);
+
+                SM_destroyThisTimed effectTime = block.GetComponent<SM_destroyThisTimed>();
+
                 // Apply damage and knockback to the enemey
                 CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
                 combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
-                combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, 3.0f)));
+                combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, effectTime.destroyTime)));
                 combatEvaluator.Apply();
 
-                // Create a blood splatter effect on the enemy.
-                EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation);
+                charactersHit.Add(c);
             }
         }
     }
 
-#if UNITY_EDITOR
-    public void OnDrawGizmos()
+    public void Update()
     {
 
-        //circle.DebugDraw();
     }
-#endif
 }
