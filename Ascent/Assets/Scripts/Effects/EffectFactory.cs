@@ -64,7 +64,7 @@ public class EffectFactory : MonoBehaviour
 
 	public void CreateArcaneExplosion(Vector3 position, Quaternion rotation)
 	{
-		GameObject explosion = GameObject.Instantiate(arcaneExplosion, transform.position, transform.rotation) as GameObject;
+		GameObject explosion = GameObject.Instantiate(arcaneExplosion, position, rotation) as GameObject;
 		explosion.transform.parent = transform;
 	}
 
