@@ -251,10 +251,18 @@ public class FloorHUDManager : MonoBehaviour
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = -3f;
 	}
-
-	public void LevelEndScreen()
+	
+	public void LevelCompleteScreen()
 	{
 		SetTransitionText("Level Complete!");
+		ToggleTransition(true);
+		transitionPanel.GetComponent<UIPanel>().alpha = 1;
+		transitionTimer = 3f;
+	}
+	
+	public void GameOverScreen()
+	{
+		SetTransitionText("GAME OVER");
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = 3f;
