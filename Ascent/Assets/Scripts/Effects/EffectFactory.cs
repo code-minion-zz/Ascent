@@ -32,6 +32,7 @@ public class EffectFactory : MonoBehaviour
     void Awake()
     {
 		singleton = Singleton;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public GameObject CreateBloodSplatter(Vector3 position, Quaternion rotation)

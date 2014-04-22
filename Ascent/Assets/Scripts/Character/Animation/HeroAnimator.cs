@@ -173,13 +173,25 @@ public class HeroAnimator : CharacterAnimator
 
 	}
 
+    private bool playingDeath;
     public void PlayReactionAction(EReactionAnimation anim, float time)
     {
+        if (playingDeath)
+            return;
+
+        playingDeath = anim == EReactionAnimation.Dying ? true : false;
+        if (playingDeath)
+        {
+            animator.SetLayerWeight((int)ELayer.Reactions, 1.0f);
+        }
+        else
+        {
+
+            animator.SetLayerWeight((int)ELayer.Reactions, 0.5f);
+        }
+
         reactionTimeMax = time;
         reactionTimeElapsed = 0.0f;
-
-        //animator.SetLayerWeight((int)layer, 1.0f);
-        animator.SetLayerWeight((int)ELayer.Reactions, 0.5f);
 
         animator.SetInteger("ReactionAnimation", (int)anim);
         animator.SetBool("NewAnimation", true);
