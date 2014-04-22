@@ -94,7 +94,6 @@ GameObject:
   - 4: {fileID: 400010}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  - 65: {fileID: 6500000}
   m_Layer: 10
   m_Name: torche
   m_TagString: Untagged
@@ -131,7 +130,7 @@ GameObject:
   - 95: {fileID: 9500000}
   - 65: {fileID: 6500002}
   m_Layer: 10
-  m_Name: Tomb03_c
+  m_Name: pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,7 +159,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 5.73676872, z: -4.76837158e-07}
   m_LocalScale: {x: .400000006, y: .400000006, z: .400000006}
   m_Children:
   - {fileID: 400010}
@@ -242,9 +241,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
-  m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1.29999995}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 400016}
 --- !u!4 &400016
@@ -293,7 +292,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: ad98ec4b73cd267479c242fefc5f2181, type: 2}
+  - {fileID: 2100000, guid: 5563186f9ae884e48b67886985154787, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -315,19 +314,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100014}
-  m_Mesh: {fileID: 4300000, guid: dd856c7b916b9834ebbf02aa4342755f, type: 3}
---- !u!65 &6500000
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100010}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.94032049, y: 2.72221541, z: 4.0417099}
-  m_Center: {x: 1.78813977e-07, y: 1.3450762, z: -1.19209318e-07}
+  m_Mesh: {fileID: 4300000, guid: 403c47c1c698aac42bc0870dd466a225, type: 3}
 --- !u!65 &6500002
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -338,8 +325,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .599886835, y: .599887013, z: 3.8999877}
-  m_Center: {x: 1.63912773e-06, y: 2.23517475e-07, z: 1.94999385}
+  m_Size: {x: 1.05812502, y: 3.00936031, z: 1.05812454}
+  m_Center: {x: 0, y: 1.37394428, z: 0}
 --- !u!95 &9500000
 Animator:
   serializedVersion: 2
@@ -363,7 +350,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 3
   m_Type: 2
-  m_Color: {r: .989147961, g: 1, b: .213235319, a: 1}
+  m_Color: {r: 0, g: .870030403, b: .948529422, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
