@@ -16,6 +16,8 @@ public class Lightning : Projectile
 
     private Vector3 velocity;
 
+    public GameObject lightningEffectHit;
+
     public void Initialise(int targets, Vector3 startPos, Character owner)
     {
         this.targets = targets;
@@ -24,7 +26,7 @@ public class Lightning : Projectile
         transform.position = new Vector3(startPos.x, 1.0f, startPos.z);
         rigidbody.AddForce(owner.transform.forward * 10.0f, ForceMode.VelocityChange);
 
-        velocity = owner.transform.forward * 10.0f;
+        velocity = owner.transform.forward * 1.0f;
 
         circle = new Circle(transform, 3.0f, Vector3.zero);
     }
@@ -37,6 +39,15 @@ public class Lightning : Projectile
     public void OnTriggerEnter(Collider collision)
     {
         bool lightningExpired = false;
+
+        Vector3 pos = collision.ClosestPointOnBounds(this.transform.position);
+        GameObject.Instantiate(lightningEffectHit, pos, collision.transform.rotation);
+
+        if (collision.gameObject.tag != "Monster")
+        {
+            GameObject.Destroy(this.gameObject);
+            return;
+        }
 
         if (!hitSomething)
         {

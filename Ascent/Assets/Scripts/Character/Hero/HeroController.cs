@@ -404,7 +404,7 @@ public class HeroController : MonoBehaviour
 		}
 		else // Hero cannot move
 		{
-			if (hero.IsInState(EStatus.Stun))
+            if (hero.IsInState(EStatus.Stun) || hero.IsInState(EStatus.Frozen))
 			{
 				animator.PlayMovement(HeroAnimator.EMoveAnimation.StunnedIdling);
 			}

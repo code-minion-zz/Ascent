@@ -37,7 +37,7 @@ public class Wizard : Enemy
 
         ESpell randomSpell = (ESpell)UnityEngine.Random.Range(0, (int)ESpell.Max);
 
-        switch (randomSpell)
+        switch (ESpell.Freeze)
         {
             case ESpell.Fireball:
                 {
