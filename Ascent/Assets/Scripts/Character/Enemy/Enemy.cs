@@ -81,7 +81,7 @@ public abstract class Enemy : Character
    protected float deathSequenceTime = 0.0f;
    protected float deathSequenceEnd = 2.0f;
    protected float deathSinkTime = 0.0f;
-   protected float deathSinkEnd = 1.0f;
+   protected float deathSinkEnd = 3.0f;
    protected Vector3 deathPosition;
    protected Vector3 deathRotation = Vector3.zero;
    protected float deathSpeed = 5.0f;
@@ -168,9 +168,9 @@ public abstract class Enemy : Character
 			{
 				deathSinkTime += Time.deltaTime;
 
-				Vector3 targetPos = deathPosition;
-				targetPos.y -= 2.0f;
-				transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
+				//Vector3 targetPos = deathPosition;
+				//targetPos.y -= 2.0f;
+				//transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
 
 				if (deathSinkTime > deathSinkEnd)
 				{
