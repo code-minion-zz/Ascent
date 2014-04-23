@@ -33,8 +33,9 @@ public class Floor : MonoBehaviour
 		set { roomTransitionTime = value; }
 	}
 
-	public float deathClock = 0f;
+	public float gameOverClock = 0f;
 	public float gameOverDelay = 3f;
+	public bool	gameOver = false;
     public bool initialised;
 
     public Room CurrentRoom
@@ -245,7 +246,7 @@ public class Floor : MonoBehaviour
             // Remove hero lives.
             hero.FloorStatistics.NumberOfDeaths++;
             hero.Lives--;
-			deathClock = 0f;
+			gameOverClock = 0f;
 
             //if (hero.Lives > 0)
             //{
@@ -331,13 +332,22 @@ public class Floor : MonoBehaviour
 	void Update()
 	{
 		ProcessDebugKeys();
+	
+		if (!gameOver)
+		{
+			if (IsAllHeroesDead())
+			{
+				FloorHUDManager.Singleton.GameOverScreen();
+				gameOver = true;
+			}
+		}
 
 		// Check if all the players are dead as well.
-		if (IsAllHeroesDead() == true)
+		if (gameOver)
 		{
 			// Take to summary screen
-			deathClock += Time.deltaTime;
-			if (deathClock > gameOverDelay)
+			gameOverClock += Time.deltaTime;
+			if (gameOverClock > gameOverDelay)
 			{
 				EndFloor();
 			}

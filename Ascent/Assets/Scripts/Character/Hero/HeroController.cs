@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -83,7 +83,7 @@ public class HeroController : MonoBehaviour
 			if (inputDevice.Start.WasReleased)
 			{
 				FloorHUDManager hudman = FloorHUDManager.Singleton;
-				hudman.SetPauseText("Paused");
+				hudman.SetTransitionText("Paused");
 				hudman.PauseGame();
 			}
 
