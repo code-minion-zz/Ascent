@@ -76,7 +76,9 @@ public class WarriorStrike : BaseHeroAbility
 							combatEvaluator.Add(new KnockbackCombatProperty(e.transform.position - owner.transform.position, knockBackValue));
 							combatEvaluator.Apply();
 
-                            EffectFactory.Singleton.CreateRandHitEffect(e.transform.position, e.transform.rotation);
+                            Vector3 hitPos = e.collider.ClosestPointOnBounds(swingArc.Position);
+
+                            EffectFactory.Singleton.CreateRandHitEffect(hitPos, e.transform.rotation);
 							// Create a blood splatter effect on the enemy.
                             EffectFactory.Singleton.CreateBloodSplatter(e.transform.position, e.transform.rotation);
 
