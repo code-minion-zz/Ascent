@@ -173,7 +173,7 @@ public class HeroAnimator : CharacterAnimator
 
 	}
 
-    private bool playingDeath;
+    public bool playingDeath;
     public void PlayReactionAction(EReactionAnimation anim, float time)
     {
         if (playingDeath)
