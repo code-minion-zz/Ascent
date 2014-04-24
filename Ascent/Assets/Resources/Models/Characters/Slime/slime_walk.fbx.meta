@@ -36,7 +36,8 @@ ModelImporter:
     400028: upper_back
     400030: upper_jaw
     4300000: slime
-    7400000: Take 001
+    7400000: SlimeWalk
+    7400002: SlimeIdle
     9500000: //RootNode
     13700000: slime
   materials:
@@ -53,7 +54,123 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: SlimeWalk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 170
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: nurbsCircle1
+        weight: 1
+      - path: nurbsCircle1/root
+        weight: 1
+      - path: nurbsCircle1/root/lower_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/front_glob
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/front_glob/glob_tip
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head/head_top
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head/upper_jaw
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: nurbsCircle1/root/tail_tip
+        weight: 1
+      - path: slime
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: SlimeIdle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 1.10000002
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: nurbsCircle1
+        weight: 1
+      - path: nurbsCircle1/root
+        weight: 1
+      - path: nurbsCircle1/root/lower_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/front_glob
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/front_glob/glob_tip
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head/head_top
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/head/upper_jaw
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: nurbsCircle1/root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: nurbsCircle1/root/tail_tip
+        weight: 1
+      - path: slime
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
