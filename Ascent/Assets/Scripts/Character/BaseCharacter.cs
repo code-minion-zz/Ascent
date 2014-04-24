@@ -47,6 +47,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	}
 
 	protected Shadow shadow;
+	private string originalShader;
 
 	public virtual void Initialise()
 	{
@@ -66,6 +67,8 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 
 		SetColor(OriginalColor);
+
+		originalShader = GetComponentInChildren<Renderer>().material.shader.name;
 	}
 
 	public virtual void SetColor(Color color)
@@ -111,7 +114,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			foreach (Material mat in render.materials)
 			{
-				mat.shader = Shader.Find("Diffuse");
+				mat.shader = Shader.Find(originalShader);
 			}
 		}
 	}
