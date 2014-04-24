@@ -79,7 +79,7 @@ public class Tower : MonoBehaviour
         }
         else
         {
-            Application.LoadLevel("P" + numberOfPlayers + "Floor" + currentFloorNumber);
+            Application.LoadLevel("P" + 1 + "Floor" + currentFloorNumber);
         }
     }
 

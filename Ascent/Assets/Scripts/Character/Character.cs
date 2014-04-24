@@ -366,6 +366,7 @@ public abstract class Character : BaseCharacter
                 Animator.Dying = false;
                 collider.enabled = true;
                 isDead = false;
+                ((HeroAnimator)animator).playingDeath = false;
             }
 		}
     }

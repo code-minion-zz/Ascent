@@ -89,7 +89,7 @@ public class HeroController : MonoBehaviour
 
             if (hero.IsDead)
             {
-                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 10.0f);
+                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
                 return;
             }
 
