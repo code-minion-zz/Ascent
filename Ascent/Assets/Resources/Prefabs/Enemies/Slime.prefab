@@ -82,7 +82,7 @@ Transform:
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_Children:
   - {fileID: 400006}
   m_Father: {fileID: 400002}
@@ -117,8 +117,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: .460000008, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -133,7 +133,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: c2826e30001d0994caf01eba9e0f97ad, type: 2}
+  - {fileID: 2100000, guid: b9b8dd22c6a774e4da2ebf4d7e053a6e, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -148,7 +148,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
-  m_Mesh: {fileID: 4300000, guid: f1a64d37696a7a045bf172a8fc548a35, type: 3}
+  m_Mesh: {fileID: 4300000, guid: e21734753647f324aaf2b099b68e9ec1, type: 3}
 --- !u!54 &5400000
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -185,7 +185,7 @@ Animator:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f58145a217821024f8a2b27f60e09b70, type: 3}
-  m_Controller: {fileID: 9100000, guid: 38405c23d24f3f244a0f25eac36e4438, type: 2}
+  m_Controller: {fileID: 9100000, guid: bf3f23f1bcb0a6847926c23aea717981, type: 2}
   m_CullingMode: 0
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
@@ -253,7 +253,10 @@ MonoBehaviour:
   wanderCircleRadius: 5
   wanderJitter: 10
   fleeDistance: 5
-  closeEnoughRange: 1.5
+  stopIfCloseEnough: 0
+  closeEnoughDistance: 2
+  moveAwayIfTooClose: 0
+  tooCloseDistance: 1
   distanceToKeepFromTarget: 1.75
   pursuitOffset: {x: 0, y: 0}
   pursuitOffsetLeader: {fileID: 0}
@@ -318,6 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
+  agent: {fileID: 0}
   health: 3
   attack: 1
   move: {x: 0, y: 0, z: 0}

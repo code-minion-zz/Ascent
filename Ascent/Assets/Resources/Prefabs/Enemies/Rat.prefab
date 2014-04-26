@@ -525,7 +525,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 1.90737728e-06}
-  m_LocalPosition: {x: -4.00001907, y: 0, z: 4.99997711}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400066}
@@ -963,7 +963,10 @@ MonoBehaviour:
   wanderCircleRadius: 5
   wanderJitter: 10
   fleeDistance: 5
-  closeEnoughRange: 1.5
+  stopIfCloseEnough: 0
+  closeEnoughDistance: 2
+  moveAwayIfTooClose: 0
+  tooCloseDistance: 1
   distanceToKeepFromTarget: 1.75
   pursuitOffset: {x: 0, y: 0}
   pursuitOffsetLeader: {fileID: 0}

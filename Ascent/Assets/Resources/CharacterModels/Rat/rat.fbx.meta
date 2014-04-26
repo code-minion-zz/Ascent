@@ -1,0 +1,496 @@
+fileFormatVersion: 2
+guid: f58145a217821024f8a2b27f60e09b70
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: jaw
+    100002: jaw_tip
+    100004: left_ball
+    100006: left_clavical
+    100008: left_elbow
+    100010: left_foot
+    100012: left_heel
+    100014: left_hip
+    100016: left_knee
+    100018: left_shoulder
+    100020: left_toe
+    100022: left_toe 1
+    100024: lower_back
+    100026: mid_back
+    100028: mid_tail
+    100030: neck
+    100032: //RootNode
+    100034: rat_mesh_run
+    100036: right_ball
+    100038: right_clavical
+    100040: right_elbow
+    100042: right_foot
+    100044: right_heel
+    100046: right_hip
+    100048: right_knee
+    100050: right_shoulder
+    100052: right_toe
+    100054: right_toe 1
+    100056: root
+    100058: tail_root
+    100060: tip_tail
+    100062: upper_back
+    400000: jaw
+    400002: jaw_tip
+    400004: left_ball
+    400006: left_clavical
+    400008: left_elbow
+    400010: left_foot
+    400012: left_heel
+    400014: left_hip
+    400016: left_knee
+    400018: left_shoulder
+    400020: left_toe
+    400022: left_toe 1
+    400024: lower_back
+    400026: mid_back
+    400028: mid_tail
+    400030: neck
+    400032: //RootNode
+    400034: rat_mesh_run
+    400036: right_ball
+    400038: right_clavical
+    400040: right_elbow
+    400042: right_foot
+    400044: right_heel
+    400046: right_hip
+    400048: right_knee
+    400050: right_shoulder
+    400052: right_toe
+    400054: right_toe 1
+    400056: root
+    400058: tail_root
+    400060: tip_tail
+    400062: upper_back
+    4300000: rat_mesh_run
+    7400000: RatHit
+    7400002: RatStrike
+    7400004: RatRun
+    7400006: RatDeath
+    9500000: //RootNode
+    13700000: rat_mesh_run
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: RatHit
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 10
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: rat_mesh_run
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/left_hip
+        weight: 1
+      - path: root/left_hip/left_knee
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball/left_toe
+        weight: 1
+      - path: root/lower_back
+        weight: 1
+      - path: root/lower_back/mid_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot/left_toe
+          1
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot/right_toe
+          1
+        weight: 1
+      - path: root/right_hip
+        weight: 1
+      - path: root/right_hip/right_knee
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball/right_toe
+        weight: 1
+      - path: root/tail_root
+        weight: 1
+      - path: root/tail_root/mid_tail
+        weight: 1
+      - path: root/tail_root/mid_tail/tip_tail
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: RatStrike
+      takeName: Take 001
+      firstFrame: 11
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: rat_mesh_run
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/left_hip
+        weight: 1
+      - path: root/left_hip/left_knee
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball/left_toe
+        weight: 1
+      - path: root/lower_back
+        weight: 1
+      - path: root/lower_back/mid_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot/left_toe
+          1
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot/right_toe
+          1
+        weight: 1
+      - path: root/right_hip
+        weight: 1
+      - path: root/right_hip/right_knee
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball/right_toe
+        weight: 1
+      - path: root/tail_root
+        weight: 1
+      - path: root/tail_root/mid_tail
+        weight: 1
+      - path: root/tail_root/mid_tail/tip_tail
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: RatRun
+      takeName: Take 001
+      firstFrame: 21
+      lastFrame: 35
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: rat_mesh_run
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/left_hip
+        weight: 1
+      - path: root/left_hip/left_knee
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball/left_toe
+        weight: 1
+      - path: root/lower_back
+        weight: 1
+      - path: root/lower_back/mid_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot/left_toe
+          1
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot/right_toe
+          1
+        weight: 1
+      - path: root/right_hip
+        weight: 1
+      - path: root/right_hip/right_knee
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball/right_toe
+        weight: 1
+      - path: root/tail_root
+        weight: 1
+      - path: root/tail_root/mid_tail
+        weight: 1
+      - path: root/tail_root/mid_tail/tip_tail
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: RatDeath
+      takeName: Take 001
+      firstFrame: 36
+      lastFrame: 85
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: rat_mesh_run
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/left_hip
+        weight: 1
+      - path: root/left_hip/left_knee
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball
+        weight: 1
+      - path: root/left_hip/left_knee/left_heel/left_ball/left_toe
+        weight: 1
+      - path: root/lower_back
+        weight: 1
+      - path: root/lower_back/mid_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/left_clavical/left_shoulder/left_elbow/left_foot/left_toe
+          1
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/neck/jaw/jaw_tip
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot
+        weight: 1
+      - path: root/lower_back/mid_back/upper_back/right_clavical/right_shoulder/right_elbow/right_foot/right_toe
+          1
+        weight: 1
+      - path: root/right_hip
+        weight: 1
+      - path: root/right_hip/right_knee
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball
+        weight: 1
+      - path: root/right_hip/right_knee/right_heel/right_ball/right_toe
+        weight: 1
+      - path: root/tail_root
+        weight: 1
+      - path: root/tail_root/mid_tail
+        weight: 1
+      - path: root/tail_root/mid_tail/tip_tail
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  userData: 
