@@ -25,6 +25,24 @@ public class TriggerRegion : MonoBehaviour
 		return IsHit;
 	}
 
+	public bool IsInside(Vector3 pointToTest, out int triggerID)
+	{
+		triggerID = 0;
+		foreach (Vector2 v in regions)
+		{
+			IsHit = MathUtility.IsWithinRect(pointToTest, this.transform.position, new Vector3(v.x, 1.0f, v.y));
+
+			if (IsHit)
+			{
+				return IsHit;
+			}
+
+			++triggerID;
+		}
+
+		return IsHit;
+	}
+
 #if UNITY_EDITOR
 	void OnDrawGizmos()
 	{

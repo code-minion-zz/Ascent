@@ -249,6 +249,7 @@ public class FloorHUDManager : MonoBehaviour
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = -3f;
+		InputManager.DisableInputForTime(3.0f);
 	}
 	
 	public void LevelCompleteScreen()
@@ -257,6 +258,7 @@ public class FloorHUDManager : MonoBehaviour
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = 3f;
+		InputManager.DisableInputForTime(3.0f);
 	}
 	
 	public void GameOverScreen()
@@ -265,6 +267,7 @@ public class FloorHUDManager : MonoBehaviour
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = 3f;
+		InputManager.DisableInputForTime(3.0f);
 	}
 
 	public void ToggleTransition(bool active)

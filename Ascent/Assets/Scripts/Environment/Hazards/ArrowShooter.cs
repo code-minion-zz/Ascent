@@ -5,28 +5,38 @@ public class ArrowShooter : EnvironmentHazard
 {
     public GameObject projectile;
     public int projectilePoolCount = 5;
-    public float frequency = 1.0f;
+    public float secondsBetweenShot = 1.0f;
     public float projectileSpeed = 5.0f;
     public int projectileDamage = 2;
     public float arrowLifeSpan = 2.0f;
-	private Vector3 direction;
+	public float startDelayInSeconds = 0.0f;
 
     private ObjectPool arrowPool;
-    private Vector3 spawnPoint;
     private float timeElapsed = 0.0f;
-    public bool activateArrows;
+    public bool activateArrows = true;
 
-    private Vector3 shootLocalPosition;
-   
+	private Transform baseThatGoesInTheWall;
+    private Transform shootLocal;
+
+	private Vector3 Direction
+	{
+		get { return transform.forward; }
+	}
+
+	private Vector3 SpawnPoint
+	{
+		get { return shootLocal.position + Direction * .50f; }
+	}
 
 	// Use this for initialization
 	void Start () 
     {
-        arrowPool = new ObjectPool(projectile, projectilePoolCount, this.transform, "Arrow");
-		direction = transform.forward;
+        arrowPool = new ObjectPool(projectile, projectilePoolCount, transform.root, "Arrow");
+		shootLocal = transform.FindChild("Shooter").transform;
 
-        shootLocalPosition = transform.FindChild("Shooter").transform.position;
-        spawnPoint = shootLocalPosition + direction * .50f;
+		baseThatGoesInTheWall = transform.FindChild("Base").transform;
+
+		timeElapsed -= startDelayInSeconds;
 		
 	}
 
@@ -44,9 +54,9 @@ public class ArrowShooter : EnvironmentHazard
         }
 
         timeElapsed += Time.deltaTime;
-        if (timeElapsed > frequency)
+        if (timeElapsed > secondsBetweenShot)
         {
-            timeElapsed -= frequency;
+            timeElapsed -= secondsBetweenShot;
 
             // Instantiate an arrow
             ObjectPool.PoolObject po = arrowPool.GetInactive();
@@ -54,18 +64,20 @@ public class ArrowShooter : EnvironmentHazard
             {
 				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.1f);
 
-                int layerMask = (((1 << (int)Layer.Block)));
+				Vector3 position = baseThatGoesInTheWall.position;
+				position.y += 0.5f;
+
+                int layerMask = ((1 << (int)Layer.Block));
                 RaycastHit hitInfo;
 
-				if (Physics.Raycast(new Ray(shootLocalPosition - direction * 0.5f, direction), out hitInfo, 0.25f, layerMask))
+				if (Physics.Raycast(new Ray(position, Direction * 1.0f), out hitInfo, 0.50f, layerMask))
                 {
-                    Debug.Log(hitInfo.collider.gameObject);
                     return;
                 }
 
                 Arrow newArrow = po.script as Arrow;
-                newArrow.Initialise(arrowLifeSpan, this.gameObject, direction, projectileSpeed, projectileDamage);
-				po.go.transform.position = spawnPoint;
+				newArrow.Initialise(arrowLifeSpan, this.gameObject, Direction, projectileSpeed, projectileDamage);
+				po.go.transform.position = SpawnPoint;
 				//po.go.transform.Rotate(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
 				//po.go.transform.LookAt(direction * 5.0f);
 				po.go.transform.rotation = transform.rotation;
@@ -75,5 +87,4 @@ public class ArrowShooter : EnvironmentHazard
             }
         }	
 	}
-
 }

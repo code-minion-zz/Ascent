@@ -64,4 +64,19 @@ public class MoveableBlock : Interactable
 			targetPos = startPos + direction.normalized * offset;
 		}
 	}
+
+	public bool CheckDirectionForAnotherBlock(Vector3 direction, float magnitude)
+	{
+		int layerMask = ~(1 << (int)Layer.Floor | 1 << (int)Layer.Hero);
+
+		RaycastHit hit;
+		Vector3 position = transform.position;
+		position.y += 0.5f;
+		if (Physics.Raycast(new Ray(position, direction), out hit, 1.0f, layerMask))
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

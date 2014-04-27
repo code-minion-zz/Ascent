@@ -332,7 +332,9 @@ public class Floor : MonoBehaviour
 
 	void Update()
 	{
+#if UNITY_EDITOR
 		ProcessDebugKeys();
+#endif
 	
 		if (!gameOver)
 		{

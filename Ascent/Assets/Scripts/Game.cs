@@ -87,6 +87,8 @@ public class Game : MonoBehaviour
         set { players = value; }
     }
 
+	public int startingHealth = 20;
+
     public int AlivePlayerCount
     {
         get 
@@ -449,4 +451,5 @@ public class Game : MonoBehaviour
 	}
 	
 	#endregion
+
 }

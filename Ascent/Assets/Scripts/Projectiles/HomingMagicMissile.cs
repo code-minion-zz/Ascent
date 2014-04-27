@@ -26,7 +26,7 @@ public class HomingMagicMissile : Projectile
     public void Initialise(Vector3 startPos, Character owner)
     {
         this.owner = owner;
-        transform.position = new Vector3(startPos.x, 0.5f, startPos.z);
+        transform.position = new Vector3(startPos.x, 2.0f, startPos.z);
         transform.forward = owner.transform.forward;
 
 		maxSpeed = Random.Range(SpeedMinMax.x, SpeedMinMax.y);
@@ -52,7 +52,9 @@ public class HomingMagicMissile : Projectile
     public Vector3 SteerToTarget()
     {
 		Vector3 desiredVelocity = Vector3.zero;
-        desiredVelocity = target.transform.position - transform.position;
+		Vector3 targetPos = target.transform.position;
+		targetPos.y = 1.5f;
+		desiredVelocity = targetPos - transform.position;
 		desiredVelocity.Normalize();
 		desiredVelocity *= maxSpeed;
 		desiredVelocity -= rigidbody.velocity;

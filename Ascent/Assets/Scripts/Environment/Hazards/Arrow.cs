@@ -14,6 +14,8 @@ public class Arrow : MonoBehaviour
     private List<Hero> heroesHit;
     bool hitYet;
 
+	public TrailRenderer trail;
+
     public void Initialise(float life, GameObject owner, Vector3 direction, float speed, int damage)
     {
 		//owner = _owner;
@@ -26,11 +28,14 @@ public class Arrow : MonoBehaviour
 
         heroesHit = new List<Hero>();
         hitYet = false;
+
+		trail.enabled = true;
     }
 	
 	// Update is called once per frame
 	void Update () 
     {
+		//transform.rotation = Quaternion.LookRotation(transform.position + direction);
         //transform.position += direction * speed * Time.deltaTime;
         if(toDestroy)
         {
@@ -79,6 +84,7 @@ public class Arrow : MonoBehaviour
 		{
 			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
+			trail.enabled = false;
         }
     }
 }

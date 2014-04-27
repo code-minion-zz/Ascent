@@ -31,7 +31,8 @@ public class SpinningBlade : MonoBehaviour
 	{
 		if (bladeCount < 1)
 		{
-			bladeCount = 1;
+			bladeCount = 0;
+			return;
 		}
 		previousBladeCount = bladeCount;
 		previousBladeLength = bladeLength;

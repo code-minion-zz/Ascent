@@ -17,6 +17,8 @@ public class ObjectPool
         get { return pool; }
     }
 
+	private int lastPulled = -1;
+
     public ObjectPool(GameObject objectToPool, int poolSize, Transform parent, string scriptName)
     {
         // Create container for the pool
@@ -35,10 +37,24 @@ public class ObjectPool
 
     public PoolObject GetInactive()
     {
+		++lastPulled;
+		if (lastPulled >= pool.Length)
+		{
+			lastPulled = 0;
+		}
+
+		// Grab next one in the pool
+		if (!pool[lastPulled].go.activeSelf)
+		{
+			return pool[lastPulled];
+		}
+
+		// If next on is not available check the whole pool for one that is available.
         for (int i = 0; i < pool.Length; ++i)
         {
-            if (!pool[i].go.activeSelf)
+			if ((!pool[i].go.activeSelf))
             {
+				lastPulled = i;
                 return pool[i];
             }
         }

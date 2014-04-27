@@ -400,7 +400,7 @@ public class HeroStats : CharacterStats
 
 					secondaryStats = new SecondaryStats()
 					{
-						health = 20.0f,
+						health = (float)Game.Singleton.startingHealth,
 						special = 15.0f,
 						attack = 1.0f,
 						physicalDefense = 1.0f,

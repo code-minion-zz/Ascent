@@ -6,6 +6,6 @@ public class HeroAbilityLoadout  : AbilityLoadout
 {
     public HeroAbilityLoadout()
     {
-        abilities = new Ability[(int)HeroController.EHeroAction.ActionMax];
+        abilities = new Ability[3];
     }
 }
