@@ -50,7 +50,10 @@ public class PlayerHUD : MonoBehaviour
 		{
 			++abilityID;
 
-			if (abilities[i] != null)
+			if (abilityID >= abilities.Length)
+				break;
+
+			if (abilities[abilityID] != null)
 			{
 				abilityIcons[i].spriteName = "Ability_" + abilities[abilityID].GetType().ToString();
 				//Debug.Log(abilityIcons[i].spriteName);
@@ -91,8 +94,8 @@ public class PlayerHUD : MonoBehaviour
 		for (int i = 0; i < abilityIcons.Length; ++i)
 		{
 			++abilityID;
-
-			if (abilities[i] != null)
+		
+			if (abilityID < abilities.Length && abilities[abilityID] != null)
 			{
 				Color color = abilityIcons[i].color;
 				color.a = 1.0f - (abilities[abilityID].RemainingCooldown / abilities[abilityID].CooldownFullDuration);
