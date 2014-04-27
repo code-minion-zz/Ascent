@@ -23,7 +23,6 @@ public class FloorHUDManager : MonoBehaviour
 	public			UILabel		pauseLabel;
 	public			UILabel		transitionLabel;
 	public			UITexture	transitionTexture;
-	private			bool		paused = false;
 	private			float		transitionTimer = 0f;
 
 	public UIPanel mainPanel;

@@ -9,7 +9,8 @@ public class Floor : MonoBehaviour
 		North = 0,
 		South,
 		East,
-		West
+		West,
+		MAX
 	}
 
 	private List<Hero> heroes;

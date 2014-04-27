@@ -9,7 +9,6 @@ public class FloorCamera : MonoBehaviour
     private Camera mainCamera;
 
     private bool transition = false;
-    private bool cameraSetup = false;
 	private bool restrict = false;
 	public bool Restrict
 	{

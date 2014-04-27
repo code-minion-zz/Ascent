@@ -40,10 +40,15 @@ public class Room : MonoBehaviour
     private int numberOfTilesY;
     public bool restrictCamera = false;
 
-	[HideInInspector]
-	public Vector3 minCamera = new Vector3(-3.0f, 24.0f, -8.0f);
-	[HideInInspector]
-	public Vector3 maxCamera = new Vector3(3.0f, 24.0f, 0.0f);
+	public float maxLeft = -1.0f;
+	public float maxRight = 1.0f;
+	public float maxTop = 1.0f;
+	public float maxBottom = -9.0f;
+
+	private float maxLeftOld = 0.0f;
+	private float maxRightOld = 0.0f;
+	private float maxTopOld = 0.0f;
+	private float maxBottomOld = 0.0f;
 	
 	[HideInInspector]
 	public float cameraHeight = 20.0f;
@@ -62,21 +67,6 @@ public class Room : MonoBehaviour
     protected List<Shrine> shrines = new List<Shrine>();
     protected List<EnvironmentBreakable> breakables = new List<EnvironmentBreakable>();
 	protected List<Interactable> interactables = new List<Interactable>();
-
-    public int NumberOfTilesX
-    {
-        get { return numberOfTilesX; }
-        set { numberOfTilesX = value; }
-    }
-
-    public int NumberOfTilesY
-    {
-        get { return numberOfTilesY; }
-        set { numberOfTilesY = value; }
-    }
-
-    public int width;
-    public int height;
 
     public Doors Doors
     {
@@ -226,33 +216,15 @@ public class Room : MonoBehaviour
             Debug.LogWarning("Could not find any doors for this room");
         }
 
-        SetupCamera();
-	}
+		// Find and populate all the lists of objects in the room.
+		PopulateListOfObjects(ref enemies, gameObject);
+		PopulateListOfObjects(ref breakables, gameObject);
+		PopulateListOfObjects(ref moveables, gameObject);
+		PopulateListOfObjects(ref chests, gameObject);
+		PopulateListOfObjects(ref shrines, gameObject);
 
-    public void OnEnable()
-    {
-        if (Game.Singleton.Tower.CurrentFloor != null && Game.Singleton.Tower.CurrentFloor.initialised)
-		{
-			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
-            if (camera != null)
-            {
-				camera.Restrict = restrictCamera;
-                camera.minCamera = transform.position + minCamera;
-                camera.maxCamera = transform.position + maxCamera;
-            }
-			//curMinCamera = minCamera;
-			//curMaxCamera = maxCamera;
-
-			//Debug.Log(camera.maxCamera);
-			//camera.CameraHeight = cameraHeight;
-		}
-
-        // Find and populate all the lists of objects in the room.
-        PopulateListOfObjects(ref enemies, gameObject);
-        PopulateListOfObjects(ref breakables, gameObject);
-        PopulateListOfObjects(ref moveables, gameObject);
-        PopulateListOfObjects(ref chests, gameObject);
-        PopulateListOfObjects(ref shrines, gameObject);
+		// Doors
+		doors.Initialise();
 
 		// Add Blocks
 		foreach (Interactable i in moveables)
@@ -295,52 +267,25 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
-    }
+	}
 
-    private void SetupCamera()
+    public void OnEnable()
     {
-        float cameraOffsetX = 1.0f;
-        float cameraOffsetMinZ = 1.0f;
-        float cameraOffsetMaxZ = 1.0f;
+		if (Game.Singleton.Tower.CurrentFloor != null && Game.Singleton.Tower.CurrentFloor.initialised)
+		{
+			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
+			if (camera != null)
+			{
+				camera.Restrict = restrictCamera;
+				camera.minCamera = transform.position + new Vector3(maxLeft, 0.0f, maxBottom);
+				camera.maxCamera = transform.position + new Vector3(maxRight, 0.0f, maxTop);
 
-        switch (width)
-        {
-            case 10: cameraOffsetX = 0.0f; break;
-            case 14: cameraOffsetX = 1.0f; break;
-            case 18: cameraOffsetX = 3.0f; break;
-            case 22: cameraOffsetX = 4.0f; break;
-            case 24: cameraOffsetX = 5.0f; break;
-
-            default:
-                {
-                    Debug.LogWarning("Unhandled case: " + width);
-                    cameraOffsetX = 5.0f;
-                }
-                break;
-        }
-
-
-        switch (height)
-        {
-            case 10: cameraOffsetMinZ = -5.0f; cameraOffsetMaxZ = -5.0f; break;
-            case 14: cameraOffsetMinZ = -7.25f; cameraOffsetMaxZ = -2.25f; break;
-            case 18: cameraOffsetMinZ = -9.25f; cameraOffsetMaxZ = -0.3f; break;
-            case 22: cameraOffsetMinZ = -11.1f; cameraOffsetMaxZ = 1.8f; break;
-            case 24: cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f; break;
-
-            default:
-                {
-                    Debug.LogWarning("Unhandled case: " + height);
-                    cameraOffsetMinZ = -13.1f; cameraOffsetMaxZ = 3.0f;
-                } 
-                break;
-        }
-
-        minCamera.x = -cameraOffsetX;
-        maxCamera.x = cameraOffsetX;
-
-        minCamera.z = cameraOffsetMinZ;
-        maxCamera.z = cameraOffsetMaxZ;
+				maxLeftOld = maxLeft;
+				maxRightOld = maxRight;
+				maxBottomOld = maxBottom;
+				maxTopOld = maxTop;
+			}
+		}
     }
 
     public void RotateFacingDirection(float angle)
@@ -387,6 +332,24 @@ public class Room : MonoBehaviour
 	void Update()
 	{
 		CheckDoors();
+
+		if (maxLeftOld != maxLeft ||
+			maxRightOld != maxRight ||
+			maxBottomOld != maxBottom ||
+			maxTopOld != maxTop)
+		{
+			FloorCamera camera = Game.Singleton.Tower.CurrentFloor.FloorCamera;
+			if (camera == null)
+				return;
+				
+			camera.minCamera = transform.position + new Vector3(maxLeft, 0.0f, maxBottom);
+			camera.maxCamera = transform.position + new Vector3(maxRight, 0.0f, maxTop);
+
+			maxLeftOld = maxLeft;
+			maxRightOld = maxRight;
+			maxBottomOld = maxBottom;
+			maxTopOld = maxTop;
+		}
 	}
 
     public void SetNavMeshDimensions(float width, float height)
@@ -1047,7 +1010,7 @@ public class Room : MonoBehaviour
 			return;
 		}
 
-		// Find direction to enter from
+		// Find direction to enter from (We want to enter from a direction that makes sense, not just any door).
 		float heading = MathUtility.ConvertVectorToHeading((transform.position - currentRoom.transform.position).normalized) * Mathf.Rad2Deg;
 
 		bool transitioned = false;
@@ -1055,9 +1018,10 @@ public class Room : MonoBehaviour
 		// Try north
 		if (heading >= -0.45f && heading <= 45.0f)
 		{
-			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
+			Door door = doors.GetDoorFacingDirection(Floor.TransitionDirection.South);
+			if (door != null)
 			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.South]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(door);
 				transitioned = true;
 			}
 		}
@@ -1065,9 +1029,10 @@ public class Room : MonoBehaviour
 		// Try East
 		if (!transitioned && (heading >= 0.45f && heading <= 135.0f))
 		{
-			if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
+			Door door = doors.GetDoorFacingDirection(Floor.TransitionDirection.West);
+			if (door != null)
 			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.West]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(door);
 				transitioned = true;
 			}
 		}
@@ -1075,9 +1040,10 @@ public class Room : MonoBehaviour
 		// Try South
 		if (!transitioned && ((heading >= 135.0f && heading <= 180.0f) || (heading <= -135.0f)))
 		{
-			if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
+			Door door = doors.GetDoorFacingDirection(Floor.TransitionDirection.North);
+			if (door != null)
 			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.North]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(door);
 				transitioned = true;
 			}
 		}
@@ -1085,9 +1051,10 @@ public class Room : MonoBehaviour
 		// Try West
 		if (!transitioned && (heading <= -0.45f && heading >= -135.0f))
 		{
-			if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
+			Door door = doors.GetDoorFacingDirection(Floor.TransitionDirection.East);
+			if (door != null)
 			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.East]);
+				Game.Singleton.Tower.CurrentFloor.TransitionToRoom(door);
 				transitioned = true;
 			}
 		}
@@ -1096,25 +1063,15 @@ public class Room : MonoBehaviour
 		{
 			// Try any door :<
 
-			if (doors.RoomDoors[(int)Floor.TransitionDirection.South] != null)
+			for (Floor.TransitionDirection direction = Floor.TransitionDirection.North; direction < Floor.TransitionDirection.MAX; ++direction )
 			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.South]);
-				transitioned = true;
-			}
-			else if (doors.RoomDoors[(int)Floor.TransitionDirection.West] != null)
-			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.West]);
-				transitioned = true;
-			}
-			else if (doors.RoomDoors[(int)Floor.TransitionDirection.North] != null)
-			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.North]);
-				transitioned = true;
-			}
-			else if (doors.RoomDoors[(int)Floor.TransitionDirection.East] != null)
-			{
-                Game.Singleton.Tower.CurrentFloor.TransitionToRoom(doors.RoomDoors[(int)Floor.TransitionDirection.East]);
-				transitioned = true;
+				Door correctDoor = doors.GetDoorFacingDirection(Floor.TransitionDirection.South);
+				if (correctDoor != null)
+				{
+					 Game.Singleton.Tower.CurrentFloor.TransitionToRoom(correctDoor);
+					transitioned = true;
+					break;
+				}
 			}
 
 			if (!transitioned)

@@ -19,7 +19,7 @@ public class Doors : MonoBehaviour
 	[HideInInspector]
 	public int lockedDoorCount;
 
-	public void Start () 
+	public void Initialise() 
 	{
 		Door[] foundDoors = GetComponentsInChildren<Door>() as Door[];
 		foreach (Door d in foundDoors)
@@ -100,5 +100,16 @@ public class Doors : MonoBehaviour
 			}
 			return null;
 		}
+	}
+
+	public Door GetDoorFacingDirection(Floor.TransitionDirection direction)
+	{
+		foreach (Door d in roomDoors)
+		{
+			if (d.direction == direction)
+				return d;
+		}
+
+		return null;
 	}
 }

@@ -181,8 +181,6 @@ public class RoomProperties
             }
         }
 
-        room.width = Width;
-        room.height = Height;
 		#if UNITY_EDITOR
         EditorUtility.SetDirty(room);
         #endif
