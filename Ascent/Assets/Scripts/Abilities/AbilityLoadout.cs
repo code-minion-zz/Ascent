@@ -15,6 +15,8 @@ public class AbilityLoadout
     protected CharacterMotor motor;
     private Ability activeAbility;
 
+	private float cantCastErrorTimer;
+
 	public Ability ActiveAbility
 	{
 		get { return activeAbility; }
@@ -63,6 +65,8 @@ public class AbilityLoadout
                 ability.UpdateCooldown();
             }
         }
+
+		cantCastErrorTimer -= Time.deltaTime;
     }
 
     private void UpdateActiveAbility()
@@ -129,6 +133,7 @@ public class AbilityLoadout
         return null;
     }
 
+
     public virtual bool UseAbility(int abilityID)
     {
         // If there no active ability then we can use a new one
@@ -152,14 +157,19 @@ public class AbilityLoadout
         {
             Ability ability = abilities[abilityID];
 
-            if (ability.IsOnCooldown)
-            {
-                FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Cooling down", Color.white);
-            }
-            else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
-            {
-                FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
-            }
+			if (cantCastErrorTimer <= 0.0f)
+			{
+				if (ability.IsOnCooldown)
+				{
+					FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Cooling down", Color.white);
+					cantCastErrorTimer = 1.6f;
+				}
+				else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+				{
+					FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
+					cantCastErrorTimer = 1.6f;
+				}
+			}
 
             // Make sure the cooldown is off otherwise we cannot use the ability
             if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
@@ -206,14 +216,20 @@ public class AbilityLoadout
         Ability ability = abilities[abilityID];
         // Make sure the cooldown is off otherwise we cannot use the ability
 
-        if (ability.IsOnCooldown)
-        {
-            FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Cooling down", Color.white);
-        }
-        else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
-        {
-            FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
-        }
+
+		if (cantCastErrorTimer <= 0.0f)
+		{
+			if (ability.IsOnCooldown)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Cooling down", Color.white);
+				cantCastErrorTimer = 1.6f;
+			}
+			else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
+			{
+				FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
+				cantCastErrorTimer = 1.6f;
+			}
+		}
 
         if (ability != null && ability.IsOnCooldown == false && (stats.CurrentSpecial - ability.SpecialCost) >= 0)
         {

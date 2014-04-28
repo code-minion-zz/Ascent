@@ -74,6 +74,21 @@ public class HeroController : MonoBehaviour
 		buttonIndicator.transform.localScale = Vector3.one * 2.5f;
 
 		//buttonIndicator.Enable(false);
+
+		hero.onDeath += OnDeath;
+	}
+
+	public void OnDeath(Character c)
+	{
+		buttonIndicator.Enable(false);
+
+		if (GrabbingObject)
+		{
+			ReleaseGrabbedObject();
+			motor.StopMovingAlongGrid();
+		}
+
+		animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
 	}
 
     void Update()
@@ -89,7 +104,6 @@ public class HeroController : MonoBehaviour
 
             if (hero.IsDead)
             {
-                animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
                 return;
             }
 
@@ -100,7 +114,6 @@ public class HeroController : MonoBehaviour
 				if (GrabbingObject)
 				{
 					ReleaseGrabbedObject();
-					motor.StopMovingAlongGrid();
 				}
 
 				if (actionButtonPair.control != null && actionButtonPair.control.WasReleased)
@@ -148,51 +161,8 @@ public class HeroController : MonoBehaviour
 				{
 					ProcessMovement(inputDevice);
 
-					// Targetting system
-					// Select closest object in front of Hero
-					Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
-					GameObject newTarget = curRoom.FindHeroTarget(hero, shapeA);
-					if (newTarget == null)
-					{
-						newTarget = curRoom.FindHeroTarget(hero, shapeB);
-					}
-					if (newTarget == null)
-					{
-						newTarget = curRoom.FindHeroTarget(hero, shapeC);
-					}
-
-					if (targetObject != null)
-					{
-						Enemy enemy = targetObject.GetComponent<Enemy>();
-						if (enemy != null)
-						{
-							enemy.StopHighlight();
-						}
-						else
-						{
-							targetObject.GetComponent<Interactable>().StopHighlight();
-						}
-					}
-
-					if (newTarget != null)
-					{
-						targetObject = newTarget;
-
-						Enemy enemy = targetObject.GetComponent<Enemy>();
-						if (enemy != null)
-						{
-							targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
-						}
-						else
-						{
-							targetObject.GetComponent<Interactable>().EnableHighlight(Color.white);
-						}
-					}
-					else
-					{
-						targetObject = null;
-					}
-
+					FindTarget();
+					
 					if (!hero.Loadout.IsAbilityActive ||
 						((hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility) ||
 						(hero.Loadout.IsAbilityActive && !hero.Loadout.CanInterruptActiveAbility && hero.Loadout.ActiveAbility is BaseHeroAbility)))
@@ -213,6 +183,8 @@ public class HeroController : MonoBehaviour
 
 				if (actionButtonPair.control.WasReleased)
 				{
+					FindTarget();
+					RotateToTarget();
 					hero.Loadout.UseAbility(hero.Loadout.GetAbilityID(actionButtonPair.action));
 					actionButtonPair.action = null;
 					actionButtonPair.control = null;
@@ -227,11 +199,61 @@ public class HeroController : MonoBehaviour
 		}
     }
 
+	void FindTarget()
+	{
+		// Targetting system
+		// Select closest object in front of Hero
+		Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+		GameObject newTarget = curRoom.FindHeroTarget(hero, shapeA);
+		if (newTarget == null)
+		{
+			newTarget = curRoom.FindHeroTarget(hero, shapeB);
+		}
+		if (newTarget == null)
+		{
+			newTarget = curRoom.FindHeroTarget(hero, shapeC);
+		}
+
+		if (targetObject != null)
+		{
+			Enemy enemy = targetObject.GetComponent<Enemy>();
+			if (enemy != null)
+			{
+				enemy.StopHighlight();
+			}
+			else
+			{
+				targetObject.GetComponent<Interactable>().StopHighlight();
+			}
+		}
+
+		if (newTarget != null)
+		{
+			targetObject = newTarget;
+
+			Enemy enemy = targetObject.GetComponent<Enemy>();
+			if (enemy != null)
+			{
+				targetObject.GetComponent<Enemy>().EnableHighlight(Color.red);
+			}
+			else
+			{
+				targetObject.GetComponent<Interactable>().EnableHighlight(Color.white);
+			}
+		}
+		else
+		{
+			targetObject = null;
+		}
+	}
+
 	void RotateToTarget()
 	{
 		if (targetObject != null)
 		{
-			transform.LookAt(targetObject.transform);
+			Enemy enemy = targetObject.GetComponent<Enemy>();
+			if (enemy != null)
+				transform.LookAt(targetObject.transform);
 		}
 	}
 
@@ -258,25 +280,29 @@ public class HeroController : MonoBehaviour
 		// Left Trigger
 		if (device.LeftTrigger)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.LeftTrigger);
+			if ((int)EHeroAction.Action1 < loadout.AbilityBinds.Length)
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.LeftTrigger);
 		}
 
         // Left Bump
         else if (device.LeftBumper)
         {
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.LeftBumper);
+			if ((int)EHeroAction.Action2 < loadout.AbilityBinds.Length)
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.LeftBumper);
         }
 
 		// Right bump
 		else if (device.RightBumper)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device.RightBumper);
+			if ((int)EHeroAction.Action3 < loadout.AbilityBinds.Length)
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action3], device.RightBumper);
 		}
 
 		// Right Trigger
 		else if (device.RightTrigger)
 		{
-            ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device.RightTrigger);
+			if ((int)EHeroAction.Action4 < loadout.AbilityBinds.Length)
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action4], device.RightTrigger);
 		}
 	}
 
@@ -508,8 +534,12 @@ public class HeroController : MonoBehaviour
 					RaycastHit hit;
 					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs(rayDirection.z), layerMask))
 					{
-						grabbedObject.MoveAlongGrid(moveDirection);
-						motor.MoveAlongGrid(moveDirection);
+						// Also check if the block is colliding against any other blocks
+						if (!grabbedObject.CheckDirectionForAnotherBlock(rayDirection, Mathf.Abs(rayDirection.z)))
+						{
+							grabbedObject.MoveAlongGrid(moveDirection);
+							motor.MoveAlongGrid(moveDirection);
+						}
 					}
 				}
 			}
@@ -566,8 +596,11 @@ public class HeroController : MonoBehaviour
 					RaycastHit hit;
 					if (!Physics.Raycast(new Ray(pos, rayDirection), out hit, Mathf.Abs(rayDirection.x), layerMask))
 					{
-						grabbedObject.MoveAlongGrid(moveDirection);
-						motor.MoveAlongGrid(moveDirection);
+						if (!grabbedObject.CheckDirectionForAnotherBlock(rayDirection, Mathf.Abs(rayDirection.x)))
+						{					
+							grabbedObject.MoveAlongGrid(moveDirection);
+							motor.MoveAlongGrid(moveDirection);
+						}
 					}
 				}
 			}
@@ -711,7 +744,8 @@ public class HeroController : MonoBehaviour
 			// Are we in range of it?
             if (closestBlock != null && closestBlock.TriggerRegion != null)
             {
-                if (closestBlock.TriggerRegion.IsInside(position))
+				int triggerID = 0;
+                if (closestBlock.TriggerRegion.IsInside(position, out triggerID))
                 {
                     // Is it in front?
                     Vector3 pos = closestBlock.transform.position;
@@ -731,7 +765,7 @@ public class HeroController : MonoBehaviour
                                 closestBlock.grabbed = true;
 
                                 //vertGrab = Mathf.Approximately(transform.forward.x, 0.0f);
-                                vertGrab = Mathf.Abs(transform.forward.x) < 0.2f;
+								vertGrab = (triggerID == 1); // 0 is horizontal 
 
                                 motor.StopMotion();
                                 animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
@@ -742,13 +776,13 @@ public class HeroController : MonoBehaviour
 								{
 									if (direction.z > 0.0f)
 									{
+										transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, -1.0f));
 										blockDirection = EBlockDirection.South;
-										//transform.forward = new Vector3(0.0f, 0.0f, -1.0f);
 									}
 									else
 									{
+										transform.LookAt(transform.position + new Vector3(0.0f, 0.0f, 1.0f));
 										blockDirection = EBlockDirection.North;
-										//transform.forward = new Vector3(0.0f, 0.0f, 1.0f);
 
 									}
 								}
@@ -756,14 +790,19 @@ public class HeroController : MonoBehaviour
 								{
 									if (direction.x > 0.0f)
 									{
+										transform.LookAt(transform.position + new Vector3(-1.0f, 0.0f, 0.0f));
 										blockDirection = EBlockDirection.West;
 
 									}
 									else
 									{
+										transform.LookAt(transform.position + new Vector3(1.0f, 0.0f, 0.0f));
 										blockDirection = EBlockDirection.East;
 									}
 								}
+
+								// Increase mass so he cant be pushed.
+								rigidbody.mass = 100000.0f;
 
 								return true;
                             }
@@ -782,8 +821,10 @@ public class HeroController : MonoBehaviour
 
 	public void ReleaseGrabbedObject()
 	{
+		motor.StopMovingAlongGrid();
 		grabbedObject.grabbed = false;
 		grabbedObject = null;
+		rigidbody.mass = 1.0f;
 	}
 
 	public enum EHeroAction

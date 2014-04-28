@@ -80,6 +80,12 @@ public class InputManager : MonoBehaviour
 #endif
 		}
 
+		if (disableTimer > 0.0f)
+		{
+			disableTimer -= Time.deltaTime;
+			return;
+		}
+
 		if(inputHandlingMethod == InputHandlingMethod.Polling)
 		{
 			foreach (InputDevice d in devices)
@@ -94,6 +100,12 @@ public class InputManager : MonoBehaviour
 				d.UpdateEvents();
 			}
 		}
+	}
+
+	private static float disableTimer;
+	public static void DisableInputForTime(float time)
+	{
+		disableTimer = time;
 	}
 
 	public static void UnbindAllDevices()

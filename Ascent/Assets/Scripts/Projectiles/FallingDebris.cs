@@ -4,14 +4,14 @@ using System.Collections;
 public class FallingDebris : Projectile
 {
     private Character owner;
-    private ProjectileShadow rayDown;
+    private FallingDebrisShadow rayDown;
 
     public void Initialise(Vector3 startPosition, Character owner)
     {
         startPosition.y = 15.0f;
         transform.position = startPosition;
         this.owner = owner;
-        rayDown = GetComponentInChildren<ProjectileShadow>();
+		rayDown = GetComponentInChildren<FallingDebrisShadow>();
     }
 
     public void Update()
