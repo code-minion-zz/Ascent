@@ -4,10 +4,16 @@ using System.Collections.Generic;
 
 public class MenuButtonFunctions : MonoBehaviour 
 {
-    public UIButton[] playButtons;
+    public UIButton[] Buttons;
 
     public void Update()
-    {
+	{
+		if (UICamera.selectedObject == null || !NGUITools.GetActive(UICamera.selectedObject))
+		{
+			UICamera.currentScheme = UICamera.ControlScheme.Controller;
+			UICamera.selectedObject = Buttons[0].gameObject;
+		}
+
         int playerCount = 0;
         for (int i = 0; i < InputManager.Devices.Count; ++i)
         {
@@ -16,42 +22,42 @@ public class MenuButtonFunctions : MonoBehaviour
                 break;
             }
 
-            playButtons[i].enabled = true;
+            Buttons[i].enabled = true;
             ++playerCount;
         }
         
         if (playerCount == 3)
         {
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[1].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[1].GetComponent<UIButtonKeys>();
 
-            playButtons[1].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
-            playButtons[1].GetComponent<UIButtonKeys>().selectOnDown = playButtons[2].GetComponent<UIButtonKeys>();
+            Buttons[1].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
+            Buttons[1].GetComponent<UIButtonKeys>().selectOnDown = Buttons[2].GetComponent<UIButtonKeys>();
 
-            playButtons[2].GetComponent<UIButtonKeys>().selectOnUp = playButtons[1].GetComponent<UIButtonKeys>();
-            playButtons[2].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
+            Buttons[2].GetComponent<UIButtonKeys>().selectOnUp = Buttons[1].GetComponent<UIButtonKeys>();
+            Buttons[2].GetComponent<UIButtonKeys>().selectOnDown = Buttons[3].GetComponent<UIButtonKeys>();
 
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[2].GetComponent<UIButtonKeys>();
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+            Buttons[3].GetComponent<UIButtonKeys>().selectOnUp = Buttons[2].GetComponent<UIButtonKeys>();
+            Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
         }
         else if (playerCount == 2)
         {
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[1].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[1].GetComponent<UIButtonKeys>();
 
-            playButtons[1].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
-            playButtons[1].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
+            Buttons[1].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
+            Buttons[1].GetComponent<UIButtonKeys>().selectOnDown = Buttons[3].GetComponent<UIButtonKeys>();
 
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[1].GetComponent<UIButtonKeys>();
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+            Buttons[3].GetComponent<UIButtonKeys>().selectOnUp = Buttons[1].GetComponent<UIButtonKeys>();
+            Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
         }
         else if (playerCount <= 1)
         {
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnUp = playButtons[3].GetComponent<UIButtonKeys>();
-            playButtons[0].GetComponent<UIButtonKeys>().selectOnDown = playButtons[3].GetComponent<UIButtonKeys>();
-
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnUp = playButtons[0].GetComponent<UIButtonKeys>();
-            playButtons[3].GetComponent<UIButtonKeys>().selectOnDown = playButtons[0].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
+            Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[3].GetComponent<UIButtonKeys>();
+			
+			Buttons[3].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
+            Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
         }
     }
 
