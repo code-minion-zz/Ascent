@@ -128,7 +128,7 @@ public static class SoundManager
 
 			case AudioClipType.stonedrag:
 			{
-				int result = Random.Range(1,4);
+				int result = Random.Range(1,2);
 				switch (result)
 				{
 				case 1:
