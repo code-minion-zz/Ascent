@@ -72,6 +72,7 @@ public class ArrowShooter : EnvironmentHazard
 
 				if (Physics.Raycast(new Ray(position, Direction * 1.0f), out hitInfo, 0.50f, layerMask))
                 {
+                    Debug.Log("a");
                     return;
                 }
 
