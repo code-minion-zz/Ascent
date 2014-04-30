@@ -24,6 +24,7 @@ public class FloorHUDManager : MonoBehaviour
 	public			UILabel		transitionLabel;
 	public			UITexture	transitionTexture;
 	private			float		transitionTimer = 0f;
+    public          float       transitionTime = 3.0f;
 	private			bool		paused = true;
 
 	public UIPanel mainPanel;
@@ -257,8 +258,8 @@ public class FloorHUDManager : MonoBehaviour
 		SetTransitionText("Level Start!");
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-		transitionTimer = -3f;
-		InputManager.DisableInputForTime(3.0f);
+        transitionTimer = -transitionTime;
+        InputManager.DisableInputForTime(transitionTime);
 	}
 	
 	public void LevelCompleteScreen()
@@ -266,8 +267,8 @@ public class FloorHUDManager : MonoBehaviour
 		SetTransitionText("Level Complete!");
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-		transitionTimer = 3f;
-		InputManager.DisableInputForTime(3.0f);
+        transitionTimer = transitionTime;
+        InputManager.DisableInputForTime(transitionTime);
 	}
 	
 	public void GameOverScreen()
@@ -275,8 +276,8 @@ public class FloorHUDManager : MonoBehaviour
 		SetTransitionText("GAME OVER");
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-		transitionTimer = 3f;
-		InputManager.DisableInputForTime(3.0f);
+        transitionTimer = transitionTime;
+        InputManager.DisableInputForTime(transitionTime);
 	}
 
 	public void ToggleTransition(bool active)
