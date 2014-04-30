@@ -112,8 +112,9 @@ public class Door : EnvironmentBreakable
                        if(p.Hero.collider.bounds.Intersects(immediateArea.bounds))
                        {
                            if (isFinalDoor)
-                           {
-                               Game.Singleton.Tower.LoadNextFloor();
+							{
+								FloorHUDManager.Singleton.LevelCompleteScreen();
+								Game.Singleton.Tower.CurrentFloor.gameOver = true;
                            }
                            else
                            {
@@ -147,8 +148,9 @@ public class Door : EnvironmentBreakable
 					if (standingOnDoorTimer >= 0.5f)
 					{
                         if (isFinalDoor)
-                        {
-                            Game.Singleton.Tower.LoadNextFloor();
+						{
+							FloorHUDManager.Singleton.LevelCompleteScreen();
+							Game.Singleton.Tower.CurrentFloor.gameOver = true;
                         }
                         else
                         {

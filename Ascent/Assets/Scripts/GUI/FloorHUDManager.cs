@@ -24,6 +24,7 @@ public class FloorHUDManager : MonoBehaviour
 	public			UILabel		transitionLabel;
 	public			UITexture	transitionTexture;
 	private			float		transitionTimer = 0f;
+	private			bool		paused = true;
 
 	public UIPanel mainPanel;
 
@@ -180,7 +181,7 @@ public class FloorHUDManager : MonoBehaviour
 		transitionLabel = transitionPanel.FindChild("Label").GetComponent<UILabel>();
 		transitionTexture = transitionPanel.FindChild("Texture").GetComponent<UITexture>();
 		ToggleTransition(false);
-		PauseGame();
+		ShowPauseScreen(false);
     }
 
 	void Update()
@@ -238,11 +239,19 @@ public class FloorHUDManager : MonoBehaviour
 
 	public void PauseGame()
 	{
-		NGUITools.SetActive(pausePanel.gameObject, !pausePanel.gameObject.activeSelf);
-
-		Time.timeScale = pausePanel.gameObject.activeSelf ? 0f : 1f;
+		Time.timeScale = paused ? 0f : 1f;
+		
+		Game.Singleton.Players.ForEach(p => p.Hero.HeroController.ToggleInput(paused));
 	}
-	
+
+	public void ShowPauseScreen(bool pause)
+	{
+		paused = pause;
+		NGUITools.SetActive(pausePanel.gameObject, paused);
+
+		PauseGame();
+	}
+
 	public void LevelStartScreen()
 	{
 		SetTransitionText("Level Start!");

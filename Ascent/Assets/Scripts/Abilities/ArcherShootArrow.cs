@@ -24,7 +24,7 @@ public class ArcherShootArrow : Ability
         owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 		performed = false;
-		SoundManager.PlaySound(AudioClipType.arrowwoosh,owner.transform.position,.1f);
+		SoundManager.PlaySound(AudioClipType.arrowwoosh,owner.transform.position,.5f);
 
 		owner.Animator.PlayAnimation(animationTrigger, true);
     }

@@ -47,7 +47,7 @@ public class ArcherArrow : Projectile
         }
         else
         {
-            SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+            SoundManager.PlaySound(AudioClipType.pop, transform.position, .5f);
         }
 
         // If the character hit is not the owner and it is not another enemy

@@ -124,7 +124,7 @@ public class HomingMagicMissile : Projectile
 		}
 		else
 		{
-			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .5f);
 		}
 
         Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);
