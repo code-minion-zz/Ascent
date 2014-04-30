@@ -54,6 +54,17 @@ public class Door : EnvironmentBreakable
 
 			a = transform.position;
 			a.y = 5.0f;
+
+			return;
+		}
+
+		if (isFinalDoor)
+		{
+			Vector3 a = transform.position;
+			Vector3 b = a + Vector3.up * 10f;
+
+			//Gizmos.DrawLine(a,b);
+			Handles.ArrowCap(0, a, Quaternion.LookRotation(Vector3.up), 8f);
 		}
 	}
 #endif
