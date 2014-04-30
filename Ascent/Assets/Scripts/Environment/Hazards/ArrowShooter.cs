@@ -62,7 +62,7 @@ public class ArrowShooter : EnvironmentHazard
             ObjectPool.PoolObject po = arrowPool.GetInactive();
             if (po != null)
             {
-				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.1f);
+				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.5f);
 
 				Vector3 position = baseThatGoesInTheWall.position;
 				position.y += 0.5f;

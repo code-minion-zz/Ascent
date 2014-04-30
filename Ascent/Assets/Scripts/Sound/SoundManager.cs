@@ -43,6 +43,8 @@ public static class SoundManager
 	private static AudioClip arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
 	private static AudioClip heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
 
+	public static float	VolumeScale = 0.01f;
+
 	static AudioSource source;
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
@@ -57,7 +59,9 @@ public static class SoundManager
         if (clip != null)
         {
             position += new Vector3(0.0f, 10.0f);
-			source.PlayOneShot(clip, volume);
+			source.clip = clip;
+			source.volume = volume * VolumeScale;
+			source.Play();
             //AudioSource.PlayClipAtPoint(clip, position, volume);
 
         }

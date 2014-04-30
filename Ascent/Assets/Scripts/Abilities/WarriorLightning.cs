@@ -9,7 +9,7 @@ public class WarriorLightning : Ability
         base.Initialise(owner);
 
         animationSpeed = 1.00f;
-        animationLength = 0.5f;
+        animationLength = 0.1f;
         cooldownFullDuration = 0.0f;
         animationTrigger = "Strike";
         specialCost = 3;
@@ -26,7 +26,7 @@ public class WarriorLightning : Ability
 
         GameObject lightningGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Lightning")) as GameObject;
 		lightningGO.GetComponent<Lightning>().Initialise(5, owner.transform.position + (owner.transform.forward), owner);
-		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 1f);
+		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 0.25f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
     }

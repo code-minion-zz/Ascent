@@ -11,7 +11,7 @@ public class MusicManager : MonoBehaviour
 
 	public float FadeDuration = 1f;
 	float elapsedTime;
-	public float MusicVolume = .05f;
+	public float MusicVolume = .01f;
 
 	public enum State
 	{
