@@ -89,7 +89,7 @@ public static class SoundManager
 			mySource.Play();
 
 #if UNITY_EDITOR
-			Selection.activeGameObject = mySource.gameObject;
+			//Selection.activeGameObject = mySource.gameObject;
 #endif
         }
         else
