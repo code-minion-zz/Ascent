@@ -99,7 +99,7 @@ public class HeroController : MonoBehaviour
 			{
 				FloorHUDManager hudman = FloorHUDManager.Singleton;
 				hudman.SetTransitionText("Paused");
-				hudman.PauseGame();
+				hudman.ShowPauseScreen(true);
 			}
 
             if (hero.IsDead)
@@ -191,11 +191,17 @@ public class HeroController : MonoBehaviour
 				}
 			}
 
-	
-
 #if UNITY_EDITOR
-   DebugKeys();
+   			DebugKeys();
 #endif
+		}
+		else if (!CanUseInput)
+		{
+			if (inputDevice.Start.WasReleased)
+			{
+				FloorHUDManager hudman = FloorHUDManager.Singleton;
+				hudman.ShowPauseScreen(false);
+			}
 		}
     }
 
@@ -274,6 +280,16 @@ public class HeroController : MonoBehaviour
 		shapeC.DebugDraw();
 	}
 #endif
+	
+	public void ToggleInput(bool paused)
+	{
+		CanUseInput = !paused;
+	}
+
+	public void ToggleInput()
+	{
+		CanUseInput = !CanUseInput;
+	}
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
