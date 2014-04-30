@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public enum AudioClipType
 {
     explosion,
@@ -43,33 +47,104 @@ public static class SoundManager
 	private static AudioClip arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
 	private static AudioClip heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
 
-	public static float	VolumeScale = 0.01f;
+	public static float	VolumeScale = 0.08f;
 
 	static AudioSource source;
 
+	static List<AudioSource> AudioSourcePool;
+
+	static int NumSources = 10;
+
+	public static void Initialise()
+	{
+		AudioSourcePool = new List<AudioSource>();
+		source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
+		string path = "Prefabs/Audio Source";
+		
+		int i = 0;
+		for (; i < NumSources; ++i)
+		{
+			Object obj = Resources.Load(path);
+			GameObject go = GameObject.Instantiate(obj) as GameObject;
+			AudioSourcePool.Add(go.GetComponent<AudioSource>());
+			AudioSourcePool[i].transform.parent = source.transform;
+		}
+	}
+
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
-		if (source == null)
+		AudioSource mySource = null;
+		if (mySource == null)
 		{
-			source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
+			mySource = GetSource();
 		}
 
         AudioClip clip = GetClipFromType(clipType);
 
         if (clip != null)
         {
-            position += new Vector3(0.0f, 10.0f);
-			source.clip = clip;
-			source.volume = volume * VolumeScale;
-			source.Play();
-            //AudioSource.PlayClipAtPoint(clip, position, volume);
+            //position += new Vector3(0.0f, 10.0f);
+			mySource.clip = clip;
+			mySource.volume = volume * VolumeScale;
+			mySource.Play();
 
+#if UNITY_EDITOR
+			Selection.activeGameObject = mySource.gameObject;
+#endif
         }
         else
         {
             Debug.LogWarning("Audio clip was not found or created");
         }
     }
+
+	static int NumIdleSources()
+	{
+		int count = 0; 
+
+		AudioSourcePool.ForEach(delegate(AudioSource source) {
+			if (source.isPlaying == false) 
+				++count;
+		});
+
+		return count;
+	}
+
+	static AudioSource GetSource()
+	{
+		AudioSource retval = SoundManager.GetIdleSource();
+
+		if (retval == null)
+		{
+			retval = GetOldestSource();
+		}
+		
+		return retval;
+	}
+
+	static AudioSource GetIdleSource()
+	{
+		return AudioSourcePool.Find(source => source.isPlaying == false);
+	}
+
+	static AudioSource GetOldestSource()
+	{
+		AudioSource oldest = null;
+
+		foreach (AudioSource source in AudioSourcePool)
+		{
+			if (oldest == null)
+			{
+				oldest = source;
+				continue;
+			}
+			if (oldest.time < source.time)
+			{
+				oldest = source;
+			}
+		}
+		return oldest;
+	}
 
     public static AudioClip GetClipFromType(AudioClipType type)
     {

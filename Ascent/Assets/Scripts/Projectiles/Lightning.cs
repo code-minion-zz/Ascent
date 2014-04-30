@@ -113,7 +113,7 @@ public class Lightning : Projectile
                                         velocity = nextTarget.transform.position - transform.position;
                                         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
                                         hitSomething = false;
-										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f);
+										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f/charactersHit.Count);
                                     }
                                     else
                                     {
