@@ -16,7 +16,6 @@ public class Arrow : MonoBehaviour
 
 	public TrailRenderer trail;
 
-    public GameObject arrowHitEffect;
 
     public void Initialise(float life, GameObject owner, Vector3 direction, float speed, int damage)
     {
@@ -82,7 +81,7 @@ public class Arrow : MonoBehaviour
 
 			toDestroy = true;
 
-            Instantiate(arrowHitEffect, transform.position, transform.rotation);
+			EffectFactory.Singleton.CreateArrowHit(transform.position, transform.rotation);
         }
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
@@ -90,7 +89,7 @@ public class Arrow : MonoBehaviour
             toDestroy = true;
 			trail.enabled = false;
 
-            Instantiate(arrowHitEffect, transform.position - transform.forward * 0.5f, transform.rotation);
+			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.5f, transform.rotation);
         }
     }
 }

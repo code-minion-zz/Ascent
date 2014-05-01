@@ -9,6 +9,9 @@ public class EffectFactory : MonoBehaviour
 	public GameObject arcaneExplosion;
     public GameObject[] hitEffects;
 
+	public GameObject arrowHit;
+	public GameObject arrowFire;
+
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
 	{
@@ -89,4 +92,32 @@ public class EffectFactory : MonoBehaviour
 
         return effect;
     }
+
+	public GameObject CreateArrowHit(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (arrowHit != null)
+		{
+			effect = GameObject.Instantiate(arrowHit, position, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateArrowFire(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (arrowFire != null)
+		{
+			effect = GameObject.Instantiate(arrowFire, position, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+
 }

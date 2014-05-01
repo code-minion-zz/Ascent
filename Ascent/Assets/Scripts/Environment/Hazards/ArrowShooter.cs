@@ -15,8 +15,6 @@ public class ArrowShooter : EnvironmentHazard
     private float timeElapsed = 0.0f;
     public bool activateArrows = true;
 
-    public GameObject arrowFireParticle;
-
 	private Transform baseThatGoesInTheWall;
     private Transform shootLocal;
 
@@ -88,7 +86,7 @@ public class ArrowShooter : EnvironmentHazard
 				po.go.rigidbody.angularVelocity = Vector3.zero;
 				po.go.rigidbody.velocity = Vector3.zero;
 
-                Instantiate(arrowFireParticle, shootLocal.position - (shootLocal.forward * 0.15f), Quaternion.identity);
+				EffectFactory.Singleton.CreateArrowFire(shootLocal.position - (shootLocal.forward * 0.35f), Quaternion.identity);
             }
         }	
 	}

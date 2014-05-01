@@ -4,8 +4,8 @@ using System.Collections;
 public class MusicManager : MonoBehaviour 
 {	
 	public static MusicManager Instance;
-	private static AudioClip towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
-	private static AudioClip bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
+	private static AudioClip towerMusic;
+	private static AudioClip bossMusic;
 
 	private MusicSelections nextMusic;
 
@@ -32,8 +32,15 @@ public class MusicManager : MonoBehaviour
 
 	void Start()
 	{
-		if (Instance == null) Instance = this;
-		audio.clip = towerMusic;
+		if (Instance == null)
+		{
+			Instance = this;
+
+			towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
+			bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
+
+			audio.clip = towerMusic;
+		}
 	}
 
 	void FixedUpdate()
