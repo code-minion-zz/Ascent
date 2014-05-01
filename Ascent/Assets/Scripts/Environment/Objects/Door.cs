@@ -28,6 +28,9 @@ public class Door : EnvironmentBreakable
 
 	private bool startDoor = false;
 
+    private DoorLockIndicator doorLockInidicator;
+    public Transform lockDoorIndicatorPosition;
+
 	public bool StartDoor
 	{
 		get { return startDoor; }
@@ -77,6 +80,18 @@ public class Door : EnvironmentBreakable
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
             sealedDoor.SetActive(false);
+
+            if (doorLockInidicator == null)
+            {
+                GameObject buttonIndicatorGO = NGUITools.AddChild(FloorHUDManager.Singleton.mainPanel.gameObject, Resources.Load("Prefabs/UI/DoorLockIndicator") as GameObject);
+                doorLockInidicator = buttonIndicatorGO.GetComponent<DoorLockIndicator>();
+                doorLockInidicator.Initialise(lockDoorIndicatorPosition);
+
+                doorLockInidicator.Enable(false);
+
+                // Set scale similar to the character size
+                doorLockInidicator.transform.localScale = Vector3.one * 2.5f;
+            }
         }
 	}
 
@@ -216,6 +231,8 @@ public class Door : EnvironmentBreakable
     {
         openedDoor.SetActive(true);
         sealedDoor.SetActive(false);
+        doorLockInidicator.Enable(false);
+
     }
 
     [ContextMenu("CloseDoor")]
@@ -223,5 +240,6 @@ public class Door : EnvironmentBreakable
     {
         openedDoor.SetActive(false);
         sealedDoor.SetActive(true);
+        doorLockInidicator.Enable(true);
     }
 }

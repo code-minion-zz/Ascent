@@ -75,13 +75,14 @@ GameObject:
   m_Component:
   - 4: {fileID: 400008}
   - 65: {fileID: 6500006}
+  - 114: {fileID: 11400000}
   m_Layer: 10
   m_Name: SealedDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +654,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!1 &100078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400078}
+  m_Layer: 0
+  m_Name: IndicatorPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -663,6 +679,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 400078}
   - {fileID: 400018}
   - {fileID: 400010}
   - {fileID: 400060}
@@ -1118,6 +1135,17 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.58121705, y: 5.01297712, z: -5.38059339e-07}
   m_LocalScale: {x: 1.92000008, y: 2, z: 2}
+  m_Children: []
+  m_Father: {fileID: 400000}
+--- !u!4 &400078
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
 --- !u!23 &2300000
@@ -1918,6 +1946,17 @@ Light:
   m_ShadowAngle: 0
   m_IndirectIntensity: 1
   m_AreaSize: {x: 1, y: 1}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1152b20d8f47def40a62ea4a5a7e60b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1932,7 +1971,7 @@ MonoBehaviour:
   environmentID: 2
   isDestroyed: 0
   isBreakable: 0
-  direction: 1
+  direction: 0
   targetDoor: {fileID: 0}
   isConnected: 1
   isFinalDoor: 0
@@ -1941,6 +1980,7 @@ MonoBehaviour:
   openedDoor: {fileID: 100010}
   sealedDoor: {fileID: 100008}
   spawnLocation: {fileID: 0}
+  lockDoorIndicatorPosition: {fileID: 400078}
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1

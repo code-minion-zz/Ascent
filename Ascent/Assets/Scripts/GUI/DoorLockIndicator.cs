@@ -12,7 +12,7 @@ public class DoorLockIndicator : MonoBehaviour
     }
 
     public UISprite buttonSprite;
-    public Character owner;
+    public Transform owner;
 
     private EState state;
     private float timeElapsed;
@@ -22,9 +22,10 @@ public class DoorLockIndicator : MonoBehaviour
     private float maxScale = 2.5f;
     private float prevScale;
 
-    public void Initialise(Character _character)
+    public void Initialise(Transform owner)
     {
-        owner = _character;
+        this.owner = owner;
+        buttonSprite.cachedTransform.localScale = Vector3.zero;
     }
 
     public void Update()
@@ -70,7 +71,6 @@ public class DoorLockIndicator : MonoBehaviour
 
         // Track the target
         Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(owner.transform.position);
-        screenPos.y += 0.11f;
         Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
         barPos = new Vector3(barPos.x, barPos.y);
         buttonSprite.transform.position = barPos;
@@ -83,6 +83,8 @@ public class DoorLockIndicator : MonoBehaviour
             state = EState.Growing;
 
             timeElapsed = 0.0f;
+
+            buttonSprite.enabled = true;
         }
         else if (b == false)
         {
