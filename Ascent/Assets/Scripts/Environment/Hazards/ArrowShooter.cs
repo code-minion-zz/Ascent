@@ -15,8 +15,11 @@ public class ArrowShooter : EnvironmentHazard
     private float timeElapsed = 0.0f;
     public bool activateArrows = true;
 
+    public GameObject arrowFireParticle;
+
 	private Transform baseThatGoesInTheWall;
     private Transform shootLocal;
+
 
 	private Vector3 Direction
 	{
@@ -25,7 +28,7 @@ public class ArrowShooter : EnvironmentHazard
 
 	private Vector3 SpawnPoint
 	{
-		get { return shootLocal.position + Direction * .50f; }
+		get { return shootLocal.position + Direction * 0.05f; }
 	}
 
 	// Use this for initialization
@@ -72,7 +75,6 @@ public class ArrowShooter : EnvironmentHazard
 
 				if (Physics.Raycast(new Ray(position, Direction * 1.0f), out hitInfo, 0.50f, layerMask))
                 {
-                    Debug.Log("a");
                     return;
                 }
 
@@ -85,6 +87,8 @@ public class ArrowShooter : EnvironmentHazard
                 po.go.SetActive(true);
 				po.go.rigidbody.angularVelocity = Vector3.zero;
 				po.go.rigidbody.velocity = Vector3.zero;
+
+                Instantiate(arrowFireParticle, shootLocal.position - (shootLocal.forward * 0.15f), Quaternion.identity);
             }
         }	
 	}
