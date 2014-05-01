@@ -409,6 +409,9 @@ public class Game : MonoBehaviour
             case EGameState.TowerPlayer2:
             case EGameState.TowerPlayer3:
 				{
+					if (tower == null)
+						return;
+
                     if (players != null)
                     {
                         foreach (Player p in players)

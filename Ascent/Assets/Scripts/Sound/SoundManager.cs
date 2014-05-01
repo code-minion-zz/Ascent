@@ -27,25 +27,25 @@ public enum AudioClipType
 
 public static class SoundManager
 {
-    private static AudioClip explosionClip = Resources.Load("Sounds/effects/explode") as AudioClip;
-	private static AudioClip swordSlash = Resources.Load("Sounds/effects/warriorStrike_snd01") as AudioClip;
-	private static AudioClip statueAwaken = Resources.Load("Sounds/effects/statueAwaken") as AudioClip;
-	private static AudioClip woodHit = Resources.Load("Sounds/effects/woodenhit") as AudioClip;
-	private static AudioClip freezeBlast = Resources.Load("Sounds/effects/freezeblast") as AudioClip;
-	private static AudioClip shootFire = Resources.Load("Sounds/effects/shootFire") as AudioClip;
-	private static AudioClip pop = Resources.Load("Sounds/effects/pop") as AudioClip;
-	private static AudioClip wethit1 = Resources.Load("Sounds/effects/wethit1") as AudioClip;
-	private static AudioClip wethit2 = Resources.Load("Sounds/effects/wethit2") as AudioClip;
-	private static AudioClip wethit3 = Resources.Load("Sounds/effects/wethit3") as AudioClip;
-	private static AudioClip wethit4 = Resources.Load("Sounds/effects/wethit4") as AudioClip;
-	private static AudioClip dooropen = Resources.Load("Sounds/effects/dooropen") as AudioClip;
-	private static AudioClip stonedrag = Resources.Load("Sounds/effects/stonedrag") as AudioClip;
-	private static AudioClip stonedrag2 = Resources.Load("Sounds/effects/stonedrag2") as AudioClip;
-	private static AudioClip switchclick = Resources.Load("Sounds/effects/switchclick") as AudioClip;
-	private static AudioClip lightning = Resources.Load("Sounds/effects/lightning") as AudioClip;
-	private static AudioClip earthshock = Resources.Load("Sounds/effects/earthshock") as AudioClip;
-	private static AudioClip arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
-	private static AudioClip heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
+    private static AudioClip explosionClip	;
+	private static AudioClip swordSlash		;
+	private static AudioClip statueAwaken	;
+	private static AudioClip woodHit		;
+	private static AudioClip freezeBlast	;
+	private static AudioClip shootFire		;
+	private static AudioClip pop			;
+	private static AudioClip wethit1		;
+	private static AudioClip wethit2		;
+	private static AudioClip wethit3		;
+	private static AudioClip wethit4		;
+	private static AudioClip dooropen		;
+	private static AudioClip stonedrag		;
+	private static AudioClip stonedrag2		;
+	private static AudioClip switchclick	;
+	private static AudioClip lightning		;
+	private static AudioClip earthshock		;
+	private static AudioClip arrowwoosh		;
+	private static AudioClip heavyhit		;
 
 	public static float	VolumeScale = 0.08f;
 
@@ -57,6 +57,26 @@ public static class SoundManager
 
 	public static void Initialise()
 	{
+
+		explosionClip = Resources.Load("Sounds/effects/explode") as AudioClip;
+		swordSlash = Resources.Load("Sounds/effects/warriorStrike_snd01") as AudioClip;
+		statueAwaken = Resources.Load("Sounds/effects/statueAwaken") as AudioClip;
+		woodHit = Resources.Load("Sounds/effects/woodenhit") as AudioClip;
+		freezeBlast = Resources.Load("Sounds/effects/freezeblast") as AudioClip;
+		shootFire = Resources.Load("Sounds/effects/shootFire") as AudioClip;
+		pop = Resources.Load("Sounds/effects/pop") as AudioClip;
+		wethit1 = Resources.Load("Sounds/effects/wethit1") as AudioClip;
+		wethit2 = Resources.Load("Sounds/effects/wethit2") as AudioClip;
+		wethit3 = Resources.Load("Sounds/effects/wethit3") as AudioClip;
+		wethit4 = Resources.Load("Sounds/effects/wethit4") as AudioClip;
+		dooropen = Resources.Load("Sounds/effects/dooropen") as AudioClip;
+		stonedrag = Resources.Load("Sounds/effects/stonedrag") as AudioClip;
+		stonedrag2 = Resources.Load("Sounds/effects/stonedrag2") as AudioClip;
+		switchclick = Resources.Load("Sounds/effects/switchclick") as AudioClip;
+		lightning = Resources.Load("Sounds/effects/lightning") as AudioClip;
+		earthshock = Resources.Load("Sounds/effects/earthshock") as AudioClip;
+		arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
+		heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
 		AudioSourcePool = new List<AudioSource>();
 		source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
 		string path = "Prefabs/Audio Source";
