@@ -86,7 +86,7 @@ public class Arrow : MonoBehaviour
         }
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
-			SoundManager.PlaySound(AudioClipType.pop,transform.position,.5f);
+			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
 			trail.enabled = false;
 

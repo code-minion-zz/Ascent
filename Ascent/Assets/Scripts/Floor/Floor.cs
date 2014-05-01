@@ -352,7 +352,7 @@ public class Floor : MonoBehaviour
 		{
 			// Take to summary screen
 			gameOverClock += Time.deltaTime;
-			Debug.Log(gameOverClock);
+//			Debug.Log(gameOverClock);
 			if (gameOverClock > gameOverDelay)
 			{
 				if (IsAllHeroesDead())
@@ -363,7 +363,6 @@ public class Floor : MonoBehaviour
 				{
 					Game.Singleton.Tower.LoadNextFloor();
 				}
-				//EndFloor();
 			}
 			// Restart the floor
 		}

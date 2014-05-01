@@ -210,6 +210,7 @@ public class Game : MonoBehaviour
 		gameState = testState;
 		gameStateToLoad = testState;
 		InitialiseState();
+		SoundManager.Initialise();
 
 		// Set this so it does not get initialised again
 		initialised = true;
