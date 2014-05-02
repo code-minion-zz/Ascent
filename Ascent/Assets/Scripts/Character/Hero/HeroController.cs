@@ -772,7 +772,7 @@ public class HeroController : MonoBehaviour
                     if (dot < -0.75f)
                     {
                         // Has it been grabbed yet?
-                        if (!closestBlock.grabbed)
+                        if (!closestBlock.grabbed || !closestBlock.IsInMotion)
                         {
                             if (wasButtonPressed)
                             {

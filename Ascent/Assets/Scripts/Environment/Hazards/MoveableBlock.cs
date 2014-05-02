@@ -9,10 +9,15 @@ public class MoveableBlock : Interactable
 
 	float offset = 1.0f;
 	float moveTime = 0.5f;
-	float timeAccum;
+	public float timeAccum;
 
 	Vector3 startPos;
 	Vector3 targetPos;
+
+    public Transform northWestCorner;
+    public Transform northEastCorner;
+    public Transform southWestCorner;
+    public Transform southEastCorner;
 
 	// Use this for initialization
 	public override void Start () 
@@ -24,7 +29,7 @@ public class MoveableBlock : Interactable
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		if (IsInMotion)
 		{
@@ -37,20 +42,49 @@ public class MoveableBlock : Interactable
 
 			 transform.position = Vector3.Lerp(startPos, targetPos, timeAccum / moveTime);
 		}
-
-		//GetComponent<Shadow>().Process();
-		//GetComponentInChildren<CharacterTilt>().Process();
 	}
+
+    private Vector3 left = new Vector3(-1.0f, 0.0f, 0.0f);
+    private Vector3 right = new Vector3(1.0f, 0.0f, 0.0f);
+    private Vector3 south = new Vector3(0.0f, 0.0f, -1.0f);
+    private Vector3 north = new Vector3(0.0f, 0.0f, 1.0f);
 
 	public void MoveAlongGrid(Vector3 direction)
 	{
 		if (!IsInMotion)
 		{
+            Vector3 normalisedDirection = direction.normalized;
+
 			SoundManager.PlaySound(AudioClipType.stonedrag, transform.position, 1f);
 			IsInMotion = true;
 			timeAccum = 0.0f;
 			startPos = transform.position;
-			targetPos = startPos + direction.normalized * offset;
+
+
+			targetPos = startPos + normalisedDirection * offset;
+
+            if(normalisedDirection == left)
+            {
+                EffectFactory.Singleton.CreateMoveBlockDust(northWestCorner.position, Quaternion.identity);
+                EffectFactory.Singleton.CreateMoveBlockDust(southWestCorner.position, Quaternion.identity);
+            }
+            else if (normalisedDirection == right)
+            {
+                EffectFactory.Singleton.CreateMoveBlockDust(northEastCorner.position, Quaternion.identity);
+                EffectFactory.Singleton.CreateMoveBlockDust(southEastCorner.position, Quaternion.identity);
+            }
+            else if (normalisedDirection == south)
+            {
+                EffectFactory.Singleton.CreateMoveBlockDust(southWestCorner.position, Quaternion.identity);
+                EffectFactory.Singleton.CreateMoveBlockDust(southEastCorner.position, Quaternion.identity);
+            }
+            else if (normalisedDirection == north)
+            {
+                EffectFactory.Singleton.CreateMoveBlockDust(northWestCorner.position, Quaternion.identity);
+                EffectFactory.Singleton.CreateMoveBlockDust(northEastCorner.position, Quaternion.identity);
+            }
+
+            EffectFactory.Singleton.CreateMoveBlockDust(transform.position, Quaternion.identity);
 		}
 	}
 

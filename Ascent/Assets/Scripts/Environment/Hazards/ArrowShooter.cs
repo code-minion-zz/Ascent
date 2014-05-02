@@ -73,6 +73,7 @@ public class ArrowShooter : EnvironmentHazard
 
 				if (Physics.Raycast(new Ray(position, Direction * 1.0f), out hitInfo, 0.50f, layerMask))
                 {
+                    Debug.Log("A");
                     return;
                 }
 
@@ -90,4 +91,13 @@ public class ArrowShooter : EnvironmentHazard
             }
         }	
 	}
+
+    void OnDrawGizmos()
+    {
+        
+		Vector3 position = baseThatGoesInTheWall.position;
+		position.y += 0.5f;
+
+        Debug.DrawLine(position, position + Direction, Color.red);
+    }
 }

@@ -124,11 +124,13 @@ public class Abomination : Enemy
 
 	public override void OnEnable()
 	{
+        base.OnEnable();
 		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
 	}
 
     public override void OnDisable()
     {
+        base.OnDisable();
 		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 

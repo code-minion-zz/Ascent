@@ -136,12 +136,26 @@ public abstract class Enemy : Character
 
     public virtual void OnEnable()
     {
-        // To be overridden
+        if (isDead)
+        {
+            animator.animator.SetLayerWeight(0, 0.0f);
+            animator.animator.SetLayerWeight(1, 1.0f);
+            deathSequenceTime = deathSequenceEnd;
+            animator.PlayAnimation("DeathIdle", true);
+            animator.animator.enabled = false;
+        }
     }
 
     public virtual void OnDisable()
     {
-        // To be overridden
+        if (isDead)
+        {
+            animator.animator.SetLayerWeight(0, 0.0f);
+            animator.animator.SetLayerWeight(1, 1.0f);
+            deathSequenceTime = deathSequenceEnd;
+            animator.PlayAnimation("DeathIdle", true);
+            animator.animator.enabled = false;
+        }
     }
 
     #endregion
@@ -154,30 +168,44 @@ public abstract class Enemy : Character
         if (isDead)
         {
 			ResetColor();
-			animator.PlayAnimation("Death", true);
-			if (deathSequenceTime != deathSequenceEnd)
-			{
-				deathSequenceTime += Time.deltaTime;
-				if (deathSequenceTime > deathSequenceEnd)
-				{
-					deathSequenceTime = deathSequenceEnd;
-					deathPosition = transform.position;
-				}
-			}
-			else if (deathSequenceTime == deathSequenceEnd)
-			{
-				deathSinkTime += Time.deltaTime;
+            if (deathSequenceTime != deathSequenceEnd)
+            {
+                deathSequenceTime += Time.deltaTime;
+                if (deathSequenceTime > deathSequenceEnd)
+                {
+                    deathPosition = transform.position;
+                    animator.animator.SetLayerWeight(0, 0.0f);
+                    animator.animator.SetLayerWeight(1, 1.0f);
+                    deathSequenceTime = deathSequenceEnd;
+                    animator.PlayAnimation("DeathIdle", true);
+                    animator.animator.enabled = false;
+                    return;
+                }
+            }
+            else if (deathSequenceTime == deathSequenceEnd)
+            {
+                animator.animator.SetLayerWeight(0, 0.0f);
+                animator.animator.SetLayerWeight(1, 1.0f);
+                deathSequenceTime = deathSequenceEnd;
+                animator.PlayAnimation("DeathIdle", true);
+                animator.animator.enabled = false;
+                return;
+            }
+            animator.PlayAnimation("Death", true);
+            //else if (deathSequenceTime == deathSequenceEnd)
+            //{
+            //    deathSinkTime += Time.deltaTime;
 
-				//Vector3 targetPos = deathPosition;
-				//targetPos.y -= 2.0f;
-				//transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
+            //    //Vector3 targetPos = deathPosition;
+            //    //targetPos.y -= 2.0f;
+            //    //transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
 
-				if (deathSinkTime > deathSinkEnd)
-				{
-					deathSinkTime = deathSinkEnd;
-					this.gameObject.SetActive(false);
-				}
-			}
+            //    if (deathSinkTime > deathSinkEnd)
+            //    {
+            //        deathSinkTime = deathSinkEnd;
+            //        this.gameObject.SetActive(false);
+            //    }
+            //}
         }
         else
         {
@@ -253,6 +281,12 @@ public abstract class Enemy : Character
 		{
 			updateHpBar = false;
 		}
+
+        if (isDead)
+        {
+            deathSequenceTime = deathSequenceEnd;
+            animator.PlayAnimation("DeathIdle", true);
+        }
 	}
 
     public override void ApplyCombatEffects(DamageResult result)
@@ -285,6 +319,12 @@ public abstract class Enemy : Character
             this.collider.enabled = false;
             this.transform.rigidbody.isKinematic = true;
             this.transform.collider.enabled = false;
+
+            Transform colliders = transform.FindChild("Colliders");
+            if (colliders != null)
+            {
+                colliders.gameObject.SetActive(false);
+            }
         }
 
 		FloorHUDManager.Singleton.RemoveEnemyLifeBar(hpBar);

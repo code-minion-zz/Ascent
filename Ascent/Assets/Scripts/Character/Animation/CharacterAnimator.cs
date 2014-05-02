@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Animator))]
 public class CharacterAnimator : MonoBehaviour
 {
-    protected Animator animator;
+    public Animator animator;
 
 	protected bool takeHit = false;
 	protected bool dying = false;

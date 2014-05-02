@@ -12,6 +12,8 @@ public class EffectFactory : MonoBehaviour
 	public GameObject arrowHit;
 	public GameObject arrowFire;
 
+    public GameObject moveBlockEffect;
+
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
 	{
@@ -57,6 +59,7 @@ public class EffectFactory : MonoBehaviour
 
         if (hitEffects != null && hitEffects.Length > 0)
         {
+            position.y += 0.5f;
             int id = UnityEngine.Random.Range(0, hitEffects.Length);
 
             hitEffect = GameObject.Instantiate(hitEffects[id], position, rotation) as GameObject;
@@ -118,6 +121,21 @@ public class EffectFactory : MonoBehaviour
 
 		return effect;
 	}
+
+    public GameObject CreateMoveBlockDust(Vector3 position, Quaternion rotation)
+    {
+        GameObject effect = null;
+
+        if (moveBlockEffect != null)
+        {
+            Vector3 pos = position;
+            pos.y += 0.5f;
+            effect = GameObject.Instantiate(moveBlockEffect, pos, rotation) as GameObject;
+            effect.transform.parent = transform;
+        }
+
+        return effect;
+    }
 
 
 }
