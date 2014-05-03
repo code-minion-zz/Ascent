@@ -91,13 +91,4 @@ public class ArrowShooter : EnvironmentHazard
             }
         }	
 	}
-
-    void OnDrawGizmos()
-    {
-        
-		Vector3 position = baseThatGoesInTheWall.position;
-		position.y += 0.5f;
-
-        Debug.DrawLine(position, position + Direction, Color.red);
-    }
 }
