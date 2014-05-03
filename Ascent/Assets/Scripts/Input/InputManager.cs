@@ -86,10 +86,10 @@ public class InputManager : MonoBehaviour
 		}
 		else
 		{
-			disable = false;
+			isEnabled = true;
 		}
 
-		if (disable)
+		if (!isEnabled)
 		{
 			return;
 		}
@@ -110,20 +110,12 @@ public class InputManager : MonoBehaviour
 		}
 	}
 	
-	private static bool disable;
+	public static bool isEnabled;
 	private static float disableTimer;
 	public static void DisableInputForTime(float time)
 	{
 		disableTimer = time;
-		disable = true;
-	}
-	public static void Disable()
-	{
-		disable = true;
-	}
-	public static void Enable()
-	{
-		disable = false;
+		isEnabled = false;
 	}
 
 	public static void UnbindAllDevices()

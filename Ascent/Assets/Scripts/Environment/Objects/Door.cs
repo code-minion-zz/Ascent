@@ -139,8 +139,7 @@ public class Door : EnvironmentBreakable
                        {
                            if (isFinalDoor)
 							{
-								FloorHUDManager.Singleton.LevelCompleteScreen();
-								Game.Singleton.Tower.CurrentFloor.gameOver = true;
+								GoThroughDoorToNextFloor();
                            }
                            else
                            {
@@ -175,8 +174,7 @@ public class Door : EnvironmentBreakable
 					{
                         if (isFinalDoor)
 						{
-							FloorHUDManager.Singleton.LevelCompleteScreen();
-							Game.Singleton.Tower.CurrentFloor.gameOver = true;
+							GoThroughDoorToNextFloor();
                         }
                         else
                         {
@@ -198,8 +196,7 @@ public class Door : EnvironmentBreakable
 						{
                             if (isFinalDoor)
                             {
-								FloorHUDManager.Singleton.LevelCompleteScreen();
-                                Game.Singleton.Tower.CurrentFloor.gameOver = true;
+								GoThroughDoorToNextFloor();
                             }
                             else
                             {
@@ -218,6 +215,12 @@ public class Door : EnvironmentBreakable
                 standingOnDoorTimer = 0.0f;
             }
         }
+	}
+
+	public void GoThroughDoorToNextFloor()
+	{
+		FloorHUDManager.Singleton.LevelCompleteScreen();
+		Game.Singleton.Tower.CurrentFloor.gameOver = true;
 	}
 
 	public void SetAsStartDoor()

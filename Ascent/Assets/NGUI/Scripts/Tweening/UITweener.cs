@@ -105,9 +105,9 @@ public abstract class UITweener : MonoBehaviour
 
 	bool mStarted = false;
 	float mStartTime = 0f;
-	float mDuration = 0f;
+	public float mDuration = 0f;
 	float mAmountPerDelta = 1000f;
-	float mFactor = 0f;
+	public float mFactor = 0f;
 
 	/// <summary>
 	/// Amount advanced per delta time.

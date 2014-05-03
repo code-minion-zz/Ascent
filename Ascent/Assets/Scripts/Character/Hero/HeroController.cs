@@ -93,19 +93,25 @@ public class HeroController : MonoBehaviour
 
     void Update()
     {
+		if (!InputManager.isEnabled)
+		{
+			return;
+		}
+
 		if (CanUseInput && InputManager.IsPolling)
 		{
-			if (inputDevice.Start.WasReleased)
+            if (hero.IsDead)
+            {
+                return;
+            }
+
+			FloorHUDManager hud = FloorHUDManager.Singleton;
+			if (hud != null && hud.canPause && inputDevice.Start.WasReleased)
 			{
 				FloorHUDManager hudman = FloorHUDManager.Singleton;
 				hudman.SetTransitionText("Paused");
 				hudman.ShowPauseScreen(true);
 			}
-
-            if (hero.IsDead)
-            {
-                return;
-            }
 
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
 			if (hero.HitTaken)

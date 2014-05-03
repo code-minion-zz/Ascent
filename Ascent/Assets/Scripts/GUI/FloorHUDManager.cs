@@ -24,8 +24,10 @@ public class FloorHUDManager : MonoBehaviour
 	public			UILabel		transitionLabel;
 	public			UITexture	transitionTexture;
 	private			float		transitionTimer = 0f;
-    public          float       transitionTime = 3.0f;
+    private         float      transitionTime = 3.0f;
 	private			bool		paused = true;
+
+	public SceneFadeInFadeOut fader;
 
 	public UIPanel mainPanel;
 
@@ -44,6 +46,10 @@ public class FloorHUDManager : MonoBehaviour
 
     }
 
+	public bool canPause
+	{
+		get { return transitionTimer == 0.0f; }
+	}
 
 	public void OnEnable()
 	{
@@ -51,16 +57,6 @@ public class FloorHUDManager : MonoBehaviour
         {
             singleton = this;
         }
-
-		//if (Game.Singleton.IsWideScreen)
-		//{
-		//    root.manualHeight = 720;
-		//}
-		//else
-		//{
-		//    root.manualHeight = 1020;
-		//}
-		//mainPanel.SetDirty();
 	}
 
     public void OnDestroy()
@@ -175,18 +171,24 @@ public class FloorHUDManager : MonoBehaviour
 				p.Hero.HeroController.InitialiseControllerIndicators();
 			}
 		}
+	
 		
-		pausePanel = transform.Find("Pause Panel");
-		pauseLabel = pausePanel.FindChild("Label").GetComponent<UILabel>();
-		transitionPanel = transform.Find("Transition Panel");
-		transitionLabel = transitionPanel.FindChild("Label").GetComponent<UILabel>();
-		transitionTexture = transitionPanel.FindChild("Texture").GetComponent<UITexture>();
-		ToggleTransition(false);
 		ShowPauseScreen(false);
+
+		LevelStartScreen();
+
+		fader.gameObject.SetActive(true);
+		fader.onTransitionEnd += OnFadeInEnd;
+		fader.onReverseTransitionEnd += OnFadeOutEnd;
+		fader.transitionTime = Game.Singleton.fadeIntoLevelTime;
+		fader.Transition();
     }
 
 	void Update()
 	{
+		if (fader.Fading)
+			return;
+
 		if (transitionTimer < 0) // level start transition
 		{
 			transitionTimer += Time.deltaTime;
@@ -195,15 +197,7 @@ public class FloorHUDManager : MonoBehaviour
 			{
 				transitionTimer = 0;
 			}
-		}
-		else if (transitionTimer > 0) // level end transition
-		{
-			transitionTimer -= Time.deltaTime;
 
-			if (transitionTimer < 0)
-			{
-				transitionTimer = 0;
-			}
 		}
 		
 		if (transitionTimer == 0)
@@ -215,7 +209,8 @@ public class FloorHUDManager : MonoBehaviour
 		}
 		else
 		{
-			transitionPanel.GetComponent<UIPanel>().alpha = (Mathf.Abs(transitionTimer)/3f);
+			transitionPanel.GetComponent<UIPanel>().alpha = (Mathf.Abs(transitionTimer)/transitionTime);
+			
 		}
 	}
 	
@@ -255,29 +250,43 @@ public class FloorHUDManager : MonoBehaviour
 
 	public void LevelStartScreen()
 	{
-		SetTransitionText("Level Start!");
+		if(Game.Singleton.showLevelStartMessageTimer == 0.0f)
+			return;
+
+		
+		SetTransitionText((Game.Singleton.Tower.currentFloorNumber >= Game.Singleton.maxFloor ? "Final Floor" : "Floor " + Game.Singleton.Tower.currentFloorNumber));
 		ToggleTransition(true);
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-        transitionTimer = -transitionTime;
-        InputManager.DisableInputForTime(transitionTime);
+        transitionTimer = -Game.Singleton.showLevelStartMessageTimer;
+		transitionTime = Mathf.Abs (transitionTimer);
 	}
 	
 	public void LevelCompleteScreen()
 	{
-		SetTransitionText("Level Complete!");
 		ToggleTransition(true);
+		SetTransitionText((Game.Singleton.Tower.currentFloorNumber >= Game.Singleton.maxFloor ? "Congratulations Final Floor" : "Floor " + Game.Singleton.Tower.currentFloorNumber) + " Completed");
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-        transitionTimer = transitionTime;
-        InputManager.DisableInputForTime(transitionTime);
+		transitionTimer = Game.Singleton.showLevelCompleteMessageTimer;
+		transitionTime = transitionTimer;
+		InputManager.DisableInputForTime(transitionTime + fader.waitTimeOut + fader.transitionTime + 0.5f);
+
+		fader.waitTimeOut = transitionTimer;
+		fader.transitionTime = Game.Singleton.fadeOutOfLevelTime;
+		fader.ReverseTransition();
 	}
 	
 	public void GameOverScreen()
 	{
-		SetTransitionText("GAME OVER");
 		ToggleTransition(true);
+		SetTransitionText("GAME OVER");
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-        transitionTimer = transitionTime;
-        InputManager.DisableInputForTime(transitionTime);
+		transitionTimer = Game.Singleton.showGameOvermessageTimer;
+		transitionTime = transitionTimer;
+		InputManager.DisableInputForTime(transitionTime + fader.waitTimeOut + fader.transitionTime + 0.5f);
+
+		fader.waitTimeOut = transitionTimer;
+		fader.transitionTime = Game.Singleton.fadeOutFromGameOverTime;
+		fader.ReverseTransition();
 	}
 
 	public void ToggleTransition(bool active)
@@ -288,5 +297,15 @@ public class FloorHUDManager : MonoBehaviour
 	public void SetTransitionText(string text)
 	{
 		transitionLabel.text = text;
+	}
+
+	public void OnFadeInEnd()
+	{
+		LevelStartScreen();
+	}
+
+	public void OnFadeOutEnd()
+	{
+		ToggleTransition(true);
 	}
 }

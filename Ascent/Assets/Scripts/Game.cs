@@ -87,7 +87,21 @@ public class Game : MonoBehaviour
         set { players = value; }
     }
 
+	public int maxFloor = 2;
 	public int startingHealth = 20;
+
+	public float fadeIntoLevelTime = 1.5f;
+	public float fadeOutOfLevelTime = 1.5f;
+	public float fadeOutFromGameOverTime = 1.5f;
+
+	public float showLevelStartMessageTimer = 2.0f;
+	public float showGameOvermessageTimer = 3.0f;
+	public float showLevelCompleteMessageTimer = 2.0f;
+
+	public float GameOverDelay
+	{
+		get { return fadeOutFromGameOverTime + showGameOvermessageTimer + 0.5f; }
+	}
 
     public int AlivePlayerCount
     {
