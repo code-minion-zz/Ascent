@@ -60,7 +60,7 @@ public class HeroController : MonoBehaviour
 
 		//shape = new Circle(hero.transform, 1.5f, new Vector3(0.0f, 0.0f, 1.7f));
 		shapeA = new Arc(hero.transform, 3.5f, 80.0f, transform.forward * -0.5f);
-		shapeB = new Arc(hero.transform, 10.0f, 30.0f, Vector3.zero);
+		shapeB = new Arc(hero.transform, 15.0f, 30.0f, Vector3.zero);
 		shapeC = new Circle(hero.transform, 1.5f, Vector3.zero);
 	}
 
@@ -71,7 +71,7 @@ public class HeroController : MonoBehaviour
 		buttonIndicator.Initialise(hero);
 
 		// Set scale similar to the character size
-		buttonIndicator.transform.localScale = Vector3.one * 2.5f;
+		//buttonIndicator.transform.localScale = Vector3.one * 2.5f;
 
 		//buttonIndicator.Enable(false);
 

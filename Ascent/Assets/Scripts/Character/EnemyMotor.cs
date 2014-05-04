@@ -20,7 +20,6 @@ public class EnemyMotor : CharacterMotor
 		{
 			// Rotate toward the target
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);
-
 			// Animate based on current speed
 			GetComponent<CharacterAnimator>().PlayAnimation("Movement", (GetComponent<AISteeringAgent>().Velocity.magnitude / GetComponent<AISteeringAgent>().maxSpeed));
 

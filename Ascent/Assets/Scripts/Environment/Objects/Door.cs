@@ -79,7 +79,6 @@ public class Door : EnvironmentBreakable
         {
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
-            sealedDoor.SetActive(false);
 
             if (doorLockInidicator == null)
             {

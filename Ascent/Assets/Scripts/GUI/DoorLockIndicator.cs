@@ -30,6 +30,9 @@ public class DoorLockIndicator : MonoBehaviour
 
     public void Update()
     {
+		if (owner == null)
+			return;
+
         // Shrink or Grow
         switch (state)
         {

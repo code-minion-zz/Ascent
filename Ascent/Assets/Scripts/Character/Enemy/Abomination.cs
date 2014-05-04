@@ -16,7 +16,7 @@ public class Abomination : Enemy
     private int chargeActionID;
 
     public override void Initialise()
-{
+	{
         base.Initialise();
 
         // Add abilities
@@ -64,7 +64,7 @@ public class Abomination : Enemy
 			// Charge at the hero.
 			chargeTrigger = behaviour.AddTrigger();
 			chargeTrigger.Operation = AITrigger.EConditionalExit.Stop;
-			//chargeTrigger.AddCondition(new AICondition_Timer(0.5f, 1.0f, 2.0f), AITrigger.EConditional.And);
+			chargeTrigger.AddCondition(new AICondition_Timer(1.0f, 1.5f), AITrigger.EConditional.And);
 			chargeTrigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[chargeActionID]));
 			chargeTrigger.OnTriggered += OnCanUseCharge;
 
@@ -81,7 +81,7 @@ public class Abomination : Enemy
 
 	public override void StateTransitionToAggressive()
 	{
-		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive;
+		AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Seek;
 
 		SetTarget();
 

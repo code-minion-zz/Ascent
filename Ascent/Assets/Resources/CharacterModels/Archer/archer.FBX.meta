@@ -338,7 +338,7 @@ ModelImporter:
     4300000: hell_whip_idle
     4300002: hell_whip
     4300004: demon
-    7400000: Take 001
+    7400000: archerDeathIdle
     7400002: grounded3hitCombo
     7400004: groundedHeadButt
     7400006: groundedHellishBreathAttack
@@ -1815,6 +1815,504 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: archerDeathIdle
+      takeName: Take 001
+      firstFrame: 2474
+      lastFrame: 2475
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: demon
+        weight: 1
+      - path: demon_
+        weight: 1
+      - path: demon_/demon_ Footsteps
+        weight: 1
+      - path: demon_/demon_ Pelvis
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe0
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe0/demon_ L Toe01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe0/demon_ L Toe01/demon_ L Toe02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe0/demon_ L Toe01/demon_ L Toe02/demon_
+          L Toe0Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe1/demon_ L Toe11
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe1/demon_ L Toe11/demon_ L Toe12
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe1/demon_ L Toe11/demon_ L Toe12/demon_
+          L Toe1Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe2
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe2/demon_ L Toe21
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe2/demon_ L Toe21/demon_ L Toe22
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ L Thigh/demon_ L Calf/demon_
+          L HorseLink/demon_ L Foot/demon_ L Toe2/demon_ L Toe21/demon_ L Toe22/demon_
+          L Toe2Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe0
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe0/demon_ R Toe01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe0/demon_ R Toe01/demon_ R Toe02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe0/demon_ R Toe01/demon_ R Toe02/demon_
+          R Toe0Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe1/demon_ R Toe11
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe1/demon_ R Toe11/demon_ R Toe12
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe1/demon_ R Toe11/demon_ R Toe12/demon_
+          R Toe1Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe2
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe2/demon_ R Toe21
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe2/demon_ R Toe21/demon_ R Toe22
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ R Thigh/demon_ R Calf/demon_
+          R HorseLink/demon_ R Foot/demon_ R Toe2/demon_ R Toe21/demon_ R Toe22/demon_
+          R Toe2Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger0
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger0/demon_ L Finger01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger0/demon_ L Finger01/demon_ L Finger02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger0/demon_ L Finger01/demon_ L Finger02/demon_ L Finger0Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger1/demon_ L Finger11
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger1/demon_ L Finger11/demon_ L Finger12
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger1/demon_ L Finger11/demon_ L Finger12/demon_ L Finger1Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger2
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger2/demon_ L Finger21
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger2/demon_ L Finger21/demon_ L Finger22
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger2/demon_ L Finger21/demon_ L Finger22/demon_ L Finger2Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger3
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger3/demon_ L Finger31
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger3/demon_ L Finger31/demon_ L Finger32
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ L Clavicle/demon_ L UpperArm/demon_ L Forearm/demon_ L Hand/demon_
+          L Finger3/demon_ L Finger31/demon_ L Finger32/demon_ L Finger3Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1/demon_ Head
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1/demon_ Head/Bone001
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1/demon_ Head/Bone001/Bone002
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1/demon_ Head/Bone001/Bone002/Bone003
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ Neck1/demon_ Head/demon_ HeadNub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger0
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger0/demon_ R Finger01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger0/demon_ R Finger01/demon_ R Finger02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger0/demon_ R Finger01/demon_ R Finger02/demon_ R Finger0Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger1/demon_ R Finger11
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger1/demon_ R Finger11/demon_ R Finger12
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger1/demon_ R Finger11/demon_ R Finger12/demon_ R Finger1Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger2
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger2/demon_ R Finger21
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger2/demon_ R Finger21/demon_ R Finger22
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger2/demon_ R Finger21/demon_ R Finger22/demon_ R Finger2Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger3
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger3/demon_ R Finger31
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger3/demon_ R Finger31/demon_ R Finger32
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/demon_
+          R Finger3/demon_ R Finger31/demon_ R Finger32/demon_ R Finger3Nub
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017/whip_bone_018
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017/whip_bone_018/whip_bone_019
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017/whip_bone_018/whip_bone_019/whip_bone_020
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017/whip_bone_018/whip_bone_019/whip_bone_020/whip_bone_021
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/demon_
+          Neck/demon_ R Clavicle/demon_ R UpperArm/demon_ R Forearm/demon_ R Hand/whip_bone_001/whip_bone_002/whip_bone_003/whip_bone_004/whip_bone_005/whip_bone_007/whip_bone_008/whip_bone_009/whip_bone_010/whip_bone_011/whip_bone_012/whip_bone_013/whip_bone_014/whip_bone_015/whip_bone_016/whip_bone_017/whip_bone_018/whip_bone_019/whip_bone_020/whip_bone_021/whip_bone_022
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_A_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_A_01/finger_wing_L_A_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_A_01/finger_wing_L_A_02/finger_wing_L_A_03
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_A_01/finger_wing_L_A_02/finger_wing_L_A_03/finger_wing_L_A_04
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_B_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_B_01/finger_wing_L_B_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_B_01/finger_wing_L_B_02/finger_wing_L_B_03
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_B_01/finger_wing_L_B_02/finger_wing_L_B_03/finger_wing_L_B_04
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_C_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_C_01/finger_wing_L_C_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_C_01/finger_wing_L_C_02/finger_wing_L_A_03
+          1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/finger_wing_L_C_01/finger_wing_L_C_02/finger_wing_L_A_03
+          1/finger_wing_L_C_04
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/hand_wing_L_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/thumb_wing_L_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/thumb_wing_L_01/thumb_wing_L_02
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/thumb_wing_L_01/thumb_wing_L_02/thumb_wing_L_03
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/arm_wing_L/fore_arm_wing_L_01/fore_arm_wing_L_02/hand_wing_L_01/thumb_wing_L_01/thumb_wing_L_02/thumb_wing_L_03/thumb_wing_L_04
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/Dummy003
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy001/Dummy003/IK
+          Chain001
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_A_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_A_01(mirrored)/finger_wing_L_A_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_A_01(mirrored)/finger_wing_L_A_02(mirrored)/finger_wing_L_A_03(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_A_01(mirrored)/finger_wing_L_A_02(mirrored)/finger_wing_L_A_03(mirrored)/finger_wing_L_A_04(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_B_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_B_01(mirrored)/finger_wing_L_B_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_B_01(mirrored)/finger_wing_L_B_02(mirrored)/finger_wing_L_B_03(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_B_01(mirrored)/finger_wing_L_B_02(mirrored)/finger_wing_L_B_03(mirrored)/finger_wing_L_B_04(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_C_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_C_01(mirrored)/finger_wing_L_C_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_C_01(mirrored)/finger_wing_L_C_02(mirrored)/finger_wing_L_A_03(mirrored)
+          1
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/finger_wing_L_C_01(mirrored)/finger_wing_L_C_02(mirrored)/finger_wing_L_A_03(mirrored)
+          1/finger_wing_L_C_04(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/hand_wing_L_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/thumb_wing_L_01(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/thumb_wing_L_01(mirrored)/thumb_wing_L_02(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/thumb_wing_L_01(mirrored)/thumb_wing_L_02(mirrored)/thumb_wing_L_03(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/arm_wing_L(mirrored)/fore_arm_wing_L_01(mirrored)/fore_arm_wing_L_02(mirrored)/hand_wing_L_01(mirrored)/thumb_wing_L_01(mirrored)/thumb_wing_L_02(mirrored)/thumb_wing_L_03(mirrored)/thumb_wing_L_04(mirrored)
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/Dummy004
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/Dummy002/Dummy004/IK
+          Chain002
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_01
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_01/whip_idle_bone_002
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_01/whip_idle_bone_002/whip_idle_bone_03
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_01/whip_idle_bone_002/whip_idle_bone_03/whip_idle_bone_04
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_05
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_05/whip_idle_bone_06
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_05/whip_idle_bone_06/whip_idle_bone_07
+        weight: 1
+      - path: demon_/demon_ Pelvis/demon_ Spine/demon_ Spine1/demon_ Spine2/whip_idle_bone_05/whip_idle_bone_06/whip_idle_bone_07/whip_idle_bone_08
+        weight: 1
+      - path: hell_whip
+        weight: 1
+      - path: hell_whip_idle
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
     isReadable: 1

@@ -56,6 +56,9 @@ public abstract class Enemy : Character
     public int health;
     public int attack;
 
+	public float enragePercentage = 0.0f;
+	protected bool enraged;
+
     private Player targetPlayer;
     private Vector3 originalScale;
 
@@ -192,27 +195,25 @@ public abstract class Enemy : Character
                 return;
             }
             animator.PlayAnimation("Death", true);
-            //else if (deathSequenceTime == deathSequenceEnd)
-            //{
-            //    deathSinkTime += Time.deltaTime;
-
-            //    //Vector3 targetPos = deathPosition;
-            //    //targetPos.y -= 2.0f;
-            //    //transform.position = Vector3.Lerp(deathPosition, targetPos, deathSinkTime);
-
-            //    if (deathSinkTime > deathSinkEnd)
-            //    {
-            //        deathSinkTime = deathSinkEnd;
-            //        this.gameObject.SetActive(false);
-            //    }
-            //}
         }
         else
         {
             base.Update();
 
-            if (CanMove && CanAct)
+			if (!enraged && enragePercentage != 0.0f && (float)EnemyStats.CurrentHealth / (float)EnemyStats.MaxHealth <= enragePercentage)
+			{
+				Enrage();
+				enraged = true;
+			}
+
+			if(IsInState(EStatus.Stun))
+			{
+				animator.PlayAnimation("Stunned", true);
+			}
+            else if (CanMove && CanAct)
             {
+				animator.PlayAnimation("Stunned", false);
+
 				Vector3 velocity = Vector3.zero;
 
 				if (TargetCharacter != null)
@@ -256,6 +257,11 @@ public abstract class Enemy : Character
 	}
 
     #endregion
+
+	protected virtual void Enrage()
+	{
+		// to be overidden
+	}
 
 	protected virtual void PositionHpBar()
 	{

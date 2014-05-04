@@ -41,6 +41,12 @@ public class AICondition_Timer : AICondition
         timeElapsed = 0.0f;
     }
 
+	public void Reset(float randMin, float randMax)
+	{
+		this.randMin = randMin;
+		this.randMax = randMax;
+	}
+
     public override bool HasBeenMet()
     {
         timeElapsed += Time.deltaTime;

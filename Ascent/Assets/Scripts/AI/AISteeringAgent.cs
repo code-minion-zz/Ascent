@@ -87,6 +87,8 @@ public class AISteeringAgent : MonoBehaviour
 	public delegate void PathCompleted();
 	public event PathCompleted OnPathCompleted;
 
+	private Vector3 debugDesired = Vector3.forward;
+
 	public Vector3 Steer(Vector3 target)
 	{
 		closeEnough = false;
@@ -224,6 +226,8 @@ public class AISteeringAgent : MonoBehaviour
 		desiredVelocity *= maxSpeed;
 		desiredVelocity -= velocity;
 
+		
+
 		return desiredVelocity;
 	}
 
@@ -253,6 +257,7 @@ public class AISteeringAgent : MonoBehaviour
 
 		return Vector3.zero;
 	}
+
 
 	private bool IsTooClose(Vector3 target)
 	{

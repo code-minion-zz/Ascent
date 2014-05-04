@@ -87,6 +87,22 @@ public class Game : MonoBehaviour
         set { players = value; }
     }
 
+	public List<Hero> AliveHeroes
+	{
+		get 
+		{
+			List<Hero> aliveHeroes = new List<Hero>();
+
+			foreach(Player p in players)
+			{
+				if (!p.Hero.IsDead)
+					aliveHeroes.Add(p.Hero);
+			}
+
+			return aliveHeroes;
+		}
+	}
+
 	public int maxFloor = 2;
 	public int startingHealth = 20;
 

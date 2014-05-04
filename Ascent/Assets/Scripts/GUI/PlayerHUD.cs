@@ -16,7 +16,7 @@ public class PlayerHUD : MonoBehaviour
     public UIGrid statusEffectGrid;
 	public UILabel livesLabel;
 
-    private Hero owner;
+    public Hero owner;
 	private const int maxAbilities = 4;
 	private const int maxAccessories = 4;
 	private const int maxItems = 3;

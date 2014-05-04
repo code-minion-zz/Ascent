@@ -83,13 +83,21 @@ public class Arrow : MonoBehaviour
 
 			EffectFactory.Singleton.CreateArrowHit(transform.position, transform.rotation);
         }
+		else if (collision.transform.gameObject.layer == (int)Layer.Block)
+		{
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			toDestroy = true;
+			trail.enabled = false;
+
+			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.25f, transform.rotation);
+		}
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
 			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
 			trail.enabled = false;
 
-			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.5f, transform.rotation);
+			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.1f, transform.rotation);
         }
     }
 }

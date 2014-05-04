@@ -277,6 +277,7 @@ ModelImporter:
     3300000: EVIL_WATCHER_middle_eye 1
     4300000: EVIL_WATCHER_middle_eye
     4300002: EVIL_WATCHER_NO_TAIL
+    7400000: WatcherDeathIdle
     7400066: WatcherIdleWatch
     7400068: WatcherIdleSleep
     7400070: WatcherWakeUp
@@ -590,6 +591,302 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: WatcherDeathIdle
+      takeName: Take 001
+      firstFrame: 919
+      lastFrame: 920
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_L_01
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_L_01/EVIL_WATCHER_eyelid_upper_B_L_02
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_L_01/EVIL_WATCHER_eyelid_upper_B_L_02/EVIL_WATCHER_eyelid_upper_B_L_03
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_R_01
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_R_01/EVIL_WATCHER_eyelid_upper_B_R_02
+        weight: 1
+      - path: EVIL_WATCHER_eyelid_upper_B_R_01/EVIL_WATCHER_eyelid_upper_B_R_02/EVIL_WATCHER_eyelid_upper_B_R_03
+        weight: 1
+      - path: EVIL_WATCHER_NO_TAIL
+        weight: 1
+      - path: EVIL_WATCHER_root_
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_body
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_L_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_L_01/EVIL_WATCHER_eyelid_lower_A_L_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_L_01/EVIL_WATCHER_eyelid_lower_A_L_02/EVIL_WATCHER_eyelid_lower_A_L_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_R_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_R_01/EVIL_WATCHER_eyelid_lower_A_R_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_A_R_01/EVIL_WATCHER_eyelid_lower_A_R_02/EVIL_WATCHER_eyelid_lower_A_R_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_L_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_L_01/EVIL_WATCHER_eyelid_lower_B_L_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_L_01/EVIL_WATCHER_eyelid_lower_B_L_02/EVIL_WATCHER_eyelid_lower_B_L_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_R_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_R_01/EVIL_WATCHER_eyelid_lower_B_R_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_lower_B_R_01/EVIL_WATCHER_eyelid_lower_B_R_02/EVIL_WATCHER_eyelid_lower_B_R_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_L_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_L_01/EVIL_WATCHER_eyelid_upper_A_L_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_L_01/EVIL_WATCHER_eyelid_upper_A_L_02/EVIL_WATCHER_eyelid_upper_A_L_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_R_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_R_01/EVIL_WATCHER_eyelid_upper_A_R_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_eyelid_upper_A_R_01/EVIL_WATCHER_eyelid_upper_A_R_02/EVIL_WATCHER_eyelid_upper_A_R_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_jaw_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_middle_eye
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_middle_eye/EVIL_WATCHER_middle_eye 1
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02/EVIL_WATCHER_tentacle_eye_A_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02/EVIL_WATCHER_tentacle_eye_A_03/EVIL_WATCHER_tentacle_eye_A_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02/EVIL_WATCHER_tentacle_eye_A_03/EVIL_WATCHER_tentacle_eye_A_04/EVIL_WATCHER_tentacle_eye_A_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02/EVIL_WATCHER_tentacle_eye_A_03/EVIL_WATCHER_tentacle_eye_A_04/EVIL_WATCHER_tentacle_eye_A_05/EVIL_WATCHER_tentacle_eyelid_A_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_A_01/EVIL_WATCHER_tentacle_eye_A_02/EVIL_WATCHER_tentacle_eye_A_03/EVIL_WATCHER_tentacle_eye_A_04/EVIL_WATCHER_tentacle_eye_A_05/EVIL_WATCHER_tentacle_eyelid_A_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02/EVIL_WATCHER_tentacle_eye_B_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02/EVIL_WATCHER_tentacle_eye_B_03/EVIL_WATCHER_tentacle_eye_B_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02/EVIL_WATCHER_tentacle_eye_B_03/EVIL_WATCHER_tentacle_eye_B_04/EVIL_WATCHER_tentacle_eye_B_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02/EVIL_WATCHER_tentacle_eye_B_03/EVIL_WATCHER_tentacle_eye_B_04/EVIL_WATCHER_tentacle_eye_B_05/EVIL_WATCHER_tentacle_eyelid_B_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_B_01/EVIL_WATCHER_tentacle_eye_B_02/EVIL_WATCHER_tentacle_eye_B_03/EVIL_WATCHER_tentacle_eye_B_04/EVIL_WATCHER_tentacle_eye_B_05/EVIL_WATCHER_tentacle_eyelid_B_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02/EVIL_WATCHER_tentacle_eye_C_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02/EVIL_WATCHER_tentacle_eye_C_03/EVIL_WATCHER_tentacle_eye_C_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02/EVIL_WATCHER_tentacle_eye_C_03/EVIL_WATCHER_tentacle_eye_C_04/EVIL_WATCHER_tentacle_eye_C_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02/EVIL_WATCHER_tentacle_eye_C_03/EVIL_WATCHER_tentacle_eye_C_04/EVIL_WATCHER_tentacle_eye_C_05/EVIL_WATCHER_tentacle_eyelid_C_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_C_01/EVIL_WATCHER_tentacle_eye_C_02/EVIL_WATCHER_tentacle_eye_C_03/EVIL_WATCHER_tentacle_eye_C_04/EVIL_WATCHER_tentacle_eye_C_05/EVIL_WATCHER_tentacle_eyelid_C_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02/EVIL_WATCHER_tentacle_eye_D_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02/EVIL_WATCHER_tentacle_eye_D_03/EVIL_WATCHER_tentacle_eye_D_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02/EVIL_WATCHER_tentacle_eye_D_03/EVIL_WATCHER_tentacle_eye_D_04/EVIL_WATCHER_tentacle_eye_D_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02/EVIL_WATCHER_tentacle_eye_D_03/EVIL_WATCHER_tentacle_eye_D_04/EVIL_WATCHER_tentacle_eye_D_05/EVIL_WATCHER_tentacle_eyelid_D_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_D_01/EVIL_WATCHER_tentacle_eye_D_02/EVIL_WATCHER_tentacle_eye_D_03/EVIL_WATCHER_tentacle_eye_D_04/EVIL_WATCHER_tentacle_eye_D_05/EVIL_WATCHER_tentacle_eyelid_D_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02/EVIL_WATCHER_tentacle_eye_E_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02/EVIL_WATCHER_tentacle_eye_E_03/EVIL_WATCHER_tentacle_eye_E_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02/EVIL_WATCHER_tentacle_eye_E_03/EVIL_WATCHER_tentacle_eye_E_04/EVIL_WATCHER_tentacle_eye_E_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02/EVIL_WATCHER_tentacle_eye_E_03/EVIL_WATCHER_tentacle_eye_E_04/EVIL_WATCHER_tentacle_eye_E_05/EVIL_WATCHER_tentacle_eyelid_E_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_E_01/EVIL_WATCHER_tentacle_eye_E_02/EVIL_WATCHER_tentacle_eye_E_03/EVIL_WATCHER_tentacle_eye_E_04/EVIL_WATCHER_tentacle_eye_E_05/EVIL_WATCHER_tentacle_eyelid_E_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02/EVIL_WATCHER_tentacle_eye_F_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02/EVIL_WATCHER_tentacle_eye_F_03/EVIL_WATCHER_tentacle_eye_F_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02/EVIL_WATCHER_tentacle_eye_F_03/EVIL_WATCHER_tentacle_eye_F_04/EVIL_WATCHER_tentacle_eye_F_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02/EVIL_WATCHER_tentacle_eye_F_03/EVIL_WATCHER_tentacle_eye_F_04/EVIL_WATCHER_tentacle_eye_F_05/EVIL_WATCHER_tentacle_eyelid_F_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_F_01/EVIL_WATCHER_tentacle_eye_F_02/EVIL_WATCHER_tentacle_eye_F_03/EVIL_WATCHER_tentacle_eye_F_04/EVIL_WATCHER_tentacle_eye_F_05/EVIL_WATCHER_tentacle_eyelid_F_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02/EVIL_WATCHER_tentacle_eye_G_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02/EVIL_WATCHER_tentacle_eye_G_03/EVIL_WATCHER_tentacle_eye_G_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02/EVIL_WATCHER_tentacle_eye_G_03/EVIL_WATCHER_tentacle_eye_G_04/EVIL_WATCHER_tentacle_eye_G_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02/EVIL_WATCHER_tentacle_eye_G_03/EVIL_WATCHER_tentacle_eye_G_04/EVIL_WATCHER_tentacle_eye_G_05/EVIL_WATCHER_tentacle_eyelid_G_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_G_01/EVIL_WATCHER_tentacle_eye_G_02/EVIL_WATCHER_tentacle_eye_G_03/EVIL_WATCHER_tentacle_eye_G_04/EVIL_WATCHER_tentacle_eye_G_05/EVIL_WATCHER_tentacle_eyelid_G_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02/EVIL_WATCHER_tentacle_eye_H_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02/EVIL_WATCHER_tentacle_eye_H_03/EVIL_WATCHER_tentacle_eye_H_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02/EVIL_WATCHER_tentacle_eye_H_03/EVIL_WATCHER_tentacle_eye_H_04/EVIL_WATCHER_tentacle_eye_H_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02/EVIL_WATCHER_tentacle_eye_H_03/EVIL_WATCHER_tentacle_eye_H_04/EVIL_WATCHER_tentacle_eye_H_05/EVIL_WATCHER_tentacle_eyelid_H_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_H_01/EVIL_WATCHER_tentacle_eye_H_02/EVIL_WATCHER_tentacle_eye_H_03/EVIL_WATCHER_tentacle_eye_H_04/EVIL_WATCHER_tentacle_eye_H_05/EVIL_WATCHER_tentacle_eyelid_H_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02/EVIL_WATCHER_tentacle_eye_I_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02/EVIL_WATCHER_tentacle_eye_I_03/EVIL_WATCHER_tentacle_eye_I_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02/EVIL_WATCHER_tentacle_eye_I_03/EVIL_WATCHER_tentacle_eye_I_04/EVIL_WATCHER_tentacle_eye_I_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02/EVIL_WATCHER_tentacle_eye_I_03/EVIL_WATCHER_tentacle_eye_I_04/EVIL_WATCHER_tentacle_eye_I_05/EVIL_WATCHER_tentacle_eyelid_I_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_I_01/EVIL_WATCHER_tentacle_eye_I_02/EVIL_WATCHER_tentacle_eye_I_03/EVIL_WATCHER_tentacle_eye_I_04/EVIL_WATCHER_tentacle_eye_I_05/EVIL_WATCHER_tentacle_eyelid_I_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02/EVIL_WATCHER_tentacle_eye_J_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02/EVIL_WATCHER_tentacle_eye_J_03/EVIL_WATCHER_tentacle_eye_J_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02/EVIL_WATCHER_tentacle_eye_J_03/EVIL_WATCHER_tentacle_eye_J_04/EVIL_WATCHER_tentacle_eye_J_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02/EVIL_WATCHER_tentacle_eye_J_03/EVIL_WATCHER_tentacle_eye_J_04/EVIL_WATCHER_tentacle_eye_J_05/EVIL_WATCHER_tentacle_eyelid_J_lower
+        weight: 1
+      - path: EVIL_WATCHER_root_/EVIL_WATCHER_tentacle_eye_J_01/EVIL_WATCHER_tentacle_eye_J_02/EVIL_WATCHER_tentacle_eye_J_03/EVIL_WATCHER_tentacle_eye_J_04/EVIL_WATCHER_tentacle_eye_J_05/EVIL_WATCHER_tentacle_eyelid_J_upper
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02/EVIL_WATCHER_tail_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02/EVIL_WATCHER_tail_03/EVIL_WATCHER_tail_04
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02/EVIL_WATCHER_tail_03/EVIL_WATCHER_tail_04/EVIL_WATCHER_tail_05
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02/EVIL_WATCHER_tail_03/EVIL_WATCHER_tail_04/EVIL_WATCHER_tail_05/EVIL_WATCHER_tail_06
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice025/EVIL_WATCHER_tail_01/EVIL_WATCHER_tail_02/EVIL_WATCHER_tail_03/EVIL_WATCHER_tail_04/EVIL_WATCHER_tail_05/EVIL_WATCHER_tail_06/EVIL_WATCHER_tail_07
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_a_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_a_01/EVIL_WATCHER_fin_L_finger_a_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_a_01/EVIL_WATCHER_fin_L_finger_a_02/EVIL_WATCHER_fin_L_finger_a_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_b_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_b_01/EVIL_WATCHER_fin_L_finger_b_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_b_01/EVIL_WATCHER_fin_L_finger_b_02/EVIL_WATCHER_fin_L_finger_b_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_c_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_c_01/EVIL_WATCHER_fin_L_finger_c_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice026/EVIL_WATCHER_fin_L_arm/EVIL_WATCHER_fin_L_forearm/EVIL_WATCHER_fin_L_hand/EVIL_WATCHER_fin_L_finger_c_01/EVIL_WATCHER_fin_L_finger_c_02/EVIL_WATCHER_fin_L_finger_c_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_a_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_a_01/EVIL_WATCHER_fin_R_finger_a_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_a_01/EVIL_WATCHER_fin_R_finger_a_02/EVIL_WATCHER_fin_R_finger_a_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_b_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_b_01/EVIL_WATCHER_fin_R_finger_b_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_b_01/EVIL_WATCHER_fin_R_finger_b_02/EVIL_WATCHER_fin_R_finger_b_03
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_c_01
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_c_01/EVIL_WATCHER_fin_R_finger_c_02
+        weight: 1
+      - path: EVIL_WATCHER_root_/Factice027/EVIL_WATCHER_fin_R_arm/EVIL_WATCHER_fin_R_forearm/EVIL_WATCHER_fin_R_hand/EVIL_WATCHER_fin_R_finger_c_01/EVIL_WATCHER_fin_R_finger_c_02/EVIL_WATCHER_fin_R_finger_c_03
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
     isReadable: 1
