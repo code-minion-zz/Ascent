@@ -1,6 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
+public enum AIConditionType
+{
+    ActionCooldown,
+    ActionEnd,
+    Attacked,
+    HP,
+    ReachedTarget,
+    Sensor,
+    SP,
+    SurroundedSensor,
+    ConditionTimer
+}
+
+[System.Serializable]
+public class AIConditionSetting
+{
+    public AIConditionType conditionType;
+}
+
+[System.Serializable]
 public class AICondition 
 {
     public enum ESign

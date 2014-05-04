@@ -28,6 +28,12 @@ public class Spider : Enemy
 
 	public void InitialiseAI()
 	{
+
+        if (AIAgent.MindAgent.overrideScriptSetups == true)
+        {
+            return;
+        }
+
 		AIBehaviour behaviour = null;
 		AITrigger trigger = null;
 

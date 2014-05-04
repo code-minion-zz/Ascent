@@ -2,16 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
+[System.Serializable]
 public class AIBehaviour  
 {
+    [SerializeField]
     protected List<AITrigger> triggers = new List<AITrigger>();
 	public List<AITrigger> Triggers
 	{
 		get { return triggers; }
 	}
 
-	protected AIMindAgent.EBehaviour type;
+    [SerializeField]
+	protected AIMindAgent.EBehaviour type = AIMindAgent.EBehaviour.Defensive;
 	public AIMindAgent.EBehaviour Type
 	{
 		get { return type; }
