@@ -296,10 +296,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7efc8e66c0663384abe7005593030a7e, type: 3}
+  m_Script: {fileID: 11500000, guid: c406f622a820b5d4a835853f48500baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 5
+  timer: 5
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -308,12 +308,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 078352b62bd7e2043b7c676b2b7f23a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2edc50b2e7db9f74795c6900f270bb60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationMaxX: 0
-  rotationMaxY: 360
-  rotationMaxZ: 0
+  rotationSpeedX: 0
+  rotationSpeedY: 360
+  rotationSpeedZ: 0
+  local: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

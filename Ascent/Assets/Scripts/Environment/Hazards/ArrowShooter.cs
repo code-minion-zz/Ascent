@@ -18,6 +18,7 @@ public class ArrowShooter : EnvironmentHazard
 	private Transform baseThatGoesInTheWall;
     private Transform shootLocal;
 
+
 	private Vector3 Direction
 	{
 		get { return transform.forward; }
@@ -25,7 +26,7 @@ public class ArrowShooter : EnvironmentHazard
 
 	private Vector3 SpawnPoint
 	{
-		get { return shootLocal.position + Direction * .50f; }
+		get { return shootLocal.position + Direction * 0.05f; }
 	}
 
 	// Use this for initialization
@@ -62,7 +63,7 @@ public class ArrowShooter : EnvironmentHazard
             ObjectPool.PoolObject po = arrowPool.GetInactive();
             if (po != null)
             {
-				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.1f);
+				SoundManager.PlaySound(AudioClipType.arrowwoosh,transform.position,.05f);
 
 				Vector3 position = baseThatGoesInTheWall.position;
 				position.y += 0.5f;
@@ -72,6 +73,7 @@ public class ArrowShooter : EnvironmentHazard
 
 				if (Physics.Raycast(new Ray(position, Direction * 1.0f), out hitInfo, 0.50f, layerMask))
                 {
+                    Debug.Log("A");
                     return;
                 }
 
@@ -84,6 +86,8 @@ public class ArrowShooter : EnvironmentHazard
                 po.go.SetActive(true);
 				po.go.rigidbody.angularVelocity = Vector3.zero;
 				po.go.rigidbody.velocity = Vector3.zero;
+
+				EffectFactory.Singleton.CreateArrowFire(shootLocal.position - (shootLocal.forward * 0.35f), Quaternion.identity);
             }
         }	
 	}

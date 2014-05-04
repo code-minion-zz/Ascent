@@ -3936,7 +3936,7 @@ Animator:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f07b53a36fab61d4bbdf49cb754b4356, type: 3}
-  m_Controller: {fileID: 9100000, guid: 676a25eac9d778f4bb6e6a8af787db8e, type: 2}
+  m_Controller: {fileID: 9100000, guid: c70a1d266aa88c34e977eb83f5c29494, type: 2}
   m_CullingMode: 0
   m_ApplyRootMotion: 1
   m_AnimatePhysics: 0
@@ -4006,8 +4006,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
   agent: {fileID: 11400004}
-  health: 35
+  health: 30
   attack: 1
+  enragePercentage: .300000012
   mainEye: {fileID: 400184}
   eyes:
   - {fileID: 400066}
@@ -4058,6 +4059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a0fee14b3dc544997ddb08711146ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   hasAnimations: 1
 --- !u!114 &11400014
 MonoBehaviour:

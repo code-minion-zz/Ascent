@@ -205,29 +205,13 @@ public class AbominationCharge : Ability
 
 		Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(1.0f, 1.0f);
 
-        GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        Vector3 randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
+		for (int i = 0; i < 4; ++i)
+		{
+			GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
+			Vector3 randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
+			go.GetComponent<FallingDebris>().Initialise(randPos, owner, Random.Range(0.0f, 1.0f));
+		}
 
-        go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
-
-        go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
-
-        go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
-
-        go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
-
-        go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
-        randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
-        go.GetComponent<FallingDebris>().Initialise(randPos, owner);
     }
 
     private bool DoDamageCheck()

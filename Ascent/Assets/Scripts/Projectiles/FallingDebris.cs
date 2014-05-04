@@ -3,11 +3,23 @@ using System.Collections;
 
 public class FallingDebris : Projectile
 {
+	public RotateSelfRandomly rotateSelf;
+	public Renderer render;
+	public FallingDebrisShadow shadow;
+
+	private float startDelay;
+
     private Character owner;
     private FallingDebrisShadow rayDown;
 
-    public void Initialise(Vector3 startPosition, Character owner)
+	private bool exploded;
+
+	private float timeElapsed;
+
+    public void Initialise(Vector3 startPosition, Character owner, float delay)
     {
+		startDelay = delay;
+
         startPosition.y = 15.0f;
         transform.position = startPosition;
         this.owner = owner;
@@ -16,43 +28,56 @@ public class FallingDebris : Projectile
 
     public void Update()
     {
+		if (exploded)
+		{
+			shadow.stop = true;
+			rotateSelf.enabled = false;
+			rigidbody.velocity = Vector3.zero;
+
+			if (timeElapsed < 1.0f)
+			{
+				timeElapsed += Time.deltaTime;
+				if (timeElapsed > 1.0f)
+				{
+					timeElapsed = 1.0f;
+				}
+
+				Color color = render.material.color;
+				color.a = Mathf.Lerp(1.0f, 0.0f, timeElapsed);
+				render.material.color = color;
+
+				color = shadow.renderer.material.color;
+				color.a = Mathf.Lerp(1.0f, 0.0f, timeElapsed);
+				shadow.renderer.material.color = color;
+
+				if (timeElapsed == 1.0f)
+				{
+					GameObject.Destroy(this.gameObject);
+				}
+			}
+
+			return;
+		}
+
+		if (startDelay > 0.0f)
+		{
+			startDelay -= Time.deltaTime;
+			return;
+		}
+
         rigidbody.AddForce(-Vector3.up * 10.0f, ForceMode.Acceleration);
     }
 
     public void OnCollisionEnter(Collision collision)
     {
-        //// Check what it has collided with
-        //Layer layer = (Layer)collision.gameObject.layer;
-
-        //switch (layer)
-        //{
-        //    case Layer.Environment:
-        //    case Layer.Floor:
-        //        {
-        //            // Blow up
-        //            Debug.Log("Hit Environment/Floor");
-        //        }
-        //        break;
-        //    case Layer.Hero:
-        //    case Layer.Monster:
-        //        {
-        //            // Blow up and deal damage to this unit
-        //            Debug.Log("Hit Character");
-        //        }
-        //        break;
-        //    default:
-        //        {
-        //            Debug.LogError("Unhandled case, " + layer.ToString() + ", " + collision.collider.gameObject.name);
-        //        }
-        //        break;
-        //}
-
+		if (exploded)
+			return;
 
         GameObject explosion = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/DebrisExplosion")) as GameObject;
         explosion.GetComponent<DebrisExplosion>().Initialise(transform.position, owner);
 
         SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, .5f);
 
-        GameObject.Destroy(this.gameObject);
+		exploded = true;
     }
 }

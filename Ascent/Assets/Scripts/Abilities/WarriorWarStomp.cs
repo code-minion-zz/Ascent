@@ -66,7 +66,7 @@ public class WarriorWarStomp : Ability
 				if (!soundPlayed)
 				{
 					soundPlayed = true;
-					SoundManager.PlaySound(AudioClipType.earthshock, owner.transform.position, 1f);
+					SoundManager.PlaySound(AudioClipType.earthshock, owner.transform.position, .5f);
 				}
 			}
 

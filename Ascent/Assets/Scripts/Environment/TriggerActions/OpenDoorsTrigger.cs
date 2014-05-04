@@ -18,6 +18,9 @@ public class OpenDoorsTrigger : EnvironmentAction
         {
             foreach (Door d in doors)
             {
+				if (d == null)
+					continue;
+
                 d.OpenDoor();
             }
         }

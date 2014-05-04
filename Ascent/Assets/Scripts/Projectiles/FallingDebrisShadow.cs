@@ -3,7 +3,9 @@ using System.Collections;
 
 public class FallingDebrisShadow : MonoBehaviour
 {
-	float largestSize = 4.0f;
+	float largestSize = 3.0f;
+
+	public bool stop;
 
 	void Start()
 	{
@@ -11,11 +13,14 @@ public class FallingDebrisShadow : MonoBehaviour
 
 	void Update()
 	{
+		if (stop)
+			return;
+
 		Vector3 hit = transform.position;
 		hit.y = 0.1f;
 		transform.position = hit;
 
-		transform.localScale = Vector3.Lerp(Vector3.one, Vector3.one * largestSize, transform.parent.transform.position.y / 15.0f);
+		transform.localScale = Vector3.Lerp(Vector3.one * largestSize, Vector3.one, transform.parent.transform.position.y / 15.0f);
 
 		Color color = renderer.material.color;
 

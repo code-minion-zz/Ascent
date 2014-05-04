@@ -48,6 +48,8 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	protected Shadow shadow;
 
+    private List<Shader> originalShaders = new List<Shader>();
+
 	public virtual void Initialise()
 	{
 		renderers = GetComponentsInChildren<Renderer>();
@@ -66,6 +68,14 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 
 		SetColor(OriginalColor);
+
+        foreach (Renderer render in renderers)
+        {
+            foreach (Material mat in render.materials)
+            {
+                originalShaders.Add(mat.shader);
+            }
+        }
 	}
 
 	public virtual void SetColor(Color color)
@@ -107,13 +117,23 @@ public abstract class BaseCharacter : MonoBehaviour
 	public void StopHighlight()
 	{
 		Renderer[] renderers = Renderers;
-		foreach (Renderer render in renderers)
-		{
-			foreach (Material mat in render.materials)
-			{
-				mat.shader = Shader.Find("Diffuse");
-			}
-		}
+        //foreach (Renderer render in renderers)
+        //{
+        //    foreach (Material mat in render.materials)
+        //    {
+        //        mat.shader = Shader.Find("Diffuse");
+        //    }
+        //}
+        int i = 0;
+        foreach (Renderer render in renderers)
+        {
+            for (int j = 0; j < render.materials.Length; ++j)
+            {
+                render.materials[j].shader = originalShaders[i];
+
+                ++i;
+            }
+        }
 	}
 
 	public virtual void Update()

@@ -24,6 +24,7 @@ public class HeroButtonIndicator : MonoBehaviour
 
 	public void Initialise(Character _character)
 	{
+		buttonSprite.transform.localScale = Vector3.zero;
 		owner = _character;
 	}
 

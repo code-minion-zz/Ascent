@@ -16,6 +16,7 @@ public class Arrow : MonoBehaviour
 
 	public TrailRenderer trail;
 
+
     public void Initialise(float life, GameObject owner, Vector3 direction, float speed, int damage)
     {
 		//owner = _owner;
@@ -79,12 +80,24 @@ public class Arrow : MonoBehaviour
             EffectFactory.Singleton.CreateBloodSplatter(collision.transform.position, collision.transform.rotation);
 
 			toDestroy = true;
+
+			EffectFactory.Singleton.CreateArrowHit(transform.position, transform.rotation);
         }
+		else if (collision.transform.gameObject.layer == (int)Layer.Block)
+		{
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			toDestroy = true;
+			trail.enabled = false;
+
+			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.25f, transform.rotation);
+		}
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
 			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
             toDestroy = true;
 			trail.enabled = false;
+
+			EffectFactory.Singleton.CreateArrowHit(transform.position - transform.forward * 0.1f, transform.rotation);
         }
     }
 }

@@ -83,6 +83,14 @@ public class InputManager : MonoBehaviour
 		if (disableTimer > 0.0f)
 		{
 			disableTimer -= Time.deltaTime;
+		}
+		else
+		{
+			isEnabled = true;
+		}
+
+		if (!isEnabled)
+		{
 			return;
 		}
 
@@ -101,11 +109,13 @@ public class InputManager : MonoBehaviour
 			}
 		}
 	}
-
+	
+	public static bool isEnabled;
 	private static float disableTimer;
 	public static void DisableInputForTime(float time)
 	{
 		disableTimer = time;
+		isEnabled = false;
 	}
 
 	public static void UnbindAllDevices()

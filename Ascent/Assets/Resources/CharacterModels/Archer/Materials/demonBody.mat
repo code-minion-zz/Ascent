@@ -36,16 +36,16 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _Illum
+          name: _LightMap
         second:
-          m_Texture: {fileID: 2800000, guid: de61ee264a579294f9a88158767c2283, type: 3}
+          m_Texture: {fileID: 2800000, guid: 87ca652023c57934a812976719ec5e50, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _LightMap
+          name: _Illum
         second:
-          m_Texture: {fileID: 2800000, guid: 87ca652023c57934a812976719ec5e50, type: 3}
+          m_Texture: {fileID: 2800000, guid: de61ee264a579294f9a88158767c2283, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -61,11 +61,11 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: .843283594, g: .843283594, b: .843283594, a: 1}
+        second: {r: 1, g: .617647052, b: .617647052, a: 1}
       data:
         first:
           name: _SpecColor
-        second: {r: .0895522237, g: .0895522237, b: .0895522237, a: 1}
+        second: {r: .33088237, g: .33088237, b: .33088237, a: 1}
       data:
         first:
           name: _ReflectColor

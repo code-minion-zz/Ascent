@@ -60,7 +60,7 @@ public class HeroController : MonoBehaviour
 
 		//shape = new Circle(hero.transform, 1.5f, new Vector3(0.0f, 0.0f, 1.7f));
 		shapeA = new Arc(hero.transform, 3.5f, 80.0f, transform.forward * -0.5f);
-		shapeB = new Arc(hero.transform, 10.0f, 30.0f, Vector3.zero);
+		shapeB = new Arc(hero.transform, 15.0f, 30.0f, Vector3.zero);
 		shapeC = new Circle(hero.transform, 1.5f, Vector3.zero);
 	}
 
@@ -71,7 +71,7 @@ public class HeroController : MonoBehaviour
 		buttonIndicator.Initialise(hero);
 
 		// Set scale similar to the character size
-		buttonIndicator.transform.localScale = Vector3.one * 2.5f;
+		//buttonIndicator.transform.localScale = Vector3.one * 2.5f;
 
 		//buttonIndicator.Enable(false);
 
@@ -93,19 +93,25 @@ public class HeroController : MonoBehaviour
 
     void Update()
     {
+		if (!InputManager.isEnabled)
+		{
+			return;
+		}
+
 		if (CanUseInput && InputManager.IsPolling)
 		{
-			if (inputDevice.Start.WasReleased)
-			{
-				FloorHUDManager hudman = FloorHUDManager.Singleton;
-				hudman.SetTransitionText("Paused");
-				hudman.PauseGame();
-			}
-
             if (hero.IsDead)
             {
                 return;
             }
+
+			FloorHUDManager hud = FloorHUDManager.Singleton;
+			if (hud != null && hud.canPause && inputDevice.Start.WasReleased)
+			{
+				FloorHUDManager hudman = FloorHUDManager.Singleton;
+				hudman.SetTransitionText("Paused");
+				hudman.ShowPauseScreen(true);
+			}
 
 			// If damage is taken, control is taken away briefy to perform this take hit animation.
 			if (hero.HitTaken)
@@ -191,11 +197,17 @@ public class HeroController : MonoBehaviour
 				}
 			}
 
-	
-
 #if UNITY_EDITOR
-   DebugKeys();
+   			DebugKeys();
 #endif
+		}
+		else if (!CanUseInput)
+		{
+			if (inputDevice.Start.WasReleased)
+			{
+				FloorHUDManager hudman = FloorHUDManager.Singleton;
+				hudman.ShowPauseScreen(false);
+			}
 		}
     }
 
@@ -274,6 +286,16 @@ public class HeroController : MonoBehaviour
 		shapeC.DebugDraw();
 	}
 #endif
+	
+	public void ToggleInput(bool paused)
+	{
+		CanUseInput = !paused;
+	}
+
+	public void ToggleInput()
+	{
+		CanUseInput = !CanUseInput;
+	}
 
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
@@ -756,7 +778,7 @@ public class HeroController : MonoBehaviour
                     if (dot < -0.75f)
                     {
                         // Has it been grabbed yet?
-                        if (!closestBlock.grabbed)
+                        if (!closestBlock.grabbed || !closestBlock.IsInMotion)
                         {
                             if (wasButtonPressed)
                             {

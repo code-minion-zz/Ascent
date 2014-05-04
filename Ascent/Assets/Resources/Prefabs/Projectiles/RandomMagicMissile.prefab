@@ -77,7 +77,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400012}
   - 96: {fileID: 9600000}
-  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: TRAIL
   m_TagString: Untagged
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400014}
   - 96: {fileID: 9600002}
-  - 114: {fileID: 11400004}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: TRAIL
   m_TagString: Untagged
@@ -396,7 +396,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc4f070279f26fc4eab7a0aef8205a91, type: 3}
+  m_Script: {fileID: 11500000, guid: 2edc50b2e7db9f74795c6900f270bb60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeedX: 0
@@ -408,31 +408,31 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04a1754bcad980849929c345cbb8c9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeInTime: .200000003
-  stayTime: 2
-  fadeOutTime: .699999988
-  thisTrail: {fileID: 9600000}
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04a1754bcad980849929c345cbb8c9f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 52ee7d6060c44a745b1f231a0cfdf644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fadeInTime: .200000003
   stayTime: 2
   fadeOutTime: .699999988
   thisTrail: {fileID: 9600002}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52ee7d6060c44a745b1f231a0cfdf644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInTime: .200000003
+  stayTime: 2
+  fadeOutTime: .699999988
+  thisTrail: {fileID: 9600000}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

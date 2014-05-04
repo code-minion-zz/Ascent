@@ -293,6 +293,7 @@ public class CharacterMotor : MonoBehaviour
 			gridMovementTimeAccum = 0.0f;
 			gridStartPos = transform.position;
 			gridTargetPos = gridStartPos + direction.normalized * gridUnitOffset;
+
 		};
 	}
 

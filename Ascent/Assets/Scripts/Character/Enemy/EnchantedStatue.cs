@@ -105,6 +105,7 @@ public class EnchantedStatue : Enemy
 
     public override void OnDisable()
     {
+        base.OnDisable();
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
         AIAgent.MindAgent.SetBehaviour(AIMindAgent.EBehaviour.Passive);

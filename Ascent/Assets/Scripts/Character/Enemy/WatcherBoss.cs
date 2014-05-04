@@ -17,6 +17,9 @@ public class WatcherBoss : Enemy
 	AICondition_Timer missileTimer;
 	AICondition_Timer lazerTimer;
 
+	WatcherMagicMissile magicMissileAbility;
+	WatcherLazerBeam lazerBeamAbility;
+
     public override void Initialise()
     {
         base.Initialise();
@@ -24,13 +27,13 @@ public class WatcherBoss : Enemy
         // Add abilities
         loadout.SetSize(2);
 
-        Ability ability = new WatcherMagicMissile();
+		magicMissileAbility = new WatcherMagicMissile();
         magicMissilesID = 0;
-        loadout.SetAbility(ability, magicMissilesID);
+		loadout.SetAbility(magicMissileAbility, magicMissilesID);
 
-		ability = new WatcherLazerBeam();
+		lazerBeamAbility = new WatcherLazerBeam();
 		lazerID = 1;
-		loadout.SetAbility(ability, lazerID);
+		loadout.SetAbility(lazerBeamAbility, lazerID);
 
         InitialiseAI();
     }
@@ -68,6 +71,17 @@ public class WatcherBoss : Enemy
 
         StateTransitionToAggressive();
     }
+
+	protected override void Enrage()
+	{
+		base.Enrage();
+
+		missileTimer.Reset(1.0f, 1.5f);
+		lazerTimer.Reset(5.0f, 8.0f);
+
+		lazerBeamAbility.Enrage();
+		magicMissileAbility.Enrage();
+	}
 
     public override void StateTransitionToPassive()
     {

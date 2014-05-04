@@ -346,7 +346,7 @@ public abstract class Character : BaseCharacter
     /// <param name="damage">The amount of damage taken.</param>
     protected virtual void OnDamageTaken(int damage)
 	{
-		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .1f);
+		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .04f);
         if (onDamageTaken != null)
         {
             onDamageTaken(damage);

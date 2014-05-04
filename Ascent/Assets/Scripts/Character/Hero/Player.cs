@@ -71,10 +71,10 @@ public class Player : MonoBehaviour
 		heroScript = HeroFactory.CreateNewHero(heroType);
 		heroObject = heroScript.gameObject;
 
-		// This is test code to assign players colours
-		Color color = GetPlayerColor(playerId);
-		heroScript.OriginalColor = color;
-		heroScript.SetColor(color);
+        //// This is test code to assign players colours
+        //Color color = GetPlayerColor(playerId);
+        //heroScript.OriginalColor = color;
+        //heroScript.SetColor(color);
 
         // Create the animator and controller for this hero (binds the input with the controller)
         heroScript.Initialise(input, null);

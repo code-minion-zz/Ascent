@@ -57,7 +57,13 @@ public class Tower : MonoBehaviour
         InitialiseTestFloor();
     }
 
-    [ContextMenu("NextFloor")]
+	[ContextMenu("NextFloor")]
+	public void GoUp()
+	{
+		FloorHUDManager.Singleton.LevelCompleteScreen();
+		Game.Singleton.Tower.CurrentFloor.gameOver = true;
+	}
+
     public void LoadNextFloor()
     {
         ++currentFloorNumber;
@@ -68,11 +74,13 @@ public class Tower : MonoBehaviour
         foreach(Player p in Game.Singleton.Players)
         {
             p.Hero.Loadout.StopAbility();
+			p.Hero.Motor.StopMovingAlongGrid();
             p.Hero.Motor.StopMotion();
+			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
             p.Hero.RefreshEverything();
         }
 
-        if (currentFloorNumber > 2)
+        if (currentFloorNumber > Game.Singleton.maxFloor)
         {
             Destroy(currentFloor);
             Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
@@ -104,9 +112,8 @@ public class Tower : MonoBehaviour
     {
         currentFloor = gameObject.AddComponent<Floor>();
 		currentFloor.InitialiseTestFloor();
-        MusicManager soundMan = GameObject.Find("SoundManager").GetComponent<MusicManager>();
-        soundMan.PlayMusic(MusicManager.MusicSelections.Tower);
-		FloorHUDManager.Singleton.LevelStartScreen();
+        MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+		musicMan.PlayMusic(MusicManager.MusicSelections.Tower);
     }
 
 	public void InitialiseFloor()

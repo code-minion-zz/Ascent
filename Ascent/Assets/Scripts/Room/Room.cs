@@ -86,6 +86,22 @@ public class Room : MonoBehaviour
         get { return enemies; }
     }
 
+	public List<Character> AliveEnemies
+	{
+		get 
+		{
+			List<Character> aliveEnemies = new List<Character>();
+
+			foreach (Character c in enemies)
+			{
+				if (!c.IsDead)
+					aliveEnemies.Add(c);
+			}
+
+			return aliveEnemies; 
+		}
+	}
+
 	public List<TreasureChest> Chests
 	{
 		get { return chests; }

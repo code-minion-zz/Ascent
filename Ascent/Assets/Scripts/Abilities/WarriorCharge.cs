@@ -55,7 +55,7 @@ public class WarriorCharge : Ability
 	{
         base.StartAbility();
 
-		SoundManager.PlaySound(AudioClipType.heavyhit, owner.transform.position, .5f);
+		SoundManager.PlaySound(AudioClipType.heavyhit, owner.transform.position, 1f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Charge, Warrior.ECombatAnimation.Charge.ToString());
 

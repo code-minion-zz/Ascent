@@ -87,7 +87,37 @@ public class Game : MonoBehaviour
         set { players = value; }
     }
 
+	public List<Hero> AliveHeroes
+	{
+		get 
+		{
+			List<Hero> aliveHeroes = new List<Hero>();
+
+			foreach(Player p in players)
+			{
+				if (!p.Hero.IsDead)
+					aliveHeroes.Add(p.Hero);
+			}
+
+			return aliveHeroes;
+		}
+	}
+
+	public int maxFloor = 2;
 	public int startingHealth = 20;
+
+	public float fadeIntoLevelTime = 1.5f;
+	public float fadeOutOfLevelTime = 1.5f;
+	public float fadeOutFromGameOverTime = 1.5f;
+
+	public float showLevelStartMessageTimer = 2.0f;
+	public float showGameOvermessageTimer = 3.0f;
+	public float showLevelCompleteMessageTimer = 2.0f;
+
+	public float GameOverDelay
+	{
+		get { return fadeOutFromGameOverTime + showGameOvermessageTimer + 0.5f; }
+	}
 
     public int AlivePlayerCount
     {
@@ -210,6 +240,7 @@ public class Game : MonoBehaviour
 		gameState = testState;
 		gameStateToLoad = testState;
 		InitialiseState();
+		SoundManager.Initialise();
 
 		// Set this so it does not get initialised again
 		initialised = true;
@@ -408,6 +439,9 @@ public class Game : MonoBehaviour
             case EGameState.TowerPlayer2:
             case EGameState.TowerPlayer3:
 				{
+					if (tower == null)
+						return;
+
                     if (players != null)
                     {
                         foreach (Player p in players)

@@ -60,6 +60,17 @@ public class Lightning : Projectile
 
                         Character hitCharacter = collision.gameObject.GetComponent<Character>();
 
+						//  this is the biggest hack to ensure that we get the actual character
+						if (hitCharacter == null)
+						{
+							hitCharacter = collision.transform.parent.gameObject.GetComponent<Character>();
+
+							if (hitCharacter == null)
+							{
+								hitCharacter = collision.transform.parent.parent.gameObject.GetComponent<Character>();
+							}
+						}
+		
                         bool isOnSameTeam = false;
 
                         if ((owner is Enemy && hitCharacter is Enemy) ||
@@ -83,7 +94,7 @@ public class Lightning : Projectile
                                 // Create a blood splatter effect on the enemy.
                                 //EffectFactory.Singleton.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);
                             }
-
+	
                             combatEvaluator.Apply();
 
                             // Find next target
@@ -113,7 +124,7 @@ public class Lightning : Projectile
                                         velocity = nextTarget.transform.position - transform.position;
                                         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
                                         hitSomething = false;
-										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f);
+										SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f/charactersHit.Count+1);
                                     }
                                     else
                                     {

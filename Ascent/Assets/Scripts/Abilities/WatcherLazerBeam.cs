@@ -13,13 +13,17 @@ public class WatcherLazerBeam : Ability
 
 	private EWatcherLazerState state = EWatcherLazerState.Charging; 
 
-	private WatcherLazer lazer;
-	private GameObject lazerCharge; 
+	private int numberOfLazers = 4;
+
+	private WatcherLazer[] lazer;
+	private GameObject[] lazerCharge; 
 
 	private float rotationAmountPerSecond = 45.0f;
 	private float chargeTime = 1.75f;
 	private float fireStraightTime = 1.75f;
 	private float fireRotatingTime = 8.0f;
+
+	private bool clockwise;
 
 	private float timeElapsed;
 
@@ -32,6 +36,11 @@ public class WatcherLazerBeam : Ability
 		animationTrigger = "Beam";
 		cooldownFullDuration = 0.0f;
 		specialCost = 0;
+	}
+
+	public void Enrage()
+	{
+		rotationAmountPerSecond = 75.0f;
 	}
 
 	public override void StartAbility()
@@ -66,6 +75,8 @@ public class WatcherLazerBeam : Ability
 						StartFiring();
 						timeElapsed = 0.0f;
 						state = EWatcherLazerState.Firing;
+
+						clockwise = Random.Range(0, 2) == 0 ? false : true;
 					}
 				}
 				break;
@@ -80,7 +91,7 @@ public class WatcherLazerBeam : Ability
 				break;
 			case EWatcherLazerState.FiringRotating:
 				{
-					owner.transform.Rotate(0.0f, rotationAmountPerSecond * Time.deltaTime, 0.0f);
+					owner.transform.Rotate(0.0f, clockwise ? rotationAmountPerSecond * Time.deltaTime : -rotationAmountPerSecond * Time.deltaTime, 0.0f);
 				}
 				break;
 			default: 
@@ -94,8 +105,11 @@ public class WatcherLazerBeam : Ability
 	{
 		if (lazer != null)
 		{
-			lazer.gameObject.SetActive(false);
-			lazerCharge.gameObject.SetActive(false);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazer[i].gameObject.SetActive(false);
+				lazerCharge[i].gameObject.SetActive(false);
+			}
 		}
 
 		owner.Animator.PlayAnimation(animationTrigger, false);
@@ -106,15 +120,30 @@ public class WatcherLazerBeam : Ability
 	{
 		if (lazerCharge == null)
 		{
-			lazerCharge = (GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/WatcherLazerChargeBeam")) as GameObject);
-			lazerCharge.transform.position = owner.transform.position + owner.transform.forward;
-			lazerCharge.transform.parent = owner.transform;
+			lazerCharge = new GameObject[numberOfLazers];
 
-			lazerCharge.SetActive(true);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazerCharge[i] = (GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/WatcherLazerChargeBeam")) as GameObject);
+
+				Vector3 direction = MathUtility.ConvertHeadingToVector((((360.0f / (float)numberOfLazers) * (float)i) - 90.0f) * Mathf.Deg2Rad);
+				direction.z = direction.y;
+				direction.y = lazerCharge[i].transform.position.y;
+
+				lazerCharge[i].transform.position = owner.transform.position + direction * 0.75f;
+				lazerCharge[i].transform.LookAt((owner.transform.position + direction * 0.75f) - direction);
+
+				lazerCharge[i].transform.parent = owner.transform;
+
+				lazerCharge[i].SetActive(true);
+			}
 		}
 		else
 		{
-			lazerCharge.SetActive(true);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazerCharge[i].SetActive(true);
+			}
 		}
 	}
 
@@ -122,19 +151,37 @@ public class WatcherLazerBeam : Ability
 	{
 		if (lazer == null)
 		{
-			lazer = (GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/WatcherLazerBeam")) as GameObject).GetComponent<WatcherLazer>();
-			lazer.Initialise(owner.transform.position + owner.transform.forward * 0.5f, owner);
+			lazer = new WatcherLazer[numberOfLazers];
 
-			lazer.gameObject.SetActive(true);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazer[i] = (GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/WatcherLazerBeam")) as GameObject).GetComponent<WatcherLazer>();
+
+				Vector3 direction = MathUtility.ConvertHeadingToVector((((360.0f / (float)numberOfLazers) * (float)i) - 90.0f) * Mathf.Deg2Rad);
+
+				direction.z = direction.y;
+				direction.y = lazer[i].transform.position.y;
+
+				lazer[i].Initialise(owner.transform.position + direction * 0.75f, owner);
+				lazer[i].transform.LookAt((owner.transform.position + direction * 0.75f) - direction);
+
+				lazer[i].gameObject.SetActive(true);
+			}
 		}
 		else
 		{
-			lazer.gameObject.SetActive(true);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazer[i].gameObject.SetActive(true);
+			}
 		}
 
 		if (lazerCharge != null)
 		{
-			lazerCharge.SetActive(false);
+			for (int i = 0; i < numberOfLazers; ++i)
+			{
+				lazerCharge[i].gameObject.SetActive(false);
+			}
 		}
 	}
 

@@ -71,6 +71,11 @@ public abstract class Hero : Character
 		get { return heroController; }
 	}
 
+	public HeroAnimator HeroAnimator
+	{
+		get { return heroAnimator; }
+	}
+
     public FloorStats FloorStatistics
     {
         get { return floorStatistics; }
@@ -85,6 +90,7 @@ public abstract class Hero : Character
 
 	public virtual void Initialise(InputDevice input, HeroSaveData saveData)
 	{
+		heroAnimator = GetComponentInChildren<HeroAnimator>();
 		animator = GetComponentInChildren<HeroAnimator>();
 		if (animator == null)
 		{

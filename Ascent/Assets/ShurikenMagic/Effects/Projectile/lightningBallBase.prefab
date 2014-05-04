@@ -127,7 +127,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400014}
-  - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   m_Layer: 0
@@ -240,10 +239,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 100014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1359aeb37551d8a49b82c3d932442b18, type: 3}
+  m_Script: {fileID: 11500000, guid: c406f622a820b5d4a835853f48500baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 5
+  timer: 5
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,26 +251,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 100014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 078352b62bd7e2043b7c676b2b7f23a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2edc50b2e7db9f74795c6900f270bb60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationMaxX: 0
-  rotationMaxY: 360
-  rotationMaxZ: 0
---- !u!114 &11400004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39af0a37559f0c044a88a9f004ed556e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  translationSpeedX: 0
-  translationSpeedY: 0
-  translationSpeedZ: 2
+  rotationSpeedX: 0
+  rotationSpeedY: 360
+  rotationSpeedZ: 0
   local: 1
 --- !u!198 &19800000
 ParticleSystem:

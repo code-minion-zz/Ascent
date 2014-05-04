@@ -159,6 +159,7 @@ ModelImporter:
     7400020: SpiderDeath1
     7400022: SpiderDeath2
     7400024: allanims
+    7400026: SpiderDeathIdle1
     9500000: //RootNode
     11100000: //RootNode
     13700000: Spider01
@@ -461,6 +462,174 @@ ModelImporter:
       curves: []
       events: []
       transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: SpiderDeathIdle1
+      takeName: Take 001
+      firstFrame: 298.98999
+      lastFrame: 299
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Box01
+        weight: 1
+      - path: Box01/Box02
+        weight: 1
+      - path: Box01/Box02/Box03
+        weight: 1
+      - path: Box01/Box02/Box03/Box04
+        weight: 1
+      - path: Box01/Box02/Box03/Box04/Box07
+        weight: 1
+      - path: Box01/Box02/Box03/Box04/Box07/Dummy09
+        weight: 1
+      - path: Box01/Box02/Box03/Box04/Box08
+        weight: 1
+      - path: Box01/Box02/Box03/Box04/Box08/Dummy10
+        weight: 1
+      - path: Box01/Box05
+        weight: 1
+      - path: Box01/Box05/Box16
+        weight: 1
+      - path: Box01/Box05/Box16/Dummy08
+        weight: 1
+      - path: Box01/Box05/Dummy03
+        weight: 1
+      - path: Box01/Box06
+        weight: 1
+      - path: Box01/Box06/Box17
+        weight: 1
+      - path: Box01/Box06/Box17/Dummy07
+        weight: 1
+      - path: Box01/Box06/Dummy04
+        weight: 1
+      - path: Box01/Box12
+        weight: 1
+      - path: Box01/Box12/Dummy11
+        weight: 1
+      - path: Box01/Box13
+        weight: 1
+      - path: Box01/Box13/Dummy12
+        weight: 1
+      - path: Box01/Dummy02
+        weight: 1
+      - path: Box01/Dummy02/Box09
+        weight: 1
+      - path: Box01/Dummy02/Box09/Box10
+        weight: 1
+      - path: Box01/Dummy02/Box09/Box10/Box11
+        weight: 1
+      - path: Box01/Dummy02/Box09/Box10/Box11/Dummy01
+        weight: 1
+      - path: Box01/Dummy02/Box20
+        weight: 1
+      - path: Box01/Dummy02/Box20/Box18
+        weight: 1
+      - path: Box01/Dummy02/Box20/Box18/Box19
+        weight: 1
+      - path: Box01/Dummy02/Box20/Box18/Box19/Dummy13
+        weight: 1
+      - path: Box01/Dummy02/Box25
+        weight: 1
+      - path: Box01/Dummy02/Box25/Box22
+        weight: 1
+      - path: Box01/Dummy02/Box25/Box22/Box23
+        weight: 1
+      - path: Box01/Dummy02/Box25/Box22/Box23/Dummy14
+        weight: 1
+      - path: Box01/Dummy02/Box26
+        weight: 1
+      - path: Box01/Dummy02/Box26/Box21
+        weight: 1
+      - path: Box01/Dummy02/Box26/Box21/Box24
+        weight: 1
+      - path: Box01/Dummy02/Box26/Box21/Box24/Dummy15
+        weight: 1
+      - path: Box01/Dummy02/Box31
+        weight: 1
+      - path: Box01/Dummy02/Box31/Box28
+        weight: 1
+      - path: Box01/Dummy02/Box31/Box28/Box29
+        weight: 1
+      - path: Box01/Dummy02/Box31/Box28/Box29/Dummy16
+        weight: 1
+      - path: Box01/Dummy02/Box35
+        weight: 1
+      - path: Box01/Dummy02/Box35/Box32
+        weight: 1
+      - path: Box01/Dummy02/Box35/Box32/Box36
+        weight: 1
+      - path: Box01/Dummy02/Box35/Box32/Box36/Dummy18
+        weight: 1
+      - path: Box01/Dummy02/Box37
+        weight: 1
+      - path: Box01/Dummy02/Box37/Box33
+        weight: 1
+      - path: Box01/Dummy02/Box37/Box33/Box34
+        weight: 1
+      - path: Box01/Dummy02/Box37/Box33/Box34/Dummy19
+        weight: 1
+      - path: Box01/Dummy02/Box38
+        weight: 1
+      - path: Box01/Dummy02/Box38/Box27
+        weight: 1
+      - path: Box01/Dummy02/Box38/Box27/Box30
+        weight: 1
+      - path: Box01/Dummy02/Box38/Box27/Box30/Dummy17
+        weight: 1
+      - path: IK Chain01
+        weight: 1
+      - path: IK Chain01/IK Chain02
+        weight: 1
+      - path: IK Chain03
+        weight: 1
+      - path: IK Chain03/IK Chain14
+        weight: 1
+      - path: IK Chain04
+        weight: 1
+      - path: IK Chain04/IK Chain15
+        weight: 1
+      - path: IK Chain05
+        weight: 1
+      - path: IK Chain05/IK Chain16
+        weight: 1
+      - path: IK Chain06
+        weight: 1
+      - path: IK Chain06/IK Chain13
+        weight: 1
+      - path: IK Chain07
+        weight: 1
+      - path: IK Chain07/IK Chain12
+        weight: 1
+      - path: IK Chain08
+        weight: 1
+      - path: IK Chain08/IK Chain11
+        weight: 1
+      - path: IK Chain09
+        weight: 1
+      - path: IK Chain09/IK Chain10
+        weight: 1
+      - path: Spider01
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
     isReadable: 1

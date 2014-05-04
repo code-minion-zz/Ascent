@@ -35,7 +35,6 @@ public class Floor : MonoBehaviour
 	}
 
 	public float gameOverClock = 0f;
-	public float gameOverDelay = 3f;
 	public bool	gameOver = false;
     public bool initialised;
 
@@ -227,6 +226,8 @@ public class Floor : MonoBehaviour
 			heroes[i].GetComponent<PlayerIndicator>().Initialise(Player.GetPlayerColor(i)); 
 		}
 
+		gameOverClock = 0f;
+
         initialised = true;
 
 		// Activate the start room
@@ -348,11 +349,30 @@ public class Floor : MonoBehaviour
 		// Check if all the players are dead as well.
 		if (gameOver)
 		{
+			// Stop players moving etc..
+			foreach (Player p in Game.Singleton.Players)
+			{
+				p.Hero.Loadout.StopAbility();
+				p.Hero.Motor.StopMovingAlongGrid();
+				p.Hero.Motor.StopMotion();
+
+				if(!p.Hero.IsDead)
+					p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
+			}
+
 			// Take to summary screen
 			gameOverClock += Time.deltaTime;
-			if (gameOverClock > gameOverDelay)
+//			Debug.Log(gameOverClock);
+			if (gameOverClock > Game.Singleton.GameOverDelay)
 			{
-				EndFloor();
+				if (IsAllHeroesDead())
+				{
+					EndFloor();
+				}
+				else
+				{
+					Game.Singleton.Tower.LoadNextFloor();
+				}
 			}
 			// Restart the floor
 		}

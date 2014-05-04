@@ -47,7 +47,11 @@ public class Shrine : Interactable
 					var players = Game.Singleton.Players;
 					foreach (Player p in players)
 					{
-						p.Hero.Stats.CurrentHealth = hero.Stats.MaxHealth;
+						if (!p.Hero.IsDead)
+						{
+							p.Hero.Stats.CurrentHealth = hero.Stats.MaxHealth;
+							p.Hero.Stats.CurrentSpecial = p.Hero.Stats.MaxSpecial;
+						}
 					}
 				}
 				break;

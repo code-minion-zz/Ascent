@@ -28,6 +28,9 @@ public class Door : EnvironmentBreakable
 
 	private bool startDoor = false;
 
+    private DoorLockIndicator doorLockInidicator;
+    public Transform lockDoorIndicatorPosition;
+
 	public bool StartDoor
 	{
 		get { return startDoor; }
@@ -54,6 +57,17 @@ public class Door : EnvironmentBreakable
 
 			a = transform.position;
 			a.y = 5.0f;
+
+			return;
+		}
+
+		if (isFinalDoor)
+		{
+			Vector3 a = transform.position;
+			Vector3 b = a + Vector3.up * 10f;
+
+			//Gizmos.DrawLine(a,b);
+			Handles.ArrowCap(0, a, Quaternion.LookRotation(Vector3.up), 8f);
 		}
 	}
 #endif
@@ -65,7 +79,18 @@ public class Door : EnvironmentBreakable
         {
             walkedOutOfTheDoor = false;
             playersLeftDoor = new bool[Game.Singleton.Players.Count];
-            sealedDoor.SetActive(false);
+
+            if (doorLockInidicator == null)
+            {
+                GameObject buttonIndicatorGO = NGUITools.AddChild(FloorHUDManager.Singleton.mainPanel.gameObject, Resources.Load("Prefabs/UI/DoorLockIndicator") as GameObject);
+                doorLockInidicator = buttonIndicatorGO.GetComponent<DoorLockIndicator>();
+                doorLockInidicator.Initialise(lockDoorIndicatorPosition);
+
+                doorLockInidicator.Enable(false);
+
+                // Set scale similar to the character size
+                doorLockInidicator.transform.localScale = Vector3.one * 2.5f;
+            }
         }
 	}
 
@@ -112,8 +137,8 @@ public class Door : EnvironmentBreakable
                        if(p.Hero.collider.bounds.Intersects(immediateArea.bounds))
                        {
                            if (isFinalDoor)
-                           {
-                               Game.Singleton.Tower.LoadNextFloor();
+							{
+								GoThroughDoorToNextFloor();
                            }
                            else
                            {
@@ -147,8 +172,8 @@ public class Door : EnvironmentBreakable
 					if (standingOnDoorTimer >= 0.5f)
 					{
                         if (isFinalDoor)
-                        {
-                            Game.Singleton.Tower.LoadNextFloor();
+						{
+							GoThroughDoorToNextFloor();
                         }
                         else
                         {
@@ -170,8 +195,7 @@ public class Door : EnvironmentBreakable
 						{
                             if (isFinalDoor)
                             {
-								FloorHUDManager.Singleton.LevelCompleteScreen();
-                                Game.Singleton.Tower.CurrentFloor.gameOver = true;
+								GoThroughDoorToNextFloor();
                             }
                             else
                             {
@@ -192,6 +216,12 @@ public class Door : EnvironmentBreakable
         }
 	}
 
+	public void GoThroughDoorToNextFloor()
+	{
+		FloorHUDManager.Singleton.LevelCompleteScreen();
+		Game.Singleton.Tower.CurrentFloor.gameOver = true;
+	}
+
 	public void SetAsStartDoor()
 	{
 		startDoor = true;
@@ -203,6 +233,8 @@ public class Door : EnvironmentBreakable
     {
         openedDoor.SetActive(true);
         sealedDoor.SetActive(false);
+        doorLockInidicator.Enable(false);
+
     }
 
     [ContextMenu("CloseDoor")]
@@ -210,5 +242,6 @@ public class Door : EnvironmentBreakable
     {
         openedDoor.SetActive(false);
         sealedDoor.SetActive(true);
+        doorLockInidicator.Enable(true);
     }
 }

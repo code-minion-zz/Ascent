@@ -42,11 +42,23 @@ public class HomingMagicMissile : Projectile
 
     public void SelectTarget()
     {
+		var aliveHeroes =  Game.Singleton.AliveHeroes;
+
+		if (aliveHeroes.Count > 0)
+		{
+			int randomPlayer = Random.Range(0, aliveHeroes.Count);
+
+			target = aliveHeroes[randomPlayer];
+
+			return;
+		}
+
+
 		int playerCount = Game.Singleton.NumberOfPlayers;
 
-		int randomPlayer = Random.Range(0, playerCount);
+		int randPlayer = Random.Range(0, playerCount);
 
-		target = Game.Singleton.Players[randomPlayer].Hero;
+		target = Game.Singleton.Players[randPlayer].Hero;
     }
 
     public Vector3 SteerToTarget()
@@ -124,7 +136,7 @@ public class HomingMagicMissile : Projectile
 		}
 		else
 		{
-			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .5f);
 		}
 
         Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);

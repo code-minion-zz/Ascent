@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class WatcherMagicMissile : Ability
 {
+	private Vector2 randomHomingMissiles = new Vector2(1, 3);
+	private Vector2 randomRandomMissiles = new Vector2(5, 10);
+	 
+
     private bool performed = false;
     public override void Initialise(Character owner)
     {
@@ -15,6 +19,12 @@ public class WatcherMagicMissile : Ability
         cooldownFullDuration = 0.0f;
         specialCost = 0;
     }
+
+	public void Enrage()
+	{
+		randomRandomMissiles = new Vector2(8, 12);
+		randomHomingMissiles = new Vector2(3, 4);
+	}
 
     public override void StartAbility()
     {
@@ -36,8 +46,14 @@ public class WatcherMagicMissile : Ability
 			int randomRandomMissiles = Random.Range(2, 5);
 			for (int i = 0; i < randomRandomMissiles; ++i)
 			{
+				int eyePos = i;
+				if (eyePos > 10)
+				{
+					eyePos = Random.Range(0, 10);
+				}
+
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/HomingMagicMissile")) as GameObject;
-				arrowGO.GetComponent<HomingMagicMissile>().Initialise(eyePositions[i].position, owner);
+				arrowGO.GetComponent<HomingMagicMissile>().Initialise(eyePositions[eyePos].position, owner);
 				arrowGO.transform.parent = owner.transform;
 				performed = true;
 			}
@@ -45,8 +61,14 @@ public class WatcherMagicMissile : Ability
 			int randomHomingMissiles = Random.Range(8, 10);
 			for (int i = 3; i < randomHomingMissiles; ++i)
 			{
+				int eyePos = i;
+				if (eyePos > 10)
+				{
+					eyePos = Random.Range(0, 10);
+				}
+
 				GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/RandomMagicMissile")) as GameObject;
-                arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[i].position, owner);
+				arrowGO.GetComponent<RandomMagicMissile>().Initialise(eyePositions[eyePos].position, owner);
 				arrowGO.transform.parent = owner.transform;
 				performed = true;
 			}

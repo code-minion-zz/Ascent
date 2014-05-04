@@ -148,16 +148,16 @@ public abstract class AISensor
         if (scope == EScope.Allies || scope == EScope.All)
         {
             // Get list of enemies
-            characters = Game.Singleton.Tower.CurrentFloor.CurrentRoom.Enemies;
+            characters = Game.Singleton.Tower.CurrentFloor.CurrentRoom.AliveEnemies;
         }
 
         if (scope == EScope.Enemies || scope == EScope.All)
         {
             // Add the heroes
-            List<Player> players = Game.Singleton.Players;
-            foreach (Player p in players)
+            var players = Game.Singleton.AliveHeroes;
+            foreach (Hero p in players)
             {
-                characters.Add(p.Hero.GetComponent<Hero>());
+                characters.Add(p);
             }
         }
     }
