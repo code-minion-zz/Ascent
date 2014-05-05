@@ -13,6 +13,7 @@ public class EffectFactory : MonoBehaviour
 	public GameObject arrowFire;
 
     public GameObject moveBlockEffect;
+    public GameObject chargedIntoWallEffect;
 
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
@@ -67,6 +68,20 @@ public class EffectFactory : MonoBehaviour
         }
 
         return hitEffect;
+    }
+
+    public GameObject CreateChargedIntoWallEffect(Vector3 position, Quaternion rotation)
+    {
+        GameObject effect = null;
+
+        if (chargedIntoWallEffect != null)
+        {
+
+            effect = GameObject.Instantiate(chargedIntoWallEffect, position, rotation) as GameObject;
+            effect.transform.parent = transform;
+        }
+
+        return effect;
     }
 
 	public void CreateArcaneExplosion(Vector3 position, Quaternion rotation)

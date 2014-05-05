@@ -212,6 +212,8 @@ public class AbominationCharge : Ability
 			go.GetComponent<FallingDebris>().Initialise(randPos, owner, Random.Range(0.0f, 1.0f));
 		}
 
+        EffectFactory.Singleton.CreateRandHitEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
+        EffectFactory.Singleton.CreateChargedIntoWallEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
     }
 
     private bool DoDamageCheck()
@@ -235,6 +237,7 @@ public class AbominationCharge : Ability
 
                         // Create a blood splatter effect on the enemy.
                         EffectFactory.Singleton.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation);
+                        EffectFactory.Singleton.CreateChargedIntoWallEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
                     }
 
                     enemiesFoundLastCount = enemies.Count;
