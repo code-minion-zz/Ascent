@@ -14,6 +14,7 @@ public class EffectFactory : MonoBehaviour
 
     public GameObject moveBlockEffect;
     public GameObject chargedIntoWallEffect;
+	public GameObject blueFlame;
 
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
@@ -151,6 +152,20 @@ public class EffectFactory : MonoBehaviour
 
         return effect;
     }
+
+	public GameObject CreateBlueFlame(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (blueFlame != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(blueFlame, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
 
 
 }
