@@ -82,7 +82,8 @@ public abstract class Enemy : Character
     }
 
    protected float deathSequenceTime = 0.0f;
-   protected float deathSequenceEnd = 2.0f;
+   protected float deathSequenceEnd = 2.5f;
+   private bool deathAnimComplete = false;
    protected float deathSinkTime = 0.0f;
    protected float deathSinkEnd = 3.0f;
    protected Vector3 deathPosition;
@@ -98,6 +99,12 @@ public abstract class Enemy : Character
 	public override void Initialise()
 	{
         EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
+
+		if (Game.Singleton.NumberOfPlayers > 1)
+		{
+			health = Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.5f);
+		}
+
         EnemyStats.SecondaryStats.health = health;
         EnemyStats.SecondaryStats.attack = attack;
         EnemyStats.Reset();
@@ -141,24 +148,38 @@ public abstract class Enemy : Character
     {
         if (isDead)
         {
-            animator.animator.SetLayerWeight(0, 0.0f);
-            animator.animator.SetLayerWeight(1, 1.0f);
-            deathSequenceTime = deathSequenceEnd;
-            animator.PlayAnimation("DeathIdle", true);
-            animator.animator.enabled = false;
+			if (!deathAnimComplete)
+			{
+				deathSequenceTime = 0.0f;
+			}
+			else
+			{
+				animator.animator.SetLayerWeight(0, 0.0f);
+				animator.animator.SetLayerWeight(1, 1.0f);
+				deathSequenceTime = deathSequenceEnd;
+				animator.PlayAnimation("DeathIdle", true);
+				animator.animator.enabled = false;
+			}
         }
     }
 
     public virtual void OnDisable()
     {
-        if (isDead)
-        {
-            animator.animator.SetLayerWeight(0, 0.0f);
-            animator.animator.SetLayerWeight(1, 1.0f);
-            deathSequenceTime = deathSequenceEnd;
-            animator.PlayAnimation("DeathIdle", true);
-            animator.animator.enabled = false;
-        }
+		if (isDead)
+		{
+			if (!deathAnimComplete)
+			{
+				deathSequenceTime = 0.0f;
+			}
+			else
+			{
+				animator.animator.SetLayerWeight(0, 0.0f);
+				animator.animator.SetLayerWeight(1, 1.0f);
+				deathSequenceTime = deathSequenceEnd;
+				animator.PlayAnimation("DeathIdle", true);
+				animator.animator.enabled = false;
+			}
+		}
     }
 
     #endregion
@@ -170,11 +191,14 @@ public abstract class Enemy : Character
     {
         if (isDead)
         {
+			if (deathAnimComplete)
+				return;
+
 			ResetColor();
             if (deathSequenceTime != deathSequenceEnd)
             {
                 deathSequenceTime += Time.deltaTime;
-                if (deathSequenceTime > deathSequenceEnd)
+                if (deathSequenceTime >= deathSequenceEnd)
                 {
                     deathPosition = transform.position;
                     animator.animator.SetLayerWeight(0, 0.0f);
@@ -182,17 +206,9 @@ public abstract class Enemy : Character
                     deathSequenceTime = deathSequenceEnd;
                     animator.PlayAnimation("DeathIdle", true);
                     animator.animator.enabled = false;
+					deathAnimComplete = true;
                     return;
                 }
-            }
-            else if (deathSequenceTime == deathSequenceEnd)
-            {
-                animator.animator.SetLayerWeight(0, 0.0f);
-                animator.animator.SetLayerWeight(1, 1.0f);
-                deathSequenceTime = deathSequenceEnd;
-                animator.PlayAnimation("DeathIdle", true);
-                animator.animator.enabled = false;
-                return;
             }
             animator.PlayAnimation("Death", true);
         }

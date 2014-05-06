@@ -38,6 +38,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: Stunned
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 3
     m_Name: Base Layer
@@ -141,24 +147,6 @@ Transition:
     m_ConditionEvent: Strike
     m_EventTreshold: 0
     m_ExitTime: .571428597
-  m_Atomic: 1
-  m_Solo: 0
-  m_Mute: 0
---- !u!1101 &110115928
-Transition:
-  m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_SrcState: {fileID: 110200000}
-  m_DstState: {fileID: 110208961}
-  m_TransitionDuration: .192307666
-  m_TransitionOffset: 0
-  m_Conditions:
-  - m_ConditionMode: 5
-    m_ConditionEvent: DeathIdle
-    m_EventTreshold: 0
-    m_ExitTime: .807692349
   m_Atomic: 1
   m_Solo: 0
   m_Mute: 0
@@ -337,7 +325,7 @@ Transition:
   m_TransitionDuration: .192307666
   m_TransitionOffset: 0
   m_Conditions:
-  - m_ConditionMode: 5
+  - m_ConditionMode: 1
     m_ConditionEvent: DeathIdle
     m_EventTreshold: 0
     m_ExitTime: .807692349
@@ -582,12 +570,6 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110233645}
-      second: []
-    data:
-      first: {fileID: 110208961}
-      second: []
-    data:
       first: {fileID: 0}
       second:
       - {fileID: 110155008}
@@ -620,8 +602,13 @@ StateMachine:
     data:
       first: {fileID: 110200000}
       second:
-      - {fileID: 110115928}
       - {fileID: 110170823}
+    data:
+      first: {fileID: 110208961}
+      second: []
+    data:
+      first: {fileID: 110233645}
+      second: []
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: -336, y: -144, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
@@ -637,7 +624,10 @@ StateMachine:
   - {fileID: 110281013}
   m_ChildStateMachine: []
   m_ChildStateMachinePosition: []
-  m_OrderedTransitions: {}
+  m_OrderedTransitions:
+    data:
+      first: {fileID: 110281013}
+      second: []
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

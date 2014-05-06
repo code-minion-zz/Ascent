@@ -8,13 +8,13 @@ public class SilenceDebuff : StatusEffect
 		type = EEffectType.Debuff;
     }
 
-	protected override void ApplyStatusEffect(Character caster, Character target, float duration)
+	public override void ApplyStatusEffect(Character caster, Character target)
 	{
 		overridePrevious = true;
 
 		if (target.IsVulnerableTo(EStatus.Silence) || caster == target)
 		{
-			base.ApplyStatusEffect(caster, target, duration);
+			base.ApplyStatusEffect(caster, target);
 
 			target.Status |= EStatus.Silence;
 

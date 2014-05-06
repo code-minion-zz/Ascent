@@ -16,6 +16,14 @@ public class EffectFactory : MonoBehaviour
     public GameObject chargedIntoWallEffect;
 	public GameObject blueFlame;
 
+	public GameObject lightningCastCircle;
+	public GameObject fireCastCircle;
+	public GameObject iceCastCircle;
+
+	public GameObject stompHitEffect;
+
+	public GameObject stunnedEffect;
+
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
 	{
@@ -162,6 +170,79 @@ public class EffectFactory : MonoBehaviour
 			Vector3 pos = position;
 			effect = GameObject.Instantiate(blueFlame, pos, rotation) as GameObject;
 			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateLightningCastCircle(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (lightningCastCircle != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(lightningCastCircle, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateFireCastCircle(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (fireCastCircle != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(fireCastCircle, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateIceCastCircle(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (iceCastCircle != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(iceCastCircle, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateStompHitEffect(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (stompHitEffect != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(stompHitEffect, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateStunnedEffect(Transform target)
+	{
+		GameObject effect = null;
+
+		if (stunnedEffect != null)
+		{
+			Vector3 pos = target.transform.position;
+			pos.y += 1.0f;
+			effect = GameObject.Instantiate(stunnedEffect, pos, target.transform.rotation) as GameObject;
+			effect.transform.parent = transform;
+
+			effect.GetComponent<StunnedEffect>().Initialise(target);
 		}
 
 		return effect;
