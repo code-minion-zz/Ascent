@@ -19,7 +19,7 @@ public class SwitchPanel : MonoBehaviour
         {
             if (isDown != value)
             {
-                SoundManager.PlaySound(AudioClipType.switchclick, transform.position + Vector3.up, 1f);
+                SoundManager.PlaySound(AudioClipType.switchclick, transform.position + Vector3.up, 10f);
             }
 
             isDown = value;
