@@ -8,7 +8,7 @@ public class PlayerIndicator : MonoBehaviour
 
 	private Transform indicatorTransform;
 
-    public float offsetY = 1.0f;
+    private float offsetY = 0.225f;
 
 	GameObject indicator;
 

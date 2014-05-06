@@ -73,8 +73,14 @@ public class FallingDebris : Projectile
 		if (exploded)
 			return;
 
+        if (collision.gameObject.layer == (int)Layer.Hero ||
+            collision.gameObject.layer == (int)Layer.Monster)
+            return;
+
         GameObject explosion = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/DebrisExplosion")) as GameObject;
-        explosion.GetComponent<DebrisExplosion>().Initialise(transform.position, owner);
+        Vector3 startPos = transform.position;
+        startPos.y = 0.1f;
+        explosion.GetComponent<DebrisExplosion>().Initialise(startPos, owner);
 
         SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, .5f);
 

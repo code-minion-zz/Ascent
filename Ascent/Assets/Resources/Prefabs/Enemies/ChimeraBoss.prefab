@@ -1428,6 +1428,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400188}
+  m_Layer: 0
+  m_Name: Stun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -1462,6 +1477,7 @@ Transform:
   m_Children:
   - {fileID: 400006}
   - {fileID: 400178}
+  - {fileID: 400188}
   m_Father: {fileID: 0}
 --- !u!4 &400006
 Transform:
@@ -2555,6 +2571,17 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: .2016}
   m_Children: []
   m_Father: {fileID: 400006}
+--- !u!4 &400188
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.69155526, z: 1.23880434}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400004}
 --- !u!54 &5400000
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -2692,9 +2719,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
+  stunEffectPosition: {fileID: 400188}
   agent: {fileID: 11400014}
-  health: 25
+  health: 50
   attack: 1
+  enragePercentage: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

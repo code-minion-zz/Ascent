@@ -21,8 +21,8 @@ public class WarriorWarStomp : Ability
         base.Initialise(owner);
 
         // TODO: remove this from hardcoded animation data.
-        animationLength = 1.667f;
-        animationSpeed = 1.5f;
+        animationLength = 0.60f;
+        animationSpeed = 1.25f;
         animationTrigger = "WarStomp";
         cooldownFullDuration = 0.0f;
         specialCost = 3;
@@ -41,7 +41,7 @@ public class WarriorWarStomp : Ability
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
         stompObject.transform.localScale = new Vector3(0.0f, 1.0f, 0.0f);
-        GameObject.Destroy(stompObject, animationLength / animationSpeed);
+        //GameObject.Destroy(stompObject, animationLength / animationSpeed);
 
         performed = false;
 		soundPlayed = false;
@@ -61,7 +61,7 @@ public class WarriorWarStomp : Ability
 
         if (!performed)
         {
-			if (timeElapsedSinceStarting >= animationLength * 0.3f)
+			if (timeElapsedSinceStarting >= animationLength * 0.1f)
 			{
 				if (!soundPlayed)
 				{
@@ -70,7 +70,7 @@ public class WarriorWarStomp : Ability
 				}
 			}
 
-            if (timeElapsedSinceStarting >= animationLength * 0.5f)
+            if (timeElapsedSinceStarting >= animationLength * 0.2f)
             {
                 List<Character> enemies = new List<Character>();
 
@@ -83,11 +83,11 @@ public class WarriorWarStomp : Ability
 						{
 							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
 							combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 0.5f));
-							combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 1.0f)));
+							combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 3.0f)));
 							combatEvaluator.Apply();
 
 							// Create a blood splatter effect on the enemy.
-                            EffectFactory.Singleton.CreateBloodSplatter(e.transform.position, e.transform.rotation);
+                            EffectFactory.Singleton.CreateStompHitEffect(e.transform.position, e.transform.rotation);
 						}
 					}
 

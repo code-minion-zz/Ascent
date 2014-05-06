@@ -12,7 +12,7 @@ using System.Collections;
 [System.Xml.Serialization.XmlInclude(typeof(WarriorFreezeField))]
 public abstract class Ability
 {
-    protected float animationLength = 0.0f;
+    public float animationLength = 0.0f;
     protected float animationSpeed = 1.0f;
 
     protected float cooldownFullDuration = 0.0f;

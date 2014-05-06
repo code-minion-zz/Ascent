@@ -2133,6 +2133,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400282}
+  m_Layer: 0
+  m_Name: Stun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -2173,6 +2188,7 @@ Transform:
   m_Children:
   - {fileID: 400226}
   - {fileID: 400000}
+  - {fileID: 400282}
   m_Father: {fileID: 0}
 --- !u!4 &400006
 Transform:
@@ -3824,6 +3840,17 @@ Transform:
   m_Children:
   - {fileID: 400010}
   m_Father: {fileID: 400210}
+--- !u!4 &400282
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100282}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: .756784916, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400004}
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -3980,6 +4007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a0fee14b3dc544997ddb08711146ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   hasAnimations: 1
 --- !u!114 &11400004
 MonoBehaviour:
@@ -4020,9 +4048,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnOnLoad: 1
+  stunEffectPosition: {fileID: 400282}
   agent: {fileID: 11400014}
   health: 5
   attack: 1
+  enragePercentage: 0
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -16,6 +16,14 @@ public class HeroController : MonoBehaviour
 
 	private HeroButtonIndicator buttonIndicator;
 
+	private InputDevice.InputControlType attackButton = InputDevice.InputControlType.Action3;
+	private InputDevice.InputControlType interactButton = InputDevice.InputControlType.Action1;
+	private InputDevice.InputControlType abilityOneButton = InputDevice.InputControlType.Action4;
+	private InputDevice.InputControlType abilityTwoButton = InputDevice.InputControlType.Action2;
+
+	private float outOfCombatTimer;
+	private float timeTillIdleAnimation = 2.0f;
+
 	private GameObject targetObject;
 	public GameObject TargetObject
 	{
@@ -154,7 +162,7 @@ public class HeroController : MonoBehaviour
 				if (grabbedObject != null)
 				{
 						// Release the object if the button is released
-					if (inputDevice.Y.WasReleased)
+					if (inputDevice.GetControl(interactButton).WasReleased)
 					{
 						ReleaseGrabbedObject();
 					}
@@ -175,7 +183,7 @@ public class HeroController : MonoBehaviour
 					{
 						ProcessFaceButtons(inputDevice);
 						ProcessTriggersAndBumpers(inputDevice);
-						ProcessDPad(inputDevice);
+						//ProcessDPad(inputDevice);
 					}
 				}
 			}
@@ -300,17 +308,17 @@ public class HeroController : MonoBehaviour
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
 		// Left Trigger
-		if (device.LeftTrigger)
+		if (device.GetControl(abilityOneButton))
 		{
 			if ((int)EHeroAction.Action1 < loadout.AbilityBinds.Length)
-				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.LeftTrigger);
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.GetControl(abilityOneButton));
 		}
 
         // Left Bump
-        else if (device.LeftBumper)
+		else if (device.GetControl(abilityTwoButton))
         {
 			if ((int)EHeroAction.Action2 < loadout.AbilityBinds.Length)
-				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.LeftBumper);
+				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.GetControl(abilityTwoButton));
         }
 
 		// Right bump
@@ -461,7 +469,24 @@ public class HeroController : MonoBehaviour
 		// If none of the above and no new movement this frame then just IDLE!
 		if (!newMovementThisFrame)
 		{
-			animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
+			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.AliveEnemies.Count > 0)
+			{
+				animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
+				outOfCombatTimer = 0.0f;
+			}
+			else
+			{
+				//outOfCombatTimer += Time.deltaTime;
+				//if (outOfCombatTimer > timeTillIdleAnimation)
+				//{
+					//outOfCombatTimer = 0.0f;
+					animator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
+				//}
+				//else
+				//{
+				//    animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
+				//}
+			}
 		}
 	}
 
@@ -638,9 +663,9 @@ public class HeroController : MonoBehaviour
 	{
 		if (!hero.Loadout.IsAbilityActive || (hero.Loadout.IsAbilityActive && hero.Loadout.CanInterruptActiveAbility))
 		{
-			bool somethingInteractedWith =  ProcessInteractions(device.Y.WasPressed);
+			bool somethingInteractedWith =  ProcessInteractions(device.GetControl(interactButton).WasPressed);
 
-			if(!somethingInteractedWith && inputDevice.A.WasPressed)
+			if (!somethingInteractedWith && inputDevice.GetControl(attackButton).WasPressed)
 			{
 				RotateToTarget();
 				hero.Loadout.UseAbility((int)EHeroAction.Strike);
@@ -790,7 +815,7 @@ public class HeroController : MonoBehaviour
 								vertGrab = (triggerID == 1); // 0 is horizontal 
 
                                 motor.StopMotion();
-                                animator.PlayMovement(HeroAnimator.EMoveAnimation.Idle);
+                                animator.PlayMovement(HeroAnimator.EMoveAnimation.GrabbingBlock);
                                 buttonIndicator.Enable(false);
 
 								// figure out direction

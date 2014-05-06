@@ -4,6 +4,8 @@ using System;
 
 public class StunnedDebuff : StatusEffect
 {
+	private StunnedEffect effect;
+
 	public StunnedDebuff()
 	{
 		type = EEffectType.Debuff;
@@ -11,24 +13,43 @@ public class StunnedDebuff : StatusEffect
 
 	public StunnedDebuff(Character caster, Character target, float duration)
 	{
-		ApplyStatusEffect(caster, target, duration);
+		type = EEffectType.Debuff;
+
+		if (duration > 0.0f)
+		{
+			timed = true;
+			this.duration = duration;
+		}
 	}
 
-	protected override void ApplyStatusEffect(Character caster, Character target, float duration)
+	public override void ApplyStatusEffect(Character caster, Character target)
 	{
 		overridePrevious = true;
 
 		if (target.IsVulnerableTo(EStatus.Stun) || caster == target)
 		{
-			base.ApplyStatusEffect(caster, target, duration);
+			if (!target.IsInState(EStatus.Stun))
+			{
+				Transform stunTarget = target.stunEffectPosition;
+				if (stunTarget == null)
+				{
+					stunTarget = target.transform.FindChild("Stun");
+
+					if (stunTarget == null)
+					{
+						stunTarget = target.transform;
+					}
+				}
+				effect = EffectFactory.Singleton.CreateStunnedEffect(stunTarget).GetComponent<StunnedEffect>();
+			}
+
+			base.ApplyStatusEffect(caster, target);
 
 			target.Status |= EStatus.Stun;
 			target.StatusColour |= EStatusColour.Yellow;
 
 			target.Motor.StopMotion();
-			target.Motor.StopMovingAlongGrid();
-
-			FloorHUDManager.Singleton.TextDriver.SpawnDamageText(target.gameObject, "Stunned!", Color.yellow);
+			target.Motor.StopMovingAlongGrid();	
 		}
 		else
 		{
@@ -38,7 +59,12 @@ public class StunnedDebuff : StatusEffect
 
 	protected override void EndEffect()
 	{
-		target.Status &= ~EStatus.Stun;
-		target.StatusColour &= ~EStatusColour.Yellow;
+		if (effect != null)
+		{
+			target.Status &= ~EStatus.Stun;
+			target.StatusColour &= ~EStatusColour.Yellow;
+
+			effect.FadeOutAndDie();
+		}
 	}
 }

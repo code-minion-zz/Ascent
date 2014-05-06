@@ -13,13 +13,13 @@ public class ShockedDebuff : TicksOverTimeEffect
 		target.HitTaken = true;
 	}
 
-	protected override void ApplyStatusEffect(Character caster, Character target, float duration)
+	public override void ApplyStatusEffect(Character caster, Character target)
 	{
 		overridePrevious = true;
 
 		if (target.IsVulnerableTo(EStatus.Shock) || caster == target)
 		{
-			base.ApplyStatusEffect(caster, target, duration);
+			base.ApplyStatusEffect(caster, target);
 
 			target.Status |= EStatus.Shock;
 

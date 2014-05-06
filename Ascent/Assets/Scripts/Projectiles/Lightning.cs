@@ -28,7 +28,7 @@ public class Lightning : Projectile
 
         velocity = owner.transform.forward * 1.0f;
 
-        circle = new Circle(transform, 3.0f, Vector3.zero);
+        circle = new Circle(transform, 7.5f, Vector3.zero);
     }
 
     public void Update()
@@ -43,11 +43,10 @@ public class Lightning : Projectile
         Vector3 pos = collision.ClosestPointOnBounds(this.transform.position);
         GameObject.Instantiate(lightningEffectHit, pos, collision.transform.rotation);
 
-        if (collision.gameObject.tag != "Monster")
-        {
-            GameObject.Destroy(this.gameObject);
-            return;
-        }
+		if (owner == null)
+		{
+			return;
+		}
 
         if (!hitSomething)
         {
@@ -146,6 +145,52 @@ public class Lightning : Projectile
 
                     }
                     break;
+				case Layer.Environment:
+					{
+						charactersHit.Add(null);
+						if (charactersHit.Count < targets)
+						{
+							Character.EScope scope = owner is Enemy ? Character.EScope.Hero : Character.EScope.Enemy;
+
+							List<Character> characters = new List<Character>();
+							Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
+
+							Character nextTarget = null;
+
+							if (curRoom.CheckCollisionArea(circle, scope, ref characters))
+							{
+								foreach (Character c in characters)
+								{
+									if (!charactersHit.Contains(c))
+									{
+										nextTarget = c;
+										break;
+									}
+								}
+
+								if (nextTarget != null)
+								{
+									// Move to next target
+									//projectile.transform.position = collision.gameObject.transform.position;
+									rigidbody.velocity = Vector3.zero;
+									velocity = nextTarget.transform.position - transform.position;
+									rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+									hitSomething = false;
+									SoundManager.PlaySound(AudioClipType.lightning, transform.position, 1f / charactersHit.Count + 1);
+								}
+								else
+								{
+									// No targets around to just expire
+									lightningExpired = true;
+								}
+							}
+						}
+						else
+						{
+							lightningExpired = true;
+						}
+					}
+					break;
                 default:
                     {
                         lightningExpired = true;
@@ -158,6 +203,7 @@ public class Lightning : Projectile
         if (lightningExpired)
         {
             GameObject.Destroy(this.gameObject);
+
         }
     }
 }

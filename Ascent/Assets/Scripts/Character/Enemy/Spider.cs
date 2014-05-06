@@ -20,6 +20,7 @@ public class Spider : Enemy
 		loadout.SetSize(1);
 
 		Ability tackle = new RatTackle();
+		tackle.animationLength = 0.667f;
 		tackleAbilityID = 0;
 		loadout.SetAbility(tackle, tackleAbilityID);
 

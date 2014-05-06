@@ -20,10 +20,10 @@ public class InputDevice
 		DPadLeft,
 		DPadRight,
 
-		Action1,
-		Action2,
-		Action3,
-		Action4,
+		Action1, // A
+		Action2, // B
+		Action3, // X
+		Action4, // Y
 
 		LeftTrigger,
 		RightTrigger,

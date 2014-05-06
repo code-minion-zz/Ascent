@@ -6,14 +6,14 @@ public class SleepingDebuff : StatusEffect
 	public SleepingDebuff(Character caster, Character target, float duration)
 	{
 		type = EEffectType.Debuff;
-		ApplyStatusEffect(caster, target, duration);
+		ApplyStatusEffect(caster, target);
 	}
 
-	protected override void ApplyStatusEffect(Character caster, Character target, float duration)
+	public override void ApplyStatusEffect(Character caster, Character target)
 	{
 		overridePrevious = true;
 
-		base.ApplyStatusEffect(caster, target, duration);
+		base.ApplyStatusEffect(caster, target);
 
 		if (target.IsVulnerableTo(EStatus.Frozen) || caster == target)
 		{

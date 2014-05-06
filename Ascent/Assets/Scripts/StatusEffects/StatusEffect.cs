@@ -116,8 +116,12 @@ public class StatusEffect
 		RemoveEffect();
 	}
 
-    protected virtual void ApplyStatusEffect(Character caster, Character target, float duration)
+    public virtual void ApplyStatusEffect(Character caster, Character target)
     {
+		timed = duration > 0.0f;
+		this.caster = caster;
+		this.target = target;
+
 		// First check if there is a status effect of the time type
 
 		List<StatusEffect> statusEffects = target.StatusEffects;
@@ -131,12 +135,15 @@ public class StatusEffect
 			{
 				// Override the existing effect if the new one is more powerful
 				// TODO: write comparison function in base class and have derived classes override it.
-				if (statusEffects[i].ToString() == this.ToString())
+				if (statusEffects[i].GetType() == this.GetType())
 				{
+					// If the duration of the new effect is longer, replace the old one.
+					// If the duration of the new effect is shorter, extend the old one.
 					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > this.FullDuration;
 					if (isDurationLonger)
 					{
-						statusEffects[i] = this;
+						statusEffects[i].FullDuration = this.FullDuration;
+						statusEffects[i].TimeElapsed = 0.0f;
 					}
 					else
 					{
@@ -144,8 +151,13 @@ public class StatusEffect
 						statusEffects[i].TimeElapsed -= this.FullDuration;
 					}
 
+					if (statusEffects[i].toBeRemoved)
+					{
+						statusEffects[i].toBeRemoved = false;
+					}
+
 					overrideSuccesful = true;
-					break;
+					return;
 				}
 			}
 
@@ -158,19 +170,6 @@ public class StatusEffect
 		{
 			statusEffects.Add(this);
 		}
-
-		if (duration > 0.0f)
-		{
-			timed = true;
-			this.duration = duration;
-		}
-		else
-		{
-			timed = false;
-		}
-
-        this.caster = caster;
-        this.target = target;
     }
 
     protected virtual void ProcessEffect()
@@ -187,4 +186,9 @@ public class StatusEffect
     {
         target.RemoveStatusEffect(this);
     }
+
+	public void EndEarly()
+	{
+		EndEffect();
+	}
 }

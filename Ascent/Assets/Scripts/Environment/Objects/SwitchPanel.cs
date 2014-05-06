@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SwitchPanel : MonoBehaviour
 {
@@ -7,6 +8,14 @@ public class SwitchPanel : MonoBehaviour
     public GameObject switchModel;
     public Color pressedColor = new Color(0.0f, 0.65f, 0.0f);
     public Color unpressedColor = new Color(0.65f, 0.0f, 0.0f);
+
+	public delegate void SwitchChange(SwitchPanel switchPanel);
+	public event SwitchChange onSwitchOn;
+	public event SwitchChange onSwitchOff;
+
+	private List<GameObject> thingsOnMe = new List<GameObject>();
+
+	private bool firedEvent;
 
     public bool IsDown
     {
@@ -47,11 +56,44 @@ public class SwitchPanel : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
 	{
-		IsDown = true;
+		if (!IsDown)
+		{
+			IsDown = true;
+
+			if (!firedEvent && onSwitchOn != null)
+			{
+				onSwitchOn.Invoke(this);
+				firedEvent = true;
+			}
+		}
+
+		if (!thingsOnMe.Contains(collision.gameObject))
+			thingsOnMe.Add(collision.gameObject);
 	}
 
     void OnCollisionExit(Collision collision)
     {
-        IsDown = false;
+		if (IsDown)
+		{
+			if (!thingsOnMe.Contains(collision.gameObject))
+			{
+				return;
+			}
+
+			thingsOnMe.Remove(collision.gameObject);
+
+			if (thingsOnMe.Count > 0)
+			{
+				return;
+			}
+
+			IsDown = false;
+			firedEvent = false;
+
+			if (onSwitchOff != null)
+			{
+				onSwitchOff.Invoke(this);
+			}
+		}
     }
 }

@@ -24,7 +24,7 @@ public class AbominationCharge : Ability
     private int checkAtFrame = 3;
     private int frameCount = 0;
 
-    private Circle circle;
+    private Arc damageArea;
     private Arc arc;
 
 	private bool started = false;
@@ -45,7 +45,7 @@ public class AbominationCharge : Ability
 
         travelTime = animationLength;
 
-        circle = new Circle(owner.transform, 1.5f, new Vector3(0.0f, 0.0f, 0.0f));
+		damageArea = new Arc(owner.transform, 3.0f, 45.0f, new Vector3(0.0f, 0.0f, -0.5f));
         arc = new Arc(owner.transform, 5.0f, 7.5f, Vector3.zero);
 
 		canBeInterrupted = false;
@@ -205,13 +205,15 @@ public class AbominationCharge : Ability
 
 		Game.Singleton.Tower.CurrentFloor.FloorCamera.ShakeCamera(1.0f, 1.0f);
 
-		for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 6; ++i)
 		{
 			GameObject go = Game.Singleton.Tower.CurrentFloor.CurrentRoom.InstantiateGameObject("Prefabs/Projectiles/FallingDebris") as GameObject;
 			Vector3 randPos = Game.Singleton.Tower.CurrentFloor.CurrentRoom.NavMesh.GetRandomPosition();
 			go.GetComponent<FallingDebris>().Initialise(randPos, owner, Random.Range(0.0f, 1.0f));
 		}
 
+        EffectFactory.Singleton.CreateRandHitEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
+        EffectFactory.Singleton.CreateChargedIntoWallEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
     }
 
     private bool DoDamageCheck()
@@ -221,7 +223,7 @@ public class AbominationCharge : Ability
         if (Game.Singleton.InTower)
         {
             Room curRoom = Game.Singleton.Tower.CurrentFloor.CurrentRoom;
-            if (curRoom.CheckCollisionArea(circle, Character.EScope.Hero, ref enemies))
+            if (curRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref enemies))
             {
                 if (enemiesFoundLastCount != enemies.Count)
                 {
@@ -230,11 +232,12 @@ public class AbominationCharge : Ability
                         // Apply damage, knockback and stun to the enemy.
                         CombatEvaluator combatEvaluator = new CombatEvaluator(owner, enemies[i]);
                         combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
-                        combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, enemies[i], 1.5f)));
+                        combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, enemies[i], 1.75f)));
                         combatEvaluator.Apply();
 
                         // Create a blood splatter effect on the enemy.
                         EffectFactory.Singleton.CreateBloodSplatter(enemies[i].transform.position, enemies[i].transform.rotation);
+                        EffectFactory.Singleton.CreateChargedIntoWallEffect(owner.transform.position + owner.transform.forward, owner.transform.rotation);
                     }
 
                     enemiesFoundLastCount = enemies.Count;
@@ -242,7 +245,7 @@ public class AbominationCharge : Ability
 
                 collisionsFound = true;
 
-                curRoom.ProcessCollisionBreakables(circle);
+                curRoom.ProcessCollisionBreakables(damageArea);
             }
         }
 
@@ -259,7 +262,7 @@ public class AbominationCharge : Ability
 #if UNITY_EDITOR
     public override void DebugDraw()
     {
-        circle.DebugDraw();
+        damageArea.DebugDraw();
         if (timeElapsedSinceStarting < travelTime * 0.25f)
         {
             arc.DebugDraw();
