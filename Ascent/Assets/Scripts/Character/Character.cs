@@ -56,6 +56,8 @@ public abstract class Character : BaseCharacter
 	protected float hitDuration = 0.3f;
 	protected float hitTimerElapsed;
 
+	public Transform stunEffectPosition;
+
     public AbilityLoadout Loadout
     {
         get { return loadout; }
@@ -190,8 +192,6 @@ public abstract class Character : BaseCharacter
 		int finalDamage = result.finalDamage;
 		if (!result.dodged)
 		{
-			HitTaken = true;
-
 			if (this is Enemy)
 			{
 				if (loadout.CanInterruptActiveAbility)
@@ -203,9 +203,6 @@ public abstract class Character : BaseCharacter
 					motor.StopMotion();
 					motor.EnableStandardMovement(false);
 				}
-
-				Animator.PlayAnimation("Hit", true);
-				hitTimerElapsed = hitDuration;
 			}
 
             // Don't set this to self
@@ -223,6 +220,18 @@ public abstract class Character : BaseCharacter
 			// Tell this character how much damage it has done.
             if (finalDamage > 0)
             {
+
+				if ((stats.CurrentHealth > 0))
+				{
+					HitTaken = true;
+
+					if (this is Enemy)
+					{
+						Animator.PlayAnimation("Hit", true);
+						hitTimerElapsed = hitDuration;
+					}
+				}
+
                 OnDamageTaken(finalDamage);
             }
 
@@ -232,6 +241,8 @@ public abstract class Character : BaseCharacter
 				motor.SetKnockback(result.knockbackDirection, result.knockbackMagnitute);
 			}
 		}
+
+
 
 		// If the character is dead
 		if (stats.CurrentHealth <= 0 && !isDead)
@@ -313,6 +324,12 @@ public abstract class Character : BaseCharacter
 		// this character.
 		isDead = true;
 
+		for (int i = statusEffects.Count - 1; i >= 0; --i)
+		{
+			statusEffects[i].EndEarly();
+			statusEffects.RemoveAt(i);
+		}
+
 		// Notify subscribers of the death.
 		if (onDeath != null)
 		{
@@ -346,7 +363,7 @@ public abstract class Character : BaseCharacter
     /// <param name="damage">The amount of damage taken.</param>
     protected virtual void OnDamageTaken(int damage)
 	{
-		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .04f);
+		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .07f);
         if (onDamageTaken != null)
         {
             onDamageTaken(damage);

@@ -160,7 +160,7 @@ public class HeroAnimator : CharacterAnimator
 
 	public void PlayCombatAction(int action, string animName)
 	{
-        weaponTrail.enabled = true;
+        weaponTrail.enabled = false;
         animator.SetInteger("MoveAnimation", 2);
 
         SetActiveLayerBlend(ELayer.Combat, 0.2f);

@@ -480,7 +480,7 @@ State:
   m_ObjectHideFlags: 3
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New State
+  m_Name: Stunned
   m_Speed: 1
   m_CycleOffset: 0
   m_Motions:
@@ -525,13 +525,13 @@ StateMachine:
   m_ChildStateMachinePosition: []
   m_OrderedTransitions:
     data:
-      first: {fileID: 110287270}
-      second:
-      - {fileID: 110170794}
-      - {fileID: 110154151}
-    data:
       first: {fileID: 0}
       second: []
+    data:
+      first: {fileID: 110207688}
+      second:
+      - {fileID: 110118250}
+      - {fileID: 110140189}
     data:
       first: {fileID: 110200000}
       second:
@@ -547,11 +547,6 @@ StateMachine:
       - {fileID: 110102840}
       - {fileID: 110176956}
     data:
-      first: {fileID: 110207688}
-      second:
-      - {fileID: 110118250}
-      - {fileID: 110140189}
-    data:
       first: {fileID: 110253288}
       second:
       - {fileID: 110109065}
@@ -562,6 +557,11 @@ StateMachine:
     data:
       first: {fileID: 110216365}
       second: []
+    data:
+      first: {fileID: 110287270}
+      second:
+      - {fileID: 110170794}
+      - {fileID: 110154151}
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: -48, y: 0, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}

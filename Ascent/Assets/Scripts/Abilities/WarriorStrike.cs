@@ -20,8 +20,8 @@ public class WarriorStrike : BaseHeroAbility
     {
 		base.Initialise(owner);
 
-        animationSpeed = 1.75f;
-        animationLength = 1.067f;
+        animationSpeed = 1.5f;
+        animationLength = 0.633f;
         cooldownFullDuration = 0.0f;
 		animationTrigger = "Strike";
 		specialCost = 0;
@@ -51,6 +51,7 @@ public class WarriorStrike : BaseHeroAbility
 		owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
 
         SoundManager.PlaySound(AudioClipType.swordSlash, owner.transform.position, 0.3f);
+
 	}
 
 	public override void UpdateAbility()
@@ -61,6 +62,10 @@ public class WarriorStrike : BaseHeroAbility
 		{
 			if (timeElapsedSinceStarting >= animationLength * 0.65f)
 			{
+				GameObject strike = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Strike/BaseStrikeEffect")) as GameObject;
+				strike.transform.position = owner.transform.position + (owner.transform.forward *0.75f)  + new Vector3(0.0f, 0.75f, 0.0f);
+				strike.transform.rotation = owner.transform.rotation;
+
 				List<Character> enemies = new List<Character>();
 
 				if (Game.Singleton.InTower)

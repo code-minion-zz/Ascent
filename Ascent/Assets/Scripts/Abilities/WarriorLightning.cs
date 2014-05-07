@@ -8,8 +8,8 @@ public class WarriorLightning : Ability
     {
         base.Initialise(owner);
 
-        animationSpeed = 1.00f;
-        animationLength = 0.1f;
+        animationSpeed = 1.5f;
+        animationLength = 0.8f;
         cooldownFullDuration = 0.0f;
         animationTrigger = "Strike";
         specialCost = 3;
@@ -29,6 +29,8 @@ public class WarriorLightning : Ability
 		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 0.25f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
+
+		EffectFactory.Singleton.CreateLightningCastCircle(owner.transform.position, owner.transform.rotation);
     }
 
     public override void StartCast()

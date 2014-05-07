@@ -47,7 +47,7 @@ public static class SoundManager
 	private static AudioClip arrowwoosh		;
 	private static AudioClip heavyhit		;
 
-	public static float	VolumeScale = 0.08f;
+	public static float	VolumeScale = 0.2f;
 
 	static AudioSource source;
 

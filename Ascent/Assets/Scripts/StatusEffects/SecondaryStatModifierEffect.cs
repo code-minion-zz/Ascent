@@ -55,7 +55,7 @@ public class SecondaryStatModifierEffect : StatusEffect
 		this.buffType = buffType;
 		this.buffValue = buffValue;
 
-		base.ApplyStatusEffect(caster, target, duration);
+		base.ApplyStatusEffect(caster, target);
 
 		target.ApplyStatusEffect(this);
 	}

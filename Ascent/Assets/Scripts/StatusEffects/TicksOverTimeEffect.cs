@@ -16,7 +16,7 @@ public class TicksOverTimeEffect : StatusEffect
 		this.totalAmount = totalAmount;
 		this.applyMethod = applyMethod;
 
-		base.ApplyStatusEffect(caster, target, duration);
+		base.ApplyStatusEffect(caster, target);
 
 		timePerTick = duration / ticks;
 

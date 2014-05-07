@@ -24,6 +24,9 @@ public class Slime : Enemy
 		loadout.SetAbility(tackle, tackleAbilityID);
 
 		InitialiseAI();
+
+		deathSequenceEnd = 3.0f;
+
 	}
 
 	public void InitialiseAI()
