@@ -4,6 +4,8 @@ using System.Collections;
 public class FadePlane : MonoBehaviour 
 {
 	private float fadeTime = 0.0f;
+
+#pragma warning disable 0414
 	private float startTime;
 
 	public void StartFade(float fadeDuration, Vector3 position)

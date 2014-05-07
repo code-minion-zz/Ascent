@@ -7,7 +7,6 @@ public class WatcherMagicMissile : Ability
 	private Vector2 randomHomingMissiles = new Vector2(1, 3);
 	private Vector2 randomRandomMissiles = new Vector2(5, 10);
 	 
-
     private bool performed = false;
     public override void Initialise(Character owner)
     {
@@ -43,8 +42,10 @@ public class WatcherMagicMissile : Ability
             WatcherBoss boss = owner.GetComponent<WatcherBoss>();
             Transform[] eyePositions = boss.eyes;
 
-			int randomRandomMissiles = Random.Range(2, 5);
-			for (int i = 0; i < randomRandomMissiles; ++i)
+			int x = (int)(randomRandomMissiles.x);
+			int y = (int)(randomRandomMissiles.y);
+			int randomRandomMissilesCount = Random.Range(x, y);
+			for (int i = 0; i < randomRandomMissilesCount; ++i)
 			{
 				int eyePos = i;
 				if (eyePos > 10)
@@ -58,8 +59,10 @@ public class WatcherMagicMissile : Ability
 				performed = true;
 			}
 
-			int randomHomingMissiles = Random.Range(8, 10);
-			for (int i = 3; i < randomHomingMissiles; ++i)
+			x = (int)(randomHomingMissiles.x);
+			y = (int)(randomHomingMissiles.y);
+			int randomHomingMissilesCount = Random.Range(x, y);
+			for (int i = 3; i < randomHomingMissilesCount; ++i)
 			{
 				int eyePos = i;
 				if (eyePos > 10)

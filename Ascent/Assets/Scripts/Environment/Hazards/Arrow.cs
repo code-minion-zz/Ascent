@@ -11,7 +11,8 @@ public class Arrow : MonoBehaviour
     private float damage;
     private GameObject owner;
 
-    private List<Hero> heroesHit;
+#pragma warning disable 0414
+	private List<Hero> heroesHit;
     bool hitYet;
 
 	public TrailRenderer trail;

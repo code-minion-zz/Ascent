@@ -50,13 +50,13 @@ public class MenuButtonFunctions : MonoBehaviour
 			if (timeElapsed < showCreditsMinimumTime)
 				return;
 
-			if (Input.GetKeyUp(KeyCode.Escape))
+			if (Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Backspace))
 			{
 				showingCredits = false;
 				creditFader.ReverseTransition();
 				credits.gameObject.SetActive(false);
 			}
-			if(Input.GetButtonUp("P1 B"))
+			if (Input.GetButtonUp("P1 B") || Input.GetButtonUp("P1 A"))
 			{
 				showingCredits = false;
 				creditFader.ReverseTransition();

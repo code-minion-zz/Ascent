@@ -21,8 +21,8 @@ public class HeroController : MonoBehaviour
 	private InputDevice.InputControlType abilityOneButton = InputDevice.InputControlType.Action4;
 	private InputDevice.InputControlType abilityTwoButton = InputDevice.InputControlType.Action2;
 
-	private float outOfCombatTimer;
-	private float timeTillIdleAnimation = 2.0f;
+	//private float outOfCombatTimer;
+	//private float timeTillIdleAnimation = 2.0f;
 
 	private GameObject targetObject;
 	public GameObject TargetObject
@@ -472,7 +472,7 @@ public class HeroController : MonoBehaviour
 			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.AliveEnemies.Count > 0)
 			{
 				animator.PlayMovement(HeroAnimator.EMoveAnimation.CombatIdling);
-				outOfCombatTimer = 0.0f;
+				//outOfCombatTimer = 0.0f;
 			}
 			else
 			{

@@ -10,7 +10,9 @@ public class FallingDebris : Projectile
 	private float startDelay;
 
     private Character owner;
-    private FallingDebrisShadow rayDown;
+
+#pragma warning disable 0414
+	private FallingDebrisShadow rayDown;
 
 	private bool exploded;
 

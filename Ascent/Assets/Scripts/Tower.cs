@@ -67,29 +67,35 @@ public class Tower : MonoBehaviour
     public void LoadNextFloor()
     {
         ++currentFloorNumber;
-        Destroy(currentFloor);
 
-        Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
-
-        foreach(Player p in Game.Singleton.Players)
-        {
-            p.Hero.Loadout.StopAbility();
-			p.Hero.Motor.StopMovingAlongGrid();
-            p.Hero.Motor.StopMotion();
-			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
-            p.Hero.RefreshEverything();
-        }
-
-        if (currentFloorNumber > Game.Singleton.maxFloor)
-        {
-            Destroy(currentFloor);
-            Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
-        }
-        else
-        {
-            Application.LoadLevel("P" + 1 + "Floor" + currentFloorNumber);
-        }
+		LoadFloor();
     }
+
+	public void LoadFloor()
+	{
+		Destroy(currentFloor);
+
+		Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
+
+		foreach (Player p in Game.Singleton.Players)
+		{
+			p.Hero.Loadout.StopAbility();
+			p.Hero.Motor.StopMovingAlongGrid();
+			p.Hero.Motor.StopMotion();
+			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
+			p.Hero.RefreshEverything();
+		}
+
+		if (currentFloorNumber > Game.Singleton.maxFloor)
+		{
+			Destroy(currentFloor);
+			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+		}
+		else
+		{
+			Application.LoadLevel("P" + 1 + "Floor" + currentFloorNumber);
+		}
+	}
 
     [ContextMenu("GameOver")]
     public void GameOver()

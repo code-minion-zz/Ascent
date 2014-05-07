@@ -41,7 +41,6 @@ GameObject:
   - 4: {fileID: 400004}
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
-  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Arc_270
   m_TagString: Untagged
@@ -182,35 +181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 3
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45a2fec77d270c245b53e196d4dd6aea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Gradient:
-    key0: {}
-    key1: {}
-    key2: {}
-    key3: {}
-    key4: {}
-    key5: {}
-    key6: {}
-    key7: {}
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 5
-  timeMultiplier: 3
-  curColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  time: 0
 --- !u!198 &19800002
 ParticleSystem:
   m_ObjectHideFlags: 1

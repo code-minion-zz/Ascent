@@ -60,7 +60,7 @@ public class MusicManager : MonoBehaviour
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
 	{
-		print (musicState);
+		//print (musicState);
 		if (immediate)
 		{
 			SwapMusic(choice);
@@ -99,7 +99,7 @@ public class MusicManager : MonoBehaviour
 
 	public void StopMusic()
 	{
-		print ("StopMusic");
+		//print ("StopMusic");
 		musicState = State.Stop;
 		audio.Stop();
 		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
@@ -107,7 +107,7 @@ public class MusicManager : MonoBehaviour
 
 	void FadeOutMusic()
 	{
-		print ("FadeOutMusic");
+		//print ("FadeOutMusic");
 		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
@@ -117,7 +117,7 @@ public class MusicManager : MonoBehaviour
 	
 	void FadeInMusic()
 	{
-		print(elapsedTime/FadeDuration);
+		//print(elapsedTime/FadeDuration);
 		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
 		if (audio.volume >= MusicVolume)
 		{

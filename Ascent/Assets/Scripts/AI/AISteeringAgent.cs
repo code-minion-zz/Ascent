@@ -78,7 +78,7 @@ public class AISteeringAgent : MonoBehaviour
 		get { return closeEnough; }
 	}
 
-//#pragma warning disable 0414
+#pragma warning disable 0414
     private Vector3 posLastFrame;
 
     public delegate void TargetReached();
@@ -484,7 +484,7 @@ public class AISteeringAgent : MonoBehaviour
 
 		// Put point back onto the circle
 		wanderTarget *= wanderCircleRadius;
-		Vector3 target = position + wanderTarget;
+		Vector3 target = wanderCirclePos + wanderTarget;
 
 		return target - position;
 	}
@@ -543,7 +543,7 @@ public class AISteeringAgent : MonoBehaviour
 		avoidanceForce.x = ahead.x - hitInfo.collider.transform.position.x;
 		avoidanceForce.z = ahead.z - hitInfo.collider.transform.position.z;
 
-		return avoidanceForce;
+		return avoidanceForce * distanceMultiplier;
 	}
 
     private bool LineIntersectCircle(Vector3 ahead, Vector3 ahead2, Vector3 obstaclePosition, float obstacleRadius)
@@ -562,8 +562,7 @@ public class AISteeringAgent : MonoBehaviour
 
 
 		Vector3 ahead = steering.transform.position + (steering.heading * behindLeader);
-
-		Vector3 behind = steering.transform.position + (steering.heading * -behindLeader);
+		//Vector3 behind = steering.transform.position + (steering.heading * -behindLeader);
 
 		const float leaderSightRadius = 1.0f;
 

@@ -17,13 +17,13 @@ public enum MiscObjectType
 #endif
 public static class EnvironmentFactory
 {
-    private static GameObject floorObject = Resources.Load("Prefabs/RoomModules/GroundTiles/Ground1") as GameObject;
+#pragma warning disable 0414
+	private static GameObject floorObject = Resources.Load("Prefabs/RoomModules/GroundTiles/Ground1") as GameObject;
     private static GameObject wallObject = Resources.Load("Prefabs/RoomWalls/Wall") as GameObject;
     private static GameObject wallCorner = Resources.Load("Prefabs/RoomWalls/WallCorner") as GameObject;
-    private static GameObject wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
+	private static GameObject wallWindow = Resources.Load("Prefabs/RoomWalls/WallWindow") as GameObject;
     private static GameObject doorObject = Resources.Load("Prefabs/RoomWalls/Door") as GameObject;
-
-    private static GameObject barrelObject = Resources.Load("Prefabs/Environment/Barrel") as GameObject;
+	private static GameObject barrelObject = Resources.Load("Prefabs/Environment/Barrel") as GameObject;
     private static GameObject barrelCluster = Resources.Load("Prefabs/Environment/BarrelCluster") as GameObject;
     private static GameObject brazierObject = Resources.Load("Prefabs/Environment/Brazier") as GameObject;
     private static GameObject pillarObject = Resources.Load("Prefabs/Environment/Pillar") as GameObject;

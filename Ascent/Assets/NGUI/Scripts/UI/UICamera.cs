@@ -1215,6 +1215,13 @@ public class UICamera : MonoBehaviour
 		currentTouchID = -100;
 		currentTouch = controller;
 
+		if(!useKeyboard || !useController)
+		{
+			currentTouch = null;
+			currentKey = KeyCode.None;
+			return;
+		}
+
 		// If this is an input field, ignore WASD and Space key presses
 		inputHasFocus = (mCurrentSelection != null && mCurrentSelection.GetComponent<UIInput>() != null);
 
