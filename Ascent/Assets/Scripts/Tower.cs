@@ -120,7 +120,9 @@ public class Tower : MonoBehaviour
 	{
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.InitialiseRandomFloor();
+		currentFloor.InitialiseRandomFloor();
+		MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+		musicMan.PlayMusic(MusicManager.MusicSelections.Tower);
 	}
 
     protected float experienceGainBonus;

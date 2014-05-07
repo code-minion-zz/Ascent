@@ -9,9 +9,9 @@ public class MusicManager : MonoBehaviour
 
 	private MusicSelections nextMusic;
 
-	public float FadeDuration = 1f;
+	float FadeDuration = 1f;
 	float elapsedTime;
-	public float MusicVolume = .01f;
+	float MusicVolume = .02f;
 
 	public enum State
 	{
@@ -60,6 +60,7 @@ public class MusicManager : MonoBehaviour
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
 	{
+		print (musicState);
 		if (immediate)
 		{
 			SwapMusic(choice);
@@ -86,9 +87,9 @@ public class MusicManager : MonoBehaviour
 				musicState = State.In;
 				break;
 			}
-			audio.Play();
 			nextMusic = choice;
 		}
+		audio.Play();
 	}
 
 	public void SetVolume(float val)
@@ -98,6 +99,7 @@ public class MusicManager : MonoBehaviour
 
 	public void StopMusic()
 	{
+		print ("StopMusic");
 		musicState = State.Stop;
 		audio.Stop();
 		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
@@ -105,28 +107,39 @@ public class MusicManager : MonoBehaviour
 
 	void FadeOutMusic()
 	{
+		print ("FadeOutMusic");
 		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
-			musicState = State.Stop;
 			StopMusic();
 		}
 	}
 	
 	void FadeInMusic()
 	{
+		print(elapsedTime/FadeDuration);
 		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
 		if (audio.volume >= MusicVolume)
 		{
-			musicState = State.Play;
+			audio.volume = MusicVolume;
+			Play();
 		}
 	}
 
-	void OnMusicEnd()
+	[ContextMenu("Play")]
+	public void Play()
 	{
-		SwapMusic(nextMusic);
+		musicState = State.Play;
 		audio.Play();
 	}
+
+//	void OnMusicEnd()
+//	{
+//		print ("OnMusicEnd");
+//		SwapMusic(nextMusic);
+//		musicState = State.In;
+//		audio.Play();
+//	}
 	
 	void SwapMusic(MusicSelections choice)
 	{
