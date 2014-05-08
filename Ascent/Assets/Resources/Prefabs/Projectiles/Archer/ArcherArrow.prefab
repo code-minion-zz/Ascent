@@ -28,6 +28,7 @@ GameObject:
   - 54: {fileID: 5400000}
   - 114: {fileID: 11400000}
   - 136: {fileID: 13600000}
+  - 82: {fileID: 8200000}
   m_Layer: 14
   m_Name: ArcherArrow
   m_TagString: Untagged
@@ -246,6 +247,129 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!82 &8200000
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 8300000, guid: e1121d22c6c6a0947955dd154fdeb6b9, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 3.94000006
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: .447368413
+      inSlope: -2501.00122
+      outSlope: -2501.00122
+      tangentMode: 0
+    - time: .00039999999
+      value: .25
+      inSlope: -625.250305
+      outSlope: -625.250305
+      tangentMode: 0
+    - time: .00079999998
+      value: .125
+      inSlope: -156.312576
+      outSlope: -156.312576
+      tangentMode: 0
+    - time: .00159999996
+      value: .0625
+      inSlope: -39.0781441
+      outSlope: -39.0781441
+      tangentMode: 0
+    - time: .00319999992
+      value: .03125
+      inSlope: -9.76953602
+      outSlope: -9.76953602
+      tangentMode: 0
+    - time: .00639999984
+      value: .015625
+      inSlope: -2.442384
+      outSlope: -2.442384
+      tangentMode: 0
+    - time: .0127999997
+      value: .0078125
+      inSlope: -.610596001
+      outSlope: -.610596001
+      tangentMode: 0
+    - time: .0255999994
+      value: .00390625
+      inSlope: -.152649
+      outSlope: -.152649
+      tangentMode: 0
+    - time: .039444264
+      value: .982456148
+      inSlope: -10004.0049
+      outSlope: -10004.0049
+      tangentMode: 0
+    - time: .0511999987
+      value: .001953125
+      inSlope: -.0381622501
+      outSlope: -.0381622501
+      tangentMode: 0
+    - time: .102399997
+      value: .0009765625
+      inSlope: -.00954056252
+      outSlope: -.00954056252
+      tangentMode: 0
+    - time: .204799995
+      value: .00048828125
+      inSlope: -.00238514063
+      outSlope: -.00238514063
+      tangentMode: 0
+    - time: .40959999
+      value: .000244140625
+      inSlope: -.000596285157
+      outSlope: -.000596285157
+      tangentMode: 0
+    - time: .819199979
+      value: .000122070312
+      inSlope: -.000149071289
+      outSlope: -.000149071289
+      tangentMode: 0
+    - time: 1
+      value: 9.99999975e-05
+      inSlope: -.000100039921
+      outSlope: -.000100039921
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: .0222222228
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!96 &9600000
 TrailRenderer:
   m_ObjectHideFlags: 1

@@ -63,6 +63,8 @@ public static class SoundManager
 
 	static int NumSources = 10;
 
+	static bool loop = false;
+
 	static bool initialized;
 
 	public static void Initialise()
@@ -127,6 +129,7 @@ public static class SoundManager
 			mySource.clip = clip;
 			mySource.volume = volume * VolumeScale;
 			mySource.Play();
+			mySource.loop = loop;
 
 #if UNITY_EDITOR
 			//Selection.activeGameObject = mySource.gameObject;
@@ -189,6 +192,8 @@ public static class SoundManager
     public static AudioClip GetClipFromType(AudioClipType type)
     {
         AudioClip clip = null;
+
+		loop = false;
 
         switch (type)
         {
@@ -300,6 +305,7 @@ public static class SoundManager
 					
 			case AudioClipType.electric:
 			{
+				loop = true;
 				int result = Random.Range(1,2);
 				switch (result)
 				{

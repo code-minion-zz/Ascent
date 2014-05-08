@@ -26,7 +26,7 @@ public class WarriorLightning : Ability
 
         GameObject lightningGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Lightning")) as GameObject;
 		lightningGO.GetComponent<Lightning>().Initialise(5, 3, owner.transform.position + (owner.transform.forward), owner);
-		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 0.1f);
+		//SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 0.1f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());
 
