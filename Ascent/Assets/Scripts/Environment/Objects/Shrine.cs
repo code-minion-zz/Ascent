@@ -12,6 +12,7 @@ public class Shrine : Interactable
     private bool activated;
     private Renderer render;
     public ShrineType refilType;
+	UITweener[] animations;
 
 	public Transform pool;
 
@@ -24,7 +25,10 @@ public class Shrine : Interactable
     public override void Start()
     {
         base.Start();
-        render = this.gameObject.transform.FindChild("Quad").GetComponent<Renderer>();
+		animations = new UITweener[2];
+		render = this.gameObject.transform.FindChild("Model").FindChild("Quad").GetComponent<Renderer>();
+		animations[0] = render.GetComponent<TweenPosition>();
+		animations[1] = render.GetComponent<TweenScale>();
 
         switch (refilType)
         {
@@ -67,8 +71,11 @@ public class Shrine : Interactable
 				break;
         }
 
-		pool.localScale = new Vector3(0.96f, 0.63f, 0.96f);
-		pool.position = new Vector3(0.0f, 1.3f, 0.0f);
+		int i;
+		for (i = 0; i < animations.Length; ++i)
+		{
+			animations[i].enabled = true;
+		}
 
         activated = true;
     }
