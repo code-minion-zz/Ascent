@@ -153,15 +153,15 @@ public class MusicManager : MonoBehaviour
 		{
 		case MusicSelections.Tower:
 			retval = towerMusic;
-			MusicVolume = 0.02f;
+			MusicVolume = 0.03f;
 			break;
 		case MusicSelections.Boss:
 			retval = bossMusic;
-			MusicVolume = 0.025f;
+			MusicVolume = 0.035f;
 			break;
 		case MusicSelections.Menu:
 			retval = menuMusic;
-			MusicVolume = 0.03f;
+			MusicVolume = 0.04f;
 			break;
 		}
 		return retval;

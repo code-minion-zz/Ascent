@@ -231,17 +231,20 @@ public class Door : EnvironmentBreakable
     [ContextMenu("OpenDoor")]
     public void OpenDoor()
     {
+		if (openedDoor.activeInHierarchy) return;
         openedDoor.SetActive(true);
         sealedDoor.SetActive(false);
-        doorLockInidicator.Enable(false);
-
+		doorLockInidicator.Enable(false);
+		SoundManager.PlaySound(AudioClipType.dooropen, transform.position, 0.5f);
     }
 
     [ContextMenu("CloseDoor")]
     public void CloseDoor()
     {
+		if (!openedDoor.activeInHierarchy) return;
         openedDoor.SetActive(false);
         sealedDoor.SetActive(true);
         doorLockInidicator.Enable(true);
+		//SoundManager.PlaySound(AudioClipType.dooropen, transform.position, 1f);
     }
 }
