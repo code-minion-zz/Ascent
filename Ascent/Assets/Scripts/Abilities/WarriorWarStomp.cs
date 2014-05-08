@@ -12,7 +12,7 @@ public class WarriorWarStomp : Ability
 
     public float radius = 3.0f;
     public float knockBack = 10.0f;
-    public int damage = 0;
+    public int damage = 2;
 
     private Circle collisionShape;
 
@@ -82,7 +82,7 @@ public class WarriorWarStomp : Ability
 						foreach (Enemy e in enemies)
 						{
 							CombatEvaluator combatEvaluator = new CombatEvaluator(owner, e);
-							combatEvaluator.Add(new PhysicalDamageProperty(1.0f, 0.5f));
+							combatEvaluator.Add(new PhysicalDamageProperty((float)damage, 1.0f));
 							combatEvaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(owner, e, 3.0f)));
 							combatEvaluator.Apply();
 

@@ -24,6 +24,9 @@ public class EffectFactory : MonoBehaviour
 
 	public GameObject stunnedEffect;
 
+	public GameObject clawEffect;
+	public GameObject biteEffect;
+
 	private static EffectFactory singleton;
 	public static EffectFactory Singleton
 	{
@@ -248,5 +251,34 @@ public class EffectFactory : MonoBehaviour
 		return effect;
 	}
 
+
+	public GameObject CreateClawEffect(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (clawEffect != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(clawEffect, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
+
+	public GameObject CreateBiteEffect(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (biteEffect != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(biteEffect, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
 
 }

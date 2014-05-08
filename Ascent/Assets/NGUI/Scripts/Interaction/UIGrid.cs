@@ -111,6 +111,17 @@ public class UIGrid : UIWidgetContainer
 	}
 
 	static public int SortByName (Transform a, Transform b) { return string.Compare(a.name, b.name); }
+	static public int SortByDepth(Transform a, Transform b) 
+	{
+		var depthA = a.GetComponent<UIWidget>().depth;
+		var depthB = b.GetComponent<UIWidget>().depth;
+
+		if (depthA == depthB) return 0;
+		else if (depthA > depthB ) return 1;
+		else if (depthA < depthB) return -1;
+
+		return 0; 
+	}
 
 	/// <summary>
 	/// Recalculate the position of all elements within the grid, sorting them alphabetically if necessary.
@@ -142,7 +153,7 @@ public class UIGrid : UIWidgetContainer
 				Transform t = myTrans.GetChild(i);
 				if (t && (!hideInactive || NGUITools.GetActive(t.gameObject))) list.Add(t);
 			}
-			list.Sort(SortByName);
+			list.Sort(SortByDepth);
 
 			for (int i = 0, imax = list.Count; i < imax; ++i)
 			{

@@ -84,6 +84,7 @@ public class FloorHUDManager : MonoBehaviour
         {
             Debug.LogError("No players, no point instantiating a PlayerHUD.");
             Destroy(playerHUD.gameObject);
+			return;
         }
 
         // Create HUDs foreach player.
@@ -103,13 +104,21 @@ public class FloorHUDManager : MonoBehaviour
 
                // Instantiate as child of the Grid
                PlayerHUD newPlayerHUD = NGUITools.AddChild(grid.gameObject, playerHUD.gameObject).GetComponent<PlayerHUD>();
+			   newPlayerHUD.transform.localScale = playerHUD.transform.localScale;
                playerHUDs[i] = newPlayerHUD;
             }
 
             // Set name so that it is findable in the editor
-            playerHUDs[i].name = "PlayerHUD " + i;
-			playerHUDs[i].playerLabel.text = "P" + (i + 1);
-			playerHUDs[i].playerLabel.GetComponent<UIWidget>().color = Player.GetPlayerColor(i);
+			if (i < Game.KIMaxPlayers)
+			{
+				playerHUDs[i].name = "PlayerHUD " + i;
+				playerHUDs[i].playerLabel.text = "P" + (i + 1);
+				playerHUDs[i].playerLabel.GetComponent<UIWidget>().color = Player.GetPlayerColor(i);
+			}
+			else
+			{
+				playerHUDs[i].gameObject.SetActive(false);
+			}
             
             // Initialise the PlayerHUD with the PlayerHero
             playerHUDs[i].Initialise(game.Players[i].Hero);
@@ -128,37 +137,60 @@ public class FloorHUDManager : MonoBehaviour
 		{
 			playerGrid.GetComponent<UIWidget>().width = 1200;
 		}
-		playerGrid.transform.localPosition = new Vector3(playerGrid.GetComponent<UIWidget>().width * -0.5f, 450.0f, playerGrid.transform.localPosition.z);
 
+		float playerHUDWidth = 335.0f;
+		float playerHUDHeight = 185.0f;
 
-		float playerHUDWidth = 350.0f;
+		playerGrid.transform.localPosition = new Vector3(playerGrid.GetComponent<UIWidget>().width * -0.5f, 485.0f, playerGrid.transform.localPosition.z);
 
-		if(playerHUDs.Length == 1)
+		if(playerHUDs.Length > 0)
 		{
 			// Just 1 player. Place it top left.
 			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
-		}
-		else if(playerHUDs.Length == 2)
-		{
-			// Place P1 on top left. Place P2 on top right.
-			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
 
+			Vector3 pos = playerHUDs[0].lowHealthIndicators[1].transform.localPosition;
+			pos.y = -200.0f;
+			playerHUDs[0].lowHealthIndicators[1].transform.localPosition = pos;
+		}
+		if(playerHUDs.Length > 1)
+		{
+			// Place P2 on top right.
 			playerHUDs[1].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Right;
 			playerHUDs[1].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[1].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
 			playerHUDs[1].transform.localRotation = playerHUDs[0].transform.localRotation;
+
+			Vector3 pos = playerHUDs[1].lowHealthIndicators[1].transform.localPosition;
+			pos.y = -200.0f;
+			playerHUDs[1].lowHealthIndicators[1].transform.localPosition = pos;
 		}
-		else if(playerHUDs.Length == 3)
+		if(playerHUDs.Length > 2)
 		{
-			// Place P1 on top left. P2  topcentre and P3 top Right.
-			playerHUDs[0].transform.localPosition = new Vector3(0.0f, 0.0f, playerGrid.transform.localPosition.z);
-
-			playerHUDs[1].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Center;
-			playerHUDs[1].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[1].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
-			playerHUDs[1].transform.localRotation = playerHUDs[0].transform.localRotation;
-
-			playerHUDs[2].GetComponent<UIWidget>().pivot = UIWidget.Pivot.Right;
-			playerHUDs[2].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[2].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
+			//  P3 Bot Lef
+			playerHUDs[2].GetComponent<UIWidget>().pivot = UIWidget.Pivot.BottomLeft;
+			playerHUDs[2].GetComponent<UIWidget>().bottomAnchor.SetVertical(playerHUDs[2].GetComponent<UIWidget>().bottomAnchor.target, playerHUDHeight);// = -350.0f;
 			playerHUDs[2].transform.localRotation = playerHUDs[0].transform.localRotation;
+
+			playerHUDs[2].lowHealthIndicators[0].gameObject.SetActive(false);
+			playerHUDs[2].lowHealthIndicators[1].gameObject.SetActive(true);
+			playerHUDs[2].lowHealthIndicators[1].transform.Rotate(Vector3.forward, 180.0f);
+			Vector3 pos = playerHUDs[2].lowHealthIndicators[1].transform.localPosition;
+			pos.y = 24.0f;
+			playerHUDs[2].lowHealthIndicators[1].transform.localPosition = pos;
+		}
+		if (playerHUDs.Length > 3)
+		{
+			// PP4 Bot Right
+			playerHUDs[3].GetComponent<UIWidget>().pivot = UIWidget.Pivot.BottomRight;
+			playerHUDs[3].GetComponent<UIWidget>().rightAnchor.SetHorizontal(playerHUDs[3].GetComponent<UIWidget>().rightAnchor.target, -playerHUDWidth);// = -350.0f;
+			playerHUDs[3].GetComponent<UIWidget>().bottomAnchor.SetVertical(playerHUDs[3].GetComponent<UIWidget>().bottomAnchor.target, playerHUDHeight);// = -350.0f;
+			playerHUDs[3].transform.localRotation = playerHUDs[0].transform.localRotation;
+
+			playerHUDs[3].lowHealthIndicators[0].gameObject.SetActive(false);
+			playerHUDs[3].lowHealthIndicators[1].gameObject.SetActive(true);
+			playerHUDs[3].lowHealthIndicators[1].transform.Rotate(Vector3.forward, 180.0f);
+			Vector3 pos = playerHUDs[3].lowHealthIndicators[1].transform.localPosition;
+			pos.y = 24.0f;
+			playerHUDs[3].lowHealthIndicators[1].transform.localPosition = pos;
 		}
 
         // Create a list of health bars for the enemies.
@@ -307,5 +339,18 @@ public class FloorHUDManager : MonoBehaviour
 	public void OnFadeOutEnd()
 	{
 		ToggleTransition(true);
+	}
+
+	public PlayerHUD GetPlayerHUD(Hero hero)
+	{
+		foreach (PlayerHUD hud in playerHUDs)
+		{
+			if (hud.owner == hero)
+			{
+				return hud;
+			}
+		}
+
+		return null;
 	}
 }

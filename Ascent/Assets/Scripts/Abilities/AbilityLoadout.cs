@@ -166,8 +166,19 @@ public class AbilityLoadout
 				}
 				else if ((stats.CurrentSpecial - ability.SpecialCost) < 0)
 				{
-					FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
-					cantCastErrorTimer = 1.6f;
+					//FloorHUDManager.Singleton.TextDriver.SpawnDamageText(owner.gameObject, "Insufficient SP", Color.white);
+
+					if(owner is Hero)
+					{
+						PlayerHUD hud = FloorHUDManager.Singleton.GetPlayerHUD(owner as Hero);
+
+						if (hud != null)
+						{
+							hud.WarnNoSP = true;
+						}
+					}
+
+					//cantCastErrorTimer = 1.6f;
 				}
 			}
 

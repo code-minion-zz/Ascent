@@ -37,6 +37,12 @@ public class Tower : MonoBehaviour
                     newPlayer.name = "Player" + i;
 
                     InputDevice device = InputManager.GetNextUnusedDevice();
+					if (device == null)
+					{
+						device = InputManager.GetAnySafeDevice();
+						if(device == null) Debug.LogError("No devices attached to initialise the game.");
+					}
+
                     newPlayer.BindInputDevice(device);
                     device.InUse = true;
 

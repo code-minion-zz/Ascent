@@ -33,7 +33,7 @@ public class WizardLightning : Ability
         if (timeElapsedSinceStarting >= animationLength * 0.5f && !performed)
         {
             GameObject lightningGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Lightning")) as GameObject;
-            lightningGO.GetComponent<Lightning>().Initialise(5, owner.transform.position + (owner.transform.forward), owner);
+            lightningGO.GetComponent<Lightning>().Initialise(5, 1, owner.transform.position + (owner.transform.forward), owner);
 
             performed = true;
             owner.ResetColor();

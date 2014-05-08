@@ -81,6 +81,7 @@ public class DoorLockIndicator : MonoBehaviour
 
     public void Enable(bool b)
     {
+		gameObject.SetActive(false);
         if (b && state != EState.Growing)
         {
             state = EState.Growing;

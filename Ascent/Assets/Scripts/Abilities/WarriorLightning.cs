@@ -15,7 +15,7 @@ public class WarriorLightning : Ability
         specialCost = 3;
 
 
-        isInstantCast = false;
+        isInstantCast = true;
     }
 
     public override void StartAbility()
@@ -25,7 +25,7 @@ public class WarriorLightning : Ability
         CanBeInterrupted = false;
 
         GameObject lightningGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Lightning")) as GameObject;
-		lightningGO.GetComponent<Lightning>().Initialise(5, owner.transform.position + (owner.transform.forward), owner);
+		lightningGO.GetComponent<Lightning>().Initialise(5, 3, owner.transform.position + (owner.transform.forward), owner);
 		SoundManager.PlaySound(AudioClipType.lightning, owner.transform.position, 0.1f);
 
         ((HeroAnimator)Owner.Animator).PlayCombatAction((int)Warrior.ECombatAnimation.Warcry, Warrior.ECombatAnimation.Warcry.ToString());

@@ -263,6 +263,24 @@ public class InputManager : MonoBehaviour
         return null;
     }
 
+	public static InputDevice GetAnySafeDevice()
+	{
+		foreach (InputDevice d in devices)
+		{
+			if (d != null && d.isJoystick)
+			{
+				return d;
+			}
+		}
+
+		if (KeyBoard != null)
+		{
+			return KeyBoard;
+		}
+
+		return null;
+	}
+
 	static void AttachDevice(InputDevice inputDevice)
 	{
 		devices.Add(inputDevice);
