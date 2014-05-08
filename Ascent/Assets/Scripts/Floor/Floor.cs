@@ -144,8 +144,8 @@ public class Floor : MonoBehaviour
         floorCamera.transform.position = camPos;
         FloorCamera.UpdateCameraPosition();
 
-		camPos = floorCamera.transform.position;
-		camPos.z -= 100.0f;
+        //camPos = floorCamera.transform.position;
+        //camPos.z -= 100.0f;
 		floorCamera.transform.position = camPos;
 
         // Finds all the rooms

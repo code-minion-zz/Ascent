@@ -100,10 +100,14 @@ public abstract class Enemy : Character
 	{
         EnemyStats = EnemyStatLoader.Load(EEnemy.Rat, this);
 
-		if (Game.Singleton.NumberOfPlayers > 1)
+		if (Game.Singleton.NumberOfPlayers == 2 )
 		{
-			health = Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.5f);
+			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.5f);
 		}
+        else if (Game.Singleton.NumberOfPlayers == 3)
+        {
+            health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 2.0f);
+        }
 
         EnemyStats.SecondaryStats.health = health;
         EnemyStats.SecondaryStats.attack = attack;
