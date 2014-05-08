@@ -12,7 +12,7 @@ public class MusicManager : MonoBehaviour
 
 	float FadeDuration = 1f;
 	float elapsedTime;
-	float MusicVolume = .02f;
+	public float MusicVolume = .02f;
 
 	public enum State
 	{
@@ -63,7 +63,6 @@ public class MusicManager : MonoBehaviour
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
 	{
-		print (musicState);
 		if (immediate)
 		{
 			SwapMusic(choice);
@@ -102,7 +101,6 @@ public class MusicManager : MonoBehaviour
 
 	public void StopMusic()
 	{
-		print ("StopMusic");
 		musicState = State.Stop;
 		audio.Stop();
 		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
@@ -120,7 +118,6 @@ public class MusicManager : MonoBehaviour
 	
 	void FadeInMusic()
 	{
-		print(elapsedTime/FadeDuration);
 		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
 		if (audio.volume >= MusicVolume)
 		{
@@ -156,12 +153,15 @@ public class MusicManager : MonoBehaviour
 		{
 		case MusicSelections.Tower:
 			retval = towerMusic;
+			MusicVolume = 0.02f;
 			break;
 		case MusicSelections.Boss:
 			retval = bossMusic;
+			MusicVolume = 0.025f;
 			break;
 		case MusicSelections.Menu:
 			retval = menuMusic;
+			MusicVolume = 0.03f;
 			break;
 		}
 		return retval;

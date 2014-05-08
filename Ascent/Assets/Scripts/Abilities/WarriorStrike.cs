@@ -50,7 +50,7 @@ public class WarriorStrike : BaseHeroAbility
 
 		owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
 
-        SoundManager.PlaySound(AudioClipType.swordSlash, owner.transform.position, 0.3f);
+        SoundManager.PlaySound(AudioClipType.swordSlash, owner.transform.position, 0.1f);
 
 	}
 

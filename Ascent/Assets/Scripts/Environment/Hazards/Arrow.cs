@@ -86,7 +86,7 @@ public class Arrow : MonoBehaviour
         }
 		else if (collision.transform.gameObject.layer == (int)Layer.Block)
 		{
-			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .05f);
 			toDestroy = true;
 			trail.enabled = false;
 
@@ -94,7 +94,7 @@ public class Arrow : MonoBehaviour
 		}
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
-			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
+			SoundManager.PlaySound(AudioClipType.pop,transform.position,0.05f);
             toDestroy = true;
 			trail.enabled = false;
 
