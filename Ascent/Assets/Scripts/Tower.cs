@@ -37,6 +37,12 @@ public class Tower : MonoBehaviour
                     newPlayer.name = "Player" + i;
 
                     InputDevice device = InputManager.GetNextUnusedDevice();
+					if (device == null)
+					{
+						device = InputManager.GetAnySafeDevice();
+						if(device == null) Debug.LogError("No devices attached to initialise the game.");
+					}
+
                     newPlayer.BindInputDevice(device);
                     device.InUse = true;
 
@@ -67,29 +73,35 @@ public class Tower : MonoBehaviour
     public void LoadNextFloor()
     {
         ++currentFloorNumber;
-        Destroy(currentFloor);
 
-        Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
-
-        foreach(Player p in Game.Singleton.Players)
-        {
-            p.Hero.Loadout.StopAbility();
-			p.Hero.Motor.StopMovingAlongGrid();
-            p.Hero.Motor.StopMotion();
-			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
-            p.Hero.RefreshEverything();
-        }
-
-        if (currentFloorNumber > Game.Singleton.maxFloor)
-        {
-            Destroy(currentFloor);
-            Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
-        }
-        else
-        {
-            Application.LoadLevel("P" + 1 + "Floor" + currentFloorNumber);
-        }
+		LoadFloor();
     }
+
+	public void LoadFloor()
+	{
+		Destroy(currentFloor);
+
+		Game.Singleton.gameStateToLoad = Game.EGameState.TowerPlayer1;
+
+		foreach (Player p in Game.Singleton.Players)
+		{
+			p.Hero.Loadout.StopAbility();
+			p.Hero.Motor.StopMovingAlongGrid();
+			p.Hero.Motor.StopMotion();
+			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
+			p.Hero.RefreshEverything();
+		}
+
+		if (currentFloorNumber > Game.Singleton.maxFloor)
+		{
+			Destroy(currentFloor);
+			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+		}
+		else
+		{
+			Application.LoadLevel("P" + 1 + "Floor" + currentFloorNumber);
+		}
+	}
 
     [ContextMenu("GameOver")]
     public void GameOver()
@@ -120,7 +132,9 @@ public class Tower : MonoBehaviour
 	{
         currentFloorNumber = 1;
         currentFloor = gameObject.AddComponent<Floor>();
-        currentFloor.InitialiseRandomFloor();
+		currentFloor.InitialiseRandomFloor();
+		MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+		musicMan.PlayMusic(MusicManager.MusicSelections.Tower);
 	}
 
     protected float experienceGainBonus;

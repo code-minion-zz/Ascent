@@ -36,6 +36,9 @@ public class WatcherBoss : Enemy
 		loadout.SetAbility(lazerBeamAbility, lazerID);
 
         InitialiseAI();
+
+
+		vulnerabilities = EStatus.None;
     }
 
     public void InitialiseAI()
@@ -103,5 +106,15 @@ public class WatcherBoss : Enemy
 	public void UseLazer()
 	{
 		loadout.UseAbility(lazerID);
+	}
+
+	protected override void PositionHpBar()
+	{
+		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
+		screenPos.y += 0.17f;
+		screenPos.x -= 0.070f;
+		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
+		barPos = new Vector3(barPos.x, barPos.y);
+		hpBar.transform.position = barPos;
 	}
 }

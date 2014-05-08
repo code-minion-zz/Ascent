@@ -18,7 +18,10 @@ public class OpenAllDoorsAction : EnvironmentAction
 		{
 			foreach (Door d in doors.RoomDoors)
 			{
-				d.OpenDoor();
+				if (d.IsOpen == false)
+				{
+					d.OpenDoor();
+				}
 			}
 		}
 

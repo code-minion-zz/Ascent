@@ -31,6 +31,14 @@ public class Door : EnvironmentBreakable
     private DoorLockIndicator doorLockInidicator;
     public Transform lockDoorIndicatorPosition;
 
+	private bool isOpen;
+
+	public bool IsOpen
+	{
+		get { return isOpen; }
+		set { isOpen = value; }
+	}
+
 	public bool StartDoor
 	{
 		get { return startDoor; }
@@ -64,7 +72,7 @@ public class Door : EnvironmentBreakable
 		if (isFinalDoor)
 		{
 			Vector3 a = transform.position;
-			Vector3 b = a + Vector3.up * 10f;
+			//Vector3 b = a + Vector3.up * 10f;
 
 			//Gizmos.DrawLine(a,b);
 			Handles.ArrowCap(0, a, Quaternion.LookRotation(Vector3.up), 8f);
@@ -72,6 +80,17 @@ public class Door : EnvironmentBreakable
 	}
 #endif
 
+	public void Start()
+	{
+		if (openedDoor.activeInHierarchy)
+		{
+			isOpen = true;
+		}
+		else
+		{
+			isOpen = false;
+		}
+	}
 
 	public virtual void OnEnable()
 	{
@@ -231,17 +250,20 @@ public class Door : EnvironmentBreakable
     [ContextMenu("OpenDoor")]
     public void OpenDoor()
     {
+		isOpen = true;
         openedDoor.SetActive(true);
         sealedDoor.SetActive(false);
-        doorLockInidicator.Enable(false);
-
+		doorLockInidicator.Enable(false);
+		SoundManager.PlaySound(AudioClipType.dooropen, transform.position, 0.5f);
     }
 
     [ContextMenu("CloseDoor")]
     public void CloseDoor()
     {
+		isOpen = false;
         openedDoor.SetActive(false);
         sealedDoor.SetActive(true);
         doorLockInidicator.Enable(true);
+		//SoundManager.PlaySound(AudioClipType.dooropen, transform.position, 1f);
     }
 }

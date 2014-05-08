@@ -97,7 +97,7 @@ public class Barrel : EnvironmentBreakable
 
 	public override void BreakObject ()
 	{
-		SoundManager.PlaySound(AudioClipType.woodHit, transform.position, 1f);
+		SoundManager.PlaySound(AudioClipType.woodHit, transform.position, 0.2f);
 
 		base.BreakObject ();
 	}

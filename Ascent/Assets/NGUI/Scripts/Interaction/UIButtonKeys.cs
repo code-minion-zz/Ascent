@@ -32,7 +32,7 @@ public class UIButtonKeys : MonoBehaviour
 		}
 	}
 
-	void OnKey (KeyCode key)
+	public void OnKey (KeyCode key)
 	{
 		if (NGUITools.GetActive(this))
 		{

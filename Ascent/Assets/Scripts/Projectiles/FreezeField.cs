@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 public class FreezeField : Projectile
 {
+#pragma warning disable 0414
     private Character owner;
     private Vector3 velocity;
     private Vector3 curVelocity;
 
-    private int targets;
+#pragma warning disable 0414
+	private int targets;
 
-    private List<Character> charactersHit = new List<Character>();
+#pragma warning disable 0414
+	private List<Character> charactersHit = new List<Character>();
 
     private Circle circle;
 

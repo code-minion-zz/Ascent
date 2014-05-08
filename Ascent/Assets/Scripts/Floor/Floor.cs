@@ -117,7 +117,7 @@ public class Floor : MonoBehaviour
         // Initialise the Hero in a default state
 		for (int i = 0; i < heroes.Count; ++i)
 		{
-			Vector3 pos = startPoints[i].transform.position;
+			Vector3 pos = startPoints[0].transform.position;
 			heroes[i].transform.position = pos;
 			heroes[i].transform.rotation = Quaternion.identity;
 			heroes[i].transform.localScale = Vector3.one;
@@ -144,8 +144,8 @@ public class Floor : MonoBehaviour
         floorCamera.transform.position = camPos;
         FloorCamera.UpdateCameraPosition();
 
-		camPos = floorCamera.transform.position;
-		camPos.z -= 100.0f;
+        //camPos = floorCamera.transform.position;
+        //camPos.z -= 100.0f;
 		floorCamera.transform.position = camPos;
 
         // Finds all the rooms

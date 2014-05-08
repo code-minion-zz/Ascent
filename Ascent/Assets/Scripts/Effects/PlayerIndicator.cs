@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerIndicator : MonoBehaviour
 {
 	private float size = 1.5f;
+
+#pragma warning disable 0414
 	private float offsetZ = -0.15f;
 
 	private Transform indicatorTransform;

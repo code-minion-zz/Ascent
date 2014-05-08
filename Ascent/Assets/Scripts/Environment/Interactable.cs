@@ -25,7 +25,7 @@ public class Interactable : MonoBehaviour
 		renderers = GetComponentsInChildren<Renderer>();
 	}
 
-	public void EnableHighlight(Color color)
+	public virtual void EnableHighlight(Color color)
 	{
 		Renderer[] renderers = Renderers;
 		foreach (Renderer render in renderers)
@@ -39,7 +39,7 @@ public class Interactable : MonoBehaviour
 		}
 	}
 
-	public void StopHighlight()
+	public virtual void StopHighlight()
 	{
 		Renderer[] renderers = Renderers;
 		foreach (Renderer render in renderers)

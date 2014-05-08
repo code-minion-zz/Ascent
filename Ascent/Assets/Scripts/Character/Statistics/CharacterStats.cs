@@ -116,13 +116,13 @@ public abstract class CharacterStats
 
 			if (currentHealth != value)
 			{
+				currentHealth = value;
+
 				if (onCurHealthChanged != null)
 				{
 					onCurHealthChanged.Invoke(value);
 				}
 			}
-
-			currentHealth = value;
 		}
 	}
 
@@ -143,13 +143,14 @@ public abstract class CharacterStats
             }
 			if (currentSpecial != value)
 			{
+				currentSpecial = value;
+
 				if (onCurSpecialChanged != null)
 				{
 					onCurSpecialChanged.Invoke(value);
 				}
 			}
 
-			currentSpecial = value;
 		}
 	}
 

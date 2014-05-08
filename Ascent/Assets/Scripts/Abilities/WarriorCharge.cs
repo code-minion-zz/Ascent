@@ -25,6 +25,8 @@ public class WarriorCharge : Ability
 	private int frameCount = 0;
 
     private Circle circle;
+
+#pragma warning disable 0414
 	private Arc arc;
 
 	List<Character> enemies;

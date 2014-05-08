@@ -25,7 +25,9 @@ public class AbominationCharge : Ability
     private int frameCount = 0;
 
     private Arc damageArea;
-    private Arc arc;
+
+#pragma warning disable 0414
+	private Arc arc;
 
 	private bool started = false;
 

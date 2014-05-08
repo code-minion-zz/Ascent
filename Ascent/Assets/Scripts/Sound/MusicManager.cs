@@ -6,12 +6,13 @@ public class MusicManager : MonoBehaviour
 	public static MusicManager Instance;
 	private static AudioClip towerMusic;
 	private static AudioClip bossMusic;
+	private static AudioClip menuMusic;
 
 	private MusicSelections nextMusic;
 
-	public float FadeDuration = 1f;
+	float FadeDuration = 1f;
 	float elapsedTime;
-	public float MusicVolume = .01f;
+	public float MusicVolume = .02f;
 
 	public enum State
 	{
@@ -25,7 +26,8 @@ public class MusicManager : MonoBehaviour
 	{
 		None,
 		Tower,
-		Boss
+		Boss,
+		Menu
 	}
 	
 	State musicState = State.Stop;
@@ -38,6 +40,7 @@ public class MusicManager : MonoBehaviour
 
 			towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
 			bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
+			menuMusic = Resources.Load("Sounds/music/mainmenu") as AudioClip;
 
 			audio.clip = towerMusic;
 		}
@@ -86,9 +89,9 @@ public class MusicManager : MonoBehaviour
 				musicState = State.In;
 				break;
 			}
-			audio.Play();
 			nextMusic = choice;
 		}
+		audio.Play();
 	}
 
 	public void SetVolume(float val)
@@ -105,10 +108,10 @@ public class MusicManager : MonoBehaviour
 
 	void FadeOutMusic()
 	{
+		print ("FadeOutMusic");
 		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
-			musicState = State.Stop;
 			StopMusic();
 		}
 	}
@@ -118,15 +121,25 @@ public class MusicManager : MonoBehaviour
 		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
 		if (audio.volume >= MusicVolume)
 		{
-			musicState = State.Play;
+			audio.volume = MusicVolume;
+			Play();
 		}
 	}
 
-	void OnMusicEnd()
+	[ContextMenu("Play")]
+	public void Play()
 	{
-		SwapMusic(nextMusic);
+		musicState = State.Play;
 		audio.Play();
 	}
+
+//	void OnMusicEnd()
+//	{
+//		print ("OnMusicEnd");
+//		SwapMusic(nextMusic);
+//		musicState = State.In;
+//		audio.Play();
+//	}
 	
 	void SwapMusic(MusicSelections choice)
 	{
@@ -140,9 +153,15 @@ public class MusicManager : MonoBehaviour
 		{
 		case MusicSelections.Tower:
 			retval = towerMusic;
+			MusicVolume = 0.03f;
 			break;
 		case MusicSelections.Boss:
 			retval = bossMusic;
+			MusicVolume = 0.035f;
+			break;
+		case MusicSelections.Menu:
+			retval = menuMusic;
+			MusicVolume = 0.04f;
 			break;
 		}
 		return retval;

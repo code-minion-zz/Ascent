@@ -98,6 +98,10 @@ public class Player : MonoBehaviour
 		{
 			color = Color.blue;
 		}
+		else if (i == 3)
+		{
+			color = Color.magenta;
+		}
 
 		return color;
 	}

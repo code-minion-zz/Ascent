@@ -75,7 +75,7 @@ public class RandomMagicMissile : Projectile
 		}
 		else
 		{
-			SoundManager.PlaySound(AudioClipType.pop, transform.position, .5f);
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .2f);
 		}
 
         Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);

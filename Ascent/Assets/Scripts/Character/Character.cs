@@ -190,6 +190,7 @@ public abstract class Character : BaseCharacter
 	public virtual void ApplyCombatEffects(DamageResult result)
 	{
 		int finalDamage = result.finalDamage;
+
 		if (!result.dodged)
 		{
 			if (this is Enemy)
@@ -208,19 +209,28 @@ public abstract class Character : BaseCharacter
             // Don't set this to self
             lastDamagedBy = (result.source == this) ? lastDamagedBy : result.source;
 
+
+#if UNITY_EDITOR
+			if (this is Hero && Game.Singleton.invincible)
+			{
+				finalDamage = 0;
+			}
+#endif
+
 			// Let the owner know of the amount of damage done.
 			if (result.source != null)
 			{
 				result.source.OnDamageDealt(finalDamage);
 			}
 
-			// Obtain the health stat and subtract damage amount to the health.
-			stats.CurrentHealth -= finalDamage;
-
 			// Tell this character how much damage it has done.
             if (finalDamage > 0)
             {
-
+	
+		
+				// Obtain the health stat and subtract damage amount to the health.
+				stats.CurrentHealth -= finalDamage;
+	
 				if ((stats.CurrentHealth > 0))
 				{
 					HitTaken = true;
@@ -363,7 +373,7 @@ public abstract class Character : BaseCharacter
     /// <param name="damage">The amount of damage taken.</param>
     protected virtual void OnDamageTaken(int damage)
 	{
-		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .07f);
+		SoundManager.PlaySound(AudioClipType.wethit, transform.position, .04f);
         if (onDamageTaken != null)
         {
             onDamageTaken(damage);

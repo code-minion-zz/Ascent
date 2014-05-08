@@ -18,7 +18,10 @@ public class CloseAllDoorsAction : EnvironmentAction
 		{
 			foreach (Door d in doors.RoomDoors)
 			{
-				d.CloseDoor();
+				if (d.IsOpen)
+				{
+					d.CloseDoor();
+				}
 			}
 		}
 	}

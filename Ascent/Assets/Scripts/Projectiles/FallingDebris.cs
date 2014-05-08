@@ -10,7 +10,9 @@ public class FallingDebris : Projectile
 	private float startDelay;
 
     private Character owner;
-    private FallingDebrisShadow rayDown;
+
+#pragma warning disable 0414
+	private FallingDebrisShadow rayDown;
 
 	private bool exploded;
 
@@ -82,7 +84,7 @@ public class FallingDebris : Projectile
         startPos.y = 0.1f;
         explosion.GetComponent<DebrisExplosion>().Initialise(startPos, owner);
 
-        SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, .5f);
+        SoundManager.PlaySound(AudioClipType.explosion, explosion.transform.position, .3f);
 
 		exploded = true;
     }

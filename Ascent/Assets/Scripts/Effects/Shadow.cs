@@ -10,6 +10,7 @@ public class Shadow : MonoBehaviour
 
 	public GameObject shadow;
 
+#pragma warning disable 0414
 	private Vector3 startScale;
 	private float startAlpha;
 

@@ -11,7 +11,8 @@ public class Arrow : MonoBehaviour
     private float damage;
     private GameObject owner;
 
-    private List<Hero> heroesHit;
+#pragma warning disable 0414
+	private List<Hero> heroesHit;
     bool hitYet;
 
 	public TrailRenderer trail;
@@ -85,7 +86,7 @@ public class Arrow : MonoBehaviour
         }
 		else if (collision.transform.gameObject.layer == (int)Layer.Block)
 		{
-			SoundManager.PlaySound(AudioClipType.pop, transform.position, .1f);
+			SoundManager.PlaySound(AudioClipType.pop, transform.position, .05f);
 			toDestroy = true;
 			trail.enabled = false;
 
@@ -93,7 +94,7 @@ public class Arrow : MonoBehaviour
 		}
         else if (collision.transform.gameObject != owner && collision.transform.parent != owner)
 		{
-			SoundManager.PlaySound(AudioClipType.pop,transform.position,.1f);
+			SoundManager.PlaySound(AudioClipType.pop,transform.position,0.05f);
             toDestroy = true;
 			trail.enabled = false;
 

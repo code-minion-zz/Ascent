@@ -9,7 +9,7 @@ public class GroundSkull : MonoBehaviour
 	public Transform[] eyePositions = new Transform[maxEyes];
 
 	private bool[] eyesLit = new bool[maxEyes]; 
-	private GroundSkullEye[] leftEye = new GroundSkullEye[maxEyes];
+	//private GroundSkullEye[] leftEye = new GroundSkullEye[maxEyes];
 
 	public SwitchPanel[] observedSwitches = new SwitchPanel[maxEyes];
 

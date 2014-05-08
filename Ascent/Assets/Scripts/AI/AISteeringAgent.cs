@@ -78,7 +78,7 @@ public class AISteeringAgent : MonoBehaviour
 		get { return closeEnough; }
 	}
 
-//#pragma warning disable 0414
+#pragma warning disable 0414
     private Vector3 posLastFrame;
 
     public delegate void TargetReached();
@@ -161,7 +161,7 @@ public class AISteeringAgent : MonoBehaviour
 		}
 		if (On(ESteerTypes.ObstacleAvoidance))
 		{
-			combinedForces += ObstacleAvoidance();
+			combinedForces += ObstacleAvoidance() * 100.0f;
 		}
 
 		return combinedForces;
@@ -189,7 +189,7 @@ public class AISteeringAgent : MonoBehaviour
 		}
 		if (On(ESteerTypes.ObstacleAvoidance))
 		{
-			combinedForces += ObstacleAvoidance();
+			combinedForces += ObstacleAvoidance()* 100.0f; 
 		}
 
 		return combinedForces;
@@ -477,14 +477,25 @@ public class AISteeringAgent : MonoBehaviour
 		Vector3 wanderCirclePos = position + heading * wanderCircleDistance;
 		
 		// Random a value on circle
-		//wanderJitter += (Random.value * Mathf.PI * 2.0f) + (Random.value * (Mathf.PI * 36.0f)) * Time.deltaTime;
-		wanderJitter +=  Random.Range(-1.0f, 1.0f);
+		wanderJitter += (Random.value * Mathf.PI * 2.0f) + (Random.value * (Mathf.PI * 36.0f)) * Time.deltaTime;
+		//wanderJitter +=  Random.Range(-1.0f, 1.0f);
 		wanderTarget += new Vector3(Mathf.Cos(wanderJitter), 0.0f, Mathf.Sin(wanderJitter));
 		wanderTarget.Normalize();
 
 		// Put point back onto the circle
 		wanderTarget *= wanderCircleRadius;
-		Vector3 target = position + wanderTarget;
+		Vector3 target = wanderCirclePos + wanderTarget;
+
+		int layerMask = (1 << (int)Layer.Environment);
+		RaycastHit hitInfo;
+
+		if(Physics.Raycast(new Ray(position, target - position), out hitInfo, 1.0f, layerMask))
+		{
+			wanderTarget *= -1.0f;
+			wanderJitter = 0.0f;
+
+			return Stop(position - target);
+		}
 
 		return target - position;
 	}
@@ -543,7 +554,7 @@ public class AISteeringAgent : MonoBehaviour
 		avoidanceForce.x = ahead.x - hitInfo.collider.transform.position.x;
 		avoidanceForce.z = ahead.z - hitInfo.collider.transform.position.z;
 
-		return avoidanceForce;
+		return avoidanceForce * distanceMultiplier;
 	}
 
     private bool LineIntersectCircle(Vector3 ahead, Vector3 ahead2, Vector3 obstaclePosition, float obstacleRadius)
@@ -562,8 +573,7 @@ public class AISteeringAgent : MonoBehaviour
 
 
 		Vector3 ahead = steering.transform.position + (steering.heading * behindLeader);
-
-		Vector3 behind = steering.transform.position + (steering.heading * -behindLeader);
+		//Vector3 behind = steering.transform.position + (steering.heading * -behindLeader);
 
 		const float leaderSightRadius = 1.0f;
 

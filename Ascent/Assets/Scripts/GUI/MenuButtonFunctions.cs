@@ -37,6 +37,9 @@ public class MenuButtonFunctions : MonoBehaviour
 
 		creditFader.onTransitionEnd += OnEnteredCredits;
 		creditFader.onReverseTransitionEnd += OnReturnFromCredits;
+		
+		MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
+		musicMan.PlayMusic(MusicManager.MusicSelections.Menu);
 
 		fader.Transition();
 	}
@@ -50,13 +53,13 @@ public class MenuButtonFunctions : MonoBehaviour
 			if (timeElapsed < showCreditsMinimumTime)
 				return;
 
-			if (Input.GetKeyUp(KeyCode.Escape))
+			if (Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Backspace))
 			{
 				showingCredits = false;
 				creditFader.ReverseTransition();
 				credits.gameObject.SetActive(false);
 			}
-			if(Input.GetButtonUp("P1 B"))
+			if (Input.GetButtonUp("P1 B") || Input.GetButtonUp("P1 A"))
 			{
 				showingCredits = false;
 				creditFader.ReverseTransition();
@@ -84,9 +87,9 @@ public class MenuButtonFunctions : MonoBehaviour
             ++playerCount;
         }
 
-		if (playerCount == 3)
+		if (playerCount == 4)
 		{
-			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[5].GetComponent<UIButtonKeys>();
 			Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[1].GetComponent<UIButtonKeys>();
 
 			Buttons[1].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
@@ -99,37 +102,61 @@ public class MenuButtonFunctions : MonoBehaviour
 			Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
 
 			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
-			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[5].GetComponent<UIButtonKeys>();
+
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 		}
-		else if (playerCount == 2)
+		else if (playerCount == 3)
 		{
-			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[5].GetComponent<UIButtonKeys>();
 			Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[1].GetComponent<UIButtonKeys>();
 
 			Buttons[1].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
-			Buttons[1].GetComponent<UIButtonKeys>().selectOnDown = Buttons[3].GetComponent<UIButtonKeys>();
+			Buttons[1].GetComponent<UIButtonKeys>().selectOnDown = Buttons[2].GetComponent<UIButtonKeys>();
 
-			Buttons[3].GetComponent<UIButtonKeys>().selectOnUp = Buttons[1].GetComponent<UIButtonKeys>();
-			Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[2].GetComponent<UIButtonKeys>().selectOnUp = Buttons[1].GetComponent<UIButtonKeys>();
+			Buttons[2].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
 
-			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
-			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[2].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[5].GetComponent<UIButtonKeys>();
+
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
+
+			Buttons[3].isEnabled = false;
+		}
+		else if (playerCount == 2)
+		{
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[5].GetComponent<UIButtonKeys>();
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[1].GetComponent<UIButtonKeys>();
+
+			Buttons[1].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
+			Buttons[1].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
+
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[1].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[5].GetComponent<UIButtonKeys>();
+
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 
 			Buttons[2].isEnabled = false;
+			Buttons[3].isEnabled = false;
 		}
 		else if (playerCount <= 1)
 		{
-			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
-			Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[3].GetComponent<UIButtonKeys>();
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnUp = Buttons[5].GetComponent<UIButtonKeys>();
+			Buttons[0].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
 
-			Buttons[3].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
-			Buttons[3].GetComponent<UIButtonKeys>().selectOnDown = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[0].GetComponent<UIButtonKeys>();
+			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[5].GetComponent<UIButtonKeys>();
 
-			Buttons[4].GetComponent<UIButtonKeys>().selectOnUp = Buttons[3].GetComponent<UIButtonKeys>();
-			Buttons[4].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
+			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 
 			Buttons[1].isEnabled = false;
 			Buttons[2].isEnabled = false;
+			Buttons[3].isEnabled = false;
 		}
 
 
@@ -246,6 +273,25 @@ public class MenuButtonFunctions : MonoBehaviour
 			fader.ReverseTransition();
         }
     }
+
+	public void OnPlayerFourPressed()
+	{
+		if (InputManager.Devices.Count >= 4)
+		{
+			Game.Singleton.Tower.numberOfPlayers = 4;
+			Game.Singleton.Tower.currentFloorNumber = 1;
+			Game.Singleton.Tower.keys = 0;
+			Game.Singleton.Tower.lives = 1;
+			modeToLoad = Game.EGameState.TowerPlayer4;
+
+			inputCamera.useController = false;
+			inputCamera.useTouch = false;
+			inputCamera.useKeyboard = false;
+			inputCamera.useMouse = false;
+
+			fader.ReverseTransition();
+		}
+	}
 
 	public void OnCreditsPressed()
 	{
