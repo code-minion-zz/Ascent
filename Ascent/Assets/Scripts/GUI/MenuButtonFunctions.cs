@@ -37,6 +37,8 @@ public class MenuButtonFunctions : MonoBehaviour
 
 		creditFader.onTransitionEnd += OnEnteredCredits;
 		creditFader.onReverseTransitionEnd += OnReturnFromCredits;
+		
+		MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
 
 		fader.Transition();
 	}

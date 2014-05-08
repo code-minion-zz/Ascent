@@ -6,6 +6,7 @@ public class MusicManager : MonoBehaviour
 	public static MusicManager Instance;
 	private static AudioClip towerMusic;
 	private static AudioClip bossMusic;
+	private static AudioClip menuMusic;
 
 	private MusicSelections nextMusic;
 
@@ -25,7 +26,8 @@ public class MusicManager : MonoBehaviour
 	{
 		None,
 		Tower,
-		Boss
+		Boss,
+		Menu
 	}
 	
 	State musicState = State.Stop;
@@ -38,6 +40,7 @@ public class MusicManager : MonoBehaviour
 
 			towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
 			bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
+			menuMusic = Resources.Load("Sounds/music/mainmenu") as AudioClip;
 
 			audio.clip = towerMusic;
 		}
@@ -60,7 +63,7 @@ public class MusicManager : MonoBehaviour
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
 	{
-		//print (musicState);
+		print (musicState);
 		if (immediate)
 		{
 			SwapMusic(choice);
@@ -99,7 +102,7 @@ public class MusicManager : MonoBehaviour
 
 	public void StopMusic()
 	{
-		//print ("StopMusic");
+		print ("StopMusic");
 		musicState = State.Stop;
 		audio.Stop();
 		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
@@ -107,7 +110,7 @@ public class MusicManager : MonoBehaviour
 
 	void FadeOutMusic()
 	{
-		//print ("FadeOutMusic");
+		print ("FadeOutMusic");
 		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
@@ -117,7 +120,7 @@ public class MusicManager : MonoBehaviour
 	
 	void FadeInMusic()
 	{
-		//print(elapsedTime/FadeDuration);
+		print(elapsedTime/FadeDuration);
 		audio.volume = Mathf.Lerp(0f, MusicVolume, elapsedTime/FadeDuration);
 		if (audio.volume >= MusicVolume)
 		{
@@ -156,6 +159,9 @@ public class MusicManager : MonoBehaviour
 			break;
 		case MusicSelections.Boss:
 			retval = bossMusic;
+			break;
+		case MusicSelections.Menu:
+			retval = menuMusic;
 			break;
 		}
 		return retval;
