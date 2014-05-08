@@ -22,7 +22,9 @@ public enum AudioClipType
 	earthshock,
 	arrowwoosh,
 	heavyhit,
-
+	drink,
+	electric,
+	fire,
 }
 
 public static class SoundManager
@@ -46,8 +48,14 @@ public static class SoundManager
 	private static AudioClip earthshock		;
 	private static AudioClip arrowwoosh		;
 	private static AudioClip heavyhit		;
+	private static AudioClip drink1			;
+	private static AudioClip drink2			;
+	private static AudioClip drink3			;
+	private static AudioClip electric1		;
+	private static AudioClip electric2		;
+	private static AudioClip fireAmbient	;
 
-	public static float	VolumeScale = 0.2f;
+	public static float	VolumeScale = 0.3f;
 
 	static AudioSource source;
 
@@ -55,8 +63,24 @@ public static class SoundManager
 
 	static int NumSources = 10;
 
+	static bool loop = false;
+
+	static bool initialized;
+
 	public static void Initialise()
 	{
+		string path = "Prefabs/Audio Source";
+		AudioSourcePool = new List<AudioSource>();
+		source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
+		int i = 0;
+		for (; i < NumSources; ++i)
+		{
+			Object obj = Resources.Load(path);
+			GameObject go = GameObject.Instantiate(obj) as GameObject;
+			AudioSourcePool.Add(go.GetComponent<AudioSource>());
+			AudioSourcePool[i].transform.parent = source.transform;
+		}
+
 
 		explosionClip = Resources.Load("Sounds/effects/explode") as AudioClip;
 		swordSlash = Resources.Load("Sounds/effects/warriorStrike_snd01") as AudioClip;
@@ -77,22 +101,20 @@ public static class SoundManager
 		earthshock = Resources.Load("Sounds/effects/earthshock") as AudioClip;
 		arrowwoosh = Resources.Load("Sounds/effects/arrowwoosh") as AudioClip;
 		heavyhit = Resources.Load("Sounds/effects/heavyhit") as AudioClip;
-		AudioSourcePool = new List<AudioSource>();
-		source = GameObject.Find("SoundManager").GetComponent<AudioSource>();
-		string path = "Prefabs/Audio Source";
-		
-		int i = 0;
-		for (; i < NumSources; ++i)
-		{
-			Object obj = Resources.Load(path);
-			GameObject go = GameObject.Instantiate(obj) as GameObject;
-			AudioSourcePool.Add(go.GetComponent<AudioSource>());
-			AudioSourcePool[i].transform.parent = source.transform;
-		}
+		drink1 = Resources.Load("Sounds/effects/drink1") as AudioClip;
+		drink2 = Resources.Load("Sounds/effects/drink2") as AudioClip;
+		drink3 = Resources.Load("Sounds/effects/drink3") as AudioClip;
+		electric1 = Resources.Load("Sounds/effects/electric1") as AudioClip;
+		electric2 = Resources.Load("Sounds/effects/electric2") as AudioClip;
+		fireAmbient = Resources.Load("Sounds/effects/fire_final") as AudioClip;
+
+		initialized = true;
 	}
 
     public static void PlaySound(AudioClipType clipType, Vector3 position, float volume)
     {
+		if (!initialized) return;
+
 		AudioSource mySource = null;
 		if (mySource == null)
 		{
@@ -107,6 +129,7 @@ public static class SoundManager
 			mySource.clip = clip;
 			mySource.volume = volume * VolumeScale;
 			mySource.Play();
+			mySource.loop = loop;
 
 #if UNITY_EDITOR
 			//Selection.activeGameObject = mySource.gameObject;
@@ -169,6 +192,8 @@ public static class SoundManager
     public static AudioClip GetClipFromType(AudioClipType type)
     {
         AudioClip clip = null;
+
+		loop = false;
 
         switch (type)
         {
@@ -237,8 +262,8 @@ public static class SoundManager
 					clip = stonedrag2;
 				break;
 				}
-			break;
 			}
+			break;
 
 			case AudioClipType.switchclick:
 				clip = switchclick;
@@ -251,13 +276,52 @@ public static class SoundManager
 			case AudioClipType.earthshock:
 				clip = earthshock;
 			break;
+
 			case AudioClipType.arrowwoosh:
 				clip = arrowwoosh;
 			break;
+			
 			case AudioClipType.heavyhit:
 				clip = heavyhit;
 			break;
-
+				
+			case AudioClipType.drink:
+			{
+				int result = Random.Range(1,3);
+				switch (result)
+				{
+				case 1:
+					clip = drink1;
+				break;
+				case 2:
+					clip = drink2;
+				break;
+				case 3:
+					clip = drink3;
+				break;
+				}
+			}
+			break;
+					
+			case AudioClipType.electric:
+			{
+				loop = true;
+				int result = Random.Range(1,2);
+				switch (result)
+				{
+				case 1:
+					clip = electric1;
+				break;
+				case 2:
+					clip = electric2;
+				break;
+				}
+			}
+			break;
+				
+			case AudioClipType.fire:
+				clip = fireAmbient;
+				break;
 		}
 		
         return clip;

@@ -54,6 +54,7 @@ public class Shrine : Interactable
 
     public void Activate(Hero hero)
     {
+		SoundManager.PlaySound(AudioClipType.drink, transform.position, 1f);
         switch (refilType)
         {
 			case ShrineType.health:
@@ -81,10 +82,9 @@ public class Shrine : Interactable
 				break;
         }
 
-		int i;
-		for (i = 0; i < animations.Length; ++i)
+		foreach(UITweener tween in animations)
 		{
-			animations[i].enabled = true;
+			tween.enabled = true;
 		}
 
         activated = true;
