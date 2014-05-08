@@ -14,7 +14,11 @@ public class Shrine : Interactable
     public ShrineType refilType;
 	UITweener[] animations;
 
+	public Renderer[] thingsToOutline;
+
 	public Transform pool;
+
+	public Light shrineLight;
 
     public bool Activated
     {
@@ -33,14 +37,20 @@ public class Shrine : Interactable
         switch (refilType)
         {
             case ShrineType.health:
-                render.material.color = Color.red;
+                //render.material.color = Color.red;
                 break;
 
             case ShrineType.manaSP:
-                render.material.color = Color.blue;
+                //render.material.color = Color.blue;
                 break;
         }
     }
+
+	public void Update()
+	{
+		if(activated)
+			shrineLight.intensity = Mathf.Lerp(2.5f, 0.0f, ((TweenPosition)animations[0]).mFactor);
+	}
 
     public void Activate(Hero hero)
     {
@@ -79,4 +89,28 @@ public class Shrine : Interactable
 
         activated = true;
     }
+
+	public override void EnableHighlight(Color color)
+	{
+		foreach (Renderer render in thingsToOutline)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Outlined/Diffuse");
+				mat.SetColor("_OutlineColor", color);
+				mat.SetFloat("_Outline", 0.003f);
+			}
+		}
+	}
+
+	public override void StopHighlight()
+	{
+		foreach (Renderer render in thingsToOutline)
+		{
+			foreach (Material mat in render.materials)
+			{
+				mat.shader = Shader.Find("Diffuse");
+			}
+		}
+	}
 }
