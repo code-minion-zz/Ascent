@@ -46,7 +46,9 @@ public class AIEditorMachine : Editor
         EditorGUILayout.PropertyField(aiMindAgent.FindProperty("overrideScriptSetups"));
         EditorGUILayout.PropertyField(aiMindAgent.FindProperty("curBehaviour"));
 
-        Show(newBehaviours.FindPropertyRelative("valuesList"), EditorListOption.NoSize);
+        SerializedProperty aiBehaviours = newBehaviours.FindPropertyRelative("valuesList");
+
+        Show(aiBehaviours, EditorListOption.NoSize);
 
         aiMindAgent.ApplyModifiedProperties();
     }
@@ -55,6 +57,7 @@ public class AIEditorMachine : Editor
     {
         bool showListLabel = (options & EditorListOption.ListLabel) != 0,
             showListSize = (options & EditorListOption.ListSize) != 0;
+        bool showButtons = true;
 
         if (showListLabel)
         {
@@ -82,6 +85,20 @@ public class AIEditorMachine : Editor
 
                 // Show child elements of each trigger list.
                 ShowElements(triggersList, EditorListOption.ElementLabels | EditorListOption.Buttons);
+
+                // Show the butotns but only if the list is not expanded
+                if (showButtons && !triggersList.isExpanded)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.Separator();
+                    ShowButtons(list, i);
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+
+            if (showButtons && list.arraySize == 0 && GUILayout.Button(addButtonContent, EditorStyles.miniButton))
+            {
+                list.arraySize += 1;
             }
         }
 
