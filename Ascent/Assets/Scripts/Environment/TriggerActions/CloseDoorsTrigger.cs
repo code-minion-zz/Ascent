@@ -18,7 +18,14 @@ public class CloseDoorsTrigger : EnvironmentAction
         {
             foreach (Door d in doors)
             {
-                d.CloseDoor();
+
+				if (d == null)
+					continue;
+
+				if (d.IsOpen)
+				{
+               		d.CloseDoor();
+				}
             }
         }
     }

@@ -21,7 +21,10 @@ public class OpenDoorsTrigger : EnvironmentAction
 				if (d == null)
 					continue;
 
-                d.OpenDoor();
+				if (d.IsOpen == false)
+				{
+                	d.OpenDoor();
+				}
             }
         }
     }

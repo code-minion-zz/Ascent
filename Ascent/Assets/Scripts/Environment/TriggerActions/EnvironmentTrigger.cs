@@ -8,10 +8,17 @@ public class EnvironmentTrigger : MonoBehaviour
 	public EnvironmentAction action;
 	public EnvironmentAction falseAction;
 
+	public bool triggerOneShot;
+
 	public virtual void Update()
 	{
 		// Has trigger been met AND it hasn't been met yet (OR it has been met before but it can be repeated)
 		bool met = HasTriggerBeenMet();
+
+		if (triggerOneShot && activated)
+		{
+			return;
+		}
 
 		if (met && (!activated || (activated && repeatable)))
 		{

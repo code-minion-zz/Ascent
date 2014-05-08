@@ -31,6 +31,14 @@ public class Door : EnvironmentBreakable
     private DoorLockIndicator doorLockInidicator;
     public Transform lockDoorIndicatorPosition;
 
+	private bool isOpen;
+
+	public bool IsOpen
+	{
+		get { return isOpen; }
+		set { isOpen = value; }
+	}
+
 	public bool StartDoor
 	{
 		get { return startDoor; }
@@ -72,6 +80,17 @@ public class Door : EnvironmentBreakable
 	}
 #endif
 
+	public void Start()
+	{
+		if (openedDoor.activeInHierarchy)
+		{
+			isOpen = true;
+		}
+		else
+		{
+			isOpen = false;
+		}
+	}
 
 	public virtual void OnEnable()
 	{
@@ -231,7 +250,7 @@ public class Door : EnvironmentBreakable
     [ContextMenu("OpenDoor")]
     public void OpenDoor()
     {
-		if (openedDoor.activeInHierarchy) return;
+		isOpen = true;
         openedDoor.SetActive(true);
         sealedDoor.SetActive(false);
 		doorLockInidicator.Enable(false);
@@ -241,7 +260,7 @@ public class Door : EnvironmentBreakable
     [ContextMenu("CloseDoor")]
     public void CloseDoor()
     {
-		if (!openedDoor.activeInHierarchy) return;
+		isOpen = false;
         openedDoor.SetActive(false);
         sealedDoor.SetActive(true);
         doorLockInidicator.Enable(true);
