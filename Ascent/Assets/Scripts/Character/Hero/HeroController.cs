@@ -308,14 +308,14 @@ public class HeroController : MonoBehaviour
 	public void ProcessTriggersAndBumpers(InputDevice device)
 	{
 		// Left Trigger
-		if (device.GetControl(abilityOneButton))
+		if (device.GetControl(abilityOneButton).WasPressed)
 		{
 			if ((int)EHeroAction.Action1 < loadout.AbilityBinds.Length)
 				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action1], device.GetControl(abilityOneButton));
 		}
 
         // Left Bump
-		else if (device.GetControl(abilityTwoButton))
+		else if (device.GetControl(abilityTwoButton).WasPressed)
         {
 			if ((int)EHeroAction.Action2 < loadout.AbilityBinds.Length)
 				ProcessAbility(loadout.AbilityBinds[(int)EHeroAction.Action2], device.GetControl(abilityTwoButton));

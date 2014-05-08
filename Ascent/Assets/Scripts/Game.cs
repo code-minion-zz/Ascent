@@ -8,6 +8,8 @@ public class Game : MonoBehaviour
 	public const float KfWebVersion = 0.1f;
 #endif
 
+	public static int KIMaxPlayers = 4;
+
 	// GameTest Values
 	public Game.EGameState testState = Game.EGameState.Tower;
 	public Character.EHeroClass[] testCharacters;
@@ -25,7 +27,8 @@ public class Game : MonoBehaviour
         Tower,
 		TowerPlayer1,
         TowerPlayer2,
-        TowerPlayer3
+        TowerPlayer3,
+		TowerPlayer4,
     }
 
 	#region Fields
@@ -67,7 +70,9 @@ public class Game : MonoBehaviour
                     gameState == EGameState.TestTower || 
                     gameState == EGameState.TowerPlayer1 ||
                     gameState == EGameState.TowerPlayer2 ||
-                    gameState == EGameState.TowerPlayer3; }
+                    gameState == EGameState.TowerPlayer3 ||
+					gameState == EGameState.TowerPlayer4;
+		}
 	}
 
 	public EGameState gameStateToLoad;
@@ -105,6 +110,8 @@ public class Game : MonoBehaviour
 
 	public int maxFloor = 2;
 	public int startingHealth = 20;
+	public int startingSpecial = 9;
+	public bool invincible = false;
 
 	public float fadeIntoLevelTime = 1.5f;
 	public float fadeOutOfLevelTime = 1.5f;
@@ -256,7 +263,7 @@ public class Game : MonoBehaviour
 	{
 		players = new List<Player>();
 
-		int[] usedSaves = new int[3] {-1,-1, -1};
+		int[] usedSaves = new int[4] {-1,-1, -1, -1};
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
@@ -300,6 +307,7 @@ public class Game : MonoBehaviour
 					if(save.heroClass == playerCharacterType[i] &&
 						i != usedSaves[0] &&
 						i != usedSaves[1] &&
+						i != usedSaves[2] &&
 						i < heroSaves.Count)
 					{
 						hero = AscentGameSaver.LoadHero(heroSaves[i]);
@@ -372,6 +380,11 @@ public class Game : MonoBehaviour
                     Application.LoadLevel("P1Floor1");
                 }
                 break;
+			case EGameState.TowerPlayer4:
+				{
+					Application.LoadLevel("P1Floor1");
+				}
+				break;
 			case EGameState.TestTower:
 				{
 					Application.LoadLevel("TestTower");
@@ -438,6 +451,7 @@ public class Game : MonoBehaviour
             case EGameState.TowerPlayer1:
             case EGameState.TowerPlayer2:
             case EGameState.TowerPlayer3:
+			case EGameState.TowerPlayer4:
 				{
 					if (tower == null)
 						return;

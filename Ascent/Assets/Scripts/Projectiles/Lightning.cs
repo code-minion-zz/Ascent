@@ -18,8 +18,11 @@ public class Lightning : Projectile
 
     public GameObject lightningEffectHit;
 
-    public void Initialise(int targets, Vector3 startPos, Character owner)
+	int damage = 1;
+
+    public void Initialise(int targets, int damage, Vector3 startPos, Character owner)
     {
+		this.damage = damage;
         this.targets = targets;
         this.owner = owner;
 
@@ -88,7 +91,7 @@ public class Lightning : Projectile
 
                             if (!isOnSameTeam)
                             {
-                                combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
+								combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, (float)damage));
 
                                 // Create a blood splatter effect on the enemy.
                                 //EffectFactory.Singleton.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);

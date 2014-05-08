@@ -102,12 +102,16 @@ public abstract class Enemy : Character
 
 		if (Game.Singleton.NumberOfPlayers == 2 )
 		{
-			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.5f);
+			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.1f);
 		}
         else if (Game.Singleton.NumberOfPlayers == 3)
         {
-            health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 2.0f);
+            health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.2f);
         }
+		else if (Game.Singleton.NumberOfPlayers == 4)
+		{
+			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.3f);
+		}
 
         EnemyStats.SecondaryStats.health = health;
         EnemyStats.SecondaryStats.attack = attack;
@@ -287,7 +291,7 @@ public abstract class Enemy : Character
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
 		screenPos.y += 0.075f;
-		screenPos.x -= 0.025f;
+		screenPos.x -= 0.030f;
 		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x,barPos.y);
 		hpBar.transform.position = barPos;

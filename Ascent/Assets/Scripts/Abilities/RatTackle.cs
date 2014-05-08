@@ -8,6 +8,7 @@ public class RatTackle : Ability
 	private float prevSpeed;
     private float prevAccel;
 	private bool executedDamage;
+	private bool performed;
 
     public override void Initialise(Character owner)
     {
@@ -19,7 +20,7 @@ public class RatTackle : Ability
 		cooldownFullDuration = 1.5f;
 		specialCost = 0;
 
-		damageArea = new Circle(owner.transform, 0.5f, new Vector3(0.0f, 0.0f, 1.0f));
+		damageArea = new Circle(owner.transform, 0.75f, new Vector3(0.0f, 0.0f, 1.0f));
     }
 
     public override void StartAbility()
@@ -27,15 +28,25 @@ public class RatTackle : Ability
 		base.StartAbility();
 
 		executedDamage = false;
+		performed = false;
 
 		owner.Motor.IsHaltingMovementToPerformAction = true;
 
 		owner.Animator.PlayAnimation(animationTrigger, true);
+		
 	}
 
     public override void UpdateAbility()
     {
 		base.UpdateAbility();
+
+		if (timeElapsedSinceStarting >= animationLength * 0.45f &&!performed)
+		{
+			performed = true;
+			Vector3 pos = owner.transform.position + owner.transform.forward * 1.0f;
+			pos.y += 1.0f;
+			EffectFactory.Singleton.CreateClawEffect(pos, Quaternion.LookRotation(owner.transform.position - Game.Singleton.Tower.CurrentFloor.MainCamera.transform.position));
+		}
 
 		if (timeElapsedSinceStarting >= animationLength * 0.45f && !executedDamage)
 		{

@@ -48,7 +48,7 @@ public class WarriorStrike : BaseHeroAbility
 
         CanBeInterrupted = false;
 
-		owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
+		//owner.Motor.Move((((Hero)owner).HeroController.MoveDirection.normalized) * 0.45f);
 
         SoundManager.PlaySound(AudioClipType.swordSlash, owner.transform.position, 0.1f);
 

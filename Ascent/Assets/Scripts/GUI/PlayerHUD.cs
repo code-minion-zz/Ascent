@@ -25,7 +25,15 @@ public class PlayerHUD : MonoBehaviour
 
 	public UISprite[] lowHealthIndicators = new UISprite[2];
 	private float time;
-	
+
+	public bool WarnNoSP
+	{
+		set 
+		{
+			timeElapsedForWarn = 1.0f;
+		}
+	}
+	private float timeElapsedForWarn;
 
 	public void Initialise(Hero _owner)
 	{
@@ -126,6 +134,9 @@ public class PlayerHUD : MonoBehaviour
         //    }
         //}
 
+
+		time += Time.deltaTime * 0.25f;
+
 		// Health indicators
 		float healthRatio = ((float)owner.Stats.CurrentHealth / (float)owner.Stats.MaxHealth);
 		if (healthRatio < 0.50f && healthRatio > 0.0f)
@@ -133,11 +144,15 @@ public class PlayerHUD : MonoBehaviour
 			foreach (UISprite sprite in lowHealthIndicators)
 			{
 				Color color = sprite.color;
-				//color.a = 1.0f - ((1.0f - healthRatio) * 0.75f);
-				time += Time.deltaTime * 0.25f;
 				color.a = 0.25f + Mathf.PingPong(time, 1.0f - ((1.0f - healthRatio) * 0.75f) + 0.25f);
 				sprite.color = color;
 			}
+
+			// Bar
+			UISprite barSprite = hpBar.GetComponent<UISprite>();
+			Color colora = barSprite.color;
+			colora.r = 0.25f + Mathf.PingPong(time + 0.25f, 1.0f - ((1.0f - healthRatio) * 0.75f) + 0.25f);
+			barSprite.color = colora;
 		}
 		else
 		{
@@ -148,6 +163,45 @@ public class PlayerHUD : MonoBehaviour
 				{
 					color.a -= Time.deltaTime;
 					sprite.color = color;
+				}
+			}
+
+			// Bar
+			UISprite barSprite = hpBar.GetComponent<UISprite>();
+			Color colora = barSprite.color;
+			if (colora.r != 0.0f)
+			{
+				colora.r -= Time.deltaTime;
+				barSprite.color = colora;
+			}
+		}
+
+		if (timeElapsedForWarn > 0.0f)
+		{
+			var specialGroups = spBar.specialGroups;
+
+			foreach (SpecialGroup group in specialGroups)
+			{
+				UISprite sprite = group.GetComponent<UISprite>();
+				
+				Color colora = sprite.color;
+				colora.b = 0.25f + Mathf.PingPong(time, 1.0f);
+				sprite.color = colora;
+			}
+			timeElapsedForWarn -= Time.deltaTime;
+		}
+		else
+		{
+			var specialGroups = spBar.specialGroups;
+
+			foreach (SpecialGroup group in specialGroups)
+			{
+				UISprite sprite = group.GetComponent<UISprite>();
+				Color colora = sprite.color;
+				if (colora.b != 0.0f)
+				{
+					colora.b -= Time.deltaTime;
+					sprite.color = colora;
 				}
 			}
 		}

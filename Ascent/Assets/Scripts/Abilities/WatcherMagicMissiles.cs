@@ -42,10 +42,10 @@ public class WatcherMagicMissile : Ability
             WatcherBoss boss = owner.GetComponent<WatcherBoss>();
             Transform[] eyePositions = boss.eyes;
 
-			int x = (int)(randomRandomMissiles.x);
-			int y = (int)(randomRandomMissiles.y);
-			int randomRandomMissilesCount = Random.Range(x, y);
-			for (int i = 0; i < randomRandomMissilesCount; ++i)
+			int x = (int)(randomHomingMissiles.x);
+			int y = (int)(randomHomingMissiles.y);
+			int randomHomingMissilesCount = Random.Range(x, y);
+			for (int i = 0; i < randomHomingMissilesCount; ++i)
 			{
 				int eyePos = i;
 				if (eyePos > 10)
@@ -59,10 +59,10 @@ public class WatcherMagicMissile : Ability
 				performed = true;
 			}
 
-			x = (int)(randomHomingMissiles.x);
-			y = (int)(randomHomingMissiles.y);
-			int randomHomingMissilesCount = Random.Range(x, y);
-			for (int i = 3; i < randomHomingMissilesCount; ++i)
+			x = (int)(randomRandomMissiles.x);
+			y = (int)(randomRandomMissiles.y);
+			int randomRandomMissilesCount = Random.Range(x, y);
+			for (int i = 3; i < randomRandomMissilesCount; ++i)
 			{
 				int eyePos = i;
 				if (eyePos > 10)
