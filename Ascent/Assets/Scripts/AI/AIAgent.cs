@@ -6,4 +6,6 @@ public class AIAgent : MonoBehaviour
 {
 	public AIMindAgent MindAgent;
 	public AISteeringAgent SteeringAgent;
+
+
 }

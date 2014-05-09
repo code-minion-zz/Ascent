@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 #pragma warning disable 0162 // hides unreachable code warning
-
+[System.Serializable]
 public class AIMindAgent : MonoBehaviour
 {
     public enum EBehaviour
@@ -16,9 +16,14 @@ public class AIMindAgent : MonoBehaviour
 
 	private const bool drawLabels = true;
 
-    protected Dictionary<EBehaviour, AIBehaviour> behaviours = new Dictionary<EBehaviour, AIBehaviour>();
+    [SerializeField]
+    public AIBehaviourMap newBehaviours = new AIBehaviourMap();
 
-	protected EBehaviour curBehaviour;
+    [SerializeField]
+    public bool overrideScriptSetups;
+
+    [SerializeField]
+	public EBehaviour curBehaviour;
 	public EBehaviour CurrentBehaviour
 	{
 		get { return curBehaviour; }
@@ -54,21 +59,27 @@ public class AIMindAgent : MonoBehaviour
 
     public void ResetBehaviour(EBehaviour e)
     {
-        if (behaviours.ContainsKey(e))
+        if (newBehaviours.ContainsKey((int)e))
         {
-            behaviours[e].Reset();
+            newBehaviours.getMap((int)e).Reset();
         }
     }
 
     public void AddBehaviour(EBehaviour e, AIBehaviour b)
     {
-        behaviours[e] = b;
+        newBehaviours.Add((int)e, b);
+    }
+
+    public AIBehaviour AddBehaviour(int e, AIBehaviour b)
+    {
+        newBehaviours.Add(e, b);
+        return b;
     }
 
     public AIBehaviour AddBehaviour(EBehaviour e)
     {
-		AIBehaviour b = new AIBehaviour(AIMindAgent.EBehaviour.Defensive);
-        behaviours[e] = b;
+		AIBehaviour b = new AIBehaviour(e);
+        newBehaviours.Add((int)e, b);
         return b;
     }
 
@@ -79,13 +90,14 @@ public class AIMindAgent : MonoBehaviour
 
     public void Process()
     {
-		if (!behaviours.ContainsKey(curBehaviour))
+        if (!newBehaviours.ContainsKey((int)curBehaviour))
 		{
 			Debug.LogError("Trying to process a behaviour that has not been initialised: " + curBehaviour);
 		}
 		else
 		{
-			behaviours[curBehaviour].Process();
+            newBehaviours.getMap((int)curBehaviour).Process();
+			//behaviours[(int)curBehaviour].Process();
 		}
 
 #if UNITY_EDITOR
@@ -97,11 +109,11 @@ public class AIMindAgent : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-	public void OnDrawGizmos()
+	/*public void OnDrawGizmos()
 	{
 		if (!drawLabels ||
-			behaviours == null ||
-			!behaviours.ContainsKey(curBehaviour) ||
+            newBehaviours == null ||
+            !newBehaviours.ContainsKey((int)curBehaviour) ||
 			Game.Singleton.Tower.CurrentFloor == null)
 		{
 			return;
@@ -129,7 +141,8 @@ public class AIMindAgent : MonoBehaviour
 		label.text = curBehaviour.ToString() + "\n";
 
 		int i = 0;
-		List<AITrigger> triggers = behaviours[curBehaviour].Triggers;
+        List<AITrigger> triggers = newBehaviours.getMap((int)curBehaviour).Triggers;
+        //List<AITrigger> triggers = behaviours[(int)curBehaviour].Triggers;
 		foreach (AITrigger t in triggers)
 		{
 			if (drawLabels)
@@ -167,6 +180,6 @@ public class AIMindAgent : MonoBehaviour
 			}
 			++i;
 		}
-    }
+    }*/
 #endif
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+[Serializable]
 public class AITrigger  
 {
     public enum EConditional
@@ -28,8 +29,10 @@ public class AITrigger
 		this.name = name;
 	}
 
+    [SerializeField]
 	public string name;
 
+    [SerializeField]
     private EConditionalExit operation;
     public EConditionalExit Operation
     {
@@ -42,9 +45,16 @@ public class AITrigger
 	{
 		get { return conditions; }
 	}
+
+
+    public List<AIConditionType> AIConditionType = new List<AIConditionType>();
  
+    [SerializeField]
     public delegate void ConditionTriggered();
+    [SerializeField]
     public event ConditionTriggered OnTriggered;
+    [SerializeField]
+    public EventDelegate onTriggered = new EventDelegate();
 
     public void AddCondition(AICondition c)
     {

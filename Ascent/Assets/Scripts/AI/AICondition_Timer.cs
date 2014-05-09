@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class AICondition_Timer : AICondition 
 {
+    [SerializeField]
     private float timeElapsed;
+    [SerializeField]
     private float timeMax;
-
+    [SerializeField]
     private float randMin;
+    [SerializeField]
     private float randMax;
 
     public AICondition_Timer(float time)
