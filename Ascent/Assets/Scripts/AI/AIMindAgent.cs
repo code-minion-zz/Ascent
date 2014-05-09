@@ -52,6 +52,7 @@ public class AIMindAgent : MonoBehaviour
 
 #if UNITY_EDITOR
 #pragma warning disable 0414 // unused var 
+#pragma warning disable 0649 // unused var
 	private GUIText label;
 
 	private bool renderedGizmos;

@@ -36,7 +36,7 @@ public class SwitchPanel : MonoBehaviour
         }
     }
 
-    public void Update()
+	public void FixedUpdate()
     {
         if (isDown)
         {

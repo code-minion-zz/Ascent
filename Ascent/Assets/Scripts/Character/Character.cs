@@ -273,14 +273,14 @@ public abstract class Character : BaseCharacter
 				foreach (Material mat in render.materials)
 				{
 					mat.shader = Shader.Find("Outlined/Diffuse");
-					mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+					mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, .75f));
 					mat.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
 				}
 			}
 		}
 
 		hitTaken = true;
-		yield return new WaitForSeconds(0.15f);
+		yield return new WaitForSeconds(0.25f);
 
 		if (this is Hero)
 		{

@@ -102,15 +102,15 @@ public abstract class Enemy : Character
 
 		if (Game.Singleton.NumberOfPlayers == 2 )
 		{
-			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.1f);
+			health = (int)((float)health * 1.25f);
 		}
         else if (Game.Singleton.NumberOfPlayers == 3)
         {
-            health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.2f);
+            health = (int)((float)health * 1.5f);
         }
 		else if (Game.Singleton.NumberOfPlayers == 4)
 		{
-			health = health * Mathf.RoundToInt((float)Game.Singleton.NumberOfPlayers * 1.3f);
+			health = (int)((float)health * 2.0f);
 		}
 
         EnemyStats.SecondaryStats.health = health;

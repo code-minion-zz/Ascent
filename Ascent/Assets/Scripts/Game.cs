@@ -500,4 +500,17 @@ public class Game : MonoBehaviour
 	
 	#endregion
 
+	public Player GetPlayer(Hero hero)
+	{
+		foreach(Player p in players)
+		{
+			if(p.Hero == hero)
+			{
+				return p;
+			}
+		}
+
+		return null;
+	}
+
 }

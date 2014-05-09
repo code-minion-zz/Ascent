@@ -88,7 +88,7 @@ public class StatBar : MonoBehaviour
 
 					if (owner is Abomination || owner is WatcherBoss)
 					{
-						statbarWidget.width *= 2;
+						statbarWidget.width *= 3;
 						statbarWidget.height *= 2;
 						barWidth = statbarWidget.width;
 					}
@@ -109,13 +109,12 @@ public class StatBar : MonoBehaviour
 					GetComponent<UIGrid>().Reposition();
 
 					statbarWidget.depth = ++depth;
+					statbarWidget.enabled = false;
 
 					if (!(owner is Abomination || owner is WatcherBoss))
 					{
 						statbarWidget.height += 4;
 					}
-			
-
 
 					//background.SetActive(true);
 				}

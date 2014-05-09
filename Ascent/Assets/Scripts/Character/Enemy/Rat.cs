@@ -51,8 +51,14 @@ public class Rat : Enemy
 	   {
 		   // OnAttacked, Triggers if attacked
 		   trigger = behaviour.AddTrigger();
-		   trigger.Operation = AITrigger.EConditionalExit.Continue;
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
 		   trigger.AddCondition(new AICondition_Attacked(this));
+		   trigger.OnTriggered += StateTransitionToAggressive;
+
+		   trigger = behaviour.AddTrigger();
+		   trigger.Operation = AITrigger.EConditionalExit.Stop;
+		   trigger.AddCondition(new AICondition_Timer(2.0f, 4.0f));
+		   trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 5.0f, Vector3.zero)));
 		   trigger.OnTriggered += StateTransitionToAggressive;
 
 		   // OnCanUseTackle, triggers if target in range and action off cooldown
@@ -76,14 +82,14 @@ public class Rat : Enemy
    public override void StateTransitionToAggressive()
    {
 	   AIAgent.SteeringAgent.steerTypes = AISteeringAgent.ESteerTypes.Arrive | AISteeringAgent.ESteerTypes.ObstacleAvoidance;
-
-	   if (lastDamagedBy != null)
-	   {
-		   TargetCharacter = lastDamagedBy;
-	   }
-	   else if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
+	   
+	   if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
 	   {
 		   TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
+	   }
+	   else if (lastDamagedBy != null)
+	   {
+		   TargetCharacter = lastDamagedBy;
 	   }
 
 	   base.StateTransitionToAggressive();

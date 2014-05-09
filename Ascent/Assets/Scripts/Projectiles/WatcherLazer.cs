@@ -89,7 +89,7 @@ public class WatcherLazer : Projectile
 	public void DealDamage(Hero damageTaker)
 	{
 		CombatEvaluator combatEvaluator = new CombatEvaluator(owner, damageTaker);
-		combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
+		combatEvaluator.Add(new PhysicalDamageProperty(3.0f, 1.0f));
 		combatEvaluator.Add(new KnockbackCombatProperty(damageTaker.transform.position - owner.transform.position, 1.0f));
 		combatEvaluator.Apply();
 	}

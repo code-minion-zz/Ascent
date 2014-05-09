@@ -71,7 +71,7 @@ public class Abomination : Enemy
 			// Attempt to rotate to a Hero. 
 			changeTargetTrigger = behaviour.AddTrigger();
 			changeTargetTrigger.Operation = AITrigger.EConditionalExit.Continue;
-			changeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.FirstFound, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
+			changeTargetTrigger.AddCondition(new AICondition_Sensor(transform, agent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 100.0f, Vector3.zero)));
 			changeTargetTrigger.OnTriggered += StateTransitionToAggressive;
         }
 
@@ -141,7 +141,7 @@ public class Abomination : Enemy
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
 		screenPos.y += 0.17f;
-		screenPos.x -= 0.070f;
+		screenPos.x -= 0.090f;
 		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x, barPos.y);
 		hpBar.transform.position = barPos;

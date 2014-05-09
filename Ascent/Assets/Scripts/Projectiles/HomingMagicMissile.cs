@@ -23,7 +23,7 @@ public class HomingMagicMissile : Projectile
 
 	public GameObject arcaneExplosionPrefab;
 
-    public void Initialise(Vector3 startPos, Character owner)
+    public void Initialise(Vector3 startPos, Character owner, Character target)
     {
         this.owner = owner;
         transform.position = new Vector3(startPos.x, 2.0f, startPos.z);
@@ -37,7 +37,8 @@ public class HomingMagicMissile : Projectile
 
 		transform.Rotate(rotation);
 
-        SelectTarget();
+		this.target = target;
+        //SelectTarget();
     }
 
     public void SelectTarget()

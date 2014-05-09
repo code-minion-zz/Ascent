@@ -45,7 +45,14 @@ public class GroundSkull : MonoBehaviour
 			{
 				for (int j = 0; j < flames[i].Count; ++j)
 				{
-					flames[i][j].GetComponent<GroundSkullEye>().FadeOutAndDie();
+					if (flames[i][j] != null)
+					{
+						GroundSkullEye eye = flames[i][j].GetComponent<GroundSkullEye>();
+						if (eye != null)
+						{
+							eye.FadeOutAndDie();
+						}
+					}
 				}
 			}
 			flames[0].Clear();

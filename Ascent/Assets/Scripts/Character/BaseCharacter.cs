@@ -102,6 +102,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void EnableHighlight(Color color)
 	{
+		color *= 0.75f;
+		//color.a = 0.75f;
+
 		Renderer[] renderers = Renderers;
 		foreach (Renderer render in renderers)
 		{
