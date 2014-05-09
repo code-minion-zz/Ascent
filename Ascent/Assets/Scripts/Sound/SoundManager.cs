@@ -55,7 +55,7 @@ public static class SoundManager
 	private static AudioClip electric2		;
 	private static AudioClip fireAmbient	;
 
-	public static float	VolumeScale = 0.3f;
+	public static float	VolumeScale = 0.5f;
 
 	static AudioSource source;
 

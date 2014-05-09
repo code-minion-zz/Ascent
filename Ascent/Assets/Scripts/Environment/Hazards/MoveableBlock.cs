@@ -55,7 +55,7 @@ public class MoveableBlock : Interactable
 		{
             Vector3 normalisedDirection = direction.normalized;
 
-			SoundManager.PlaySound(AudioClipType.stonedrag, transform.position, 1f);
+			SoundManager.PlaySound(AudioClipType.stonedrag, transform.position, 5f);
 			IsInMotion = true;
 			timeAccum = 0.0f;
 			startPos = transform.position;

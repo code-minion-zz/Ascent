@@ -24,7 +24,6 @@ public class ArcherShootArrow : Ability
         owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 		performed = false;
-		SoundManager.PlaySound(AudioClipType.shootFire,owner.transform.position,.1f);
 
 		owner.Animator.PlayAnimation(animationTrigger, true);
     }
@@ -38,7 +37,8 @@ public class ArcherShootArrow : Ability
             GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Archer/ArcherArrow")) as GameObject;
             arrowGO.GetComponent<ArcherArrow>().Initialise(owner.transform.position + owner.transform.forward, owner.transform.forward * 10.0f, owner);
             performed = true;
-            owner.ResetColor();
+			owner.ResetColor();
+			SoundManager.PlaySound(AudioClipType.shootFire,owner.transform.position,.1f);
         }
     }
 
