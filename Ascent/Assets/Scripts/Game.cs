@@ -200,6 +200,8 @@ public class Game : MonoBehaviour
 	{
 		UnityEngine.Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
 
+        Application.targetFrameRate = targetFrameRate;
+
 		float aspectRatio = ((float)Screen.width / (float)Screen.height);
 		if (aspectRatio >= 1.6f) // 16:9 
 		{
