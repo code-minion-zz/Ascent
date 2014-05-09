@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
 		}
 		else if (i == 3)
 		{
-			color = Color.magenta;
+			color = Color.yellow;
 		}
 
 		return color;

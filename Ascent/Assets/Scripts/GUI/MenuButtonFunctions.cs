@@ -78,13 +78,13 @@ public class MenuButtonFunctions : MonoBehaviour
         int playerCount = 0;
         for (int i = 0; i < InputManager.Devices.Count; ++i)
         {
-            if (i > 2)
-            {
-                break;
-            }
-
             Buttons[i].enabled = true;
             ++playerCount;
+        }
+
+        if (playerCount > 4)
+        {
+            playerCount = 4;
         }
 
 		if (playerCount == 4)

@@ -18,10 +18,10 @@ public class LockedDoor : Door
         }
     }
 
-	public void Start()
-	{
-		openedDoor.SetActive(false);
-	}
+    //public void Start()
+    //{
+    //    openedDoor.SetActive(false);
+    //}
 
 	public void Open()
 	{

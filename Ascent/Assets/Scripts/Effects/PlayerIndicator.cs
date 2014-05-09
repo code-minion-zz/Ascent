@@ -26,6 +26,10 @@ public class PlayerIndicator : MonoBehaviour
 			indicatorTransform.localScale = new Vector3(size, size, size);
 
 			indicator.renderer.material.color = color;
+
+            ParticleSystem particle = indicator.GetComponentInChildren<ParticleSystem>();
+            color.a = 0.25f;
+            particle.startColor = color;
 		}
 	}
 

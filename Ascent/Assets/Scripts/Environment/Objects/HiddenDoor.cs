@@ -8,10 +8,10 @@ public class HiddenDoor : Door
 	[HideInInspector]
 	public bool opened;
 
-	public void Start()
-	{
-		openedDoor.SetActive(false);
-	}
+    //public override void Start()
+    //{
+    //    openedDoor.SetActive(false);
+    //}
 
 	public void Open()
 	{
