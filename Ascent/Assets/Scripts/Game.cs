@@ -203,6 +203,8 @@ public class Game : MonoBehaviour
 
         Application.targetFrameRate = targetFrameRate;
 
+		Screen.showCursor = false;
+
 		float aspectRatio = ((float)Screen.width / (float)Screen.height);
 		if (aspectRatio >= 1.6f) // 16:9 
 		{
