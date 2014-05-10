@@ -54,46 +54,90 @@ public class SwitchPanel : MonoBehaviour
         }
     }
 
-    void OnCollisionStay(Collision collision)
-	{
-		if (!IsDown)
-		{
-			IsDown = true;
+    //void OnCollisionStay(Collision collision)
+    //{
+    //    if (!IsDown)
+    //    {
+    //        IsDown = true;
 
-			if (!firedEvent && onSwitchOn != null)
-			{
-				onSwitchOn.Invoke(this);
-				firedEvent = true;
-			}
-		}
+    //        if (!firedEvent && onSwitchOn != null)
+    //        {
+    //            onSwitchOn.Invoke(this);
+    //            firedEvent = true;
+    //        }
+    //    }
 
-		if (!thingsOnMe.Contains(collision.gameObject))
-			thingsOnMe.Add(collision.gameObject);
-	}
+    //    if (!thingsOnMe.Contains(collision.gameObject))
+    //        thingsOnMe.Add(collision.gameObject);
+    //}
 
-    void OnCollisionExit(Collision collision)
+    //void OnCollisionExit(Collision collision)
+    //{
+    //    if (IsDown)
+    //    {
+    //        if (!thingsOnMe.Contains(collision.gameObject))
+    //        {
+    //            return;
+    //        }
+
+    //        thingsOnMe.Remove(collision.gameObject);
+
+    //        if (thingsOnMe.Count > 0)
+    //        {
+    //            return;
+    //        }
+
+    //        IsDown = false;
+    //        firedEvent = false;
+
+    //        if (onSwitchOff != null)
+    //        {
+    //            onSwitchOff.Invoke(this);
+    //        }
+    //    }
+    //}
+
+
+    void OnTriggerStay(Collider collider)
     {
-		if (IsDown)
-		{
-			if (!thingsOnMe.Contains(collision.gameObject))
-			{
-				return;
-			}
+        if (!IsDown)
+        {
+            IsDown = true;
 
-			thingsOnMe.Remove(collision.gameObject);
+            if (!firedEvent && onSwitchOn != null)
+            {
+                onSwitchOn.Invoke(this);
+                firedEvent = true;
+            }
+        }
 
-			if (thingsOnMe.Count > 0)
-			{
-				return;
-			}
+        if (!thingsOnMe.Contains(collider.gameObject))
+            thingsOnMe.Add(collider.gameObject);
+    }
 
-			IsDown = false;
-			firedEvent = false;
+    void OnTriggerExit(Collider collider)
+    {
+        if (IsDown)
+        {
+            if (!thingsOnMe.Contains(collider.gameObject))
+            {
+                return;
+            }
 
-			if (onSwitchOff != null)
-			{
-				onSwitchOff.Invoke(this);
-			}
-		}
+            thingsOnMe.Remove(collider.gameObject);
+
+            if (thingsOnMe.Count > 0)
+            {
+                return;
+            }
+
+            IsDown = false;
+            firedEvent = false;
+
+            if (onSwitchOff != null)
+            {
+                onSwitchOff.Invoke(this);
+            }
+        }
     }
 }

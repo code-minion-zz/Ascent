@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 52, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400004}
@@ -104,7 +104,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   mColor: {r: .154411793, g: .0193014741, b: .0193014741, a: .592156887}
-  mPivot: 0
+  mPivot: 1
   mWidth: 105
   mHeight: 15
   mDepth: 2
@@ -152,7 +152,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   mColor: {r: 0, g: 0, b: 0, a: 1}
-  mPivot: 0
+  mPivot: 1
   mWidth: 105
   mHeight: 15
   mDepth: 3
@@ -189,6 +189,7 @@ MonoBehaviour:
   healthBlocks: []
   specialBlocks: []
   specialGroups: []
+  actualBarWidth: 0
   TrackStat: 0
 --- !u!1001 &100100000
 Prefab:

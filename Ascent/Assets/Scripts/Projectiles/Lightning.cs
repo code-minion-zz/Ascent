@@ -91,7 +91,13 @@ public class Lightning : Projectile
 
                             if (!isOnSameTeam)
                             {
-								combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, (float)damage));
+                                combatEvaluator.Add(new PhysicalDamageProperty(damage, 1.0f));
+
+                                damage -= 1;
+                                if (damage <= 0)
+                                {
+                                    damage = 1;
+                                }
 
                                 // Create a blood splatter effect on the enemy.
                                 //EffectFactory.Singleton.CreateBloodSplatter(hitCharacter.transform.position, hitCharacter.transform.rotation, hitCharacter.transform, 2.0f);

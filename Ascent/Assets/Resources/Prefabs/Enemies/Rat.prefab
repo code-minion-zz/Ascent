@@ -1025,7 +1025,7 @@ MonoBehaviour:
   spawnOnLoad: 1
   stunEffectPosition: {fileID: 400066}
   agent: {fileID: 11400014}
-  health: 5
+  health: 6
   attack: 1
   enragePercentage: 0
   move: {x: 0, y: 0, z: 0}
@@ -1066,6 +1066,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f800587857ae734d8748c0150e5e7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newBehaviours:
+    keysList: 
+    valuesList: []
+  overrideScriptSetups: 0
+  curBehaviour: 0
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
