@@ -85,7 +85,8 @@ public class HeroAnimator : CharacterAnimator
 		animator.SetLayerWeight(1, 1.0f);
 		animator.SetLayerWeight(2, 0.0f);
 		animator.SetLayerWeight(3, 0.0f);
-		animator.SetLayerWeight(3, 0.0f);
+		animator.SetLayerWeight(4, 0.0f);
+		animator.SetLayerWeight(5, 0.0f);
 
 		layer = ELayer.Movement;
 
@@ -102,6 +103,25 @@ public class HeroAnimator : CharacterAnimator
         }
     }
 
+	public void Reset()
+	{
+		animator.SetLayerWeight(1, 1.0f);
+		animator.SetLayerWeight(2, 0.0f);
+		animator.SetLayerWeight(3, 0.0f);
+		animator.SetLayerWeight(3, 0.0f);
+		animator.SetLayerWeight(4, 0.0f);
+		animator.SetLayerWeight(5, 0.0f);
+
+		layer = ELayer.Movement;
+		
+		playingDeath = false;
+		dead = false;
+		animator.SetBool("Death", false);
+		animator.SetBool("DeathIdle", false);
+		PlayMovement(EMoveAnimation.IdleLook);
+		
+	}
+
 	/// <summary>
 	/// Plays a movement or idle animation.
 	/// </summary>
@@ -109,6 +129,9 @@ public class HeroAnimator : CharacterAnimator
 	/// <param name="movement"> movement param only affects Moving and GrabbingBlock. </param>
 	public void PlayMovement(EMoveAnimation moveAnim)
 	{
+		if (playingDeath || dead)
+			return;
+
 		//if(layer == ELayer.Movement)
 		{
             if (this.moveAnim != moveAnim)
@@ -140,6 +163,9 @@ public class HeroAnimator : CharacterAnimator
 	/// <param name="movement"></param>
 	public void Move(float movement)
 	{
+		if (playingDeath || dead)
+			return;
+
 		if (layer == ELayer.Movement)
 		{
 			// Set float values for states that have blend trees
@@ -160,6 +186,9 @@ public class HeroAnimator : CharacterAnimator
 
 	public void PlayCombatAction(int action, string animName)
 	{
+		if (playingDeath || dead)
+			return;
+
         weaponTrail.enabled = false;
         animator.SetInteger("MoveAnimation", 2);
 
@@ -174,9 +203,26 @@ public class HeroAnimator : CharacterAnimator
 	}
 
     public bool playingDeath;
+	public bool dead;
+	public float deathTimer;
+	public void PlayDeath()
+	{
+		if (!playingDeath && !dead)
+		{
+			playingDeath = true;
+			animator.SetLayerWeight(1, 0.0f);
+			animator.SetLayerWeight(2, 0.0f);
+			animator.SetLayerWeight(3, 0.0f);
+			animator.SetLayerWeight(3, 0.0f);
+			animator.SetLayerWeight(4, 0.0f);
+			animator.SetLayerWeight(5, 1.0f);
+			animator.SetBool("Death", true);
+		}
+	}
+
     public void PlayReactionAction(EReactionAnimation anim, float time)
     {
-        if (playingDeath)
+		if (playingDeath || dead)
             return;
 
         playingDeath = anim == EReactionAnimation.Dying ? true : false;
@@ -201,6 +247,9 @@ public class HeroAnimator : CharacterAnimator
 
     public void PlayInteractionAction(EInteractionAnimation anim)
     {
+		if (playingDeath || dead)
+			return;
+
         SetActiveLayer(ELayer.Interactions);
 
         animator.SetInteger("InteractionAnimation", (int)anim);
@@ -211,6 +260,9 @@ public class HeroAnimator : CharacterAnimator
 
     public void SetActiveLayer(ELayer layer)
     {
+		if (playingDeath || dead)
+			return;
+
         if (this.layer != layer)
         {
             animator.SetLayerWeight((int)this.layer, 0.0f);
@@ -222,6 +274,9 @@ public class HeroAnimator : CharacterAnimator
 
 	public void SetActiveLayer(ELayer layer, float newLayerWeight)
 	{
+		if (playingDeath || dead)
+			return;
+
 		if (this.layer != layer)
 		{
             newLayerWeight = Mathf.Min(Mathf.Abs(newLayerWeight), 0.0f);
@@ -236,6 +291,9 @@ public class HeroAnimator : CharacterAnimator
 
     public void SetActiveLayerBlend(ELayer layer, float time)
     {
+		if (playingDeath || dead)
+			return;
+
         if (this.layer != layer)
         {
             blendTimeMax = time;
@@ -249,6 +307,24 @@ public class HeroAnimator : CharacterAnimator
 
 	public override void Update() 
     {
+		if(dead)
+		{
+			 animator.SetBool("Death", true);
+			 return;
+		}
+		else if (playingDeath)
+		{
+			deathTimer += Time.deltaTime;
+			if (deathTimer >= 1.167f)
+			{
+				playingDeath = false;
+				dead = true;
+				animator.SetBool("DeathIdle", true);
+			}
+
+			return;
+		}
+
         int iLayer = (int)layer;
         if(iLayer >= 1 && iLayer < animator.layerCount)
         {

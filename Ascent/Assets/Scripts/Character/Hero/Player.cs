@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
 
     public void BindInputDevice(InputDevice device)
 	{
+		device.InUse = true;
 		this.input = device;
 	}
 

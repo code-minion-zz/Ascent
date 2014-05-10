@@ -25,7 +25,6 @@ public class Floor : MonoBehaviour
 	private bool randomFloor;
 
 	public Enemy floorBoss;
-	private bool bossKilled = false;
 
 	private float roomTransitionTime = 0.5f;
 	public float RoomTransitionTime
@@ -326,15 +325,12 @@ public class Floor : MonoBehaviour
             hero.FloorStatistics.ExperienceGained += (int)expGain;
         }
 
-		if(enemy == floorBoss)
-		{
-			bossKilled = true;
-		}
 
         // Unsubscribe from listening to events from this enemy.
         enemy.onDeath -= OnEnemyDeath;
     }
 
+	private bool allDead;
 	void Update()
 	{
 #if UNITY_EDITOR
@@ -343,7 +339,8 @@ public class Floor : MonoBehaviour
 	
 		if (!gameOver)
 		{
-			if (IsAllHeroesDead())
+			allDead = IsAllHeroesDead();
+			if (allDead)
 			{
 				FloorHUDManager.Singleton.GameOverScreen();
 				gameOver = true;
@@ -365,30 +362,19 @@ public class Floor : MonoBehaviour
 			}
 
 			// Take to summary screen
-			gameOverClock += Time.deltaTime;
-//			Debug.Log(gameOverClock);
-			if (gameOverClock > Game.Singleton.GameOverDelay)
+			if (!allDead)
 			{
-				if (IsAllHeroesDead())
-				{
-					EndFloor();
-				}
-				else
+				gameOverClock += Time.deltaTime;
+				if (gameOverClock > Game.Singleton.GameOverDelay)
 				{
 					Game.Singleton.Tower.LoadNextFloor();
 				}
 			}
-			// Restart the floor
 		}
 	}
 
     private void ProcessDebugKeys()
     {
-        if (bossKilled == true || Input.GetKeyUp(KeyCode.F1))
-        {
-            EndFloor();
-        }
-
         if (currentRoom.Doors == null)
         {
             return;
@@ -467,9 +453,9 @@ public class Floor : MonoBehaviour
 		// Show summary screen
 		//Instantiate(Resources.Load("Prefabs/FloorSummary"));
 
-        floorInstanceReward.ApplyFloorInstanceRewards();
+        //floorInstanceReward.ApplyFloorInstanceRewards();
 
-		Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+		//Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
 
 		// Enable input on summary screen
 	}

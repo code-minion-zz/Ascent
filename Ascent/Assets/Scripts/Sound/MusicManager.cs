@@ -58,7 +58,6 @@ public class MusicManager : MonoBehaviour
 			break;
 		case State.Stop:
 			return;
-			break;
 		}
 		
 		if (!audio.isPlaying) audio.Play();
@@ -98,7 +97,6 @@ public class MusicManager : MonoBehaviour
 				currentMusic = choice;
 				musicState = State.In;
 				return;
-				break;
 			}
 			nextMusic = choice;
 		}

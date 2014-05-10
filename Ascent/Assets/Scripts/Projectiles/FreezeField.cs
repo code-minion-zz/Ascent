@@ -41,14 +41,14 @@ public class FreezeField : Projectile
             foreach (Character c in characters)
             {
                 // Create a blood splatter effect on the enemy.
-                GameObject block = EffectFactory.Singleton.CreateIceblock(c.transform.position, c.transform.rotation);
+               // GameObject block = EffectFactory.Singleton.CreateIceblock(c.transform.position, c.transform.rotation);
 
-                SM_destroyThisTimed effectTime = block.GetComponent<SM_destroyThisTimed>();
+                //SM_destroyThisTimed effectTime = block.GetComponent<SM_destroyThisTimed>();
 
                 // Apply damage and knockback to the enemey
                 CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
                 combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
-                combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, effectTime.destroyTime)));
+                //combatEvaluator.Add(new StatusEffectCombatProperty(new FrozenDebuff(owner, c, effectTime.destroyTime)));
                 combatEvaluator.Apply();
             }
         }

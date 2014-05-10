@@ -96,7 +96,8 @@ public class HeroController : MonoBehaviour
 			motor.StopMovingAlongGrid();
 		}
 
-		animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
+		//animator.PlayReactionAction(HeroAnimator.EReactionAnimation.Dying, 1.0f);
+		animator.PlayDeath();
 	}
 
     void Update()
@@ -208,14 +209,6 @@ public class HeroController : MonoBehaviour
 #if UNITY_EDITOR
    			DebugKeys();
 #endif
-		}
-		else if (!CanUseInput)
-		{
-			if (inputDevice.Start.WasReleased)
-			{
-				FloorHUDManager hudman = FloorHUDManager.Singleton;
-				hudman.ShowPauseScreen(false);
-			}
 		}
     }
 

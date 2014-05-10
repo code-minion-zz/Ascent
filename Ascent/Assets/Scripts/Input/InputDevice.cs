@@ -45,6 +45,13 @@ public class InputDevice
 		get { return name; }
 	}
 
+	private bool connected;
+	public bool IsConnected
+	{
+		get { return connected; }
+		set { connected = value; }
+	}
+
 	public bool isJoystick;
 
 	bool isInUse = false;
@@ -85,13 +92,11 @@ public class InputDevice
 		this.isJoystick = isJoystick;
 	}
 
-	public bool IsConnected()
-	{
-		return (false);
-	}
 
 	protected void Initialise()
 	{
+		connected = true;
+
 		AddAnalogControl(InputControlType.LeftStickX);
 		AddAnalogControl(InputControlType.LeftStickY);
 		AddAnalogControl(InputControlType.RightStickX);

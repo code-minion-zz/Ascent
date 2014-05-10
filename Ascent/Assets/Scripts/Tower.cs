@@ -44,7 +44,6 @@ public class Tower : MonoBehaviour
 					}
 
                     newPlayer.BindInputDevice(device);
-                    device.InUse = true;
 
                     players.Add(newPlayer);
 
@@ -88,6 +87,7 @@ public class Tower : MonoBehaviour
 			p.Hero.Loadout.StopAbility();
 			p.Hero.Motor.StopMovingAlongGrid();
 			p.Hero.Motor.StopMotion();
+			p.Hero.HeroAnimator.Reset();
 			p.Hero.HeroAnimator.PlayMovement(HeroAnimator.EMoveAnimation.IdleLook);
 			p.Hero.RefreshEverything();
 		}

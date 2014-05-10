@@ -51,7 +51,7 @@ public class InputManager : MonoBehaviour
 		platform = (SystemInfo.operatingSystem + " " + SystemInfo.deviceModel).ToUpper();
 
 		string[] joystickNames = Input.GetJoystickNames();
-		
+
 		if(InputManager.debugMessages)
 		{
 			int length = joystickNames.Length;
@@ -298,9 +298,10 @@ public class InputManager : MonoBehaviour
 
 	static void DetachDevice(InputDevice inputDevice)
 	{
-		devices.Remove(inputDevice);
+		//devices.Remove(inputDevice);
 		Debug.Log("Disconnected: " + inputDevice.Name);
 
+		inputDevice.IsConnected = false;
 		inputDevice.SendDisconnectionEvent();
 
 		if (OnDeviceDetached != null)

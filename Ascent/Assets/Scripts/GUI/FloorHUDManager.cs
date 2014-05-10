@@ -20,6 +20,7 @@ public class FloorHUDManager : MonoBehaviour
 	public          GameObject  enemHealthBars;
 	public          Transform  	pausePanel;
 	public          Transform  	transitionPanel;
+	public			Transform	gameOverPanel;
 	public			UILabel		pauseLabel;
 	public			UILabel		transitionLabel;
 	public			UITexture	transitionTexture;
@@ -28,6 +29,7 @@ public class FloorHUDManager : MonoBehaviour
 	private			bool		paused = true;
 
 	public SceneFadeInFadeOut fader;
+	public SceneFadeInFadeOut gameOverFader;
 
 	public UIPanel mainPanel;
 
@@ -203,7 +205,6 @@ public class FloorHUDManager : MonoBehaviour
 				p.Hero.HeroController.InitialiseControllerIndicators();
 			}
 		}
-	
 		
 		ShowPauseScreen(false);
 
@@ -214,6 +215,8 @@ public class FloorHUDManager : MonoBehaviour
 		fader.onReverseTransitionEnd += OnFadeOutEnd;
 		fader.transitionTime = Game.Singleton.fadeIntoLevelTime;
 		fader.Transition();
+
+		gameOverFader.onTransitionEnd += OnGameOverFadeEnd;
     }
 
 	void Update()
@@ -310,17 +313,10 @@ public class FloorHUDManager : MonoBehaviour
 	
 	public void GameOverScreen()
 	{
-		ToggleTransition(true);
-		SetTransitionText("GAME OVER");
-		transitionPanel.GetComponent<UIPanel>().alpha = 1;
-		transitionTimer = Game.Singleton.showGameOvermessageTimer;
-		transitionTime = transitionTimer;
-		InputManager.DisableInputForTime(transitionTime + fader.waitTimeOut + fader.transitionTime + 0.5f);
-
-		fader.waitTimeOut = transitionTimer;
-		fader.transitionTime = Game.Singleton.fadeOutFromGameOverTime;
-		fader.ReverseTransition();
-		MusicManager.Instance.SlowStop();
+		InputManager.DisableInputForTime(Game.Singleton.fadeToGameOverTime + 0.1f);
+		gameOverFader.gameObject.SetActive(true);
+		gameOverFader.transitionTime = Game.Singleton.fadeToGameOverTime;
+		gameOverFader.Transition();
 	}
 
 	public void ToggleTransition(bool active)
@@ -341,6 +337,13 @@ public class FloorHUDManager : MonoBehaviour
 	public void OnFadeOutEnd()
 	{
 		ToggleTransition(true);
+	}
+
+	public void OnGameOverFadeEnd()
+	{
+		NGUITools.SetActive(gameOverPanel.gameObject, true);
+
+		//MusicManager.Instance.SlowStop();
 	}
 
 	public PlayerHUD GetPlayerHUD(Hero hero)

@@ -19,13 +19,22 @@ public class HeroButtonIndicator : MonoBehaviour
 	private float growTime = 0.15f;
 	private float shrinkTime = 0.09f;
 
-	private float maxScale = 2.5f;
+	private float maxScale = 3.25f;
 	private float prevScale;
 
 	public void Initialise(Character _character)
 	{
 		buttonSprite.transform.localScale = Vector3.zero;
 		owner = _character;
+
+		Player player = Game.Singleton.GetPlayer(((Hero)owner));
+		
+		bool isKeyboard = !player.Input.isJoystick;
+		
+		if (isKeyboard)
+		{
+			buttonSprite.spriteName = "keyF";
+		}
 	}
 
 	public void Update()

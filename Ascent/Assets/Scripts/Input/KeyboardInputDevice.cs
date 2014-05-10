@@ -12,6 +12,8 @@ public class KeyboardInputDevice : InputDevice
 	const int maxAnalogs = 6;
 	const int maxButtons = 14;
 
+	public bool menuMode;
+
 	public KeyboardInputDevice()
 	{
 		this.name = keyboardName;
@@ -127,24 +129,101 @@ public class KeyboardInputDevice : InputDevice
 
 		switch (type)
 		{
-			case InputControlType.Action1: { buttonState = (Input.GetKey(KeyCode.D) ? true : false); } break;
-			case InputControlType.Action2: { buttonState = ((Input.GetKey(KeyCode.Backspace) || Input.GetKey(KeyCode.Escape) || Input.GetKey(KeyCode.F)) ? true : false); } break;
+			case InputControlType.Action1: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.A) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.F) ? true : false);
+					}
+				} 
+				break;
+			case InputControlType.Action2: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Backspace) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.D) ? true : false); 
+					}
+				}
+				break;
 			case InputControlType.Action3: { buttonState = (Input.GetKey(KeyCode.A) ? true : false); } break;
 			case InputControlType.Action4: { buttonState = (Input.GetKey(KeyCode.S) ? true : false); } break;
 
 			case InputControlType.LeftBumper: { buttonState = (Input.GetKey(KeyCode.W) ? true : false); } break;
 			case InputControlType.RightBumper: { buttonState = (Input.GetKey(KeyCode.E) ? true : false); } break;
 
-            case InputControlType.DPadUp: { buttonState = (Input.GetKey(KeyCode.Alpha1) ? true : false); } break;
-            case InputControlType.DPadDown: { buttonState = (Input.GetKey(KeyCode.Alpha2) ? true : false); } break;
-            case InputControlType.DPadLeft: { buttonState = (Input.GetKey(KeyCode.Alpha3) ? true : false); } break;
-            case InputControlType.DPadRight: { buttonState = (Input.GetKey(KeyCode.Alpha4) ? true : false); } break;
+            case InputControlType.DPadUp: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.UpArrow) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.Alpha1) ? true : false);
+					}
+				} 
+				break;
+            case InputControlType.DPadDown: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.DownArrow) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.Alpha2) ? true : false);
+					}
+				}
+				break;
+            case InputControlType.DPadLeft: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.LeftArrow) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.Alpha3) ? true : false);
+					}
+				}
+				break;
+            case InputControlType.DPadRight: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.RightArrow) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.Alpha4) ? true : false);
+					}
+				}
+				break;
 
 			case InputControlType.LeftStickButton: { buttonState = (Input.GetKey(KeyCode.E) ? true : false); } break;
 			case InputControlType.RightStickButton: { buttonState = (Input.GetKey(KeyCode.R) ? true : false); } break;
 
 			case InputControlType.Back: { buttonState = (Input.GetKey(KeyCode.RightShift) ? true : false); } break;
-			case InputControlType.Start: { buttonState = (Input.GetKey(KeyCode.Return) ? true : false); } break;
+			case InputControlType.Start: 
+				{
+					if (menuMode)
+					{
+						buttonState = (Input.GetKey(KeyCode.Escape) ? true : false);
+					}
+					else
+					{
+						buttonState = (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.Escape) ? true : false);
+					}
+				}
+				break;
 		}
 
 		if (InputManager.debugMessages && buttonState)

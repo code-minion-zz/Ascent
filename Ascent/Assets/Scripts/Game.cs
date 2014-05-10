@@ -116,6 +116,7 @@ public class Game : MonoBehaviour
 	public float fadeIntoLevelTime = 1.5f;
 	public float fadeOutOfLevelTime = 1.5f;
 	public float fadeOutFromGameOverTime = 1.5f;
+	public float fadeToGameOverTime = 1.5f;
 
 	public float showLevelStartMessageTimer = 2.0f;
 	public float showGameOvermessageTimer = 3.0f;
@@ -455,6 +456,7 @@ public class Game : MonoBehaviour
             case EGameState.TowerPlayer3:
 			case EGameState.TowerPlayer4:
 				{
+
 					if (tower == null)
 						return;
 

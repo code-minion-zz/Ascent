@@ -20,9 +20,18 @@ public class MenuButtonFunctions : MonoBehaviour
 
 	private Game.EGameState modeToLoad;
 
-	private const float showCreditsMinimumTime = 1.25f;
+	private const float showCreditsMinimumTime = 0.5f;
 	private float timeElapsed;
 
+	private bool stopInput;
+	private bool up;
+	private bool down;
+	private bool a;
+	private bool aRelease;
+	private bool b;
+	private bool bRelease;
+	private bool highlight;
+	private GameObject highlightedObject;
 
 	public void Start()
 	{
@@ -44,10 +53,69 @@ public class MenuButtonFunctions : MonoBehaviour
 		creditFader.onReverseTransitionEnd += OnReturnFromCredits;
 
 		fader.Transition();
+
+		((KeyboardInputDevice)InputManager.KeyBoard).menuMode = true;
 	}
 
     public void Update()
 	{
+		if (UICamera.selectedObject == null)
+			return;
+
+		up = false;
+		down = false;
+		a = false;
+		aRelease = false;
+		b = false;
+		bRelease = false;
+
+		if (stopInput)
+			return;
+
+		var devices = InputManager.Devices;
+		foreach (InputDevice d in devices)
+		{
+			if (!up || !down)
+			{
+				if (d.LeftStickY.WasPressed)
+				{
+					if (!up)
+					{
+						up = d.LeftStickY > 0.05f;
+
+						if (!down)
+						{
+							down = d.LeftStickY < -0.05f;
+						}
+					}
+				}
+				else
+				{
+					if (!up)
+					{
+						up = d.DPadUp.WasPressed;
+
+						if (!down)
+						{
+							down = d.DPadDown.WasPressed;
+						}
+					}
+				}
+			}
+
+			if (!a)
+				a = d.A.WasPressed || d.Start.WasPressed;
+
+			if (!aRelease)
+				aRelease = d.A.WasReleased || d.Start.WasReleased;
+
+			if (!b)
+				b = d.B.WasPressed;
+
+			if (!bRelease)
+				bRelease = d.B.WasReleased;
+		}
+
 		if (showingCredits)
 		{
 			timeElapsed += Time.deltaTime;
@@ -55,26 +123,21 @@ public class MenuButtonFunctions : MonoBehaviour
 			if (timeElapsed < showCreditsMinimumTime)
 				return;
 
-			if (Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.Backspace))
+			if (aRelease || bRelease)
 			{
-				showingCredits = false;
-				creditFader.ReverseTransition();
-				credits.gameObject.SetActive(false);
-			}
-			if (Input.GetButtonUp("P1 B") || Input.GetButtonUp("P1 A"))
-			{
-				showingCredits = false;
-				creditFader.ReverseTransition();
-				credits.gameObject.SetActive(false);
-			}
-			if (Input.GetMouseButtonUp(0))
-			{
+				stopInput = true;
 				showingCredits = false;
 				creditFader.ReverseTransition();
 				credits.gameObject.SetActive(false);
 			}
 
 			return;
+		}
+
+		if (UICamera.selectedObject != null && !UICamera.selectedObject.GetComponent<UIButton>().isEnabled)
+		{
+			UICamera.selectedObject = Buttons[0].gameObject;
+			Deselect();
 		}
 
         int playerCount = 0;
@@ -88,6 +151,10 @@ public class MenuButtonFunctions : MonoBehaviour
         {
             playerCount = 4;
         }
+		else if (playerCount == 0)
+		{
+			playerCount = 1;
+		}
 
 		if (playerCount == 4)
 		{
@@ -108,6 +175,18 @@ public class MenuButtonFunctions : MonoBehaviour
 
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
+
+			if (!Buttons[0].isEnabled)
+				Buttons[0].isEnabled = true;
+
+			if (!Buttons[1].isEnabled)
+				Buttons[1].isEnabled = true;
+
+			if (!Buttons[2].isEnabled)
+				Buttons[2].isEnabled = true;
+
+			if (!Buttons[3].isEnabled)
+				Buttons[3].isEnabled = true;
 		}
 		else if (playerCount == 3)
 		{
@@ -126,6 +205,15 @@ public class MenuButtonFunctions : MonoBehaviour
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 
+			if (!Buttons[0].isEnabled)
+				Buttons[0].isEnabled = true;
+
+			if (!Buttons[1].isEnabled)
+				Buttons[1].isEnabled = true;
+
+			if (!Buttons[2].isEnabled)
+				Buttons[2].isEnabled = true;
+
 			Buttons[3].isEnabled = false;
 		}
 		else if (playerCount == 2)
@@ -142,6 +230,12 @@ public class MenuButtonFunctions : MonoBehaviour
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 
+			if (!Buttons[0].isEnabled)
+				Buttons[0].isEnabled = true;
+
+			if (!Buttons[1].isEnabled)
+				Buttons[1].isEnabled = true;
+
 			Buttons[2].isEnabled = false;
 			Buttons[3].isEnabled = false;
 		}
@@ -156,54 +250,51 @@ public class MenuButtonFunctions : MonoBehaviour
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnUp = Buttons[4].GetComponent<UIButtonKeys>();
 			Buttons[5].GetComponent<UIButtonKeys>().selectOnDown = Buttons[0].GetComponent<UIButtonKeys>();
 
+			if(!Buttons[0].isEnabled)
+				Buttons[0].isEnabled = true;
+
 			Buttons[1].isEnabled = false;
 			Buttons[2].isEnabled = false;
 			Buttons[3].isEnabled = false;
+
 		}
 
+		if (up)
+		{
+			UICamera.selectedObject.GetComponent<UIButtonKeys>().OnKey(KeyCode.UpArrow);
 
-		if ((UICamera.selectedObject != null && UICamera.hoveredObject != null) && 
-			(UICamera.selectedObject != UICamera.hoveredObject))
-		{
-			UICamera.selectedObject = UICamera.hoveredObject;
+			if (highlight)
+				Deselect();
 		}
-		else if ((UICamera.selectedObject == null && UICamera.hoveredObject != null))
+		else if (down)
 		{
-			UICamera.selectedObject = UICamera.hoveredObject;
+			UICamera.selectedObject.GetComponent<UIButtonKeys>().OnKey(KeyCode.DownArrow);
+
+			if(highlight)
+				Deselect();
 		}
-		else if ((UICamera.selectedObject == null && UICamera.hoveredObject == null))
+		if(a)
 		{
-			// There is a small time frame between deselecting and selecting something new
-			// if this timer isn't used, it always thinks that nothing is selected.
-			deselectTimer += Time.deltaTime;
-			if (deselectTimer >= 0.05f)
+			UICamera.selectedObject.GetComponent<UIButton>().OnPress(true);
+			highlightedObject = UICamera.selectedObject;
+			highlight = true;
+		}
+		if (aRelease)
+		{
+			if (highlightedObject == UICamera.selectedObject && highlightedObject.GetComponent<UIButton>().isEnabled)
 			{
-				if(Input.GetKey(KeyCode.UpArrow))
-				{
-					UICamera.selectedObject = Buttons[0].gameObject; 
-					deselectTimer = 0.0f;
-				}
-				else if (Input.GetKey(KeyCode.DownArrow))
-				{
-					UICamera.selectedObject = Buttons[0].gameObject; 
-					deselectTimer = 0.0f;
-				}
-				else if (Input.GetAxis("Vertical") > 0.0f)
-				{
-					UICamera.selectedObject = Buttons[1].gameObject; 
-					deselectTimer = 0.0f;
-				}
-				else if (Input.GetAxis("Vertical") < 0.0f)
-				{
-					UICamera.selectedObject = Buttons[4].gameObject; 
-					deselectTimer = 0.0f;
-				}
-				
+				EventDelegate.Execute(UICamera.selectedObject.GetComponent<UIButton>().onClick);
+				stopInput = true;
+				return;
+			}
+			else
+			{
+				Deselect();
 			}
 		}
-		else
+		if(b)
 		{
-			deselectTimer = 0.0f;
+			//UICamera.selectedObject.GetComponent<UIButtonKeys>().OnKey(KeyCode.UpArrow);
 		}
 
 		for(int i = 0; i < Buttons.Length; ++i)
@@ -219,6 +310,12 @@ public class MenuButtonFunctions : MonoBehaviour
 		}
     }
 
+	private void Deselect()
+	{
+		highlightedObject = null;
+		highlight = false;
+	}
+
     public void OnPlayerOnePressed()
     {
         if (InputManager.Devices.Count >= 1)
@@ -229,10 +326,7 @@ public class MenuButtonFunctions : MonoBehaviour
             Game.Singleton.Tower.lives = 1;
 			modeToLoad = Game.EGameState.TowerPlayer1;
 
-			inputCamera.useController = false;
-			inputCamera.useTouch = false;
-			inputCamera.useKeyboard = false;
-			inputCamera.useMouse = false;
+			((KeyboardInputDevice)InputManager.KeyBoard).menuMode = false;
 			
 			StopMusic();
 
@@ -250,10 +344,7 @@ public class MenuButtonFunctions : MonoBehaviour
             Game.Singleton.Tower.lives = 1;
 			modeToLoad = Game.EGameState.TowerPlayer2;
 
-			inputCamera.useController = false;
-			inputCamera.useTouch = false;
-			inputCamera.useKeyboard = false;
-			inputCamera.useMouse = false;
+			((KeyboardInputDevice)InputManager.KeyBoard).menuMode = false;
 			
 			StopMusic();
 
@@ -271,10 +362,7 @@ public class MenuButtonFunctions : MonoBehaviour
             Game.Singleton.Tower.lives = 1;
 			modeToLoad = Game.EGameState.TowerPlayer3;
 
-			inputCamera.useController = false;
-			inputCamera.useTouch = false;
-			inputCamera.useKeyboard = false;
-			inputCamera.useMouse = false;
+			((KeyboardInputDevice)InputManager.KeyBoard).menuMode = false;
 			
 			StopMusic();
 
@@ -292,10 +380,7 @@ public class MenuButtonFunctions : MonoBehaviour
 			Game.Singleton.Tower.lives = 1;
 			modeToLoad = Game.EGameState.TowerPlayer4;
 
-			inputCamera.useController = false;
-			inputCamera.useTouch = false;
-			inputCamera.useKeyboard = false;
-			inputCamera.useMouse = false;
+			((KeyboardInputDevice)InputManager.KeyBoard).menuMode = false;
 
 			StopMusic();
 
@@ -322,6 +407,7 @@ public class MenuButtonFunctions : MonoBehaviour
 	public void OnEnteredCredits()
 	{
 		credits.gameObject.SetActive(true);
+		stopInput = false;
 	}
 
 	public void OnReturnFromCredits()
@@ -335,6 +421,7 @@ public class MenuButtonFunctions : MonoBehaviour
 		UICamera.selectedObject = Buttons[0].gameObject;
 		ButtonMarkers[0].gameObject.SetActive(true);
 		ButtonMarkers[0].enabled = false;
+		stopInput = false;
 	}
 
 	void StopMusic()
@@ -344,10 +431,8 @@ public class MenuButtonFunctions : MonoBehaviour
 
 	public void OnTransitionEnterEnd()
 	{
-		inputCamera.useController = true;
-		inputCamera.useTouch = true;
-		inputCamera.useKeyboard = true;
-		inputCamera.useMouse = true;
+		//inputCamera.useController = true;
+		//inputCamera.useKeyboard = true;
 	}
 
 	public void OnTransitionExitEnd()
