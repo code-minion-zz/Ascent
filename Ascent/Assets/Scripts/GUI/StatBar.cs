@@ -18,6 +18,8 @@ public class StatBar : MonoBehaviour
 	public SpecialBlock[] specialBlocks;
 	public SpecialGroup[] specialGroups;
 
+    public float actualBarWidth;
+
 	public enum eStat
 	{
 		Invalid = -1,
@@ -88,14 +90,30 @@ public class StatBar : MonoBehaviour
 
 					if (owner is Abomination || owner is WatcherBoss)
 					{
-						statbarWidget.width *= 3;
+						statbarWidget.width *= 10;
 						statbarWidget.height *= 2;
 						barWidth = statbarWidget.width;
 					}
 
+                    actualBarWidth = (float)barWidth;
+                    
 					int blockWidth = barWidth / healthBlocks.Length;
 					int depth = statbarWidget.depth;
 
+
+                    int rows = 3;
+                    int blockPerRow = 0;
+                    int blocks = 0;
+
+                    if ((owner is Abomination || owner is WatcherBoss))
+                    {
+                        GetComponent<UIGrid>().cellHeight = statbarWidget.height;
+                        GetComponent<UIGrid>().cellHeight = 0;
+                        blockPerRow = owner.Stats.MaxHealth / rows;
+                        GetComponent<UIGrid>().maxPerLine = blockPerRow;
+                    }
+
+                    blocks = 0;
 					for(int i = 0; i < healthBlocks.Length; ++i)
 					{
 						healthBlocks[i] = NGUITools.AddChild(gameObject, healthBlock).GetComponent<HealthBlock>();
@@ -103,9 +121,29 @@ public class StatBar : MonoBehaviour
 						healthBlocks[i].GetComponent<UIWidget>().height = statbarWidget.height;
 						healthBlocks[i].GetComponent<UIWidget>().width = (int)blockWidth;
 						healthBlocks[i].GetComponent<UIWidget>().depth = depth++;
+
+                        if ((owner is Abomination || owner is WatcherBoss))
+                        {
+                            if (blocks < blockPerRow)
+                            {
+                                healthBlocks[i].GetComponent<UIWidget>().color = Color.red;
+                            }
+                            else if (blocks < blockPerRow * 2)
+                            {
+                                healthBlocks[i].GetComponent<UIWidget>().color = new Color(0.7f, 0.6f, 0.3f);
+                            }
+                            else if (blocks < blockPerRow * 3)
+                            {
+                                healthBlocks[i].GetComponent<UIWidget>().color = Color.yellow;
+                            }
+
+                            ++blocks;
+                        }
+
 						healthBlocks[i].name = i + "block";
 					}
 					GetComponent<UIGrid>().cellWidth = blockWidth;
+
 					GetComponent<UIGrid>().Reposition();
 
 					statbarWidget.depth = ++depth;
@@ -208,8 +246,18 @@ public class StatBar : MonoBehaviour
 			{
 				for (int i = 0; i < owner.Stats.MaxHealth; ++i )
 				{
-					if (i < healthBlocks.Length)
-						healthBlocks[i].gameObject.SetActive(i < owner.Stats.CurrentHealth);
+                    if (i < healthBlocks.Length)
+                    {
+                        healthBlocks[i].gameObject.SetActive(i <= owner.Stats.CurrentHealth);
+
+                        if ((owner is Abomination || owner is WatcherBoss) && i == owner.Stats.CurrentHealth)
+                        {
+                            UIWidget widget = healthBlocks[i].GetComponent<UIWidget>();
+                            Color oldColor = widget.color;
+                            oldColor = Color.white;
+                            widget.color = oldColor;
+                        }
+                    }
 				}
 			}
 

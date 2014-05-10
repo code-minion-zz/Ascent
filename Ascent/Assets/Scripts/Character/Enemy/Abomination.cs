@@ -146,8 +146,8 @@ public class Abomination : Enemy
 	protected override void PositionHpBar()
 	{
 		Vector3 screenPos = Game.Singleton.Tower.CurrentFloor.MainCamera.WorldToViewportPoint(transform.position);
-		screenPos.y += 0.17f;
-		screenPos.x -= 0.090f;
+        screenPos.y += 0.19f;
+        screenPos.x -= 0.12f;
 		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x, barPos.y);
 		hpBar.transform.position = barPos;
