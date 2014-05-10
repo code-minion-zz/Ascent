@@ -248,9 +248,10 @@ public class StatBar : MonoBehaviour
 				{
                     if (i < healthBlocks.Length)
                     {
-                        healthBlocks[i].gameObject.SetActive(i <= owner.Stats.CurrentHealth);
+                        healthBlocks[i].gameObject.SetActive(i < owner.Stats.CurrentHealth);
 
-                        if ((owner is Abomination || owner is WatcherBoss) && i == owner.Stats.CurrentHealth)
+                        int cur = owner.Stats.CurrentHealth - 1;
+                        if ((owner is Abomination || owner is WatcherBoss) && i == cur)
                         {
                             UIWidget widget = healthBlocks[i].GetComponent<UIWidget>();
                             Color oldColor = widget.color;
