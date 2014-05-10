@@ -15,6 +15,8 @@ public class Abomination : Enemy
     private int stompActionID;
     private int chargeActionID;
 
+	bool isFirstTime = true;
+
     public override void Initialise()
 	{
         base.Initialise();
@@ -124,14 +126,18 @@ public class Abomination : Enemy
 
 	public override void OnEnable()
 	{
-        base.OnEnable();
-		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
+		base.OnEnable();
+
+		if (isFirstTime)
+			isFirstTime = false;
+		else
+			MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
 	}
 
     public override void OnDisable()
     {
         base.OnDisable();
-		//MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
+		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
         AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Aggressive);
 
         motor.StopMotion();

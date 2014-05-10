@@ -20,6 +20,8 @@ public class WatcherBoss : Enemy
 	WatcherMagicMissile magicMissileAbility;
 	WatcherLazerBeam lazerBeamAbility;
 
+	bool isFirstTime = true;
+
     public override void Initialise()
     {
         base.Initialise();
@@ -116,5 +118,21 @@ public class WatcherBoss : Enemy
 		Vector3 barPos = FloorHUDManager.Singleton.hudCamera.ViewportToWorldPoint(screenPos);
 		barPos = new Vector3(barPos.x, barPos.y);
 		hpBar.transform.position = barPos;
+	}
+	
+	public override void OnEnable()
+	{
+		base.OnEnable();
+
+		if (isFirstTime)
+			isFirstTime = false;
+		else
+			MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Boss);
+	}
+
+	public override void OnDisable()
+	{
+		base.OnDisable();
+		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Tower);
 	}
 }

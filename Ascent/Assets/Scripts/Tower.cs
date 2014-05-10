@@ -96,6 +96,7 @@ public class Tower : MonoBehaviour
 		{
 			Destroy(currentFloor);
 			Game.Singleton.LoadLevel(Game.EGameState.MainMenu);
+			MusicManager.Instance.SlowStop();
 		}
 		else
 		{

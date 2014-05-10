@@ -23,8 +23,13 @@ public class MenuButtonFunctions : MonoBehaviour
 	private const float showCreditsMinimumTime = 1.25f;
 	private float timeElapsed;
 
+
 	public void Start()
 	{
+		Time.timeScale = 1f;
+
+		MusicManager.Instance.PlayMusic(MusicManager.MusicSelections.Menu);
+
 		inputCamera.useController = false;
 		inputCamera.useTouch = false;
 		inputCamera.useKeyboard = false;
@@ -37,9 +42,6 @@ public class MenuButtonFunctions : MonoBehaviour
 
 		creditFader.onTransitionEnd += OnEnteredCredits;
 		creditFader.onReverseTransitionEnd += OnReturnFromCredits;
-		
-		MusicManager musicMan = GameObject.Find("MusicManager").GetComponent<MusicManager>();
-		musicMan.PlayMusic(MusicManager.MusicSelections.Menu);
 
 		fader.Transition();
 	}
@@ -231,6 +233,8 @@ public class MenuButtonFunctions : MonoBehaviour
 			inputCamera.useTouch = false;
 			inputCamera.useKeyboard = false;
 			inputCamera.useMouse = false;
+			
+			StopMusic();
 
 			fader.ReverseTransition();
         }
@@ -250,6 +254,8 @@ public class MenuButtonFunctions : MonoBehaviour
 			inputCamera.useTouch = false;
 			inputCamera.useKeyboard = false;
 			inputCamera.useMouse = false;
+			
+			StopMusic();
 
 			fader.ReverseTransition();
         }
@@ -269,6 +275,8 @@ public class MenuButtonFunctions : MonoBehaviour
 			inputCamera.useTouch = false;
 			inputCamera.useKeyboard = false;
 			inputCamera.useMouse = false;
+			
+			StopMusic();
 
 			fader.ReverseTransition();
         }
@@ -288,6 +296,8 @@ public class MenuButtonFunctions : MonoBehaviour
 			inputCamera.useTouch = false;
 			inputCamera.useKeyboard = false;
 			inputCamera.useMouse = false;
+
+			StopMusic();
 
 			fader.ReverseTransition();
 		}
@@ -327,6 +337,11 @@ public class MenuButtonFunctions : MonoBehaviour
 		ButtonMarkers[0].enabled = false;
 	}
 
+	void StopMusic()
+	{		
+		MusicManager.Instance.SlowStop();
+	}
+
 	public void OnTransitionEnterEnd()
 	{
 		inputCamera.useController = true;
@@ -338,6 +353,10 @@ public class MenuButtonFunctions : MonoBehaviour
 	public void OnTransitionExitEnd()
 	{
 		Game.Singleton.LoadLevel(modeToLoad);
+	}
+
+	void OnEnable()
+	{		
 	}
 
     public void Exit()

@@ -9,6 +9,7 @@ public class MusicManager : MonoBehaviour
 	private static AudioClip menuMusic;
 
 	private MusicSelections nextMusic;
+	private MusicSelections currentMusic;
 
 	float FadeDuration = 1f;
 	float elapsedTime;
@@ -41,8 +42,6 @@ public class MusicManager : MonoBehaviour
 			towerMusic = Resources.Load("Sounds/music/tower") as AudioClip;
 			bossMusic = Resources.Load("Sounds/music/boss") as AudioClip;
 			menuMusic = Resources.Load("Sounds/music/mainmenu") as AudioClip;
-
-			audio.clip = towerMusic;
 		}
 	}
 
@@ -57,15 +56,25 @@ public class MusicManager : MonoBehaviour
 		case State.Out:
 			FadeOutMusic();
 			break;
+		case State.Stop:
+			return;
+			break;
 		}
-//		Debug.Log(audio.volume);
+		
+		if (!audio.isPlaying) audio.Play();
 	}
 
 	public void PlayMusic(MusicSelections choice, bool immediate = false)
 	{
+		if (currentMusic == choice)
+		{
+			return;
+		}
+
 		if (immediate)
 		{
 			SwapMusic(choice);
+			currentMusic = choice;
 			audio.Stop();
 			audio.volume = MusicVolume;
 			musicState = State.Play;
@@ -86,12 +95,13 @@ public class MusicManager : MonoBehaviour
 				elapsedTime = 0f;
 				audio.volume = 0f;
 				SwapMusic(choice);
+				currentMusic = choice;
 				musicState = State.In;
+				return;
 				break;
 			}
 			nextMusic = choice;
 		}
-		audio.Play();
 	}
 
 	public void SetVolume(float val)
@@ -99,16 +109,32 @@ public class MusicManager : MonoBehaviour
 		audio.volume = val;
 	}
 
+	public void SlowStop()
+	{
+		Debug.Log("SlowStop()");
+		elapsedTime = 0f;
+		nextMusic = MusicSelections.None;
+		musicState = State.Out;
+	}
+
 	public void StopMusic()
 	{
 		musicState = State.Stop;
 		audio.Stop();
-		if (nextMusic != MusicSelections.None) PlayMusic(nextMusic);
+		if (nextMusic != MusicSelections.None)
+		{
+			PlayMusic(nextMusic);
+			currentMusic = nextMusic;
+			nextMusic = MusicSelections.None;
+		}
+		else
+		{
+			currentMusic = MusicSelections.None;
+		}
 	}
 
 	void FadeOutMusic()
 	{
-		print ("FadeOutMusic");
 		audio.volume = Mathf.Lerp(MusicVolume, 0f, elapsedTime/FadeDuration);
 		if (audio.volume <= 0f)
 		{
@@ -157,11 +183,11 @@ public class MusicManager : MonoBehaviour
 			break;
 		case MusicSelections.Boss:
 			retval = bossMusic;
-			MusicVolume = 0.035f;
+			MusicVolume = 0.06f;
 			break;
 		case MusicSelections.Menu:
 			retval = menuMusic;
-			MusicVolume = 0.04f;
+			MusicVolume = 0.035f;
 			break;
 		}
 		return retval;

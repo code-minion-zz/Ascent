@@ -305,6 +305,7 @@ public class FloorHUDManager : MonoBehaviour
 		fader.waitTimeOut = transitionTimer;
 		fader.transitionTime = Game.Singleton.fadeOutOfLevelTime;
 		fader.ReverseTransition();
+		MusicManager.Instance.SlowStop();
 	}
 	
 	public void GameOverScreen()
@@ -319,6 +320,7 @@ public class FloorHUDManager : MonoBehaviour
 		fader.waitTimeOut = transitionTimer;
 		fader.transitionTime = Game.Singleton.fadeOutFromGameOverTime;
 		fader.ReverseTransition();
+		MusicManager.Instance.SlowStop();
 	}
 
 	public void ToggleTransition(bool active)

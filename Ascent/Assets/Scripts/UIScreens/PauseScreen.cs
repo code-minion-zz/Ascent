@@ -139,6 +139,7 @@ public class PauseScreen : MonoBehaviour
 		fader.transitionTime = transitionOutTime;
 		fader.onReverseTransitionEnd += OnRestartFadeOutEnd;
 		fader.ReverseTransitionNow();
+		MusicManager.Instance.SlowStop();
 
 		inputCamera.useController = false;
 		inputCamera.useTouch = false;
@@ -158,6 +159,8 @@ public class PauseScreen : MonoBehaviour
 		lastSelected = UICamera.selectedObject;
 		main.gameObject.SetActive(false);
 		titleConfirm.gameObject.SetActive(true);
+		
+		MusicManager.Instance.SlowStop();
 	}
 
 	public void OnTitleCancel()
