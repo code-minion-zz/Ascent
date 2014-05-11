@@ -12,6 +12,9 @@ public class Spider : Enemy
 
 	public Vector3 move;
 
+	private AICondition_Timer retargetTimer;
+	private AICondition_Timer abilityTimer;
+
 	public override void Initialise()
 	{
 		base.Initialise();
@@ -20,7 +23,6 @@ public class Spider : Enemy
 		loadout.SetSize(1);
 
 		Ability tackle = new RatTackle();
-		tackle.animationLength = 0.667f;
 		tackleAbilityID = 0;
 		loadout.SetAbility(tackle, tackleAbilityID);
 
@@ -29,12 +31,6 @@ public class Spider : Enemy
 
 	public void InitialiseAI()
 	{
-
-        if (AIAgent.MindAgent.overrideScriptSetups == true)
-        {
-            return;
-        }
-
 		AIBehaviour behaviour = null;
 		AITrigger trigger = null;
 
@@ -58,20 +54,22 @@ public class Spider : Enemy
 		{
 			// OnAttacked, Triggers if attacked
 			trigger = behaviour.AddTrigger();
-			trigger.Operation = AITrigger.EConditionalExit.Continue;
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
 			trigger.AddCondition(new AICondition_Attacked(this));
 			trigger.OnTriggered += StateTransitionToAggressive;
 
 			trigger = behaviour.AddTrigger();
 			trigger.Operation = AITrigger.EConditionalExit.Stop;
-			trigger.AddCondition(new AICondition_Timer(2.0f, 4.0f));
+			retargetTimer = new AICondition_Timer(2.0f, 4.0f);
+			trigger.AddCondition(retargetTimer);
 			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Sphere(transform, AISensor.EType.Closest, AISensor.EScope.Enemies, 5.0f, Vector3.zero)));
 			trigger.OnTriggered += StateTransitionToAggressive;
 
 			// OnCanUseTackle, triggers if target in range and action off cooldown
 			trigger = behaviour.AddTrigger();
 			trigger.Operation = AITrigger.EConditionalExit.Continue;
-			trigger.AddCondition(new AICondition_ActionCooldown(loadout.AbilityBinds[tackleAbilityID]));
+			abilityTimer = new AICondition_Timer(1.0f, 1.5f);
+			trigger.AddCondition(abilityTimer);
 			trigger.AddCondition(new AICondition_Sensor(transform, AIAgent.MindAgent, new AISensor_Arc(transform, AISensor.EType.Target, AISensor.EScope.Enemies, 2.5f, 80.0f, Vector3.zero)), AITrigger.EConditional.And);
 			trigger.OnTriggered += UseTackle;
 		}
@@ -92,6 +90,7 @@ public class Spider : Enemy
 
 		if (AIAgent.MindAgent.SensedCharacters != null && AIAgent.MindAgent.SensedCharacters.Count > 0)
 		{
+			retargetTimer.Reset();
 			TargetCharacter = AIAgent.MindAgent.SensedCharacters[0];
 		}
 		else if (lastDamagedBy != null)
@@ -99,12 +98,12 @@ public class Spider : Enemy
 			TargetCharacter = lastDamagedBy;
 		}
 
-
 		base.StateTransitionToAggressive();
 	}
 
 	public void UseTackle()
 	{
+		abilityTimer.Reset();
 		loadout.UseAbility(tackleAbilityID);
 	}
 }

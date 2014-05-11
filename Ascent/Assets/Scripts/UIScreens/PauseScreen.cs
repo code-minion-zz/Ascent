@@ -97,7 +97,6 @@ public class PauseScreen : MonoBehaviour
 
 			if (!d.InUse)
 			{
-				Debug.Log(d.Name);
 				continue;
 			}
 

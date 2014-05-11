@@ -2161,19 +2161,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerTypes: 0
-  maxSpeed: 45
-  maxForce: 20
+  maxSpeed: 75
+  maxForce: 35
   mass: .100000001
   arriveRadius: 10
   wanderCircleDistance: 10
   wanderCircleRadius: 5
   wanderJitter: 10
   fleeDistance: 5
-  stopIfCloseEnough: 0
-  closeEnoughDistance: 2
-  moveAwayIfTooClose: 0
+  stopIfCloseEnough: 1
+  closeEnoughDistance: 1.75
+  moveAwayIfTooClose: 1
   tooCloseDistance: 1
-  distanceToKeepFromTarget: 1.75
+  distanceToKeepFromTarget: 2
   pursuitOffset: {x: 0, y: 0}
   pursuitOffsetLeader: {fileID: 0}
   path: {fileID: 0}

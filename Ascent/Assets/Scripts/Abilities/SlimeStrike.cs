@@ -17,7 +17,7 @@ public class SlimeStrike : Ability
 		animationLength = 0.375f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Strike";
-		cooldownFullDuration = 1.5f;
+		cooldownFullDuration = 0.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 0.75f, new Vector3(0.0f, 0.0f, 1.0f));

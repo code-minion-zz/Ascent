@@ -109,7 +109,6 @@ public class MusicManager : MonoBehaviour
 
 	public void SlowStop()
 	{
-		Debug.Log("SlowStop()");
 		elapsedTime = 0f;
 		nextMusic = MusicSelections.None;
 		musicState = State.Out;

@@ -17,7 +17,7 @@ public class RatTackle : Ability
 		animationLength = 0.375f;
 		animationSpeed = 1.0f;
 		animationTrigger = "Strike";
-		cooldownFullDuration = 1.5f;
+		cooldownFullDuration = 0.0f;
 		specialCost = 0;
 
 		damageArea = new Circle(owner.transform, 0.75f, new Vector3(0.0f, 0.0f, 1.0f));
@@ -46,10 +46,7 @@ public class RatTackle : Ability
 			Vector3 pos = owner.transform.position + owner.transform.forward * 1.0f;
 			pos.y += 1.0f;
 			EffectFactory.Singleton.CreateClawEffect(pos, Quaternion.LookRotation(owner.transform.position - Game.Singleton.Tower.CurrentFloor.MainCamera.transform.position));
-		}
 
-		if (timeElapsedSinceStarting >= animationLength * 0.45f && !executedDamage)
-		{
 			List<Character> characters = new List<Character>();
 
 			if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref characters))
@@ -63,12 +60,34 @@ public class RatTackle : Ability
 					combatEvaluator.Apply();
 
 					// Create a blood splatter effect on the enemy.
-                    EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation);
+					EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation);
 				}
 
-				executedDamage = true;
+				//executedDamage = true;
 			}
 		}
+
+		//if (timeElapsedSinceStarting >= animationLength * 0.45f && !executedDamage)
+		//{
+		//    List<Character> characters = new List<Character>();
+
+		//    if (Game.Singleton.Tower.CurrentFloor.CurrentRoom.CheckCollisionArea(damageArea, Character.EScope.Hero, ref characters))
+		//    {
+		//        foreach (Character c in characters)
+		//        {
+		//            // Apply damage and knockback to the enemey.
+		//            CombatEvaluator combatEvaluator = new CombatEvaluator(owner, c);
+		//            combatEvaluator.Add(new PhysicalDamageProperty(owner.Stats.Attack, 1.0f));
+		//            combatEvaluator.Add(new KnockbackCombatProperty(c.transform.position - owner.transform.position, 1.0f));
+		//            combatEvaluator.Apply();
+
+		//            // Create a blood splatter effect on the enemy.
+		//            EffectFactory.Singleton.CreateBloodSplatter(c.transform.position, c.transform.rotation);
+		//        }
+
+		//        executedDamage = true;
+		//    }
+		//}
     }
 
     public override void EndAbility()

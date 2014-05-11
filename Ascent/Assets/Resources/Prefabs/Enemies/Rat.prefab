@@ -990,11 +990,11 @@ MonoBehaviour:
   wanderCircleRadius: 5
   wanderJitter: 10
   fleeDistance: 5
-  stopIfCloseEnough: 0
-  closeEnoughDistance: 2
-  moveAwayIfTooClose: 0
+  stopIfCloseEnough: 1
+  closeEnoughDistance: 1.75
+  moveAwayIfTooClose: 1
   tooCloseDistance: 1
-  distanceToKeepFromTarget: 1.75
+  distanceToKeepFromTarget: 2
   pursuitOffset: {x: 0, y: 0}
   pursuitOffsetLeader: {fileID: 0}
   path: {fileID: 0}

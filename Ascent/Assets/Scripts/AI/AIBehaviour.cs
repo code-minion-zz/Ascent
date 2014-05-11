@@ -57,13 +57,6 @@ public class AIBehaviour
         }
     }
 
-#if UNITY_EDITOR
-	public void OnDrawGizmos()
-    {
-        DebugDraw();
-    }
-#endif
-
     public void Reset()
     {
         foreach (AITrigger t in triggers)

@@ -110,7 +110,7 @@ public class AIMindAgent : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-	/*public void OnDrawGizmos()
+	public void OnDrawGizmos()
 	{
 		if (!drawLabels ||
             newBehaviours == null ||
@@ -181,6 +181,6 @@ public class AIMindAgent : MonoBehaviour
 			}
 			++i;
 		}
-    }*/
+    }
 #endif
 }
