@@ -38,7 +38,7 @@ public class AIEditorMachine : Editor
         aiMindAgent = new SerializedObject(target);
     }
 
-    public override void OnInspectorGUI()
+    /*public override void OnInspectorGUI()
     {
         aiMindAgent.Update();
         newBehaviours = aiMindAgent.FindProperty("newBehaviours");
@@ -51,7 +51,7 @@ public class AIEditorMachine : Editor
         Show(aiBehaviours, EditorListOption.NoSize);
 
         aiMindAgent.ApplyModifiedProperties();
-    }
+    }*/
 
     public static void Show(SerializedProperty list, EditorListOption options = EditorListOption.Default)
     {
