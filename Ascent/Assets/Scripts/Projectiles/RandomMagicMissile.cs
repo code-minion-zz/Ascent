@@ -37,7 +37,8 @@ public class RandomMagicMissile : Projectile
 		if (timeElapsed >= 3.5f && !exploded)
 		{
 			exploded = true;
-			EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
+			GameObject go = EffectFactory.Singleton.CreateArcaneExplosion(transform.position, transform.rotation);
+			go.transform.parent = EffectFactory.Singleton.transform;
 		}
 		else if (timeElapsed >= lifeSpan)
 		{
@@ -79,7 +80,8 @@ public class RandomMagicMissile : Projectile
 		}
 
         Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);
-        EffectFactory.Singleton.CreateArcaneExplosion(closestPoint, transform.rotation);
+		GameObject go = EffectFactory.Singleton.CreateArcaneExplosion(closestPoint, transform.rotation);
+		go.transform.parent = EffectFactory.Singleton.transform;
 		GameObject.Destroy(gameObject);
 	}
 }

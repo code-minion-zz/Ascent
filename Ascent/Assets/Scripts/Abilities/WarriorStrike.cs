@@ -16,6 +16,9 @@ public class WarriorStrike : BaseHeroAbility
 	private Warrior.ECombatAnimation curStrikeAnim = Warrior.ECombatAnimation.Strike1;
 	private Warrior.ECombatAnimation lastStrikeAnim = Warrior.ECombatAnimation.Strike3;
 
+
+	private Color strikeColor;
+
 	public override void Initialise(Character owner)
     {
 		base.Initialise(owner);
@@ -28,6 +31,10 @@ public class WarriorStrike : BaseHeroAbility
 
         // Defines the collision shape and properties of this ability.
 		swingArc = new Arc(owner.transform, radius, arcAngle, new Vector3(0.0f, 0.0f, -0.0f));
+
+		Color playerColor = Player.GetPlayerColor(Game.Singleton.GetPlayer(((Hero)owner)).PlayerID);
+		strikeColor = (Color.white * 0.5f) + (playerColor * 0.5f);
+		strikeColor.a = 0.35f;
     }
 
 	public override void StartAbility()
@@ -60,11 +67,15 @@ public class WarriorStrike : BaseHeroAbility
 
 		if (!performed)
 		{
-			if (timeElapsedSinceStarting >= animationLength * 0.65f)
+			if (timeElapsedSinceStarting >= animationLength * 0.50f)
 			{
 				GameObject strike = GameObject.Instantiate(Resources.Load("Prefabs/Effects/Strike/BaseStrikeEffect")) as GameObject;
-				strike.transform.position = owner.transform.position + (owner.transform.forward *0.75f)  + new Vector3(0.0f, 0.75f, 0.0f);
+				strike.transform.position = owner.transform.position + (owner.transform.forward * 0.45f)  + new Vector3(0.0f, 0.55f, 0.0f);
 				strike.transform.rotation = owner.transform.rotation;
+
+				strike.transform.parent = EffectFactory.Singleton.transform;
+
+				strike.GetComponentInChildren<MaterialDelayFade>().myColor = strikeColor;
 
 				List<Character> enemies = new List<Character>();
 

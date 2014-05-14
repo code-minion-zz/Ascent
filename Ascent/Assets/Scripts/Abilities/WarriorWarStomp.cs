@@ -41,6 +41,7 @@ public class WarriorWarStomp : Ability
         stompObject = GameObject.Instantiate(prefab) as GameObject;
         stompObject.transform.position = owner.transform.position;
         stompObject.transform.localScale = new Vector3(0.0f, 1.0f, 0.0f);
+		stompObject.transform.parent = EffectFactory.Singleton.transform;
         //GameObject.Destroy(stompObject, animationLength / animationSpeed);
 
         performed = false;

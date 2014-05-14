@@ -11,23 +11,29 @@ public class StunnedEffect : MonoBehaviour
 
 	private float timeElapsed;
 
-	private Transform target;
+	private Transform targetPosition;
+	private Character targetCharacter;
 
-	public void Initialise(Transform target)
+	public void Initialise(Transform target, Character targetCharacter)
 	{
-		this.target = target;
+		this.targetCharacter = targetCharacter;
+		this.targetPosition = target;
 	}
 
 	void Update () 
 	{
-		if (target != null)
+		if (targetPosition != null)
 		{
-			Vector3 targetPos = target.transform.position;
+			Vector3 targetPos = targetPosition.transform.position;
 			targetPos.y = transform.position.y;
 			transform.position = targetPos;
 		}
 
-		if (target == null && !fadeOut)
+		if ((targetPosition == null || targetCharacter == null) && !fadeOut)
+		{
+			fadeOut = true;
+		}
+		else if (targetCharacter != null && !targetCharacter.IsInState(EStatus.Stun))
 		{
 			fadeOut = true;
 		}
@@ -56,6 +62,7 @@ public class StunnedEffect : MonoBehaviour
 			if (timeElapsed == fadeOutTime)
 			{
 				GameObject.Destroy(this.gameObject);
+				return;
 			}
 		}
 	}

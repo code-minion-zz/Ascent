@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class StunnedDebuff : StatusEffect
 {
@@ -28,6 +29,25 @@ public class StunnedDebuff : StatusEffect
 
 		if (target.IsVulnerableTo(EStatus.Stun) || caster == target)
 		{
+			base.ApplyStatusEffect(caster, target);
+
+			bool wasApplied = false;
+			// Hack to make sure that effect was applied
+			List<StatusEffect> statusEffects = target.StatusEffects;
+
+			for (int i = 0; i < statusEffects.Count; ++i)
+			{
+				if (statusEffects[i].GetType() == this.GetType())
+				{
+					wasApplied = true;
+					break;
+				}
+			}
+			if (!wasApplied)
+			{
+				return;
+			}
+
 			if (!target.IsInState(EStatus.Stun))
 			{
 				Transform stunTarget = target.stunEffectPosition;
@@ -40,13 +60,12 @@ public class StunnedDebuff : StatusEffect
 						stunTarget = target.transform;
 					}
 				}
-				effect = EffectFactory.Singleton.CreateStunnedEffect(stunTarget).GetComponent<StunnedEffect>();
+				effect = EffectFactory.Singleton.CreateStunnedEffect(stunTarget, target).GetComponent<StunnedEffect>();
 			}
 
-			base.ApplyStatusEffect(caster, target);
 
 			target.Status |= EStatus.Stun;
-			target.StatusColour |= EStatusColour.Yellow;
+			//target.StatusColour |= EStatusColour.Yellow;
 
 			target.Motor.StopMotion();
 			target.Motor.StopMovingAlongGrid();	
@@ -61,10 +80,9 @@ public class StunnedDebuff : StatusEffect
 	{
 		if (effect != null)
 		{
-			target.Status &= ~EStatus.Stun;
-			target.StatusColour &= ~EStatusColour.Yellow;
-
 			effect.FadeOutAndDie();
 		}
+			target.Status &= ~EStatus.Stun;
+			//target.StatusColour &= ~EStatusColour.Yellow;
 	}
 }

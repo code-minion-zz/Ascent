@@ -30,7 +30,7 @@ public class PlayerHUD : MonoBehaviour
 	{
 		set 
 		{
-			timeElapsedForWarn = 1.0f;
+			timeElapsedForWarn = 0.5f;
 		}
 	}
 	private float timeElapsedForWarn;
@@ -186,6 +186,7 @@ public class PlayerHUD : MonoBehaviour
 				
 				Color colora = sprite.color;
 				colora.b = 0.25f + Mathf.PingPong(time, 1.0f);
+				colora.b = ((timeElapsedForWarn / 0.5f));
 				sprite.color = colora;
 			}
 			timeElapsedForWarn -= Time.deltaTime;

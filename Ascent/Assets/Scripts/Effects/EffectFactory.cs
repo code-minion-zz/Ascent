@@ -19,6 +19,7 @@ public class EffectFactory : MonoBehaviour
 	public GameObject lightningCastCircle;
 	public GameObject fireCastCircle;
 	public GameObject iceCastCircle;
+	public GameObject arcaneCastCircle;
 
 	public GameObject stompHitEffect;
 
@@ -96,10 +97,12 @@ public class EffectFactory : MonoBehaviour
         return effect;
     }
 
-	public void CreateArcaneExplosion(Vector3 position, Quaternion rotation)
+	public GameObject CreateArcaneExplosion(Vector3 position, Quaternion rotation)
 	{
 		GameObject explosion = GameObject.Instantiate(arcaneExplosion, position, rotation) as GameObject;
 		explosion.transform.parent = transform;
+
+		return explosion;
 	}
 
     public GameObject CreateIceblock(Vector3 position, Quaternion rotation)
@@ -192,6 +195,34 @@ public class EffectFactory : MonoBehaviour
 		return effect;
 	}
 
+	public GameObject CreateLightningCastCircle(Character owner)
+	{
+		GameObject effect = null;
+
+		if (lightningCastCircle != null)
+		{
+			Vector3 pos = owner.transform.position;
+			effect = GameObject.Instantiate(lightningCastCircle, pos, owner.transform.rotation) as GameObject;
+			effect.transform.parent = owner.transform;
+		}
+
+		return effect;
+	}
+
+	public GameObject CreateArcaneCastCircle(Vector3 position, Quaternion rotation)
+	{
+		GameObject effect = null;
+
+		if (arcaneCastCircle != null)
+		{
+			Vector3 pos = position;
+			effect = GameObject.Instantiate(arcaneCastCircle, pos, rotation) as GameObject;
+			effect.transform.parent = transform;
+		}
+
+		return effect;
+	}
+
 	public GameObject CreateFireCastCircle(Vector3 position, Quaternion rotation)
 	{
 		GameObject effect = null;
@@ -234,7 +265,7 @@ public class EffectFactory : MonoBehaviour
 		return effect;
 	}
 
-	public GameObject CreateStunnedEffect(Transform target)
+	public GameObject CreateStunnedEffect(Transform target, Character targetChar)
 	{
 		GameObject effect = null;
 
@@ -245,7 +276,7 @@ public class EffectFactory : MonoBehaviour
 			effect = GameObject.Instantiate(stunnedEffect, pos, target.transform.rotation) as GameObject;
 			effect.transform.parent = transform;
 
-			effect.GetComponent<StunnedEffect>().Initialise(target);
+			effect.GetComponent<StunnedEffect>().Initialise(target, targetChar);
 		}
 
 		return effect;

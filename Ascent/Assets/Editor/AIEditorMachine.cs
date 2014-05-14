@@ -22,6 +22,7 @@ public enum EditorListOption
 [CanEditMultipleObjects]
 public class AIEditorMachine : Editor
 {
+#pragma warning disable 0414
     private SerializedObject aiMindAgent;
     private SerializedProperty newBehaviours;
 

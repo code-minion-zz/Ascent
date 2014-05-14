@@ -44,7 +44,9 @@ public class Lightning : Projectile
         bool lightningExpired = false;
 
         Vector3 pos = collision.ClosestPointOnBounds(this.transform.position);
-        GameObject.Instantiate(lightningEffectHit, pos, collision.transform.rotation);
+		GameObject light = GameObject.Instantiate(lightningEffectHit, pos, collision.transform.rotation) as GameObject;
+
+		light.transform.parent = EffectFactory.Singleton.transform;
 
 		if (owner == null)
 		{

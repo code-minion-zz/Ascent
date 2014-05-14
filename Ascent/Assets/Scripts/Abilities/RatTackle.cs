@@ -7,7 +7,6 @@ public class RatTackle : Ability
 	private Circle damageArea;
 	private float prevSpeed;
     private float prevAccel;
-	private bool executedDamage;
 	private bool performed;
 
     public override void Initialise(Character owner)
@@ -27,7 +26,6 @@ public class RatTackle : Ability
     {
 		base.StartAbility();
 
-		executedDamage = false;
 		performed = false;
 
 		owner.Motor.IsHaltingMovementToPerformAction = true;

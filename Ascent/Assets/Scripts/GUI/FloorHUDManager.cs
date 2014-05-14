@@ -299,7 +299,8 @@ public class FloorHUDManager : MonoBehaviour
 	public void LevelCompleteScreen()
 	{
 		ToggleTransition(true);
-		SetTransitionText((Game.Singleton.Tower.currentFloorNumber >= Game.Singleton.maxFloor ? "Congratulations Final Floor" : "Floor " + Game.Singleton.Tower.currentFloorNumber) + " Completed");
+		SetTransitionText((Game.Singleton.Tower.currentFloorNumber >= Game.Singleton.maxFloor ? "Final Floor" : "Floor " + Game.Singleton.Tower.currentFloorNumber) + "\n Completed");
+		
 		transitionPanel.GetComponent<UIPanel>().alpha = 1;
 		transitionTimer = Game.Singleton.showLevelCompleteMessageTimer;
 		transitionTime = transitionTimer;
@@ -327,6 +328,11 @@ public class FloorHUDManager : MonoBehaviour
 	public void SetTransitionText(string text)
 	{
 		transitionLabel.text = text;
+	}
+
+	public void SetTransitionTextSize(int size)
+	{
+		transitionLabel.fontSize = size;
 	}
 
 	public void OnFadeInEnd()

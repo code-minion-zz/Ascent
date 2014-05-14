@@ -34,7 +34,7 @@ public class Interactable : MonoBehaviour
 			{
 				mat.shader = Shader.Find("Outlined/Diffuse");
 				mat.SetColor("_OutlineColor", color);
-				mat.SetFloat("_Outline", 0.003f);
+				mat.SetFloat("_Outline", 0.002f);
 			}
 		}
 	}

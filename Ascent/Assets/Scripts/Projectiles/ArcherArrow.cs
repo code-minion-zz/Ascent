@@ -17,6 +17,8 @@ public class ArcherArrow : Projectile
         transform.LookAt(startPos - velocity, Vector3.up);
         rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         //projectile.rigidbody.AddTorque(new Vector3(Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f), Random.Range(1.0f, 100.0f)));
+
+		transform.parent = EffectFactory.Singleton.transform;
     }
 
     public void Update()

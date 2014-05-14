@@ -129,6 +129,52 @@ public class Floor : MonoBehaviour
             heroes[i].FloorStatistics = new FloorStats();
 		}
 
+		// Put player indicators on the heroes.
+		for (int i = 0; i < players.Count; ++i)
+		{
+			heroes[i].GetComponent<PlayerIndicator>().Initialise(Player.GetPlayerColor(i));
+		}
+
+		// Correct materials on
+		for (int i = 0; i < players.Count; ++i)
+		{
+			var render = heroes[i].GetComponentInChildren<SkinnedMeshRenderer>();
+
+			// Hack to just get colors in
+			if(i == 0)
+			{
+				render.materials[2].SetTexture(0, Resources.Load("CharacterModels/Warrior/warrior_diff_red") as Texture);
+				render.materials[2].color = (Color.white * 0.9f) + (Color.red * 0.1f);
+				render.materials[1].color = (Color.white * 0.9f) + (Color.red * 0.1f);
+				render.materials[0].color = (Color.white * 0.65f) + (Color.red * 0.35f);
+			}
+			else if(i == 1)
+			{
+				render.materials[1].SetTexture(0, Resources.Load("CharacterModels/Warrior/shieldgreen_diff") as Texture);
+				render.materials[2].SetTexture(0, Resources.Load("CharacterModels/Warrior/warrior_diff_green") as Texture);
+				render.materials[2].color = (Color.white * 0.9f) + (Color.green * 0.1f);
+				render.materials[1].color = (Color.white * 0.9f) + (Color.green * 0.1f);
+				render.materials[0].color = (Color.white * 0.65f) + (Color.green * 0.35f);
+			}
+			else if(i == 2)
+			{
+				render.materials[1].SetTexture(0, Resources.Load("CharacterModels/Warrior/shieldblue_diff") as Texture);
+				render.materials[2].SetTexture(0, Resources.Load("CharacterModels/Warrior/warrior_diff_blue") as Texture);
+				render.materials[2].color = (Color.white * 0.9f) + (Color.blue * 0.1f);
+				render.materials[1].color = (Color.white * 0.9f) + (Color.blue * 0.1f);
+				render.materials[0].color = (Color.white * 0.65f) + (Color.blue * 0.35f);
+			}
+			else if (i == 3)
+			{
+				render.materials[1].SetTexture(0, Resources.Load("CharacterModels/Warrior/shieldyellow_diff") as Texture);
+				render.materials[2].SetTexture(0, Resources.Load("CharacterModels/Warrior/warrior_diff_yellow") as Texture);
+				render.materials[2].color = (Color.white * 0.9f) + (Color.yellow * 0.1f);
+				render.materials[1].color = (Color.white * 0.9f) + (Color.yellow * 0.1f);
+				render.materials[0].color = (Color.white * 0.65f) + (Color.yellow * 0.35f);
+			}
+
+		}
+
         // Position the camera into a default state
         // Create the floor's camera
         GameObject go = Resources.Load("Prefabs/Tower/FloorCamera") as GameObject;
@@ -222,12 +268,6 @@ public class Floor : MonoBehaviour
 			r.gameObject.SetActive(false);
 		}
 
-
-		// Put player indicators on the heroes.
-		for (int i = 0; i < players.Count; ++i)
-		{
-			heroes[i].GetComponent<PlayerIndicator>().Initialise(Player.GetPlayerColor(i)); 
-		}
 
 		gameOverClock = 0f;
 

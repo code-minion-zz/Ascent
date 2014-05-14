@@ -44,6 +44,9 @@ public class Abomination : Enemy
         InitialiseAI();
 
 		vulnerabilities = EStatus.None;
+
+
+		((EnemyMotor)motor).SnapToTarget = true;
     }
 
     public void InitialiseAI()

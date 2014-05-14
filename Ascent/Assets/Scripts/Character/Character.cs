@@ -263,20 +263,28 @@ public abstract class Character : BaseCharacter
 		}
 	}
 
+	private Color hitColor = Color.black;
 	public IEnumerator SetHitTaken()
 	{
 		if (this is Hero)
 		{
-			Renderer[] renderers = Renderers;
-			foreach (Renderer render in renderers)
+			if (hitColor == Color.black)
 			{
-				foreach (Material mat in render.materials)
-				{
-					mat.shader = Shader.Find("Outlined/Diffuse");
-					mat.SetColor("_OutlineColor", new Color(1.0f, 1.0f, 1.0f, .75f));
-					mat.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
-				}
+				hitColor = Player.GetPlayerColor(Game.Singleton.GetPlayer(((Hero)this)).PlayerID);
+				hitColor *= 0.5f;
+				hitColor.r += .35f;
+				hitColor.g += .35f;
+				hitColor.b += .35f;
+				hitColor.a = 0.85f;
 			}
+
+			Renderer[] renderers = Renderers;
+			renderers[0].materials[2].shader = Shader.Find("Outlined/Diffuse");
+			renderers[0].materials[2].SetColor("_OutlineColor", hitColor);
+			renderers[0].materials[2].SetFloat("_Outline", 0.002f);
+				//_Outline ("Outline width", Range (.002, 0.03)) = .003
+
+			//renderers[0].materials[2].SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 0.75f));
 		}
 
 		hitTaken = true;
@@ -285,13 +293,8 @@ public abstract class Character : BaseCharacter
 		if (this is Hero)
 		{
 			Renderer[] renderers = Renderers;
-			foreach (Renderer render in renderers)
-			{
-				foreach (Material mat in render.materials)
-				{
-					mat.shader = Shader.Find("Diffuse");
-				}
-			}
+
+			renderers[0].materials[2].shader = Shader.Find("DiffuseNormalSpecular");
 
 			hitTaken = false;
 		}

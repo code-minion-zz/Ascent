@@ -141,7 +141,8 @@ public class HomingMagicMissile : Projectile
 		}
 
         Vector3 closestPoint = collision.collider.ClosestPointOnBounds(transform.position);
-		GameObject.Instantiate(arcaneExplosionPrefab, closestPoint, transform.rotation);
-		GameObject.Destroy(this.gameObject);
+		GameObject go = EffectFactory.Singleton.CreateArcaneExplosion(closestPoint, transform.rotation);
+		go.transform.parent = EffectFactory.Singleton.transform;
+		Destroy(gameObject);
     }
 }

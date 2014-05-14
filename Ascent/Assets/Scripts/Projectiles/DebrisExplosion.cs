@@ -19,6 +19,7 @@ public class DebrisExplosion : Projectile
 
         circle = new Circle(transform, 2.0f, Vector3.zero);
 
+		transform.parent = EffectFactory.Singleton.transform;
     }
 
     public void Update()

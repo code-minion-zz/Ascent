@@ -10,6 +10,7 @@ public class WatcherBoss : Enemy
 {
     private int lazerID;
     private int magicMissilesID;
+	private int sleepID;
 
     public Transform mainEye;
     public Transform[] eyes;
@@ -19,6 +20,7 @@ public class WatcherBoss : Enemy
 
 	WatcherMagicMissile magicMissileAbility;
 	WatcherLazerBeam lazerBeamAbility;
+	WatcherSleep sleepAbility;
 
 	bool isFirstTime = true;
 
@@ -27,7 +29,7 @@ public class WatcherBoss : Enemy
         base.Initialise();
 
         // Add abilities
-        loadout.SetSize(2);
+        loadout.SetSize(3);
 
 		magicMissileAbility = new WatcherMagicMissile();
         magicMissilesID = 0;
@@ -36,6 +38,10 @@ public class WatcherBoss : Enemy
 		lazerBeamAbility = new WatcherLazerBeam();
 		lazerID = 1;
 		loadout.SetAbility(lazerBeamAbility, lazerID);
+
+		sleepAbility = new WatcherSleep();
+		sleepID = 2;
+		loadout.SetAbility(sleepAbility, sleepID);
 
         InitialiseAI();
 
@@ -72,7 +78,21 @@ public class WatcherBoss : Enemy
 			lazerTimer = new AICondition_Timer(7.5f, 12.0f);
 			trigger.AddCondition(lazerTimer);
 			trigger.OnTriggered += UseLazer;
+
+			trigger = behaviour.AddTrigger("Sleep after lazer.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[lazerID]));
+			trigger.OnTriggered += StateTransitionToPassive;
         }
+
+		// Passive
+		behaviour = AIAgent.MindAgent.AddBehaviour(AIMindAgent.EBehaviour.Passive);
+		{
+			trigger = behaviour.AddTrigger("Sleep for 3 seconds.");
+			trigger.Operation = AITrigger.EConditionalExit.Stop;
+			trigger.AddCondition(new AICondition_ActionEnd(loadout.AbilityBinds[sleepID]));
+			trigger.OnTriggered += StateTransitionToAggressive;
+		}
 
         StateTransitionToAggressive();
     }
@@ -92,6 +112,8 @@ public class WatcherBoss : Enemy
     {
         base.StateTransitionToPassive();
 		AIAgent.MindAgent.ResetBehaviour(AIMindAgent.EBehaviour.Passive);
+
+		loadout.UseAbility(sleepID);
     }
 
     public override void StateTransitionToAggressive()

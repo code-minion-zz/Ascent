@@ -56,6 +56,8 @@ public class WatcherMagicMissile : Ability
 
 		if (timeElapsedSinceStarting >= animationLength * 0.5f && !performedA)
         {
+			EffectFactory.Singleton.CreateArcaneCastCircle(owner.transform.position, owner.transform.rotation);
+
 			var players = Game.Singleton.Players;
 			for (int i = 0; i < Game.Singleton.AlivePlayerCount; ++i)
 			{

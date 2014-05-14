@@ -77,22 +77,22 @@ BlendTree:
   - m_Motion: {fileID: 7400000, guid: 8dfe797e8ac8abc419c6f29a97b71a43, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: .5
+    m_TimeScale: .349999994
     m_CycleOffset: 0
     m_IsAnim: 1
     m_Mirror: 0
   - m_Motion: {fileID: 7400004, guid: f58145a217821024f8a2b27f60e09b70, type: 3}
-    m_Threshold: 1
+    m_Threshold: .75
     m_Position: {x: 0, y: 0}
-    m_TimeScale: .75
+    m_TimeScale: .850000024
     m_CycleOffset: 0
     m_IsAnim: 1
     m_Mirror: 0
   m_BlendParameter: Movement
   m_BlendParameterY: Movement
   m_MinThreshold: 0
-  m_MaxThreshold: 1
-  m_UseAutomaticThresholds: 1
+  m_MaxThreshold: .75
+  m_UseAutomaticThresholds: 0
   m_BlendType: 0
 --- !u!206 &20621040
 BlendTree:
@@ -592,18 +592,32 @@ StateMachine:
       second:
       - {fileID: 110155008}
     data:
-      first: {fileID: 110270438}
+      first: {fileID: 110200000}
       second:
-      - {fileID: 110100000}
-      - {fileID: 110110796}
-      - {fileID: 110141175}
-      - {fileID: 110143332}
+      - {fileID: 110188798}
+      - {fileID: 110133578}
+    data:
+      first: {fileID: 110208827}
+      second:
+      - {fileID: 110177845}
+      - {fileID: 110189945}
+      - {fileID: 110164497}
     data:
       first: {fileID: 110260123}
       second:
       - {fileID: 110164293}
       - {fileID: 110124809}
       - {fileID: 110176103}
+    data:
+      first: {fileID: 110266550}
+      second: []
+    data:
+      first: {fileID: 110270438}
+      second:
+      - {fileID: 110100000}
+      - {fileID: 110110796}
+      - {fileID: 110141175}
+      - {fileID: 110143332}
     data:
       first: {fileID: 110272625}
       second:
@@ -612,21 +626,7 @@ StateMachine:
       - {fileID: 110186943}
       - {fileID: 110173701}
     data:
-      first: {fileID: 110208827}
-      second:
-      - {fileID: 110177845}
-      - {fileID: 110189945}
-      - {fileID: 110164497}
-    data:
-      first: {fileID: 110200000}
-      second:
-      - {fileID: 110188798}
-      - {fileID: 110133578}
-    data:
       first: {fileID: 110298387}
-      second: []
-    data:
-      first: {fileID: 110266550}
       second: []
   m_MotionSetCount: 1
   m_AnyStatePosition: {x: -336, y: -144, z: 0}

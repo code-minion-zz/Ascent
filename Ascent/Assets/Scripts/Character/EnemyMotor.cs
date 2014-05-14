@@ -5,6 +5,13 @@ public class EnemyMotor : CharacterMotor
 {
     public float rotationSpeed = 5.0f;
 
+	private bool snapToTarget = false;
+	public bool SnapToTarget
+	{
+		get { return snapToTarget; }
+		set { snapToTarget = value; }
+	}
+
     protected override void ProcessMovement()
     {
 		Vector3 velocity = Vector3.zero;
@@ -19,7 +26,14 @@ public class EnemyMotor : CharacterMotor
 		if (velocity.magnitude > 0.01f)
 		{
 			// Rotate toward the target
-			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);
+			if (snapToTarget)
+			{
+				transform.rotation = Quaternion.LookRotation(velocity, Vector3.up);
+			}
+			else
+			{
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);	
+			}
 			// Animate based on current speed
 			GetComponent<CharacterAnimator>().PlayAnimation("Movement", (GetComponent<AISteeringAgent>().Velocity.magnitude / GetComponent<AISteeringAgent>().maxSpeed));
 

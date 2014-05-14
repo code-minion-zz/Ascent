@@ -220,7 +220,7 @@ public class Game : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 
 		// Load all save games. (Make a save file if none exists).
-		AscentGameSaver.LoadGame();
+		//AscentGameSaver.LoadGame();
 
 		// Seed for the entire game. This script is executed first, no need to seed again.
 		Random.seed = (int)System.DateTime.Now.TimeOfDay.Ticks;
@@ -268,23 +268,23 @@ public class Game : MonoBehaviour
 	{
 		players = new List<Player>();
 
-		int[] usedSaves = new int[4] {-1,-1, -1, -1};
+		//int[] usedSaves = new int[4] {-1,-1, -1, -1};
 
 		for (int i = 0; i < playerCharacterType.Length; ++i)
 		{
-			// Create the test player object
-			GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
-			player.transform.parent = transform;
-			player.transform.localPosition = Vector3.zero;
-			player.transform.localRotation = Quaternion.identity;
-			player.transform.localScale = Vector3.one;
+		    // Create the test player object
+		    GameObject player = Instantiate(Resources.Load("Prefabs/Player")) as GameObject;
+		    player.transform.parent = transform;
+		    player.transform.localPosition = Vector3.zero;
+		    player.transform.localRotation = Quaternion.identity;
+		    player.transform.localScale = Vector3.one;
 
-			// Add the player component to it
-			Player newPlayer = player.GetComponent<Player>();
-			newPlayer.PlayerID = i;
+		    // Add the player component to it
+		    Player newPlayer = player.GetComponent<Player>();
+		    newPlayer.PlayerID = i;
 
-			// Add player to list
-			players.Add(newPlayer);
+		    // Add player to list
+		    players.Add(newPlayer);
 
 			// Assign it a device (devices can be doubled up if there arent enough)
 			int iDevice = i;
@@ -304,25 +304,25 @@ public class Game : MonoBehaviour
 			// Attempt to load an existing save to set for the player
 			Hero hero = null;
 
-			var heroSaves = AscentGameSaver.SaveData.heroSaves;
-			if(heroSaves.Count > 0)
-			{
-				foreach(HeroSaveData save in heroSaves)
-				{
-					if(save.heroClass == playerCharacterType[i] &&
-						i != usedSaves[0] &&
-						i != usedSaves[1] &&
-						i != usedSaves[2] &&
-						i < heroSaves.Count)
-					{
-						hero = AscentGameSaver.LoadHero(heroSaves[i]);
-						hero.Initialise(device, heroSaves[i]);
-						hero.transform.parent = newPlayer.transform;
-						usedSaves[i] = i;
-                        break;
-					}
-				}
-			}
+		//    //var heroSaves = AscentGameSaver.SaveData.heroSaves;
+		//    //if(heroSaves.Count > 0)
+		//    //{
+		//    //    foreach(HeroSaveData save in heroSaves)
+		//    //    {
+		//    //        if(save.heroClass == playerCharacterType[i] &&
+		//    //            i != usedSaves[0] &&
+		//    //            i != usedSaves[1] &&
+		//    //            i != usedSaves[2] &&
+		//    //            i < heroSaves.Count)
+		//    //        {
+		//    //            hero = AscentGameSaver.LoadHero(heroSaves[i]);
+		//    //            hero.Initialise(device, heroSaves[i]);
+		//    //            hero.transform.parent = newPlayer.transform;
+		//    //            usedSaves[i] = i;
+		//    //            break;
+		//    //        }
+		//    //    }
+			//}
 
 			// Assign the loaded hero else create a new one.
 			if (hero == null)

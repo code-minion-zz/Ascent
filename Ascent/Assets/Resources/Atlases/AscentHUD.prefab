@@ -40,9 +40,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 082f13e540b4b1e4d953276a8bb5d6f8, type: 2}
   mSprites:
+  - name: ascentTitle
+    x: 0
+    y: 289
+    width: 1002
+    height: 223
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 12
+    paddingRight: 10
+    paddingTop: 16
+    paddingBottom: 26
   - name: black
-    x: 746
-    y: 960
+    x: 72
+    y: 6
     width: 64
     height: 64
     borderLeft: 3
@@ -55,7 +68,7 @@ MonoBehaviour:
     paddingBottom: -1
   - name: buttonA
     x: 371
-    y: 843
+    y: 107
     width: 110
     height: 110
     borderLeft: 0
@@ -67,8 +80,8 @@ MonoBehaviour:
     paddingTop: 9
     paddingBottom: 9
   - name: fullWhite
-    x: 811
-    y: 955
+    x: 137
+    y: 1
     width: 32
     height: 32
     borderLeft: 3
@@ -80,8 +93,8 @@ MonoBehaviour:
     paddingTop: -2
     paddingBottom: -1
   - name: Hp_bar_Square
-    x: 811
-    y: 988
+    x: 137
+    y: 34
     width: 36
     height: 36
     borderLeft: 0
@@ -93,8 +106,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Hp_bar_Square2
-    x: 848
-    y: 988
+    x: 174
+    y: 34
     width: 36
     height: 36
     borderLeft: 0
@@ -106,8 +119,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: HPRed
-    x: 674
-    y: 956
+    x: 0
+    y: 2
     width: 71
     height: 68
     borderLeft: 0
@@ -120,7 +133,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: HpSpBar
     x: 0
-    y: 954
+    y: 218
     width: 673
     height: 70
     borderLeft: 1
@@ -133,7 +146,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: keyF
     x: 257
-    y: 840
+    y: 104
     width: 113
     height: 113
     borderLeft: 0
@@ -146,7 +159,7 @@ MonoBehaviour:
     paddingBottom: 6
   - name: lowHealth
     x: 0
-    y: 807
+    y: 71
     width: 256
     height: 146
     borderLeft: 0
@@ -158,8 +171,8 @@ MonoBehaviour:
     paddingTop: 110
     paddingBottom: 0
   - name: Mana_Bar_Square
-    x: 885
-    y: 988
+    x: 211
+    y: 34
     width: 36
     height: 36
     borderLeft: 10
@@ -171,8 +184,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Mana_Bar_Square2
-    x: 922
-    y: 988
+    x: 257
+    y: 67
     width: 36
     height: 36
     borderLeft: 0

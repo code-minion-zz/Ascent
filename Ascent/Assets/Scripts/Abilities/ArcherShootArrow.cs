@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class ArcherShootArrow : Ability
 {
     private bool performed = false;
+	private bool createdCastEfect = false;
+
     public override void Initialise(Character owner)
     {
         base.Initialise(owner);
@@ -24,6 +26,7 @@ public class ArcherShootArrow : Ability
         owner.Motor.EnableStandardMovement(false);
         owner.SetColor(Color.red);
 		performed = false;
+		createdCastEfect = false;
 
 		owner.Animator.PlayAnimation(animationTrigger, true);
     }
@@ -32,14 +35,20 @@ public class ArcherShootArrow : Ability
     {
         base.UpdateAbility();
 
-        if (timeElapsedSinceStarting >= animationLength * 0.75f && !performed)
-        {
-            GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Archer/ArcherArrow")) as GameObject;
-            arrowGO.GetComponent<ArcherArrow>().Initialise(owner.transform.position + owner.transform.forward, owner.transform.forward * 10.0f, owner);
-            performed = true;
+		if (timeElapsedSinceStarting >= animationLength * 0.25f && !createdCastEfect)
+		{
+			EffectFactory.Singleton.CreateFireCastCircle(owner.transform.position, owner.transform.rotation);
+
+			createdCastEfect = true;
+		}
+		else if (timeElapsedSinceStarting >= animationLength * 0.75f && !performed)
+		{
+			GameObject arrowGO = GameObject.Instantiate(Resources.Load("Prefabs/Projectiles/Archer/ArcherArrow")) as GameObject;
+			arrowGO.GetComponent<ArcherArrow>().Initialise(owner.transform.position + owner.transform.forward, owner.transform.forward * 10.0f, owner);
+			performed = true;
 			owner.ResetColor();
-			SoundManager.PlaySound(AudioClipType.shootFire,owner.transform.position,.1f);
-        }
+			SoundManager.PlaySound(AudioClipType.shootFire, owner.transform.position, .1f);
+		}
     }
 
     public override void EndAbility()

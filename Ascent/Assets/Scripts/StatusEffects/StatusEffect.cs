@@ -137,6 +137,11 @@ public class StatusEffect
 				// TODO: write comparison function in base class and have derived classes override it.
 				if (statusEffects[i].GetType() == this.GetType())
 				{
+					if (this.FullDuration == 0.0f)
+					{
+						return;
+					}
+
 					// If the duration of the new effect is longer, replace the old one.
 					// If the duration of the new effect is shorter, extend the old one.
 					bool isDurationLonger = (statusEffects[i].FullDuration - statusEffects[i].TimeElapsed) > this.FullDuration;
@@ -163,6 +168,10 @@ public class StatusEffect
 
 			if (!overrideSuccesful)
 			{
+				if (this.FullDuration == 0.0f)
+				{
+					return;
+				}
 				statusEffects.Add(this);
 			}
 		}

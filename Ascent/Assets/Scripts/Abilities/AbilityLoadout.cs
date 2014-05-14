@@ -17,6 +17,7 @@ public class AbilityLoadout
 
 	private float cantCastErrorTimer;
 
+
 	public Ability ActiveAbility
 	{
 		get { return activeAbility; }
@@ -175,6 +176,8 @@ public class AbilityLoadout
 						if (hud != null)
 						{
 							hud.WarnNoSP = true;
+							cantCastErrorTimer = 0.5f;
+							EffectFactory.Singleton.CreateLightningCastCircle(owner);
 						}
 					}
 

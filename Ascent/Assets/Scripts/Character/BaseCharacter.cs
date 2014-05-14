@@ -102,6 +102,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void EnableHighlight(Color color)
 	{
+		if (this is Abomination || this is WatcherBoss)
+			return;
+
 		color *= 0.75f;
 		//color.a = 0.75f;
 
@@ -119,6 +122,10 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void StopHighlight()
 	{
+		if (this is Abomination || this is WatcherBoss)
+			return;
+
+
 		Renderer[] renderers = Renderers;
         //foreach (Renderer render in renderers)
         //{
