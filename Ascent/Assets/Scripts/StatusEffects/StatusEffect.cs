@@ -26,7 +26,7 @@ public class StatusEffect
 		set { type = value; }
 	}
 
-    protected bool timed = false;
+    protected bool timed = true;
     public bool Timed
     {
         get { return timed; }
@@ -89,7 +89,7 @@ public class StatusEffect
     {
         if (timed)
         {
-            if (timeElapsed < duration)
+            if (timeElapsed <= duration)
             {
                 timeElapsed += Time.deltaTime;
                 if (timeElapsed >= duration)
@@ -118,7 +118,7 @@ public class StatusEffect
 
     public virtual void ApplyStatusEffect(Character caster, Character target)
     {
-		timed = duration > 0.0f;
+		//timed = duration > 0.0f;
 		this.caster = caster;
 		this.target = target;
 

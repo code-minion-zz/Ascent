@@ -102,6 +102,14 @@ public class HeroController : MonoBehaviour
 
     void Update()
     {
+        //if(Input.GetKeyUp(KeyCode.Alpha1))
+        //{
+        //    CombatEvaluator evaluator = new CombatEvaluator(null, hero);
+
+        //    evaluator.Add(new StatusEffectCombatProperty(new StunnedDebuff(null, hero, 1.0f)));
+        //    evaluator.Apply();
+        //}
+
 		if (!InputManager.isEnabled)
 		{
 			return;

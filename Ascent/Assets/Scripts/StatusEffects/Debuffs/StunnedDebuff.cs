@@ -15,11 +15,11 @@ public class StunnedDebuff : StatusEffect
 	{
 		type = EEffectType.Debuff;
 
-		if (duration > 0.0f)
-		{
+        //if (duration > 0.0f)
+        //{
 			timed = true;
 			this.duration = duration;
-		}
+		//}
 	}
 
 	public override void ApplyStatusEffect(Character caster, Character target)
