@@ -46,12 +46,12 @@ public class Tower : MonoBehaviour
                     newPlayer.BindInputDevice(device);
 
                     players.Add(newPlayer);
+					Game.Singleton.SetPlayers(players);
 
                     newPlayer.CreateHero(Character.EHeroClass.Warrior);
                     newPlayer.Hero.gameObject.SetActive(true);
+
                 }
-              
-                Game.Singleton.SetPlayers(players);
             }
 
 
