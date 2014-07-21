@@ -14,31 +14,45 @@ public class EnemyMotor : CharacterMotor
 
     protected override void ProcessMovement()
     {
-		Vector3 velocity = Vector3.zero;
+		Vector3 desiredVelocity = Vector3.zero;
 
         // Updates buff values
 		if (!isActionHaltingMovement)
 		{
-			velocity = ProcessStandardMovement();
+			desiredVelocity = ProcessStandardMovement();
 		}
 
         // Move forward with the velocity magnitude
-		if (velocity.magnitude > 0.01f)
+		if (desiredVelocity.magnitude > 0.01f)
 		{
 			// Rotate toward the target
 			if (snapToTarget)
 			{
-				transform.rotation = Quaternion.LookRotation(velocity, Vector3.up);
+				transform.rotation = Quaternion.LookRotation(desiredVelocity, Vector3.up);
 			}
 			else
 			{
-				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(velocity, Vector3.up), rotationSpeed);	
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(desiredVelocity, Vector3.up), rotationSpeed);	
 			}
 			// Animate based on current speed
 			GetComponent<CharacterAnimator>().PlayAnimation("Movement", (GetComponent<AISteeringAgent>().Velocity.magnitude / GetComponent<AISteeringAgent>().maxSpeed));
 
 
-			rigidbody.AddForce(transform.forward * velocity.magnitude, ForceMode.VelocityChange);
+			rigidbody.AddForce(transform.forward * desiredVelocity.magnitude, ForceMode.VelocityChange);
+
+			targetVelocity = (targetVelocity * currentSpeed);
+
+			// Apply a force that attempts to reach target velocity
+			Vector3 velocity = rigidbody.velocity;
+			Vector3 velocityChange = (targetVelocity - velocity);
+
+			float buffedMaxVelocityChange = maxVelocityChange + (buffBonusSpeed * 0.5f);
+
+			velocityChange.x = Mathf.Clamp(velocityChange.x, -buffedMaxVelocityChange, buffedMaxVelocityChange);
+			velocityChange.z = Mathf.Clamp(velocityChange.z, -buffedMaxVelocityChange, buffedMaxVelocityChange);
+			velocityChange.y = 0;
+
+			rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 		}
 		else
 		{

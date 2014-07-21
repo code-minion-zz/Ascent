@@ -249,6 +249,7 @@ public abstract class Enemy : Character
 					velocity = AIAgent.SteeringAgent.Steer(TargetPosition);
 				}
 
+				
 				motor.Move(velocity);
 
 				if (loadout.ActiveAbility == null)
